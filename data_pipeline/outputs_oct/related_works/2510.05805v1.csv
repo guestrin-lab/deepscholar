@@ -1,0 +1,121 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.05805v1,http://arxiv.org/abs/2510.05805v1,2025-10-07 11:22:27+00:00,Improving Clinical Dataset Condensation with Mode Connectivity-based Trajectory Surrogates,"Dataset condensation (DC) enables the creation of compact, privacy-preserving
+synthetic datasets that can match the utility of real patient records,
+supporting democratised access to highly regulated clinical data for developing
+downstream clinical models. State-of-the-art DC methods supervise synthetic
+data by aligning the training dynamics of models trained on real and those
+trained on synthetic data, typically using full stochastic gradient descent
+(SGD) trajectories as alignment targets; however, these trajectories are often
+noisy, high-curvature, and storage-intensive, leading to unstable gradients,
+slow convergence, and substantial memory overhead. We address these limitations
+by replacing full SGD trajectories with smooth, low-loss parametric surrogates,
+specifically quadratic B\'ezier curves that connect the initial and final model
+states from real training trajectories. These mode-connected paths provide
+noise-free, low-curvature supervision signals that stabilise gradients,
+accelerate convergence, and eliminate the need for dense trajectory storage. We
+theoretically justify B\'ezier-mode connections as effective surrogates for SGD
+paths and empirically show that the proposed method outperforms
+state-of-the-art condensation approaches across five clinical datasets,
+yielding condensed datasets that enable clinically effective model development.","\label{sec:rel_works}
+
+% \textsc{Dataset Condensation:} Dataset Distillation (DD) \citep{wang2018dataset} pioneered the synthesis of small training sets through nested bilevel optimisation, addressing the computational burden of training on massive real-world datasets by creating dramatically smaller yet equally effective alternatives. Early extensions explored soft-label optimisation \citep{sucholutsky2019soft, bohdal2020flexible}, while Dataset Condensation (DC) with gradient matching \citep{zhao2021dataset} addressed the computational intensity of bilevel optimisation by formulating dataset synthesis as a gradient matching problem, avoiding expensive nested optimisation loops. Kernel-based methods framed the problem in the neural tangent kernel regime \citep{nguyen2021dataset, nguyen2022dataset, jacot2018neural}, offering closed-form updates but with heavy matrix costs and limited use beyond images. Distribution-matching (DM) strategies instead aligned feature statistics, often through maximum mean discrepancy \citep{zhao2023dataset, wang2022cafe, zhao2023improved, zhang2024m3d}, scaling more efficiently but typically requiring larger synthetic sets to achieve strong performance. More recent methods, such as Squeeze, Recover and Relabel (SRe2$^2$L) \citep{sre2l2023} and Realistic, Diverse, and Efficient Dataset Distillation (RDED) \citep{rded2023}, decouple generation from training by inverting pre-trained models or matching batch-normalisation statistics. While effective on images, these methods transfer poorly to structured clinical data, where synthetic–real performance gaps remain a significant barrier to deployment.
+
+\textsc{Dataset Condensation:} 
+Dataset Distillation \citep{wang2018dataset} pioneered synthetic dataset synthesis through nested bilevel optimisation, addressing the computational burden of training on massive real-world datasets by creating dramatically smaller yet equally effective alternatives. Gradient matching approaches \citep{zhao2021dataset} improved computational efficiency by avoiding expensive inner-loop unrolling, while soft-label extensions \citep{sucholutsky2019soft, bohdal2020flexible} explored label optimisation. Kernel-based methods \citep{nguyen2021dataset, nguyen2022dataset, jacot2018neural} reformulated the problem using neural tangent kernel theory, offering closed-form solutions but with heavy computational costs. Distribution matching methods \citep{zhao2023dataset, wang2022cafe, zhao2023improved, zhang2024m3d} achieved efficiency gains by aligning feature statistics without bilevel optimisation, though often requiring larger synthetic sets to achieve strong performance. Recent image-focussed decoupling approaches like Squeeze, Recover and Relabel \citep{yin2023sre2l} and Realistic, Diverse, and Efficient Dataset Distillation \citep{sun2023rded} separate synthesis from training optimisation. While effective on vision datasets, these methods transfer poorly to structured clinical data, where performance gaps remain significant.
+
+\textsc{Trajectory Matching:} 
+TM narrows this gap by supervising synthetic data with the training dynamics of real data. Matching Training Trajectories (MTT) \citep{cazenavette2022dataset} first aligned long-range trajectories, capturing richer information than stepwise gradient matching. Extensions such as Flat Trajectory Distillation (FTD) \citep{du2023ftd}, Difficulty-Aligned Trajectory Matching (DATM) \citep{guo2024datm}, and TrajEctory matching with Soft Label Assignment (TESLA) \citep{liu2023tesla} introduce curvature regularisation, difficulty-based curricula, and scalable soft-label assignment respectively. Despite strong results, TM methods depend on dense trajectories—tens to hundreds of checkpoints—and inherit the noise and curvature of SGD paths, inflating storage and introducing instability that limits clinical use.
+
+\textsc{Mode Connectivity:}
+Mode connectivity studies the geometry of neural loss landscapes by constructing smooth, low-loss paths between trained models, most commonly parameterised as quadratic Bézier curves \citep{garipov2018loss, draxler2018essentially, izmailov2018averaging}. These paths preserve endpoint performance while bypassing high-loss regions, and have been used to analyse generalisation and reparameterisation. In clinical machine learning, they have supported incremental learning and mitigated distribution shift \citep{thakur2023clinical}. Requiring only two endpoints and a single control point, mode connections provide compact yet expressive representations of optimisation paths.
+
+\textsc{Comparison With Proposed Approach:}
+These approaches present distinct trade-offs: non-TM methods are efficient but struggle with structured clinical data; TM captures richer dynamics but suffers from SGD instability and heavy storage requirements; mode connectivity provides compact, smooth paths but remains unexplored for DC. This work bridges these limitations by replacing noisy SGD trajectories with smooth mode-connected surrogates, combining TM's supervisory power with mode connectivity's efficiency for effective clinical data synthesis.
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%","\textsc{Dataset Condensation:} 
+Dataset Distillation \citep{wang2018dataset} pioneered synthetic dataset synthesis through nested bilevel optimisation, addressing the computational burden of training on massive real-world datasets by creating dramatically smaller yet equally effective alternatives. Gradient matching approaches \citep{zhao2021dataset} improved computational efficiency by avoiding expensive inner-loop unrolling, while soft-label extensions \citep{sucholutsky2019soft, bohdal2020flexible} explored label optimisation. Kernel-based methods \citep{nguyen2021dataset, nguyen2022dataset, jacot2018neural} reformulated the problem using neural tangent kernel theory, offering closed-form solutions but with heavy computational costs. Distribution matching methods \citep{zhao2023dataset, wang2022cafe, zhao2023improved, zhang2024m3d} achieved efficiency gains by aligning feature statistics without bilevel optimisation, though often requiring larger synthetic sets to achieve strong performance. Recent image-focussed decoupling approaches like Squeeze, Recover and Relabel \citep{yin2023sre2l} and Realistic, Diverse, and Efficient Dataset Distillation \citep{sun2023rded} separate synthesis from training optimisation. While effective on vision datasets, these methods transfer poorly to structured clinical data, where performance gaps remain significant.
+
+\textsc{Trajectory Matching:} 
+TM narrows this gap by supervising synthetic data with the training dynamics of real data. Matching Training Trajectories (MTT) \citep{cazenavette2022dataset} first aligned long-range trajectories, capturing richer information than stepwise gradient matching. Extensions such as Flat Trajectory Distillation (FTD) \citep{du2023ftd}, Difficulty-Aligned Trajectory Matching (DATM) \citep{guo2024datm}, and TrajEctory matching with Soft Label Assignment (TESLA) \citep{liu2023tesla} introduce curvature regularisation, difficulty-based curricula, and scalable soft-label assignment respectively. Despite strong results, TM methods depend on dense trajectories—tens to hundreds of checkpoints—and inherit the noise and curvature of SGD paths, inflating storage and introducing instability that limits clinical use.
+
+\textsc{Mode Connectivity:}
+Mode connectivity studies the geometry of neural loss landscapes by constructing smooth, low-loss paths between trained models, most commonly parameterised as quadratic Bézier curves \citep{garipov2018loss, draxler2018essentially, izmailov2018averaging}. These paths preserve endpoint performance while bypassing high-loss regions, and have been used to analyse generalisation and reparameterisation. In clinical machine learning, they have supported incremental learning and mitigated distribution shift \citep{thakur2023clinical}. Requiring only two endpoints and a single control point, mode connections provide compact yet expressive representations of optimisation paths.
+
+\textsc{Comparison With Proposed Approach:}
+These approaches present distinct trade-offs: non-TM methods are efficient but struggle with structured clinical data; TM captures richer dynamics but suffers from SGD instability and heavy storage requirements; mode connectivity provides compact, smooth paths but remains unexplored for DC. This work bridges these limitations by replacing noisy SGD trajectories with smooth mode-connected surrogates, combining TM's supervisory power with mode connectivity's efficiency for effective clinical data synthesis.","Dataset Condensation:Dataset Distillation (Wang
+et al., 2018) pioneered synthetic dataset synthesis
+through nested bilevel optimisation, addressing the
+computational burden of training on massive real-world
+datasets by creating dramatically smaller yet equally
+effective alternatives. Gradient matching approaches
+(Zhao and Bilen, 2021) improved computational ef-
+ficiency by avoiding expensive inner-loop unrolling,
+while soft-label extensions (Sucholutsky and Schonlau,
+2019; Bohdal et al., 2020) explored label optimisation.
+Kernel-based methods (Nguyen et al., 2021, 2022; Jacot
+et al., 2018) reformulated the problem using neural tan-
+gent kernel theory, offering closed-form solutions but
+with heavy computational costs. Distribution match-
+ing methods (Zhao and Bilen, 2023; Wang et al., 2022;
+Zhao et al., 2023; Zhang et al., 2024) achieved efficiency
+gains by aligning feature statistics without bilevel opti-
+misation, though often requiring larger synthetic sets to
+achieve strong performance. Recent image-focussed de-
+coupling approaches like Squeeze, Recover and Relabel
+(Yin et al., 2023) and Realistic, Diverse, and Efficient
+Dataset Distillation (Sun et al., 2023) separate syn-
+thesis from training optimisation. While effective on
+vision datasets, these methods transfer poorly to struc-
+tured clinical data, where performance gaps remain
+significant.
+Trajectory Matching:TM narrows this gap by
+supervising synthetic data with the training dynamics
+of real data. Matching Training Trajectories (MTT)
+(Cazenavette et al., 2022) first aligned long-range tra-
+jectories, capturing richer information than stepwise
+gradient matching. Extensions such as Flat Trajec-
+tory Distillation (FTD) (Du et al., 2023), Difficulty-
+Aligned Trajectory Matching (DATM) (Guo et al.,
+2024), and TrajEctory matching with Soft Label As-
+signment (TESLA) (Liu et al., 2023) introduce cur-
+vature regularisation, difficulty-based curricula, and
+scalable soft-label assignment respectively. Despite
+strong results, TM methods depend on dense trajecto-
+ries—tens to hundreds of checkpoints—and inherit the
+noise and curvature of SGD paths, inflating storage
+and introducing instability that limits clinical use.
+Mode Connectivity:Mode connectivity studies the
+geometry of neural loss landscapes by constructing
+smooth, low-loss paths between trained models, most
+commonly parameterised as quadratic B´ ezier curves
+(Garipov et al., 2018; Draxler et al., 2018; Izmailov
+et al., 2018). These paths preserve endpoint perfor-
+mance while bypassing high-loss regions, and have been
+used to analyse generalisation and reparameterisation.
+In clinical machine learning, they have supported in-
+cremental learning and mitigated distribution shift(Thakur et al., 2023). Requiring only two endpoints
+and a single control point, mode connections provide
+compact yet expressive representations of optimisation
+paths.
+Comparison With Proposed Approach:These
+approaches present distinct trade-offs: non-TM meth-
+ods are efficient but struggle with structured clinical
+data; TM captures richer dynamics but suffers from
+SGD instability and heavy storage requirements; mode
+connectivity provides compact, smooth paths but re-
+mains unexplored for DC. This work bridges these
+limitations by replacing noisy SGD trajectories with
+smooth mode-connected surrogates, combining TM’s
+supervisory power with mode connectivity’s efficiency
+for effective clinical data synthesis."

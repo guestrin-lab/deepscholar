@@ -1,0 +1,53 @@
+
+
+\section{Introduction}
+
+
+Modeling realistic and controllable two-person interactions from natural language remains a central problem in human motion generation with broad implications for animation, extended reality, and embodied AI. Compared with single-person motion, interactions require (i) plausible individual dynamics, (ii) precise spatiotemporal coupling between agents, and (iii) semantic consistency with text prompts that often specify initiation, response, and contact phases. Despite recent progress in single-person synthesis~\citep{tevet2022human, zhou2024emdm, cong2024laserhuman, xu2025mospa, guo2024momask}, current approaches struggle to extend to diverse two-person scenarios for two principal reasons. \emph{Data coverage is insufficient:} two-person corpora are markedly smaller than single-person counterparts (e.g., \textsc{InterHuman}~\citep{liang2024intergen}: $<\!8$k sequences vs.\ \textsc{HumanML3D}~\citep{guo2022generating}: $>\!14$k), which limits the support of coordination patterns and degrades out-of-distribution generalization. \emph{Language conditioning is coarse:} while interaction captions are long and structurally informative (median $21$ tokens in \textsc{InterHuman} vs.\ $7$ in \textsc{HumanML3D}), prior work~\citep{liang2024intergen, tanaka2023role, javed2024intermask} typically compresses the prompt into a single sentence embedding holistically, discarding token-level spatial–temporal cues essential for text-to-interaction alignment. 
+
+In this paper, we argue that in text-to-interaction generation, \emph{coverage can be obtained by scalable motion composition} and \emph{faithfulness can be achieved by fine-grained language supervision and coupling-aware objectives}. To this end, we present \name, a framework that generates realistic, text-aligned human–human interactions via a scalable high-fidelity data synthesizer and a streamlined spatiotemporal coordination pipeline.
+
+First, we introduce \namesyn, our scalable data synthesizer, based on the view that many interactions can be \emph{composed} from single-person motion primitives when composition is text-grounded and constrained by inter-agent geometry and timing. Given a prompt $x=(x_1,\ldots,x_T)$ and an observed (or synthesized) motion for agent~A, we learn a conditional generator for agent~B that enforces semantic alignment with $x$ and spatiotemporal consistency with A. Our scalable synthesis-by-composition framework aligns LLM-generated interaction descriptions with strong single-person motion priors to produce diverse two-person sequences beyond existing distributions. We pair rich interaction texts with concise single-person summaries via an LLM~\citep{liu2024deepseek}, retrieve candidate single-person motions from a pretrained generator~\citep{guo2024momask}, and train a conditional \emph{reaction} model to produce B given A and $x$. A neural motion evaluator filters weak or misaligned samples, yielding synthetic data that broadens interaction support without additional capture.
+
+\begin{figure}
+\vspace{-5mm}
+\centering
+
+  \begin{overpic}[width=\linewidth]{Figs/fig_teaser}
+  \end{overpic}
+\vspace{-5mm}
+\caption{(a) Our generative two-person motion composition framework, \namesyn, synthesizes plausible and diverse interactions from generated textual descriptions and a single-person motion condition (yellow). (b) Our interaction generation framework \namegen generates high-quality and plausible interactions faithful to text. A deeper color indicates a later time.}
+\vspace{-3mm}
+\label{fig:fig_teaser}
+\end{figure}
+
+Second, we present \namegen, our text-to-interaction generator that excels in language-interaction consistency and spatial-temporal coordination. We achieve fine-grained language-to-interaction modeling by employing \emph{word-level conditioning} rather than sentence-level conditioning~\citep{liang2024intergen, javed2024intermask, ruiz2024in2in} in \namegen, allowing motion tokens to attend to all textual tokens and thus preserve cues about initiation, response, and contact ordering. To further effectively capture the detailed body interactions and facilitate spatial-temporal consistency, we introduce an \emph{adaptive interaction loss} that weights inter-person joint pairs according to context-dependent proximity and relevance (e.g., hands in handshakes, forearms in sparring), in contrast to diffusion-based baselines that treat all pairs uniformly~\citep{liang2024intergen, ruiz2024in2in}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Extensive experiments demonstrate state-of-the-art performance of our method in the standard benchmark~\citep{liang2024intergen} of two-person motion generation, showing that \namegen outperforms prior art in terms of motion fidelity, faithfulness to text, and generalizability. Moreover, our ablation studies validate the effectiveness of each component in the proposed framework, especially in scenarios where real interaction data is sparse. 
+
+To faithfully and comprehensively measure the effectiveness of the \namesyn framework, we conduct a user preference study that evaluates the improvement on generation quality and text-alignment from in-the-wild text prompts when \namegen is fine-tuned on synthetic data. This measures improvements in generalizability that are undetected by quantitative metrics calculated from the InterGen-trained~\citep{liang2024intergen} evaluator embeddings.  
+
+
+In summary, our contribution is threefold:
+\begin{itemize}[leftmargin=*]
+    \vspace{-2mm}
+    \item A scalable synthesis-and-filtering strategy (\namesyn) that constructs high-quality, diverse two-person interactions from LLM text priors and single-person motion priors.
+    \vspace{-2mm}
+    \item A word-level attention conditioning module (\namegen) with an adaptive interaction loss for semantically faithful and spatiotemporally coherent two-person generation.
+    \vspace{-2mm}
+    \item State-of-the-art results on standard benchmarks and superior performance in challenging out-of-distribution settings via a broad user study.
+\end{itemize}
+

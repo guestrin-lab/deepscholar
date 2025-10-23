@@ -1,0 +1,183 @@
+\section{Experiments}
+\subsection{Experimental details}
+
+\paragraph{Data generation details} We use GPT-4o \citep{hurst2024gpt} as an LLM for the object categories generation. The LLM is prompted to generate two types of objects: generic and domain-specific. 
+Generic objects consist of daily-life objects, while domain-specific objects are objects represented in the particular domains of our evaluation benchmarks. Details about the number of generated object categories are in \cref{tab:gene_details}. 
+We set the number of inference steps to $1$ when generating instances from each object category using Stable Diffusion Turbo. 
+Before applying ICLight to synthesize four distinct backgrounds, \ie $N=4$, we add random padding (up to 50\% of the image resolution) to the foreground-segmented instance, keeping the same aspect ratio. 
+
+\paragraph{Training set variants} To evaluate the quality of our generated data, we compare the performance of the backbone models trained on our generated dataset, some of its variants and alternatives with real objects and/or images.
+
+
+\begin{table}[t]
+    \centering
+    \caption{Details of evaluation datasets.}
+    \input{tables/benchmark}
+    \label{tab:datasets}
+\end{table}
+
+
+\begin{itemize}
+    \item \textbf{Pretrained}: The original datasets which the backbones are pretrained on. SigLIP and CLIP are pretrained on web-based text-image datasets, WebLI~\citep{chenpali} and WIT~\citep{rkh+21}, respectively. ViT is pretrained on ImageNet~\citep{dsl+09}. The frozen backbones are evaluated. 
+    \item \textbf{\oursplus{} - all domains}: Our generated dataset with $10$K objects from the generic domain and $10$K objects from the specific domains. 
+    This dataset is used by default, unless otherwise stated. See \cref{tab:gene_details} for details. 
+    \item \textbf{\oursgeneric{} - generic domain}: Our generated dataset with up to $20$K objects from the generic domain only.
+    \item \textbf{\oursspecific{} - specific domain}: Our generated dataset with images from only one of the three specific domains.
+    \item \textbf{\oursplus {} without background}: Our generated dataset without background generation.
+    \item \textbf{Objaverse-background}: Objaverse 1.0~\citep{objaverse} is a large-scale 3D object dataset with $818$K 3D objects across various categories. We randomly select $20$K objects, render each 3D object into $16$ views~\citep{liusyncdreamer}, and choose the four views around the main one, resulting in a total of 80K images to match the statistics of our generated dataset. For each view, we add a background with the same generation process as in our method. This dataset allows us to compare with training on real objects rather than synthetic ones, but on synthesized images via rendering.
+    \item \textbf{Real-S - specific domain}: To compare with training on real images that are manually annotated, we use the MET, GLDv2, and SOP training sets to obtain domain-specific models for artwork, landmark, and product, respectively.
+    We follow the same dataset split as in \cite{ypsilantis2023towards}. To provide a direct comparison, we use the same number of instances as the corresponding domain-specific parts of our dataset, \ie $3$K, $4$K, and $3$K, respectively, and $4$ images per instance.
+    \item \textbf{Real-ALL - all domains}: The above is extended to compose a dataset by merging the training sets of SOP, InShop, RP2k, GLDv2 and MET. We use all classes with at least $4$ images from the first three datasets that are small, and complement with enough classes equally from the other two datasets to reach $20$K instances. We sample $4$ images per class.
+\end{itemize}
+
+
+\paragraph{Training details} 
+During training, we use random cropping, resizing, flipping, color jitter, and mapping to grayscale as image augmentations~\citep{hfw+20}.
+We use a batch size of $1,600$ images ($B=400$, $N=4$) and optimize over $400$ queries, one per class. 
+We use the vanilla version of the recall@k loss with its default hyper-parameters, and train until all classes have been loaded in a batch.
+We use learning rate $10^{-5}$ and Adam optimizer~\citep{kb15} with a weight decay $10^{-6}$. Experiments are run on a single A100 or V100 GPU. 
+
+
+
+\paragraph{Backbones} 
+We use SigLIP ViT-L/16 \citep{zhai2023sigmoid}, CLIP ViT-L/14 \citep{rkh+21}, and ViT-B/16 \citep{dbk+21}, briefly referred to as SigLIP, CLIP, and ViT-B. Images are resized to $336 \times 336$, $384 \times 384$, and $224 \times 224$ pixels, respectively, according to their pretraining setup. We load the pre-trained models from timm\footnote{\url{https://timm.fast.ai/}} and treat the [CLS] token as the global descriptor.
+
+
+\paragraph{Evaluation benchmarks}
+We use a set of standard and diverse ILR retrieval and classification datasets for evaluation. ILR datasets are comprised of queries, a database in which the same instances as queries exist as positives, and occasionally, a distractor set of irrelevant images. 
+Details are provided in \cref{tab:datasets} and the dataset list is as follows:
+%
+\begin{itemize}
+    \item \textbf{Artwork domain}: The MET dataset~\citep{ypsilantis2021met} comprises a database of catalog photos from the Metropolitan Museum of Art and query images taken by visitors inside the museum. To adapt the benchmark for retrieval, we retain only queries with at least one positive match in the database, \ie we discard the distractor queries, and keep only the first positive per query in the database asserting visual overlap between the two images.
+    \item \textbf{Landmark domain}: R-Oxford \citep{rit+18}, R-Paris \citep{rit+18}, and GLDv2 \citep{wac+20} are the most widely used datasets in this domain. 
+    For R-Oxford and R-Paris, we report results on the Medium and Hard evaluation split with distractors, and following standard practice, we report average performance across the two datasets, denoted as ROP. 
+    \item \textbf{Product domain}: SOP \citep{sxj+15} whose images are crawled from e-commerce websites.
+    \item \textbf{Multi-domain}: We use INSTRE \citep{wj15} and ILIAS \citep{ilias} which include a variety of objects from multiple domains such as daily objects, landmarks, etc. We use the mini version of ILIAS with 5M distractor images.
+\end{itemize}
+
+
+\subsection{Results for different training sets}
+%
+\cref{tab:all_results} shows the main results for SigLIP after training on a variety of datasets. 
+
+\begin{table*}[t]
+    \centering
+    \caption{Evaluation results using SigLIP with different training datasets, number of instances, and use of synthetic background (bg). \oursgeneric{} uses generic domain object categories, while \oursplus{} includes domain-specific objects.}
+\input{tables/all_results}
+\vspace{-10pt}
+\label{tab:all_results}
+\end{table*}
+
+\paragraph{Impact of synthetic data} 
+\oursplus{} (ID7) provides consistent improvement compared to the pretrained (ID1) model on all datasets except SOP where performance does not change, with an average improvement equal to $5.1$.
+Compared to Objaverse, which uses images rendered from 3D objects rather than automatically generated, \oursplus{} performs better on most datasets, especially on ROP.
+This suggests that our method, which relies solely on synthesized objects, learns representations that are at least as effective as those learned on rendered objects.
+
+\begin{figure}[!h]
+\centering
+\input{fig/scatter}
+\vspace{-5pt}
+\caption{Average Precision (AP) per query for the pretrained backbone (y-axis) and the backbone fine-tuned on \oursplus{} (x-axis). 
+Each point represents a query in the evaluation dataset. Points below the diagonal indicate a query with improved performance when fine-tuned on \oursplus{}. Results using SigLIP.
+\label{fig:scatter}}
+\vspace{-8pt}
+\end{figure}
+
+
+\begin{table}[!h]
+    \centering
+    \caption{Comparison between training on real-labeled images and training our synthetic images on four different domains using SigLIP .} 
+    % \vspace{-3pt}    
+\input{tables/synth_vs_real}
+\vspace{-5pt}
+\label{tab:synth_vs_real}
+\end{table}
+
+
+\paragraph{Number of instances}
+We evaluate SigLIP backbone trained on the generic-domain version of the dataset, \oursgeneric{}, with different numbers of instances: $5$K, $10$K, and $20$K (corresponding to ID3, ID4, and ID5 in \cref{tab:all_results}). 
+Even with the smallest set of $5$K generic instances (ID3), performance on all the benchmarks is better than the pre-trained backbone (ID1). When the number of instances increases to $10$K (ID4), the average performance increases further, but saturates for the largest set (ID5).
+
+\paragraph{Diverse \vs clean background}
+Training on \oursplus{} with clean background (ID6) improves the performance on most datasets compared to the pretrained backbone. However, performance drops on INSTRE and the improvement is small on mini-ILIAS, which are two datasets with high background clutter. 
+Synthesizing realistic and diverse backgrounds (ID7) leads to a substantial improvement on most datasets compared to clean background (ID6).
+SOP forms an exception, where having clean background is the variant that brings a noticeable improvement, which is related to the commonly clean background in this test set.
+
+\paragraph{Domain of the instances} 
+Complementing \oursgeneric{}-$10$K (ID4) with $10$K images from domain-specific objects (ID7) is much better on average than complementing it with $10$K generic objects (ID5). Such a choice strengthens performance on the tests sets related to those specific domains, \ie MET, ROP, and GLDv2, but has smaller or no improvement on datasets with a large variety of objects, \ie INSTRE and mini-ILIAS.
+Therefore, leveraging synthetic images in a diverse set of targeted domains, our method has the potential to effectively address data scarcity and obtain universal representation models.
+
+\paragraph{Improvement per query}
+In \cref{fig:scatter}, we compare the performance of the pretrained and the \oursplus{} fine-tuned backbone on a query basis. Training on the dataset of the proposed method improves the performance on the majority of queries and over the whole range of performance values with the pretrained model, even for many highly performing queries of INSTRE.
+
+
+
+\paragraph{Comparison to real manually labeled images}
+We train SigLIP on both real-labeled and our synthetic images with recall@k loss under the same setting and present results in \cref{tab:synth_vs_real}. 
+We make the following observations. 
+Training with our synthetic images yields better overall performance compared to real-labeled images. Although training with real images from a single domain achieves better performance within the specific domain, our synthetic images have better performance across other domains except for product. Notably, results on multi-domain (INSTRE and mini-ILIAS) reveal that our synthetic images are the best in all cases, indicating the strength of our approach to cover a large range of domains. Performance when testing on ROP is always better when training on real images, possibly indicating shortcomings of the generative models for large objects with many details.
+
+\begin{table}[t]
+    \centering
+    \caption{Evaluation results on different backbones. Representations learned on synthetic data using \oursplus{} outperform the pretrained representations on all datasets, except SigLIP and ViT on SOP.} 
+    % \vspace{-3pt}    
+\input{tables/backbone_results}
+\vspace{-10pt}
+\label{tab:backbone_results}
+\end{table}
+
+
+\begin{table}[t]
+    \centering
+    \caption{Evaluation results by training SigLIP on \oursplus{} using different loss function.} 
+    % \vspace{-5pt}    
+\input{tables/loss}
+\vspace{-12pt}
+\label{tab:loss_results}
+\end{table}
+
+\input{tables/ablation}
+
+\vspace{-4pt}
+\subsection{Ablations and more results}
+
+\paragraph{Backbones}
+In \cref{tab:backbone_results} we present results for fine-tuning two additional backbones. Performance improvements are similar to those of SigLIP, demonstrating the general applicability of our method.
+\vspace{-4pt}
+
+\paragraph{Different loss function}
+We train SigLIP using infoNCE loss~\citep{chen2020simple}, contrastive loss~\citep{chl05}, and softmax margin loss~\citep{wwz+18}, which are widely used in representation learning, and present results in \cref{tab:loss_results}.
+The generated training set is shown to be effective with a diverse set of losses, while the recall@k loss remains the best overall choice.
+\vspace{-4pt}
+
+\paragraph{Training images per class}
+\cref{tab:ablation} shows the performance with different numbers of images per instance-level class during training (ID-S1 and ID-S2). We decrease the number of images per class $N$ in the training set to $3$ and $2$. The trained models achieve an average performance of $51.5$ and $50.3$, respectively, which is a considerable drop compared to the main variant that achieves $52.6$. 
+\vspace{-4pt}
+
+\begin{figure}[!h]
+\centering
+\input{fig/contamination}
+\hspace{30pt}
+\vspace{-15pt}
+\caption{Pairs of \oursplus{} and test sets with the highest similarity score. While these pairs share some common appearance, they do not indicate data leakage from an ILR point of view.}
+ \label{fig:contamination}
+ \vspace{-8pt}
+\end{figure}
+
+\paragraph{LLM models and prompts}
+To examine the effect of the prompts and LLMs, we evaluate variants from ID-S3 to ID-S5 in \cref{tab:ablation}. In ID-S3, we use a fixed prompt template across all the generic and specific domains with GPT-4o (see the supplementary material). 
+In ID-S4 and ID-S5, we use our designed prompts with two other LLMs, DeepSeek-V3 and Claude 3.7 Sonnet, respectively. The similar results suggest that our method is robust regardless of the LLM or prompt type.
+\vspace{-4pt}
+
+\paragraph{GDM}
+We apply different GDMs and higher-quality images to study how instance generation quality affects performance, as shown in ID-S6 and ID-S7 in \cref{tab:ablation}. In ID-S6, we change SD Turbo to SD v2.0, resulting in worse performance, likely due to more intricate backgrounds that hinder accurate foreground segmentation. We use $50$ inference steps following the default setting. 
+In ID-S7, we increase the inference steps of SD Turbo from the default $1$ to $5$, aiming to generate higher-quality images. Although the visual quality is better, there was no overall significant performance improvement. Additional details are in the supplementary material.
+
+
+\paragraph{Background generation}
+As shown in \cref{tab:ablation}, changing ICLight to SD v2.0 for background generation (ID-S8) leads to worse performance even than the pretrained model (ID1). This is due to poor identity preservation, while ICLight is tailored to this task. When we switch off padding (ID-S9), which is our way of varying object size and position, the average performance drops by 1.1\%, demonstrating that even such a simple viewpoint variation has a positive impact.
+
+
+\paragraph{Train and test set overlap}
+To investigate whether objects from the test sets have leaked into the generated training set, we perform the following mining process. We use the trained model as a descriptor extractor and perform retrieval using the test queries as queries and the generated training set as the database. We visually inspect the results with the highest similarity scores and do not identify any cases of such leakage as shown in \cref{fig:contamination}. The pairs showcase similar characteristics (a strength of our approach), but are not positive from an instance-level point of view.
+

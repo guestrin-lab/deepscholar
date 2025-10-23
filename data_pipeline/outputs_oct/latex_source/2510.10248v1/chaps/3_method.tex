@@ -1,0 +1,98 @@
+\section{Methodology}
+\label{sec3:method}
+
+\begin{figure}
+  \centering
+  \includegraphics[clip, trim=0cm 0.5cm 0cm 0.5cm, width=0.97\linewidth]{figs/framework.pdf}
+  \caption{ Overview of MPPReasoner framework.} 
+  \label{fig:framework}
+\end{figure}
+
+MPPReasoner cultivates chemical reasoning capabilities in multimodal large language models through a structured approach illustrated in Figure~\ref{fig:framework}. We first construct high-quality reasoning trajectories that demonstrate expert-level chemical analysis patterns. These trajectories are then used in a two-stage training framework: SFT establishes foundational reasoning abilities, followed by RL guided by our novel Principle-Guided Reward mechanism.
+
+
+
+
+\subsection{Multimodal Molecular Prompt Design}
+
+To provide comprehensive molecular understanding, we employ a multimodal input representation that integrates 2D molecular images with their corresponding SMILES strings. This dual representation enables the model to capture both the sequential chemical information encoded in SMILES and the spatial structural relationships depicted in molecular visualizations.
+
+As shown in Appendix~\ref{appa:prompt}, our prompt engineering strategy comprises four essential components: \textbf{[Role Definition]} instructs the model to act as an expert chemist specializing in molecular property prediction; \textbf{[Task Description]} provides task-specific instructions outlining the prediction objective and requirement for step-by-step reasoning; \textbf{[Few-Shot Examples]} are dynamically retrieved by identifying the top-5 most similar molecules from the training set using Tanimoto similarity~\citep{tanimoto} based on Morgan fingerprints~\citep{fingerprint}; and \textbf{[Multimodal Molecule]} includes both the rendered 2D molecular structure image and the corresponding SMILES string, providing complementary perspectives on molecular characteristics.
+
+
+\subsection{Two-Stage Training Framework for Chemical Reasoning}
+
+% We propose a two-stage training framework designed to first cold start foundational reasoning ability via SFT and then refine advanced reasoning skills with RL.
+\subsubsection{Stage 1: Reasoning Trajectory Construction for Cold Start SFT}
+\label{sec3.2.1:stage1}
+The first stage establishes foundational chemical reasoning capabilities through high-quality data construction and supervised learning. We begin by constructing a comprehensive dataset of chemical reasoning trajectories through two complementary approaches:
+
+\paragraph{Multi-Source Reasoning Data Construction.} We leverage powerful large general-domain reasoning models as teacher models to generate high-quality chemical reasoning patterns through two complementary approaches:
+\begin{itemize}[leftmargin=*]
+    \item \textit{ChemCoT-Based One-Shot Generation:} We utilize exemplars from the ChemCoT dataset~\citep{chemcot} as one-shot demonstrations, instructing teacher models to emulate the step-by-step analytical style demonstrated in chemical chain-of-thought examples.
+    \item \textit{Expert-Guided Task-Specific Generation:} Expert chemists draft comprehensive reasoning guides covering fundamental principles for various molecular properties. These guides are then refined by GPT-4o~\citep{gpt4o} to extract task-specific knowledge relevant to each dataset (e.g., BACE~\citep{moleculenet}). The extracted principles serve as domain-specific prompts in generating reasoning trajectories that incorporate relevant chemical knowledge and theoretical foundations.
+\end{itemize}
+
+
+
+\paragraph{Quality Control and Data Curation.} We employ rejection sampling to ensure trajectory quality, accepting only those instances where teacher models produce correct predictions (True/False). This process yields 16,000 high-quality reasoning trajectories for SFT.
+
+Using these curated reasoning trajectories, we perform SFT on Qwen2.5-VL-7B-Instruct with standard next-token prediction loss. The reasoning generation process utilizes three state-of-the-art language models (GPT4o~\citep{gpt4o}, DeepSeek-v3.1~\citep{deepseekr1} and Qwen2.5VL~\citep{qwen25vl}) working in parallel to ensure diversity in reasoning patterns while maintaining high quality through model complementarity. When multiple teacher models generate correct reasoning for the same instance, we randomly select one trajectory to maintain dataset diversity. This stage focuses on instruction alignment, teaching the model to follow the required format of providing step-by-step reasoning before making final predictions, while simultaneously instilling domain-specific knowledge and analytical patterns demonstrated in the expert-curated trajectories.
+
+
+\subsubsection{Stage 2: Advanced Reasoning Refinement with RLPGR}
+% TODO
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figs/rlpgr.pdf}
+  \caption{Illustration of RLPGR in MPPReasoner.} 
+  \label{fig:rlpgr}
+\end{figure}
+
+
+While SFT establishes basic reasoning patterns, the second stage employs RLPGR to elevate the model's capabilities from imitation to exploration and refinement. Unlike traditional RLHF~\citep{rlhf} approaches that rely on human preference data, RLPGR leverages verifiable, rule-based rewards~\citep{rlvr} derived from chemical principles and computational tools~\citep{rdkit}, ensuring both scalability and domain accuracy.
+
+
+Our RLPGR framework decomposes the complex cognitive process of chemical reasoning into measurable reward components across three hierarchical layers. As illustrated in Figure~\ref{fig:rlpgr}, given a molecular description $x$, reasoning trace $z$, and prediction $y$, the total reward is computed as:
+
+% \begin{equation}
+% R_{\text{total}}(x,z,y) = \underbrace{\lambda_1 r_{\text{acc}} + \lambda_2 r_{\text{fmt}} + \lambda_3 r_{\text{len}}}_{R_{\text{foundation}}} + \underbrace{\lambda_4 r_{\text{cons}} + \lambda_5 r_{\text{comp}}}_{R_{\text{reasoning}}} + \underbrace{\lambda_6 r_{\text{prin}} + \lambda_7 r_{\text{struct}}}_{R_{\text{chemistry}}}
+% \end{equation}
+
+\begin{equation}
+R_{\text{total}}(x,z,y) = \lambda_1 \underbrace{(r_{\text{ans}} + r_{\text{fmt}} 
+% + r_{\text{len}}
+)}_{R_{\text{foundation}}} + \lambda_2 \underbrace{(r_{\text{cons}} + r_{\text{comp}})}_{R_{\text{reasoning}}} + \lambda_3 \underbrace{(r_{\text{prin}} + r_{\text{struct}})}_{R_{\text{chemistry}}}
+\end{equation}
+
+where $\lambda_i$ are hyperparameters controlling the relative importance of each reward component.
+
+\textbf{Foundation Layer:} This layer ensures basic task requirements through two components:
+\begin{itemize}[leftmargin=*]
+  \item Answer reward $r_{\text{ans}}$ provides binary feedback based on prediction correctness.
+  \item Format compliance reward $r_{\text{fmt}}$ verifies that outputs follow the required structure with reasoning enclosed in \texttt{<think>} tags and predictions in \texttt{<answer>} tags.
+\end{itemize}
+
+\textbf{Reasoning Layer:} This layer evaluates general reasoning quality through two key aspects:
+\begin{itemize}[leftmargin=*]
+  \item Logical consistency reward $r_{\text{cons}}$ measures alignment between the reasoning conclusion and final prediction by analyzing sentiment consistency using predefined keyword sets for affirmative and negative conclusions.
+  \item Comparative analysis reward $r_{\text{comp}}$ encourages analogical thinking by detecting whether the reasoning process analyzes the few-shot examples provided based on molecular similarity, promoting effective utilization of the retrieved similar molecules and cross-molecular reasoning capabilities.
+\end{itemize}
+
+\textbf{Chemistry Layer:} This layer targets domain-specific expertise through computational verification of chemical knowledge and structural analysis accuracy. We leverage RDKit~\citep{rdkit} for molecular property computation and substructure detection to provide objective feedback on chemical reasoning quality.
+\begin{itemize}[leftmargin=*]
+  \item Chemical principle application reward $r_{\text{prin}}$ evaluates whether mentioned chemical concepts align with computationally derived molecular properties. For instance, when the reasoning discusses hydrophobicity, we verify this against the computed LogP value. This reward ensures that chemical principles are applied appropriately rather than superficially mentioned.
+  \item Molecular structure analysis reward $r_{\text{struct}}$ measures the coverage of structural feature identification as 
+  $
+  r_{\text{struct}} = {|S_{\text{actual}} \cap S_{\text{pred}}|}/({|S_{\text{actual}}| + \epsilon}),
+  $
+  where $S_{\text{actual}}$ represents the set of distinct structural feature types identified via RDKit (functional groups, ring systems, stereochemical features), $S_{\text{pred}}$ denotes the set of structural feature types mentioned in the reasoning trace $z$, and $\epsilon = 10^{-5}$ ensures numerical stability.
+\end{itemize}
+
+\textbf{Training Process.} We employ GRPO \citep{grpo} for policy optimization, which maximizes the expected reward across reasoning trajectories:
+
+\begin{equation}
+\mathcal{L}_{\text{RLPGR}} = \mathbb{E}_{(x,z,y) \sim \pi_\theta} [R_{\text{total}}(x,z,y)]
+\end{equation}
+
+where $\pi_\theta$ represents the policy parameterized by $\theta$. Dynamic sampling during training focuses computational resources on tractable reasoning examples, ensuring efficient convergence toward models capable of generating chemically accurate and interpretable reasoning paths. This RLPGR approach transforms the model from pattern-matching to genuine chemical reasoning through systematic principle-guided RL.

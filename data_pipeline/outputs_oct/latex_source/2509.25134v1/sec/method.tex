@@ -1,0 +1,106 @@
+\section{Approach}
+\label{sec:method}
+
+\ours{} solves the decomposition task by iterative extraction of \emph{top-layers}, which are not occluded by any other layers, and background completion (\cref{fig:pipeline}).
+Our formulation integrates the subtasks of layer decomposition, which prior methods~\cite{mulan,accordion} separately address, into a single task, leading to a simplified implementation and performance gain by the simple training goal.
+Additionally, we refine the final decomposition quality by leveraging the domain prior that graphic designs often contain simple, texture-less elements or backgrounds.
+
+\subsection{Iterative Decomposition}
+\label{sec:method:framework}
+
+
+
+We obtain layer predictions $\hat{Y} = (\hat{\bm{l}}_m \in [0,1]^{H \times W \times 3} )_{m=0}^M$ from an input image $\bm{x}$ by iterative processes from front ($m=M$) to back ($m=1$) as follows:
+\begin{align}
+    \hat{\bm{l}}^{\text{A}}_{m} &= F_{\theta}(\hat{\bm{x}}_m) \\
+    \hat{\bm{x}}_{m-1} &= G_{\phi}(\hat{\bm{x}}_m, \hat{\bm{l}}^{\text{A}}_{m}) \\
+    \hat{\bm{l}}^{\text{C}}_{m} &= {\rm B^{-1}}(\hat{\bm{x}}^{\text{C}}_{m-1}, \hat{\bm{x}}^{\text{C}}_{m}, \hat{\bm{l}}^{\text{A}}_{m}) 
+    \\ &= (\hat{\bm{x}}^{\text{C}}_{m} - \hat{\bm{x}}^{\text{C}}_{m-1} \odot (1 - \hat{\bm{l}}^{\text{A}}_{m})) \oslash \hat{\bm{l}}^{\text{A}}_{m} \label{eq:unblend}
+\end{align}
+where $\hat{\bm{x}}_M = \bm{x}$, $\hat{\bm{l}}_0 = \hat{\bm{x}}_0$, and $\oslash$ is an element-wise division. The superscripts $\text{A}$ and $\text{C}$ denote the alpha channel and one of the RGB channels, respectively.
+$F_{\theta}(\cdot)$ is a model that takes an image as input and outputs an alpha map, which is the same as the trimap-free matting task, as long as the matting target is the top-layers.
+The output alpha contains all top layers; they are decomposed in one iteration.
+$G_{\phi}(\cdot)$ is a background completion model that takes an image and a target mask obtained from the top-layers alpha map as input and outputs an image with the target area completed.
+The background completion model should not insert new objects.
+We tried several inpainting approaches, including generative model-based completion~\cite{blackforest2024fluxfill}, and found that generative approaches often insert unnecessary objects.
+We use LaMa~\cite{lama} for $G_{\phi}$, which satisfies our inpainting requirement.
+$\rm B^{-1}(\cdot)$ is a process that estimates the RGB values from the completed background and the alpha map of top-layers.
+Since we know the alpha map and the completed background, we can calculate the RGB values of top-layers by simple arithmetic as the inverse process of alpha blending $B(\cdot)$.
+Note that existing methods~\cite{mulan,accordion} replace the alpha of the original image with the predicted soft or hard segmentation mask.
+For pixels with an alpha of 1, our method estimates the same RGB values as these naive methods.
+However, for other transparent pixels, our method estimates the RGB values while considering blending with the background.
+This primarily improves the quality of layer boundaries where soft blending is applied.
+We terminate the iteration (\ie, $m=M$) when there are no pixels above a certain threshold in the matting result $\hat{\bm{l}}^{\text{A}}_m$.
+
+
+
+\subsection{Training}
+\label{sec:method:training}
+In \ours{}, we utilize two learnable models: top-layer matting model $F_{\theta}$ and background inpainting model $G_{\phi}(\cdot)$.
+Since image inpainting is a general task and reasonably performant models are available in the public~\cite{lama}, we use an off-the-shelf pretrained model without fine-tuning.
+For training the top-layer matting model, we prepare pairs of an input RGB image $\bm{x}$ and a target alpha map of top-layers $\bm{l}^{\text{A}}$ from Crello~\cite{yamaguchi2021canvasvae} for supervised learning.
+We first check the occlusion of each layer based on the layer information and integrate the alpha maps of non-occluded layers into a single alpha map.
+This clear target definition eliminates ambiguity in training.
+Similarly to \ours{}'s pipeline, we create multiple pairs per design sample by recursively performing the same process on the remaining background.
+
+We follow the prior study~\cite{birefnet} and define the loss function as below:
+\begin{align}
+    \mathcal{L}(\hat{\bm{l}}^{\text{A}}, \bm{l}^{\text{A}}) &= \lambda_{\text{BCE}} \mathcal{L}_{\text{BCE}}(\hat{\bm{l}}^{\text{A}}, \bm{l}^{\text{A}}) \notag \\ 
+    & + \lambda_{\text{IoU}}\mathcal{L}_{\text{IoU}}(\hat{\bm{l}}^{\text{A}}, \bm{l}^{\text{A}}) + \lambda_{\text{SSIM}} \mathcal{L}_{\text{SSIM}}(\hat{\bm{l}}^{\text{A}}, \bm{l}^{\text{A}}), 
+\end{align}
+where $\mathcal{L}_{\text{BCE}}(\cdot)$, $\mathcal{L}_{\text{IoU}}(\cdot)$, and $\mathcal{L}_{\text{SSIM}}(\cdot)$ are binary cross-entropy, Intersection-over-Union (IoU) loss, and structural similarity index (SSIM) loss, respectively, and
+$\lambda_{\text{BCE}}$, $\lambda_{\text{IoU}}$, and $\lambda_{\text{SSIM}}$ are weights for each loss term.
+We train the matting model using all loss functions at the early steps and then use only the SSIM loss to improve the boundary quality.
+
+During inference, the model takes the background completion result ($\hat{\bm{x}}_m$) as input instead of the clean intermediate composite result, except for the first iteration.
+This gap between training and inference can degrade the decomposition quality.
+To make the matting model robust to the inpainting artifacts, we include training examples where the top-layer regions are completed by the background completion model.
+Since the completion in areas spanning the back layers can alter their shape, leading to inconsistencies with the ground truth, we do not complete such areas when making training data.
+
+
+\subsection{Palette-based Refinement}
+Graphic designs often contain flat elements or backgrounds with few textures, such as decorations, texts, and vector shapes.
+Based on this observation, we introduce a simple refinement approach that greatly improves the resulting appearance at the end of each iteration.
+
+
+\paragraph{Background refinement (\cref{fig:bg-refine})}
+We first divide the alpha map into connected regions and process each area.
+We calculate the color gradients of the surrounding area of the completion target area.
+If the area with zero color gradients is dominant, we assume that the completion target region is a flat-paint area with few textures.
+We extract the dominant colors, \ie, the palette, of the region based on percentiles and assign the completed RGB values to the nearest palette color in the Lab color space.
+The background completion model can make rough predictions for such flat backgrounds even with noticeable artifacts, allowing our simple refinement to work effectively.
+Our refinement eliminates such artifacts.
+
+\paragraph{Foreground refinement (\cref{fig:fg-refine})}
+Similar to background refinement, we first divide the alpha map into connected regions.
+Next, we calculate the color gradients within each region and classify regions where the area with zero color gradients dominates as flat regions.
+We extract the region that matches the palette color from the input image ($\bm{x}$) or intermediate completed background ($\hat{\bm{x}}_m$) and select the region if the overlap with the predicted alpha exceeds a threshold.
+Then, we integrate the selected regions as a new mask.
+Since the obtained mask is binary, we calculate the alpha value around the mask using the palette color and the background color to derive the final alpha value.
+We often observe that this refinement improves the quality of the boundary parts and thin decoration layers (\eg, lines and frames), which the plain matting model frequently fails.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[keepaspectratio, width=1\linewidth]{figures/bg-refine.pdf}
+    \caption{
+        Background completion with palette-based refinement.
+        We first complete the area of the predicted alpha map, then refine the target connected region based on the color palette of the surrounding area.
+        We select the target area based on the color gradient of the surrounding area (shown in red).
+        }
+    \label{fig:bg-refine}
+\end{figure}
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[keepaspectratio, width=1\linewidth]{figures/fg-refine.pdf}
+    \caption{
+        Palette-based foreground refinement. 
+        First, we estimate the RGB values of the top-layer using the input image, the top-layer's alpha, and the background by the unblend function.
+        Next, we extract the color palette of the connected components of the top-layer, extract the region that matches the color from the original image, integrate the connected color region with a large overlap with the predicted alpha map, and use it as a new alpha map.
+        Note that the missing blue edge is refined in this figure.
+    }
+    \label{fig:fg-refine}
+\end{figure}

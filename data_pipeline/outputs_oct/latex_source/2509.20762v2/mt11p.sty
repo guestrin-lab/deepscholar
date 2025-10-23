@@ -1,0 +1,1052 @@
+%%
+%% This is file `mt11p.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% mt11p.dtx  (with options: `package')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from mt11p.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file mt11p.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%% mt11p.dtx
+%% Copyright 1997, 2002 Drahoslav L\'im
+%%
+%% This program may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.2
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% This program consists of the following files:
+%% 0readme
+%% mt11p.dtx (this file)
+%% mt11p.ins
+%% mt11p.ps (formatted documentation)
+%% mt11p.map
+%% the binary tfm files:
+%%              mtex.tfm mtexb.tfm mtexh.tfm mtgu.tfm
+%%              mtgub.tfm mtmi.tfm mtmib.tfm mtmih.tfm
+%%              mtms.tfm mtmsb.tfm mtmu.tfm mtmub.tfm
+%%              mtmuh.tfm mtsyb.tfm mtsyh.tfm mtsyn.tfm
+%%              rmtmi.tfm rmtmib.tfm rmtmih.tfm rmtmub.tfm
+%%              rmtmuh.tfm
+%%
+%% the binary vf files:
+%%              mtmi.vf mtmib.vf mtmih.vf mtmu.vf
+%%              mtmub.vf mtmuh.vf
+%%
+%% Use at your own risk.
+%%
+%% Send bug reports to DrahoslavL@seznam.cz
+%%
+%%
+\def\fileversion{0.4a}% corected minor typos in documentation; code not touched
+\def\filedate{1997/01/27}
+\def\docdate {2002/04/05}
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{mt11p}%
+        [\filedate: setup\space for\space Times\space
+         +\space MathTime\space +\space MathTimePlus]
+\chardef\mt@quotedbl   \catcode`\"
+\chardef\mt@quotesinglr\catcode`\'
+\chardef\mt@colon      \catcode`\:
+\chardef\mt@question   \catcode`\?
+\chardef\mt@semicolon  \catcode`\;
+\chardef\mt@exclam     \catcode`\!
+\@makeother\"
+\@makeother\'
+\@makeother\:
+\@makeother\?
+\@makeother\;
+\@makeother\!
+\DeclareOption{T1}{\def\mt@enc{\def\encodingdefault{T1}}}
+\DeclareOption{OT1}{\def\mt@enc{\def\encodingdefault{OT1}}}
+\DeclareOption{noenc}{\let\mt@enc\relax}
+\DeclareOption{opnone}{\chardef\mt@ops0 }
+\DeclareOption{opsafe}{\chardef\mt@ops1 }
+\DeclareOption{opmax}{\chardef\mt@ops2 }
+\DeclareOption{opaccents}{\chardef\mt@accs0 }
+\DeclareOption{symaccents}{\chardef\mt@accs1 }
+\DeclareOption{mtcal}{\chardef\mt@cal0 }
+\DeclareOption{cmcal}{\chardef\mt@cal1 }
+\DeclareOption{nomtms}{\chardef\mt@cal2 }
+\DeclareOption{dohbar}{\chardef\mt@hbar1 }
+\DeclareOption{nohbar}{\chardef\mt@hbar0 }
+\DeclareOption{subs}{\chardef\mt@sub1 }
+\DeclareOption{nosubs}{\chardef\mt@sub0 }
+\DeclareOption{no8r}{\chardef\mt@eightR0 }
+\DeclareOption{do8r}{\chardef\mt@eightR1 }
+\DeclareOption{nodag}{\chardef\mt@eightR2 }
+\DeclareOption{nobsy}{\chardef\mt@bsy0 }
+\DeclareOption{bsy}{\chardef\mt@bsy1 }
+\DeclareOption{resize}{\def\mt@exit{\MathTimeSizes}}
+\DeclareOption{noresize}{\let\mt@exit\relax}
+\DeclareOption{activesb}{\chardef\mt@sb1 }
+\DeclareOption{noactivesb}{\chardef\mt@sb0 }
+\DeclareOption{nomathgr}{\chardef\mt@mgr0 }
+\DeclareOption{mathgr}{\chardef\mt@mgr1 }
+\DeclareOption{nomathOS}{\chardef\mt@osdg0 }
+\DeclareOption{mathOS}{\chardef\mt@osdg1 }
+\DeclareOption{times}{\def\times@style{times}}
+\DeclareOption*{\edef\times@style{\CurrentOption}}
+\ExecuteOptions{T1,times,opsafe,opaccents,mtcal,%
+                dohbar,subs,do8r,bsy,resize,mathgr,mathOS,activesb}
+\ProcessOptions*
+\mt@enc
+\IfFileExists{\times@style.sty}%
+        {\RequirePackage{\times@style}}%
+        {\PackageWarning{mt11p}{No file `\times@style.sty' found.%
+                                \MessageBreak
+                                Guessing what the text
+                                font familes \MessageBreak
+                                are called}
+         \renewcommand{\sfdefault}{phv}
+         \renewcommand{\rmdefault}{ptm}
+         \renewcommand{\ttdefault}{pcr}
+         \renewcommand{\bfdefault}{b}}
+\def\MathTimeSizes{%
+  \def\@vpt{6.0}%
+  \def\@vipt{6.8}%
+  \def\@viipt{7.6}%
+  \def\@viiipt{8.4}%
+  \def\@ixpt{9.2}%
+  \def\@xpt{10.0}%
+  \def\@xipt{10.8}%
+  \def\@xiipt{11.6}%
+  \def\@xivpt{13.2}%
+  \def\@xviipt{15.6}%
+  \def\@xxpt{18.0}%
+  \def\@xxvpt{22.0}%
+  \DeclareMathSizes\@vpt   \@vpt   \@vpt   \@vpt
+  \DeclareMathSizes\@vipt  \@vipt  \@vpt   \@vpt
+  \DeclareMathSizes\@viipt \@viipt \@vpt   \@vpt
+  \DeclareMathSizes\@viiipt\@viiipt\@vipt  \@vpt
+  \DeclareMathSizes\@ixpt  \@ixpt  \@vipt  \@vpt
+  \DeclareMathSizes\@xpt   \@xpt   \@viipt \@vpt
+  \DeclareMathSizes\@xipt  \@xipt  \@viipt \@vpt
+  \DeclareMathSizes\@xiipt \@xiipt \@viiipt\@vipt
+  \DeclareMathSizes\@xivpt \@xivpt \@xpt   \@viipt
+  \DeclareMathSizes\@xviipt\@xviipt\@xiipt \@xpt
+  \DeclareMathSizes\@xxpt  \@xxpt  \@xivpt \@xiipt
+  \DeclareMathSizes\@xxvpt \@xxvpt \@xxpt  \@xviipt
+  \PackageInfo{mt11p}{Adjusting math subscript sizing}}
+\providecommand{\hvdefault}{h}
+\providecommand{\uidefault}{ui}
+\providecommand{\uldefault}{u}
+\providecommand{\psdefault}{p}
+\DeclareFontEncoding{LmtL}{}{\noaccents@}
+\DeclareFontFamily{LmtL}{mtl}{\skewchar\font=45 }
+\DeclareFontShape{LmtL}{mtl}{\mddefault}{\itdefault}{<->mtmi}{}
+\DeclareFontShape{LmtL}{mtl}{\bfdefault}{\itdefault}{<->mtmib}{}
+\DeclareFontShape{LmtL}{mtl}{\hvdefault}{\itdefault}{<->mtmih}{}% see dtx SUBS
+\DeclareFontShape{LmtL}{mtl}{\mddefault}{\uidefault}{<->mtmu}{}
+\DeclareFontShape{LmtL}{mtl}{\bfdefault}{\uidefault}{<->mtmub}{}
+\DeclareFontShape{LmtL}{mtl}{\hvdefault}{\uidefault}{<->mtmuh}{}
+\DeclareFontEncoding{LmtS}{}{\no@accents}%
+\DeclareFontFamily{LmtS}{mts}{}% the fonts have no skewkerns
+\DeclareFontEncoding{OML}{}{\noaccents@}
+\DeclareFontEncoding{OMS}{}{\noaccents@}
+\DeclareFontShape{LmtS}{mts}{\mddefault}{\updefault}{<->mtsyn}{}
+\DeclareFontShape{LmtS}{mts}{\bfdefault}{\updefault}{<->mtsyb}{}
+\DeclareFontShape{LmtS}{mts}{\hvdefault}{\updefault}{<->mtsyh}{}
+\DeclareFontEncoding{LmtW}{}{\noaccents@}
+\DeclareFontFamily{LmtW}{mtw}{\skewchar\font=42 \hyphenchar\font=-1 }
+\DeclareFontShape{LmtW}{mtw}{\mddefault}{\updefault}{<->mtms}{}
+\DeclareFontShape{LmtW}{mtw}{\bfdefault}{\updefault}{<->mtmsb}{}
+\DeclareFontFamily{OMX}{mtx}{}% this really is OMX, thank you
+\DeclareFontShape{OMX}{mtx}{\mddefault}{\updefault}{<->mtex}{}
+\DeclareFontShape{OMX}{mtx}{\bfdefault}{\updefault}{<->mtexb}{}
+\DeclareFontShape{OMX}{mtx}{\hvdefault}{\updefault}{<->mtexh}{}
+\DeclareFontEncoding{LmtG}{}{\noaccents@}
+\DeclareFontFamily{LmtG}{mtg}{}
+\DeclareFontShape{LmtG}{mtg}{\mddefault}{\updefault}{<->mtgu}{}
+\DeclareFontShape{LmtG}{mtg}{\bfdefault}{\updefault}{<->mtgub}{}
+\DeclareFontSubstitution{LmtL}{mtl}{\mddefault}{\itdefault}
+\DeclareFontSubstitution{LmtS}{mts}{\mddefault}{\updefault}
+\DeclareFontSubstitution{LmtW}{mtw}{\mddefault}{\updefault}
+\DeclareFontSubstitution{LmtG}{mtg}{\mddefault}{\updefault}
+\PackageWarning{mt11p-Font}{Expect LOTS of NFSS warnings}
+\DeclareMathVersion{normal}
+\DeclareMathVersion{bold}
+\DeclareMathVersion{heavy}
+\def\normalmath{\@nomath\normalmath\mathversion{normal}}
+\def\boldmath{\@nomath\boldmath\mathversion{bold}}
+\def\heavymath{\@nomath\heavymath\mathversion{heavy}}
+\def\unboldmath{\normalmath}
+\let\unheavymath\unboldmath
+\let\unnormalmath\relax
+\DeclareSymbolFont{operators}{\encodingdefault}%
+                             {\rmdefault}{\mddefault}{\updefault}
+\DeclareSymbolFont{letters}{LmtL}%
+                           {mtl}{\mddefault}{\itdefault}
+\DeclareSymbolFont{symbols}{LmtS}%
+                           {mts}{\mddefault}{\updefault}
+\DeclareSymbolFont{largesymbols}{OMX}%
+                                {mtx}{\mddefault}{\updefault}
+\DeclareSymbolFontAlphabet \mathnormal {letters}
+\DeclareSymbolFontAlphabet \mathrm     {operators}
+\DeclareMathAlphabet \mathbf {\encodingdefault}%
+                             {\rmdefault}{\bfdefault}{\updefault}
+\DeclareMathAlphabet \mathsf {\encodingdefault}%
+                             {\sfdefault}{\mddefault}{\updefault}
+\DeclareMathAlphabet \mathit {\encodingdefault}%
+                             {\rmdefault}{\mddefault}{\itdefault}
+\DeclareMathAlphabet \mathtt {\encodingdefault}%
+                             {\ttdefault}{\mddefault}{\updefault}
+\ifcase\mt@cal % case 0
+   \DeclareMathAlphabet \mathcal {LmtW}{mtw}{\mddefault}{\updefault}
+\or            % case 1
+   \DeclareMathAlphabet \mathscr {LmtW}{mtw}{\mddefault}{\updefault}
+   \DeclareMathAlphabet \mathcal {OMS}{cmsy}{m}{n}
+\or            % case 2
+   \DeclareMathAlphabet \mathcal {OMS}{cmsy}{m}{n}
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@cal}%
+                {The \string\mathcal/\string\mathscr setup is hosed.}
+\fi
+\SetSymbolFont{operators}{normal}{\encodingdefault}%
+                                 {\rmdefault}{\mddefault}{\updefault}
+\SetSymbolFont{letters}{normal}{LmtL}%
+                               {mtl}{\mddefault}{\itdefault}
+\SetSymbolFont{symbols}{normal}{LmtS}%
+                               {mts}{\mddefault}{\updefault}
+\SetSymbolFont{largesymbols}{normal}{OMX}%
+                                    {mtx}{\mddefault}{\updefault}
+\SetMathAlphabet \mathsf {normal}%
+                {\encodingdefault}{\sfdefault}{\mddefault}{\updefault}
+\SetMathAlphabet \mathtt {normal}%
+                {\encodingdefault}{\ttdefault}{\mddefault}{\updefault}
+\SetMathAlphabet \mathit {normal}%
+                {\encodingdefault}{\rmdefault}{\mddefault}{\itdefault}
+\SetMathAlphabet \mathbf {normal}%
+                {\encodingdefault}{\rmdefault}{\hvdefault}{\updefault}
+\ifcase\mt@cal % case 0
+   \SetMathAlphabet \mathcal {normal}{LmtW}{mtw}{\mddefault}{\updefault}
+\or            % case 1
+   \SetMathAlphabet \mathscr {normal}{LmtW}{mtw}{\mddefault}{\updefault}
+   \SetMathAlphabet \mathcal {normal}{OMS}{cmsy}{m}{n}
+\or            % case 2
+   \SetMathAlphabet \mathcal {normal}{OMS}{cmsy}{m}{n}
+\fi
+\SetSymbolFont{operators}{bold}{\encodingdefault}%
+                               {\rmdefault}{\bfdefault}{\updefault}
+\SetSymbolFont{letters}{bold}{LmtL}%
+                             {mtl}{\bfdefault}{\itdefault}
+\SetSymbolFont{symbols}{bold}{LmtS}%
+                             {mts}{\bfdefault}{\updefault}
+\SetSymbolFont{largesymbols}{bold}{OMX}%
+                                  {mtx}{\bfdefault}{\updefault}
+\SetMathAlphabet \mathsf {bold}{\encodingdefault}%
+                               {\sfdefault}{\bfdefault}{\updefault}
+\SetMathAlphabet \mathtt {bold}{\encodingdefault}%
+                               {\ttdefault}{\bfdefault}{\updefault}
+\SetMathAlphabet \mathit {bold}{\encodingdefault}%
+                               {\rmdefault}{\bfdefault}{\itdefault}
+\SetMathAlphabet \mathbf {bold}{\encodingdefault}%
+                               {\rmdefault}{\uldefault}{\updefault}
+\ifcase\mt@cal % case 0
+   \SetMathAlphabet \mathcal {bold}{LmtW}{mtw}{\bfdefault}{\updefault}
+\or            % case 1
+   \SetMathAlphabet \mathscr {bold}{LmtW}{mtw}{\bfdefault}{\updefault}
+   \SetMathAlphabet \mathcal {bold}{OMS}{cmsy}{b}{n}
+\or            % case 2
+   \SetMathAlphabet \mathcal {bold}{OMS}{cmsy}{b}{n}
+\fi
+\SetSymbolFont{operators}{heavy}{\encodingdefault}%
+                                {\rmdefault}{\hvdefault}{\updefault}
+\SetSymbolFont{letters}  {heavy}{LmtL}%
+                                {mtl}{\hvdefault}{\itdefault}
+\SetSymbolFont{symbols}  {heavy}{LmtS}%
+                                {mts}{\hvdefault}{\updefault}
+\SetSymbolFont{largesymbols}{heavy}{OMX}%
+                                   {mtx}{\hvdefault}{\updefault}
+\SetMathAlphabet \mathsf {heavy}{\encodingdefault}%
+                                {\sfdefault}{\hvdefault}{\updefault}
+\SetMathAlphabet \mathtt {heavy}{\encodingdefault}%
+                                {\ttdefault}{\hvdefault}{\updefault}
+\SetMathAlphabet \mathit {heavy}{\encodingdefault}%
+                                {\rmdefault}{\hvdefault}{\itdefault}
+\SetMathAlphabet \mathbf {heavy}{\encodingdefault}%
+                                {\rmdefault}{\psdefault}{\updefault}%
+\ifcase\mt@cal % case 0
+   \SetMathAlphabet \mathcal {heavy}{LmtW}{mtw}{\hvdefault}{\updefault}
+\or            % case 1
+   \SetMathAlphabet \mathscr {heavy}{LmtW}{mtw}{\hvdefault}{\updefault}
+   \SetMathAlphabet \mathcal {heavy}{OMS}{cmsy}{\hvdefault}{\updefault}
+\or            % case 2
+   \SetMathAlphabet \mathcal {heavy}{OMS}{cmsy}{\hvdefault}{\updefault}
+\fi
+\ifcase\mt@sub % case 0
+   \PackageWarning{mt11p}{No math font substitutions set}
+\or % case 1
+   \def\mt@fd@check#1{%
+          \edef\reserved@a{\lowercase{\noexpand
+                              \InputIfFileExists{\encodingdefault #1.fd}}}%
+          \reserved@a\relax{\InputIfFileExists{\encodingdefault #1.fd}\relax
+                       {\PackageError{mt11p}%
+                         {No file `\encodingdefault#1.fd' found}%
+                         {Your text \string#1 setup looks inconsistent.}}}}
+   \mt@fd@check\rmdefault
+   \mt@fd@check\sfdefault
+   \mt@fd@check\ttdefault
+   \edef\reserved@a{\lowercase{\noexpand\InputIfFileExists{omscmsy.fd}}}%
+   \reserved@a\relax{\InputIfFileExists{OMScmsy.fd}\relax
+                {\PackageError{mt11p}{No OMScmsy.fd file}%
+                         {Your are missing a basic distribution file. %
+                                      Check the LaTeX installation.}}}
+   \DeclareFontShape{\encodingdefault}%
+                    {\rmdefault}{\hvdefault}{\updefault}% heavy \rm SUBS
+                    {<->ssub*\rmdefault/\bfdefault/\updefault}{}
+   \DeclareFontShape{\encodingdefault}%
+                    {\sfdefault}{\hvdefault}{\updefault}% heavy \sf SUBS
+                    {<->ssub*\sfdefault/\bfdefault/\updefault}{}
+   \DeclareFontShape{\encodingdefault}%
+                    {\ttdefault}{\hvdefault}{\updefault}% heavy \tt SUBS
+                    {<->ssub*\ttdefault/\bfdefault/\updefault}{}
+   \DeclareFontShape{\encodingdefault}%
+                    {\rmdefault}{\psdefault}{\updefault}% poster \rm SUBS
+                    {<->ssub*\rmdefault/\bfdefault/\updefault}{}
+   \DeclareFontShape{LmtW}%
+                    {mtw}{\hvdefault}{\updefault}%      heavy mtms SUBS
+                    {<->ssub*mtw/\bfdefault/\updefault}{}
+   \DeclareFontShape{OMS}{cmsy}{\hvdefault}{\updefault}%
+                    {<->ssub*cmsy/b/n}{}%               heavy cmsy SUBS
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@sub}%
+                {No math font substitutions set.}
+\fi
+\DeclareMathSymbol\Gamma      {\mathord}{letters}{'060}
+\DeclareMathSymbol\Delta      {\mathord}{letters}{'061}
+\DeclareMathSymbol\Theta      {\mathord}{letters}{'062}
+\DeclareMathSymbol\Lambda     {\mathord}{letters}{'063}
+\DeclareMathSymbol\Xi         {\mathord}{letters}{'064}
+\DeclareMathSymbol\Pi         {\mathord}{letters}{'065}
+\DeclareMathSymbol\Sigma      {\mathord}{letters}{'066}
+\DeclareMathSymbol\Upsilon    {\mathord}{letters}{'067}
+\DeclareMathSymbol\Phi        {\mathord}{letters}{'070}
+\DeclareMathSymbol\Psi        {\mathord}{letters}{'071}
+\DeclareMathSymbol\Omega      {\mathord}{letters}{'177}
+\DeclareMathSymbol\varGamma   {\mathord}{letters}{'000}
+\DeclareMathSymbol\varDelta   {\mathord}{letters}{'001}
+\DeclareMathSymbol\varTheta   {\mathord}{letters}{'002}
+\DeclareMathSymbol\varLambda  {\mathord}{letters}{'003}
+\DeclareMathSymbol\varXi      {\mathord}{letters}{'004}
+\DeclareMathSymbol\varPi      {\mathord}{letters}{'005}
+\DeclareMathSymbol\varSigma   {\mathord}{letters}{'006}
+\DeclareMathSymbol\varUpsilon {\mathord}{letters}{'007}
+\DeclareMathSymbol\varPhi     {\mathord}{letters}{'010}
+\DeclareMathSymbol\varPsi     {\mathord}{letters}{'011}
+\DeclareMathSymbol\varOmega   {\mathord}{letters}{'012}
+\DeclareMathSymbol\varkappa   {\mathord}{letters}{'176}
+\DeclareMathSymbol\omicron    {\mathord}{letters}{`\o}% for completeness
+\DeclareMathSymbol\openclubsuit   {\mathord}{symbols}{"78}
+\DeclareMathSymbol\shadedclubsuit {\mathord}{symbols}{"79}
+\DeclareMathSymbol\openspadesuit  {\mathord}{symbols}{"7A}
+\DeclareMathSymbol\shadedspadesuit{\mathord}{symbols}{"7B}
+\DeclareMathSymbol\triangleleft   {\mathbin}{symbols}{"47}
+\DeclareMathSymbol\triangleright  {\mathbin}{symbols}{"46}
+\DeclareMathSymbol\cupprod        {\mathbin}{symbols}{"59}
+\DeclareMathSymbol\capprod        {\mathbin}{symbols}{"5A}
+\DeclareMathSymbol\varcirc{\mathbin}{symbols}{"42}
+\let\comp=\varcirc
+\DeclareMathAccent\vec    {\mathord}{symbols}{"45}
+\DeclareMathAccent\overbar{\mathord}{symbols}{"53}
+\let\widebar\overbar
+\DeclareMathSymbol\varsetminus{\mathbin}{symbols}{"58}
+\let\smallsetminus\varsetminus
+\ifcase\mt@cal % case 0
+   \let\mathscr\mathcal % don't warn
+\or            % case 1
+\or            % case 2
+   \def\mathscr#1{\mathcal{#1}%
+              \PackageWarning{mt11p}{no \string\mathscr\space available;
+                           \MessageBreak using OMScmsy \string\mathcal}}
+\fi
+\def\varA   {\mt@al@hexsy\mathscr{30}}
+\def\varE   {\mt@al@hexsy\mathscr{31}}
+\def\varG   {\mt@al@hexsy\mathscr{32}}
+\def\varvarG{\mt@al@hexsy\mathscr{33}}
+\def\varI   {\mt@al@hexsy\mathscr{34}}
+\def\varL   {\mt@al@hexsy\mathscr{35}}
+\def\varQ   {\mt@al@hexsy\mathscr{36}}
+\def\varS   {\mt@al@hexsy\mathscr{37}}
+\def\varr   {\mt@al@hexsy\mathscr{38}}
+\def\varz   {\mt@al@hexsy\mathscr{39}}
+\def\iscript{\mt@al@hexsy\mathscr{7B}}% can't use \imath
+\def\jscript{\mt@al@hexsy\mathscr{7C}}% can't use \jmath
+\DeclareRobustCommand\script{\@ifstar\@varscript\@script}
+\ifnum\mt@cal<2 % mtms available
+   \def\@script#1{\mathscr{#1}}
+   \def\@varscript#1{%
+               \ifx#1A\varA
+          \else\ifx#1E\varE
+          \else\ifx#1G\varG
+          \else\ifx#1g\varvarG
+          \else\ifx#1I\varI
+          \else\ifx#1L\varL
+          \else\ifx#1Q\varQ
+          \else\ifx#1S\varS
+          \else\ifx#1r\varr
+          \else\ifx#1z\varz
+          \else\ifx#1i\iscript
+          \else\ifx#1j\jscript
+          \else       \PackageWarning{mt11p}{#1: no such variant letter}%
+                                    \mathscr{#1}%
+          \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+\else % OMS only
+   \def\@script#1{\mathscr{#1}}
+   \def\@varscript#1{\PackageWarning{mt11}%
+                             {no variant letters available in OMS}%
+                             \@script{#1}}
+\fi
+\def\mt@assign@del#1#2#3#4#5{%
+         \edef\reserved@a{\expandafter\the\csname sym#2\endcsname}%
+         \edef\reserved@b{\expandafter\the\csname sym#4\endcsname}%
+         \delcode#1="\reserved@a#3\reserved@b#5 \relax}
+\ifcase\mt@ops % case 0
+   \DeclareMathSymbol{(}{\mathopen}{letters}{"2E}
+   \mt@assign@del{`\(}{letters}{2E}{largesymbols}{00}
+   \DeclareMathSymbol{)}{\mathclose}{letters}{"2F}
+   \mt@assign@del{`\)}{letters}{2F}{largesymbols}{01}
+   \DeclareMathSymbol{+}{\mathbin}{symbols}{"43}
+   \DeclareMathSymbol{=}{\mathrel}{symbols}{"44}% identical one at "48
+   \DeclareMathSymbol{;}{\mathpunct}{symbols}{"49}
+   \DeclareMathSymbol{[}{\mathopen}{symbols}{"54}
+   \mt@assign@del{`\[}{symbols}{54}{largesymbols}{02}
+   \DeclareMathSymbol{]}{\mathclose}{symbols}{"55}
+   \mt@assign@del{`\]}{symbols}{55}{largesymbols}{03}
+   \DeclareMathSymbol{:}{\mathrel}{symbols}{"56}
+   \ifx\colon\undefined
+      \DeclareMathSymbol{\colon}{\mathpunct}{symbols}{"56}
+   \fi
+   \DeclareMathSymbol{!}{\mathclose}{symbols}{"57}
+   \DeclareMathSymbol{.}{\mathord}{letters}{"3A}
+   \DeclareMathSymbol{\period}{\mathpunct}{letters}{"3A}
+   \DeclareMathSymbol{,}{\mathpunct}{letters}{"3B}
+   %\DeclareMathSymbol{<}{\mathrel}{letters}{"3C}% format defaults
+   %\DeclareMathSymbol{>}{\mathrel}{letters}{"3E}
+   %\DeclareMathSymbol{|}{\mathord}{symbols}{"6A}
+   %\DeclareMathSymbol{/}{\mathord}{letters}{"3D}
+   %\DeclareMathSymbol{-}{\mathbin}{symbols}{"00}
+\or           % case 1
+   \DeclareMathSymbol{(}{\mathopen}{operators}{`\(}
+   \mt@assign@del{`\(}{operators}{28}{largesymbols}{00}
+   \DeclareMathSymbol{)}{\mathclose}{operators}{`\)}
+   \mt@assign@del{`\)}{operators}{29}{largesymbols}{01}
+   \DeclareMathSymbol{+}{\mathbin}{symbols}{"43}
+   \DeclareMathSymbol{=}{\mathrel}{symbols}{"44}% identical one at "48
+   \DeclareMathSymbol{;}{\mathpunct}{operators}{`\;}
+   \DeclareMathSymbol{[}{\mathopen}{operators}{`\[}
+   \mt@assign@del{`\[}{operators}{5B}{largesymbols}{02}
+   \DeclareMathSymbol{]}{\mathclose}{operators}{`\]}
+   \mt@assign@del{`\]}{operators}{5D}{largesymbols}{03}
+   \DeclareMathSymbol{:}{\mathrel}{operators}{`\:}
+   \ifx\colon\undefined % AMS defines it differently; don't overwrite that
+      \DeclareMathSymbol{\colon}{\mathpunct}{operators}{`\:}
+   \fi
+   \DeclareMathSymbol{!}{\mathclose}{operators}{`\!}
+   \DeclareMathSymbol{.}{\mathord}{operators}{`\.}
+   \DeclareMathSymbol{\period}{\mathpunct}{operators}{`\.}
+   \DeclareMathSymbol{,}{\mathpunct}{operators}{`\,}
+   %\DeclareMathSymbol{<}{\mathrel}{letters}{"3C}% format defaults
+   %\DeclareMathSymbol{>}{\mathrel}{letters}{"3E}
+   %\DeclareMathSymbol{|}{\mathord}{symbols}{"6A}
+   %\DeclareMathSymbol{/}{\mathord}{letters}{"3D}
+   %\DeclareMathSymbol{-}{\mathbin}{symbols}{"00}
+\or           % case 2
+   \PackageWarning{mt11p}{opmax enabled}
+   \DeclareMathSymbol{(}{\mathopen}{operators}{`\(}
+   \mt@assign@del{`\(}{operators}{28}{largesymbols}{00}
+   \DeclareMathSymbol{)}{\mathclose}{operators}{`\)}
+   \mt@assign@del{`\)}{operators}{29}{largesymbols}{01}
+   \DeclareMathSymbol{+}{\mathbin}{operators}{`\+}
+   \DeclareMathSymbol{=}{\mathrel}{operators}{`\=}% dangerous
+   \DeclareMathSymbol{;}{\mathpunct}{operators}{`\;}
+   \DeclareMathSymbol{[}{\mathopen}{operators}{`\[}
+   \mt@assign@del{`\[}{operators}{5B}{largesymbols}{02}
+   \DeclareMathSymbol{]}{\mathclose}{operators}{`\]}
+   \mt@assign@del{`\]}{operators}{5D}{largesymbols}{03}
+   \DeclareMathSymbol{:}{\mathrel}{operators}{`\:}
+   \ifx\colon\undefined
+      \DeclareMathSymbol{\colon}{\mathpunct}{operators}{`\:}
+   \fi
+   \DeclareMathSymbol{!}{\mathclose}{operators}{`\!}
+   \DeclareMathSymbol{.}{\mathord}{operators}{`\.}
+   \DeclareMathSymbol{\period}{\mathpunct}{operators}{`\.}
+   \DeclareMathSymbol{,}{\mathpunct}{operators}{`\,}
+   \DeclareMathSymbol{/}{\mathord}{operators}{`\/}
+   \mt@assign@del{`\/}{operators}{2F}{largesymbols}{0E}
+   \def\reserved@a{OT1}\edef\reserved@b{\encodingdefault}
+   \ifx\reserved@a\reserved@b % unavailable in OT1...
+      %\DeclareMathSymbol{<}{\mathrel}{letters}{"3C}% format defaults
+      %\DeclareMathSymbol{>}{\mathrel}{letters}{"3E}
+      %\DeclareMathSymbol{|}{\mathord}{symbols}{"6A}
+      \DeclareMathSymbol{-}{\mathbin}{operators}{"7B}% dangerous
+   \else
+      \def\reserved@a{T1}%
+      \ifx\reserved@a\reserved@b
+         \DeclareMathSymbol{-}{\mathbin}{operators}{"15}% dangerous
+      \else
+         \def\reserved@a{8r}%
+         \ifx\reserved@a\reserved@b
+            \DeclareMathSymbol{-}{\mathbin}{operators}{150}% dangerous
+         \else
+            \def\reserved@a{8a}%
+            \ifx\reserved@a\reserved@b
+               \DeclareMathSymbol{-}{\mathbin}{operators}{"B1}% dangerous
+            \else
+               % keep symbols, slot "00
+            \fi % 8a
+         \fi % 8r
+      \fi % T1
+      \DeclareMathSymbol{<}{\mathrel}{operators}{`\<}% ascii positions
+      \DeclareMathSymbol{>}{\mathrel}{operators}{`\>}
+      \DeclareMathSymbol{|}{\mathord}{operators}{`\|}
+      \mt@assign@del{`\|}{operators}{7C}%  ascii bar
+                      {largesymbols}{0C}
+      \DeclareMathDelimiter\backslash\mathord{operators}{"5C}% ascii backslash
+                                          {largesymbols}{"0F}
+      \DeclareMathDelimiter\lbrace   \mathopen{operators}{`\{}% ascii `{'
+                                          {largesymbols}{"08}
+      \DeclareMathDelimiter\rbrace   \mathclose{operators}{`\}}% ascii `}'
+                                          {largesymbols}{"09}
+   \fi
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@ops}%
+                {The mathsymbol setup is hosed; expect bad output.}
+\fi
+\ifcase\mt@accs % case 0
+\def\mt@accent@make#1#2{\def#1{\mathaccent"\mt@acc@class0#2 }}
+   \edef\reserved@a{\encodingdefault}
+   \def\reserved@b{T1}% a.k.a Cork or DC or EC
+   \ifx\reserved@a\reserved@b
+      \mt@accent@make{\grave}{00}
+      \mt@accent@make{\acute}{01}
+      \mt@accent@make{\hat}{02}
+      \mt@accent@make{\tilde}{03}
+      \mt@accent@make{\ddot}{04}
+      \mt@accent@make{\ring}{06}
+      \mt@accent@make{\check}{07}
+      \mt@accent@make{\breve}{08}
+      \mt@accent@make{\bar}{09}
+      \mt@accent@make{\dot}{0A}
+   \else
+      \def\reserved@b{OT1}% ``Knuth roman''
+      \ifx\reserved@a\reserved@b
+        \mt@accent@make{\grave}{12}
+        \mt@accent@make{\acute}{13}
+        \mt@accent@make{\check}{14}
+        \mt@accent@make{\breve}{15}
+        \mt@accent@make{\bar}{16}
+        \mt@accent@make{\ring}{17}
+        \mt@accent@make{\hat}{5E}
+        \mt@accent@make{\dot}{5F}
+        \mt@accent@make{\tilde}{7E}
+        \mt@accent@make{\ddot}{7F}
+      \else
+         \def\reserved@b{8r}% TeXBase1
+         \ifx\reserved@a\reserved@b
+            \mt@accent@make{\dot}{01}
+            \mt@accent@make{\ring}{09}
+            \mt@accent@make{\breve}{0B}}
+            \mt@accent@make{\check}{10}
+            \mt@accent@make{\grave}{1E}
+            \mt@accent@make{\hat}{88}
+            \mt@accent@make{\tilde}{98}
+            \mt@accent@make{\ddot}{A8}
+            \mt@accent@make{\bar}{AF}
+            \mt@accent@make{\acute}{B4}
+         \else
+            \def\reserved@b{8a}% AdobeStandard
+            \ifx\reserved@a\reserved@b
+               \mt@accent@make{\grave}{C1}
+               \mt@accent@make{\acute}{C2}
+               \mt@accent@make{\hat}{C3}
+               \mt@accent@make{\tilde}{C4}
+               \mt@accent@make{\bar}{C5}
+               \mt@accent@make{\breve}{C6}
+               \mt@accent@make{\dot}{C7}
+               \mt@accent@make{\ddot}{C8}
+               \mt@accent@make{\ring}{CA}
+               \mt@accent@make{\check}{CF}
+            \else % I give up...
+               \DeclareMathAccent\grave{\mathord}{symbols}{"4A}
+               \DeclareMathAccent\acute{\mathord}{symbols}{"4B}
+               \DeclareMathAccent\check{\mathord}{symbols}{"4C}
+               \DeclareMathAccent\breve{\mathord}{symbols}{"4D}
+               \DeclareMathAccent\bar  {\mathord}{symbols}{"4E}
+               \DeclareMathAccent\hat  {\mathord}{symbols}{"4F}
+               \DeclareMathAccent\dot  {\mathord}{symbols}{"50}
+               \DeclareMathAccent\tilde{\mathord}{symbols}{"51}
+               \DeclareMathAccent\ddot {\mathord}{symbols}{"52}
+               \def\ring#1{{#1}} % no \ring in the symbols font
+               \PackageError{mt11p}%
+                            {Unknown \string\encodingdefault\space
+                                     \encodingdefault. \MessageBreak
+                             Reverting to fixed accents
+                             from symbols font}%
+                            {I had to make math accents ignore alphabet
+                             changes,\MessageBreak
+                             because I don't recognize the
+                             `\encodingdefault' encoding.}
+            \fi % 8a
+         \fi % 8r
+      \fi % OT1
+   \fi % T1
+   \ifx\noaccents@\@undefined\let\noaccents@\@empty\fi % be safe
+   \g@addto@macro{\noaccents@}{\def\mt@acc@class{0}}
+   \def\mt@acc@class{7}
+\or % case 1, accents from symbols
+   \DeclareMathAccent\grave{\mathord}{symbols}{"4A}
+   \DeclareMathAccent\acute{\mathord}{symbols}{"4B}
+   \DeclareMathAccent\check{\mathord}{symbols}{"4C}
+   \DeclareMathAccent\breve{\mathord}{symbols}{"4D}
+   \DeclareMathAccent\bar  {\mathord}{symbols}{"4E}
+   \DeclareMathAccent\hat  {\mathord}{symbols}{"4F}
+   \DeclareMathAccent\dot  {\mathord}{symbols}{"50}
+   \DeclareMathAccent\tilde{\mathord}{symbols}{"51}
+   \DeclareMathAccent\ddot {\mathord}{symbols}{"52}
+   \def\ring#1{{#1}} % no \ring in the symbols font
+   \ifx\noaccents@\@undefined\let\noaccents@\@empty\fi % be safe
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@accs}%
+                {The math accent setup is hosed; expect bad output.}
+\fi
+\ifx\mathaccent@\undefine\else % (i)
+\ifx\Hat\undefine\else         % (iia)
+\ifx\Check\undefine\else       % (iib)
+\def\@tempa{7}%
+\ifx\@tempa\accentclass@       % (iii)
+   \PackageInfo{mt11p}{amsmath detected; redefining double accents}
+   \def\@tempa#1#2{% variable 7/0
+             \def#1{\relax % write it out
+                    \ifmmode
+                        \def\next@{\mathaccent@{"\accentclass@#2 }}%
+                    \else
+                        \def\next@{\nonmatherr@{#1}}%
+                    \fi
+                    \next@}}
+   \def\@tempb#1#2{% fixed
+             \def#1{\relax % write it out
+                    \ifmmode
+                        \def\next@{\mathaccent@{"0#2 }}%
+                    \else
+                        \def\next@{\nonmatherr@{#1}}%
+                    \fi
+                    \next@}}
+   \@tempb\Vec{245}
+   \@tempb\Overbar{253}
+   \def\Widebar{\Overbar}% synonym
+   \ifnum\mt@accs=0 %
+      \edef\reserved@a{\encodingdefault}
+      \def\reserved@b{T1}% a.k.a Cork or DC or EC
+      \ifx\reserved@a\reserved@b
+         \@tempa\Hat{002}
+         \@tempa\Check{007}
+         \@tempa\Tilde{003}
+         \@tempa\Acute{001}
+         \@tempa\Grave{000}
+         \@tempa\Dot{00A}
+         \@tempa\Ddot{004}
+         \@tempa\Breve{008}
+         \@tempa\Bar{009}
+      \else
+         \def\reserved@b{OT1}% DEK's
+         \ifx\reserved@a\reserved@b
+            \@tempa\Grave{012}
+            \@tempa\Acute{013}
+            \@tempa\Check{014}
+            \@tempa\Breve{015}
+            \@tempa\Bar{016}
+            \@tempa\Hat{05E}
+            \@tempa\Dot{05F}
+            \@tempa\Tilde{07E}
+            \@tempa\Ddot{07F}
+         \else
+            \def\reserved@b{8r}% TeXBase1
+            \ifx\reserved@a\reserved@b
+               \@tempa\Dot{001}
+               \@tempa\Breve{00B}
+               \@tempa\Check{010}
+               \@tempa\Grave{01E}
+               \@tempa\Hat{088}
+               \@tempa\Tilde{098}
+               \@tempa\Ddot{0A8}
+               \@tempa\Bar{0AF}
+               \@tempa\Acute{0B4}
+            \else
+               \def\reserved@b{8a}% AdobeStandard
+               \ifx\reserved@a\reserved@b
+                  \@tempa\Grave{0C1}
+                  \@tempa\Acute{0C2}
+                  \@tempa\Hat{0C3}
+                  \@tempa\Tilde{0C4}
+                  \@tempa\Bar{0C5}
+                  \@tempa\Breve{0C6}
+                  \@tempa\Dot{0C7}
+                  \@tempa\Ddot{0C8}
+                  \@tempa\Check{0CF}
+               \else % beats me...
+                  \@tempb\Grave{24A}
+                  \@tempb\Acute{24B}
+                  \@tempb\Check{24C}
+                  \@tempb\Breve{24D}
+                  \@tempb\Bar{24E}
+                  \@tempb\Hat{24F}
+                  \@tempb\Dot{250}
+                  \@tempb\Tilde{251}
+                  \@tempb\Ddot{252}
+                  \PackageWarning{mt11p}{using fixed accents for amsmath}
+               \fi % 8a
+            \fi % 8r
+         \fi % OT1
+      \fi % T1
+   \else % symaccents option
+      \@tempb\Grave{24A}
+      \@tempb\Acute{24B}
+      \@tempb\Check{24C}
+      \@tempb\Breve{24D}
+      \@tempb\Bar{24E}
+      \@tempb\Hat{24F}
+      \@tempb\Dot{250}
+      \@tempb\Tilde{251}
+      \@tempb\Ddot{252}
+   \fi
+\fi\fi\fi\fi
+\def\greekshape{\fontencoding{LmtG}\selectfont}%
+\DeclareTextFontCommand{\textgr}{\greekshape}
+\ifcase\mt@mgr % case 0
+   \def\mathgr#1{\PackageError{mt11p}{upright Greek not loaded for math}%
+                                     {Don't use the nomathgr option.}%
+                 \hbox{\greekshape #1}}% as good as anything else
+\or % case 1
+   \DeclareMathAlphabet\mathgr {LmtG}{mtg}{\mddefault}{\updefault}
+   \SetMathAlphabet    \mathgr {normal}{LmtG}{mtg}{\mddefault}{\updefault}
+   \SetMathAlphabet    \mathgr {bold}  {LmtG}{mtg}{\bfdefault}{\updefault}
+   \SetMathAlphabet    \mathgr {heavy} {LmtG}{mtg}{\hvdefault}{\updefault}
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@mgr}%
+                {The \string\mathgr\space setup is hosed.}
+\fi
+\ifnum\mt@sub=1 %
+   \DeclareFontShape{LmtG}{mtg}{\hvdefault}{\updefault}%
+                    {<->ssub*mtg/\bfdefault/\updefault}{}% heavy mtgu SUBS
+\fi
+\ifnum\mt@hbar=1 %
+   \DeclareMathSymbol \mt@hbar@macron {\mathord}{symbols}{"4E}%
+   \DeclareMathSymbol \mt@hbar@h      {\mathord}{letters}{`\h}
+   \def\hbar@macron#1{\hbox to\z@{\m@th\raisebox{-0.16\height}%
+                        {$\csname#1style\endcsname
+                            \mkern.65mu\mt@hbar@macron$}\hss}}
+   \def\hbar{\mathord{\mathchoice{\hbar@macron{display}}%
+                                 {\hbar@macron{text}}%
+                                 {\hbar@macron{script}}%
+                                 {\hbar@macron{scriptscript}}%
+                      \mt@hbar@h}}
+
+\fi
+\ifcase\mt@eightR % case 0
+   \PackageInfo{mt11p}{Retaining CM for \string\textdagger, etc}%
+\or % case 1
+   \IfFileExists{8r\rmdefault.fd}%
+         {\IfFileExists{8r.sty}%
+               {\PackageInfo{mt11p}%
+                             {MT math using 8r.sty}%
+                \RequirePackage{8r}%
+                \DeclareTextSymbol{\textsection}{8r}{167}%   section
+                \DeclareTextSymbol{\textparagraph}{8r}{182}% paragraph
+                \DeclareTextSymbol{\textdagger}{8r}{134}%    dagger
+                \DeclareTextSymbol{\textdaggerdbl}{8r}{135}% daggerdbl
+                \DeclareTextSymbolDefault{\textsection}{8r}%
+                \DeclareTextSymbolDefault{\textparagraph}{8r}%
+                \DeclareTextSymbolDefault{\textdagger}{8r}%
+                \DeclareTextSymbolDefault{\textdaggerdbl}{8r}%
+               }% using 8r.sty
+               {\PackageWarning{mt11p}%
+                               {No file 8r.sty found. Winging it}%
+                \DeclareFontEncoding{8r}{}{\no@accents}%
+                \DeclareFontSubstitution{8r}{\rmdefault}%
+                                            {\mddefault}{\updefault}%
+                \DeclareTextSymbol{\textsection}{8r}{167}%   section
+                \DeclareTextSymbol{\textparagraph}{8r}{182}% paragraph
+                \DeclareTextSymbol{\textdagger}{8r}{134}%    dagger
+                \DeclareTextSymbol{\textdaggerdbl}{8r}{135}% daggerdbl
+                \DeclareTextSymbolDefault{\textsection}{8r}%
+                \DeclareTextSymbolDefault{\textparagraph}{8r}%
+                \DeclareTextSymbolDefault{\textdagger}{8r}%
+                \DeclareTextSymbolDefault{\textdaggerdbl}{8r}%
+               }% faked 8r.sty
+         \input{8r\rmdefault.fd}%
+         }% 8r\rmdefault.fd was available
+         {\PackageWarning{mt11p}%
+                         {No fd file for 8r-coded \string\rmdefault\space
+                              found; guessing TFM file names}%
+     \font\preloaded=\rmdefault r8r\relax % next time try the `no8r' option
+          \let\preloaded\undefined
+          \DeclareFontEncoding{8r}{}{\no@accents}%
+          \DeclareFontFamily{8r}{\rmdefault}{\hyphenchar\font=-1 }%
+          \DeclareFontSubstitution{8r}{\rmdefault}{\mddefault}{\updefault}%
+          \DeclareFontShape{8r}{\rmdefault}{\mddefault}{\updefault}%
+                                           {<->\rmdefault  r8r}{}%
+          \DeclareFontShape{8r}{\rmdefault}{\bfdefault}{\updefault}%
+                                           {<->\rmdefault  b8r}{}%
+          \DeclareFontShape{8r}{\rmdefault}{\mddefault}{\itdefault}%
+                                           {<->\rmdefault  ri8r}{}%
+          \DeclareFontShape{8r}{\rmdefault}{\bfdefault}{\itdefault}%
+                                           {<->\rmdefault  bi8r}{}%
+          \DeclareTextSymbol{\textsection}{8r}{167}%   section
+          \DeclareTextSymbol{\textparagraph}{8r}{182}% paragraph
+          \DeclareTextSymbol{\textdagger}{8r}{134}%    dagger
+          \DeclareTextSymbol{\textdaggerdbl}{8r}{135}% daggerdbl
+          \DeclareTextSymbolDefault{\textsection}{8r}%
+          \DeclareTextSymbolDefault{\textparagraph}{8r}%
+          \DeclareTextSymbolDefault{\textdagger}{8r}%
+          \DeclareTextSymbolDefault{\textdaggerdbl}{8r}%
+         }% no 8r\rmdefault.fd
+\or % case 2
+   \PackageInfo{mt11p}{not doing anything with \string\textdagger, etc.}
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@eightR}%
+                {\string\dag, \string\ddag, \string\S\space and
+                 \string\P\space are probably hosed.}
+\fi
+\ifcase\mt@eightR % 0: avoid 8r
+   \ifnum\mt@cal=0 %
+      \DeclareMathAlphabet\mt@sy{OMS}{cmsy}{m}{n}
+      \SetMathAlphabet    \mt@sy{normal}{OMS}{cmsy}{m}{n}
+      \SetMathAlphabet    \mt@sy{bold}  {OMS}{cmsy}{b}{n}
+      \SetMathAlphabet    \mt@sy{heavy} {OMS}{cmsy}{\hvdefault}{\updefault}
+      \def\mathsection  {\mt@al@hexsy\mt@sy{78}}
+      \def\dagger       {\mt@al@hexsy\mt@sy{79}}
+      \def\ddagger      {\mt@al@hexsy\mt@sy{7A}}
+      \def\mathparagraph{\mt@al@hexsy\mt@sy{7B}}
+   \else % \mt@cal>0
+      \def\mathsection  {\mt@al@hexsy\mathcal{78}}
+      \def\dagger       {\mt@al@hexsy\mathcal{79}}
+      \def\ddagger      {\mt@al@hexsy\mathcal{7A}}
+      \def\mathparagraph{\mt@al@hexsy\mathcal{7B}}
+   \fi
+\or % 1: 8r is ok
+   \DeclareMathAlphabet\mt@sy{8r}{\rmdefault}{\mddefault}{\updefault}
+   \SetMathAlphabet \mt@sy {normal}{8r}%
+                             {\rmdefault}{\mddefault}{\updefault}
+   \SetMathAlphabet \mt@sy {bold}  {8r}%
+                             {\rmdefault}{\bfdefault}{\updefault}
+   \SetMathAlphabet \mt@sy {heavy} {8r}%
+                             {\rmdefault}{\hvdefault}{\updefault}
+   \def\mathparagraph{\mt@al@hexsy\mt@sy{B6}}
+   \def\dagger       {\mt@al@hexsy\mt@sy{86}}
+   \def\ddagger      {\mt@al@hexsy\mt@sy{87}}
+   \def\mathsection  {\mt@al@hexsy\mt@sy{A7}}
+   \ifnum\mt@sub=1 %
+      \DeclareFontShape{8r}{\rmdefault}{\hvdefault}{\updefault}% heavy \rm in 8r SUBS
+                           {<->ssub*\rmdefault/\bfdefault/\updefault}{}
+   \fi
+\or % 2: nothing
+   \PackageInfo{mt11p}{not doing anything with (math) \string\dagger, etc.}
+\fi
+\def\mt@al@hexsy#1#2{#1{\mathchar"70#2}}
+\ifcase\mt@sb % case 0
+   \PackageInfo{mt11p}{not using active underscore}
+\or % case 1
+   \ifnum\the\catcode`\_=8 %
+      \ifnum\the\mathcode`\_=32768 % "8000
+         \PackageInfo{mt11p}{redefining the underscore \string\catcode}
+         \PackageInfo{mt11p}{\string\catcode\space of underscore made 12 (other)}
+         \def\space@.{\futurelet\space@\relax}
+         \space@. %
+         \let\mt@orig@sb_
+         \catcode`\_=\active
+         \def_{\ifmmode\expandafter\sb@\else\expandafter\mt@orig@sb\fi}
+         \let\sb_
+         \def\sb@#1{\mt@orig@sb{\futurelet\next\sb@@#1}}
+         \def\sb@@{\ifx\next\space@\def\next@. {\futurelet\next\sb@@}%
+                   \else
+                      \def\next@.{\ifx\next j\jadjust
+                             \else\ifx\next f\jadjust
+                             \else\ifx\next p\mkern-\@ne mu%
+                                  \fi\fi\fi}%
+                   \fi
+                   \next@.}
+         \@makeother\_
+      \else % \the\mathcode`\_<>"8000 !
+         \PackageWarning{mt11}{underscore did not have mathcode "8000;
+                               \MessageBreak Underscore not made active}
+      \fi
+   \else % \the\catcode`\_ <>8 !
+      \PackageWarning{mt11}{underscore was not of category 8;\MessageBreak
+                            Underscore not made active}
+   \fi
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@sb}%
+                {Underscore not made active.}
+\fi
+\def\jadjust{\mkern-\tw@ mu}
+\def\vdots{\vbox{\baselineskip4\p@\lineskiplimit\z@\kern6\p@
+                 \hbox{$\m@th.$}\hbox{$\m@th.$}\hbox{$\m@th.$}}}
+\def\ddots{\mathinner{%
+           \mkern1mu\raise7\p@\vbox{\kern7\p@\hbox{$\m@th.$}}\mkern2mu
+           \raise4\p@\hbox{$\m@th.$}\mkern2mu%
+           \raise\p@\hbox{$\m@th.$}\mkern1mu}}
+\def\mt@angle#1#2{{\vbox{\ialign{$\m@th#1##$\crcr
+            \not\mathrel{\mkern14mu}\crcr
+            \noalign{\nointerlineskip}%
+            \mkern2.5mu\leaders\hrule height1.05\fontdimen8#2 3 %
+                              \hfill\mkern2.5mu\crcr}}}}
+\def\angle{\mathchoice{\mt@angle{\scriptstyle}{\scriptfont}}
+                      {\mt@angle{\scriptstyle}{\scriptfont}}
+                      {\mt@angle{\scriptscriptstyle}{\scriptscriptfont}}
+                      {\mt@angle{\scriptscriptstyle}{\scriptscriptfont}}}
+\DeclareTextAccent{\t}{LmtS}{"41}
+\DeclareTextAccentDefault{\t}{LmtS}
+\DeclareTextAccentDefault{\textcircled}{LmtS}
+\DeclareTextCommand{\textcircled}{LmtS}[1]{{%
+   \ooalign{\hfil\raise.07ex\hbox{\upshape#1}\hfil\crcr\char13}}}
+\DeclareTextSymbol{\textless}{LmtL}{60}% afm names
+\DeclareTextSymbol{\textgreater}{LmtL}{62}
+\DeclareTextSymbol{\textperiodcentered}{LmtS}{1}
+\DeclareTextSymbol{\textasteriskmath}{LmtS}{3}% centered
+\DeclareTextSymbol{\textopenbullet}{LmtS}{14}
+\DeclareTextSymbol{\textbullet}{LmtS}{15}
+\DeclareTextSymbol{\textbraceleft}{LmtS}{102}
+\DeclareTextSymbol{\textbraceright}{LmtS}{103}
+\DeclareTextSymbol{\textbar}{LmtS}{106}
+\DeclareTextSymbol{\textbackslash}{LmtS}{110}
+\DeclareTextSymbolDefault{\textperiodcentered}{LmtS}
+\DeclareTextSymbolDefault{\textasteriskmath}{LmtS}
+\DeclareTextSymbolDefault{\textopenbullet}{LmtS}
+\DeclareTextSymbolDefault{\textbullet}{LmtS}
+\DeclareTextSymbolDefault{\textbraceleft}{LmtS}
+\DeclareTextSymbolDefault{\textbraceright}{LmtS}
+\DeclareTextSymbolDefault{\textbar}{LmtS}
+\DeclareTextSymbolDefault{\textbackslash}{LmtS}
+\DeclareTextSymbolDefault{\textless}{LmtL}
+\DeclareTextSymbolDefault{\textgreater}{LmtL}
+\ifcase\mt@osdg % case 0
+   \def\math@OS#1{\PackageError{mt11p}{oldstyle digits not loaded for math}%
+                                     {Don't use the nomathOS option.}%
+                 {\hbox{\oldstylenums{#1}}}}% as good as anything else
+\or % case 1
+   \DeclareMathAlphabet\math@OS {OML}{cmm}{m}{it}
+   \SetMathAlphabet    \math@OS {normal}{OML}{cmm}{m}{it}
+   \SetMathAlphabet    \math@OS {bold}  {OML}{cmm}{b}{it}
+   \SetMathAlphabet    \math@OS {heavy} {OML}{cmm}{\hvdefault}{\itdefault}
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@osdg}%
+                {Oldsyle digits in math are hosed.}
+\fi
+\ifnum\mt@sub=1 %
+   \InputIfFileExists{omlcmm.fd}\relax % grrr...
+                        {\InputIfFileExists{OMLcmm.fd}\relax
+                        {\PackageError{mt11p}{No OMLcmm.fd file}%
+                                 {Your are missing a basic distribution file. %
+                                              Check the LaTeX installation.}}}
+   \DeclareFontShape{OML}{cmm}{\hvdefault}{\itdefault}%
+                    {<->ssub*cmm/b/it}{}%      heavy cmmi SUBS
+\fi
+\def\oldstylenums#1{%
+     \ifmmode
+        \math@OS{#1}%
+     \else
+        {\usefont{OML}{cmm}{\f@series}{it}#1}%
+     \fi}
+\ifcase\mt@bsy % case 0
+   \providecommand{\boldsymbol}[1]{\PackageError{mt11p}%
+                               {Get or load the package amsbsy
+                                to use \string\boldsymbol}{See above.}#1\relax}
+   \providecommand{\heavysymbol}[1]{\PackageError{mt11p}%
+                               {Get or load the package amsbsy
+                                to use \string\heavysymbol}{See above.}#1\relax}
+   \providecommand{\normalsymbol}[1]{\PackageError{mt11p}%
+                               {Get or load the package amsbsy
+                                to use \string\normalsymbol}{See above.}#1\relax}
+\or % case 1
+   \IfFileExists{amsbsy.sty}%
+        {\RequirePackage{amsbsy}%
+         \DeclareRobustCommand{\heavysymbol}[1]{%
+             \begingroup
+             \let\@nomath\@gobble \mathversion{heavy}%
+             \math@atom{##1}{%
+             \mathchoice
+               {\hbox{$\m@th\displaystyle##1$}}%
+               {\hbox{$\m@th\textstyle##1$}}%
+               {\hbox{$\m@th\scriptstyle##1$}}%
+               {\hbox{$\m@th\scriptscriptstyle##1$}}}%
+             \endgroup}%
+         \DeclareRobustCommand{\normalsymbol}[1]{%
+             \begingroup
+             \let\@nomath\@gobble \mathversion{normal}%
+             \math@atom{##1}{%
+             \mathchoice
+               {\hbox{$\m@th\displaystyle##1$}}%
+               {\hbox{$\m@th\textstyle##1$}}%
+               {\hbox{$\m@th\scriptstyle##1$}}%
+               {\hbox{$\m@th\scriptscriptstyle##1$}}}%
+             \endgroup}%
+        }% using amsbsy.sty
+        {\PackageError{mt11p}{No file `amsbsy.sty' found}%
+                   {Use the `nobsy' option if you don't have or \MessageBreak
+                   don't want the AMS \string\boldsymbol\space macro.}
+        \let\boldsymbol\@firstofone
+        \let\heavysymbol\@firstofone
+        \let\normalsymbol\@firstofone
+        }% no amsbsy.sty
+\else % oops
+   \PackageError{mt11p}{PANIC: Unexpected value of \string\mt@bsy}%
+                {The \string\boldsymbol\space macro is probably hosed.}
+\fi
+\thinmuskip=2mu \relax
+\medmuskip=2.5mu plus 1mu minus 1mu \relax
+\thickmuskip=4mu plus 1.5mu minus 1mu \relax
+\InputIfFileExists{mt11p.cfg}%
+           {\typeout{**************************************^^J%
+                     * Local config file mt11p.cfg loaded *^^J%
+                     **************************************}%
+            }{}
+\mt@exit
+\catcode`\"\mt@quotedbl
+\catcode`\'\mt@quotesinglr
+\catcode`\:\mt@colon
+\catcode`\?\mt@question
+\catcode`\;\mt@semicolon
+\catcode`\!\mt@exclam
+\let\mt@quotedbl  \undefined
+\let\mt@quotesinglr\undefined
+\let\mt@colon     \undefined
+\let\mt@question  \undefined
+\let\mt@semicolon \undefined
+\let\mt@exclam    \undefined
+\let\mt@exit      \undefined
+\let\MathTimeSizes\undefine
+\let\mt@enc       \undefined
+\let\times@style  \undefined
+\let\mt@fd@check  \undefined
+\let\mt@accs      \undefined
+\let\mt@accent@make\undefined
+\let\mt@hbar      \undefined
+\let\mt@eightR    \undefined
+\let\mt@bsy       \undefined
+\let\mt@sb        \undefined
+\let\mt@mgrs      \undefined
+\let\mt@osdg      \undefined
+\let\mt@assign@del\undefined
+ %\let\mt@cal       \undefined
+ %\let\mt@ops       \undefined
+\endinput
+%%
+%% End of file `mt11p.sty'.

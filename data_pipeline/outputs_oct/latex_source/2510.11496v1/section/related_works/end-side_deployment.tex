@@ -1,0 +1,24 @@
+\subsection{Mobile-Side Deployment of MLLM}
+\label{sec:mobile-side_deploy}
+
+The deployment of MLLMs on mobile devices presents unique challenges, including limited computational resources, diverse hardware architectures, and stringent energy constraints. To address these issues, various solutions~\cite{ONNX-Runtime, llamacpp, MLC, iyer2023automated, jiang2020mnn, li2024transformer, genimi-nano, apple-core-ML} have been proposed that take advantage of CPUs, GPUs, and NPUs. 
+
+\paragraph{CPU-based Deployment}
+
+In 2020, Alibaba developed the Mobile Neural Network (MNN)~\cite{jiang2020mnn}, an inference engine tailored for mobile applications. It introduces a ``pre-inference'' mechanism for runtime optimization, thorough kernel optimizations for optimal computation performance, and a back-end abstraction module that enables hybrid scheduling while maintaining a lightweight engine footprint on mobile CPUs.
+
+In 2023, Georgi Gerganov~\cite{llamacpp} introduced llama.cpp, a lightweight, dependency-free C/C++ implementation designed for efficient LLM inference across diverse hardware platforms, including mobile CPUs. It includes support for several quantization levels (ranging from 1.5-bit to 8-bit), enabling reduced memory consumption and accelerated inference.
+
+\paragraph{GPU-based Deployment}
+
+In 2024, a machine learning compiler and high-performance deployment engine for LLMs, MLC LLM~\cite{MLC}, was developed, aiming to enable native deployment across various platforms, including mobile GPUs. It compiles models into optimized binaries compatible with platforms such as iOS, Android, and web browsers.
+
+In addition, Li et al.~\cite{li2024transformer} proposed Transformer-Lite, which focuses on the high-efficiency deployment of LLM on mobile phone GPUs. It introduced four optimization techniques: a symbolic expression-based approach for dynamic shape model inference, operator optimizations with execution priority settings, an FP4 quantization method termed M0E4 to reduce dequantization overhead, and a sub-tensor-based technique to eliminate the need for copying key-value (KV) cache after inference. These optimizations enable significant speedups in both prefill and decoding phases compared to existing CPU-based and GPU-based inference engines.
+
+\paragraph{NPU-based Deployment}
+
+Gemini Nano~\cite{genimi-nano}, developed by Google, is designed for on-device use cases, running within Android's AICore system service to leverage device hardware for low-latency inference. It is accessible through the AI Edge SDK, which allows developers to customize the inference and prompts. Gemini Nano models, such as Nano-1 (1.8B parameters) and Nano-2 (3.25B parameters), are distilled from larger Gemini models and optimized for edge devices such as smartphones.
+
+Finally, Apple's On-Device Deployment utilizes the Core ML framework to optimize and deploy large language models on Apple silicon~\cite{apple-core-ML}. Techniques such as grouped-query attention (GQA) mechanisms, mixed 2-bit and 4-bit quantization, and efficient memory management strategies enable the deployment of models like Llama-3.1-8B-Instruct on devices such as the iPhone 15 Pro, achieving decoding speeds of approximately 30 tokens per second.
+
+Despite notable progress in mobile-side deployment of MLLMs, several challenges persist. These include balancing model performance with resource constraints, ensuring cross-device compatibility, standardizing deployment processes, and establishing comprehensive evaluation frameworks for multimodal tasks. To address these issues, we introduce the AndesVL series, which offers a comprehensive suite of optimized deployment solutions tailored for mobile platforms. This includes detailed training methodologies, quantization techniques, compilation strategies, and hardware-specific optimizations. Our work aims to bridge existing gaps, providing a robust foundation for future research and practical applications in mobile-side MLLM deployment.

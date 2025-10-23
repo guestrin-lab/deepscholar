@@ -1,0 +1,63 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.06512v1,http://arxiv.org/abs/2510.06512v1,2025-10-07 23:05:20+00:00,LogSTOP: Temporal Scores over Prediction Sequences for Matching and Retrieval,"Neural models such as YOLO and HuBERT can be used to detect local properties
+such as objects (""car"") and emotions (""angry"") in individual frames of videos
+and audio clips respectively. The likelihood of these detections is indicated
+by scores in [0, 1]. Lifting these scores to temporal properties over sequences
+can be useful for several downstream applications such as query matching (e.g.,
+""does the speaker eventually sound happy in this audio clip?""), and ranked
+retrieval (e.g., ""retrieve top 5 videos with a 10 second scene where a car is
+detected until a pedestrian is detected""). In this work, we formalize this
+problem of assigning Scores for TempOral Properties (STOPs) over sequences,
+given potentially noisy score predictors for local properties. We then propose
+a scoring function called LogSTOP that can efficiently compute these scores for
+temporal properties represented in Linear Temporal Logic. Empirically, LogSTOP,
+with YOLO and HuBERT, outperforms Large Vision / Audio Language Models and
+other Temporal Logic-based baselines by at least 16% on query matching with
+temporal properties over objects-in-videos and emotions-in-speech respectively.
+Similarly, on ranked retrieval with temporal properties over objects and
+actions in videos, LogSTOP with Grounding DINO and SlowR50 reports at least a
+19% and 16% increase in mean average precision and recall over zero-shot
+text-to-video retrieval baselines respectively.","\noindent{\textbf{Temporal Logic for video and audio understanding. }}
+\citet{yang2023specification} and \citet{Choi2024TowardsNV} (NSVS-TL) use the probabilistic model checker STORM to verify temporal properties over object detections in videos, using LTL and PCTL to represent properties respectively. 
+
+\noindent{\textbf{Benchmarks for video and audio understanding. }}
+Benchmarks for video understanding such as Video-MME~\citep{videomme}, RexTIME~\citep{chen2024rextime}, Next-qa~\citep{nextqa}, QVHighlights~\citep{qvhighlights}, TemporalBench~\citep{cai2024temporalbench} and TempCompass~\citep{liu2024tempcompass} include tasks that require temporal understanding of events in videos. Similarly, audio understanding datasets such as MMAU~\citep{sakshi2024mmau} and CompA~\citep{ghosh2023compa} evaluate temporal tasks such as detecting the order of two events. 
+These tasks are fundamentally different from the QMTP benchmark which focuses on more fine-grained temporal properties. 
+
+\noindent{\textbf{Video retrieval with temporal queries. }} 
+Popular text-to-video retrieval datasets such as 
+Activity Net Captions~\citep{krishna2017dense} and DiDeMo~\citep{didemo} focus on temporal segments within minute-long videos.
+Our TP2VR benchmark focuses on fine-grained temporal queries over short events in videos, with many-to-many mapping between queries and videos.
+
+Popular text-video retrieval methods include CLIP4Clip~\citep{luo2021clip4clip}, TS2-Net~\citep{liu2022ts2},~\citep{Bain21}, which employ training to improve embeddings for retrieval, and zero-shot methods such as mPLUG~\citep{li2022mplug} and ELIOT~\citep{liu-etal-2025-eliot}. Since we use off-the-shelf models with LogSTOP for retrieval, we only include the latter for comparison.","\noindent{\textbf{Temporal Logic for video and audio understanding. }}
+\citet{yang2023specification} and \citet{Choi2024TowardsNV} (NSVS-TL) use the probabilistic model checker STORM to verify temporal properties over object detections in videos, using LTL and PCTL to represent properties respectively. 
+
+\noindent{\textbf{Benchmarks for video and audio understanding. }}
+Benchmarks for video understanding such as Video-MME~\citep{videomme}, RexTIME~\citep{chen2024rextime}, Next-qa~\citep{nextqa}, QVHighlights~\citep{qvhighlights}, TemporalBench~\citep{cai2024temporalbench} and TempCompass~\citep{liu2024tempcompass} include tasks that require temporal understanding of events in videos. Similarly, audio understanding datasets such as MMAU~\citep{sakshi2024mmau} and CompA~\citep{ghosh2023compa} evaluate temporal tasks such as detecting the order of two events. 
+These tasks are fundamentally different from the QMTP benchmark which focuses on more fine-grained temporal properties. 
+
+\noindent{\textbf{Video retrieval with temporal queries. }} 
+Popular text-to-video retrieval datasets such as 
+Activity Net Captions~\citep{krishna2017dense} and DiDeMo~\citep{didemo} focus on temporal segments within minute-long videos.
+Our TP2VR benchmark focuses on fine-grained temporal queries over short events in videos, with many-to-many mapping between queries and videos.
+
+Popular text-video retrieval methods include CLIP4Clip~\citep{luo2021clip4clip}, TS2-Net~\citep{liu2022ts2},~\citep{Bain21}, which employ training to improve embeddings for retrieval, and zero-shot methods such as mPLUG~\citep{li2022mplug} and ELIOT~\citep{liu-etal-2025-eliot}. Since we use off-the-shelf models with LogSTOP for retrieval, we only include the latter for comparison.","Temporal Logic for video and audio understanding.Yang et al. [44]and Choi et al. [9](NSVS-TL)
+use the probabilistic model checker STORM to verify temporal properties over object detections in videos,
+using LTL and PCTL to represent properties respectively.
+9
+Figure 5: Examples of video retrieval with different methods, from the TP2VR-objects and TP2VR-actions
+datasets. The event length ranges in terms of number of frames are mentioned with the temporal properties.
+Detailed discussion of these examples is in Appendix H
+Benchmarks for video and audio understanding.Benchmarks for video understanding such as
+Video-MME [ 17], RexTIME [ 8], Next-qa [ 43], QVHighlights [ 25], TemporalBench [ 7] and TempCompass [ 30]
+include tasks that require temporal understanding of events in videos. Similarly, audio understanding datasets
+such as MMAU [ 38] and CompA [ 18] evaluate temporal tasks such as detecting the order of two events. These
+tasks are fundamentally different from the QMTP benchmark which focuses on more fine-grained temporal
+properties.
+Video retrieval with temporal queries.Popular text-to-video retrieval datasets such as Activity Net
+Captions [ 24] and DiDeMo [ 3] focus on temporal segments within minute-long videos. Our TP2VR benchmark
+focuses on fine-grained temporal queries over short events in videos, with many-to-many mapping between
+queries and videos.
+Popular text-video retrieval methods include CLIP4Clip [ 32], TS2-Net [ 31], [4], which employ training to
+improve embeddings for retrieval, and zero-shot methods such as mPLUG [ 26] and ELIOT [ 29]. Since we use
+off-the-shelf models with LogSTOP for retrieval, we only include the latter for comparison."

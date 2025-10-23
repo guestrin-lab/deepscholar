@@ -1,0 +1,282 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.09848v1,http://arxiv.org/abs/2510.09848v1,2025-10-10 20:24:20+00:00,Cell Instance Segmentation: The Devil Is in the Boundaries,"State-of-the-art (SOTA) methods for cell instance segmentation are based on
+deep learning (DL) semantic segmentation approaches, focusing on distinguishing
+foreground pixels from background pixels. In order to identify cell instances
+from foreground pixels (e.g., pixel clustering), most methods decompose
+instance information into pixel-wise objectives, such as distances to
+foreground-background boundaries (distance maps), heat gradients with the
+center point as heat source (heat diffusion maps), and distances from the
+center point to foreground-background boundaries with fixed angles (star-shaped
+polygons). However, pixel-wise objectives may lose significant geometric
+properties of the cell instances, such as shape, curvature, and convexity,
+which require a collection of pixels to represent. To address this challenge,
+we present a novel pixel clustering method, called Ceb (for Cell boundaries),
+to leverage cell boundary features and labels to divide foreground pixels into
+cell instances. Starting with probability maps generated from semantic
+segmentation, Ceb first extracts potential foreground-foreground boundaries
+with a revised Watershed algorithm. For each boundary candidate, a boundary
+feature representation (called boundary signature) is constructed by sampling
+pixels from the current foreground-foreground boundary as well as the
+neighboring background-foreground boundaries. Next, a boundary classifier is
+used to predict its binary boundary label based on the corresponding boundary
+signature. Finally, cell instances are obtained by dividing or merging
+neighboring regions based on the predicted boundary labels. Extensive
+experiments on six datasets demonstrate that Ceb outperforms existing pixel
+clustering methods on semantic segmentation probability maps. Moreover, Ceb
+achieves highly competitive performance compared to SOTA cell instance
+segmentation methods.","\subsection{Cell Instance Segmentation}
+
+Recent SOTA methods for cell instance segmentation can be broadly categorized into two types: semantic segmentation-based approaches and region-based approaches, with the vast majority of SOTA methods belonging to the former type.
+
+\subsubsection{Semantic Segmentation-based Approaches}
+
+Semantic segmentation-based methods first distinguish foreground pixels and background pixels, and then cluster foreground pixels into individual instances~\cite{chen2016dcan,graham2019mild,zhou2019cia,ronneberger2015u,isensee2021nnu,liang2019cascade}. The most recent work adopted pixel-wise objectives to distinguish individual instances. In the training stage, cell instance labels are transformed to pixel-wise labels. In the inference stage, pixel-wise labels are predicted and further processed to produce final instances. For example, Hover~\cite{graham2019hover} and CellViT~\cite{horst2024cellvit} used distance maps considering the distances from each inner pixel to the nearest instance boundaries.  
+StarDist~\cite{schmidt2018cell} extended distance maps to radial maps with $32$ fixed angles. CellPose~\cite{stringer2021cellpose} introduced heat diffusion maps with the center point as the heat source, and the heat gradients of each point were considered as pixel-wise labels. Another kind of popular methods is based on pixel-embedding, using contrastive learning to represent pixel-pixel similarities~\cite{payer2019segmenting,zhao2021faster,lalit2022embedseg,goldsborough2024instanseg, wang2024mudslide}. Pixels with similar embeddings are clustered together to form the final instance segmentation results. For example, InstanSeg~\cite{goldsborough2024novel} predicted seed points that represent instance centers and learned pixel-wise embeddings which were used to cluster pixels into instances based on their similarity to seed embeddings. Despite their flexibility and generalizability, these pixel-wise objectives may still lose significant geometric properties of original cell instances, such as
+shape, curvature, and convexity, which require a structured collection of pixels to represent. In this work, we present Ceb, aiming to preserve the structure properties of cell instances with boundary-level features by selecting pixels from foreground-foreground boundaries and background-foreground boundaries.
+
+\subsubsection{Region-based Approaches}
+
+In region-based models, instances are assigned to grids or anchors within an image, allowing for region-wise classification to detect and segment instances~\cite{he2017mask,liu2018path,chen2019hybrid,huang2019mask,cai2019cascade,tang2021look}. For example, CelloType~\cite{pang2024cellotype} employed a Transformer-based detector (DINO) to generate bounding boxes and extract latent features, which are then processed by MaskDINO for joint optimization of detection, segmentation, and classification. However, such region-based representations may not be a good fit for cell instances. For example, bounding boxes can be suppressed by nearby instances, especially in crowded scenes. Pre-defined bounding boxes can also suffer from the imbalance problem of false/true instances.
+
+% Pixel-based models are currently the dominant approach for cell instance segmentation tasks. They can accommodate different cell sizes and shapes. However, converting instance-level labels to pixel-level labels can incur information loss, especially the loss of useful features for pixel-clustering.
+
+
+% {\color{orange}{CelloType~\cite{pang2024cellotype}: It uses a transformer-based detector (DINO) to propose bounding boxes, predict classes, and extract latent features, then integrates them into MaskDINO to refine instance masks and jointly optimize detection, segmentation, and classification. InstanSeg: InstanSeg operates by predicting seed points that represent instance centers and learning pixel-wise embeddings, which are used to group pixels into instances based on their similarity to seed embeddings. CellViT: CellViT employs a distance map-based approach and leverages Vision Transformer (ViT) encoders. Mudslide~\cite{wang2024mudslide}: Mudslide predicts a force direction for each pixel (via a collapse field), then iteratively “collapses” pixels along these forces from the initial boundary, thereby separating adjacent nuclei and ensuring each nucleus forms a coherent instance. The initial boundary is detected by the edge detection filter (for example, the Sobel operator) on the predicted collapse field. }}
+
+\subsection{Boundary Generation Methods}
+Instance boundaries play a vital role in image segmentation.
+Traditional boundary generation methods generate instance boundaries based on local pixel features. Two well-known methods are Watershed~\cite{meyer1994topographic} and Active Contours~\cite{caselles1997geodesic}. The Watershed algorithm considers an image as a heat map based on pixel intensities. Instance boundaries are determined as local minimum lines/curves between instances. Subsequent work incorporated the Watershed algorithm with DL methods~\cite{lux2019dic,eschweiler2019cnn}. For example, DIC~\cite{lux2019dic} predicted cell seeds first and used Watershed as a foreground pixel clustering step to obtain final cell instances. In~\cite{wolf2017learned}, the Watershed algorithm is transformed into a learnable model to consider altitudes of pixels as well as the corresponding region assignment. Active contours are energy-minimizing curves that deform and converge to the boundaries of the regions of interest (RoIs) in an image~\cite{kass1988snakes,chan2001active,sundaramoorthi2007sobolev}. In~\cite{rupprecht2016deep}, parameter maps/initial contours for Sobolev active contours were predicted by CNN models, and Sobolev active contours were applied as a foreground pixel clustering step to obtain final predictions. Subsequent work proposed active contour inspired losses (e.g., Mumford-Shah loss~\cite{kim2019mumford}, active contour without edge (ACWE) loss~\cite{chen2019learning,zhang2020deep, kim2019cnn, gur2019unsupervised}, and sneak active contour loss~\cite{marcos2018learning}). Boundary-based approaches are also a rising focus for point cloud segmentation. For example, CBL~\cite{tang2022contrastive} proposed a boundary contrastive loss for point cloud segmentation.
+Unlike most existing boundary-based methods which utilize solely pixel-level features to generate boundaries, Ceb employs boundary-level features to classify binary boundary labels on top of foreground pixels. Consequently, Ceb retains the advantages of semantic segmentation compared to the other boundary generation methods while still being able to preserve instance structure properties as the known boundary generation methods.
+
+% {\color{orange}{B2Inst~\cite{kim2021devil}: B2Inst detects objects via a detection head, and for each detected object, it uses that object’s instance-specific parameters together with a shared, globally predicted boundary map (the holistic boundary basis) to assemble a object boundary mask for that instance. Both traditional image-processing techniques and modern deep learning approaches have leveraged boundary information to improve the delineation of touching cells. Traditional Boundary-Based Segmentation Methods: watershed, Morphological Operations and Boundary Extraction:Active contours can yield smooth, continuous boundaries but require good initialization and can struggle when cells are touching. Deep Learning Approaches Leveraging Boundaries: Modern deep learning models have significantly advanced cell instance segmentation by explicitly learning to detect boundaries or related representations (contours, distance maps, etc.) in conjunction with segmenting cell regions. DCAN outputs both the cell-region mask and an explicit contour map for each object. Following DCAN, other networks also leveraged contour predictions. For example, Zhou et al. (2019) proposed a Contour-Aware Information Aggregation Network, which fuses features from nucleus interior and contour regions to refine the segmentation. Boundary-Preserving Mask R-CNN (BMask R-CNN, 2020) adding a parallel branch in the mask head that predicts the object boundary (edge) map, and uses feature fusion between the boundary and mask branches. Distance Map Regression and Watershed CNNs. }}
+
+\subsection{Segmentation Trees}
+Another line of related work is segmentation tree based methods~\cite{silberman2014instance,funke2018candidate,fehri2019bayesian,souza2016overview,jones1999connected,akram2014segmentation, akram2016joint}, which utilize tree-based structures to solve instance segmentation problems. These methods generate over-segmented components, and then perform final instance segmentation by clustering the components. Unlike our method, such methods often produce tree-like structures without DL networks. For example, a tree can be generated from super-pixels~\cite{silberman2014instance, funke2018candidate}; after the ``leaf"" regions of the initial over-segmented candidate regions are obtained, a tree structure is built by iteratively merging similar super-pixels, until a pre-specified stopping criterion is met. GP-S3Net~\cite{razani2021gp} used density-based spatial clustering of applications with noise (DBSCAN)~\cite{ester1996density} to produce over-segmented candidates, and a graph neural network (GNN) model was used to predict the label of each edge. Note that these methods make final decisions based on node features, which make modeling geometric features of instance regions difficult. In contrast, our method directly utilizes boundary features for boundary classification, which are generally easier to identify and classify.
+
+
+\begin{algorithm}
+\footnotesize
+\SetAlgoLined
+\SetKw{KwInput}{Input}
+\SetKw{KwOutput}{Output}
+\KwInput{Foreground Pixels $F = \{ (x_{f}, y_{f})\}$;
+Seeds $S = \{ (x_s, y_s)\} \in F$;
+Probability map $p$, $p(x_f, y_f) \in [0, 1], \forall (x_f, y_f) \in F$;
+}  
+
+\KwOutput{Regions $\boldsymbol{R}$, Boundaries $\boldsymbol{B}$ 
+\# \textit{Regions and Boundaries are both Hashmaps, representing index and corresponding pixels. }
+}
+
+$\boldsymbol{R} \gets \emptyset, \boldsymbol{B} \gets \emptyset$ 
+
+\# \textit{status mapping function $f$: $-1$ represents unvisited ($\textbf{UNVISITED}$), $-2$ represents in the queue to be assigned ($\textbf{INQE}$), $-3$ represents a place holder to be placed in the queue later ($\textbf{MASK}$), $0$ represents a Watershed boundary ($\textbf{WSHD}$), positive integer represents the region index.}
+
+\For{$(x, y) \in F$}{
+    $f[(x, y)] \gets -1$
+}
+
+$region\_index \gets 0$
+
+\For{$(x, y) \in S$}{
+    $region\_index \gets region\_index + 1$
+    
+    $f[(x, y)] \gets region\_index$
+    
+    $\textbf{R}[f[(x, y)]].add((x, y))$
+}
+
+Initialize $Queue \gets \emptyset$
+
+Initialize $Hashmap \gets \emptyset$ \# \textit{key represents probability map value, value is a list of pixels with the corresponding probability}
+
+\For{$(x, y) \in$ $F \setminus S$ }{
+    $Hashmap[p(x, y)].add((x, y)) $
+}
+
+ \For{$key \in reverse\_sorted(Hashmap.keys)$}{
+   \For{$(x, y) \in Hashmap[key]$}{
+        $f[(x, y)] \gets \textbf{\textit{MASK}}$
+        
+        \For{$(x_n, y_n)\in Neighbors(x, y)$}{
+            \If{$f[(x_n, y_n)] > 0$ }{ 
+                $Enqueue(Queue, (x, y))$
+                $f[(x, y)] \gets$ \textbf{\textit{INQE}}
+                
+                \textbf{break}
+                }
+  }
+  }
+ \While{$Queue \neq \emptyset$}{
+   $(x, y) \gets Dequeue(Queue)$\;
+   \For{$(x_n, y_n) \in Neighbors(x, y)$}{
+            \If{$f[(x_n, y_n)] > 0$}{
+               \If{$f[(x, y)] = \textbf{INQE}$}{
+                    $f[(x, y)] \gets f[(x_n, y_n)]$
+                    $\textbf{R}[f[(x_n, y_n)]].add((x, y))$
+                    }
+                \uElseIf{$f[(x, y)]>0$ \textbf{and} $f[(x, y)] \neq f[(x_n, y_n)]$}{
+                $\textbf{B}[f[(x, y)], f[(x_n, y_n)]].add((x, y))$
+                $f[(x, y)]\gets \textbf{\textit{WSHD}}$
+                }
+                }
+            \uElseIf{$f[(x_n, y_n)] = \textbf{\textit{WSHD}}$}{
+             \If{$f[(x, y)] = \textbf{INQE}$}{
+                    $\textbf{B}[ \textbf{B}.find\_key((x_n, y_n)) ].add((x, y))$
+                    $f[(x, y)] \gets \textbf{\textit{WSHD}}$
+                    }
+            }
+            \uElseIf{$f[(x_n, y_n)] = \textbf{MASK}$}{
+                $f[(x_n, y_n)] \gets \textbf{\textit{INQE}}$
+                $Enqueue(Queue, (x_n, y_n))$
+            }
+                }
+ }}
+ \Return{$\boldsymbol{B}$, $\boldsymbol{R}$}
+\caption{A Revised Watershed Algorithm to Generate Possible Cell Boundaries and Regions}
+\label{algorithm:adapted_watershed}
+\end{algorithm}
+
+%\vspace{-1in}","\subsection{Cell Instance Segmentation}
+
+Recent SOTA methods for cell instance segmentation can be broadly categorized into two types: semantic segmentation-based approaches and region-based approaches, with the vast majority of SOTA methods belonging to the former type.
+
+\subsubsection{Semantic Segmentation-based Approaches}
+
+Semantic segmentation-based methods first distinguish foreground pixels and background pixels, and then cluster foreground pixels into individual instances~\cite{chen2016dcan,graham2019mild,zhou2019cia,ronneberger2015u,isensee2021nnu,liang2019cascade}. The most recent work adopted pixel-wise objectives to distinguish individual instances. In the training stage, cell instance labels are transformed to pixel-wise labels. In the inference stage, pixel-wise labels are predicted and further processed to produce final instances. For example, Hover~\cite{graham2019hover} and CellViT~\cite{horst2024cellvit} used distance maps considering the distances from each inner pixel to the nearest instance boundaries.  
+StarDist~\cite{schmidt2018cell} extended distance maps to radial maps with $32$ fixed angles. CellPose~\cite{stringer2021cellpose} introduced heat diffusion maps with the center point as the heat source, and the heat gradients of each point were considered as pixel-wise labels. Another kind of popular methods is based on pixel-embedding, using contrastive learning to represent pixel-pixel similarities~\cite{payer2019segmenting,zhao2021faster,lalit2022embedseg,goldsborough2024instanseg, wang2024mudslide}. Pixels with similar embeddings are clustered together to form the final instance segmentation results. For example, InstanSeg~\cite{goldsborough2024novel} predicted seed points that represent instance centers and learned pixel-wise embeddings which were used to cluster pixels into instances based on their similarity to seed embeddings. Despite their flexibility and generalizability, these pixel-wise objectives may still lose significant geometric properties of original cell instances, such as
+shape, curvature, and convexity, which require a structured collection of pixels to represent. In this work, we present Ceb, aiming to preserve the structure properties of cell instances with boundary-level features by selecting pixels from foreground-foreground boundaries and background-foreground boundaries.
+
+\subsubsection{Region-based Approaches}
+
+In region-based models, instances are assigned to grids or anchors within an image, allowing for region-wise classification to detect and segment instances~\cite{he2017mask,liu2018path,chen2019hybrid,huang2019mask,cai2019cascade,tang2021look}. For example, CelloType~\cite{pang2024cellotype} employed a Transformer-based detector (DINO) to generate bounding boxes and extract latent features, which are then processed by MaskDINO for joint optimization of detection, segmentation, and classification. However, such region-based representations may not be a good fit for cell instances. For example, bounding boxes can be suppressed by nearby instances, especially in crowded scenes. Pre-defined bounding boxes can also suffer from the imbalance problem of false/true instances.
+
+
+
+
+
+
+\subsection{Boundary Generation Methods}
+Instance boundaries play a vital role in image segmentation.
+Traditional boundary generation methods generate instance boundaries based on local pixel features. Two well-known methods are Watershed~\cite{meyer1994topographic} and Active Contours~\cite{caselles1997geodesic}. The Watershed algorithm considers an image as a heat map based on pixel intensities. Instance boundaries are determined as local minimum lines/curves between instances. Subsequent work incorporated the Watershed algorithm with DL methods~\cite{lux2019dic,eschweiler2019cnn}. For example, DIC~\cite{lux2019dic} predicted cell seeds first and used Watershed as a foreground pixel clustering step to obtain final cell instances. In~\cite{wolf2017learned}, the Watershed algorithm is transformed into a learnable model to consider altitudes of pixels as well as the corresponding region assignment. Active contours are energy-minimizing curves that deform and converge to the boundaries of the regions of interest (RoIs) in an image~\cite{kass1988snakes,chan2001active,sundaramoorthi2007sobolev}. In~\cite{rupprecht2016deep}, parameter maps/initial contours for Sobolev active contours were predicted by CNN models, and Sobolev active contours were applied as a foreground pixel clustering step to obtain final predictions. Subsequent work proposed active contour inspired losses (e.g., Mumford-Shah loss~\cite{kim2019mumford}, active contour without edge (ACWE) loss~\cite{chen2019learning,zhang2020deep, kim2019cnn, gur2019unsupervised}, and sneak active contour loss~\cite{marcos2018learning}). Boundary-based approaches are also a rising focus for point cloud segmentation. For example, CBL~\cite{tang2022contrastive} proposed a boundary contrastive loss for point cloud segmentation.
+Unlike most existing boundary-based methods which utilize solely pixel-level features to generate boundaries, Ceb employs boundary-level features to classify binary boundary labels on top of foreground pixels. Consequently, Ceb retains the advantages of semantic segmentation compared to the other boundary generation methods while still being able to preserve instance structure properties as the known boundary generation methods.
+
+
+
+\subsection{Segmentation Trees}
+Another line of related work is segmentation tree based methods~\cite{silberman2014instance,funke2018candidate,fehri2019bayesian,souza2016overview,jones1999connected,akram2014segmentation, akram2016joint}, which utilize tree-based structures to solve instance segmentation problems. These methods generate over-segmented components, and then perform final instance segmentation by clustering the components. Unlike our method, such methods often produce tree-like structures without DL networks. For example, a tree can be generated from super-pixels~\cite{silberman2014instance, funke2018candidate}; after the ``leaf"" regions of the initial over-segmented candidate regions are obtained, a tree structure is built by iteratively merging similar super-pixels, until a pre-specified stopping criterion is met. GP-S3Net~\cite{razani2021gp} used density-based spatial clustering of applications with noise (DBSCAN)~\cite{ester1996density} to produce over-segmented candidates, and a graph neural network (GNN) model was used to predict the label of each edge. Note that these methods make final decisions based on node features, which make modeling geometric features of instance regions difficult. In contrast, our method directly utilizes boundary features for boundary classification, which are generally easier to identify and classify.
+
+
+\begin{algorithm}
+\footnotesize
+\SetAlgoLined
+\SetKw{KwInput}{Input}
+\SetKw{KwOutput}{Output}
+\KwInput{Foreground Pixels $F = \{ (x_{f}, y_{f})\}$;
+Seeds $S = \{ (x_s, y_s)\} \in F$;
+Probability map $p$, $p(x_f, y_f) \in [0, 1], \forall (x_f, y_f) \in F$;
+}  
+
+\KwOutput{Regions $\boldsymbol{R}$, Boundaries $\boldsymbol{B}$ 
+\# \textit{Regions and Boundaries are both Hashmaps, representing index and corresponding pixels. }
+}
+
+$\boldsymbol{R} \gets \emptyset, \boldsymbol{B} \gets \emptyset$ 
+
+\# \textit{status mapping function $f$: $-1$ represents unvisited ($\textbf{UNVISITED}$), $-2$ represents in the queue to be assigned ($\textbf{INQE}$), $-3$ represents a place holder to be placed in the queue later ($\textbf{MASK}$), $0$ represents a Watershed boundary ($\textbf{WSHD}$), positive integer represents the region index.}
+
+\For{$(x, y) \in F$}{
+    $f[(x, y)] \gets -1$
+}
+
+$region\_index \gets 0$
+
+\For{$(x, y) \in S$}{
+    $region\_index \gets region\_index + 1$
+    
+    $f[(x, y)] \gets region\_index$
+    
+    $\textbf{R}[f[(x, y)]].add((x, y))$
+}
+
+Initialize $Queue \gets \emptyset$
+
+Initialize $Hashmap \gets \emptyset$ \# \textit{key represents probability map value, value is a list of pixels with the corresponding probability}
+
+\For{$(x, y) \in$ $F \setminus S$ }{
+    $Hashmap[p(x, y)].add((x, y)) $
+}
+
+ \For{$key \in reverse\_sorted(Hashmap.keys)$}{
+   \For{$(x, y) \in Hashmap[key]$}{
+        $f[(x, y)] \gets \textbf{\textit{MASK}}$
+        
+        \For{$(x_n, y_n)\in Neighbors(x, y)$}{
+            \If{$f[(x_n, y_n)] > 0$ }{ 
+                $Enqueue(Queue, (x, y))$
+                $f[(x, y)] \gets$ \textbf{\textit{INQE}}
+                
+                \textbf{break}
+                }
+  }
+  }
+ \While{$Queue \neq \emptyset$}{
+   $(x, y) \gets Dequeue(Queue)$\;
+   \For{$(x_n, y_n) \in Neighbors(x, y)$}{
+            \If{$f[(x_n, y_n)] > 0$}{
+               \If{$f[(x, y)] = \textbf{INQE}$}{
+                    $f[(x, y)] \gets f[(x_n, y_n)]$
+                    $\textbf{R}[f[(x_n, y_n)]].add((x, y))$
+                    }
+                \uElseIf{$f[(x, y)]>0$ \textbf{and} $f[(x, y)] \neq f[(x_n, y_n)]$}{
+                $\textbf{B}[f[(x, y)], f[(x_n, y_n)]].add((x, y))$
+                $f[(x, y)]\gets \textbf{\textit{WSHD}}$
+                }
+                }
+            \uElseIf{$f[(x_n, y_n)] = \textbf{\textit{WSHD}}$}{
+             \If{$f[(x, y)] = \textbf{INQE}$}{
+                    $\textbf{B}[ \textbf{B}.find\_key((x_n, y_n)) ].add((x, y))$
+                    $f[(x, y)] \gets \textbf{\textit{WSHD}}$
+                    }
+            }
+            \uElseIf{$f[(x_n, y_n)] = \textbf{MASK}$}{
+                $f[(x_n, y_n)] \gets \textbf{\textit{INQE}}$
+                $Enqueue(Queue, (x_n, y_n))$
+            }
+                }
+ }}
+ \Return{$\boldsymbol{B}$, $\boldsymbol{R}$}
+\caption{A Revised Watershed Algorithm to Generate Possible Cell Boundaries and Regions}
+\end{algorithm}","methods [45]–[51], which utilize tree-based structures to solve
+instance segmentation problems. These methods generate over-
+segmented components, and then perform final instance seg-
+mentation by clustering the components. Unlike our method,
+such methods often produce tree-like structures without DL
+networks. For example, a tree can be generated from super-
+pixels [45], [46]; after the “leaf” regions of the initial over-
+segmented candidate regions are obtained, a tree structure
+is built by iteratively merging similar super-pixels, until a
+pre-specified stopping criterion is met. GP-S3Net [52] used
+density-based spatial clustering of applications with noise
+(DBSCAN) [53] to produce over-segmented candidates, and
+a graph neural network (GNN) model was used to predict the
+label of each edge. Note that these methods make final deci-
+sions based on node features, which make modeling geometric
+features of instance regions difficult. In contrast, our method
+directly utilizes boundary features for boundary classification,
+which are generally easier to identify and classify.
+III. METHODOLOGY
+In this section, we present our Ceb framework for cell
+instance segmentation. Fig. 1 gives an overview of our frame-
+work, which consists of five main steps. (1) Seed generation
+(Section III-A): We first generate instance seeds from seman-
+tic segmentation probability maps. (2) Boundary generation
+(Section III-B): Given the generated seeds and probability
+maps, we employ a revised Watershed algorithm to generate
+possible cell boundaries and the regions enclosed by these
+boundaries. Thus, the cell instance segmentation problem
+becomes a boundary selection problem. (3) Boundary label
+assignment (Section III-C): To obtain boundary labels (true or
+false) for the training stage, we build an optimized matching
+model between ground truth instance masks and the divided
+regions to attain true regions. The corresponding boundaries"

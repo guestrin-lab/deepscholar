@@ -1,0 +1,101 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{colortbl}
+\usepackage{pifont} 
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{diagbox}
+\usepackage{subcaption}
+\usepackage[utf8]{inputenc}
+\usepackage{svg}
+\usepackage{comment} 
+\newtheorem{assumption}{Assumption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{graphicx}    % 用于includegraphics
+\usepackage{caption}     % 用于captionsetup
+\usepackage{subcaption}  % 如果需要子图功能
+\usepackage{newunicodechar}
+\newunicodechar{，}{,}
+\title{FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching}
+
+\vspace{-10mm}
+\author{Jiacheng Liu$^{1,2,3}$\thanks{Equal contribution.} \,
+  Peiliang Cai$^{1\,*}$ \,
+  Qinming Zhou$^{1,4}$ \,
+  Yuqi Lin$^{1,5}$ \,
+  Deyang Kong$^{1，7}$ \\
+  \textbf{Benhao Huang}$^{1,6}$ \,
+  \textbf{Yupei Pan}$^{1,7}$ \,
+  \textbf{Haowen Xu}$^{1}$ \,
+  \textbf{Chang Zou}$^{1,2,7}$ \,
+  \textbf{Junshu Tang}$^{2}$ \\
+  \textbf{Shikang Zheng}$^{1,8}$ \,
+  \textbf{Linfeng Zhang}$^{1}$\thanks{Corresponding author. Email: \texttt{zhanglinfeng@sjtu.edu.cn}} \\
+  \vspace{4mm}
+  $^{1}$EPIC Lab,STJU \quad
+  $^{2}$Tencent Hunyuan\quad
+  $^{3}$SDU\quad
+  $^{4}$THU\quad
+  $^{5}$JLU\quad
+  $^{6}$CMU\quad
+  $^{7}$UESTC\quad
+  $^{8}$SCUT\quad
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\iclrfinalcopy 
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+\vspace{-6mm}
+\begin{abstract}
+\vspace{-4mm}
+The application of diffusion transformers is suffering from their significant inference costs. Recently, feature caching has been proposed to solve this problem by reusing features from previous timesteps, thereby skipping computation in future timesteps. 
+However, previous feature caching assumes that features in adjacent timesteps are similar or continuous, which does not always hold in all settings.
+To investigate this, this paper begins with an analysis from the frequency domain, which reveal that \emph{different frequency bands in the features of diffusion models exhibit different dynamics across timesteps.} Concretely, low-frequency components, which decide the structure of images, exhibit higher \emph{similarity} but poor continuity. In contrast, the high-frequency bands, which decode the details of images, show significant continuity but poor similarity. These interesting observations motivate us to propose  \textbf{Freq}uency-aware \textbf{Ca}ching (\textbf{FreqCa})
+ which directly reuses features of low-frequency components based on their similarity, while using a second-order Hermite interpolator to predict the volatile high-frequency ones based on its continuity.
+ Besides, we further propose to cache Cumulative Residual Feature (CRF) instead of the features in all the layers, which reduces the memory footprint of feature caching by \textbf{99\%}. 
+ Extensive experiments on FLUX.1-dev, FLUX.1-Kontext-dev, Qwen-Image, and Qwen-Image-Edit demonstrate its effectiveness in both generation and editing. \emph{Codes are available in the supplementary materials and will be released on GitHub.}
+
+\end{abstract}
+%\input{sections/0_abstract}
+\vspace{-4mm}
+\input{sections/1_introduction}
+\input{sections/2_relatedwork}
+\input{sections/3_method}
+\input{sections/4_experiment}
+\input{sections/5_conclusion}
+
+\input{sections/5_statement}
+
+
+% \input{sections/6_acknowledgement}
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\appendix
+\input{sections/7_appendix}
+
+
+\end{document}

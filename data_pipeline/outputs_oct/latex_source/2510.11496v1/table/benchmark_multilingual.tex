@@ -1,0 +1,68 @@
+\begin{table*}[t!]
+\scriptsize
+\centering
+\renewcommand{\arraystretch}{0.95}
+{\fontsize{8}{10}\selectfont 
+\setlength\tabcolsep{4.2pt}
+\newcommand{\MMMB}{\makecell{MMMB}}
+\newcommand{\MultiMMB}{\makecell{Multilingual MMBench}}
+\begin{tabular}{l|cccccc|cccccc|c|c}
+\multirow{2}{*}{Model Name}               & \multicolumn{6}{c|}{\MMMB}              & \multicolumn{6}{c|}{\MultiMMB}          & MTVQA   & \multirow{2}{*}{Overall} \\
+                                          & en   & zh   & pt   & ar   & tr   & ru   & en   & zh   & pt   & ar   & tr   & ru   & (avg)   &                          \\
+\hline
+InternVL2-1B~\cite{chen2024far}           & 73.2 & 67.4 & 55.5 & 53.5 & 43.8 & 55.2 & 67.9 & 61.2 & 50.8 & 43.3 & 31.8 & 52.7 & 12.6    & 40.7                     \\
+InternVL2.5-1B~\cite{chen2024expanding}   & 78.8 & 70.2 & 61.5 & 55.0 & 45.3 & 61.1 & 72.5 & 64.7 & 57.0 & 43.0 & 37.8 & 53.2 & 21.4    & 46.0                     \\
+\rowcolor{gray!15}
+InternVL3-1B                              & 79.4 & 70.1 & 62.3 & 58.0 &	47.6 & 61.9 & 72.6 & 66.2 & 62.3 & 48.0 & 39.5 & 60.3 & 22.2    & 47.9                     \\
+Qwen2-VL-2B~\cite{wang2024qwen2vl}        & 78.3 & 74.2 & 72.6 & 68.3 & 61.8 & 72.8 & 72.1 & 71.1 & 69.9 & 61.1 & 54.4 & 69.3 & 20.0    & 52.6                     \\
+Qwen2.5-VL-3B~\cite{bai2025qwen2}         & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & 24.8    & --                       \\
+InternVL2-2B~\cite{chen2024far}           & 79.4 & 71.6 & 54.0 & 43.5 & 46.4 & 48.1 & 73.8 & 69.6 & 51.4 & 29.8 & 31.3 & 42.3 & 10.9    & 39.3                     \\
+InternVL2.5-2B~\cite{chen2024expanding}   & 81.4 & 74.4 & 58.2 & 48.3 & 46.4 & 53.2 & 76.5 & 71.6 & 55.9 & 37.3 & 33.9 & 44.8 & 21.8    & 45.2                     \\
+\rowcolor{gray!15}
+InternVL3-2B                              & 81.9 & 78.3 & 75.4 & 68.6 & 62.9 & 74.6 & 81.3 & 77.8 & 75.9 & 66.4 & 59.5 & 70.7 & 26.7    & 57.4                     \\
+% \hline
+% InternVL2-4B~\cite{chen2024far}           & 82.0 & 76.1 & 75.6 & 54.3 & 51.2 & 67.4 & 77.3 & 72.4 & 72.6 & 43.6 & 46.5 & 61.2 & 15.3    & 48.4                     \\
+% \rowcolor{gray!15}
+% InternVL2.5-4B                            & 83.7 & 81.0 & 79.7 & 76.0 & 70.5 & 79.9 & 82.3 & 81.1 & 78.9 & 73.4 & 68.1 & 76.2 & 28.4    & 61.2                     \\
+\hline
+mPLUG-Owl2~\cite{ye2023mplug2}            & 67.3 & 61.0 & 59.7 & 45.8 & 45.4 & 62.6 & 66.2 & 59.4 & 58.2 & 37.9 & 47.7 & 60.4 & --      & --                       \\
+Qwen2-VL-7B~\cite{wang2024qwen2vl}        & 83.9 & 82.4 & 81.2 & 79.0 & 74.7 & 82.4 & 81.8 & 81.6 & 79.1 & 75.6 & 74.5 & 79.3 & 25.6    & 61.6                     \\
+Qwen2.5-VL-7B~\cite{bai2025qwen2}         & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & 29.2    & --                       \\
+InternVL2-8B~\cite{chen2024far}           & 83.4 & 81.5 & 76.1 & 66.3 & 69.2 & 75.7 & 82.9 & 81.8 & 76.0 & 60.5 & 66.0 & 74.4 & 20.9    & 56.6                     \\ 
+InternVL2.5-8B~\cite{chen2024expanding}   & 84.3 & 83.1 & 78.6 & 69.3 & 71.5 & 79.5 & 83.8 & 83.2 & 79.4 & 64.3 & 67.8 & 77.3 & 27.6    & 60.4                     \\
+\rowcolor{gray!15}
+InternVL3-8B                              & 85.1 & 83.1 & 82.5 & 81.6 & 76.2 & 83.4 & 85.5 & 85.6 &	83.2 & 79.2 & 75.9 & 82.6 & 30.2    & 64.7                     \\
+\rowcolor{gray!15}
+InternVL3-9B                              & 84.8 & 83.7 & 80.6 & 69.9 & 68.5 & 80.8 & 86.5 & 85.2 & 79.1 & 64.3 & 68.3 & 79.1 & 27.1    & 60.7                     \\
+\rowcolor{gray!15}
+InternVL3-14B                             & 85.7 & 84.7 & 83.1 & 83.7 &	79.3 & 83.6 & 86.7 & 85.8 & 83.2 & 81.1 & 80.7 & 83.8 & 31.6    & 66.2                     \\
+\hline
+InternVL-Chat-V1.5~\cite{chen2024far}     & 82.6 & 80.8 & 76.3 & 65.2 & 68.6 & 74.0 & 81.1 & 80.2 & 76.9 & 56.2 & 66.7 & 71.0 & 20.5    & 55.7                     \\
+InternVL2-26B~\cite{chen2024far}          & 83.8 & 81.7 & 78.0 & 68.8 & 69.3 & 76.3 & 82.7 & 81.8 & 77.8 & 61.9 & 69.6 & 74.4 & 17.7    & 56.2                     \\
+InternVL2.5-26B~\cite{chen2024expanding}  & 86.2 & 83.8 & 81.6 & 73.3 & 73.7 & 82.8 & 86.1 & 85.5 & 80.7 & 67.5 & 75.0 & 79.6 & 28.5    & 62.6                     \\
+InternVL2-40B~\cite{chen2024far}          & 85.3 & 84.1 & 81.1 & 70.3 & 74.2 & 81.4 & 86.2 & 85.8 & 82.8 & 64.0 & 74.2 & 81.8 & 20.6    & 59.7                     \\
+InternVL2.5-38B~\cite{chen2024expanding}  & 86.4 & 85.1 & 84.1 & 84.3 & 82.8 & 84.9 & 87.5 & 88.6 & 85.3 & 84.5 & 84.0 & 85.9 & 31.7    & 67.4                     \\
+\rowcolor{gray!15}
+InternVL3-38B                             & 86.7 & 85.6 & 84.5 & 84.8 &	82.6 & 85.1 & 89.0 & 89.3 & 87.1 & 84.6 & 84.3 & 87.4 & 32.4    & 68.1                     \\
+\hline
+GPT-4V~\cite{gpt4v}                       & 75.0 & 74.2 & 71.5 & 73.5 & 69.0 & 73.1 & 77.6 & 74.4 & 72.5 & 72.3 & 70.5 & 74.8 & 22.0    & 56.1                     \\
+GPT-4o~\cite{gpt4v}                       & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & 27.8    & --                       \\
+% Qwen-VL-Max~\cite{bai2023qwenvl}        & 77.2 & 75.3 & 72.2 & 70.8 & 66.0 & 74.2 & 76.8 & 77.6 & 74.6 & 75.0 & 69.1 & 75.0 & --      & --                       \\
+Gemini-1.0-Pro~\cite{team2023gemini}      & 75.0 & 71.9 & 70.6 & 69.9 & 69.6 & 72.7 & 73.6 & 72.1 & 70.3 & 61.1 & 69.8 & 70.5 & --      & --                       \\
+Qwen2-VL-72B~\cite{wang2024qwen2vl}       & 86.8 & 85.3 & 85.2 & 84.8 & 84.2 & 85.3 & 86.9 & 87.2 & 85.8 & 83.5 & 84.4 & 85.3 & 30.9    & 67.2                     \\
+Qwen2.5-VL-72B~\cite{bai2025qwen2}        & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & --   & 31.7    & --                       \\
+InternVL2-Llama3-76B~\cite{chen2024far}   & 85.3 & 85.1 & 82.8 & 82.8 & 83.0 & 83.7 & 87.8 & 87.3 &	85.9 & 83.1 & 85.0 & 85.7 & 22.0    & 63.9                     \\
+InternVL2.5-78B~\cite{chen2024expanding}  & 86.3 & 85.6 & 85.1 & 84.8 & 83.1 & 85.4 & 90.0 & 89.7 & 87.4 & 83.3 & 84.9 & 86.3 & 31.9    & 68.0                     \\
+\rowcolor{gray!15}
+InternVL3-78B                             & 87.2 & 86.6 & 85.5 & 86.5 & 84.6 & 86.1 & 89.4 & 90.3 &	88.7 & 86.1 & 86.6 & 88.1 & 32.5    & 68.9                     \\
+% \rowcolor{gray!15}
+% InternVL2.5-Pro                         &      &      &      &      &      &      &      &      &      &      &      &      &         & --                       \\
+\end{tabular}
+}
+\caption{\textbf{Comparison of multimodal multilingual performance. }
+We evaluate multilingual capabilities across 3 benchmarks, including MMMB~\cite{sun2024parrot}, Multilingual MMBench~\cite{sun2024parrot} and MTVQA~\cite{tang2024mtvqa}.
+The languages evaluated are English (en), Chinese (zh), Portuguese (pt), Arabic (ar), Turkish (tr), and Russian (ru).
+}
+\label{tab:benchmark_multilingual}
+\end{table*}
+

@@ -1,0 +1,28 @@
+\begin{table*}[h!]
+\centering
+\caption{Comparison of detectors on established benchmarks based on real and fake class accuracy. Detectors marked with * were evaluated using their official pretrained weights. Results are in the format: \resultscell{rAcc}{fAcc} (\%).}
+\label{tab:established_results_appendix}
+\resizebox{0.8\textwidth}{!}{%
+\begin{tabular}{l|ccc|c|c}
+\toprule
+\textbf{Detector} & \textbf{GenImage} & \textbf{ImagiNet} & \textbf{Chameleon} & \textbf{STD} & \textbf{Mean} \\
+\midrule
+BiLoRA* & \resultscell{99.71}{22.75} & \resultscell{40.76}{72.36} & \resultscell{62.68}{34.38} & \resultscell{29.80}{25.95} & \resultscell{67.72}{43.16} \\
+DIF* & \resultscell{96.4}{87.2} & \resultscell{99.5}{1.1} & \resultscell{86.3}{20.4} & \resultscell{6.90}{45.18} & \resultscell{94.07}{36.23} \\
+UNIFD* & \resultscell{97.35}{43.63} & \resultscell{86.21}{67.32} & \resultscell{97.94}{3.58} & \resultscell{6.61}{32.22} & \resultscell{93.83}{38.18} \\
+NPR* & \resultscell{58}{93.4} & \resultscell{61.7}{87.5} & \resultscell{98.31}{10.16} & \resultscell{22.28}{46.45} & \resultscell{72.67}{63.69} \\
+DNF & \resultscell{100}{55.8} & \resultscell{99.8}{49.04} & \resultscell{100}{6.26} & \resultscell{0.12}{26.86} & \resultscell{99.93}{37.03} \\
+UNIFD & \resultscell{93.25}{54.33} & \resultscell{89.53}{58.53} & \resultscell{75.63}{53.49} & \resultscell{9.29}{2.70} & \resultscell{86.14}{55.45} \\
+LASTED & \resultscell{92.21}{54.55} & \resultscell{94.49}{54.12} & \resultscell{94.99}{45.93} & \resultscell{1.48}{4.86} & \resultscell{93.90}{51.53} \\
+AIDE & \resultscell{99.35}{77.67} & \resultscell{98.46}{40.1} & \resultscell{99.93}{6.1} & \resultscell{0.74}{35.80} & \resultscell{99.25}{41.29} \\
+LASTED* & \resultscell{90.83}{95.13} & \resultscell{73.18}{52.5} & \resultscell{61.25}{16.12} & \resultscell{14.88}{39.55} & \resultscell{75.09}{54.58} \\
+NPR & \resultscell{97.9}{75.0} & \resultscell{96.9}{48.6} & \resultscell{99.9}{4.8} & \resultscell{1.53}{35.46} & \resultscell{98.23}{42.80} \\
+AIDE* & \resultscell{99.82}{74.4} & \resultscell{88.2}{57.1} & \resultscell{94.01}{18.97} & \resultscell{5.81}{28.36} & \resultscell{94.01}{50.16} \\
+SSP* & \resultscell{99.3}{87.88} & \resultscell{91.56}{59.66} & \resultscell{99.53}{4.21} & \resultscell{4.54}{42.57} & \resultscell{96.80}{50.58} \\
+SSP & \resultscell{97.25}{89.43} & \resultscell{94.98}{61.0} & \resultscell{99.8}{5.85} & \resultscell{2.41}{42.50} & \resultscell{97.34}{52.09} \\
+\rowcolor{blue!10}
+\textbf{Ours} & \resultscell{96.95}{68.12} & \resultscell{91.50}{72.26} & \resultscell{94.23}{51.11} & \resultscell{2.73}{11.21} & \resultscell{94.23}{63.83} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}

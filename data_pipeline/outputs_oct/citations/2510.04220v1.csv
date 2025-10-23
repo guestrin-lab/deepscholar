@@ -1,0 +1,324 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,brown2020language,\cite{brown2020language},Language Models are Few-Shot Learners,http://arxiv.org/abs/2005.14165v4,"Recent work has demonstrated substantial gains on many NLP tasks and
+benchmarks by pre-training on a large corpus of text followed by fine-tuning on
+a specific task. While typically task-agnostic in architecture, this method
+still requires task-specific fine-tuning datasets of thousands or tens of
+thousands of examples. By contrast, humans can generally perform a new language
+task from only a few examples or from simple instructions - something which
+current NLP systems still largely struggle to do. Here we show that scaling up
+language models greatly improves task-agnostic, few-shot performance, sometimes
+even reaching competitiveness with prior state-of-the-art fine-tuning
+approaches. Specifically, we train GPT-3, an autoregressive language model with
+175 billion parameters, 10x more than any previous non-sparse language model,
+and test its performance in the few-shot setting. For all tasks, GPT-3 is
+applied without any gradient updates or fine-tuning, with tasks and few-shot
+demonstrations specified purely via text interaction with the model. GPT-3
+achieves strong performance on many NLP datasets, including translation,
+question-answering, and cloze tasks, as well as several tasks that require
+on-the-fly reasoning or domain adaptation, such as unscrambling words, using a
+novel word in a sentence, or performing 3-digit arithmetic. At the same time,
+we also identify some datasets where GPT-3's few-shot learning still struggles,
+as well as some datasets where GPT-3 faces methodological issues related to
+training on large web corpora. Finally, we find that GPT-3 can generate samples
+of news articles which human evaluators have difficulty distinguishing from
+articles written by humans. We discuss broader societal impacts of this finding
+and of GPT-3 in general.","Brown, Tom and Mann, Benjamin and Ryder, Nick and Subbiah, Melanie and Kaplan, Jared D and Dhariwal, Prafulla and Neelakantan, Arvind and Shyam, Pranav and Sastry, Girish and Askell, Amanda and others",2020,,,,Advances in neural information processing systems
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,touvron2023llama,\cite{touvron2023llama},LLaMA: Open and Efficient Foundation Language Models,http://arxiv.org/abs/2302.13971v1,"We introduce LLaMA, a collection of foundation language models ranging from
+7B to 65B parameters. We train our models on trillions of tokens, and show that
+it is possible to train state-of-the-art models using publicly available
+datasets exclusively, without resorting to proprietary and inaccessible
+datasets. In particular, LLaMA-13B outperforms GPT-3 (175B) on most benchmarks,
+and LLaMA-65B is competitive with the best models, Chinchilla-70B and
+PaLM-540B. We release all our models to the research community.","Touvron, Hugo and Lavril, Thibaut and Izacard, Gautier and Martinet, Xavier and Lachaux, Marie-Anne and Lacroix, Timoth{\'e}e and Rozi{\`e}re, Baptiste and Goyal, Naman and Hambro, Eric and Azhar, Faisal and others",2023,,,,arXiv preprint arXiv:2302.13971
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,esser2021taming,\cite{esser2021taming},Taming Transformers for High-Resolution Image Synthesis,http://arxiv.org/abs/2012.09841v3,"Designed to learn long-range interactions on sequential data, transformers
+continue to show state-of-the-art results on a wide variety of tasks. In
+contrast to CNNs, they contain no inductive bias that prioritizes local
+interactions. This makes them expressive, but also computationally infeasible
+for long sequences, such as high-resolution images. We demonstrate how
+combining the effectiveness of the inductive bias of CNNs with the expressivity
+of transformers enables them to model and thereby synthesize high-resolution
+images. We show how to (i) use CNNs to learn a context-rich vocabulary of image
+constituents, and in turn (ii) utilize transformers to efficiently model their
+composition within high-resolution images. Our approach is readily applied to
+conditional synthesis tasks, where both non-spatial information, such as object
+classes, and spatial information, such as segmentations, can control the
+generated image. In particular, we present the first results on
+semantically-guided synthesis of megapixel images with transformers and obtain
+the state of the art among autoregressive models on class-conditional ImageNet.
+Code and pretrained models can be found at
+https://github.com/CompVis/taming-transformers .","Esser, Patrick and Rombach, Robin and Ommer, Bjorn",2021,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,yu2021vector,\cite{yu2021vector},Vector-quantized Image Modeling with Improved VQGAN,http://arxiv.org/abs/2110.04627v3,"Pretraining language models with next-token prediction on massive text
+corpora has delivered phenomenal zero-shot, few-shot, transfer learning and
+multi-tasking capabilities on both generative and discriminative language
+tasks. Motivated by this success, we explore a Vector-quantized Image Modeling
+(VIM) approach that involves pretraining a Transformer to predict rasterized
+image tokens autoregressively. The discrete image tokens are encoded from a
+learned Vision-Transformer-based VQGAN (ViT-VQGAN). We first propose multiple
+improvements over vanilla VQGAN from architecture to codebook learning,
+yielding better efficiency and reconstruction fidelity. The improved ViT-VQGAN
+further improves vector-quantized image modeling tasks, including
+unconditional, class-conditioned image generation and unsupervised
+representation learning. When trained on ImageNet at \(256\times256\)
+resolution, we achieve Inception Score (IS) of 175.1 and Fr'echet Inception
+Distance (FID) of 4.17, a dramatic improvement over the vanilla VQGAN, which
+obtains 70.6 and 17.04 for IS and FID, respectively. Based on ViT-VQGAN and
+unsupervised pretraining, we further evaluate the pretrained Transformer by
+averaging intermediate features, similar to Image GPT (iGPT). This
+ImageNet-pretrained VIM-L significantly beats iGPT-L on linear-probe accuracy
+from 60.3% to 73.2% for a similar model size. VIM-L also outperforms iGPT-XL
+which is trained with extra web image data and larger model size.","Yu, Jiahui and Li, Xin and Koh, Jing Yu and Zhang, Han and Pang, Ruoming and Qin, James and Ku, Alexander and Xu, Yuanzhong and Baldridge, Jason and Wu, Yonghui",2021,,,,arXiv preprint arXiv:2110.04627
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,dhariwal2021diffusion,\cite{dhariwal2021diffusion},Diffusion Models Beat GANs on Image Synthesis,http://arxiv.org/abs/2105.05233v4,"We show that diffusion models can achieve image sample quality superior to
+the current state-of-the-art generative models. We achieve this on
+unconditional image synthesis by finding a better architecture through a series
+of ablations. For conditional image synthesis, we further improve sample
+quality with classifier guidance: a simple, compute-efficient method for
+trading off diversity for fidelity using gradients from a classifier. We
+achieve an FID of 2.97 on ImageNet 128$\times$128, 4.59 on ImageNet
+256$\times$256, and 7.72 on ImageNet 512$\times$512, and we match BigGAN-deep
+even with as few as 25 forward passes per sample, all while maintaining better
+coverage of the distribution. Finally, we find that classifier guidance
+combines well with upsampling diffusion models, further improving FID to 3.94
+on ImageNet 256$\times$256 and 3.85 on ImageNet 512$\times$512. We release our
+code at https://github.com/openai/guided-diffusion","Dhariwal, Prafulla and Nichol, Alexander",2021,,,,Advances in neural information processing systems
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,peebles2023scalable,\cite{peebles2023scalable},Scalable Diffusion Models with Transformers,http://arxiv.org/abs/2212.09748v2,"We explore a new class of diffusion models based on the transformer
+architecture. We train latent diffusion models of images, replacing the
+commonly-used U-Net backbone with a transformer that operates on latent
+patches. We analyze the scalability of our Diffusion Transformers (DiTs)
+through the lens of forward pass complexity as measured by Gflops. We find that
+DiTs with higher Gflops -- through increased transformer depth/width or
+increased number of input tokens -- consistently have lower FID. In addition to
+possessing good scalability properties, our largest DiT-XL/2 models outperform
+all prior diffusion models on the class-conditional ImageNet 512x512 and
+256x256 benchmarks, achieving a state-of-the-art FID of 2.27 on the latter.","Peebles, William and Xie, Saining",2023,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,sun2024autoregressive,\cite{sun2024autoregressive},"Autoregressive Model Beats Diffusion: Llama for Scalable Image
+  Generation",http://arxiv.org/abs/2406.06525v1,"We introduce LlamaGen, a new family of image generation models that apply
+original ``next-token prediction'' paradigm of large language models to visual
+generation domain. It is an affirmative answer to whether vanilla
+autoregressive models, e.g., Llama, without inductive biases on visual signals
+can achieve state-of-the-art image generation performance if scaling properly.
+We reexamine design spaces of image tokenizers, scalability properties of image
+generation models, and their training data quality. The outcome of this
+exploration consists of: (1) An image tokenizer with downsample ratio of 16,
+reconstruction quality of 0.94 rFID and codebook usage of 97% on ImageNet
+benchmark. (2) A series of class-conditional image generation models ranging
+from 111M to 3.1B parameters, achieving 2.18 FID on ImageNet 256x256
+benchmarks, outperforming the popular diffusion models such as LDM, DiT. (3) A
+text-conditional image generation model with 775M parameters, from two-stage
+training on LAION-COCO and high aesthetics quality images, demonstrating
+competitive performance of visual quality and text alignment. (4) We verify the
+effectiveness of LLM serving frameworks in optimizing the inference speed of
+image generation models and achieve 326% - 414% speedup. We release all models
+and codes to facilitate open-source community of visual generation and
+multimodal foundation models.","Sun, Peize and Jiang, Yi and Chen, Shoufa and Zhang, Shilong and Peng, Bingyue and Luo, Ping and Yuan, Zehuan",2024,,,,arXiv preprint arXiv:2406.06525
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,tian2024visual,\cite{tian2024visual},"Visual Autoregressive Modeling: Scalable Image Generation via Next-Scale
+  Prediction",http://arxiv.org/abs/2404.02905v2,"We present Visual AutoRegressive modeling (VAR), a new generation paradigm
+that redefines the autoregressive learning on images as coarse-to-fine
+""next-scale prediction"" or ""next-resolution prediction"", diverging from the
+standard raster-scan ""next-token prediction"". This simple, intuitive
+methodology allows autoregressive (AR) transformers to learn visual
+distributions fast and generalize well: VAR, for the first time, makes GPT-like
+AR models surpass diffusion transformers in image generation. On ImageNet
+256x256 benchmark, VAR significantly improve AR baseline by improving Frechet
+inception distance (FID) from 18.65 to 1.73, inception score (IS) from 80.4 to
+350.2, with around 20x faster inference speed. It is also empirically verified
+that VAR outperforms the Diffusion Transformer (DiT) in multiple dimensions
+including image quality, inference speed, data efficiency, and scalability.
+Scaling up VAR models exhibits clear power-law scaling laws similar to those
+observed in LLMs, with linear correlation coefficients near -0.998 as solid
+evidence. VAR further showcases zero-shot generalization ability in downstream
+tasks including image in-painting, out-painting, and editing. These results
+suggest VAR has initially emulated the two important properties of LLMs:
+Scaling Laws and zero-shot task generalization. We have released all models and
+codes to promote the exploration of AR/VAR models for visual generation and
+unified learning.","Tian, Keyu and Jiang, Yi and Yuan, Zehuan and Peng, Bingyue and Wang, Liwei",2024,,,,Advances in neural information processing systems
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,zhou2024transfusion,\cite{zhou2024transfusion},"Transfusion: Predict the Next Token and Diffuse Images with One
+  Multi-Modal Model",http://arxiv.org/abs/2408.11039v1,"We introduce Transfusion, a recipe for training a multi-modal model over
+discrete and continuous data. Transfusion combines the language modeling loss
+function (next token prediction) with diffusion to train a single transformer
+over mixed-modality sequences. We pretrain multiple Transfusion models up to 7B
+parameters from scratch on a mixture of text and image data, establishing
+scaling laws with respect to a variety of uni- and cross-modal benchmarks. Our
+experiments show that Transfusion scales significantly better than quantizing
+images and training a language model over discrete image tokens. By introducing
+modality-specific encoding and decoding layers, we can further improve the
+performance of Transfusion models, and even compress each image to just 16
+patches. We further demonstrate that scaling our Transfusion recipe to 7B
+parameters and 2T multi-modal tokens produces a model that can generate images
+and text on a par with similar scale diffusion models and language models,
+reaping the benefits of both worlds.","Zhou, Chunting and Yu, Lili and Babu, Arun and Tirumala, Kushal and Yasunaga, Michihiro and Shamis, Leonid and Kahn, Jacob and Ma, Xuezhe and Zettlemoyer, Luke and Levy, Omer",2024,,,,arXiv preprint arXiv:2408.11039
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,han2024infinity,\cite{han2024infinity},"Infinity: Scaling Bitwise AutoRegressive Modeling for High-Resolution
+  Image Synthesis",http://arxiv.org/abs/2412.04431v2,"We present Infinity, a Bitwise Visual AutoRegressive Modeling capable of
+generating high-resolution, photorealistic images following language
+instruction. Infinity redefines visual autoregressive model under a bitwise
+token prediction framework with an infinite-vocabulary tokenizer & classifier
+and bitwise self-correction mechanism, remarkably improving the generation
+capacity and details. By theoretically scaling the tokenizer vocabulary size to
+infinity and concurrently scaling the transformer size, our method
+significantly unleashes powerful scaling capabilities compared to vanilla VAR.
+Infinity sets a new record for autoregressive text-to-image models,
+outperforming top-tier diffusion models like SD3-Medium and SDXL. Notably,
+Infinity surpasses SD3-Medium by improving the GenEval benchmark score from
+0.62 to 0.73 and the ImageReward benchmark score from 0.87 to 0.96, achieving a
+win rate of 66%. Without extra optimization, Infinity generates a high-quality
+1024x1024 image in 0.8 seconds, making it 2.6x faster than SD3-Medium and
+establishing it as the fastest text-to-image model. Models and codes will be
+released to promote further exploration of Infinity for visual generation and
+unified tokenizer modeling.","Han, Jian and Liu, Jinlai and Jiang, Yi and Yan, Bin and Zhang, Yuqi and Yuan, Zehuan and Peng, Bingyue and Liu, Xiaobing",2024,,,,arXiv preprint arXiv:2412.04431
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,fan2024fluid,\cite{fan2024fluid},"Fluid: Scaling Autoregressive Text-to-image Generative Models with
+  Continuous Tokens",http://arxiv.org/abs/2410.13863v1,"Scaling up autoregressive models in vision has not proven as beneficial as in
+large language models. In this work, we investigate this scaling problem in the
+context of text-to-image generation, focusing on two critical factors: whether
+models use discrete or continuous tokens, and whether tokens are generated in a
+random or fixed raster order using BERT- or GPT-like transformer architectures.
+Our empirical results show that, while all models scale effectively in terms of
+validation loss, their evaluation performance -- measured by FID, GenEval
+score, and visual quality -- follows different trends. Models based on
+continuous tokens achieve significantly better visual quality than those using
+discrete tokens. Furthermore, the generation order and attention mechanisms
+significantly affect the GenEval score: random-order models achieve notably
+better GenEval scores compared to raster-order models. Inspired by these
+findings, we train Fluid, a random-order autoregressive model on continuous
+tokens. Fluid 10.5B model achieves a new state-of-the-art zero-shot FID of 6.16
+on MS-COCO 30K, and 0.69 overall score on the GenEval benchmark. We hope our
+findings and results will encourage future efforts to further bridge the
+scaling gap between vision and language models.","Fan, Lijie and Li, Tianhong and Qin, Siyang and Li, Yuanzhen and Sun, Chen and Rubinstein, Michael and Sun, Deqing and He, Kaiming and Tian, Yonglong",2024,,,,arXiv preprint arXiv:2410.13863
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,zhang2025zipar,\cite{zhang2025zipar},ZipAR: Parallel Autoregressive Image Generation through Spatial Locality,,,Yifei Zhang and Feng Chen and Siyu He and Biao Zhuang,2025,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,cheng2025tensorar,\cite{cheng2025tensorar},TensorAR: Refinement is All You Need in Autoregressive Image Generation,http://arxiv.org/abs/2505.16324v1,"Autoregressive (AR) image generators offer a language-model-friendly approach
+to image generation by predicting discrete image tokens in a causal sequence.
+However, unlike diffusion models, AR models lack a mechanism to refine previous
+predictions, limiting their generation quality. In this paper, we introduce
+TensorAR, a new AR paradigm that reformulates image generation from next-token
+prediction to next-tensor prediction. By generating overlapping windows of
+image patches (tensors) in a sliding fashion, TensorAR enables iterative
+refinement of previously generated content. To prevent information leakage
+during training, we propose a discrete tensor noising scheme, which perturbs
+input tokens via codebook-indexed noise. TensorAR is implemented as a
+plug-and-play module compatible with existing AR models. Extensive experiments
+on LlamaGEN, Open-MAGVIT2, and RAR demonstrate that TensorAR significantly
+improves the generation performance of autoregressive models.","Cheng, Cheng and Song, Lin and Xiao, Yicheng and Chen, Yuxin and Zhang, Xuchong and Sun, Hongbin and Shan, Ying",2025,,,,arXiv preprint arXiv:2505.16324
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,wu2025alitok,\cite{wu2025alitok},AliTok: Towards Sequence Modeling Alignment between Tokenizer and Autoregressive Model,,,"Wu, Pingyu and Zhu, Kai and Liu, Yu and Tang, Longxiang and Yang, Jian and Peng, Yansong and Zhai, Wei and Cao, Yang and Zha, Zheng-Jun",2025,,,,arXiv preprint arXiv:2506.05289
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,hu2025improving,\cite{hu2025improving},"Improving Autoregressive Visual Generation with Cluster-Oriented Token
+  Prediction",http://arxiv.org/abs/2501.00880v2,"Employing LLMs for visual generation has recently become a research focus.
+However, the existing methods primarily transfer the LLM architecture to visual
+generation but rarely investigate the fundamental differences between language
+and vision. This oversight may lead to suboptimal utilization of visual
+generation capabilities within the LLM framework. In this paper, we explore the
+characteristics of visual embedding space under the LLM framework and discover
+that the correlation between visual embeddings can help achieve more stable and
+robust generation results. We present IAR, an Improved AutoRegressive Visual
+Generation Method that enhances the training efficiency and generation quality
+of LLM-based visual generation models. Firstly, we propose a Codebook
+Rearrangement strategy that uses balanced k-means clustering algorithm to
+rearrange the visual codebook into clusters, ensuring high similarity among
+visual features within each cluster. Leveraging the rearranged codebook, we
+propose a Cluster-oriented Cross-entropy Loss that guides the model to
+correctly predict the cluster where the token is located. This approach ensures
+that even if the model predicts the wrong token index, there is a high
+probability the predicted token is located in the correct cluster, which
+significantly enhances the generation quality and robustness. Extensive
+experiments demonstrate that our method consistently enhances the model
+training efficiency and performance from 100M to 1.4B, reducing the training
+time by half while achieving the same FID. Additionally, our approach can be
+applied to various LLM-based visual generation models and adheres to the
+scaling law, providing a promising direction for future research in LLM-based
+visual generation. The code is available at: https://github.com/sjtuplayer/IAR.","Hu, Teng and Zhang, Jiangning and Yi, Ran and Weng, Jieyu and Wang, Yabiao and Zeng, Xianfang and Xue, Zhucun and Ma, Lizhuang",2025,,,,arXiv preprint arXiv:2501.00880
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,guo2025improving,\cite{guo2025improving},"Improving Autoregressive Image Generation through Coarse-to-Fine Token
+  Prediction",http://arxiv.org/abs/2503.16194v1,"Autoregressive models have shown remarkable success in image generation by
+adapting sequential prediction techniques from language modeling. However,
+applying these approaches to images requires discretizing continuous pixel data
+through vector quantization methods like VQ-VAE. To alleviate the quantization
+errors that existed in VQ-VAE, recent works tend to use larger codebooks.
+However, this will accordingly expand vocabulary size, complicating the
+autoregressive modeling task. This paper aims to find a way to enjoy the
+benefits of large codebooks without making autoregressive modeling more
+difficult. Through empirical investigation, we discover that tokens with
+similar codeword representations produce similar effects on the final generated
+image, revealing significant redundancy in large codebooks. Based on this
+insight, we propose to predict tokens from coarse to fine (CTF), realized by
+assigning the same coarse label for similar tokens. Our framework consists of
+two stages: (1) an autoregressive model that sequentially predicts coarse
+labels for each token in the sequence, and (2) an auxiliary model that
+simultaneously predicts fine-grained labels for all tokens conditioned on their
+coarse labels. Experiments on ImageNet demonstrate our method's superior
+performance, achieving an average improvement of 59 points in Inception Score
+compared to baselines. Notably, despite adding an inference step, our approach
+achieves faster sampling speeds.","Guo, Ziyao and Zhang, Kaipeng and Shieh, Michael Qizhe",2025,,,,arXiv preprint arXiv:2503.16194
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,van2017neural,\cite{van2017neural},Neural Discrete Representation Learning,http://arxiv.org/abs/1711.00937v2,"Learning useful representations without supervision remains a key challenge
+in machine learning. In this paper, we propose a simple yet powerful generative
+model that learns such discrete representations. Our model, the Vector
+Quantised-Variational AutoEncoder (VQ-VAE), differs from VAEs in two key ways:
+the encoder network outputs discrete, rather than continuous, codes; and the
+prior is learnt rather than static. In order to learn a discrete latent
+representation, we incorporate ideas from vector quantisation (VQ). Using the
+VQ method allows the model to circumvent issues of ""posterior collapse"" --
+where the latents are ignored when they are paired with a powerful
+autoregressive decoder -- typically observed in the VAE framework. Pairing
+these representations with an autoregressive prior, the model can generate high
+quality images, videos, and speech as well as doing high quality speaker
+conversion and unsupervised learning of phonemes, providing further evidence of
+the utility of the learnt representations.","Van Den Oord, Aaron and Vinyals, Oriol and Kavukcuoglu, Koray",2017,,,,Advances in neural information processing systems
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,huh2023straightening,\cite{huh2023straightening},"Straightening Out the Straight-Through Estimator: Overcoming
+  Optimization Challenges in Vector Quantized Networks",http://arxiv.org/abs/2305.08842v1,"This work examines the challenges of training neural networks using vector
+quantization using straight-through estimation. We find that a primary cause of
+training instability is the discrepancy between the model embedding and the
+code-vector distribution. We identify the factors that contribute to this
+issue, including the codebook gradient sparsity and the asymmetric nature of
+the commitment loss, which leads to misaligned code-vector assignments. We
+propose to address this issue via affine re-parameterization of the code
+vectors. Additionally, we introduce an alternating optimization to reduce the
+gradient error introduced by the straight-through estimation. Moreover, we
+propose an improvement to the commitment loss to ensure better alignment
+between the codebook representation and the model embedding. These optimization
+methods improve the mathematical approximation of the straight-through
+estimation and, ultimately, the model performance. We demonstrate the
+effectiveness of our methods on several common model architectures, such as
+AlexNet, ResNet, and ViT, across various tasks, including image classification
+and generative modeling.","Huh, Minyoung and Cheung, Brian and Agrawal, Pulkit and Isola, Phillip",2023,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,tang2025exploitingdiscriminativecodebookprior,\cite{tang2025exploitingdiscriminativecodebookprior},"Exploiting Discriminative Codebook Prior for Autoregressive Image
+  Generation",http://arxiv.org/abs/2508.10719v1,"Advanced discrete token-based autoregressive image generation systems first
+tokenize images into sequences of token indices with a codebook, and then model
+these sequences in an autoregressive paradigm. While autoregressive generative
+models are trained only on index values, the prior encoded in the codebook,
+which contains rich token similarity information, is not exploited. Recent
+studies have attempted to incorporate this prior by performing naive k-means
+clustering on the tokens, helping to facilitate the training of generative
+models with a reduced codebook. However, we reveal that k-means clustering
+performs poorly in the codebook feature space due to inherent issues, including
+token space disparity and centroid distance inaccuracy. In this work, we
+propose the Discriminative Codebook Prior Extractor (DCPE) as an alternative to
+k-means clustering for more effectively mining and utilizing the token
+similarity information embedded in the codebook. DCPE replaces the commonly
+used centroid-based distance, which is found to be unsuitable and inaccurate
+for the token feature space, with a more reasonable instance-based distance.
+Using an agglomerative merging technique, it further addresses the token space
+disparity issue by avoiding splitting high-density regions and aggregating
+low-density ones. Extensive experiments demonstrate that DCPE is plug-and-play
+and integrates seamlessly with existing codebook prior-based paradigms. With
+the discriminative prior extracted, DCPE accelerates the training of
+autoregressive models by 42% on LlamaGen-B and improves final FID and IS
+performance.",Longxiang Tang and Ruihang Chu and Xiang Wang and Yujin Han and Pingyu Wu and Chunming He and Yingya Zhang and Shiwei Zhang and Jiaya Jia,2025,,https://arxiv.org/abs/2508.10719,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,beyer1999nearest,\cite{beyer1999nearest},When is “nearest neighbor” meaningful?,,,"Beyer, Kevin and Goldstein, Jonathan and Ramakrishnan, Raghu and Shaft, Uri",1999,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,li2023resizing,\cite{li2023resizing},Resizing codebook of vector quantization without retraining,,,"Li, Lei and Liu, Tingting and Wang, Chengyu and Qiu, Minghui and Chen, Cen and Gao, Ming and Zhou, Aoying",2023,,,,Multimedia Systems
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,zheng2023online,\cite{zheng2023online},Online Clustered Codebook,http://arxiv.org/abs/2307.15139v1,"Vector Quantisation (VQ) is experiencing a comeback in machine learning,
+where it is increasingly used in representation learning. However, optimizing
+the codevectors in existing VQ-VAE is not entirely trivial. A problem is
+codebook collapse, where only a small subset of codevectors receive gradients
+useful for their optimisation, whereas a majority of them simply ``dies off''
+and is never updated or used. This limits the effectiveness of VQ for learning
+larger codebooks in complex computer vision tasks that require high-capacity
+representations. In this paper, we present a simple alternative method for
+online codebook learning, Clustering VQ-VAE (CVQ-VAE). Our approach selects
+encoded features as anchors to update the ``dead'' codevectors, while
+optimising the codebooks which are alive via the original loss. This strategy
+brings unused codevectors closer in distribution to the encoded features,
+increasing the likelihood of being chosen and optimized. We extensively
+validate the generalization capability of our quantiser on various datasets,
+tasks (e.g. reconstruction and generation), and architectures (e.g. VQ-VAE,
+VQGAN, LDM). Our CVQ-VAE can be easily integrated into the existing models with
+just a few lines of code.","Zheng, Chuanxia and Vedaldi, Andrea",2023,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,tenenbaum2000global,\cite{tenenbaum2000global},A global geometric framework for nonlinear dimensionality reduction,,,"Tenenbaum, Joshua B and De Silva, Vin and Langford, John C",2000,,,,Science
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,belkin2003laplacian,\cite{belkin2003laplacian},Laplacian eigenmaps for dimensionality reduction and data representation,,,"Belkin, Mikhail and Niyogi, Partha",2003,,,,Neural computation
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,angiulli2018behavior,\cite{angiulli2018behavior},"On the behavior of intrinsically high-dimensional spaces: distances, direct and reverse nearest neighbors, and hubness",,,"Angiulli, Fabrizio",2018,,,,Journal of Machine Learning Research
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,chen2024revisiting,\cite{chen2024revisiting},Revisiting the Manifold Hypothesis in Deep Representational Learning,,,"Chen, Wei and Li, Xiang",2024,,,,
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,lukasova1979hierarchical,\cite{lukasova1979hierarchical},Hierarchical agglomerative clustering procedure,,,"Lukasov{\'a}, Alena",1979,,,,Pattern Recognition
+MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,http://arxiv.org/abs/2510.04220v1,ward1963hierarchical,\cite{ward1963hierarchical},Hierarchical grouping to optimize an objective function,,,"Ward Jr, Joe H",1963,,,,Journal of the American statistical association

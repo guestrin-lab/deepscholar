@@ -1,0 +1,76 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.04220v1,http://arxiv.org/abs/2510.04220v1,2025-10-05 14:23:51+00:00,MASC: Boosting Autoregressive Image Generation with a Manifold-Aligned Semantic Clustering,"Autoregressive (AR) models have shown great promise in image generation, yet
+they face a fundamental inefficiency stemming from their core component: a
+vast, unstructured vocabulary of visual tokens. This conventional approach
+treats tokens as a flat vocabulary, disregarding the intrinsic structure of the
+token embedding space where proximity often correlates with semantic
+similarity. This oversight results in a highly complex prediction task, which
+hinders training efficiency and limits final generation quality. To resolve
+this, we propose Manifold-Aligned Semantic Clustering (MASC), a principled
+framework that constructs a hierarchical semantic tree directly from the
+codebook's intrinsic structure. MASC employs a novel geometry-aware distance
+metric and a density-driven agglomerative construction to model the underlying
+manifold of the token embeddings. By transforming the flat, high-dimensional
+prediction task into a structured, hierarchical one, MASC introduces a
+beneficial inductive bias that significantly simplifies the learning problem
+for the AR model. MASC is designed as a plug-and-play module, and our extensive
+experiments validate its effectiveness: it accelerates training by up to 57%
+and significantly improves generation quality, reducing the FID of LlamaGen-XL
+from 2.87 to 2.58. MASC elevates existing AR frameworks to be highly
+competitive with state-of-the-art methods, establishing that structuring the
+prediction space is as crucial as architectural innovation for scalable
+generative modeling.","\label{sec:related_work}
+
+\textbf{Autoregressive Image Generation.}
+Inspired by Large Language Models (LLMs)~\citep{brown2020language, touvron2023llama}, the field of autoregressive (AR) image generation has rapidly matured. Its core paradigm uses a tokenizer~\citep{esser2021taming, yu2021vector} to convert images into discrete sequences for a Transformer model, an approach that has proven highly scalable and achieved quality competitive with leading diffusion models~\citep{dhariwal2021diffusion, peebles2023scalable}. A wave of architectural innovations has advanced the field, from adapting LLM designs~\citep{sun2024autoregressive} and exploring diverse prediction schemes~\citep{tian2024visual, zhou2024transfusion, han2024infinity, fan2024fluid}, to developing new decoding, refinement, and alignment strategies~\citep{zhang2025zipar, cheng2025tensorar, wu2025alitok}. Despite these significant advancements, a unifying challenge persists: discrete AR models perform prediction over a \textbf{large, flat, and unstructured vocabulary}. This focus on architecture has largely sidestepped the intrinsic inefficiency of the prediction task itself, which motivates our work to explicitly structure the prediction space.
+
+\textbf{Codebook Priors and Manipulation.}
+Recognizing the limitations of a flat vocabulary, pioneering methods have sought to extract a codebook prior to simplify the AR model's training. The predominant approach has been to apply k-means clustering to the token embeddings~\citep{hu2025improving, guo2025improving}. However, the reliance on a naive, geometry-agnostic algorithm like k-means is a fundamental limitation. The visual token space is better modeled as a non-uniform semantic manifold~\citep{van2017neural, huh2023straightening,tang2025exploitingdiscriminativecodebookprior}, where k-means' core assumptions about Euclidean space and meaningful centroids are violated. This mismatch often results in semantically incoherent clusters and a noisy prior~\citep{beyer1999nearest}. Other works on codebook manipulation focus on improving the tokenizer's representational quality~\citep{li2023resizing, zheng2023online} rather than providing a structural prior to ease the AR model's prediction task. This leaves a clear gap for a principled, manifold-aligned prior extraction framework.
+
+\textbf{Manifold Learning and Hierarchical Clustering.}
+Our approach is grounded in two established principles. First, Manifold learning posits that token embeddings lie on a low-dimensional manifold~\citep{tenenbaum2000global, belkin2003laplacian}, where standard Euclidean distance is an unreliable similarity metric, thus necessitating geometry-aware methods~\citep{beyer1999nearest, angiulli2018behavior, chen2024revisiting}. Second, hierarchical clustering~\citep{lukasova1979hierarchical, ward1963hierarchical} is naturally suited for the non-uniform density of such data. MASC operationalizes a synthesis of these principles, employing a geometry-aware metric within a density-driven, hierarchical algorithm. This marks a shift from heuristic clustering to a principled, manifold-aligned construction of the prediction space.","\textbf{Autoregressive Image Generation.}
+Inspired by Large Language Models (LLMs)~\citep{brown2020language, touvron2023llama}, the field of autoregressive (AR) image generation has rapidly matured. Its core paradigm uses a tokenizer~\citep{esser2021taming, yu2021vector} to convert images into discrete sequences for a Transformer model, an approach that has proven highly scalable and achieved quality competitive with leading diffusion models~\citep{dhariwal2021diffusion, peebles2023scalable}. A wave of architectural innovations has advanced the field, from adapting LLM designs~\citep{sun2024autoregressive} and exploring diverse prediction schemes~\citep{tian2024visual, zhou2024transfusion, han2024infinity, fan2024fluid}, to developing new decoding, refinement, and alignment strategies~\citep{zhang2025zipar, cheng2025tensorar, wu2025alitok}. Despite these significant advancements, a unifying challenge persists: discrete AR models perform prediction over a \textbf{large, flat, and unstructured vocabulary}. This focus on architecture has largely sidestepped the intrinsic inefficiency of the prediction task itself, which motivates our work to explicitly structure the prediction space.
+
+\textbf{Codebook Priors and Manipulation.}
+Recognizing the limitations of a flat vocabulary, pioneering methods have sought to extract a codebook prior to simplify the AR model's training. The predominant approach has been to apply k-means clustering to the token embeddings~\citep{hu2025improving, guo2025improving}. However, the reliance on a naive, geometry-agnostic algorithm like k-means is a fundamental limitation. The visual token space is better modeled as a non-uniform semantic manifold~\citep{van2017neural, huh2023straightening,tang2025exploitingdiscriminativecodebookprior}, where k-means' core assumptions about Euclidean space and meaningful centroids are violated. This mismatch often results in semantically incoherent clusters and a noisy prior~\citep{beyer1999nearest}. Other works on codebook manipulation focus on improving the tokenizer's representational quality~\citep{li2023resizing, zheng2023online} rather than providing a structural prior to ease the AR model's prediction task. This leaves a clear gap for a principled, manifold-aligned prior extraction framework.
+
+\textbf{Manifold Learning and Hierarchical Clustering.}
+Our approach is grounded in two established principles. First, Manifold learning posits that token embeddings lie on a low-dimensional manifold~\citep{tenenbaum2000global, belkin2003laplacian}, where standard Euclidean distance is an unreliable similarity metric, thus necessitating geometry-aware methods~\citep{beyer1999nearest, angiulli2018behavior, chen2024revisiting}. Second, hierarchical clustering~\citep{lukasova1979hierarchical, ward1963hierarchical} is naturally suited for the non-uniform density of such data. MASC operationalizes a synthesis of these principles, employing a geometry-aware metric within a density-driven, hierarchical algorithm. This marks a shift from heuristic clustering to a principled, manifold-aligned construction of the prediction space.","In summary, the choice of average-linkage is a deliberate design decision to create a clustering
+hierarchy that is robust, deterministic, and best reflects the underlying semantic structure of the
+codebook manifold by balancing compactness and shape-invariance.
+15
+Figure 5: A conceptual illustration of linkage criteria. (a) Single-linkage may incorrectly merge two
+distinct semantic groups if they are connected by a bridge of a few close points. (b) Average-linkage,
+as used in MASC, considers the overall distribution of points and is more robust, correctly identifying
+distinct clusters.
+Algorithm 1Manifold-Aligned Semantic Clustering (MASC) Construction
+Require:Codebook embeddingsZ={v 1, . . . , v N} ∈RN×d, target number of clustersk.
+Ensure:A mappingM:{1, . . . , N} → {1, . . . , k}from token indices to cluster indices.
+1:▷Initialization
+2:InitializeNactive clusters,C j← {v j}, and their sizes,|C j| ←1, forj= 1, . . . , N.
+3:Pre-compute the fullN×Npairwise Euclidean distance matrixD, whereD st=∥v s−vt∥2.
+4:Set diagonal elementsD ss← ∞to prevent self-merging.
+5:▷Bottom-Up Hierarchical Construction
+6:fori←1toN−kdo
+7:Find the pair of active clusters with the minimum distance:(s∗, t∗)←arg mins,tDst.
+8:▷Update distance matrix efficiently using a weighted average
+9:foreach remaining active clusterC uwhereu̸=s∗, t∗do
+10:D s∗,u←|Cs∗|Ds∗,u+|Ct∗|Dt∗,u
+|Cs∗|+|C t∗|;D u,s∗←D s∗,u
+11:end for
+12:▷Update cluster size and deactivate the merged clusterC t∗
+13:|C s∗| ← |C s∗|+|C t∗|.
+14:Set row and columnt∗ofDto∞.
+15:Keep track that all original tokens from clusterC t∗now belong to clusterC s∗.
+16:end for
+17:▷Final Mapping Construction
+18:The remainingkactive clusters form the final coarse vocabulary.
+19:Assign a unique index from{1, . . . , k}to each of the finalkactive clusters.
+20:Construct the mappingMby assigning each original tokenv ito its final cluster index.
+21:returnThe mappingM.
+C EXTENDEDEXPERIMENTALRESULTS ANDANALYSES
+This section expands upon the experimental results presented in the main paper. We provide detailed
+analyses, including qualitative visualizations of cluster coherence, ablation studies on key hyperpa-
+rameters, and a deeper look into the effects of different decoding strategies. These results collectively
+offer a comprehensive validation of the MASC framework.
+C"

@@ -1,0 +1,68 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,narayanan2019pipedream,\cite{narayanan2019pipedream},{PipeDream}: generalized pipeline parallelism for {DNN} training,,,"Narayanan, D and Harlap, A and Phanishayee, A and Seshadri, V and Devanur, N R. and Ganger, G R. and Gibbons, P B. and Zaharia, M",2019,,https://doi.org/10.1145/3341301.3359646,10.1145/3341301.3359646,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,huang2019gpipe,\cite{huang2019gpipe},G{P}ipe: Efficient training of giant neural networks using pipeline parallelism,,,"Huang, Yanping and Cheng, Youlong and Bapna, Ankur and Firat, Orhan and Chen, Dehao and Chen, Mia and Lee, HyoukJoong and Ngiam, Jiquan and Le, Quoc V and Wu, Yonghui and others",2019,,,,Advances in Neural Information Processing Systems
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,narayanan2021memory,\cite{narayanan2021memory},Memory-Efficient Pipeline-Parallel DNN Training,http://arxiv.org/abs/2006.09503v3,"Many state-of-the-art ML results have been obtained by scaling up the number
+of parameters in existing models. However, parameters and activations for such
+large models often do not fit in the memory of a single accelerator device;
+this means that it is necessary to distribute training of large models over
+multiple accelerators. In this work, we propose PipeDream-2BW, a system that
+supports memory-efficient pipeline parallelism. PipeDream-2BW uses a novel
+pipelining and weight gradient coalescing strategy, combined with the double
+buffering of weights, to ensure high throughput, low memory footprint, and
+weight update semantics similar to data parallelism. In addition, PipeDream-2BW
+automatically partitions the model over the available hardware resources, while
+respecting hardware constraints such as memory capacities of accelerators and
+interconnect topologies. PipeDream-2BW can accelerate the training of large GPT
+and BERT language models by up to 20$\times$ with similar final model accuracy.","Narayanan, Deepak and Phanishayee, Amar and Shi, Kaiyu and Chen, Xie and Zaharia, Matei",2021,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,zhao2021v,\cite{zhao2021v},{v Pipe: A virtualized acceleration system for achieving efficient and scalable pipeline parallel {DNN} training},,,"Zhao, Shixiong and Li, Fanxin and Chen, Xusheng and Guan, Xiuxian and Jiang, Jianyu and Huang, Dong and Qing, Yuhao and Wang, Sen and Wang, Peng and Zhang, Gong and others",2021,,,,IEEE Transactions on Parallel and Distributed Systems
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,kim2023bpipe,\cite{kim2023bpipe},{Bpipe: Memory-balanced pipeline parallelism for training large language models},,,"Kim, Taebum and Kim, Hyoungjoo and Yu, Gyeong-In and Chun, Byung-Gon",2023,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,10.1145/3472456.3472497,\cite{10.1145/3472456.3472497},{Hippie: A Data-Paralleled Pipeline Approach to Improve Memory-Efficiency and Scalability for Large {DNN} Training},,,"Ye, Xiangyu and Lai, Zhiquan and Li, Shengwei and Cai, Lei and Sun, Ding and Qiao, Linbo and Li, Dongsheng",2021,,https://doi.org/10.1145/3472456.3472497,10.1145/3472456.3472497,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,zhang2023pipepar,\cite{zhang2023pipepar},{PipePar}: Enabling fast {DNN} pipeline parallel training in heterogeneous GPU clusters,,,"Zhang, Jinghui and Niu, Geng and Dai, Qiangsheng and Li, Haorui and Wu, Zhihua and Dong, Fang and Wu, Zhiang",2023,,,,Neurocomputing
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,tangkoala,\cite{tangkoala},{Koala: Efficient Pipeline Training through Automated Schedule Searching on Domain-Specific Language},,,"Tang, Yu and Yin, Lujia and Li, Qiao and Zhu, Hongyu and Li, Hengjie and Zhang, Xingcheng and Qiao, Linbo and Li, Dongsheng and Li, Jiaxin",,,,,ACM Transactions on Architecture and Code Optimization
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,liu2025mario,\cite{liu2025mario},{Mario: Near Zero-cost Activation Checkpointing in Pipeline Parallelism},,,"Liu, Weijian and Li, Mingzhen and Tan, Guangming and Jia, Weile",2025,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,lin2025weipipe,\cite{lin2025weipipe},{WeiPipe: Weight Pipeline Parallelism for Communication-Effective Long-Context Large Model Training},,,"Lin, Junfeng and Liu, Ziming and You, Yang and Wang, Jun and Zhang, Weihao and Zhao, Rong",2025,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,liu2024deepseek,\cite{liu2024deepseek},DeepSeek-V3 Technical Report,http://arxiv.org/abs/2412.19437v2,"We present DeepSeek-V3, a strong Mixture-of-Experts (MoE) language model with
+671B total parameters with 37B activated for each token. To achieve efficient
+inference and cost-effective training, DeepSeek-V3 adopts Multi-head Latent
+Attention (MLA) and DeepSeekMoE architectures, which were thoroughly validated
+in DeepSeek-V2. Furthermore, DeepSeek-V3 pioneers an auxiliary-loss-free
+strategy for load balancing and sets a multi-token prediction training
+objective for stronger performance. We pre-train DeepSeek-V3 on 14.8 trillion
+diverse and high-quality tokens, followed by Supervised Fine-Tuning and
+Reinforcement Learning stages to fully harness its capabilities. Comprehensive
+evaluations reveal that DeepSeek-V3 outperforms other open-source models and
+achieves performance comparable to leading closed-source models. Despite its
+excellent performance, DeepSeek-V3 requires only 2.788M H800 GPU hours for its
+full training. In addition, its training process is remarkably stable.
+Throughout the entire training process, we did not experience any irrecoverable
+loss spikes or perform any rollbacks. The model checkpoints are available at
+https://github.com/deepseek-ai/DeepSeek-V3.","Liu, Aixin and Feng, Bei and Xue, Bing and Wang, Bingxuan and Wu, Bochao and Lu, Chengda and Zhao, Chenggang and Deng, Chengqi and Zhang, Chenyu and Ruan, Chong and others",2024,,,,arXiv preprint arXiv:2412.19437
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,sun2025mepipe,\cite{sun2025mepipe},MEPipe: Democratizing LLM Training with Memory-Efficient Slice-Level Pipeline Scheduling on Cost-Effective Accelerators,,,"Sun, Zhenbo and Chen, Shengqi and Wang, Yuanwei and Sha, Jian and Feng, Guanyu and Chen, Wenguang",2025,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,qi2024zero,\cite{qi2024zero},Zero bubble (almost) pipeline parallelism,,,"Qi, Penghui and Wan, Xinyi and Huang, Guangxing and Lin, Min",2024,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,jeon2025graphpipe,\cite{jeon2025graphpipe},Graph{P}ipe: Improving performance and scalability of dnn training with graph pipeline parallelism,,,"Jeon, Byungsoo and Wu, Mengdi and Cao, Shiyi and Kim, Sunghyun and Park, Sunghyun and Aggarwal, Neeraj and Unger, Colin and Arfeen, Daiyaan and Liao, Peiyuan and Miao, Xupeng and others",2025,,,,
+Memory Efficient and Staleness Free Pipeline Parallel DNN Training Framework with Improved Convergence Speed,http://arxiv.org/abs/2509.23241v1,dutta2024timeprest,\cite{dutta2024timeprest},"TiMePReSt: Time and Memory Efficient Pipeline Parallel DNN Training with
+  Removed Staleness",http://arxiv.org/abs/2410.14312v2,"DNN training is time-consuming and requires efficient multi-accelerator
+parallelization, where a single training iteration is split over available
+accelerators. Current approaches often parallelize training using intra-batch
+parallelization. Combining inter-batch and intra-batch pipeline parallelism is
+common to further improve training throughput. In this article, we develop a
+system, called TiMePReSt, that combines them in a novel way which helps to
+better overlap computation and communication, and limits the amount of
+communication. The traditional pipeline-parallel training of DNNs maintains
+similar working principle as sequential or conventional training of DNNs by
+maintaining consistent weight versions in forward and backward passes of a
+mini-batch. Thus, it suffers from high GPU memory footprint during training. In
+this paper, experimental study demonstrates that compromising weight
+consistency doesn't decrease prediction capability of a parallelly trained DNN.
+Moreover, TiMePReSt overcomes GPU memory overhead and achieves zero weight
+staleness. State-of-the-art techniques often become costly in terms of training
+time. In order to address this issue, TiMePReSt introduces a variant of
+intra-batch parallelism that parallelizes the forward pass of each mini-batch
+by decomposing it into smaller micro-batches. A novel synchronization method
+between forward and backward passes reduces training time in TiMePReSt. The
+occurrence of multiple sequence problem and its relation with version
+difference have been observed in TiMePReSt. This paper presents a mathematical
+relationship between the number of micro-batches and worker machines,
+highlighting the variation in version difference. A mathematical expression has
+been developed to calculate version differences for various combinations of
+these two without creating diagrams for all combinations.","Dutta, Ankita and Chaki, Nabendu and De, Rajat K",2024,,,,arXiv preprint arXiv:2410.14312

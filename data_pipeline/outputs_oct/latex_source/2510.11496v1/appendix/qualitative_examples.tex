@@ -1,0 +1,431 @@
+\section{Qualitative Examples}
+\label{app:qualitative_examples}
+In this section, a series of qualitative examples are illustrated for various capabilities of the AndesVL model by presenting responses generated from AndesVL-4B. Fig. \ref{tab:general_case_caption} shows strong image understanding; Fig. \ref{tab:general_case_multiimage_1}, \ref{tab:general_case_multiimage_2} and \ref{tab:general_case_multiimage_3} demonstrate multi-image perception ability; Fig.~\ref{tab:general_case_reasoning_1} shows basic reasoning capability of AndesVL; and Fig.~\ref{tab:case_ocr_1} and \ref{tab:case_ocr_2} illustrate document understanding and OCR capabilities.
+
+Examples demonstrating AndesVL-4B-Thinking’s visual reasoning capability are provided in Fig. \ref{tab:case_math_1}, \ref{tab:case_math_2} and \ref{tab:case_math_3}. Fig. \ref{tab:case_math_1} shows a case of AndesVL-4B-Thinking solving a geometry problem. Fig. \ref{tab:case_math_3} illustrates the model's capability of handling reasoning tasks related to charts.  
+
+UI understanding and reasoning cases of AndesVL-4B are shown in Fig.~\ref{tab:case_ui_1} and \ref{tab:case_ui_2}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{8}*{{\includegraphics[width=3cm]{figure/general_case_1.png}}}
+& \textbf{Prompt}:  详细描述一下这张图片的内容。\\
+& \textbf{Model Response}: \\
+% & 这张图片展示了一只猫的剪影，它坐在一根树枝上，背景是一轮巨大的满\\
+% & 月。月亮呈现出橙黄色，表面有明显的纹理和细节，看起来非常明亮。猫 \\
+% & 的轮廓清晰，它的身体和头部都清晰可见，猫的耳朵竖立，眼睛闭着，似 \\
+% & 乎在享受夜晚的宁静。\\
+% & \\
+% & 图片的背景是黑色的，这使得月亮和猫的剪影更加突出。月亮占据了图片\\
+% & 的大部分空间，而猫和树枝则位于月亮的下方，形成了一种视觉上的平衡\\
+% &。\\
+% & \\
+% & 这张图片可能是在夜晚拍摄的，因为月亮非常明亮，而周围的环境非常黑\\
+% & 暗。这种对比增强了月亮和猫的剪影效果，使得整个画面显得非常神秘和\\
+% & 宁静。\\
+& 这张图片展示了一个夜晚的场景。在图片的右侧，有一只猫，它正坐在一\\
+& 根树枝上，猫的轮廓清晰地映衬在背景的明亮光线中。这只猫的姿势看起\\
+& 来很放松，它正面对着树枝的另一端。背景中，有一个巨大的满月，月光\\
+& 呈现出橙红色调，与夜晚的黑色背景形成鲜明对比。月球的表面细节不是\\
+& 很清晰，但可以看到一些暗淡的云状纹理。整个场景给人一种宁静而神秘\\
+& 的感觉。\\
+\hline
+\end{tabular}
+\caption{A dense captioning example of AndesVL.}
+\label{tab:general_case_caption}
+\end{table}
+
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{9}*{{\includegraphics[width=3cm]{figure/test_case_2.png}}}
+& \textbf{Prompt}: What are these attractions? Please give a short description of the \\
+& attractions and output in Markdown format.\\
+& \textbf{Model Response}: \\
+& - **Left**: The Pyramids of Giza, located in Egypt, are the largest and oldest \\
+& of the three pyramids in the Giza pyramid complex. They were built as tombs \\
+& for the Pharaohs of Ancient Egypt.\\
+& - **Right**: The Great Wall of China is an ancient series of walls and \\
+& fortifications that was built to protect China from invasions. It stretches for \\
+& over 13,000 miles and is one of the most famous landmarks in the world. \\
+% & \# Left Image \\
+% & - Pyramids of Giza \\
+% &   - The largest pyramid is the Great Pyramid of Giza, built for the Pharaoh Khufu. \\ 
+% &   - The pyramids are located in Giza, Egypt. \\
+% & \\
+% & \# Right Image \\
+% & - Great Wall of China \\
+% &   - A series of fortifications made of stone, brick, tamped earth, wood, and other\\
+% & materials. \\
+% &   - It was built across the historical northern  borders of China to protect \\
+% & against invasions. \\
+% &   - The wall stretches over 13,000 miles (21,196 km) from the east to the west.\\
+\hline
+\end{tabular}
+\caption{A knowledge question answering example of AndesVL.}
+\label{tab:general_case_multiimage_1}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{16}*{{\includegraphics[width=3cm]{figure/multi_demo1.png}}}
+& \textbf{Prompt}: Here is one math problem with its ground-truth answer, \\
+& the solving of which requires interpreting the paired diagram. \\
+& Please select the correct paired math diagram from the four given images. \\
+& Question: As shown in the figure, the straight line a is parallel to b, \\
+& then the degree of angle 1 is (). \\
+& \# Choices: \\
+& - A:75° \\
+& - B:105° \\
+& - C:140° \\
+& - D:145° \\
+& Answer the question first and give a brief explanation of your choice. \\
+& \textbf{Model Response}: \\
+& B: 105° \\
+& The given angles are 40° and 35°. Since line a is parallel to line b, \\
+& angle 2 is equal to 40°. Therefore, angle 1 is the sum of angles 2 and 35°, \\
+& which is 40° + 35° = 75°. However, angle 1 is an exterior angle to the \\
+& triangle formed by angles 35° and 40°, so the exterior angle theorem tells\\
+& us that angle 1 is equal to 180° - 75° = 105°. \\
+% & Answer: B \\
+% & Explanation: Since a is parallel to b, angle 1 is equal to angle 2. \\ 
+% & Angle 2 is equal to 180° - 75° = 105°. Therefore, angle 1 is also 105°.\\
+\hline
+\end{tabular}
+\caption{An Example of Multi-Image Understanding of AndesVL.}
+\label{tab:general_case_multiimage_2}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{16}*{{\includegraphics[width=3cm]{figure/multi_demo2.png}}}
+& \textbf{Prompt}: A point is circled on the first image, labeled with REF. \\
+& We change the camera position or lighting and shoot the second image. \\
+& You are given multiple red-circled points on the second image, \\
+& choices of "A, B, C, D" are drawn beside each circle. \\
+& Which point on the second image corresponds to the point in the first image? \\
+& \# Select from the following options first and briefly explain the reason: \\
+& - A: Point A \\
+& - B: Point B \\
+& - C: Point C \\
+& - D: Point D \\
+& \textbf{Model Response}: \\
+& B: Point B  \\
+& The first image's REF point is in the center of the ski lift area, and \\
+& Point B in the second image is in the same relative position, maintaining \\
+& the same perspective and orientation. \\
+% & Explanation: The position of Point B in the second image matches the circled point in \\
+% & the first image closely, suggesting that it is the intended reference point. \\ 
+% & Additionally, the color and texture of the circled point in the first image closely \\
+% & match the characteristics of Point B in the second image.\\
+\hline
+\end{tabular}
+\caption{An Example of Multi-Image Understanding of AndesVL.}
+\label{tab:general_case_multiimage_3}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{8}*{{\includegraphics[width=3cm]{figure/test_case_5.png}}}
+& \textbf{Prompt}: Look at this sequence of three shapes. What shape should come as the\\
+& fourth shape? Explain your reasoning with detailed descriptions of the first shapes. \\
+& \textbf{Model Response}: \\
+& The sequence consists of a triangle, a square, and a pentagon. The fourth shape \\ 
+& in the sequence should be a hexagon. The reasoning is as follows: Each shape in \\
+& the sequence has one more side than the previous shape. The triangle has three  \\
+& sides, the square has four sides, and the pentagon has five sides. Therefore,\\
+& the next shape should have six sides, which is a hexagon.\\
+\hline
+\end{tabular}
+\caption{A visual reasoning example of AndesVL.}
+\label{tab:general_case_reasoning_1}
+\end{table}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{40}*{{\includegraphics[width=3cm]{OCR_case_1.jpeg}}}
+
+& \textbf{Prompt}: Make a detailed summary of the image.\\
+& \textbf{Model Response}: \\
+& This image is an infographic titled "How Brilliant Women Make Business \\
+& Bloom." \\
+&It highlights the growth and impact of women-owned businesses in the United \\
+& States.  Here's a detailed summary of the content:\\
+& 1. Title and Introduction:\\
+& \qquad $\cdot$ The infographic begins with the title "How Brilliant Women Make Business\\
+&  \qquad Bloom." \\
+&  \qquad $\cdot$ A brief introduction mentions that women entrepreneurs are making   \\
+& \qquad significant strides in the marketplace. It states that women-owned businesses  \\
+& \qquad grew by 44\% between  1997 and 2007 ...\\
+& 2. Where Girls Rule:\\
+& \qquad $\cdot$ Women-Owned Businesses by State:\\
+& \qquad \quad $\cdot$ California: 1,000,000 businesses (13.3\% of total) \\
+& \qquad \quad ...\\
+& \qquad $\cdot$ Women-Owned Businesses by Metro Area:\\
+& \qquad \quad $\cdot$ Los Angeles - Long Beach - Santa Ana: 410,000 businesses. \\
+& \qquad \quad ...\\
+& 3. Industries:\\
+& \qquad The infographic lists the top 5 industries with the most women-owned \\
+& \qquad businesses: \\
+& \qquad 1. Other Services (not public administration): 1,300,000 businesses.\\
+& \qquad ... \\
+& 4. Confronting the Challenges:\\
+& ...\\
+& Additional Information:\\
+& \qquad $\cdot$ The infographic also includes a note on financial tips and deals, mentioning  \\ 
+& \qquad CreditDonkey.com, which helps small business owners with "donkey-proof" \\
+& \qquad financial advice.\\
+& \qquad ... \\
+& Visual Elements:\\
+& ...\\
+\\
+& \textbf{Prompt}: Which state has the second highest number of women-owned businesses? \\
+& Answer the question with detailed explanation.\\
+& \textbf{Model Response}: \\
+& According to the text, Texas has 610,000 women-owned businesses, which is the   \\
+& second highest number after California. The text also provides percentages for the    \\
+& number of women-owned businesses in different industries and metro areas.      \\
+& However, the question specifically asks for the state with the second highest number   \\
+& of women-owned businesses, which is Texas.\\
+\hline
+
+\end{tabular}
+\caption{Demonstration of AndesVL’s ability of accurately extracting and comprehensing texts and visual elements from an image, understanding the user’s query, and retrieving the answer from the document. }
+\label{tab:case_ocr_1}
+\end{table}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|l}
+\hline
+\multirow{16}*{{\includegraphics[width=3cm]{OCR_case_2.jpeg}}} \\
+
+& \textbf{Prompt}: Parse the image into a markdown table.\\
+& \textbf{Model Response}: \\
+& ```markdown \\
+& |10\%氯化钾注射液（哈森）（省集采2）(高警示药品)|10ml|1 支|0.1900|0.19| \\
+& |5\%葡萄糖注射液(威高)|250ml|1 袋|4.2600|4.26| \\
+& |一次性使用无菌注射器|1.2mm(1.2*38TWLB)100支*6盒/箱|1 支|0.64|0.64| \\
+& |碳酸氢钠注射液（哈森）（省集采2）|10ml:0.5g|1 支|0.4000|0.40| \\
+& |一次性使用无菌注射器|1.2mm(1.2*38TWLB)100支*6盒/箱|2 支|0.64|1.28| \\
+& |浓氯化钠注射液(高警示药品)|10ml:1g|1 支|0.7040|0.70| \\
+& |静脉输液（2瓶以上每瓶加收）|1|2 次|2.00|2.00| \\
+& |一次性使用输液器(超低密度聚乙烯)|15支*20包/箱|1 支|5.00|5.00| \\
+& |5\%葡萄糖注射液(威高)|250ml|1 袋|4.2600|4.26| \\
+& |静脉输液|4|1 组|4.00|4.00| \\
+& |0.9\%氯化钠注射液(威高)|100ml|1 瓶|4.8900|4.89|\\
+& |注射用奥美拉唑钠(美斯汀)（国集采7）|40mg*1瓶/瓶|1 瓶|0.8400|0.84|\\
+& |浓氯化钠注射液(高警示药品)|10ml:1g|1 支|0.7040|0.70|\\
+& |维生素B6注射液(省集采1)|2ml:0.1g|1 支|0.4300|0.43|\\
+& |合计：|29.59|\\
+& ```\\
+\hline
+\end{tabular}
+\caption{An example of extracting multilingual texts from a long receipt. }
+\label{tab:case_ocr_2}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{30}*{{\includegraphics[width=4cm]{figure/math_1_large.png}}}
+& \textbf{Prompt}: What is the volume of this azure right square pyramid?\\
+& \textbf{Model Response}: \\
+& <think> \\
+& Got it, let's see. The problem is to find the volume of a right square pyramid. \\
+& First, I need to recall the formula for the volume of a pyramid. The volume \( V \) \\
+& of a pyramid is \( \frac{1}{3} \times \text{base area} \times \text{height} \). \\
+& First, identify the base. The base is a square, so the base area is side length \\
+& squared.\\
+& From the diagram, the side length of the square base is 8. The height \( h \) of the \\
+& pyramid is given as 7.\\
+& So, base area \( = 8 \times 8 = 64 \). Then, volume \( = \frac{1}{3} \times 64 \times 7 \).\\
+& ... \\
+& So the answer is 149.33 (or 149.333... but let's present it as a floating number).\\
+& </think> \\
+& To find the volume of a right square pyramid, we use the formula:\\
+& $V = \frac{1}{3} \times \text{base area} \times \text{height}$
+\\
+&  Step 1: Determine the base area \\
+& The base of the pyramid is a square with side length \( 8 \).\\
+& The area of a square is \( \text{side}^2 \), so:\\
+& $\text{Base area} = 8 \times 8 = 64$\\
+&  Step 2: Identify the height of the pyramid\\
+& From the diagram, the height \( h \) of the pyramid is \( 7 \).\\
+&  Step 3: Calculate the volume\\
+& Substitute the base area and height into the volume formula:\\
+& $V = \frac{1}{3} \times 64 \times 7$\\
+& First, multiply \( 64 \times 7 = 448 \). Then divide by 3:\\
+& $V = \frac{448}{3} \approx 149.333\ldots $\\
+&  Step 4: Present the result as a floating number\\
+& Rounding to two decimal places, the volume is \( 149.33 \).\\
+& the answer is 149.33\\
+\hline
+\end{tabular}
+\caption{An example of solving a geometry problem.}
+\label{tab:case_math_1}
+\end{table}
+
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{40}*{{\includegraphics[width=4cm]{figure/math_2_large.png}}}
+& \textbf{Prompt}: What is the value of (e - f) / g?\\
+& \textbf{Model Response}: \\
+& <think> \\
+& Got it, let's try to solve this problem. First, we need to find the value of (e - f)/g.\\
+& Let's list out the given equations: \\
+& 1. e - f = 8 \\
+& 2. g * h = 3 \\
+& 3. e - f + g = 11 \\
+& First, let's find the value of g. From equation 3: e - f + g = 11. We know from \\
+& equation 1 that e - f = 8. So substitute that into equation 3: 8 + g = 11. \\
+& Solving for g, we get g = 11 - 8 = 3. So g is 3.\\
+& Now, we need to find (e - f)/g. We know e - f is 8 (from equation 1) and g is 3. \\
+& So substitute those values in: 8 / 3. Let's compute that. 8 divided by 3 is \\
+& approximately 2.666..., which as a floating number is 2.666666... (repeating). \\
+& But we need to present it as a floating number. Let's check if we need to round or \\
+& keep the exact value. Since it's a math problem, 8/3 is approximately 2.666...,  \\
+& so we can write it as 2.6667 (if we round to four decimal places) or just  \\
+& 2.666666... but let's confirm. \\
+& Wait, let's make sure we didn't miss anything. Let's check the other equations. \\
+& ...\\
+& he problem says "convert the final result as a floating number". So 8 divided by \\
+&  3 is approximately 2.666666..., so we can write it as 2.666666... or 2.6667.  \\
+& Let's go with 2.666666... (six decimal places) or 2.6667 (four decimal places).  \\
+& Let's pick 2.666666... as the floating number.\\
+& </think>\\
+& To solve for the value of (e - f)/g, we analyze the given equations \\
+& step by step:\\
+& Step 1: Find the value of g \\
+& We know: \\
+&  e - f = 8 (from the first equation).\\
+& e - f + g = 11 (from the fourth equation).\\
+& Substitute e - f = 8 into e - f + g = 11:\\
+& 8 + g = 11 \\
+& Solve for g: \\
+& g = 11 - 8 = 3 \\
+& Step 2: Calculate (e - f)/g \\
+&...\\
+& the answer is 2.666666\\
+\hline
+\end{tabular}
+\caption{An example of solving an algebra problem. }
+\label{tab:case_math_2}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|l}
+\hline
+\multirow{40}*{{\includegraphics[width=4cm]{figure/math_3_large.png}}}
+& \textbf{Prompt}: Find the value of $z * (z^*)$.\\
+& \textbf{Model Response}: \\
+& <think> \\
+& Got it, let's try to solve this problem. First, we need to find the value of z \\
+ &multiplied by its complex conjugate $z^*$. \\
+ &Let's start by identifying the complex number z from the graph.\\
+& Looking at the graph, the point (-2, 3i) corresponds to the complex number z = -2 + 3i. \\
+& ... \\
+& Alternatively, using the formula (a + bi)(a - bi) = a² + b². \\
+ &Here, a = -2, b = 3. So a² = (-2)² = 4, b² = 3² = 9.\\
+ &Then 4 + 9 = 13.\\
+ &So the value of $z *(z^*)$ is 13.\\
+& </think>\\
+& To solve for $z * (z^*)$, follow these steps:\\
+& Step 1: Identify the complex number $z$ from the graph\\
+& The graph shows a point at $(-2, 3i)$. \\
+ &For a complex number $z = a + bi$, the real part $a$ is the x - coordinate, \\
+ &and the imaginary part $b$ is the y - coordinate. Thus, $z = -2 + 3i$.\\
+& Step 2: Find the complex conjugate $z^*$\\
+& The complex conjugate of $z = a + bi$ is $z^* = a - bi$.\\
+ & For $z = -2 + 3i$, the conjugate is $z^* = -2 - 3i$.\\
+& Step 3: Calculate $z * z^*$\\
+& For any complex number $z = a + bi$, \\
+ &the product $z * z^*$ simplifies to $a^2 + b^2$ \\
+ &(derived from multiplying $(a + bi)(a - bi)$).\\
+& For $z = -2 + 3i$:\\
+ &- Real part $a = -2$, so $a^2 = (-2)^2 = 4$.\\
+ &- Imaginary part $b = 3$, so $b^2 = 3^2 = 9$.\\
+ &Adding these: $a^2 + b^2 = 4 + 9 = 13$.\\
+&  The answer is $13$.\\ 
+\hline
+\end{tabular}
+\caption{An example of solving an analytic geometry problem. }
+\label{tab:case_math_3}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|l}
+\hline
+\multirow{16}*{{\includegraphics[width=3cm]{figure/ui_demo1.png}}} \\
+
+& \textbf{Prompt}: 当前页面有弹窗吗？\\
+& \textbf{Model Response}: 是的，当前页面有一个弹窗，\\
+& 控件(1741,7204),(8398,7858)是一个文本按钮, 描述为“立即抢购”。\\
+& \textbf{Prompt}: 如何关闭当前页面的弹窗？\\
+& \textbf{Model Response}: 您可以点击控件(4509,8167),(5565,8533)，\\
+& 它是一个图标（Icon），描述为'关闭'。\\
+& \textbf{Prompt}: 我想找平板电脑，应该怎么办？\\
+& \textbf{Model Response}: 您可以点击控件(472,5638),(2000,6450)，\\
+& 它是一个文本按钮，描述为“平板电脑”。\\
+& \textbf{Prompt}: 我想查看我的订单，应该怎么办？\\
+& \textbf{Model Response}: 您可以点击控件(8241,9371),(9250,9988)，\\
+& 它是一个多标签（Multi-Tab），描述为“我的”，进入后可以查看您的订单。\\
+\\
+\\
+\\
+\\
+\hline
+\end{tabular}
+\caption{An example of Mobile UI understanding and reasoning.}
+\label{tab:case_ui_1}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|l}
+\hline
+\multirow{16}*{{\includegraphics[width=3cm]{figure/ui_demo2.png}}} \\
+
+& \textbf{Prompt}: 这是什么页面？\\
+& \textbf{Model Response}: 这是音乐APP中的播放页面，用于控制和播放音乐。\\
+& \textbf{Prompt}: 现在正在播放什么音乐？\\
+& \textbf{Model Response}: 正在播放的音乐是'别怕我伤心'。\\
+& \textbf{Prompt}: 如何切换下一曲？\\
+& \textbf{Model Response}: 点击控件(6376,8752),(7342,9218)。\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\hline
+\end{tabular}
+\caption{An example of Mobile UI understanding and reasoning.}
+\label{tab:case_ui_2}
+\end{table}

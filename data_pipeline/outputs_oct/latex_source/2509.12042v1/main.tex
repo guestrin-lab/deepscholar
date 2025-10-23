@@ -1,0 +1,243 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[preprint]{acl}
+\usepackage{enumitem}
+% Standard package includes
+\usepackage{times}
+\usepackage[percent]{overpic}
+\usepackage{tabularx}
+\usepackage{latexsym}
+\usepackage{siunitx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pmboxdraw} % provides box-drawing glyphs for pdfLaTeX
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{color}
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{graphicx}
+
+
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+% \usepackage[hidelinks]{hyperref}
+% \usepackage[utf8]{inputenc}
+% \usepackage[small]{caption}
+% \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[switch]{lineno}
+\usepackage{xcolor}
+\usepackage{nameref}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{amsthm,amssymb}
+\usepackage{bbm}
+\usepackage{graphicx}
+\usepackage{booktabs} % for professional tables
+\usepackage{multirow}
+\usepackage{acl}
+\usepackage{subfigure}
+\usepackage{array}
+\usepackage{arydshln}
+\usepackage{color}
+\usepackage{stfloats}
+\usepackage{enumitem}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+\usepackage{soul}
+
+\definecolor{AddColor}{RGB}{0,130,0}      % Green
+\definecolor{ClarifyColor}{RGB}{0,60,160} % Blue
+\definecolor{MoveColor}{RGB}{180,90,0}    % Orange
+
+\newcommand{\add}[1]{\sethlcolor{AddColor}\hl{#1}}
+\newcommand{\clarify}[1]{\sethlcolor{ClarifyColor}\hl{#1}}
+\newcommand{\move}[1]{\sethlcolor{MoveColor}\hl{#1}}
+
+%% For Review Response
+\usepackage{xcolor}
+\usepackage[linewidth=1pt]{mdframed}% used for responding to reviewer comments
+\newcommand{\review}[1]{\vspace{12px} \begin{mdframed} \noindent #1 \end{mdframed} \vspace{5px} }
+\newcommand{\rref}[1]{{\color{darkblue}\ref{#1}}}
+\newcommand{\rcite}[1]{{\color{darkblue}\cite{#1}}}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={FinGEAR: Financial Mapping-Guided Enhanced Answer Retrieval},
+    pdfpagemode=UseOutlines,
+    }
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{FinGEAR: Financial Mapping-Guided Enhanced Answer Retrieval}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a separate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+% \author{
+%   Ying Li \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \And
+%   Mengyu Wang \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \And
+%   Miguel de Carvalho \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \And
+%   Sotirios Sabanis \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \And
+%   Tiejun Ma \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+% }
+
+\author{
+\textbf{Ying Li\textsuperscript{1}} \quad
+\textbf{Mengyu Wang\textsuperscript{1}} \quad
+\textbf{Miguel de Carvalho\textsuperscript{1,2}} \\
+\textbf{Sotirios Sabanis\textsuperscript{1,3,4}} \quad
+\textbf{Tiejun Ma\textsuperscript{1,5}}\\
+\textsuperscript{1}The University of Edinburgh, United Kingdom\\
+\textsuperscript{2}University of Aveiro, Portugal\\
+\textsuperscript{3}National Technical University of Athens, Greece\\
+\textsuperscript{4}Archimedes/Athena Research Centre, Greece\\
+\textsuperscript{5}The Artificial Intelligence Applications Institute, The University of Edinburgh, United Kingdom\\
+\texttt{\normalsize \{sunnie.y.li, mengyu.wang, miguel.decarvalho, s.sabanis, tiejun.ma\}@ed.ac.uk}
+}
+
+% \author{Ying Li \\ {\bf Mengyu Wang} \\ {\bf Miguel de Carvalho} \\{\bf Sotirios Sabanis} \\ {\bf Tiejun Ma} \\
+%         Address line \\ ... \\ Address line}
+
+%\author{
+%  \textbf{First Author\textsuperscript{1}},
+%  \textbf{Second Author\textsuperscript{1,2}},
+%  \textbf{Third T. Author\textsuperscript{1}},
+%  \textbf{Fourth Author\textsuperscript{1}},
+%\\
+%  \textbf{Fifth Author\textsuperscript{1,2}},
+%  \textbf{Sixth Author\textsuperscript{1}},
+%  \textbf{Seventh Author\textsuperscript{1}},
+%  \textbf{Eighth Author \textsuperscript{1,2,3,4}},
+%\\
+%  \textbf{Ninth Author\textsuperscript{1}},
+%  \textbf{Tenth Author\textsuperscript{1}},
+%  \textbf{Eleventh E. Author\textsuperscript{1,2,3,4,5}},
+%  \textbf{Twelfth Author\textsuperscript{1}},
+%\\
+%  \textbf{Thirteenth Author\textsuperscript{3}},
+%  \textbf{Fourteenth F. Author\textsuperscript{2,4}},
+%  \textbf{Fifteenth Author\textsuperscript{1}},
+%  \textbf{Sixteenth Author\textsuperscript{1}},
+%\\
+%  \textbf{Seventeenth S. Author\textsuperscript{4,5}},
+%  \textbf{Eighteenth Author\textsuperscript{3,4}},
+%  \textbf{Nineteenth N. Author\textsuperscript{2,5}},
+%  \textbf{Twentieth Author\textsuperscript{1}}
+%\\
+%\\
+%  \textsuperscript{1}Affiliation 1,
+%  \textsuperscript{2}Affiliation 2,
+%  \textsuperscript{3}Affiliation 3,
+%  \textsuperscript{4}Affiliation 4,
+%  \textsuperscript{5}Affiliation 5
+%\\
+%  \small{
+%    \textbf{Correspondence:} \href{mailto:email@domain}{email@domain}
+%  }
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Financial disclosures such as 10-K filings pose challenging retrieval problems because of their length, regulatory section hierarchy, and domain-specific language, which standard retrieval-augmented generation (RAG) models underuse. We present \textbf{FinGEAR} (Financial Mapping-Guided Enhanced Answer Retrieval), a retrieval framework tailored to financial documents. FinGEAR combines a finance lexicon for Item-level guidance (FLAM), dual hierarchical indices for within-Item search (Summary Tree and Question Tree), and a two-stage cross-encoder reranker. This design aligns retrieval with disclosure structure and terminology, enabling fine-grained, query-aware context selection. Evaluated on full 10-Ks with the FinQA dataset, FinGEAR delivers consistent gains in precision, recall, F1, and relevancy, improving F1 by up to 56.7\% over flat RAG, 12.5\% over graph-based RAGs, and 217.6\% over prior tree-based systems, while also increasing downstream answer accuracy with a fixed reader. By jointly modeling section hierarchy and domain lexicon signals, FinGEAR improves retrieval fidelity and provides a practical foundation for high-stakes financial analysis. 
+% \textcolor{red}{Tiejun: it would be better if the abstract can be shortened within 200 words}
+
+\end{abstract}
+
+
+\input{s1_introduction}
+\input{s2_related_work}
+\input{s3_methodology}
+\input{s4_datasets}
+\input{s5_experiments}
+\input{s6_conclusion}
+
+
+\bibliography{ref}
+
+\appendix
+\input{s7_appendix}
+% \input{s8_reviewer_response}
+
+\end{document}

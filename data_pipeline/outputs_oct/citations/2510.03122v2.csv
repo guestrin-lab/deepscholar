@@ -1,0 +1,300 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,3-7,\cite{3-7},Diffusion Models Beat GANs on Image Synthesis,http://arxiv.org/abs/2105.05233v4,"We show that diffusion models can achieve image sample quality superior to
+the current state-of-the-art generative models. We achieve this on
+unconditional image synthesis by finding a better architecture through a series
+of ablations. For conditional image synthesis, we further improve sample
+quality with classifier guidance: a simple, compute-efficient method for
+trading off diversity for fidelity using gradients from a classifier. We
+achieve an FID of 2.97 on ImageNet 128$\times$128, 4.59 on ImageNet
+256$\times$256, and 7.72 on ImageNet 512$\times$512, and we match BigGAN-deep
+even with as few as 25 forward passes per sample, all while maintaining better
+coverage of the distribution. Finally, we find that classifier guidance
+combines well with upsampling diffusion models, further improving FID to 3.94
+on ImageNet 256$\times$256 and 3.85 on ImageNet 512$\times$512. We release our
+code at https://github.com/openai/guided-diffusion","Dhariwal, Prafulla and Nichol, Alexander",2021,,,,Advances in neural information processing systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,mdb8,\cite{mdb8},Stable Diffusion is Unstable,http://arxiv.org/abs/2306.02583v2,"Recently, text-to-image models have been thriving. Despite their powerful
+generative capacity, our research has uncovered a lack of robustness in this
+generation process. Specifically, the introduction of small perturbations to
+the text prompts can result in the blending of primary subjects with other
+categories or their complete disappearance in the generated images. In this
+paper, we propose Auto-attack on Text-to-image Models (ATM), a gradient-based
+approach, to effectively and efficiently generate such perturbations. By
+learning a Gumbel Softmax distribution, we can make the discrete process of
+word replacement or extension continuous, thus ensuring the differentiability
+of the perturbation generation. Once the distribution is learned, ATM can
+sample multiple attack samples simultaneously. These attack samples can prevent
+the generative model from generating the desired subjects without compromising
+image quality. ATM has achieved a 91.1% success rate in short-text attacks and
+an 81.2% success rate in long-text attacks. Further empirical analysis revealed
+four attack patterns based on: 1) the variability in generation speed, 2) the
+similarity of coarse-grained characteristics, 3) the polysemy of words, and 4)
+the positioning of words.","Du, Chengbin and Li, Yanxi and Qiu, Zhongwei and Xu, Chang",2023,,,,Advances in Neural Information Processing Systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,Mdb13,\cite{Mdb13},Denoising Diffusion Probabilistic Models,http://arxiv.org/abs/2006.11239v2,"We present high quality image synthesis results using diffusion probabilistic
+models, a class of latent variable models inspired by considerations from
+nonequilibrium thermodynamics. Our best results are obtained by training on a
+weighted variational bound designed according to a novel connection between
+diffusion probabilistic models and denoising score matching with Langevin
+dynamics, and our models naturally admit a progressive lossy decompression
+scheme that can be interpreted as a generalization of autoregressive decoding.
+On the unconditional CIFAR10 dataset, we obtain an Inception score of 9.46 and
+a state-of-the-art FID score of 3.17. On 256x256 LSUN, we obtain sample quality
+similar to ProgressiveGAN. Our implementation is available at
+https://github.com/hojonathanho/diffusion","Ho, Jonathan and Jain, Ajay and Abbeel, Pieter",2020,,,,Advances in neural information processing systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,14-6,\cite{14-6},"MindDiffuser: Controlled Image Reconstruction from Human Brain Activity
+  with Semantic and Structural Diffusion",http://arxiv.org/abs/2303.14139v1,"Reconstructing visual stimuli from measured functional magnetic resonance
+imaging (fMRI) has been a meaningful and challenging task. Previous studies
+have successfully achieved reconstructions with structures similar to the
+original images, such as the outlines and size of some natural images. However,
+these reconstructions lack explicit semantic information and are difficult to
+discern. In recent years, many studies have utilized multi-modal pre-trained
+models with stronger generative capabilities to reconstruct images that are
+semantically similar to the original ones. However, these images have
+uncontrollable structural information such as position and orientation. To
+address both of the aforementioned issues simultaneously, we propose a
+two-stage image reconstruction model called MindDiffuser, utilizing Stable
+Diffusion. In Stage 1, the VQ-VAE latent representations and the CLIP text
+embeddings decoded from fMRI are put into the image-to-image process of Stable
+Diffusion, which yields a preliminary image that contains semantic and
+structural information. In Stage 2, we utilize the low-level CLIP visual
+features decoded from fMRI as supervisory information, and continually adjust
+the two features in Stage 1 through backpropagation to align the structural
+information. The results of both qualitative and quantitative analyses
+demonstrate that our proposed model has surpassed the current state-of-the-art
+models in terms of reconstruction results on Natural Scenes Dataset (NSD).
+Furthermore, the results of ablation experiments indicate that each component
+of our model is effective for image reconstruction.","Lu, Yizhuo and Du, Changde and Zhou, Qiongyi and Wang, Dianpeng and He, Huiguang",2023,,,,
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,4-9,\cite{4-9},Generative adversarial networks for reconstructing natural images from brain activity,,,"Seeliger, Katja and G{\""u}{\c{c}}l{\""u}, Umut and Ambrogioni, Luca and G{\""u}{\c{c}}l{\""u}t{\""u}rk, Yagmur and Van Gerven, Marcel AJ",2018,,,,NeuroImage
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,11-3-23,\cite{11-3-23},"UniBrain: Unify Image Reconstruction and Captioning All in One Diffusion
+  Model from Human Brain Activity",http://arxiv.org/abs/2308.07428v1,"Image reconstruction and captioning from brain activity evoked by visual
+stimuli allow researchers to further understand the connection between the
+human brain and the visual perception system. While deep generative models have
+recently been employed in this field, reconstructing realistic captions and
+images with both low-level details and high semantic fidelity is still a
+challenging problem. In this work, we propose UniBrain: Unify Image
+Reconstruction and Captioning All in One Diffusion Model from Human Brain
+Activity. For the first time, we unify image reconstruction and captioning from
+visual-evoked functional magnetic resonance imaging (fMRI) through a latent
+diffusion model termed Versatile Diffusion. Specifically, we transform fMRI
+voxels into text and image latent for low-level information and guide the
+backward diffusion process through fMRI-based image and text conditions derived
+from CLIP to generate realistic captions and images. UniBrain outperforms
+current methods both qualitatively and quantitatively in terms of image
+reconstruction and reports image captioning results for the first time on the
+Natural Scenes Dataset (NSD) dataset. Moreover, the ablation experiments and
+functional region-of-interest (ROI) analysis further exhibit the superiority of
+UniBrain and provide comprehensive insight for visual-evoked brain decoding.","Mai, Weijian and Zhang, Zhijun",2023,,,,arXiv preprint arXiv:2308.07428
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,mdb46,\cite{mdb46},"Patch Diffusion: Faster and More Data-Efficient Training of Diffusion
+  Models",http://arxiv.org/abs/2304.12526v2,"Diffusion models are powerful, but they require a lot of time and data to
+train. We propose Patch Diffusion, a generic patch-wise training framework, to
+significantly reduce the training time costs while improving data efficiency,
+which thus helps democratize diffusion model training to broader users. At the
+core of our innovations is a new conditional score function at the patch level,
+where the patch location in the original image is included as additional
+coordinate channels, while the patch size is randomized and diversified
+throughout training to encode the cross-region dependency at multiple scales.
+Sampling with our method is as easy as in the original diffusion model. Through
+Patch Diffusion, we could achieve $\mathbf{\ge 2\times}$ faster training, while
+maintaining comparable or better generation quality. Patch Diffusion meanwhile
+improves the performance of diffusion models trained on relatively small
+datasets, $e.g.$, as few as 5,000 images to train from scratch. We achieve
+outstanding FID scores in line with state-of-the-art benchmarks: 1.77 on
+CelebA-64$\times$64, 1.93 on AFHQv2-Wild-64$\times$64, and 2.72 on
+ImageNet-256$\times$256. We share our code and pre-trained models at
+https://github.com/Zhendong-Wang/Patch-Diffusion.","Wang, Zhendong and Jiang, Yifan and Zheng, Huangjie and Wang, Peihao and He, Pengcheng and Wang, Zhangyang and Chen, Weizhu and Zhou, Mingyuan and others",2023,,,,Advances in neural information processing systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,uni31,\cite{uni31},Laion-400m: Open dataset of clip-filtered 400 million image-text pairs,,,"Schuhmann, Christoph and Vencu, Richard and Beaumont, Romain and Kaczmarczyk, Robert and Mullis, Clayton and Katta, Aarush and Coombes, Theo and Jitsev, Jenia and Komatsuzaki, Aran",2021,,,,arXiv preprint arXiv:2111.02114
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,uni4,\cite{uni4},Coyo-700m: Image-text pair dataset,,,"Byeon, Minwoo and Park, Beomhee and Kim, Haecheon and Lee, Sungjun and Baek, Woonhyuk and Kim, Saehoon",2022,,,,
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,uni23-clip,\cite{uni23-clip},Learning Transferable Visual Models From Natural Language Supervision,http://arxiv.org/abs/2103.00020v1,"State-of-the-art computer vision systems are trained to predict a fixed set
+of predetermined object categories. This restricted form of supervision limits
+their generality and usability since additional labeled data is needed to
+specify any other visual concept. Learning directly from raw text about images
+is a promising alternative which leverages a much broader source of
+supervision. We demonstrate that the simple pre-training task of predicting
+which caption goes with which image is an efficient and scalable way to learn
+SOTA image representations from scratch on a dataset of 400 million (image,
+text) pairs collected from the internet. After pre-training, natural language
+is used to reference learned visual concepts (or describe new ones) enabling
+zero-shot transfer of the model to downstream tasks. We study the performance
+of this approach by benchmarking on over 30 different existing computer vision
+datasets, spanning tasks such as OCR, action recognition in videos,
+geo-localization, and many types of fine-grained object classification. The
+model transfers non-trivially to most tasks and is often competitive with a
+fully supervised baseline without the need for any dataset specific training.
+For instance, we match the accuracy of the original ResNet-50 on ImageNet
+zero-shot without needing to use any of the 1.28 million training examples it
+was trained on. We release our code and pre-trained model weights at
+https://github.com/OpenAI/CLIP.","Radford, Alec and Kim, Jong Wook and Hallacy, Chris and Ramesh, Aditya and Goh, Gabriel and Agarwal, Sandhini and Sastry, Girish and Askell, Amanda and Mishkin, Pamela and Clark, Jack and others",2021,,,,
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,11-3-08,\cite{11-3-08},Visual image reconstruction from human brain activity using a combination of multiscale local image decoders,,,"Miyawaki, Yoichi and Uchida, Hajime and Yamashita, Okito and Sato, Masa-aki and Morito, Yusuke and Tanabe, Hiroki C and Sadato, Norihiro and Kamitani, Yukiyasu",2008,,,,Neuron
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,11-2,\cite{11-2},Natural images are reliably represented by sparse and variable populations of neurons in visual cortex,,,"Yoshida, Takashi and Ohki, Kenichi",2020,,,,Nature communications
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,11-8,\cite{11-8},"Generic decoding of seen and imagined objects using hierarchical visual
+  features",http://arxiv.org/abs/1510.06479v3,"Object recognition is a key function in both human and machine vision. While
+recent studies have achieved fMRI decoding of seen and imagined contents, the
+prediction is limited to training examples. We present a decoding approach for
+arbitrary objects, using the machine vision principle that an object category
+is represented by a set of features rendered invariant through hierarchical
+processing. We show that visual features including those from a convolutional
+neural network can be predicted from fMRI patterns and that greater accuracy is
+achieved for low/high-level features with lower/higher-level visual areas,
+respectively. Predicted features are used to identify seen/imagined object
+categories (extending beyond decoder training) from a set of computed features
+for numerous object images. Furthermore, the decoding of imagined objects
+reveals progressive recruitment of higher to lower visual representations. Our
+results demonstrate a homology between human and machine vision and its utility
+for brain-based information retrieval.","Horikawa, Tomoyasu and Kamitani, Yukiyasu",2017,,,,Nature communications
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,10-4,\cite{10-4},Neural decoding with hierarchical generative models,,,"Van Gerven, Marcel AJ and De Lange, Floris P and Heskes, Tom",2010,,,,Neural computation
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,10-5-effenet,\cite{10-5-effenet},"Reconstructing Faces from fMRI Patterns using Deep Generative Neural
+  Networks",http://arxiv.org/abs/1810.03856v2,"While objects from different categories can be reliably decoded from fMRI
+brain response patterns, it has proved more difficult to distinguish visually
+similar inputs, such as different instances of the same category. Here, we
+apply a recently developed deep learning system to the reconstruction of face
+images from human fMRI patterns. We trained a variational auto-encoder (VAE)
+neural network using a GAN (Generative Adversarial Network) unsupervised
+training procedure over a large dataset of celebrity faces. The auto-encoder
+latent space provides a meaningful, topologically organized 1024-dimensional
+description of each image. We then presented several thousand face images to
+human subjects, and learned a simple linear mapping between the multi-voxel
+fMRI activation patterns and the 1024 latent dimensions. Finally, we applied
+this mapping to novel test images, turning the obtained fMRI patterns into VAE
+latent codes, and ultimately the codes into face reconstructions. Qualitative
+and quantitative evaluation of the reconstructions revealed robust pairwise
+decoding (>95% correct), and a strong improvement relative to a baseline model
+(PCA decomposition). Furthermore, this brain decoding model can readily be
+recycled to probe human face perception along many dimensions of interest; for
+example, the technique allowed for accurate gender classification, and even to
+decode which face was imagined, rather than seen by the subject. We hypothesize
+that the latent space of modern deep learning generative models could serve as
+a valid approximation for human brain representations.","VanRullen, Rufin and Reddy, Leila",2019,,,,Communications biology
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,10-6,\cite{10-6},Deep image reconstruction from human brain activity,,,"Shen, Guohua and Horikawa, Tomoyasu and Majima, Kei and Kamitani, Yukiyasu",2019,,,,PLoS computational biology
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,10-7,\cite{10-7},"From voxels to pixels and back: Self-supervision in natural-image
+  reconstruction from fMRI",http://arxiv.org/abs/1907.02431v1,"Reconstructing observed images from fMRI brain recordings is challenging.
+Unfortunately, acquiring sufficient ""labeled"" pairs of {Image, fMRI} (i.e.,
+images with their corresponding fMRI responses) to span the huge space of
+natural images is prohibitive for many reasons. We present a novel approach
+which, in addition to the scarce labeled data (training pairs), allows to train
+fMRI-to-image reconstruction networks also on ""unlabeled"" data (i.e., images
+without fMRI recording, and fMRI recording without images). The proposed model
+utilizes both an Encoder network (image-to-fMRI) and a Decoder network
+(fMRI-to-image). Concatenating these two networks back-to-back (Encoder-Decoder
+& Decoder-Encoder) allows augmenting the training with both types of unlabeled
+data. Importantly, it allows training on the unlabeled test-fMRI data. This
+self-supervision adapts the reconstruction network to the new input test-data,
+despite its deviation from the statistics of the scarce training data.","Beliy, Roman and Gaziv, Guy and Hoogi, Assaf and Strappini, Francesca and Golan, Tal and Irani, Michal",2019,,,,Advances in Neural Information Processing Systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,10-8,\cite{10-8},Generative adversarial networks conditioned on brain activity reconstruct seen images,,,"St-Yves, Ghislain and Naselaris, Thomas",2018,,,,
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,7-12,\cite{7-12},Reconstructing seen image from brain activity by visually-guided cognitive representation and adversarial learning,,,"Ren, Ziqi and Li, Jie and Xue, Xuetong and Li, Xin and Yang, Fan and Jiao, Zhicheng and Gao, Xinbo",2021,,,,NeuroImage
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,2-7,\cite{2-7},Mind Reader: Reconstructing complex images from brain activities,http://arxiv.org/abs/2210.01769v1,"Understanding how the brain encodes external stimuli and how these stimuli
+can be decoded from the measured brain activities are long-standing and
+challenging questions in neuroscience. In this paper, we focus on
+reconstructing the complex image stimuli from fMRI (functional magnetic
+resonance imaging) signals. Unlike previous works that reconstruct images with
+single objects or simple shapes, our work aims to reconstruct image stimuli
+that are rich in semantics, closer to everyday scenes, and can reveal more
+perspectives. However, data scarcity of fMRI datasets is the main obstacle to
+applying state-of-the-art deep learning models to this problem. We find that
+incorporating an additional text modality is beneficial for the reconstruction
+problem compared to directly translating brain signals to images. Therefore,
+the modalities involved in our method are: (i) voxel-level fMRI signals, (ii)
+observed images that trigger the brain signals, and (iii) textual description
+of the images. To further address data scarcity, we leverage an aligned
+vision-language latent space pre-trained on massive datasets. Instead of
+training models from scratch to find a latent space shared by the three
+modalities, we encode fMRI signals into this pre-aligned latent space. Then,
+conditioned on embeddings in this space, we reconstruct images with a
+generative model. The reconstructed images from our pipeline balance both
+naturalness and fidelity: they are photo-realistic and capture the ground truth
+image contents well.","Lin, Sikun and Sprague, Thomas and Singh, Ambuj K",2022,,,,Advances in Neural Information Processing Systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,3-27,\cite{3-27},Palette: Image-to-Image Diffusion Models,http://arxiv.org/abs/2111.05826v2,"This paper develops a unified framework for image-to-image translation based
+on conditional diffusion models and evaluates this framework on four
+challenging image-to-image translation tasks, namely colorization, inpainting,
+uncropping, and JPEG restoration. Our simple implementation of image-to-image
+diffusion models outperforms strong GAN and regression baselines on all tasks,
+without task-specific hyper-parameter tuning, architecture customization, or
+any auxiliary loss or sophisticated new techniques needed. We uncover the
+impact of an L2 vs. L1 loss in the denoising diffusion objective on sample
+diversity, and demonstrate the importance of self-attention in the neural
+architecture through empirical studies. Importantly, we advocate a unified
+evaluation protocol based on ImageNet, with human evaluation and sample quality
+scores (FID, Inception Score, Classification Accuracy of a pre-trained
+ResNet-50, and Perceptual Distance against original images). We expect this
+standardized evaluation protocol to play a role in advancing image-to-image
+translation research. Finally, we show that a generalist, multi-task diffusion
+model performs as well or better than task-specific specialist counterparts.
+Check out https://diffusion-palette.github.io for an overview of the results.","Saharia, Chitwan and Chan, William and Chang, Huiwen and Lee, Chris and Ho, Jonathan and Salimans, Tim and Fleet, David and Norouzi, Mohammad",2022,,,,
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,3-28,\cite{3-28},"Photorealistic Text-to-Image Diffusion Models with Deep Language
+  Understanding",http://arxiv.org/abs/2205.11487v1,"We present Imagen, a text-to-image diffusion model with an unprecedented
+degree of photorealism and a deep level of language understanding. Imagen
+builds on the power of large transformer language models in understanding text
+and hinges on the strength of diffusion models in high-fidelity image
+generation. Our key discovery is that generic large language models (e.g. T5),
+pretrained on text-only corpora, are surprisingly effective at encoding text
+for image synthesis: increasing the size of the language model in Imagen boosts
+both sample fidelity and image-text alignment much more than increasing the
+size of the image diffusion model. Imagen achieves a new state-of-the-art FID
+score of 7.27 on the COCO dataset, without ever training on COCO, and human
+raters find Imagen samples to be on par with the COCO data itself in image-text
+alignment. To assess text-to-image models in greater depth, we introduce
+DrawBench, a comprehensive and challenging benchmark for text-to-image models.
+With DrawBench, we compare Imagen with recent methods including VQ-GAN+CLIP,
+Latent Diffusion Models, and DALL-E 2, and find that human raters prefer Imagen
+over other models in side-by-side comparisons, both in terms of sample quality
+and image-text alignment. See https://imagen.research.google/ for an overview
+of the results.","Saharia, Chitwan and Chan, William and Saxena, Saurabh and Li, Lala and Whang, Jay and Denton, Emily L and Ghasemipour, Kamyar and Gontijo Lopes, Raphael and Karagol Ayan, Burcu and Salimans, Tim and others",2022,,,,Advances in neural information processing systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,3-29,\cite{3-29},Image Super-Resolution via Iterative Refinement,http://arxiv.org/abs/2104.07636v2,"We present SR3, an approach to image Super-Resolution via Repeated
+Refinement. SR3 adapts denoising diffusion probabilistic models to conditional
+image generation and performs super-resolution through a stochastic denoising
+process. Inference starts with pure Gaussian noise and iteratively refines the
+noisy output using a U-Net model trained on denoising at various noise levels.
+SR3 exhibits strong performance on super-resolution tasks at different
+magnification factors, on faces and natural images. We conduct human evaluation
+on a standard 8X face super-resolution task on CelebA-HQ, comparing with SOTA
+GAN methods. SR3 achieves a fool rate close to 50%, suggesting photo-realistic
+outputs, while GANs do not exceed a fool rate of 34%. We further show the
+effectiveness of SR3 in cascaded image generation, where generative models are
+chained with super-resolution models, yielding a competitive FID score of 11.3
+on ImageNet.","Saharia, Chitwan and Ho, Jonathan and Chan, William and Salimans, Tim and Fleet, David J and Norouzi, Mohammad",2022,,,,IEEE transactions on pattern analysis and machine intelligence
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,9-1,\cite{9-1},High-resolution image reconstruction with latent diffusion models from human brain activity,,,"Takagi, Yu and Nishimoto, Shinji",2023,,,,
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,12-4,\cite{12-4},"Reconstructing the Mind's Eye: fMRI-to-Image with Contrastive Learning
+  and Diffusion Priors",http://arxiv.org/abs/2305.18274v2,"We present MindEye, a novel fMRI-to-image approach to retrieve and
+reconstruct viewed images from brain activity. Our model comprises two parallel
+submodules that are specialized for retrieval (using contrastive learning) and
+reconstruction (using a diffusion prior). MindEye can map fMRI brain activity
+to any high dimensional multimodal latent space, like CLIP image space,
+enabling image reconstruction using generative models that accept embeddings
+from this latent space. We comprehensively compare our approach with other
+existing methods, using both qualitative side-by-side comparisons and
+quantitative evaluations, and show that MindEye achieves state-of-the-art
+performance in both reconstruction and retrieval tasks. In particular, MindEye
+can retrieve the exact original image even among highly similar candidates
+indicating that its brain embeddings retain fine-grained image-specific
+information. This allows us to accurately retrieve images even from large-scale
+databases like LAION-5B. We demonstrate through ablations that MindEye's
+performance improvements over previous methods result from specialized
+submodules for retrieval and reconstruction, improved training techniques, and
+training models with orders of magnitude more parameters. Furthermore, we show
+that MindEye can better preserve low-level image features in the
+reconstructions by using img2img, with outputs from a separate autoencoder. All
+code is available on GitHub.","Scotti, Paul and Banerjee, Atmadeep and Goode, Jimmie and Shabalin, Stepan and Nguyen, Alex and Dempster, Aidan and Verlinde, Nathalie and Yundler, Elad and Weisberg, David and Norman, Kenneth and others",2023,,,,Advances in Neural Information Processing Systems
+HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,http://arxiv.org/abs/2510.03122v2,13-5,\cite{13-5},MindBridge: A Cross-Subject Brain Decoding Framework,http://arxiv.org/abs/2404.07850v1,"Brain decoding, a pivotal field in neuroscience, aims to reconstruct stimuli
+from acquired brain signals, primarily utilizing functional magnetic resonance
+imaging (fMRI). Currently, brain decoding is confined to a
+per-subject-per-model paradigm, limiting its applicability to the same
+individual for whom the decoding model is trained. This constraint stems from
+three key challenges: 1) the inherent variability in input dimensions across
+subjects due to differences in brain size; 2) the unique intrinsic neural
+patterns, influencing how different individuals perceive and process sensory
+information; 3) limited data availability for new subjects in real-world
+scenarios hampers the performance of decoding models. In this paper, we present
+a novel approach, MindBridge, that achieves cross-subject brain decoding by
+employing only one model. Our proposed framework establishes a generic paradigm
+capable of addressing these challenges by introducing biological-inspired
+aggregation function and novel cyclic fMRI reconstruction mechanism for
+subject-invariant representation learning. Notably, by cycle reconstruction of
+fMRI, MindBridge can enable novel fMRI synthesis, which also can serve as
+pseudo data augmentation. Within the framework, we also devise a novel
+reset-tuning method for adapting a pretrained model to a new subject.
+Experimental results demonstrate MindBridge's ability to reconstruct images for
+multiple subjects, which is competitive with dedicated subject-specific models.
+Furthermore, with limited data for a new subject, we achieve a high level of
+decoding accuracy, surpassing that of subject-specific models. This advancement
+in cross-subject brain decoding suggests promising directions for wider
+applications in neuroscience and indicates potential for more efficient
+utilization of limited fMRI data in real-world scenarios. Project page:
+https://littlepure2333.github.io/MindBridge","Wang, Shizun and Liu, Songhua and Tan, Zhenxiong and Wang, Xinchao",2024,,,,

@@ -1,0 +1,73 @@
+\begin{table*}[t!]
+\centering
+\renewcommand{\arraystretch}{0.95}
+\setlength\tabcolsep{3pt}
+\newcommand{\VMME}{\makecell{Video-MME\\(wo / w sub)}}
+\newcommand{\MVB}{\makecell{MVBench}}
+\newcommand{\MMBV}{\makecell{MMBench-Video\\(val)}}
+\newcommand{\MLVU}{\makecell{MLVU\\(M-Avg)}}
+\newcommand{\LVB}{\makecell{LongVideoBench\\(val total)}}
+\newcommand{\CG}{\makecell{CG-Bench\\(long / clue acc.)}}
+\newcommand{\lsp}{--\ \ \ \ \ \ }
+\newcommand{\rsp}{\ \ \ \ \ --~}
+{\fontsize{8}{10}\selectfont 
+\begin{tabular}{l|cccccc|c}
+Model Name                                 &    \VMME    & \MVB & \MMBV & \MLVU & \LVB  & \CG         & Overall \\
+\hline
+InternVL2-1B~\cite{chen2024far}            & 42.9 / 45.4 & 57.5 & 1.14  & 51.6  & 43.3  & --          & --      \\
+InternVL2.5-1B~\cite{chen2024expanding}    & 50.3 / 52.3 & 64.3 & 1.36  & 57.3  & 47.9  & --          & --      \\
+\rowcolor{gray!15}
+InternVL3-1B                               & 51.0 / 53.0 & 63.1 &  1.3  & 53.0  & 48.1  & 24.8 / 39.1 & 46.9    \\
+Qwen2-VL-2B~\cite{wang2024qwen2vl}         & 55.6 / 60.4 & 63.2 & --    & --    & --    & --          & --      \\
+Qwen2.5-VL-3B~\cite{bai2025qwen2_5}        & 61.5 / 67.6 & 67.0 & 1.63  & 68.2  & 43.3  & --          & --      \\
+InternVL2-2B~\cite{chen2024far}            & 46.2 / 49.1 & 60.2 & 1.30  & 54.3  & 46.0  & --          & --      \\
+InternVL2.5-2B~\cite{chen2024expanding}    & 51.9 / 54.1 & 68.8 & 1.44  & 61.4  & 52.0  & --          & --      \\
+\rowcolor{gray!15}
+InternVL3-2B                               & 58.9 / 61.4 & 70.4 & 1.42  & 64.2  & 55.4  & 30.8 / 50.7 & 54.9    \\
+\hline
+VideoChat2-HD~\cite{li2023videochat}       & 45.3 / 55.7 & 62.3 & 1.22  & 47.9  & --    & --          & --      \\
+MiniCPM-V-2.6~\cite{yao2024minicpm}        & 60.9 / 63.6 & --   & 1.70  & --    & 54.9  & --          & --      \\
+LLaVA-OneVision-7B~\cite{li2024llavaov}    & 58.2 / \lsp & 56.7 & --    & --    & --    & --          & --      \\
+Qwen2-VL-7B~\cite{wang2024qwen2vl}         & 63.3 / 69.0 & 67.0 & 1.44  & --    & 55.6  & --          & --      \\
+Qwen2.5-VL-7B~\cite{bai2025qwen2_5}        & 65.1 / 71.6 & 69.6 & 1.79  & 70.2  & 45.3  & --          & --      \\
+InternVL2-8B~\cite{chen2024far}            & 56.3 / 59.3 & 65.8 & 1.57  & 64.0  & 54.6  & --          & --      \\
+InternVL2.5-8B~\cite{chen2024expanding}    & 64.2 / 66.9 & 72.0 & 1.68  & 68.9  & 60.0  & --          & --      \\
+\rowcolor{gray!15}
+InternVL3-8B                               & 66.3 / 68.9 & 75.4 & 1.69  & 71.4  & 58.8  & 38.6 / 55.2 & 61.4    \\
+\rowcolor{gray!15}
+InternVL3-9B                               & 66.7 / 68.9 & 74.3 & 1.69  & 70.8  & 62.5  & 41.1 / 58.0 & 62.3    \\
+\rowcolor{gray!15}
+InternVL3-14B                              & 70.4 / 73.0 & 76.6 & 1.73  & 73.3  & 63.9  & 44.1 / 60.6 & 64.9    \\
+\hline
+InternVL2-26B~\cite{chen2024far}           & 57.0 / 60.2 & 67.5 & 1.67  & 64.2  & 56.1  & --          & --      \\
+InternVL2.5-26B                            & 66.9 / 69.2 & 75.2 & 1.86  & 72.3  & 59.9  & --          & --      \\
+Oryx-1.5-32B~\cite{liu2024oryx}            & 67.3 / 74.9 & 70.1 & 1.52  & 72.3  & --    & --          & --      \\  
+Qwen2.5-VL-32B~\cite{bai2025qwen2_5}       & 70.5 / 77.9 & --   & 1.93  & --    & --    & --          & --      \\
+VILA-1.5-40B~\cite{lin2024vila}            & 60.1 / 61.1 & --   & 1.61  & 56.7  & --    & --          & --      \\
+InternVL2-40B~\cite{chen2024far}           & 66.1 / 68.6 & 72.0 & 1.78  & 71.0  & 60.6  & --          & --      \\
+InternVL2.5-38B~\cite{chen2024expanding}   & 70.7 / 73.1 & 74.4 & 1.82  & 75.3  & 63.3  & --          & --      \\
+\rowcolor{gray!15}
+InternVL3-38B                              & 72.7 / 75.0 & 76.9 & 1.81  & 77.8  & 67.3  & 46.9 / 62.8 & 67.5    \\
+\hline
+GPT-4V/4T~\cite{openai2023gpt4}            & 59.9 / 63.3 & 43.7 & 1.53  & 49.2  & 59.1  & --          & --      \\
+GPT-4o-20240513~\cite{gpt4v}               & 71.9 / 77.2 & --   & 1.63  & 64.6  & 66.7  & --          & --      \\
+GPT-4o-20240806~\cite{gpt4v}               & --          & --   & 1.87  & --    & --    & 41.8 / 58.3 & --      \\
+Gemini-1.5-Pro~\cite{reid2024gemini1_5}    & 75.0 / 81.3 & --   & 1.30  & --    & 64.0  & 40.1 / 56.4 & --      \\
+VideoLLaMA2-72B~\cite{cheng2024videollama2}& 61.4 / 63.1 & 62.0 & --    & --    & --    & --          & --      \\
+LLaVA-OneVision-72B~\cite{li2024llavaov}   & 66.2 / 69.5 & 59.4 & --    & 66.4  & 61.3  & --          & --      \\
+Qwen2-VL-72B~\cite{wang2024qwen2vl}        & 71.2 / 77.8 & 73.6 & 1.70  & --    & --    & 41.3 / 56.2 & --      \\
+Qwen2.5-VL-72B~\cite{bai2025qwen2_5}       & 73.3 / 79.1 & 70.4 & 2.02  & 74.6  & 60.7  & --          & --      \\
+InternVL2-Llama3-76B~\cite{chen2024far}    & 64.7 / 67.8 & 69.6 & 1.71  & 69.9  & 61.1  & --          & --      \\
+InternVL2.5-78B~\cite{chen2024expanding}   & 72.1 / 74.0 & 76.4 & 1.97  & 75.7  & 63.6  & 42.2 / 58.5 & 66.0    \\ 
+\rowcolor{gray!15}
+InternVL3-78B                              & 72.7 / 75.7 & 78.7 & 1.81  & 79.5  & 65.7  & 48.4 / 65.3 & 68.3    \\ 
+% \rowcolor{gray!15}
+% InternVL2.5-Pro                          &      /      &      &       &       &       &             &         \\  
+\end{tabular}
+}
+\caption{\textbf{Comparison of video understanding performance.}
+We evaluate InternVL's video understanding capabilities across 6 benchmarks.
+For Video-MME~\cite{fu2024video}, MMBench-Video~\cite{fang2024mmbench}, MLVU~\cite{MLVU}, and LongVideoBench~\cite{wu2024longvideobench}, we test with four different settings: 16, 32, 48, and 64 frames, and report the maximum results. For MVBench~\cite{li2024mvbench}, we conduct testing using 16 frames. For CG-Bench~\cite{anonymous2024cgbench}, we use 32 frames.
+}
+\label{tab:benchmark_video}
+\end{table*}

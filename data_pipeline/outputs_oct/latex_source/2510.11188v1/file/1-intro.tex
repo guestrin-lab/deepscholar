@@ -1,0 +1,41 @@
+ \section{Introduction}
+
+Proteins are indispensable molecular machines of life, driving key functions such as maintaining cell structure and enabling cell communication.
+% 
+Their three-dimensional architectures, catalytic activities, interaction networks, and evolutionary trajectories are all encoded within a linear sequence composed of twenty amino-acid characters~\cite{kitadai2018origins,xiao2025protein}. 
+%
+Therefore, the core of understanding protein function lies in accurately ``reading'' and ``translating'' the biological meaning contained within these amino-acid sequences~\cite{clark2011analysis,koonin2002sequence}. 
+% 
+However, this task is fraught with challenges. Although the amino acid sequence is formally like a language—possessing a fixed character set (over 20 genetically encoded amino acids) and potential grammatical rules (physicochemical laws)—the mapping relationship from the one-dimensional sequence to the three-dimensional structure and function is extremely complex and highly context-dependent~\cite{rost1998protein,wang2005context}.
+% 
+Consequently, the central challenge of ``what cellular function does an unknown amino acid sequence encode?'' still lacks a comprehensive solution.
+
+
+To address this challenge, research efforts on protein understanding can be broadly categorized into two dominant paradigms:
+\textit{protein representation learning} and \textit{protein–language alignment modeling}.
+% 
+Protein representation learning sees amino-acid sequences as a standalone modality like language and visual, acquires universal protein representations through self-supervised pre-training on large-scale amino-acid sequences, and then attaches lightweight decoders to predict structure or function~\cite{zhang2022ontoprotein,brandes2022proteinbert,lin2023evolutionary,su2023saprot,chen2024xtrimopglm,wu2024tcr,wu2024proteinclip}. While this paradigm excels in the universality of its embeddings and in mining deep sequential patterns, these embeddings still rely on additional ``interpreters'', \emph{i.e.}, post-processing adapters, to be converted into human-understandable explanations.
+% 
+Protein–language alignment modeling, in contrast, co-trains on paired protein sequences and their textual descriptions, establishing a bidirectional mapping within a shared latent space that enables end-to-end text-based question answering~\cite{xu2022protranslator,pei2023biot5,guo2023proteinchat,abdine2024prot2text,wang2024protchatgpt,xiao2024proteingpt}. Although this route bypasses downstream adapters, it is intrinsically bound to large-scale paired data and often requires re-fine-tuning whenever the output format or downstream objective shifts.
+% 
+In summary, both of these approaches face bottlenecks of large training data requirements, high computational costs, and limited generalization ability.
+
+\paragraph{Protein as Second Language.} Reflecting on the human cognitive process, we observe that humans exhibit remarkable efficiency and generalization ability when learning a brand-new symbolic system (i.e., a new language). The key lies in their ability to rely on and transfer their existing native language knowledge system~\cite{gass2020second, jarvis2008crosslinguistic}.
+%
+Given the aforementioned ``linguistic'' properties of protein sequences—possessing a compositional structure and contextual semantics—and our goal of understanding their function using natural language, we propose a novel perspective: to treat protein sequences as a symbolic system that can be learned and interpreted by large language models (LLMs) as a ``second language''.
+
+%
+Analogous to how humans acquire a second language, \emph{i.e.}, by encountering new words in context and inferring their meaning and usage, we propose a protein language learning framework in which an LLM acquires protein semantics and reasoning ability through context-driven exposure that grounds sequence patterns in functional and structural examples. This framework adaptively constructs learning contexts for a given protein understanding goal, enabling rapid acquisition of target protein knowledge without additional training or sacrificing generalization.
+%
+To support effective learning, we constructed a ``bilingual'' dataset of 79,926 protein-sequence–question–answer triples covering functional, descriptive, and extended-information queries. 
+% 
+Across Protein2Text~\cite{xu2023protst}, Mol-Instructions\cite{fang2023mol} and ProtDescribe-QA~\cite{Protein2Text2025}, our framework raises the average ROUGE-L by 7\% across diverse open-source models and GPT-4o, with a maximum gain of 17.2\%, without any task-specific fine-tuning.
+% 
+Our contributions are as follows:
+\begin{itemize}[leftmargin=0.6cm, itemsep=0.05cm]
+\item We introduce the “\textbf{\textit{Protein-as-Second-Language}}” conceptual framework, which recasts amino-acid sequences as a second language that can be acquired via in-context learning, enabling efficient and generalized protein understanding.
+\item We construct \textbf{\textit{a protein-natural language bilingual dataset}} that spans four task families: attribute-based QA, True or False QA, descriptive-text QA, and extended-information QA, to support effective protein language learning and benchmarking.
+\item We present a protein language learning framework that adaptively constructs learning contexts for protein understanding, yielding significant gains for both open-source models and GPT-4o, enabling them to outperform domain-specialized models without additional training.
+\end{itemize}
+
+

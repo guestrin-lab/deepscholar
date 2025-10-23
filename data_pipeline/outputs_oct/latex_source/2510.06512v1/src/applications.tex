@@ -1,0 +1,111 @@
+\section{Experiments}
+\label{sec:experiments}
+
+We select 15 temporal property templates 
+from 5 broad categories for evaluation, in the order of increasing difficulty of operator selection and nesting (p1, p2, p3 are placeholders for local properties):
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Simple temporal operators:} Eventually p1, Always p1, p1 Until p2.
+    \item \textbf{Boolean over temporal operators:} Always p1 and Eventually p2, Always p1 or Eventually p2.
+    \item \textbf{Temporal over boolean operators:} (Not p1) Until p2, p1 Until (Not p2), Always (p1 and p2), (p1 and p2) Until p3.
+    \item \textbf{Temporal over temporal operators:} p1 Until Always p2, Eventually Always p1, Always Eventually p1.
+    \item \textbf{Temporal operators over boolean and temporal operators:} (Not p1) Until Eventually p2, (Not p1) Until Always p2, (p1 and p2) Until Eventually p3.
+\end{enumerate}
+
+
+\subsection{The QMTP and TP2VR Benchmarks}
+
+There are no existing benchmarks that evaluate query matching and ranked retrieval on 
+video and speech sequences with the breadth of temporal properties discussed above. 
+We hence introduce two new benchmarks for evaluation
+using
+three existing datasets with frame/segment-level annotations for local properties:
+RealTLV~\citep{Choi2024TowardsNV}
+for objects in videos (6 classes),
+IEMOCAP~\citep{busso2008iemocap}
+for emotions in speech (4 classes), and
+AVA~\citep{gu2018ava} 
+for actions in videos (80 classes).
+We briefly describe the two benchmarks below, with more details in Appendix~\ref{appendix:datasets}.
+
+\noindent{\textbf{The QMTP benchmark.}}
+The QMTP benchmark evaluates query matching with temporal properties over objects in video and emotions in speech sequences.
+\textbf{QMTP-video} consists of \(7468\) samples 
+(\(3750\) matching and \(3718\) non-matching) 
+with \(10-50\) frames per sample.
+\textbf{QMTP-speech} contains \(3300\) samples (balanced), 
+including speech sequences with \(5-30\) segments per sample.
+
+\noindent{\textbf{The TP2VR benchmark.}}
+The TP2VR benchmark evaluates ranked retrieval of video sequences given temporal property queries over objects and actions.
+The \textbf{TP2VR-objects dataset} consists of \(746\) videos with \(39-199\) frames, collected from the RealTLV dataset, and \(42\) queries over objects. Each query corresponds to \(25-50\) frame temporal events and is relevant to no more than \(250\) videos in the dataset.
+Similarly, the \textbf{TP2VR-actions dataset} consists of \(952\) videos with \(300\) frames each, collected from 1-min segments of videos in the AVA dataset,
+with \(70\) queries over actions.
+Each query corresponds to \(10\)-second temporal events and is relevant to no more than \(50\) videos in the dataset.
+
+\subsection{Results on Query Matching}
+
+\noindent{\textbf{Methods.}} We evaluate LogSTOP for temporal query matching 
+using simple neural predictors for object and emotion detection. 
+We use YOLOv8~\citep{yolov8_ultralytics}, OWLv2~\citep{minderer2023scaling}, and Grounding DINO~\citep{liu2024grounding} to obtain 
+frame-level object detection scores.
+We use HuBERT~\citep{superb} for segment-level emotion recognition. 
+These scores are matched using the adaptive threshold discussed in Section~\ref{sec:logstop_qm}. 
+For QMTP-video, we compare against two Large Vision Language Models (LVLMs),
+namely \texttt{Video-LLava-7B}~\citep{videollava} and \texttt{LongVA-7B}~\citep{zhang2024longva},
+and the PCTL-based method, NSVS-TL~\citep{Choi2024TowardsNV}.
+For QMTP-speech, we compare against two Large Audio Language Models (LALMs),
+namely \texttt{Qwen-Audio-Chat}~\citep{Qwen-Audio} and \texttt{Qwen2-Audio-7B-Instruct}~\citep{Qwen2-Audio}.
+We provide more details on the prompts and parameters used for all methods in Appendix~\ref{appendix:baselines_qm}.
+
+\noindent{\textbf{Results.}}
+Figure~\ref{fig:qmtp_barplots} shows the balanced accuracies of different methods on the QMTP-video and QMTP-speech datasets.
+LogSTOP outperforms other methods by at least \(16\%\) on QMTP-video and QMTP-speech using object detection scores from YOLOv8 and emotion detection scores from HuBERT respectively. LogSTOP with Grounding DINO also performs better than the baselines. 
+The accuracies of detecting objects with scores \(> 0.5\) for YOLO, Grounding DINO and OWLv2 are \(46\%\), \(38\%\) and \(19\%\) resp. which reflect the order of their performances on query matching.
+
+\input{graphics/charts/qm_results}
+\input{graphics/charts/threshold_comparsion}
+
+
+LogSTOP consistently reports accuracies over \(75\%\)  on all query categories.
+\texttt{LongVA-7B}  and \texttt{Qwen-Audio-Chat} 
+perform better on simple temporal queries than queries with boolean/temporal compositions.
+NSVS-TL also performs poorly on 
+categories with compositions over boolean expressions.
+These results
+suggest that the understanding of temporal queries is still an open problem for LVLMs and LALMs. Moreover, the higher accuracy of LogSTOP with much smaller neural models suggests that using well-defined logics for reasoning is beneficial.
+
+Finally, we evaluate how the various design choices for LogSTOP affect the performance (Table~\ref{tab:logstop_ablation}). We find that the accuracy drops by \(2\%\) when the standard STL robustness is used for aggregating scores instead of LogSTOP, or when local smoothing from Algorithm~\ref{alg:LogSTOP_complete} (line~\ref{alg:smoothing_op}) is not performed. 
+A \(3\%\) drop is also observed when the adaptive threshold is replaced with \(\log 0.5\); Figure~\ref{fig:thresholds} demonstrates how the adaptive threshold 
+is
+better at distinguishing between matching and non-matching sequences. 
+
+\input{graphics/tables/logstop_ablation.tex}
+\input{graphics/charts/retrieval_results}
+\input{graphics/charts/retrieval_example.tex}
+
+\subsection{Results on Ranked Retrieval}
+
+\noindent{\textbf{Methods.}} We evaluate LogSTOP for ranked retrieval using Grounding DINO for object detection and Detectron2~\citep{wu2019detectron2} with SlowR50~\citep{feichtenhofer2019slowfast} for action detection. 
+Since there are no methods specifically designed for temporal property to sequence retrieval, we adapt existing text-to-video retrieval methods for this task. Since LogSTOP does not require explicit training for retrieval, we specifically only include zero-shot text-to-video retrieval methods for comparison.
+We include \texttt{mPLUG}~\citep{li2022mplug}, a large multimodal model that jointly embeds videos and text queries. Inspired by ELIOT~\citep{liu-etal-2025-eliot}, we also include embedding similarity between video captions and text queries.
+We refer to this as \texttt{CaptionSim} and use 
+\texttt{LLaVA-NeXT-Video-7B}~\citep{zhang2024llavanextvideo} for generating video captions and \texttt{SentenceBERT}~\citep{reimers-2020-multilingual-sentence-bert} for embedding captions and queries. More details are provided in Appendix~\ref{appendix:baselines_vr}.
+
+\noindent{\textbf{Metrics.}}
+Following existing work, we include standard retrieval metrics such as Recall at \(r\) (R@\(r\), where \(r\) is the number of relevant results) for evaluating coverage, and mean / median ranks of first retrieval (MnR / MdR).
+Since multiple videos could be relevant to a query, we also evaluate if relevant results are ranked higher using Precision (P@\(\{1, r\}\)), and mean average precision (mAP).
+
+\noindent{\textbf{Results.}} 
+Figure~\ref{fig:tp2vr_barplots}
+presents the results for ranked retrieval on the TP2VR benchmark.
+The performance of all methods on TP2VR-actions is lower than that on TP2VR-objects due to the significantly higher number of classes (\(80\) actions vs. \(6\) objects) and lower number of relevant results (on average, \(21\) vs. \(163\) relevant videos). 
+LogSTOP with GroundingDINO outperforms \texttt{mPLUG} and \texttt{CaptionSim} on TP2VR-objects by 
+at least \(28\%\) in mAP and \(24\%\) in R@\(r\), indicating that relevant results are retrieved at earlier ranks and the retrieved results include more relevant items than other methods.
+Similarly, LogSTOP with SlowR50 outperforms baselines by more than \(19\%\) and \(16\%\) in terms of mAP and R@r respectively.
+The first relevant result is also retrieved earlier by LogSTOP as is indicated by at least a \(24\%\) higher P@1 and better mean ranks; 
+on TP2VR-actions, LogSTOP retrieves the first relevant result at rank \(7.9\) while  \texttt{CaptionSim} and \texttt{mPLUG} retrieve it at ranks \(>20\). 
+Figure~\ref{fig:retrieval_example} presents examples of ranking using the three methods. 
+We discuss these in detail in Appendix~\ref{appendix:examples}.
+
+Ablating various components of LogSTOP also degrades retrieval performance (Table~\ref{tab:logstop_ablation}). The standard STL robustness reduces mAP and R@\(r\) by more than \(12\%\). While removing the smoothing step from LogSTOP leads to a slight increase of 0.2 in MnR, it reduces mAP and R@\(r\) by at least \(4\%\).

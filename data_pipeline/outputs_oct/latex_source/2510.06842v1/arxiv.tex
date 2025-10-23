@@ -1,0 +1,1579 @@
+\documentclass[lettersize,journal]{IEEEtran}
+% \documentclass[10pt,journal,cspaper,compsoc]{IEEEtran}
+% \documentclass[10pt,journal,compsoc]{IEEEtran}
+
+\usepackage{amsmath,bm,bbm,amsfonts,amssymb}
+\usepackage{pifont}
+
+\usepackage{soul,colortbl}
+\usepackage[table,dvipsnames]{xcolor} 
+\usepackage{color}
+
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{pict2e}
+\usepackage{url}
+\usepackage{etoolbox}
+\usepackage{orcidlink}
+\usepackage{fontawesome5}
+\usepackage{overpic}
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{gcolor}{RGB}{112,173,71}
+\definecolor{gcolor}{RGB}{40,160,70}
+\definecolor{ycolor}{RGB}{255,196,0}
+\definecolor{ycolor}{RGB}{222,158,20}
+\usepackage{hyperref}
+\hypersetup{
+     colorlinks=true,
+     linkcolor=blue,
+     citecolor=blue,
+     filecolor=blue,
+     urlcolor=magenta,
+}
+\usepackage{cite}
+% 括号与数字
+\renewcommand\citeleft{\textcolor{blue}{[}}
+\renewcommand\citeright{\textcolor{blue}{]}}
+% \renewcommand\citeform[1]{\textcolor{blue}{#1}}
+% 逗号分隔
+\renewcommand\citepunct{\textcolor{blue}{]}, \textcolor{blue}{[}}
+% 连字符和中间的 ]...[（用于 [1]–[4] 这种样式）
+\renewcommand\citedash{{\textendash}}
+\renewcommand\citemid{\textcolor{blue}{]\nobreak\hskip0.08em\textendash\hskip0.08em[}}
+
+% 关键：中间部分 → 蓝色括号 + 黑色横线
+\renewcommand\citemid{%
+  \textcolor{blue}{]}% 先闭括号
+  \nobreak\hskip0.08em\textendash\hskip0.08em% 黑色横线
+  \textcolor{blue}{[}% 再开括号
+}
+\usepackage{makecell}
+\usepackage{siunitx} % 导言区引入
+\sisetup{
+  retain-explicit-plus,   % 保留显式正号
+  table-number-alignment = center,
+  detect-weight = true,
+  detect-family = true,
+  mode = text,
+  input-symbols = {\textbf}
+}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{todonotes}
+% \usepackage[capitalize,noabbrev]{cleveref}
+\usepackage[capitalise]{cleveref}
+\crefname{section}{Sect.}{Sects.}
+\Crefname{section}{Sect.}{Sects.}
+\crefname{figure}{Fig.}{Figs.}
+\Crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Tab.}{Tabs.}
+\Crefname{table}{Tab.}{Tabs.}
+% Appendices (short form)
+\crefname{appendix}{Appendix}{Appendixes}
+\Crefname{appendix}{Appendix}{Appendixes}
+
+\newcommand{\crefx}[2]{\cref{#1}{\color{blue}({#2})}}
+\newcommand{\qy}[1]{{\color{blue}[{\bf qy:} #1]}}
+\crefformat{equation}{Eq.~{#2(#1)#3}}
+\newtheorem{hyp}{Hypothesis}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proof}{Proof}
+\newtheorem{proposition}{Proposition}
+
+\newcommand{\xx}[1]{\textcolor[rgb]{0.7,0.2,0.1}{[xx: #1]}}
+\newcommand{\fred}[1]{\textcolor{magenta}{FL: #1}}
+
+\usepackage{subcaption}
+\captionsetup[figure]{font=small}
+\captionsetup[table]{textfont={sc,footnotesize}, labelfont=footnotesize, labelsep=space,justification=centering}
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{\alph{subtable}}
+\newcommand\round[1]{\left[#1\right]}
+
+\usepackage[switch,pagewise]{lineno}
+\linenumbers
+\renewcommand\makeLineNumber{}
+
+\usepackage{arydshln}
+\setlength\dashlinedash{1pt}
+\setlength\dashlinegap{2pt}
+\setlength\arrayrulewidth{1pt}
+
+\newcommand{\ly}[1]{{\color{blue}{ [ly: #1]}}}
+
+
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+
+\newcommand{\circleannotatedimage}[6]{%
+  \begin{overpic}[width=#2]{#1}
+    \put(#3,#4){%
+      \begin{tikzpicture}[overlay]
+        \draw[red,thick] (0,0) circle (#5);
+        \node[red,below=1pt] at (0,0) {\scriptsize\sffamily #6};
+      \end{tikzpicture}%
+    }%
+  \end{overpic}%
+}
+
+\newcommand{\smiley}[2]{%
+  \tikz \node[circle,draw,#1,thick,minimum size=1cm] {\color{#1}#2};}
+% 右下角表情宏：\emojiBR[<color>][<fontsize>]{<icon>}
+% 例：\emojiBR[red][\Large]{\faFrown}
+\NewDocumentCommand{\emojiBR}{ O{blue} O{\normalsize} m }{%
+  \put(1,4){\color{#1}#2 #3}%
+}
+
+\usepackage{contour}
+\contourlength{0.1em} % 描边厚度
+
+\newcommand{\myPara}[1]{%
+  \textbf{#1}.%
+}
+
+% 橙色（Current Feature Manifold、部分曲线等）
+\definecolor{currentOrange}{RGB}{255, 165, 0} 
+% 蓝色（Deviated Old Features、Old Features 等）
+\definecolor{deviatedBlue}{RGB}{0, 100, 200} 
+% 绿色（Current session features 等）
+\definecolor{sessionGreen}{RGB}{0, 150, 0} 
+% 黄色（Old Feature Manifold 等）
+\definecolor{oldYellow}{RGB}{255, 204, 0} 
+% 红色（Score curve 等）
+\definecolor{scoreRed}{RGB}{255, 0, 0} 
+
+\begin{document}
+
+\title{Continual Action Quality Assessment via Adaptive Manifold-Aligned Graph Regularization}
+%\title{Continual Action Quality Assessment with Adaptive Feature Alignment and Graph Regularization}
+%\title{MAGR++: Balancing Adaptation and Stability in Continual Action Quality Assessment}
+% \title{Continual Action Quality Assessment via Layer-Adaptive Manifold-Aligned Graph Regularization}
+%\title{Continual Action Quality Assessment via Hierarchical Manifold-Aligned Graph Regularization}
+\author{
+    Kanglei Zhou$^{\orcidlink{0000-0002-4660-581X}}$, Qingyi Pan$^{\orcidlink{0000-0002-3823-4254}}$,  Xingxing Zhang$^{\orcidlink{0000-0003-4012-3796}}$, Hubert P. H. Shum$^{\orcidlink{0000-0001-5651-6039}}$,~\IEEEmembership{Senior Member,~IEEE},\\ Frederick W. B. Li$^{\orcidlink{0000-0002-4283-4228}}$, Xiaohui Liang$^{\orcidlink{0000-0001-6351-2538}}$,~\IEEEmembership{Member,~IEEE}, and Liyuan Wang$^{\orcidlink{0009-0002-7797-325X}}$
+    % <-this % stops a space
+    \thanks{
+        Manuscript received \today.
+        This work was supported by the NSFC Project No.~62406160 and Beijing Natural Science Foundation L247011. \textit{(Corresponding author: Liyuan Wang).}
+    }% <-this % stops a space
+    \thanks{
+        Kanglei Zhou and Liyuan Wang are with the Department of Psychological and Cognitive Sciences,  Tsinghua University, Beijing 100084, China. (e-mail: zhoukanglei@tsinghua.edu.cn; liyuanwang@tsinghua.edu.cn).
+    }% <-this % stops a space
+    \thanks{
+        Qingyi Pan is with the Department of Statistics and Data Science, Beijing 100084, China, Tsinghua University. (e-mail: pqy\_edu@163.com).
+    }% <-this % stops a space
+    \thanks{
+        Xingxing Zhang is with the Department of Computer Science and Technology, Institute for AI, BNRist Center, Tsinghua-Bosch Joint ML Center, THBI Lab, Tsinghua University. (e-mail: xxzhang1993@gmail.com).
+    }% <-this % stops a space
+    \thanks{
+        Hubert P. H. Shum and Frederick W. B. Li are with the Department of Computer Science, Durham University, DH1 3LE Durham, U.K. (e-mail: hubert.shum@durham.ac.uk; frederick.li@durham.ac.uk).
+    }% <-this % stops a space
+    \thanks{
+        Xiaohui Liang is with the State Key Laboratory of Virtual Reality Technology and Systems, Beihang University, Beijing 100191, China, and also with the Zhongguancun Laboratory, Beijing 100190, China (e-mail: liang\_xiaohui@buaa.edu.cn).
+    }% <-this % stops a space
+}
+
+\markboth{Journal of \LaTeX~Class Files,~Vol.~XX, No.~XX, XX~XXXX}%
+{Shell \MakeLowercase{\textit{et al.}}: A Sample Article Using IEEEtran.cls for IEEE Journals}
+
+\maketitle
+
+\begin{abstract}
+Action Quality Assessment (AQA) quantifies human actions in videos, supporting applications in sports scoring, rehabilitation, and skill evaluation. A major challenge lies in the non-stationary nature of quality distributions in real-world scenarios, which limits the generalization ability of conventional methods. We introduce Continual AQA (CAQA), which equips AQA with Continual Learning (CL) capabilities to handle evolving distributions while mitigating catastrophic forgetting. Although parameter-efficient fine-tuning of pretrained models has shown promise in CL for image classification, we find it insufficient for CAQA. Our empirical and theoretical analyses reveal two insights: (i) Full-Parameter Fine-Tuning (FPFT) is necessary for effective representation learning; yet (ii) uncontrolled FPFT induces overfitting and feature manifold shift, thereby aggravating forgetting. To address this, we propose Adaptive Manifold-Aligned Graph Regularization (MAGR++), which couples backbone fine-tuning that stabilizes shallow layers while adapting deeper ones with a two-step feature rectification pipeline: a manifold projector to translate deviated historical features into the current representation space, and a graph regularizer to align local and global distributions. We construct four CAQA benchmarks from three datasets with tailored evaluation protocols and strong baselines, enabling systematic cross-dataset comparison. Extensive experiments show that MAGR++ achieves state-of-the-art performance, with average correlation gains of 3.6\% offline and 12.2\% online over the strongest baseline, confirming its robustness and effectiveness.
+Our code is available at \url{https://github.com/ZhouKanglei/MAGRPP}.
+\end{abstract}
+
+\begin{IEEEkeywords}
+    Human Motion Analysis, Action Quality Assessment, Continual Learning, Catastrophic Forgetting
+\end{IEEEkeywords}
+
+\section{Introduction}
+\IEEEPARstart{A}{ction} Quality Assessment (AQA) \cite{gedamu2024self,majeedi2024rica,dong2024interpretable,liu2025adaptive} evaluates how well human actions are performed in videos, offering an objective alternative to subjective judgment. It has diverse applications in sports scoring \cite{zeng2024multimodal,ji2023localization,zhang2023logo}, rehabilitation \cite{zhou2023video}, skill assessment \cite{parmar2021piano,li2022surgical}, etc. As reliable annotations require domain expertise, data collection becomes costly, limiting dataset scale. To address this, many studies employ Pretrained Models (PTMs) \cite{carreira2017quo} trained on large-scale action recognition datasets \cite{kay2017kinetics}. Although these models provide strong representations, their performance declines when distributions shift. In AQA, such shifts are inherent, as scoring patterns evolve with individual skill progression and differ across groups (see \cref{fig:teaser-a,fig:teaser-b}), which limits AQA's real-world applicability.
+
+\begin{figure}
+    \centering
+    \includegraphics[height=0.310\linewidth,clip,trim=80 90 485 90]{figs/variation.pdf}
+    \includegraphics[height=0.310\linewidth,]{figs/3d_bar_offline.pdf}
+    \includegraphics[height=0.310\linewidth,]{figs/3d_bar_online.pdf}
+    \caption{Motivation and challenges of CAQA. \subref{fig:teaser-a} and \subref{fig:teaser-b} illustrate the inherent limitations of conventional AQA methods, while \subref{fig:teaser-c} and \subref{fig:teaser-d} demonstrate that even strong CL baselines exhibit large performance gaps on CAQA benchmarks in both offline and online settings.}
+    \label{fig:teaser}
+    {
+    \phantomsubcaption\label{fig:teaser-a}
+    \phantomsubcaption\label{fig:teaser-b}
+    \phantomsubcaption\label{fig:teaser-c}
+    \phantomsubcaption\label{fig:teaser-d}
+    }
+    \vspace{-0.5cm}
+\end{figure}
+
+To this end, Continual Learning (CL)~\cite{wang2024comprehensive} provides a principled framework for adapting models to evolving distributions while retaining previously acquired knowledge. However, most CL research has focused on classification tasks~\cite{chi2022metafscil,wang2023hierarchical,wang2021afec}, whereas its extension to AQA requires continual score regression and remains largely unexplored. Bridging this gap demands clear task formulation, benchmark construction, and customized evaluation protocols. In this work, we introduce \textbf{Continual AQA (CAQA)}, a novel setting that extends CL to AQA tasks by confronting the dilemma between capturing fine-grained motion cues through continual adaptation and maintaining stability under non-stationary score distributions.
+
+The complexity of CAQA poses unique challenges that render even strong CL baselines ineffective when applied directly (see \cref{fig:teaser-c,fig:teaser-d}). Existing PTM-based CL methods typically follow two paradigms: (i) extensive base-session adaptation followed by feature freezing, or (ii) Parameter-Efficient Fine-Tuning (PEFT) for continual updates \cite{zhou2025adaptive,wang2023hierarchical,xin2024parameter}. While both strategies have shown success in classification, their \textbf{limitations} become evident in CAQA. First, the high cost of expert annotations \cite{zhou2024comprehensivesurveyactionquality} makes large-scale base-session adaptation impractical. Second, unlike coarse-grained classification, AQA relies on subtle motion cues, meaning frozen features without adequate adaptation fail to generalize across evolving distributions \cite{zhou2024cofinal,zhou2025phi}. Finally, although PEFT provides a lightweight mechanism for continual updates, the substantial domain gap between upstream recognition and downstream fine-grained AQA renders such adapters insufficient. Our \textbf{empirical study} (see \cref{sec:empirical_study}) demonstrates that Full-Parameter Fine-Tuning (FPFT) consistently outperforms PEFT, suggesting its necessity to CAQA.
+
+To investigate this observation, we conduct an in-depth \textbf{theoretical analysis} under a representative, storage-efficient feature replay strategy, and obtain two key insights. 
+First, while FPFT is effective for realigning representations, repeated use in long-term continual adaptation risks severe overfitting. Second, continual distribution shifts cause replayed features to drift from the evolving data manifold, undermining rehearsal effectiveness. Inspired by these, we propose \textbf{Adaptive Manifold-Aligned Graph Regularization (MAGR++)}, an innovative framework that addresses both overfitting and distribution shift in CAQA. MAGR++ employs a layer-adaptive fine-tuning strategy that constrains shallow layers from drifting while fully tuning deeper ones to embrace session-specific variations, with the boundary determined adaptively. It further incorporates a manifold projector that maps historical features into the current representation space and a graph regularizer that enforces both local and global consistency between feature and quality spaces, enabling reliable replay and regression. Together, these modules allow MAGR++ to achieve effective continual adaptation while maintaining stability.
+
+We establish four CAQA benchmarks from three AQA datasets, with tailored evaluation metrics and strong baselines for systematic cross-dataset comparison. Experiments across both offline and online CAQA settings demonstrate that MAGR++ achieves \textbf{state-of-the-art performance}, surpassing the strongest baseline by 1.6\%--6.5\% offline and 4.0\%--21.8\% online, with average gains of 3.6\% and 12.2\%, respectively.
+
+This work substantially extends our preliminary version MAGR~\cite{zhou2024magr}. Beyond a complete rewriting of the manuscript, MAGR++ advances the prior work in three key aspects. First, we establish a solid theoretical foundation that formalizes the challenges of CAQA and clarifies the principles guiding our design. Second, we propose a theoretically grounded solution that tackles the stability–adaptability dilemma through layer-adaptive fine-tuning and an asynchronous two-step feature rectification pipeline, providing a principled framework rather than an ad-hoc extension. Third, we broaden the empirical validation by incorporating both offline and online CAQA across diverse protocols and datasets, offering comprehensive evidence of robustness and generality.
+
+Overall, our contributions can be summarized as follows:
+\begin{itemize}
+\item We introduce the first formulation of CAQA to explicitly tackle non-stationary action quality distributions. 
+\item We develop a theoretical framework that reveals two fundamental challenges of CAQA, i.e., overfitting from repeated FPFT and feature drift under feature replay. 
+\item We propose a theoretically grounded CAQA method with adaptive FPFT for robust representation learning and two-step rectification for coherent feature alignment.
+\item We conduct extensive experiments on four CAQA benchmarks. Our method achieves consistently state-of-the-art performance in both offline and online settings. 
+\end{itemize}
+
+\section{Related Work} \label{sec:related_work}
+
+\myPara{Action Quality Assessment} 
+AQA aims to automatically evaluate the objective execution quality of human actions, spanning numerous applications in sports scoring \cite{xu2022finediving,parmar2019action,pirsiavash2014assessing,xu2025quality,xu2024vision}, rehabilitation \cite{zhou2023video}, and skill assessment \cite{zia2016automated}. 
+A major challenge is the scarcity of annotated labels \cite{zhou2024comprehensivesurveyactionquality}, since reliable quality scores demand domain expertise. To address this, most approaches \cite{pan2021adaptive,yu2021group,parmar2019and} leverage PTMs (e.g., I3D \cite{carreira2017quo}) to extract strong visual features and then regress quality scores either via direct regression \cite{zhou2023hierarchical} or contrastive regression \cite{ke2024two}. Ranking-based skill assessment methods \cite{doughty2019pros,doughty2018s} further alleviate annotation costs by comparing relative performance instead of relying on absolute scores. Another core difficulty lies in fine-grained temporal parsing, as PTMs are optimized for coarse action recognition while AQA demands temporal sensitivity. To this end, strategies such as continual pretraining \cite{dadashzadeh2024pecop}, regularization \cite{zhou2025phi,zhou2024cofinal}, and human-centric cues \cite{xu2024fineparser,xu2025human} have been proposed to enhance feature representations. 
+Furthermore, non-stationary variations across tasks pose additional challenges for CAQA. While recent works attempt to mitigate this by freezing backbone features \cite{li2024continual}, such designs restrict adaptation capacity and often overlook skill variations within the same action, where subtle distribution shifts make fine-grained evaluation more difficult.
+In this work, we address these challenges by designing a framework that both adapts to evolving task distributions and preserves discriminative skill-related cues, enabling AQA in realistic evolving scenarios.
+
+\myPara{Continual Learning}
+CL \cite{wang2023incorporating,wang2024comprehensive} enables models to acquire new knowledge from a stream of tasks without forgetting previous ones. This capability is particularly valuable in real-world applications such as robotics, surveillance, and other dynamic vision domains \cite{zhou2025adaptive}.
+The main challenge is to avoid catastrophic forgetting of previously learned knowledge. Current efforts can be broadly divided into constraint-based and replay-based methods. Constraint-based methods such as SI~\cite{zenke2017continual}, EWC~\cite{james2017ewc}, and LwF~\cite{li2017learning} impose regularization to preserve old knowledge without storing past data, but often suffer from limited scalability. Replay-based methods, by contrast, achieve stronger retention via exemplar storage (e.g., MER~\cite{riemer2019learning}, DER++~\cite{buzzega2020dark}, TOPIC~\cite{tao2020few}, and GEM~\cite{kukleva2021generalized}), which raises memory and privacy concerns. More recently, feature replay has emerged as a lightweight and privacy-preserving alternative (e.g., SLCA~\cite{zhang2023slca,zhang2024slca++}, NC-FSCIL~\cite{yang2023neural}, FS-Aug~\cite{li2024continual}, and MAGR~\cite{zhou2024magr}). However, applying feature replay in domains like AQA is challenging due to significant domain gaps, and continual adaptation of the backbone often induces manifold shifts, misaligning old and new feature distributions. Motivated by these, our work adopts feature replay as the primary technical route of CAQA while introducing adaptive strategies to alleviate feature misalignment.
+
+\section{Preliminaries of AQA and CAQA} \label{sec:fundation}
+In this section, we describe the problem formulation of AQA and CAQA, empirically investigate FPFT and PEFT under these settings, and provide an in-depth theoretical analysis with storage-efficient feature replay, which yields key implications for the design of MAGR++.
+
+\begin{figure}
+    \centering
+    \vspace{-0.2cm}
+    \includegraphics[width=\linewidth]{figs/fft_vs_peft.pdf}
+    \caption{
+    SRCC and rMSE comparison of fixed backbone, PEFT (I3D-Adapters), and FPFT in representative AQA tasks.
+    }
+    \label{fig:fft_vs_peft}
+    \phantomsubcaption\label{fig:fft_vs_peft-a}
+    \phantomsubcaption\label{fig:fft_vs_peft-b}
+    \phantomsubcaption\label{fig:fft_vs_peft-c}
+    \phantomsubcaption\label{fig:fft_vs_peft-d}
+    \phantomsubcaption\label{fig:fft_vs_peft-e}
+    \phantomsubcaption\label{fig:fft_vs_peft-f}
+    \vspace{-0.4cm}
+\end{figure}
+
+\subsection{Task Definition of AQA and CAQA}
+In AQA, the goal is to assign a quantitative score $\hat{y} \in \mathbb{R}$ to a video $\mathbf{x} \in \mathbb{R}^{F \times H \times W \times 3}$, where $F$, $H$, and $W$ denote the number of frames, height, and width. A backbone $f$ extracts features $\bm{h}=f(\mathbf{x})$, and a regressor $g$ predicts scores $\hat{y}=g(\bm{h})$, trained on a labeled dataset $\mathcal{D}_{\text{train}}=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$. Traditional AQA assumes that both $\mathcal{D}_{\text{train}}$ and the parameters $\bm{\theta}_f,\bm{\theta}_g$ remain fixed once trained. In practice, however, new actions, user populations, and individual variations continually emerge, leading to shifts in the underlying distribution. We therefore define \textbf{CAQA}: given a sequence of datasets $\{\mathcal{D}_{\text{train}}^t\}_{t=1}^T$ across sessions, the backbone $f^t$ and regressor $g^t$ are updated in each session to adapt to new data while retaining past knowledge. For clarity, we omit parameter dependence (e.g., $\bm{\theta}_f^t, \bm{\theta}_g^t$) in the notation when referring to session $t$.
+
+A critical challenge in CAQA is \textbf{catastrophic forgetting}, where learning from new data degrades performance on previous sessions. Rehearsal \cite{wang2024comprehensive} is a simple yet effective remedy that stores and replays past samples. To this end, CAQA employs the storage-efficient feature replay \cite{yang2023neural}, which maintains a memory bank $\mathcal{M}$ containing only a small set of representative latent embeddings $\bm{h}$ from previous sessions.
+Building on this, we define the CAQA objective as:
+\begin{equation}
+    \min_{\bm{\theta}_f^t,\,\bm{\theta}_g^t}~ 
+    \mathcal{L}_{\text{D}} + \mathcal{L}_{\text{M}},
+    \label{eq:caqa}
+\end{equation}
+where $\mathcal{L}_{\text{D}}$ denotes the regression loss on the current session data $\mathcal{D}_{\text{train}}^t$, and $\mathcal{L}_{\text{M}}$ represents the replay loss on the memory bank $\mathcal{M}$. This joint objective enables the model to incrementally refine its assessment ability across sessions while effectively retaining previously acquired knowledge.
+
+\subsection{Empirical Study of PEFT and FPFT for AQA} \label{sec:empirical_study}
+PEFT techniques~\cite{xin2024parameter}, such as prompts, LoRA and adapters, are effective when upstream models are strong and downstream tasks are simple, as they require only minimal adaptation. In AQA, however, upstream models pretrained on coarse-grained action recognition are poorly aligned with the fine-grained motion cues essential for quality assessment~\cite{zhou2024cofinal, zhou2025phi}, yet the roles of PEFT and FPFT remain largely underexplored.
+
+To close this gap, we adopt representative baselines for a fair empirical comparison. Since PEFT in AQA has only been explored with adapters, we use I3D-Adapters as its representative. Concretely, we compare fixed backbone (no adaptation), PEFT with I3D-Adapters~\cite{dadashzadeh2024pecop}, and FPFT across three benchmarks (MTL-AQA~\cite{parmar2019and}, AQA-7~\cite{parmar2019action}, FineDiving~\cite{xu2022finediving}) with three prediction heads: CoRe~\cite{yu2021group}, HGCN~\cite{zhou2023hierarchical}, and CoFInAl~\cite{zhou2024cofinal}. As shown in \cref{fig:fft_vs_peft}, FPFT consistently achieves superior performance in both SRCC (defined in \cref{eq:rho}) and rMSE \cite{zhou2024comprehensivesurveyactionquality} across all datasets and models. Compared with the fixed backbone, FPFT yields average gains of $+$3.33\% SRCC and $-$31.23\% rMSE, confirming that upstream features are poorly aligned for AQA. Compared with PEFT, FPFT achieves average gains of $+$2.11\% SRCC and $-$14.25\% rMSE, with the most significant improvement on AQA-7 ($+$5.89\% SRCC, $-$44.21\% rMSE), and smaller yet consistent benefits on MTL-AQA ($+$0.23\% SRCC, $+$4.31\% rMSE) and FineDiving ($+$0.22\% SRCC, $-$2.85\% rMSE), demonstrating that lightweight adapters cannot fully bridge the upstream--downstream gap.
+
+To place these findings in a broader context, we categorize fine-tuning choices by the relative strengths of upstream models and downstream tasks, as shown in \cref{fig:strategy_decision_map}. We further provide an in-depth theoretical analysis as follows.
+
+\begin{figure}
+    \centering
+    \vspace{-0.1cm}
+    \includegraphics[width=\linewidth,clip,trim=160 140 180 125]{figs/strategy_decision_map.pdf}
+    \caption{
+    PEFT works well when upstream models are strong and downstream tasks are simple. FPFT does the opposite, as in AQA.
+    }
+    \label{fig:strategy_decision_map}
+    \vspace{-0.2cm}
+\end{figure}
+
+\subsection{Theoretical Analysis of FPFT with Feature Replay} \label{sec:theoretical_foundation}
+
+\myPara{Why FPFT Matters for AQA}
+As shown in \cref{sec:empirical_study}, FPFT consistently outperforms PEFT in AQA, though prior results mainly concern adapters. \cref{thm:peft-vs-fpft} generalizes this finding by showing that all PEFT methods suffer a projection gap: when the downstream optimum lies outside the restricted subspace, PEFT updates incur strictly positive excess risk under a curvature-induced metric, whereas FPFT avoids this.
+
+\begin{theorem}
+\label{thm:peft-vs-fpft}
+Let the upstream model $\phi_{\bm{\theta}_{\text{up}}}$ denote a pre-trained AQA scorer on a source domain $\mathcal{D}_{\text{up}}$ (typically large-scale action recognition), and define the downstream task on a target AQA domain $\mathcal{D}_{\text{down}}$ with a distinct data distribution. The goal is to adapt $\phi_{\bm{\theta}_{\text{up}}}$ by minimizing the downstream risk $R_{\text{down}}(\bm{\theta})=\mathbb{E}_{(x,y)\sim\mathcal{D}_{\text{down}}}\ell(\phi_{\bm{\theta}}(x),y)$, where $\bm{\theta}_{\text{down}}^\star=\arg\min_{\bm{\theta}}R_{\text{down}}(\bm{\theta})$. Following the unified view of PEFT methods~\cite{he2021towards}, prompt tuning, adapter tuning, and LoRA share a common low-rank formulation. Taking LoRA as an example, updates are restricted to a low-rank subspace $\mathcal{S}:=\mathrm{range}(\mathbf{U})\subset\mathbb{R}^d$ via $\bm{\theta}=\bm{\theta}_{\text{up}}+\mathbf{U}\bm{\alpha}$, with $\mathbf{U}\in\mathbb{R}^{d\times r}$ and $\mathrm{rank}(\mathbf{U})=r\!\ll\!d$, while FPFT allows full-space updates. The upstream Jacobian $\mathbf{J}_{\text{up}}(x):=\nabla_{\bm{\theta}}\phi_{\bm{\theta}_{\text{up}}}(x)$ measures the local sensitivity of outputs to parameters, and its Neural Tangent Kernel (NTK)-style Gram matrix $\mathbf{\Sigma}_0:=\mathbb{E}_{x\sim\mathcal{D}_{\text{down}}}[\mathbf{J}_{\text{up}}(x)\mathbf{J}_{\text{up}}(x)^\top]\succeq0$ characterizes the curvature and geometry around $\bm{\theta}_{\text{up}}$.
+Assume:
+\begin{itemize}
+\item[(A1)] (\emph{Curvature}) The loss $\ell(\cdot,y)$ is twice differentiable and locally strongly convex,  
+i.e., $\ell''(z,y)\ge\mu>0$, ensuring a quadratic lower bound on the risk landscape.
+\item[(A2)] (\emph{Nondegeneracy}) 
+The curvature of $\mathbf{\Sigma}_0$ on the orthogonal complement $\mathcal{S}^\perp$  
+is positive, i.e., $\lambda_{\min}(\mathbf{\Sigma}_0\!\mid_{\mathcal{S}^\perp})>0$, ensuring that useful and stable descent directions exist consistently outside the PEFT subspace.
+\item[(A3)] (\emph{Linearization}) 
+There exist constants $\rho>0$ and $L_\varepsilon\!\ge\!0$ such that for all small perturbations $\bm{v}$ with $\|\bm{v}\|\!\le\!\rho$,  
+$\big|R_{\text{down}}(\bm{\theta}_{\text{up}}+\bm{v})
+-\widetilde R_{\text{down}}(\bm{v})\big|
+\le\tfrac{L_\varepsilon}{2}\|\bm{v}\|^2$,  
+where the linearized risk is  
+$\widetilde R_{\text{down}}(\bm{v})
+=\mathbb{E}_{(x,y)\sim\mathcal{D}_{\text{down}}}\!
+\ell\big(\phi_{\bm{\theta}_{\text{up}}}(x)
++\mathbf{J}_{\text{up}}(x)^\top\bm{v},\,y\big)$,  
+and both the restricted and full minimizers,  
+$\bm{v}_{\mathcal{S}}=\arg\min_{\bm{v}\in\mathcal{S}}\widetilde R_{\text{down}}(\bm{v})$  
+and $\bm{v}^\star=\arg\min_{\bm{v}}\widetilde R_{\text{down}}(\bm{v})$,  
+lie within the local region $\|\bm{v}\|\le\rho$.
+\end{itemize}
+Under these assumptions, for any PEFT parameter $\bm{\alpha}$  
+(such that $\bm{v}=\mathbf{U}\bm{\alpha}\in\mathcal{S}$), the following holds:
+\begin{equation}
+\label{eq:excess-risk-peft-sigma}
+R_{\text{down}}(\bm{\theta}_{\text{up}}+\mathbf{U}\bm{\alpha}) - R_{\text{down}}(\bm{\theta}_{\text{down}}^\star)
+\ge\tfrac{\mu}{2}\,\|\Pi_{\mathcal{S}^\perp}^{(\mathbf{\Sigma}_0)}\bm{\Delta}\|_{\mathbf{\Sigma}_0}^2 - C_\varepsilon,
+\end{equation}
+where $\bm{\Delta} := \bm{\theta}_{\text{down}}^\star-\bm{\theta}_{\text{up}}$, 
+$\|\bm{w}\|_{\mathbf{\Sigma}_0}^2 := \bm{w}^\top \mathbf{\Sigma}_0 \bm{w}$, 
+$\Pi_{\mathcal{S}^\perp}^{(\mathbf{\Sigma}_0)}$ is the $\mathbf{\Sigma}_0$-orthogonal projection onto $\mathcal{S}^\perp$ (well-defined under assumption \textbf{(A2)}), 
+and $C_\varepsilon := \tfrac{L_\varepsilon}{2}(\|\bm{v}_{\mathcal{S}}\|^2+\|\bm{v}^\star\|^2)$.
+\end{theorem}
+
+\cref{eq:excess-risk-peft-sigma} indicates that PEFT suffers excess risk whenever the downstream optimum $\bm{\theta}_{\text{down}}^\star$ has a nonzero projection onto $\mathcal{S}^\perp$, the complement of its update subspace. The projection term $\|\Pi_{\mathcal{S}^\perp}^{(\mathbf{\Sigma}_0)}\bm{\Delta}\|_{\mathbf{\Sigma}_0}^2$ measures the portion of adaptation inaccessible to PEFT under the curvature geometry of $\mathbf{\Sigma}_0$. In contrast, FPFT can align with the full descent direction, achieving lower risk.
+A detailed proof of \cref{thm:peft-vs-fpft} is provided in \cref{sec:peft-vs-fpft_proof}.
+
+\myPara{When FPFT Meets Feature Replay}  
+While \cref{thm:peft-vs-fpft} shows the advantage of FPFT over PEFT in static transfer, the CAQA setting requires continual adaptation to evolving distributions.
+%it overlooks the CAQA setting where continual adaptation is essential. 
+In practice, feature replay~\cite{yang2023neural} is widely adopted to mitigate forgetting with limited extra memory. However, combining FPFT with feature replay introduces new risks: FPFT may induce overfitting due to large parameter shifts, and historical features stored in memory can drift away from the representations produced by the continually updated backbone. To better understand these challenges, \cref{thm:fpft-replay} formalizes FPFT under replay and establishes stability conditions.  
+
+\begin{theorem}
+\label{thm:fpft-replay}
+Let $f_{\bm{\theta}_f}:\mathcal{X}\!\to\!\mathbb{R}^m$ be the encoder (backbone), 
+$g_{\bm{\theta}_g}:\mathbb{R}^m\!\to\!\mathbb{R}$ be the output head, 
+and the full model be $\phi_{\bm{\theta}}:=g_{\bm{\theta}_g}\circ f_{\bm{\theta}_f}$, where $\bm{\theta}=\{\bm{\theta}_f, \bm{\theta}_g\}$.  
+At session $t$, parameters update from $\bm{\theta}^{t-1}$ to $\bm{\theta}^{t}$ 
+by FPFT on new data $\mathcal{D}_t$ while replaying a memory buffer $\mathcal{M}_{t-1}$.  
+We denote the update vector as $\bm{\Delta}_t := \bm{\theta}^t - \bm{\theta}^{t-1}$ 
+and its associated step size as $\Delta_t := \|\bm{\Delta}_t\|$.  
+Assume:
+\begin{itemize}
+\item[(B1)] (\emph{Loss Smoothness})  
+The loss $\ell(\cdot,y)$ (e.g., MSE or KL divergence) is $1$-Lipschitz continuous with respect to its scalar input, ensuring that small prediction changes lead to bounded loss variation.
+
+\item[(B2)] (\emph{Head Regularity})  
+For any parameter $\bm{\theta}_g$, the prediction head $g_{\bm{\theta}_g}$ is $L_g$-Lipschitz continuous with respect to its feature input, limiting sensitivity in score prediction caused by feature perturbations.
+
+\item[(B3)] (\emph{Backbone Stability})  
+The backbone mapping $f_{\bm{\theta}_f}$ satisfies  
+$\|f_{\bm{\theta}'_f}(x)-f_{\bm{\theta}_f}(x)\|\le L_f\,\|\bm{\theta}'_f-\bm{\theta}_f\|$ 
+uniformly for all $x\in\mathcal{X}$ and parameters $\bm{\theta}_f,\bm{\theta}'_f$, 
+ensuring representation smoothness during encoder updates.
+
+\item[(B4)] (\emph{Model Continuity})  
+The overall mapping $\phi_{\bm{\theta}}=g_{\bm{\theta}_g}\!\circ\! f_{\bm{\theta}_f}$ is uniformly continuous, satisfying  
+$\|\phi_{\bm{\theta}'}(x)-\phi_{\bm{\theta}}(x)\|\le L_\phi\,\|\bm{\theta}'-\bm{\theta}\|$, 
+which guarantees bounded prediction drift under finite-step updates.
+\end{itemize}
+Under these regularity and stability conditions, for any past task $k<t$, the expected forgetting satisfies
+\begin{equation}
+\label{eq:forgetting-bound}
+\mathbb{E}\!\left[\psi_t(k)\right]
+\;\;\lesssim\;\;
+L_g L_f\,\Delta_t \;+\; C\,L_\phi\,\Delta_t \;+\; E_\text{opt},
+\end{equation}
+where $\psi_t(k)$ denotes the forgetting on task $k$ after session $t$, 
+the first term quantifies the replay-drift contribution from feature mismatch, 
+the second term reflects the growth of the hypothesis class (for some constant $C>0$), 
+and $E_\text{opt}\ge 0$ accounts for the residual optimization error at session $t$.
+\end{theorem}
+
+\cref{eq:forgetting-bound} shows that FPFT’s flexibility comes at the cost of stability: large updates $\Delta_t$ amplify both replay drift ($L_gL_f\Delta_t$) and generalization growth ($C L_\phi\Delta_t$), leading to potential overfitting and forgetting. Moreover, stale features from the old encoder deviate from the updated one, weakening replay supervision. These findings motivate the layer-adaptive tuning and feature rectification in MAGR++, which jointly constrain $\Delta_t$ and reduce feature drift for stable continual adaptation.
+A detailed proof of \cref{thm:fpft-replay} is deferred to \cref{sec:proof-fpft-replay}.
+
+\cref{thm:peft-vs-fpft} shows that FPFT strictly dominates PEFT by avoiding projection gaps, yet 
+\cref{thm:fpft-replay} further reveals two crucial risks in CAQA: (i) FPFT may suffer from overfitting as the hypothesis class grows across sessions, and (ii) feature replay is vulnerable to representation drift when old features become misaligned with the updated backbone. 
+In the original MAGR~\cite{zhou2024magr}, synchronous projector training exacerbates this misalignment, leading to unstable replay correction. 
+
+To address these challenges, MAGR++ introduces \textbf{two key improvements}: 
+(i) layer-adaptive fine-tuning, which constrains updates on low-level layers while fully tuning high-level ones, thereby balancing stability and adaptability; and 
+(ii) asynchronous feature rectification, which allows the backbone and projector to converge before replay correction, preventing noisy updates and ensuring robust continual adaptation.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth,clip,trim=140 80 140 76]{figs/idea.pdf}
+    \caption{
+        Core idea of MAGR++: 
+        (a) Old features (\textcolor{deviatedBlue}{blue circles}) deviate from the current manifold (\textcolor{currentOrange}{orange curve}) due to manifold shift; 
+        (b) Mixing old and new features (\textcolor{sessionGreen}{green circles}) leads to confusion in score regression; 
+        (c) The manifold projector translates old features from the previous manifold (\textcolor{oldYellow}{yellow curve}) to the current one; 
+        (d) The feature space is further aligned with the quality score space.
+    }
+    \label{fig:idea}{
+    \phantomsubcaption\label{fig:idea-a}%
+    \phantomsubcaption\label{fig:idea-b}%
+    \phantomsubcaption\label{fig:idea-c}%
+    \phantomsubcaption\label{fig:idea-d}%
+     }%
+\end{figure}
+
+
+\section{Adaptive Manifold-Aligned Graph Regularization (MAGR++)} \label{sec:method}
+This section presents the design of our proposed MAGR++ for CAQA. We first introduce the task definition, motivation, and overall architecture, and then describe the core modules. The training strategy that integrates these components into a CL system is presented in \cref{sec:training}.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\linewidth,clip,trim=0 75 0 90]{figs/magr++framework.pdf}
+    \caption{Overview of MAGR++. At the end of session $t-1$ \subref{fig:framework-a}, representative features are selected via Ordered Uniform Sampling (OUS, \subref{fig:framework-b}) and stored in the memory bank $\mathcal{M}$. At the start of session $t$ \subref{fig:framework-c}, the backbone is adapted with layer-adaptive FPFT \subref{fig:framework-d} to balance stability and plasticity. A Manifold Projector (MP) is then trained \subref{fig:framework-e} to align old features with the evolving feature space \subref{fig:framework-f}, enabling effective replay and regressor adaptation \subref{fig:framework-g}. Finally, the memory bank is refreshed with rectified old features and newly sampled prototypes \subref{fig:framework-h}.}
+    \label{fig:framework}
+    \phantomsubcaption\label{fig:framework-a}%
+    \phantomsubcaption\label{fig:framework-b}%
+    \phantomsubcaption\label{fig:framework-c}%
+    \phantomsubcaption\label{fig:framework-d}%
+    \phantomsubcaption\label{fig:framework-e}%
+    \phantomsubcaption\label{fig:framework-f}%
+    \phantomsubcaption\label{fig:framework-g}%
+    \phantomsubcaption\label{fig:framework-h}%
+    \vspace{-0.2cm}
+\end{figure*}
+
+
+\subsection{Motivation and Framework Overview}
+\myPara{Addressing CAQA Challenges with MAGR++}
+As discussed in \cref{sec:fundation}, CAQA poses a dilemma for CL: fine-tuning the backbone is essential for adapting to new sessions, yet it inevitably causes feature manifold shift and catastrophic forgetting. As illustrated in \cref{fig:idea}, this shift causes stored feature prototypes (blue circles) to deviate from the new feature manifold (orange curve), making them ineffective for reply (see \cref{fig:idea-a}) and prone to confusing score regression when mixed with current features (see \cref{fig:idea-b}). These challenges undermine replay-based methods and highlight the need for shift-aware adaptation. To address this, MAGR++ introduces a two-step solution: (i) mapping old features from their previous manifold (yellow curve) onto the current session’s manifold (see \cref{fig:idea-c}); and (ii) readjusting the translated distribution for optimal alignment with target scores (see \cref{fig:idea-d}).
+
+\myPara{Framework Overview}
+\cref{fig:framework} depicts the overall pipeline of MAGR++. 
+At the end of session $t-1$ (see \cref{fig:framework-a}), Ordered Uniform Sampling (OUS, see \cref{fig:framework-b}) stores representative features in the memory bank $\mathcal{M}$ by sorting samples by quality scores and uniformly selecting them across the score range, ensuring diverse coverage. 
+At the beginning of each new session $t$ (see \cref{fig:framework-c}), the backbone is adapted to the new data distribution via layer-adaptive FPFT (see \cref{fig:framework-d}).
+Next, the Manifold Projector (MP) is trained to align session-wise feature spaces (see \cref{fig:framework-e}) by using paired features from the frozen backbone $f^{t-1}$ and the updated backbone $f^t$, learning a mapping from the old space to the new one. Additionally, an Intra-Inter-Joint Graph Regularization (IIJ-GR) promotes feature alignment across sessions. The regressor is jointly trained on rectified old features and new features (see \cref{fig:framework-g}), enabling adaptation to new data while retaining previously acquired knowledge.
+Finally, after regressor training, old features are first updated via MP to align with the current feature space (see \cref{fig:framework-h}), and new prototypes from session $t$ are chosen and added to $\mathcal{M}$. 
+
+Formally, at session $t$, MAGR++ optimizes the backbone ($\bm{\theta}_f^t$), regressor ($\bm{\theta}_g^t$), and manifold projector ($\bm{\theta}_p^t$) by minimizing the following composite training objective:
+\begin{equation}
+\begin{aligned}
+    \min_{\bm{\theta}_f^t,\,\bm{\theta}_g^t,\,\bm{\theta}_p^t}\ 
+    &\ \mathcal{L}_{\text{D}} + \mathcal{L}_{\text{M}} + \lambda_{\text{tune}}\,\mathcal{L}_{\text{tune}} + \lambda_{\text{proj}}\,\mathcal{L}_{\text{proj}} + \lambda_{\text{reg}}\,\mathcal{L}_{\text{reg}} \\
+    \text{s.t.} \quad
+    &\ \hat{y}_i^t = g^t(f^t(\mathbf{x}_i^t)), ~~ (\mathbf{x}_i^t, y_i^t) \in \mathcal{D}^t_{\text{train}}, \\
+    &\ \hat{y}_j = g^t(p^t(\bm{h}_j)), ~~ (\bm{h}_j, y_j) \in \mathcal{M}.
+\end{aligned}
+\label{eq:magrpp-obj}
+\end{equation}
+Here, $\mathcal{L}_{\text{D}}$ and $\mathcal{L}_{\text{M}}$ follow \cref{eq:caqa}, $\mathcal{L}_{\text{tune}}$ is the FPFT loss (see \cref{eq:la} in \cref{sec:layer_adaptive}), and $\mathcal{L}_{\text{proj}}$ (see \cref{eq:proj} in \cref{sec:mp}) and $\mathcal{L}_{\text{reg}}$ (see \cref{eq:iij} in \cref{sec:iij_gr}) regularize the projector and regressor, respectively. The coefficients $\lambda_{\text{tune}}$, $\lambda_{\text{proj}}$, and $\lambda_{\text{reg}}$ balance the corresponding loss terms.
+
+\subsection{Stability–Adaptability Balance via Layer-Adaptive FPFT} \label{sec:layer_adaptive}
+A central challenge in CAQA is the stability–adaptability dilemma: FPFT provides strong adaptation to new sessions but risks overfitting and catastrophic forgetting. Inspired by prior findings in vision representation learning \cite{datta2025deep}, we leverage the hierarchical functionality of pretrained backbone: shallow layers capture spatial cues (\emph{where}), middle layers encode semantics (\emph{what}), and deeper layers model execution quality (\emph{how}). Since AQA depends primarily on fine-grained motion quality, we propose \textbf{layer-adaptive FPFT} (see \cref{fig:la_fpft}), which constrains shallow layers for stability while fully fine-tuning deeper layers for adaptability. Adaptive layer selection identifies the optimal boundary, and constrained full tuning regularizes updates, systematically balancing robustness and flexibility. Unlike previous CL methods such as first-session adaptation and continual PEFT \cite{zhou2025adaptive,xin2024parameter,wang2023hierarchical,wang2025hide}, our novelty lies in exploiting the intrinsic hierarchical decomposition of representations to explicitly balance stability and adaptability in CAQA, offering a principled solution applicable beyond this domain.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth,clip,trim=165 160 165 160]{figs/la-fpft.pdf}
+    \caption{Illustration of layer-adaptive FPFT.}
+    \label{fig:la_fpft}
+    \phantomsubcaption\label{fig:la_fpft-a}
+    \phantomsubcaption\label{fig:la_fpft-b}
+    \vspace{-0.2cm}
+\end{figure}
+
+
+\myPara{Adaptive Layer Selection}  
+The key to layer-adaptive FPFT lies in identifying the optimal boundary between stable and adaptive layers.  
+Exhaustive grid search is infeasible since it requires future session data and incurs prohibitive cost. 
+Instead, we exploit only base-session data to guide boundary selection, preventing information leakage.  
+As shown in \cref{fig:la_fpft-a}, we evaluate the abstraction degree encoded at each layer by treating clustering quality as a proxy for feature abstraction, denoted as \(\mathcal{C}^l\) for the \(l\)-th layer. Shallower layers dominated by low-level appearance cues generally yield noisy and less separable structures, whereas deeper layers encode more abstract and quality-aware features that are easier to cluster by action scores. For each layer \(l\), we compute the Davies--Bouldin index from both the frozen backbone \(f_{\text{fix}}\) and the fine-tuned backbone \(f_{\text{tune}}\), and define the abstraction ratio as \(r^l = \mathcal{C}^l_{\text{tune}} / \mathcal{C}^l_{\text{fix}}\).
+ The key intuition is that \(r^l \leq 1\) indicates no gain, or even degradation, from fine-tuning, suggesting that the layer is still dominated by low-level cues, whereas \(r^l > 1\) signifies improved separability and abstraction through fine-tuning. Accordingly, the optimal boundary is determined as:
+\begin{equation}
+L_{\text{opt}} = \min \big\{ l \in \{1,\dots,L\} \;|\; r^l > 1 + \epsilon \big\},
+\label{eq:Lopt}
+\end{equation}
+where \(\epsilon\) is a small margin (e.g., 0.05) introduced to enhance robustness against noise. Layers below \(L_{\text{opt}}\) are constrained to remain stable, while deeper layers are fully fine-tuned to adapt to evolving quality distributions. This principled criterion eliminates future-data dependence, avoids costly grid search, and provides a robust mechanism for balancing stability and adaptability in CAQA.
+As shown in \cref{fig:cluster}, the layer boundaries selected by our method are consistent with those obtained via exhaustive grid search, verifying its effectiveness.  
+
+\myPara{Constrained Full Tuning}  
+During the current session $t$, we constrain the backbone's updates for layers below $L_{\text{opt}}$ when adapting the backbone $f^t$ (see \cref{fig:la_fpft-b}).  
+Given current session data $\mathbf{x}_i^t$, we obtain paired features $\bm{z}_i^{t,l}$ from $f^t$ and $\bm{z}_i^{t-1,l}$ from the previous backbone $f^{t-1}$ at layer $l<L_{\text{opt}}$.  
+We then enforce consistency between features across sessions using a feature-matching loss, which is: 
+\begin{equation} \label{eq:la}
+\mathcal{L}_{\text{tune}} = \frac{1}{N_t}\sum_{i=1}^{N_{t}}\sum_{l < L_{\text{opt}}} 
+\big\| \bm{z}_i^{t,l} - \bm{z}_i^{t-1,l} \big\|_2^2,
+\end{equation}
+where $N_t$ is the number of samples in the current session and $\bm{z}_i^{t,l}$ denotes the feature from layer $l$ at session $t$.  
+Unlike freezing features entirely, this soft constraint still permits shallow layers to undergo limited adaptation, as suggested by \cref{fig:cluster}, while effectively preventing uncontrolled drift.  
+This design stabilizes generic low-level representations without suppressing their necessary refinement, thereby balancing stability and adaptability during FPFT. Interestingly, our experiments further show that applying the constraint only at layer $L_{\text{opt}}-1$ is sufficient to achieve stable performance, offering a lightweight yet effective regularization strategy.
+
+\subsection{Deviated Feature Translation via Manifold Projector} \label{sec:mp}
+
+As identified in \cref{sec:fundation}, CAQA suffers from manifold shift under FPFT, as features extracted from earlier sessions become inconsistent with the updated backbone, causing replayed samples to misalign with the current representation and degrade regressor performance. Existing strategies remain insufficient. Experience replay \cite{buzzega2020dark} depends on raw inputs and raises storage and privacy concerns. Backbone freezing \cite{yang2023neural} preserves stability but hinders adaptation. Alignment-based corrections \cite{zhang2023slca} only partially capture evolving shifts. To this end, we introduce the \textbf{Manifold Projector (MP)}, which estimates the manifold shift between adjacent sessions and translates deviated features into the current representation space without requiring raw inputs. 
+
+\myPara{Projector Learning}
+The key to MP lies in estimating the manifold shift without accessing raw data from previous sessions. We cast this as a self-supervised prediction problem using only current-session inputs. As shown in \cref{fig:framework-e}, at the start of session $t$ we freeze the previous backbone $f^{t-1}$ and compute initial features $\bm{z}_j^t=f^{t-1}(\mathbf{x}_j^t)$ for each current sample $\mathbf{x}_j^t$. We then train a projector $p(\cdot)$ to predict the updated features produced by the adapting backbone $f^t$, which is:
+\begin{equation}\label{eq_mp_learning}
+\bm{\hat{h}}_j^t=\bm{z}_j^t+p(\bm{z}_j^t),
+\end{equation}
+where the residual connection stabilizes optimization.  
+The projector is optimized by minimizing the discrepancy between the predicted features $\bm{\hat{h}}_j^t$ and the actual updated features $\bm{h}_j^t = f^t(\mathbf{x}_j^t)$, which is:
+\begin{equation} \label{eq:proj}
+\mathcal{L}_{\text{proj}} = \frac{1}{N_t} \sum_j \| \bm{h}_j^t - \bm{\hat{h}}_j^t \|_2^2,
+\end{equation}
+where $N_t$ is the number of samples in session $t$, and $\|\cdot\|_2^2$ denotes the mean squared error. 
+In parallel, old features fetched from the memory bank are updated via the projector and used to compute a regularization loss with respect to $\bm{\hat{h}}_j^t$, further constraining projector learning (detailed in \cref{sec:iij_gr}).  
+This design enables the projector to capture representation shifts effectively without requiring access to old data.
+
+
+\myPara{Deviated Feature Projection}  
+Once trained with sufficient coverage of the current session data, the projector is applied to translate old features from previous sessions into the current representation space.  
+For an old feature $\bm{h}_i^s$ stored in memory ($s < t$), the corrected feature is computed as:
+\begin{equation} \label{eq_fp}
+\bm{h}_i^s \leftarrow \bm{h}_i^s + p(\bm{h}_i^s).
+\end{equation}
+This translation aligns old features with the updated manifold, ensuring stable replay that alleviates catastrophic forgetting.  
+
+
+\subsection{Feature Alignment via Intra-Inter-Joint Graph Regularizer} \label{sec:iij_gr}
+
+While MP translates old features into the current representation space, it does not ensure that the overall feature distribution remains aligned with the quality score distribution (see \cref{fig:idea-c}). Existing graph-based CL methods \cite{tao2020few} often rely on Euclidean distances, which fail to capture the geodesic structure of quality relationships and thus distort feature–score alignment (see \cref{fig:iij_gr-a}). Furthermore, features from different sessions may suffer from inconsistent scaling, which disrupts the relative ordering of quality scores and confuses regression. To address these issues, we propose the \textbf{Intra-Inter-Joint Graph Regularizer (IIJ-GR)}, which explicitly enforces both local (intra-session) and global (inter-session) consistency between the feature and score spaces, as shown in \cref{fig:iij_gr}. The key innovation lies in leveraging angular distances on a unit hypersphere (see \cref{fig:iij_gr-b}), together with a distance matrix partitioning strategy (see \cref{fig:iij_gr-c}) that provides a principled mechanism to preserve the geometric structure of quality relationships across sessions, thereby enhancing both stability and accuracy in CAQA.
+
+
+\myPara{Distance Matrix Partitioning}  
+Given a mini-batch of old features $\bm{h}_i^s$ from the memory bank and $\bm{h}_j^t$ from the current session, we form a joint feature matrix 
+\(\mathbf{H} = [\bm{h}_1^s, \dots, \bm{h}_{b_1}^s, \bm{h}_1^t, \dots, \bm{h}_{b_2}^t]\).  
+All features are normalized onto a unit hypersphere, where each row of \(\tilde{\mathbf{H}}\) has unit length. Their pairwise angular distances are:
+\begin{equation}
+\mathbf{A} = \arccos\!\left(\tilde{\mathbf{H}} \tilde{\mathbf{H}}^\top \right).
+\end{equation}
+Compared to Euclidean distance, angular distance better preserves the geodesic structure of semantic similarity \cite{bao2023pcfgaze}, which is crucial for reflecting fine-grained quality cues.  
+The resulting matrix $\mathbf{A}$ is then partitioned into four sub-blocks corresponding to intra-session relations in past data, intra-session relations in current data, and inter-session relations across the two.  
+This partitioning disentangles local (within-session) and global (cross-session) dependencies, enabling structured supervision that balances stability and adaptability in distribution alignment.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth,clip,trim=95 165 120 140]{figs/graph_reg.pdf}
+    \caption{Illustrations of IIJ-GR: \subref{fig:iij_gr-a} Euclidean distance, \subref{fig:iij_gr-b} Angular distance, and \subref{fig:iij_gr-c} Distance Matrix Partitioning (DMP).}
+    {
+        \phantomsubcaption\label{fig:iij_gr-a}%
+        \phantomsubcaption\label{fig:iij_gr-b}%
+        \phantomsubcaption\label{fig:iij_gr-c}%
+    }
+    \label{fig:iij_gr}
+    \vspace{-0.2cm}
+\end{figure}
+
+\myPara{Graph Regularization}  
+To align the feature geometry with quality relationships, we construct a score distance matrix $\mathbf{S} = \bm{y} - \bm{y}^\top$, where $\bm{y}$ denotes the quality labels of the joint batch.  
+We then define the regularization loss as:
+\begin{equation} \label{eq:iij}
+\mathcal{L}_{\text{reg}} = 
+\|\mathbf{A} - \mathbf{S}\|_2^2 
++ \sum_{i=1}^2\sum_{j=1}^2 \|\mathbf{A}_{ij} - \mathbf{S}_{ij}\|_2^2.
+\end{equation} 
+By jointly optimizing the global distance matrix $\mathbf{A}$ and its sub-blocks against $\mathbf{S}$, IIJ-GR enforces alignment between feature distances and score relationships at both intra- and inter-session levels.  
+This design preserves local ranking consistency within each session while maintaining global comparability across sessions, ensuring that rectified features remain semantically meaningful for continual regression.
+
+\begin{table*}[h!]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \caption{\textbf{Offline} performance comparison. The primary metric is $\rho_{\text{avg}}$, with Joint Training as the Upper Bound (UB) and Sequential FT as the Lower Bound (LB). Best results are highlighted in bold. $\uparrow$: higher is better; $\downarrow$: lower is better.}
+    \label{tab:offline}
+    \vspace{0.2cm}
+    %================= 1 =================
+    \begin{minipage}{0.50\linewidth}
+        \centering
+        \subcaption{MTL-AQA (default, w/o difficulty label)}
+        \vspace{-1.5mm}
+        \begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+        \toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+        \midrule
+        \rowcolor{orange!5}Joint Training (UB) & - & None & 0.9360 & - & {-} \\
+        \rowcolor{orange!5}Sequential FT (LB) & - & None & 0.5458 & 0.1524 & 0.0538 \\
+        \rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.5526 & 0.2677 & 0.0350 \\
+        \rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.2312 & 0.1553 & 0.0343 \\
+        \rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.4581 & 0.1894 & 0.0490 \\
+        \rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.8720 & 0.1303 & 0.0625 \\
+        \rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.8334 & 0.1775 & 0.0433 \\
+        \rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.7693 & 0.1427 & 0.1391 \\
+        \rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.8583 & 0.0950 & 0.1429 \\
+        \rowcolor{brown!5}Feature MER & - & Feature & 0.7283 & 0.2255 & 0.0535 \\
+        \rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.7223 & 0.1852 & 0.1665 \\
+        \rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.8426 & 0.1146 & 0.0718 \\
+        \rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.8060 & 0.1456 & 0.0790 \\
+        \rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.8979 & 0.0223 & \bf 0.1914 \\
+        \rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \bf 0.9205 & \bf 0.0103 & 0.1274 \\
+        \bottomrule
+        \end{tabular}
+    \end{minipage}\hfill
+    %================= 2 =================
+    \begin{minipage}{0.50\linewidth}
+        \centering
+        \subcaption{MTL-AQA (w/ difficulty)}
+        \vspace{-1.5mm}
+        \begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+        \toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+        \midrule
+        \rowcolor{orange!5}Joint Training (UB) & - & None & 0.9587 & - & {-} \\
+        \rowcolor{orange!5}Sequential FT (LB) & - & None & 0.8684 & 0.1418 & 0.2282 \\
+        \rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.8678 & 0.2050 & 0.2491 \\
+        \rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.8625 & 0.1267 & 0.1776 \\
+        \rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.7852 & 0.1501 & 0.0912 \\
+        \rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.9234 & 0.0832  & 0.3089 \\
+        \rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.9037 & 0.1230 & 0.3122 \\
+        \rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.8782 & 0.1394 & 0.2304 \\
+        \rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.8873 & 0.1707 & 0.3127 \\
+        \rowcolor{brown!5}Feature MER & - & Feature & 0.8785 & 0.2130 & 0.2436 \\
+        \rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.6885 & 0.2029 & 0.0958 \\
+        \rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.9034 & 0.0878 & 0.1456 \\
+        \rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.9136 & 0.1280 & 0.3145  \\
+        \rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature &  0.9237 & 0.0615 & 0.1944 \\
+        \rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \bf 0.9383 & \bf 0.0181 & \bf 0.3222 \\
+        \bottomrule
+        \end{tabular}
+    \end{minipage}\hfill
+
+    %================= 3 =================
+    \begin{minipage}{0.50\linewidth}
+        \centering
+        \vspace{2mm}
+        \subcaption{FineDiving (w/ dive number)}
+        \vspace{-1.5mm}
+        \begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+        \toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+        \midrule
+        \rowcolor{orange!5}Joint Training (UB) & - & None & 0.9075 & - & {-} \\
+        \rowcolor{orange!5}Sequential FT (LB) & - & None & 0.7420 & 0.1322 & 0.2135 \\
+        \rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.6863 & 0.2330 & 0.1938 \\
+        \rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.5311 & 0.3177 & 0.1776 \\
+        \rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.7648 & 0.0807 & 0.2894 \\
+        \rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.8276 & 0.1446 & 0.2806 \\
+        \rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.8285 & 0.1523 & 0.2851 \\
+        \rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.8006 & 0.1344 & 0.2744 \\
+        \rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.8309 & 0.0721 & 0.2883 \\
+        \rowcolor{brown!5}Feature MER & - & Feature & 0.4914 & 0.2354 & 0.2344 \\
+        \rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.8130 & 0.0920 & 0.2453 \\
+        \rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.8087 & 0.0203 & 0.3404 \\
+        \rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.8123 & 0.1412 &  0.2928 \\
+        \rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.8580 & 0.0167 & 0.2952 \\
+        \rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \bf 0.8902 & \bf 0.0090 & \bf 0.3915 \\
+        \bottomrule
+        \end{tabular}
+    \end{minipage}\hfill
+    %================= 4 =================
+    \begin{minipage}{0.50\linewidth}
+        \centering
+        \vspace{2mm}
+        \subcaption{UNLV-Dive}
+        \vspace{-1.5mm}
+        \begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+        \toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+        \midrule
+        \rowcolor{orange!5}Joint Training (UB) & - & None & 0.8460 & - & {-} \\
+        \rowcolor{orange!5}Sequential FT (LB) & - & None & 0.6307 & 0.2135 & ~\bf 0.3595 \\
+        \rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.1519 & 0.3822 & 0.0220 \\
+        \rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.4096 & 0.2576 & 0.3039 \\
+        \rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.6081 & 0.1578 & 0.3230 \\
+        \rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.7397 & 0.1321 & 0.0465 \\
+        \rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.7206 & 0.1382 & -0.1773 \\
+        \rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.4085 & 0.2647 & 0.1132 \\
+        \rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.6538 & 0.2322 & 0.0270 \\
+        \rowcolor{brown!5}Feature MER & - & Feature & 0.5675 & 0.1322 & 0.1558 \\
+        \rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.5551 & 0.1085 & 0.3200 \\
+        \rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.6458 & 0.0637 & -0.1677 \\
+        \rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.7374 & \bf 0.0263 & -0.0742 \\
+        \rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.7668 & 0.0827 & 0.1227 \\
+        \rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \bf 0.8165 & 0.0910  &  0.3502 \\
+        \bottomrule
+        \end{tabular}
+    \end{minipage}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Online} performance comparison. The primary metric is $\rho_{\text{avg}}$, with Joint Training as the Upper Bound (UB) and Sequential FT as the Lower Bound (LB). Best results are highlighted in bold. $\uparrow$: higher is better; $\downarrow$: lower is better.}
+
+% --------- MTL-AQA w/o diff ----------
+\begin{minipage}{0.50\linewidth}
+\centering
+\subcaption{MTL-AQA (default, w/o difficulty label)}
+\vspace{-1.5mm}
+\begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}] }
+\toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+\midrule
+% \rowcolor{orange!5}Joint Training (UB) & - & None & 0.6113 & - & - \\
+\rowcolor{orange!5}Sequential FT (LB) & - & None & 0.4926 & 0.0649 & -0.1416 \\
+\rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.5243 & 0.0253 & 0.0669 \\
+\rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.5401 & 0.0303 & 0.0850 \\
+\rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.5243 & 0.0170 & 0.0797 \\
+\rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.5734 & 0.0394 & 0.0262  \\
+\rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data &  0.5415 & 0.0146 & 0.0857  \\
+\rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.5116 & 0.0981 & 0.0690 \\
+\rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.5490 & 0.0612 & \bf 0.0972  \\
+\rowcolor{brown!5}Feature MER & - & Feature & 0.3571 & 0.1444 & -0.0213 \\
+\rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.4880 & 0.0430 & -0.0282 \\
+\rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.4971 & 0.0291 & -0.0463 \\
+\rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.3322 & 0.0725 & -0.0581 \\
+\rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.5196 & 0.0337 & 0.0282 \\
+\rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \textbf{0.5618} & \textbf{0.0165} & 0.0405  \\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+%
+% --------- MTL-AQA w/ diff ----------
+\begin{minipage}{0.50\linewidth}
+\centering
+\subcaption{MTL-AQA (w/ difficulty label)}
+\vspace{-1.5mm}
+\begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+\toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+\midrule
+% \rowcolor{orange!5}Joint Training (UB) & - & None & 0.6310 & - & - \\
+\rowcolor{orange!5}Sequential FT (LB) & - & None & 0.6022 & 0.0647 & -0.0536 \\
+\rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.6581 & 0.0803 & 0.0429 \\
+\rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.6371 & 0.1372 & 0.0895 \\
+\rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.6416 & 0.0134 & 0.3076 \\
+\rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.6290 & 0.0833 & 0.0057 \\
+\rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.6444 & 0.1133 & 0.0221 \\
+\rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.6241 & 0.0916 & 0.0258 \\
+\rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.6422 & 0.0894 & 0.0105  \\
+\rowcolor{brown!5}Feature MER & - & Feature & 0.6065 & 0.0472 & -0.0294  \\
+\rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.5980 & 0.0827 & -0.0266 \\
+\rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.5937 & 0.1006 & 0.0181 \\
+\rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.5339 & 0.0723 & -0.0108 \\
+\rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.6416 & \textbf{0.0134} & \bf 0.3076 \\
+\rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \textbf{0.6676} & 0.0810 & -0.0126 \\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+
+%
+% --------- FineDiving ----------
+\begin{minipage}{0.50\linewidth}
+\centering
+\vspace{2mm}
+\subcaption{FineDiving (w/o dive number)}
+\vspace{-1.5mm}
+\begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+\toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+\midrule
+% \rowcolor{orange!5}Joint Training (UB) & - & None &  &  &  \\
+\rowcolor{orange!5}Sequential FT (LB) & - & None & 0.3970 & 0.0448 & 0.0557 \\
+\rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.4597 & 0.0149 & 0.0553 \\
+\rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.3222 & 0.0471 & 0.0825 \\
+\rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.4230 & 0.0217 & 0.1144  \\
+\rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.4116 & 0.0534 & 0.0426  \\
+\rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.4358 & 0.0707 & 0.1045 \\
+\rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.4654 & 0.0978 & 0.1086 \\
+\rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.4414 & 0.0531 & 0.1109 \\
+\rowcolor{brown!5}Feature MER & - & Feature & 0.1935 & 0.0998 & 0.1559 \\
+\rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.3935 & 0.3360 & 0.2346 \\
+\rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.3810 & 0.0079 & \bf 0.2518 \\
+\rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.4266 & 0.0732 & 0.1645 \\
+\rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.4641 & \textbf{0.0062} & 0.2020 \\
+\rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \textbf{0.5325} & 0.0094 & 0.1227 \\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+%
+% --------- UNLV-Dive ----------
+\begin{minipage}{0.50\linewidth}
+\centering
+\vspace{2mm}
+\subcaption{UNLV-Dive}
+\vspace{-1.5mm}
+\begin{tabular}{l r c cc S[table-format=+1.4, input-symbols={\textbf}]}
+\toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+\midrule
+% \rowcolor{orange!5}Joint Training (UB) & - & None &  &  &  \\
+\rowcolor{orange!5}Sequential FT (LB) & - & None & 0.2251 & 0.2592 & -0.1432 \\
+\rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.3465 & 0.2211 & -0.3182 \\
+\rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.3722 & 0.2631 & -0.3542 \\
+\rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.3981 & 0.2132 & -0.3913 \\
+\rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.2890 & 0.2222 & -0.3567 \\
+\rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.4291 & 0.1350 & -0.3106 \\
+\rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.3874 & 0.2112 & -0.3454 \\
+\rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.4094 & 0.2315 & -0.3773 \\
+\rowcolor{brown!5}Feature MER & - & Feature & 0.1308 & 0.2126 & -0.4571 \\
+\rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.3119 & 0.1641 & -0.3082 \\
+\rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.3136 & 0.1282 & -0.4892 \\
+\rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.3639 & 0.1510 & -0.1555  \\
+\rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.4202 & 0.1947 & -0.0499 \\
+\rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \textbf{0.5117} & \textbf{0.0959} & \bf 0.3927 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\label{tab:online}
+\end{table*}
+
+\section{Experiments}  \label{sec:exp}
+We conduct extensive experiments to evaluate the effectiveness and robustness of our proposed MAGR++ for CAQA. 
+In addition, we provide supplementary experiments in \cref{sec:add_exp} to further validate the generality of our approach.
+
+\subsection{Experimental Setting}
+\myPara{Datasets} 
+We build CAQA benchmarks on three diving AQA datasets of varying scales and feature-shift levels (validated in \cref{tab:deviation}). 
+\textbf{MTL-AQA} \cite{parmar2019action} contains 1412 samples across 16 diving events (male/female, single/double, 3m springboard, 10m platform), with detailed annotations of action categories, commentary, and AQA scores; 1059 samples are used for training and 353 for testing. \textbf{FineDiving} \cite{xu2022finediving} includes 3000 dives from major competitions (Olympics, World Cup, etc.), annotated with 52 action types, 29 sub-action types, 23 difficulty levels, temporal boundaries, and both action and AQA scores; we adopt the official 75\%/25\% train/test split. \textbf{UNLV-Dive} \cite{parmar2017learning} provides 370 videos (300 train and 70 test) from the 2012 London Olympics 10 m platform event, with final scores ranging from 21.6–102.6 and execution scores in [0, 30]. We focus on diving datasets in the main paper because they offer multiple well-annotated benchmarks with consistent action types, ensuring fair cross-dataset comparison. Results on other actions, such as UNLV-Vault \cite{yu2021group}, are provided in \cref{sec:add_exp} to demonstrate generalization beyond diving while keeping the main analysis concise and focused.
+
+\myPara{CAQA Protocol}  
+To simulate real-world skill variations, we introduce a grade-incremental setting for CAQA that couples regression and classification challenges. The continuous quality space is discretized into $G$ grade intervals, with $S$ samples per session to induce challenging score variations. Unlike the uniform and independent class space in traditional class-incremental tasks \cite{zhang2023few}, our setting preserves contextual dependencies between adjacent grades. Here, grade order typically follows skill progression (with \cref{fig:parameter_change} analyzing task order effects), while the quality range also shifts across sessions. These challenges are compounded by the fine-grained regression nature of AQA, posing significant difficulties for lifelong learning in mitigating catastrophic forgetting.
+
+\myPara{CAQA Metrics} 
+We propose innovative evaluation metrics tailored to the CAQA setting. Our design builds upon Spearman's Rank Correlation Coefficient (SRCC) $\rho$, the standard metric in AQA for measuring the alignment between predicted scores $\hat{\bm{y}}$ and ground-truth scores $\bm{y}$. Given rank vectors $\bm{p}$ and $\bm{q}$ for $\bm{y}$ and $\hat{\bm{y}}$, SRCC is defined as:
+\begin{equation} \label{eq:rho}
+  \rho = \frac{ \sum_i (p_i - \bar{p}) (q_i - \bar{q}) }{\sqrt{\sum_i (p_i - \bar{p})^2 \sum_i (q_i - \bar{q})^2}},
+\end{equation}
+where $\bar{p}$ and $\bar{q}$ are the mean ranks of $\bm{p}$ and $\bm{q}$.  
+However, SRCC is highly sensitive to sample size, making simple averaging across sessions unreliable in CL scenarios. To address this, we introduce the overall correlation $\rho_{\text{avg}}$ as the \textbf{primary} CAQA metric, which aggregates predictions from all sessions into a single unified estimate, ensuring fairness and consistency across tasks.  
+To further probe model stability and adaptability, we also report two auxiliary metrics: average forgetting $\rho_{\text{aft}} = \tfrac{1}{T-1} \sum_{t=1}^{T-1} \max_{i,j \in \{1,2,\cdots,T\}} (\rho_{i,t} - \rho_{j,t})$ and forward transfer $\rho_{\text{fwt}} = \tfrac{1}{T-1} \sum_{t=2}^{T} (\rho_{t-1,t} - \tilde{\rho}_{t})$, where $\rho_{i,j}$ denotes the correlation on the $j$-th test set after training up to task $i$ ($j \leq i$), and $\tilde{\rho}_{t}$ is the baseline correlation of a randomly initialized model on task $t$.
+Together, these three metrics provide a comprehensive assessment of CAQA in terms of accuracy, stability, and plasticity.
+
+\myPara{Implementation Details}  
+All experiments are conducted on two Nvidia 4090 GPUs using PyTorch. We adopt the I3D backbone \cite{carreira2017quo} with a score regression model \cite{zhou2023hierarchical}. Training is performed using Adam with a learning rate of $10^{-4}$ and weight decay of $10^{-5}$, run for up to 50 epochs in the offline setting, and for 1 epoch in the online setting. To emulate real-world constraints of limited data streams and label scarcity, we configure the incremental setting with $G=5$ and $S=20$, using batch size $b_1=5$ and mini-batch size $b_2=3$. The remaining data are reserved for base-session adaptation, providing a stable foundation before incremental updates. Batch normalization layers in the backbone are frozen to mitigate small-batch effects. MP is implemented as a two-layer MLP that learns residual feature shifts between old and new manifolds, which can be effectively captured without complex architectures. 
+All losses are normalized to remove scale mismatch, so $\lambda_{\text{tune}}$, $\lambda_{\text{proj}}$, and $\lambda_{\text{reg}}$ are simply fixed to 1. 
+
+\subsection{Comparisons with Strong Baselines}   \label{sec:sota_cmp}
+Following prior work~\cite{yu2021group,zhou2023hierarchical}, we evaluate all methods on the MTL-AQA dataset with and without Difficulty Degree (DD). In total, our evaluation covers three benchmark datasets and four experimental configurations.
+For comprehensive comparison, we implement several recent CL baselines \cite{yang2023neural,zhang2023slca} and incorporate state-of-the-art CAQA models \cite{li2024continual,zhou2024magr}.  
+We then compare MAGR++ against these strong baselines in terms of offline performance (see \cref{tab:offline}), online performance (see \cref{tab:online}), and computational efficiency (see \cref{tab:computation}).  
+
+\myPara{Offline Performance}
+In \cref{tab:offline}, we report Upper-Bound (UB) results by jointly training all samples with the baseline \cite{zhou2023hierarchical}. These results serve only as references for fair comparison, as our focus is on enhancing CAQA performance rather than pursuing upper-bound improvements, which have been explored in recent AQA studies \cite{xu2025human,xu2025comprehensive}.  In contrast, sequentially training each task serves as the Lower Bound (LB). The gap between UB and LB reflects catastrophic forgetting, as evidenced by a 41.69\% correlation drop on MTL-AQA (w/o DD).
+Among these CL baselines, rehearsal-free methods generally perform worse than replay-based methods, indicating that the complexity of video and the fine-grained nature of AQA make replay-based strategies simple yet effective. Furthermore, raw data replay methods slightly outperform recent feature replay methods, as the continually adapting feature space induces severe catastrophic forgetting. 
+
+In contrast, MAGR++ explicitly addresses manifold shift and consistently surpasses MAGR and other feature-replay baselines across datasets with varying shift severity. On MTL-AQA (w/o DD), MAGR++ improves $\rho_{\text{avg}}$ from 0.8979 to 0.9205, a 2.52\% gain over MAGR and 9.25\% over NC-FSCIL \cite{yang2023neural}. With DD, it achieves 1.58\% and 2.70\% improvements over MAGR and FS-Aug \cite{li2024continual}, respectively. On FineDiving, MAGR++ reaches 0.8902, outperforming MAGR by 3.75\% and SLCA \cite{zhang2023slca} by 9.50\%, while on UNLV-Dive it improves from 0.7668 to 0.8165, a 6.48\% increase over MAGR and 10.73\% over FS-Aug. Beyond correlation, MAGR++ also achieves lower forgetting and stronger forward transfer than all competing baselines, highlighting its superiority.
+
+In addition, MAGR++ outperforms raw data replay methods such as MER \cite{riemer2019learning} and DER++ \cite{buzzega2020dark} by explicitly modeling feature relations across sessions, thereby mitigating catastrophic forgetting more effectively. Furthermore, by balancing plasticity and stability via effective FPFT, MAGR++ surpasses relation-based methods such as TOPIC \cite{tao2020few}.
+
+\begin{table}[h]
+    \centering
+    \setlength{\tabcolsep}{5pt}
+    \caption{Feature deviations and correlation gains.}
+    \begin{tabular}{llS[table-format=2.2]S[table-format=2.2]S[table-format=2.2]}
+    \toprule
+    \multicolumn{2}{c}{\textbf{Setting}}  & {\textbf{FineDiving}} & {\textbf{MTL-AQA}} & {\textbf{UNLV-Dive}} \\ 
+    \midrule
+    \rowcolor{orange!5} \multicolumn{2}{l}{Deviation Strength (MSE)}   & 26.85 & 35.28 & 51.75 \\ 
+    \rowcolor{brown!5}\cellcolor{yellow!5}  & FS-Aug \cite{li2024continual} & -0.09 & -4.34 & +14.18 \\
+    \rowcolor{brown!5}\cellcolor{yellow!5}  & MAGR \cite{zhou2024magr}     & +5.66 & +6.56 & +15.64 \\ 
+    \rowcolor{brown!5}\cellcolor{yellow!5} \multirow{-3}{*}{$\Delta \rho_{\text{avg}}$} & MAGR++ & +9.50 & +9.25 & +26.43 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:deviation}
+\end{table}
+
+Finally, we perform a \textit{cross-dataset analysis} by quantifying the feature deviations between pretrained and fine-tuned features under joint training, as shown in \cref{tab:deviation}.  
+This deviation, measured by mean squared error (MSE), reflects the degree of manifold shift induced during continual adaptation.  
+We observe that the three datasets exhibit different deviation levels: datasets with fewer samples and classes (e.g., UNLV-Dive) show larger deviations, while larger datasets (e.g., FineDiving) exhibit smaller deviations.  
+When comparing replay-based methods, FS-Aug often degrades under stronger shifts (e.g., $-4.34$ on MTL-AQA), while MAGR achieves moderate gains ($+5.66$, $+6.56$, $+15.64$).  
+In contrast, MAGR++ consistently delivers the largest improvements, scaling with deviation strength: $+9.50$ on FineDiving (MSE=26.85), $+9.25$ on MTL-AQA (MSE=35.28), and $+26.43$ on UNLV-Dive (MSE=51.75).  
+This confirms the superiority of MAGR++ to mitigate feature shifts over both prior methods.  
+
+\myPara{Online Performance}  
+In \cref{tab:online}, online results exhibit a different trend compared to offline.  
+Rehearsal-free methods such as SI \cite{zenke2017continual} and LwF \cite{li2017learning} achieve competitive performance relative to replay-based methods, mainly due to the domain gap between the pretraining domain (coarse action recognition) and the fine-grained AQA domain \cite{zhou2025phi,zhou2024cofinal}.  
+The single-epoch nature of online training, coupled with severe manifold shift, makes feature replay generally less effective than raw data replay.  
+In contrast, MAGR++ explicitly manages feature shifts and further stabilizes adaptation through layer-adaptive fine-tuning, leading to consistent improvements over MAGR and other baselines.  
+Specifically, on MTL-AQA (w/o DD), MAGR++ improves $\rho_{\text{avg}}$ from 0.5196 to 0.5618 (+8.12\% over MAGR, +6.57\% over MER).  
+On MTL-AQA (w/ DD), MAGR++ attains a correlation of 0.6676, 4.05\% higher than MAGR and 3.61\% higher than DER++. 
+On FineDiving, the correlation reaches 0.5325, 14.74\% higher than MAGR and 14.43\% higher than TOPIC. 
+The largest gain is observed on UNLV-Dive, where MAGR++ improves correlation from 0.4202 to 0.5117, 21.77\% higher than MAGR and 19.27\% higher than DER++.
+These results highlight the effectiveness of MAGR++ in mitigating catastrophic forgetting and adapting under severe distribution shifts in the online scenario.
+
+\begin{table}[th]
+    \centering
+    \caption{Computational performance on MTL-AQA. All metrics are reported as improvements over the offline LB.}
+    \label{tab:computation}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{lcc
+    S[table-format=+1.4, input-symbols={\textbf}]
+    S[table-format=+1.4, input-symbols={\textbf}]
+    S[table-format=+1.4, input-symbols={\textbf}]
+    }
+    \toprule
+    \bf Method & \makecell{\bf Parameters \\ \bf (M)} & \makecell{\bf Training \\ \bf Time (h)} & {\makecell{$\Delta\rho_{\text{avg}}$}} & {\makecell{$\Delta\rho_{\text{aft}}$}} & {\makecell{$\Delta\rho_{\text{fwt}}$}} \\
+    \midrule
+    \rowcolor{orange!5} SLCA \cite{zhang2023slca} & 13.62 & 2.27 & +0.1765 & -0.0672 & +0.1127 \\
+    \rowcolor{yellow!5} NC-FSCIL \cite{yang2023neural} & 12.62 & 2.33 & +0.2968 & -0.0378 & +0.0180 \\
+    \rowcolor{brown!5} Feature MER & 12.62 & 2.22 & +0.1825 & +0.0731 & -0.0003 \\
+    \rowcolor{yellow!5} MAGR \cite{zhou2024magr} & 12.63 & 2.23 & +0.3521 & -0.1301 & +0.1376 \\
+    \rowcolor{orange!5} MAGR++ (Ours) & 12.63 & 2.32 & +0.3925 & -0.1421 & +0.0736 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\myPara{Computational Efficiency}  
+\cref{tab:computation} reports model size and offline training time under previous settings~\cite{zhou2025adaptive}. MAGR++ incurs only negligible overhead, adding just 0.01M parameters and 0.09h training time compared to MAGR.   
+With this minor cost, MAGR++ achieves the largest gains over LB across all metrics, offering a favorable balance between computational efficiency and CL performance.  
+
+\subsection{Ablation Study}
+All ablation and parameter sensitivity experiments are conducted on MTL-AQA.  
+\cref{tab:ablation_mtl} summarizes the main ablation results.  
+Beyond these, we further investigate the impact of memory size (see \cref{fig:memory_size}), task order (see \cref{fig:parameter_change}), and robustness against sparse and noisy labeling attacks (see \cref{fig:sol}).  
+
+\myPara{Impact of Core Modules}
+\cref{tab:ablation_mtl} shows that backbone tuning, multi-phase rectification, graph relations, and sampling are all critical to the final performance.
+(1) Compared to the fixed backbone (ID~3, $\rho_{\text{avg}}$ drops by 47\%), both FPFT (ID~2) and PEFT (ID~4) achieve significant improvements, confirming that tuning is necessary to reduce the domain gap. FPFT is consistently more effective than PEFT, showing better $\rho_{\text{avg}}$ and lower forgetting.
+(2) Our two-stage MP (ID~1) outperforms both the one-stage version (ID~5, $\rho_{\text{avg}}$ drops by 3\%) and the removal of MP (ID~6, $\rho_{\text{avg}}$ drops by 9\%), verifying that explicitly decomposing feature shift rectification into two phases is more powerful than one-step methods like MAGR.
+(3) Removing inter-intra relation (II-GR, ID~7) or joint relation (J-GR, ID~8) each leads to clear performance drops. Excluding both (IIJ-GR, ID~9) further reduces $\rho_{\text{avg}}$ by 7\%, highlighting that relational modeling at both local and global levels is indispensable.
+(4) Replacing our ordered sampling with random sampling (ID~10) degrades $\rho_{\text{aft}}$ from 0.0103 to 0.0397 (+285\%), showing that our strategy effectively recovers old distributions and reduces forgetting.
+
+\begin{table}[h!]
+    \centering
+    \setlength{\tabcolsep}{3pt}
+    \caption{Ablation studies on MTL-AQA. Reported percentages are performance changes compared to each method's ID~1.}
+    \label{tab:ablation_mtl}
+        \begin{tabular}{p{0.2cm} p{2.8cm} p{1.5cm} p{1.6cm} p{1.6cm}}
+        \toprule
+    \textbf{ID} & \textbf{Setting} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+        \midrule
+        \rowcolor{brown!5} 1 & MAGR++ (Ours) & 0.9205 & 0.0103 & 0.1274 \\
+        \rowcolor{orange!5} 2 & ~~w/ FPFT & 0.9135$^{-1\%}$ & 0.0233$^{+126\%}$ & 0.1204$^{-5\%}$ \\
+        \rowcolor{orange!5} 3 & ~~w/ Fixed Backbone & 0.4855$^{-47\%}$ & 0.0523$^{+408\%}$ & 0.0746$^{-41\%}$ \\
+        \rowcolor{orange!5} 4 & ~~w/ PEFT (Adapters) & 0.8703$^{-5\%}$ & 0.0180$^{+75\%}$ & 0.2991$^{+135\%}$ \\
+        \rowcolor{yellow!5} 5 & ~~w/ One-Stage MP & 0.8944$^{-3\%}$ & 0.0355$^{+245\%}$ & 0.1149$^{-10\%}$ \\
+        \rowcolor{yellow!5} 6 & ~~w/o MP & 0.8418$^{-9\%}$ & 0.0995$^{+866\%}$ & 0.1082$^{-15\%}$ \\
+        \rowcolor{orange!5} 7 &~~w/o II-GR   & 0.8730$^{-5\%}$ & 0.0131$^{+27\%}$ & 0.1095$^{-14\%}$ \\
+        \rowcolor{orange!5} 8 &~~w/o J-GR    & 0.8991$^{-2\%}$ & 0.0314$^{+205\%}$ & 0.1586$^{+25\%}$ \\
+        \rowcolor{orange!5} 9 &~~w/o IIJ-GR  & 0.8548$^{-7\%}$ & 0.0143$^{+39\%}$ & 0.1211$^{-5\%}$ \\
+        \rowcolor{yellow!5} 10 & ~~w/ Random Sampling & 0.9143$^{-1\%}$ & 0.0397$^{+285\%}$ & 0.1191$^{-7\%}$ \\
+        \bottomrule
+        \end{tabular}
+\end{table}
+
+\myPara{Impact of Memory Size}
+\cref{fig:memory_size} depicts the trade-off between accuracy and storage by varying the number of replayed samples per session. Most baselines such as DER++ and MER exhibit relatively flat performance across different sizes (e.g., DER++ $\rho_{\text{avg}}$ ranges narrowly from 0.8383 to 0.8434), indicating limited sensitivity. In contrast, MAGR benefits substantially from larger memory: $\rho_{\text{avg}}$ improves from 0.6750 at 3 samples to 0.8918 at 11 samples. Our MAGR++ method consistently outperforms all competitors under every setting, achieving the best balance between accuracy and forgetting. For instance, with only 3 samples per session, our method already achieves $\rho_{\text{avg}}=0.9066$ and $\rho_{\text{aft}}=0.0173$, clearly outperforming MAGR (0.6750, 0.2107) and NC-FSCIL (0.7751, 0.1536). This advantage stems from the fact that MAGR++ more effectively addresses feature shifts and better exploits limited samples to recover underlying data distributions, thereby mitigating forgetting. We choose 10 samples per session for a fair comparison in \cref{sec:sota_cmp}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/cmp_hist.pdf}
+    \caption{Comparison of different memory sizes on MTL-AQA.}
+    \label{fig:memory_size}
+    \phantomsubcaption\label{fig:memory_size-a}
+    \phantomsubcaption\label{fig:memory_size-b}
+    \phantomsubcaption\label{fig:memory_size-c}
+\end{figure}
+
+\myPara{Impact of Feature Supervision Layer}
+\cref{fig:cluster} investigates which layer of the I3D backbone should be layer-adaptive to balance stability and adaptability. Specifically, we aim to identify the boundary layer that yields optimal performance when used for feature supervision. Empirical results consistently point to the third layer as the most effective choice, which aligns with the outcomes of our dynamic layer selection strategy. This is reasonable since earlier layers mainly capture low-level visual patterns that are broadly transferable, while higher layers encode task-specific semantics that require adaptation. Thus, supervising features at the third layer provides an effective trade-off, preserving generalizable representations while allowing deeper layers to specialize.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/i3d_layer_cluster_quality_ratio_dual_axis.pdf}
+    \caption{Cluster quality ratio and overall correlation.}
+    \label{fig:cluster}
+\end{figure}
+
+\myPara{Impact of Task Order}
+In practice, human skill progression is not strictly linear. To assess the impact of varying task sequences, we shuffled the task order multiple times and measured both performance and parameter changes (see \cref{fig:parameter_change}). Our method shows strong robustness to task-order variation, achieving an average performance of $0.9183 \pm 0.0028$, which is not only more stable but also higher than FS-Aug and NC-FSCIL. Moreover, in terms of parameter dynamics, our approach exhibits larger yet more structured parameter changes while maintaining higher performance and lower forgetting (see \cref{fig:parameter_change-b}), highlighting its superior ability to manage catastrophic forgetting caused by parameter shifts.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/parameter_change.pdf}
+    \caption{Performance vs. parameter changes across task orders.}
+    \label{fig:parameter_change}
+    \phantomsubcaption\label{fig:parameter_change-a}
+    \phantomsubcaption\label{fig:parameter_change-b}
+    \phantomsubcaption\label{fig:parameter_change-c}
+\end{figure}
+
+\myPara{Impact of Semi-Supervision and Noise}
+\cref{fig:sol} evaluates MAGR++ under semi-supervised settings with limited labels (see \cref{fig:sol-a}) and in the presence of noisy annotations (see \cref{fig:sol-d}), two realistic and challenging issues in AQA that directly impact model generalization. Compared to MAGR, MAGR++ achieves consistently higher performance owing to its two-stage feature rectification and effective FPFT backbone tuning. With only 10 samples per session, MAGR++ reaches $\rho_{\text{avg}}=0.9162$ compared to MAGR’s 0.8741, and the margin remains at 25 samples (0.9256 vs.\ 0.8951). Under noise, MAGR++ is notably more resilient, sustaining 0.9234 at intensity 7 (see \cref{fig:sol-f}, $\hat{y}_i = 0.94 y_i + 3.04$) while MAGR drops sharply to 0.7813 (see \cref{fig:sol-e}, $\hat{y}_i = 0.65 y_i + 32.17$). Beyond MAGR, MAGR++ also outperforms other baselines: at 15 samples it achieves 0.9205 compared to 0.8950 for SLCA and 0.8142 for NC-FSCIL, and at noise level 7 it yields 0.9234 compared to 0.8032 for SLCA (see \cref{fig:sol-b}, $\hat{y}_i = 0.53 y_i + 37.34$), 0.7548 for NC-FSCIL (see \cref{fig:sol-c}, $\hat{y}_i = 0.73 y_i + 24.71$), while TOPIC lags further at 0.7049. These results verify the superior robustness of MAGR++ under both label scarcity and noisy supervision.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/sol.pdf}
+\caption{
+    Performance comparison under label scarcity and labeling noise. 
+    \subref{fig:sol-a} varies the number of training samples per session, and \subref{fig:sol-d} evaluates robustness under noisy annotations. 
+    \subref{fig:sol-b}, \subref{fig:sol-c}, \subref{fig:sol-e}, and \subref{fig:sol-f} show correlation plots at noise level~7, with fitted regression lines. 
+}
+    \label{fig:sol}
+    \phantomsubcaption\label{fig:sol-a}
+    \phantomsubcaption\label{fig:sol-b}
+    \phantomsubcaption\label{fig:sol-c}
+    \phantomsubcaption\label{fig:sol-d}
+    \phantomsubcaption\label{fig:sol-e}
+    \phantomsubcaption\label{fig:sol-f}
+\end{figure}
+
+
+\subsection{Qualitative and Quantitative Results}
+We provide additional experimental results to further validate the effectiveness of our proposed method.  
+
+\myPara{Flatness of Loss Landscape}  
+To assess model generalization, we visualize the flatness of the loss landscape \cite{deng2021flattening}. After training each session, model weights are perturbed along 10 random directions, and the resulting loss curves are averaged across perturbation magnitudes. \cref{fig:loss_landscape-a,fig:loss_landscape-b,fig:loss_landscape-c,fig:loss_landscape-d,fig:loss_landscape-e} illustrate session-wise results, while \cref{fig:loss_landscape-f} shows the average over all five sessions.  
+MAGR++ consistently exhibits flatter and lower loss landscapes than all other baselines, suggesting it converges to more stable minima that enhance generalization and mitigate catastrophic forgetting. In contrast, FS-Aug produces uneven and fluctuating curves, reflecting sensitivity to noise and a lack of robustness in its learned representations.  
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/loss_landscape_curves.pdf}
+    \caption{Loss landscapes on MTL-AQA. \subref{fig:loss_landscape-a}-\subref{fig:loss_landscape-e} show loss curves for five sessions, while \subref{fig:loss_landscape-f} presents the average curve.}
+    \label{fig:loss_landscape}
+    \phantomsubcaption\label{fig:loss_landscape-a}
+    \phantomsubcaption\label{fig:loss_landscape-b}
+    \phantomsubcaption\label{fig:loss_landscape-c}
+    \phantomsubcaption\label{fig:loss_landscape-d}
+    \phantomsubcaption\label{fig:loss_landscape-e}
+    \phantomsubcaption\label{fig:loss_landscape-f}
+\end{figure}
+
+\myPara{Visualization of Addressing Feature Shifts}  
+To better understand catastrophic forgetting, we visualize feature distributions and scatter correlation in \cref{fig:tsne}. In \cref{fig:tsne-a,fig:tsne-b,fig:tsne-c,fig:tsne-m}, MER exhibits severe manifold shifts where samples from different sessions are highly entangled, leading to a poorly aligned regression line $\hat{y}_i = 0.11 y_i + 76.78$. FS-Aug and MAGR alleviate this overlap but still suffer from residual shifts, with regression lines remaining misaligned (e.g., MAGR: $\hat{y}_i = 0.73 y_i + 23.90$ (see \cref{fig:tsne-n})). In contrast, our method explicitly separates samples across sessions (see \cref{fig:tsne-j,fig:tsne-k,fig:tsne-l})  and achieves a much closer regression fit $\hat{y}_i = 0.90 y_i + 7.63$ (see \cref{fig:tsne-p}), approaching the ideal line $\hat{y}_i = y_i$. These results indicate that our approach effectively mitigates feature shifts, preserving both feature space consistency and correlation accuracy across tasks.  
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/cmp_tsne.pdf}
+    \caption{Visualization of t-SNE feature distributions (first three columns) and overall correlation plots (last column). The feature space is projected into two dimensions and normalized to $[0,1]$. }
+    \label{fig:tsne}
+    \phantomsubcaption\label{fig:tsne-a}
+    \phantomsubcaption\label{fig:tsne-b}
+    \phantomsubcaption\label{fig:tsne-c}
+    \phantomsubcaption\label{fig:tsne-d}
+    \phantomsubcaption\label{fig:tsne-e}
+    \phantomsubcaption\label{fig:tsne-f}
+    \phantomsubcaption\label{fig:tsne-g}
+    \phantomsubcaption\label{fig:tsne-h}
+    \phantomsubcaption\label{fig:tsne-i}
+    \phantomsubcaption\label{fig:tsne-j}
+    \phantomsubcaption\label{fig:tsne-k}
+    \phantomsubcaption\label{fig:tsne-l}
+    \phantomsubcaption\label{fig:tsne-m}
+    \phantomsubcaption\label{fig:tsne-n}
+    \phantomsubcaption\label{fig:tsne-o}
+    \phantomsubcaption\label{fig:tsne-p}
+    \vspace{-0.5cm}
+\end{figure}
+
+
+\myPara{Error Analysis}  
+\cref{fig:error_statistic} compares error distributions and cumulative accuracy among baselines and MAGR++.  
+SLCA, FS-Aug, and MAGR achieve mean absolute errors of $10.80 \pm 8.83$, $12.48 \pm 8.41$, and $9.68 \pm 6.17$, respectively.  
+In contrast, MAGR++ significantly reduces the error to $5.26 \pm 4.39$, indicating both lower bias and variance.  
+The cumulative accuracy curves further emphasize this gain: MAGR++ reaches an AUC of $0.91$, surpassing SLCA ($0.81$), FS-Aug ($0.78$), and MAGR ($0.83$) by margins of $0.10$, $0.13$, and $0.08$, respectively.  
+These results confirm the effectiveness of shift-aware rectification in improving both accuracy and stability for CAQA.  
+ 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figs/score_distribution.pdf}
+    \caption{
+        Error analysis on MTL-AQA. 
+        \subref{fig:error_statistic-a}: Boxplots of absolute errors with mean, median, and standard deviation. 
+        \subref{fig:error_statistic-b}: Cumulative error accuracy curves with area under the curve (AUC).
+    }
+    \label{fig:error_statistic}
+    \phantomsubcaption\label{fig:error_statistic-a}
+    \phantomsubcaption\label{fig:error_statistic-b}
+    \vspace{-0.5cm}
+\end{figure}
+
+
+\section{Discussion and Conclusion} \label{sec:conclusion}
+
+In this work, we introduce the first formulation of CAQA, extending CL to fine-grained regression in AQA. To support this new paradigm, we construct four comprehensive benchmarks with tailored evaluation metrics and strong baselines, enabling fair cross-dataset comparison. Through an empirical study, we demonstrate that existing CL paradigms are insufficient for CAQA, and FPFT is necessary to bridge the gap between upstream action recognition and downstream fine-grained quality assessment. Our theoretical analysis further shows that FPFT is prone to overfitting during long-term adaptation and is vulnerable to manifold shift when replaying old features.
+To address these challenges, we proposed MAGR++, which integrates FPFT with layer-adaptive selection to stabilize continual updates, a manifold projector to rectify deviated features, and graph regularization to regulate feature space. Experiments show that MAGR++ consistently achieves state-of-the-art performance across various benchmarks. We believe this work establishes a solid foundation for future research on continual adaptation in fine-grained video understanding.
+
+Despite these promising results, several avenues remain open. First, our current formulation focuses on CL of AQA tasks. Extending MAGR++ to more general CL scenarios could further validate its applicability. Second, integrating multi-modal inputs (e.g., audio and text) may improve the robustness and effectiveness. Third, incorporating online adaptation mechanisms could enhance efficiency for deployment in real-time settings. We view these directions as natural and impactful extensions toward advancing CAQA research.
+
+\bibliographystyle{ieeetr}
+\bibliography{refs}
+
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/ZKL.png}}]{Kanglei Zhou}
+    specializes in action quality assessment and continual learning. He is currently a Postdoctoral Researcher in the Department of Psychology and Cognitive Science at Tsinghua University. He received the Ph.D. degree in Computer Science and Engineering from Beihang University, Beijing, China. In 2024, he was a Visiting Student in the Department of Computer Science at Durham University, U.K. He obtained the B.E. degree from the College of Computer and Information Engineering, Henan Normal University, Xinxiang, China, in 2020.
+\end{IEEEbiography}
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/pqy_homepage.jpg}}]{Qingyi Pan}
+is currently pursuing his Ph.D. degree at the Department of Statistics and Data  Science at Tsinghua University. He received his M.S. degree from the Department of Computer Science and Technology at Tsinghua University in 2022. His research interest focuses on continual learning, interpretability, and uncertainty quantification for multivariate time series forecasting.
+\end{IEEEbiography}
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/Zhang}}]{Xingxing Zhang} received the BE and PhD degrees
+    from the Institute of Information Science, Beijing
+    Jiaotong University, in 2015 and 2020, respectively.
+    She was also a visiting student with the Department
+    of Computer Science, University of Rochester, from
+    2018 to 2019. She was a postdoc with the Department
+    of Computer Science and Technology, Tsinghua University, from 2020 to 2022. Her research interests include continual learning and few-shot learning. She received the Excellent PhD Thesis Award from the Chinese Institute of Electronics in 2020.
+\end{IEEEbiography}
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/Hubert}}]{Hubert P. H. Shum}
+(Senior Member, IEEE) is a Professor of Visual Computing and the Director of Research for the Department of Computer Science at Durham University, specialising in modelling spatio-temporal information with responsible AI. He is also a Co-Founder and the Co-Director of Durham University Space Research Centre. He received his PhD degree from the University of Edinburgh. He chaired conferences such as Pacific Graphics, BMVC and SCA. He has authored over 200 research publications in the fields of Computer Vision, Computer Graphics and AI in Healthcare.
+\end{IEEEbiography}
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/Li}}]{Frederick W. B. Li} received a B.A. and an M.Phil. degree from Hong Kong Polytechnic University, and a Ph.D. degree from the City University of Hong Kong. He is currently an Associate Professor at Durham University, researching computer graphics, deep learning, collaborative virtual environments, and educational technologies. He is also an Associate Editor of Frontiers in Education and an Editorial Board Member of Virtual Reality \& Intelligent Hardware. He chaired conferences such as ISVC and ICWL.
+\end{IEEEbiography}
+
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/Liang.jpg}}]{Xiaohui Liang} (Member, IEEE) received his Ph.D. degree in computer science and engineering from Beihang University, China. He is currently a Professor, working in the School of Computer Science and Engineering at Beihang University. His main research interests
+    include computer graphics and animation, visualization, and virtual reality.
+\end{IEEEbiography}
+% \vfill
+
+\vspace{-3em}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.1in,clip,keepaspectratio]{figs/Wang.jpg}}]{Liyuan Wang}
+    is currently an Assistant Professor in the Department of Psychological and Cognitive Sciences at Tsinghua University. He received the B.S. and Ph.D. degrees from Tsinghua University, where he also conducted his postdoctoral research. He has an interdisciplinary background in neuroscience and machine learning. His work on continual learning has been published in major conferences and journals in related fields, such as Nature Machine Intelligence, TPAMI, TNNLS, NeurIPS, ICLR, CVPR, ICCV, ECCV, etc.
+\end{IEEEbiography}
+
+\clearpage
+
+\appendices
+\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\theequation}{A\arabic{equation}}
+% \setcounter{figure}{0}
+% \setcounter{table}{0}
+% \setcounter{equation}{0}
+
+\onecolumn
+
+\crefalias{section}{appendix}
+
+
+\section{Proof of Theorem~\ref{thm:peft-vs-fpft}}
+\label{sec:peft-vs-fpft_proof}
+
+\begin{proof}
+Let $\bm{v}:=\bm{\theta}-\bm{\theta}_{\text{up}}$ and $\mathcal{S}:=\mathrm{range}(\mathbf{U})$. 
+Define the linearized risk
+\begin{equation}
+\label{eq:lin-risk}
+\widetilde R_{\text{down}}(\bm{v})
+:=\mathbb{E}_{(x,y)\sim\mathcal{D}_{\text{down}}}\,
+\ell\!\big(\phi_{\bm{\theta}_{\text{up}}}(x)+\mathbf{J}_{\text{up}}(x)^\top \bm{v},\,y\big),
+\end{equation}
+together with the $\mathbf{\Sigma}_0$-norm
+\begin{equation}
+\label{eq:sigma-norm}
+\|\bm{w}\|_{\mathbf{\Sigma}_0}^2:=\bm{w}^\top\mathbf{\Sigma}_0 \bm{w}.
+\end{equation}
+
+By Taylor’s theorem, for $\bm{v}^\star:=\arg\min_{\bm{v}}\widetilde R_{\text{down}}(\bm{v})$ and any $\bm{v}$ in the NTK neighborhood, one has
+\begin{equation}
+\label{eq:taylor}
+\widetilde R_{\text{down}}(\bm{v})
+\;\ge\;\widetilde R_{\text{down}}(\bm{v}^\star)
++\tfrac12(\bm{v}-\bm{v}^\star)^\top \mathbf{H}(\bm{v})(\bm{v}-\bm{v}^\star),
+\end{equation}
+where
+\begin{equation}
+\label{eq:hessian}
+\mathbf{H}(\bm{v})=\mathbb{E}_{(x,y)\sim\mathcal{D}_{\text{down}}}\!
+\big[\ell''(\phi_{\bm{\theta}_{\text{up}}}(x)+\mathbf{J}_{\text{up}}(x)^\top \bar{\bm{v}},y)\,
+\mathbf{J}_{\text{up}}(x)\mathbf{J}_{\text{up}}(x)^\top\big]\succeq \mu\,\mathbf{\Sigma}_0
+\end{equation}
+for some $\bar{\bm{v}}$ on the segment $[\bm{v}^\star,\bm{v}]$. 
+This implies
+\begin{equation}
+\label{eq:qg}
+\widetilde R_{\text{down}}(\bm{v})-\widetilde R_{\text{down}}(\bm{v}^\star)
+\;\ge\;\tfrac{\mu}{2}\,\|\bm{v}-\bm{v}^\star\|_{\mathbf{\Sigma}_0}^2.
+\end{equation}
+
+Since PEFT restricts $\bm{v}$ to $\mathcal{S}$, let $\bm{v}_{\mathcal{S}}:=\arg\min_{\bm{v}\in\mathcal{S}}\widetilde R_{\text{down}}(\bm{v})$. 
+By \cref{eq:qg}, it follows that
+\begin{equation}
+\label{eq:vs-gap}
+\widetilde R_{\text{down}}(\bm{v}_{\mathcal{S}})-\widetilde R_{\text{down}}(\bm{v}^\star)
+\;\ge\;\tfrac{\mu}{2}\,\inf_{\bm{s}\in\mathcal{S}}\|\bm{s}-\bm{v}^\star\|_{\mathbf{\Sigma}_0}^2
+=\tfrac{\mu}{2}\,\big\|\bm{v}^\star-\Pi_{\mathcal{S}}^{(\mathbf{\Sigma}_0)}(\bm{v}^\star)\big\|_{\mathbf{\Sigma}_0}^2,
+\end{equation}
+where $\Pi_{\mathcal{S}}^{(\mathbf{\Sigma}_0)}$ is the $\mathbf{\Sigma}_0$-orthogonal projection onto $\mathcal{S}$. 
+Substituting $\bm{v}^\star=\bm{\theta}_{\text{down}}^\star-\bm{\theta}_{\text{up}}$ gives
+\begin{equation}
+\label{eq:orth-decomp}
+\big\|\bm{v}^\star-\Pi_{\mathcal{S}}^{(\mathbf{\Sigma}_0)}(\bm{v}^\star)\big\|_{\mathbf{\Sigma}_0}
+=\big\|\Pi_{\mathcal{S}^\perp}^{(\mathbf{\Sigma}_0)}(\bm{\theta}_{\text{down}}^\star-\bm{\theta}_{\text{up}})\big\|_{\mathbf{\Sigma}_0}.
+\end{equation}
+
+Finally, by assumption \textbf{(A3)}, for $\|\bm{v}_{\mathcal{S}}\|,\|\bm{v}^\star\|\le\rho$,
+\begin{equation}
+\label{eq:final-step}
+R_{\text{down}}(\bm{\theta}_{\text{up}}+\bm{v}_{\mathcal{S}})
+- R_{\text{down}}(\bm{\theta}_{\text{down}}^\star)
+\;\ge\;\widetilde R_{\text{down}}(\bm{v}_{\mathcal{S}})-\widetilde R_{\text{down}}(\bm{v}^\star)
+- \tfrac{L_\varepsilon}{2}\big(\|\bm{v}_{\mathcal{S}}\|^2+\|\bm{v}^\star\|^2\big).
+\end{equation}
+Combining \cref{eq:vs-gap,eq:orth-decomp,eq:final-step} yields
+\begin{equation}
+\label{eq:proof-final}
+R_{\text{down}}(\bm{\theta}_{\text{up}}+\bm{v}_{\mathcal{S}})
+- R_{\text{down}}(\bm{\theta}_{\text{down}}^\star)
+\;\ge\;\tfrac{\mu}{2}\,\big\|\Pi_{\mathcal{S}^\perp}^{(\mathbf{\Sigma}_0)}(\bm{\theta}_{\text{down}}^\star-\bm{\theta}_{\text{up}})\big\|_{\mathbf{\Sigma}_0}^2
+- C_\varepsilon,
+\end{equation}
+where $C_\varepsilon:=\tfrac{L_\varepsilon}{2}(\|\bm{v}_{\mathcal{S}}\|^2+\|\bm{v}^\star\|^2)$. 
+This establishes \cref{eq:excess-risk-peft-sigma}.
+\end{proof}
+
+
+
+\begin{algorithm}[!h]
+% \DontPrintSemicolon
+\small
+\renewcommand{\AlCapFnt}{\small}
+\renewcommand{\AlCapNameFnt}{\small}
+
+\caption{\small Training procedure of MAGR++ for CAQA}
+\label{alg:magrpp}
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Sequential training sets $\{\mathcal{D}^t_{\text{train}}\}_{t=1}^{T}$, memory size $M$, backbone $f$, regressor $g$, projector $p$, threshold $\epsilon$}
+\Output{Trained $(f^T,g^T,p^T)$}
+\SetKwFunction{OUS}{OUS}
+\SetKwFunction{LayerFPFT}{LayerSelection}
+\SetKwFunction{ProjLearn}{TrainProjector}
+\SetKwFunction{Rectify}{RectifyFeatures}
+\SetKwFunction{IILoss}{IIJGRLoss}
+\SetKwFunction{Refresh}{RefreshMemory}
+
+\BlankLine
+\textbf{Init:} Pretrain $f$ (e.g., I3D) and init $g,p$; $\mathcal{M}\leftarrow\varnothing$\;
+\For{$t \leftarrow 1$ \KwTo $T$}{
+  
+  Copy previous backbone $f^{t-1}$ and freeze $f^{t-1}$ \tcp*{copy previous backbone}
+  $L_{\text{opt}} \leftarrow$ \LayerFPFT(\,$f^{t-1},\ f^t, \mathcal{D}^1_{\text{train}},\ \epsilon$\,)\tcp*{see \cref{sec:layer_adaptive}, invoke \cref{alg:layer_selection}}
+
+  \tcp{Mini-batch training loop}
+  \While{not converged}{
+    Sample current batch $\mathcal{B}^t = \{(\mathbf{x}_i^t,y_i^t)\}_{i=1}^{b_2} \subset \mathcal{D}^t_{\text{train}}$\;
+    \tcp{Forward through current and previous backbones}
+    $\bm{h}_i^{t,l} \leftarrow f^{t,l}(\mathbf{x}_i^t)$,\quad
+    $\bm{z}_i^{t,l} \leftarrow f^{t-1,l}(\mathbf{x}_i^t)$ for all layers $l$\;
+
+    
+    $\hat{y}_i^t \leftarrow g(\bm{h}_i^{t,L})$;\quad
+    $\mathcal{L}_{\text{D}} \leftarrow \frac{1}{b_2}\sum_i (\hat{y}_i^t - y_i^t)^2$\tcp*{Current-task loss (Eq.~\eqref{eq:caqa})}
+
+    \tcp{Training phase 1: layer-adaptive FPFT  (Eq.~\eqref{eq:la})}
+    $\mathcal{L}_{\text{tune}} \leftarrow \frac{1}{b_2}\sum_i \sum_{l<L_{\text{opt}}} \|\bm{h}_i^{t,l} - \bm{z}_i^{t,l}\|_2^2$\;
+
+    \tcp{Training phase 2: projector learning (Eqs.~\eqref{eq_mp_learning}, \eqref{eq:proj})}
+    $\bm{z}_i^{t} \leftarrow \bm{z}_i^{t,L}$; \quad $\bm{\hat{h}}_i^{t} \leftarrow \bm{z}_i^{t} + p(\bm{z}_i^{t})$;\quad
+    $\mathcal{L}_{\text{proj}} \leftarrow \frac{1}{b_2}\sum_i \|\bm{h}_i^{t,L} - \bm{\hat{h}}_i^{t}\|_2^2$\;
+
+    Sample old feature batch $\tilde{\mathcal{B}}=\{(\tilde{\bm{h}}_j,y_j)\}_{j=1}^{b_1}\subset \mathcal{M}$\;
+    \ForEach{$(\tilde{\bm{h}}_j,y_j)\in \tilde{\mathcal{B}}$}{
+      $\tilde{\bm{h}}_j \leftarrow \tilde{\bm{h}}_j + p(\tilde{\bm{h}}_j)$ \tcp*{deviated feature translation}
+    }
+
+    \tcp{Training phase 3: build joint batch and compute regularizer (Eq.~\eqref{eq:iij})}
+    $\mathbf{H} \leftarrow [\tilde{\bm{h}}_{1:b_1},\ \bm{h}^{t,L}_{1:b_2}]$;\quad
+    $\bm{y} \leftarrow [y_{1:b_1},\ y^t_{1:b_2}]$\;
+    $\mathcal{L}_{\text{reg}} \leftarrow$ \IILoss(\,$\mathbf{H},\bm{y}$\,)\tcp*{angular distances + matrix partitions, see \cref{eq:iij}}
+
+    
+    $\hat{y}_j \leftarrow g(\tilde{\bm{h}}_j)$;\quad
+    $\mathcal{L}_{\text{M}} \leftarrow \frac{1}{b_1}\sum_j (\hat{y}_j - y_j)^2$\tcp*{replay loss (Eq.~\eqref{eq:caqa})}
+
+    Update $\{f,g,p\}$ by backprop on $\mathcal{L}$ (optimizer, LR schedule, etc.)\;
+  }
+
+  \tcp{End-of-session memory maintenance}
+  \ForEach{$(\tilde{\bm{h}},y)\in \mathcal{M}$}{ 
+    $\tilde{\bm{h}} \leftarrow \tilde{\bm{h}} + p(\tilde{\bm{h}})$ \tcp*{refresh old features via converged projector}
+  }
+  $\mathcal{P}^t \leftarrow \OUS(\mathcal{D}^t_{\text{train}}, f, g, M)$ \tcp*{select new prototypes, invoke \cref{alg:ous}}
+  Update memory as $\mathcal{M} \leftarrow \mathcal{M} \cup \mathcal{P}^t$ and keep at most $M$ items\;
+}
+\end{algorithm}
+
+
+\section{Proof of Theorem~\ref{thm:fpft-replay}}
+\label{sec:proof-fpft-replay}
+
+\begin{proof}
+Let the per-session update be defined as
+\begin{equation}
+\label{eq:update-def}
+\bm{\Delta}_t := \bm{\theta}^{t}-\bm{\theta}^{t-1}, 
+\qquad 
+\Delta_t := \|\bm{\Delta}_t\|.
+\end{equation}
+Define the per-task risk and its empirical counterpart as
+\begin{equation}
+\label{eq:task-risk}
+R_k(\bm{\theta})
+:=\mathbb{E}_{(x,y)\sim\mathcal{D}_k}\,\ell\!\big(\phi_{\bm{\theta}}(x),y\big),
+\qquad
+\hat R_k(\bm{\theta})
+:=\mathbb{E}_{(x,y)\sim\text{mem}(k)}\,\ell\!\big(\phi_{\bm{\theta}}(x),y\big).
+\end{equation}
+At session $t$, define the stale and ideal replay objectives:
+\begin{equation}
+\label{eq:stale-ideal}
+\begin{aligned}
+\mathcal{L}_t^{\text{stale}}(\bm{\theta})
+&:=\mathbb{E}_{(x,y)\sim \mathcal{M}_{t-1}}\,
+\ell\!\big(g_{\bm{\theta}_g}(f_{\bm{\theta}_f^{t-1}}(x)),y\big),\\
+\mathcal{L}_t^{\text{ideal}}(\bm{\theta})
+&:=\mathbb{E}_{(x,y)\sim \mathcal{M}_{t-1}}\,
+\ell\!\big(g_{\bm{\theta}_g}(f_{\bm{\theta}_f}(x)),y\big).
+\end{aligned}
+\end{equation}
+
+By Assumptions~\textbf{(B1)} and~\textbf{(B2)}, evaluating at $\bm{\theta}=\bm{\theta}^t$ yields
+\begin{equation}
+\label{eq:l-diff}
+\begin{aligned}
+\Big|\mathcal{L}_t^{\text{stale}}(\bm{\theta}^t)-\mathcal{L}_t^{\text{ideal}}(\bm{\theta}^t)\Big|
+&\le 
+\mathbb{E}\,\big\|g_{\bm{\theta}_g^{t}}\!\big(f_{\bm{\theta}_f^{t-1}}(x)\big)
+- g_{\bm{\theta}_g^{t}}\!\big(f_{\bm{\theta}_f^{t}}(x)\big)\big\| \\
+&\le L_g\,\mathbb{E}\,\big\|f_{\bm{\theta}_f^{t-1}}(x)-f_{\bm{\theta}_f^{t}}(x)\big\|.
+\end{aligned}
+\end{equation}
+Using Assumption~\textbf{(B3)} with $\|\bm{\theta}_f^{t}-\bm{\theta}_f^{t-1}\|=\Delta_t$, we have
+\begin{equation}
+\label{eq:drift}
+\Big|\mathcal{L}_t^{\text{stale}}(\bm{\theta}^t)-\mathcal{L}_t^{\text{ideal}}(\bm{\theta}^t)\Big|
+\;\le\; L_g\,L_f\,\Delta_t.
+\end{equation}
+If there exists a projector $\mathbf{P}_t$ such that
+\begin{equation}
+\label{eq:app-proj}
+\mathbb{E}\,\big\|f_{\bm{\theta}_f^{t}}(x)-\mathbf{P}_t f_{\bm{\theta}_f^{t-1}}(x)\big\|\le \varepsilon_t,
+\end{equation}
+the bound refines to
+\begin{equation}
+\label{eq:drift-proj}
+\Big|\mathcal{L}_t^{\text{stale}}(\bm{\theta}^t)-\mathcal{L}_t^{\text{ideal}}(\bm{\theta}^t)\Big|
+\;\le\; L_g\,\varepsilon_t.
+\end{equation}
+
+Let $\mathcal{H}_{t-1}$ denote the model class realizable near $\bm{\theta}^{t-1}$, and define
+\begin{equation}
+\label{eq:hclass}
+\mathcal{H}_t := \mathcal{H}_{t-1} \cup 
+\big\{\phi_{\bm{\theta}}:\|\bm{\theta}-\bm{\theta}^{t-1}\|\le \Delta_t\big\}.
+\end{equation}
+By Assumption~\textbf{(B4)}, enlarging the parameter ball by $\Delta_t$ increases localized complexity (e.g., Rademacher or covering bounds) by at most $C_0 L_\phi \Delta_t$, giving
+\begin{equation}
+\label{eq:gen}
+\mathbb{E}\big[R_k(\bm{\theta}^t)-\hat R_k(\bm{\theta}^t)\big]
+\;\le\;
+\mathbb{E}\big[R_k(\bm{\theta}^{t-1})-\hat R_k(\bm{\theta}^{t-1})\big]
+\;+\; C\,L_\phi\,\Delta_t,
+\end{equation}
+for some constant $C>0$.
+
+Define the forgetting as
+\begin{equation}
+\label{eq:forget-def}
+\psi_t(k) := R_k(\bm{\theta}^t) - R_k(\bm{\theta}^{t-1}).
+\end{equation}
+Adding and subtracting empirical risks gives
+\begin{equation}
+\label{eq:three-terms}
+\psi_t(k)
+=\underbrace{R_k(\bm{\theta}^t)-\hat R_k(\bm{\theta}^t)}_{\text{(I)}}
++\underbrace{\hat R_k(\bm{\theta}^t)-\hat R_k(\bm{\theta}^{t-1})}_{\text{(II)}}
++\underbrace{\hat R_k(\bm{\theta}^{t-1})-R_k(\bm{\theta}^{t-1})}_{\text{(III)}}.
+\end{equation}
+Taking expectations and applying \cref{eq:gen} to (I) and (III) gives
+\begin{equation}
+\label{eq:gen-contrib}
+\mathbb{E}[\text{(I)}+\text{(III)}]\;\lesssim\; C\,L_\phi\,\Delta_t.
+\end{equation}
+For (II), the empirical change is bounded by the stale–ideal gap plus the session-$t$ optimization suboptimality:
+\begin{equation}
+\label{eq:emp-diff}
+\mathbb{E}\big[\hat R_k(\bm{\theta}^t)-\hat R_k(\bm{\theta}^{t-1})\big]
+\;\lesssim\;
+\Big|\mathcal{L}_t^{\text{stale}}(\bm{\theta}^t)-\mathcal{L}_t^{\text{ideal}}(\bm{\theta}^t)\Big|
+\;+\; E_\text{opt}.
+\end{equation}
+Combining \cref{eq:drift,eq:gen-contrib,eq:emp-diff} yields
+\begin{equation}
+\label{eq:forgetting-final}
+\mathbb{E}[\psi_t(k)]
+\;\lesssim\;
+L_g L_f\,\Delta_t \;+\; C\,L_\phi\,\Delta_t \;+\; E_\text{opt},
+\end{equation}
+matching the bound in \cref{eq:forgetting-bound}.  
+In the projector case \cref{eq:app-proj}, replace $L_g L_f \Delta_t$ by $L_g \varepsilon_t$ from \cref{eq:drift-proj}, completing the proof.
+\end{proof}
+
+\section{Training Procedure} \label{sec:training}
+At each session $t$, MAGR++ jointly optimizes the backbone, regressor, and projector under the composite objective in \cref{eq:magrpp-obj}. The training begins with Ordered Uniform Sampling (OUS) to store representative features from session $t{-}1$ in the memory bank $\mathcal{M}$, ensuring efficient replay coverage as required by the CAQA loss in \cref{eq:caqa}. The backbone $f^t$ is then adapted to current data $\mathcal{D}^t_{\text{train}}$ via layer-adaptive FPFT, where shallow layers below $L_{\text{opt}}$ are constrained by the feature-matching loss in \cref{eq:la}, while deeper layers are fully fine-tuned to capture evolving quality cues. To handle manifold shift, the Manifold Projector (MP) is trained using the projection loss in \cref{eq:proj}, aligning $f^{t-1}$ and $f^t$ representations with only current-session inputs, and subsequently applied to translate old features from $\mathcal{M}$ into the updated space for replay. In parallel, the Intra-Inter-Joint Graph Regularizer (IIJ-GR) minimizes the regularization loss in \cref{eq:iij}, enforcing both intra- and inter-session consistency between feature geometry and quality scores. Finally, the regressor $g^t$ is optimized on a mixture of rectified old features and current-session features, and the memory bank is refreshed by updating old features through MP and adding new prototypes. This coordinated pipeline ensures that MAGR++ balances adaptation and stability across sessions, while mitigating forgetting through replay.
+The details of the training procedure are shown in \cref{alg:magrpp}.
+
+\begin{figure*}[!h]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\begin{algorithm}[H]
+\small
+\renewcommand{\AlCapFnt}{\small}
+\renewcommand{\AlCapNameFnt}{\small}
+\caption{\small \texttt{LayerSelection}: Layer Selection}
+\label{alg:layer_selection}
+\KwIn{Base-session set $\mathcal{D}^0$, backbone $f$, threshold $\epsilon$}
+\KwOut{Optimal boundary $L_{\text{opt}}$}
+
+\For{$l \leftarrow 1$ \KwTo $L$}{
+  $\mathbf{Z}^l_{\text{fix}} \leftarrow f_{\text{fix}}^l(\mathcal{D}^0)$; \quad
+  $\mathbf{Z}^l_{\text{tune}} \leftarrow f_{\text{tune}}^l(\mathcal{D}^0)$\;
+
+  $r^l \leftarrow 
+  \mathcal{C}(\mathbf{Z}^l_{\text{tune}}) / \mathcal{C}(\mathbf{Z}^l_{\text{fix}})$\;
+
+  \If{$r^l > 1 + \epsilon$}{
+     $L_{\text{opt}} \leftarrow l$\;
+  }
+}
+\textbf{return}~{$L_{\text{opt}}$}
+\end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{algorithm}[H]
+\small
+\renewcommand{\AlCapFnt}{\small}
+\renewcommand{\AlCapNameFnt}{\small}
+\caption{\small  \texttt{OUS}: Ordered Uniform Sampling}
+\label{alg:ous}
+\KwIn{Training set $\mathcal{D}^t$, memory size $M$, scorer $g$}
+\KwOut{Prototype set $\mathcal{P}^t$}
+
+Compute scores $y_i = g^t(f^t(\mathbf{x}_i))$ for all $\mathbf{x}_i \in \mathcal{D}^t$\;
+Sort $\mathcal{D}^t$ by $y_i$ in ascending order\;
+Divide sorted samples into $M$ intervals uniformly across score range\;
+Select one representative sample from each interval\;
+\KwRet $\mathcal{P}^t$
+\end{algorithm}
+\end{minipage}
+\end{figure*}
+
+\begin{table}
+    \centering
+    \caption{Experiments on UNLV-Vault.}
+    \label{tab:vault}
+\begin{minipage}{0.50\linewidth}
+\centering
+\subcaption{UNLV-Vault (offline)}
+    \vspace{-1.5mm}
+    \begin{tabular}{l r c S[table-format=+1.4, input-symbols={\textbf}]  c S[table-format=+1.4, input-symbols={\textbf}]}
+        \toprule
+        \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & \multicolumn{1}{c}{$\rho_{\text{avg}}$ ($\uparrow$)} & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+        \midrule
+        \rowcolor{orange!5}Joint Training (UB) & - & None & 0.7514 & - & {-} \\
+        \rowcolor{orange!5}Sequential FT (LB) & - & None & 0.5168 & 0.1887 & 0.3445 \\
+        \rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & 0.5165 & 0.2287 & 0.2839 \\
+        \rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.5173 & 0.2250 & 0.2371 \\
+        \rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & 0.6659 & 0.1371 & 0.4318 \\
+        \rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.5883 & 0.1458 & 0.4053 \\
+        \rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & 0.5905 & 0.3693 & 0.2150 \\
+        \rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.5429 & 0.1712 & 0.3183 \\
+        \rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.5339 & 0.1854 & 0.0608 \\
+        \rowcolor{brown!5}Feature MER & - & Feature & 0.4342 & 0.1856 & 0.4578 \\
+        \rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.4919 & 0.1221 & 0.3972 \\
+        \rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.5747 & 0.2664 & \bf 0.4863 \\
+        \rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.5146 & 0.2113 & 0.4275 \\
+        \rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.6526 & \bf 0.0687 &  0.2853 \\
+        \rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \bf 0.7012 &  0.2425 & 0.2534 \\
+        \bottomrule
+    \end{tabular}
+\end{minipage}
+
+\begin{minipage}{0.50\linewidth}
+    \centering
+    \vspace{2mm}
+    \subcaption{UNLV-Vault (online)}
+    \vspace{-1.5mm}
+    \begin{tabular}{l r c S[table-format=+1.4, input-symbols={\textbf}] c S[table-format=+1.4, input-symbols={\textbf}] }
+    \toprule
+            \textbf{Method} & \textbf{Publisher} & \textbf{Memory} & \multicolumn{1}{c}{$\rho_{\text{avg}}$ ($\uparrow$)} & $\rho_{\text{aft}}$ ($\downarrow$) & \multicolumn{1}{c}{$\rho_{\text{fwt}}$ ($\uparrow$)} \\
+    \midrule
+    % \rowcolor{orange!5}Joint Training (UB) & - & None & 0.6113 & - & - \\
+    \rowcolor{orange!5}Sequential FT (LB) & - & None & 0.2139 & 0.0684 & 0.5507 \\
+    \rowcolor{orange!5}SI \cite{zenke2017continual} & ICML'17 & None & -0.2904 & 0.0897 & 0.2912 \\
+    \rowcolor{orange!5}EWC \cite{james2017ewc} & PNAS'17 & None & 0.0585 & 0.0385 & 0.2288 \\
+    \rowcolor{orange!5}LwF \cite{li2017learning} & TPAMI'17 & None & -0.1075 & 0.2311 & 0.1540 \\
+    \rowcolor{yellow!5}MER \cite{riemer2019learning} & ICLR'19 & Raw Data & 0.0441 & 0.2533 & 0.2597  \\
+    \rowcolor{yellow!5}DER++ \cite{buzzega2020dark} & NeurIPS'20 & Raw Data & -0.1701 & 0.1642 & 0.2853  \\
+    \rowcolor{yellow!5}TOPIC \cite{tao2020few} & CVPR'20 & Raw Data & 0.0590 & 0.1013 & 0.3340 \\
+    \rowcolor{yellow!5}GEM \cite{kukleva2021generalized} & ICCV'21 & Raw Data & 0.0391 & 0.1013 & 0.3340  \\
+    \rowcolor{brown!5}Feature MER & - & Feature & 0.3571 & 0.1444 & -0.0213 \\
+    \rowcolor{brown!5}SLCA \cite{zhang2023slca} & ICCV'23 & Feature & 0.0962 & 0.1242 & 0.2670 \\
+    \rowcolor{brown!5}NC-FSCIL \cite{yang2023neural} & ICLR'23 & Feature & 0.4971 & 0.0291 & -0.0463 \\
+    \rowcolor{brown!5}FS-Aug \cite{li2024continual} & TCSVT'24 & Feature & 0.1998 & 0.1350 & 0.1497 \\
+    \rowcolor{brown!5}MAGR \cite{zhou2024magr} & ECCV'24 & Feature & 0.1986 & 0.1201 & -0.1483 \\
+    \rowcolor{brown!5}MAGR++ (Ours) & - & Feature & \bf 0.5806 & \bf 0.0000 & \bf 0.7057  \\
+    \bottomrule
+    \end{tabular}
+\end{minipage}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth,clip,trim=50 278 50 286]{figs/case_study_fig.pdf}
+    \caption{
+    Representative samples from MTL-AQA covering high-, mid-, and low-score cases. 
+    The first five columns show sampled frames, and the last column reports assessment results with errors. 
+    \subref{fig:case_study-a} and \subref{fig:case_study-b} show successful cases, 
+    while \subref{fig:case_study-c} depicts a failure case.
+    }
+    \label{fig:case_study}
+    \phantomsubcaption\label{fig:case_study-a}
+    \phantomsubcaption\label{fig:case_study-b}
+    \phantomsubcaption\label{fig:case_study-c}
+\end{figure}
+
+\section{Additional Experiments} \label{sec:add_exp}
+\subsection{Experimental Setting} \label{sec:add_setting}
+
+\myPara{UNLV-Vault}
+To further verify the generalization of our method beyond diving, we include the UNLV-Vault dataset in our evaluations. 
+UNLV-Vault contains 176 gymnastics vault videos is treated as the ``vault'' class in the AQA-7 benchmark~\cite{yu2021group}. Each video sequence is sampled to 103 frames, covering the complete vault motion from run-up to landing.
+Each sample is annotated by expert judges under the standard vault scoring system. 
+In our experiments, we follow the same split as in prior works (120 for training and 56 for testing). 
+Since vault actions differ substantially from diving, with shorter durations, more abrupt motions, and distinct visual cues, this dataset serves as a complementary testbed to assess whether our method can maintain performance under domain shift. 
+The results show that MAGR++ retains strong performance on UNLV-Vault, supporting its generalization across different action domains.
+
+\begin{table}[!h]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Additional ablation results on MTL-AQA. Reported percentages denote relative changes compared to ID~1.}
+\label{tab:ablation_extra}
+\begin{tabular}{p{0.2cm} p{3.8cm} p{1.5cm} p{1.6cm} p{1.6cm}}
+\toprule
+\textbf{ID} & \textbf{Setting} & $\rho_{\text{avg}}$ ($\uparrow$) & $\rho_{\text{aft}}$ ($\downarrow$) & $\rho_{\text{fwt}}$ ($\uparrow$) \\
+\midrule
+\rowcolor{brown!5} 1 & MAGR++ (Ours) & 0.9205 & 0.0103 & 0.1274 \\
+\rowcolor{orange!5} 2 & ~~MP w/o Residual Link & 0.8933$^{-3\%}$ & 0.0389$^{+278\%}$ & 0.0693$^{-46\%}$  \\
+\rowcolor{yellow!5} 3 & ~~\cref{eq:iij} w/ KL Loss & 0.9173$^{-0.3\%}$ & 0.0155$^{+51\%}$ & 0.1029$^{-19\%}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Results and Analysis}
+\myPara{Generalization to Other Domains Beyond Diving}  
+To further verify the cross-domain robustness of our approach, we evaluate MAGR++ on the UNLV-Vault dataset, which differs significantly from diving in terms of motion dynamics and temporal structure. 
+As summarized in \cref{tab:vault}, MAGR++ achieves the best overall performance in both offline and online settings. 
+In the offline case, it attains $\rho_{\text{avg}}=0.7012$, outperforming the strongest baseline MAGR~\cite{zhou2024magr} by $+0.0486$, NC-FSCIL~\cite{yang2023neural} by $+0.1265$, and SLCA~\cite{zhang2023slca} by $+0.2093$. 
+In the online setting, MAGR++ reaches $\rho_{\text{avg}}=0.5806$, yielding a substantial improvement of $+0.0835$ over NC-FSCIL (0.4971) and $+0.3810$ over FS-Aug (0.1998). 
+It also maintains zero forgetting ($\rho_{\text{aft}}=0$) and the highest forward transfer ($\rho_{\text{fwt}}=0.7057$), indicating strong adaptability without sacrificing stability.  
+These results demonstrate that the proposed layer-adaptive fine-tuning and two-step rectification effectively preserve feature–score alignment even when transferred to unseen domains with distinct motion and visual characteristics.
+
+
+\myPara{Ablation Study}
+As shown in \cref{tab:ablation_extra}, removing the residual link in MP leads to a notable decline in performance, 
+with the average correlation dropping by about 3\%, the after-effect increasing nearly threefold, 
+and the forward transfer reduced by almost half. 
+This observation highlights that the residual connection is essential for capturing substantial feature variations and maintaining stability across continual updates. 
+In contrast, substituting the MSE term in \cref{eq:iij} with a KL divergence yields only marginal changes, 
+demonstrating that our method remains robust regardless of the specific feature-matching loss. 
+Overall, these results confirm the stability and robustness of MAGR++, showing that its performance is largely insensitive to minor design variations, 
+yet heavily reliant on the residual link for effective adaptation.
+
+\myPara{Case Study}  
+\cref{fig:case_study} illustrates representative samples from the MTL-AQA dataset, covering low-, high-, and mid-score diving scenarios. We further compare the predictions of different methods, including SLCA~\cite{zhang2023slca}, NC-FSCIL~\cite{yang2023neural}, FS-Aug~\cite{li2024continual}, MAGR~\cite{zhou2024magr}, and our approach.
+\cref{fig:case_study} illustrates representative samples from the MTL-AQA dataset, covering low-, high-, and mid-score diving scenarios, with predictions compared across SLCA~\cite{zhang2023slca}, NC-FSCIL~\cite{yang2023neural}, FS-Aug~\cite{li2024continual}, MAGR~\cite{zhou2024magr}, and our approach. In the low-score case (Sample~\#006), the dive produces a large splash indicating poor execution, where the ground-truth score is 25.65 and our method predicts 26.03 with only 0.38 error, while SLCA (59.75, error 34.10) and FS-Aug (36.71, error 11.06) perform much worse. In the high-score case (Sample~\#138), the nearly splash-free entry yields a ground truth of 90.75, and our method achieves 90.54 with 0.21 error, whereas NC-FSCIL (100.34, error 9.59) and SLCA (82.58, error 7.77) deviate substantially. Even in the more challenging mid-score case (Sample~\#021), where the ground truth is 52.70, our method outputs 66.43, closer to the target than NC-FSCIL (70.43) and SLCA (69.44). These examples highlight the superior reliability of our method across both extreme and intermediate performance levels. At the same time, they reveal common error modes: occlusions (e.g., body–water overlap) may lead to misaligned features, while abrupt motion changes can induce projection failures, which explains the remaining discrepancies. Analyzing such cases not only clarifies why errors occur but also highlights promising directions for future research, such as developing representations that are intrinsically robust to occlusion and designing projection mechanisms that explicitly account for dynamic motion patterns.
+
+
+\section{Additional Discussion and Future Work}
+While MAGR++ demonstrates strong performance and generalization across diverse CAQA benchmarks, several open challenges remain. 
+First, although the proposed layer-adaptive fine-tuning effectively balances stability and adaptability, it relies on clustering-based abstraction estimation. Future work could explore more efficient or theoretically grounded criteria, such as information-theoretic or gradient-based layer importance measures. 
+Second, MP is currently implemented as a simple MLP, which assumes local smoothness in feature transitions. Incorporating spatiotemporal attention or motion-conditioned projection could better handle complex distribution shifts caused by abrupt dynamics or occlusions.  
+Third, while our two-step rectification preserves feature–score alignment, it primarily focuses on visual modality. Extending this framework to multi-modal settings (e.g., integrating pose or textual feedback) would further enhance interpretability and robustness.  
+Finally, although our evaluations cover multiple datasets and both offline and online CAQA settings, future studies could examine real-time deployment and memory-limited environments to further assess scalability and practicality.  
+Overall, we envision MAGR++ as a foundation for building trustworthy, adaptive AQA systems capable of CL under realistic scenarios.
+
+\end{document}

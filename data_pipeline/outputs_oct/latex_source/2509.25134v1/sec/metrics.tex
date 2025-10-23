@@ -1,0 +1,57 @@
+\section{Decomposition Metrics}
+\label{sec:metrics}
+There are two problems in evaluating the quality of predicted layers $\hat{Y}$ against the ground truth $Y$.
+First, the number of layers in the ground truth and the predicted layers can differ, making it non-trivial to compare directly.
+To address this, we apply order-aware layer alignment using DTW~\citep{Mueller07_InformationRetrieval_SPRINGER}.
+Second, the quality of the predicted layers can be evaluated from two perspectives: visual quality and granularity.
+If we do not consider these aspects separately, we may underestimate the quality of the predicted layers due to differences in granularity, even if they are practically useful. 
+We measure granularity by the number of edits required to align the two; we allow merging adjacent layers in the z-index and report both the number of edits and the visual quality after the editing operations.
+
+\paragraph{Layer alignment}
+\label{sec:layer_alignment}
+As pre-processing, we first group the ground truth and predicted layers based on visibility.
+Specifically, we extract layers whose visible regions (\ie, alpha values greater than zero) are not occluded by any other higher layers in z-index, blend them into a single layer, and repeat the same operation with the remaining layers.
+This operation never affects the appearance of the composite image and forms what we refer to as a top-layer.
+
+Next, we find alignment between the two layer sequences with different lengths using DTW, which considers the sequence order even if the lengths differ.
+We obtain a set of pairs $P=\{(k_s,q_s)|s=0,1,\ldots,S\}$, where $k_s$ and $q_s$ represent the layer indices, and $S$ is the number of pairs.
+Note that resolved pairs satisfy the monotonicity condition, \ie., $k_s$ and $q_s$ are increasing sequences; in other words, layers cannot be shuffled during alignment (see \suppref{sup:dtw}).
+We define the distance metric for the layer pair as the sum of the negative value of the alpha's soft IoU and 
+L1 distance of the RGB channels weighted by the ground-truth alpha, as introduced in \cite{suzuki2024fast}.
+
+Finally, we compute the quality metric between the two layer sequences as follows:
+\begin{align}
+    \label{eq:metric}
+    \mathcal{E}(\hat{Y}, Y) = \frac{1}{S}\sum_{s=0}^{S} e(\hat{\bm{l}}_{k_s}, \bm{l}_{q_s}),
+\end{align}
+where $e(\cdot)$ is an arbitrary function that measures the similarity or distance between layers. 
+We use the weighted L1 distance of the RGB channels and the soft IoU of the alpha channel as $e(\cdot)$, similar to DTW's distance metric.
+
+
+
+\paragraph{Layer merge}
+
+Due to the ill-posed nature of layer decomposition, decomposition results sometimes do not align well with the ground truth. \TODO{Provide examples?}
+In this work, we relax the alignment constraints by allowing \emph{edits}.
+The idea is inspired by minimum edit distance~\citep{wagner1974string}, which is commonly used for string alignment. We define a specific edit operation set for layers, and report both the maximum number of allowed edits and the distance metric used in DTW after edits.
+This gives a straightforward insight into how many layer-level edits are required for good alignment.
+
+For simplicity, we define a single edit operation; \texttt{Merge}, which merges two consecutive layers in z-index, when the edit yields the highest positive distance improvement.
+We apply edits iteratively until no further improvements are possible or the number of layers is reduced to 2.
+The ground truth is also mergeable.
+Visual examples of the edit process can be found in \suppref{fig:sup-edit-process-1,fig:sup-edit-process-2}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

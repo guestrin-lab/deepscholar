@@ -1,0 +1,21 @@
+\section{Related Works}
+\label{sec:related_works}
+
+\subsection{Mobile-side MLLMs}
+\label{sec:mobile-side_mllms}
+
+% vivo bleulm-v-3B; meituan mobilevlm, mobilevlm v2; xiaomi mobilevlm; apple ferret-ui
+
+Recent years have witnessed a proliferation of remarkable advances in MLLMs. Numerous remarkable MLLMs~\cite{bai2023qwenvl, wang2024qwen2vl, bai2025qwen2, chen2023internvl, chen2024internvl_1_5, chen2024expanding, zhu2025internvl3, wang2025internvl3, chatgpt4o, team2023gemini, reid2024gemini1_5, gemini2_0, gemini2_0pro, geminipro2.5, claude3series2024} have been introduced, primarily driven by the pursuit of exploring the upper bounds of model performance through scaling laws. This endeavor has resulted in models with astronomically large parameter counts, reaching hundreds of billions or even trillions. Nonetheless, this emphasis on large-scale models has left the development of mobile-side MLLMs relatively underexplored.
+
+Among the efforts towards more mobile-friendly MLLMs, the Qwen series has made notable progress. Qwen2-VL~\cite{wang2024qwen2vl} and Qwen2.5-VL~\cite{bai2025qwen2} introduced model sizes of 2B and 3B, respectively, which are particularly suited for deployment on mobile devices. These model sizes effectively balance performance and the computational limitations of mobile hardware. Similarly, the InternVL series~\cite{chen2024expanding, zhu2025internvl3, wang2025internvl3} presented a range of model sizes---1B, 2B, and 4B---designed to fulfill various operational needs on mobile platforms.
+
+In 2023, Meituan emerged as a pioneer in the mobile MLLM domain with the introduction of MobileVLM~\cite{chu2023mobilevlm}. Built upon MobileLLaMA in a LLaVA-like~\cite{liu2023llava} architecture, MobileVLM came in 1.7B and 3B model sizes. It achieved SOTA results in some benchmarks for models of similar sizes at that time. Meituan offered significant insights into the processing speeds on mobile and IoT platforms, reporting rates of 12.21 and 21.54 tokens per second, respectively. In 2024, the release of MobileVLM V2~\cite{chu2024mobilevlm} further advanced the field by exploring the data scaling law, improving training strategies, and optimizing the modality alignment design. These developments contributed to a comprehensive enhancement in the performance of the MobileVLM framework.
+
+In 2024, the Apple MM series~\cite{mckinzie2024mm1, zhang2024mm1_5} demonstrated that even relatively compact models, specifically those with 1B and 3B parameters, could achieve impressive performance through meticulous data curation and optimized training strategies. The Ferret UI series~\cite{you2024ferret, li2024ferret} marked a significant step forward, as it was the first series extensively dedicated to improving the capabilities of screen UI understanding. It extended the capabilities of MLLMs to tasks such as referring and grounding on mobile UI screens and answering questions related to screen operations. However, Apple did not reveal the performance metrics for these models when deployed on mobile platforms.
+
+Xiaomi's MobileVLM~\cite{wu2024mobilevlm} also made important contributions by leveraging carefully constructed UI understanding and APP operation trajectory data. This enabled the model to expand its capabilities from understanding within a single UI (intra-UI) to understanding and operating across multiple UIs (inter-UI). Nevertheless, Xiaomi's 9.8B MobileVLM model was not successfully deployed on mobile devices.
+
+Finally, vivo's BlueLM-V-3B~\cite{lu2024bluelm} and BlueLM-2.5-3B~\cite{xiong2025bluelm} achieved mobile-side deployment of an MLLM through systematic optimizations in algorithms and hardware deployment. Specifically, BlueLM-V-3B achieved a running memory of 2.2G and a token throughput speed of 24.4 tokens/s on MediaTek Dimensity 9300 NPUs. This not only showcases its effectiveness but also provides practical performance metrics for mobile-side MLLMs.
+
+Despite these efforts, there remains a gap in comprehensively documenting training processes, deployment solutions, and benchmark results for general and mobile-specific tasks of mobile-side MLLMs. Our work aims to fill this void by presenting the AndesVL suite, which offers a comprehensive approach to mobile-side MLLMs, including detailed training, deployment, and benchmarking aspects. 

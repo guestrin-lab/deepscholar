@@ -1,0 +1,244 @@
+
+\input{secs/LLM-models-table}
+
+In the evaluation, we focus on the following research questions:
+\begin{itemize}[topsep=0pt]
+	\item Can LLM systems process large C++ project configurations?
+	\item Can source containers provide performance portability?
+	\item Can IR containers perform better than portable containers?
+	\item Can IR containers optimize deployments?
+\end{itemize}
+
+\vspace{-1em}
+
+\subsection{Benchmarking Setup}
+
+We demonstrate the portability of our containers on three systems:
+\begin{itemize}[topsep=0pt]
+	\item \textbf{CSCS Ault} Heterogenous system with Sarus~\cite{10.1007/978-3-030-34356-9_5} containers. We use Ault23 (Intel 6130 CPU, V100 GPU), Ault25 (AMD EPYC 7742, A100 GPU), and Ault01-04 (Intel 6154 CPU).
+	      %with a RoCE network and
+	\item \textbf{CSCS Alps.Clariden} Cray system with the GH200 superchip, Cray Slingshot network, and Podman~\cite{10030014} containers.
+	\item \textbf{Aurora} Cray system with Intel Xeon CPU Max CPUs, Intel Data Center GPU Max, and Apptainer~\cite{10.1371/journal.pone.0177459} containers.
+\end{itemize}
+
+The deployment images for Clariden are built on the compute nodes, and we use a local development machine with Docker for Ault23 and Aurora, as neither system supports container building.
+
+\indent We consider two high-performance applications as case studies.
+
+\noindent\textbf{GROMACS 2025.0}~\cite{https://doi.org/10.1002/jcc.20291}
+%
+supports many vectorization options, with automatic detection of the best option on the system.
+%
+In addition to MPI and OpenMP, it contains mutually exclusive GPU backends. % for CUDA, SYCL, and OpenCL.
+
+\noindent\textbf{llama.cpp}~\cite{llamacpp}
+%
+The C++ LLM inference engine achieves good portability by separating the implementation into multiple backends, which can be loaded dynamically at runtime.
+
+
+\subsection{Specialization Discovery}
+\label{sec:eval-llms}
+%
+We propose automating the process of discovering specialization points with the help of LLMs.
+%
+Given LLM's tendency to hallucinate and produce incorrect output, this raises the question: can these results be trusted?
+%
+Thus, we evaluate the analysis of GROMACS with models from OpenAI, Anthropic, and Google.
+%
+For each model, we apply \emph{in-context learning} by providing examples from CMake configuration options, internal commands, and flags for GROMACS, Quantum Espresso, and Kokkos.
+%
+We normalize the structure of specialization points, and compare specializations found in the ground truth and LLM result, counting true/false positives and negatives.
+%
+We repeat the prompt 10 times and evaluate the characterization of the build system, vectorization, FFT and linear algebra libraries, parallel computing solutions, and GPU backends.
+%
+Results in Table~\ref{tab:LLMs-compact} show that the correctness and performance vary widely between models.
+%
+Both GPT models produce inconsistent results across repetitions (F-score 0.55--0.97).
+%
+Gemini models perfom best, which can be explained by the large context window.
+%
+Examples of failures include returning only a subset of options (Claude 3.5, GPT-4o) and mixing FFT and linear algebra libraries (GPT-4o, Gemini 1.5).
+
+% measured with gemini tokenizer
+The basic CMake configuration contains 13299 tokens, while all CMake scripts add 154,946 more tokens.
+%
+Recommended configurations are described in the documentation that adds almost 1M tokens (without plots), which might be out of reach for many current models~\cite{liu-etal-2024-lost}.
+%
+Documentation can be processed iteratively, but this would significantly increase processing time and further increase the uncertainty of the final result.
+%
+Thus, while in-context learning can enable LLM models to perform well in the automatic analysis of specialization points,
+the processing pipeline requires tight human supervision and corrections, and performance preferences might be
+provided by system operators or application developers.
+
+\emph{Generalization}
+%
+We evaluated llama.cpp for which we provide no prompt examples.
+%
+We pass CMake configurations of llama.cpp and its main subproject \emph{ggml} (2544 and 4574 tokens, respectively).
+%
+Best performing models are Sonnet 3.7 (F1 0.55--0.62) and GPT-o3 (F1 0.62--0.7).
+%
+Models often underperform due to minor discrepancies (inconsistent hyphen/underscore, missing \emph{-D} prefix).
+%
+Normalization improves performance: Sonnet 3.7 (F1 0.63--0.74), Gemini Flash 2 (F1 0.53--0.79), and GPT-o3 (F1 0.73--0.79).
+%
+Additionally, ggml contains over 20 optimization flags; including them in evaluation decreases overall performance while improving Sonnet's best result to 0.78.
+
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{figures/gromacs_portability.pdf}
+	\vspace{-1em}
+	\caption{Performance portability of GROMACS between systems.}
+	\vspace{-1em}
+	\label{fig:gromacs-execution time}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{figures/llama_portability.pdf}
+	\vspace{-1em}
+	\caption{Performance portability of llama.cpp between systems.}
+	\vspace{-1em}
+	\label{fig:llamacpp-execution time}
+\end{figure}
+
+\subsection{Performance Portability}
+\label{eval:sec-source-containers}
+
+We evaluate the performance portability of \toolname{} source containers by comparing them against local builds, specialized containers, and Spack packages or modules - when available.
+%
+We deploy different source images based on system discovery and user input results.
+
+\subsubsection{GROMACS}
+%
+We execute test cases A and B from UEABS~\cite{ueabs} 30 times, and subtract the I/O overhead reported by GROMACS from timings (Figure~\ref{fig:gromacs-execution time}).
+%
+We use default GCC 11.4 in XaaS source images, and Spack-installed GCC 11.5 for other test cases.
+%
+Naive build uses the default CMake command from the documentation, which results with lack of GPU acceleration even when the CUDA module is loaded.
+%
+Both naive and native builds pick up MKL from the HPC modules environment.
+%
+On Ault23, we compare Spack installation with MPI and CUDA, and a second configuration with explicit selection of MKL, which achieves performance close to the XaaS source container.
+%
+According to GROMACS logs, the default Spack installation performs worse in the CPU part of the application, indicating possible issues with multithreading or the automatically selected OpenBLAS.
+%
+% Processing ault23 - B - gromacs_testcase4_testcaseB, samples: 30, 30
+% Processing ault23 - testcase4, time: 138.48863333333335 +- 0.04346232419715079
+% Processing ault23 - B - gromacs2025_testcase4_testcaseB, samples: 30, 30
+% Processing ault23 - testcase4, time: 136.72633333333334 +- 0.057986244274133014
+%
+% Processing ault23 - B - gromacs2025_testcase5_testcaseB, samples: 30, 30
+% Processing ault23 - testcase5, time: 28.391166666666667 +- 0.04138302141366523
+% Processing ault23 - B - gromacs_testcase5_testcaseB, samples: 30, 30
+% Processing ault23 - testcase5, time: 29.283299999999997 +- 0.04099056083102681
+Spack cases uses the latest available GROMACS 2024.4, and a subsequent reevaluation of 2025.0 with test B on Ault23 demonstrated an average improvement of 1-2 seconds.
+
+We use two baselines on Aurora: a hand-written specialized container and a module version of GROMACS 2024.5 since it cannot be installed by Spack.
+%
+For XaaS and specialized containers, we use the oneAPI image recommended by system operators.
+%
+The module version uses MPI, while other benchmarks use the internal Threads-MPI due to MPI compatibility issues in containers on Aurora (Section~\ref{sec:network_performance}).
+%
+However, the default source container uses only CPUs because the build is incompatible with Intel Max GPUs.
+%
+There, GROMACS uses a compile-time definition specialized only for this device, found in the documentation but not the build configuration.
+%
+For the \emph{manual} fix, source containers need an additional source of knowledge, such as documentation parsing (Section~\ref{sec:eval-llms}) or specialization parameters provided by developers (Section~\ref{sec:xaas-source-containers}).
+
+\textbf{Portable Container.}
+%
+A GPU-capable container is possible only with the SYCL backend.
+%
+This \emph{exotic} configuration~\cite{gromacsexotic} uses the vkFFT library~\cite{10036080}, which can be compiled for one hardware backend only.
+%
+Instead, we used the recently added oneMath library~\cite{onemath}, which supports MKL and cuFFT simultaneously.
+%
+We built GROMACS with the CUDA plugin for SYCL~\cite{codeplaycudaplugin} in the oneAPI image, and compared it against our source containers on V100 (Ault23) and A100 (Ault25).
+%
+The SYCL container is 11\%-20\% slower on test A, and fails to run test B.
+%
+Portability is further limited by two factors: GPU compatibility still requires compile-time definitions, and the CUDA plugin generates code for one GPU architecture at a time.
+
+\subsubsection{llama.cpp}
+%
+We use the internal llama.cpp benchmark, running 40 repetitions of prompt processing (512) and text generation (128), with a 4-bit quantized LLama-2-13B-chat model.
+%
+We configure source containers to compiler and library versions close to those available on the system.
+%
+On Aurora, we have to manually patch the source code to compile with the Intel icpx compiler, as the SYCL backend cannot be compiled with Clang 21.
+%
+For XaaS source containers, we switch to the official oneAPI image at deployment.
+%
+In this benchmark, the specialized build performs comparably to \toolname{}, while the naive default build does not enable GPU (Figure~\ref{fig:llamacpp-execution time}).
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{figures/ir_comparison.pdf}
+	\includegraphics[width=\linewidth]{figures/ir_gpu_comparison.pdf}
+	\caption{IR containers on CPU (top, Ault01-04) and GPU (bottom).}
+	\vspace{-1.5em}
+	\label{fig:gromacs-ir-container}
+\end{figure}
+
+\subsection{IR Containers}
+%
+We evaluate the performance portability of IR containers with GROMACS on CPU, with OpenMP, and tuned against five different CPU architectures, from SSE4.1 to AVX-512.
+%
+This requires discovering CPU tuning flags and delaying optimizations until final deployment (Section~\ref{sec:xaas-ir-containers-pipeline}).
+%
+For each variant, we build a separate container layer hosting \texttt{fftw3} library tuned for that architecture.
+%
+Additionally, we build IR containers with CUDA 12.8 by generating IR files with embedded device code, which we later lower to the target platform.
+%
+We compare against portable and specialized containers built with Clang 19 for SSE4.1 and AVX\_512 (CPU), and CUDA containers (GPU).
+%
+Figure~\ref{fig:gromacs-ir-container} shows the runtime of GROMACS with I/O time excluded, demonstrating that a specialization of the IR container can improve performance by up to 2x when compared to a performance-oblivious container.
+%
+We also evaluate a separate deployment of IR containers configured against CUDA and two vectorization levels for Ault23 and Ault25 nodes.
+%
+On the GPU, we provide performance comparable to a specialized container, with a slight increase in I/O time for test case B.
+
+\emph{Configurability and System Dependency}
+%
+This experiment validates positively Hypotheses 1 and 2 on GROMACS (Section~\ref{sec:xaas-ir-containers}).
+%
+To deploy five GROMACS containers tuned to different ISAs, developers must build 8710 translation units (TU).
+%
+In our container, we build only 2695 IRs (69\% reduction).
+%
+The reduction would not be possible without the \toolname{} pipeline, as 96\% of compiled source files have incompatible build flags across projects; the primary reason is the inclusion of header files in the build directory.
+%
+Preprocessing determines that only 14.3\% of additional TUs require separate IR compilation.
+%
+However, 95\% of identical targets have different CPU tuning, which is resolved by the vectorization pass of our pipeline.
+
+Four build configurations with two vectorization settings and CUDA require 7052 TUs, which we reduce to 2694 IRs (76\% reduction).
+%
+The build combinations obtained with enabling OpenMP and/or MPI require compiling and lowering 6976 TUs.
+%
+Thanks to preprocessing and determining when the OpenMP flag has no effect, we build only 2333 IRs (66.4\% reduction).
+
+\vspace{-0.75em}
+
+\subsection{Network Performance}
+\label{sec:network_performance}
+%
+We focused on single-node deployments to demonstrate specialization to the available hardware and software,
+and did not evaluate distributed execution due to technical limitations on our systems.
+%
+On Aurora, Apptainer containers did not function with MPI, and we had to use Thread-MPI instead.
+%
+On Clariden, co-location of MPI ranks is needed to utilize the four GH200 chips on each node.
+%
+However, the intra-node MPI communication is implemented separately from \emph{cxi}, the Slingshot provider in Libfabric~\cite{https://doi.org/10.1002/cpe.8203}.
+%
+Thus, containerized MPIs can access the high-speed network through Libfabric replacement, but cannot use shared memory.
+%
+While bare-metal Cray-MPICH achieves up to 64 GB/s on the same socket, co-located containers reach only up to 23.5 GB/s (OpenMPI).
+%
+LinkX~\cite{pritchard2023open} is a Libfabric provider that combines remote and local communication, and provides up to 64 (MPICH) and 70 (OpenMPI) GB/s of intra-node bandwidth.
+%
+However, the provider is still experimental, e.g., it does not function well on all benchmarks and hardware.
+

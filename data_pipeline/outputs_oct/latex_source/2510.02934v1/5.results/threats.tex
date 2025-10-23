@@ -1,0 +1,11 @@
+\subsection{Threats to Validity}
+
+The main threats to the validity of our work consist of internal, construct, and external threats.
+
+\textbf{Internal Validity}. One threat to internal validity lies in the selection of hyperparameters. To mitigate this threat, we systematically explored various configurations of \tool and reused the official settings from the original papers for baselines~\cite{openia, codebert, codet5}, ensuring fair comparisons. Another potential threat involves the procedure for extracting internal representations. To address this threat, we relied on widely adopted PyTorch tools to extract hidden states during code generation. Additionally, to further reduce the risk of implementation errors, we carefully reviewed our code and made it public~\cite{website} so that other researchers can double-check and reproduce our experiments. 
+
+\textbf{Construct Validity}. A threat to construct validity arises from the selection of evaluation metrics and experimental procedures. To mitigate this threat, we adopt standard  metrics, including Accuracy, Precision, Recall, and F1-Score for evaluation. To ensure a comprehensive assessment, we systematically evaluated \tool across multiple code LLMs, benchmarks, and experimental settings. Another potential threat involves the procedure for labeling code correctness, which relies on test outcomes or static analysis results. To mitigate this threat, we utilized high-quality, widely adopted benchmarks~\cite{HumanEval, MBPP, li-etal-2024-deveval, SecurityEval, Cweval, CODEGUARD+, Sallm} that include rigorous test suites. As future work, we plan to incorporate human evaluation to complement automated assessments.
+
+\textbf{External Validity}.
+External threat relates to the generalizability of our results. We mitigated this threat by evaluating \tool across diverse model families. However, due to hardware constraints, our evaluation focused on models with up to 13 billion parameters. We intend to explore the scalability of \tool to larger models in future work. 
+Additionally, the prompt variability also poses a potential threat. To address this, we conducted evaluations on diverse benchmarks with varying prompt styles, offering partial mitigation. We also plan to systematically study prompt sensitivity in future experiments.

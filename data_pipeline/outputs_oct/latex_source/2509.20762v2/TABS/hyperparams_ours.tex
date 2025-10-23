@@ -1,0 +1,22 @@
+\begingroup
+\setlength{\tabcolsep}{5pt}
+\begin{table*}[t]
+    \centering    
+    \caption{The fine-tuned hyperparameters of \ours.}
+    \label{tab:hyperparams_ours}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|cccccccccccccccc}
+\hline
+\multirow{2}[2]{*}{\textbf{Dataset}} & \multicolumn{2}{c}{\texttt{coAA}} & \multicolumn{2}{c}{\texttt{coDB}} & \multicolumn{2}{c}{\texttt{coSM}} & \multirow{2}[2]{*}{\texttt{qaBI}} & \multirow{2}[2]{*}{\texttt{qaPH}} & \multirow{2}[2]{*}{\texttt{qaMA}} & \multirow{2}[2]{*}{\texttt{qaST}} & \multirow{2}[2]{*}{\texttt{emEN}} & \multirow{2}[2]{*}{\texttt{emEU}} & \multirow{2}[2]{*}{\texttt{emER}} & \multirow{2}[2]{*}{\texttt{soME}} & \multirow{2}[2]{*}{\texttt{soRE}} & \multirow{2}[2]{*}{\texttt{moML}} \bigstrut[t]\\
+      & (first) & (last) & (first) & (last) & (first) & (last) &       &       &       &       &       &       &       &       &       &  \bigstrut[b]\\
+\hline
+Stage 1 learning rate & 0.01  & 0.01  & 0.01  & 0.001 & 0.001 & 0.01  & 0.1   & 0.1   & 0.01  & 0.001 & 0.01  & 0.001 & 0.01  & 0.01  & 0.001 & 0.1 \bigstrut[t]\\
+Stage 2 learning rate & 0.1   & 0.1   & 0.1   & 0.1   & 0.1   & 0.01  & 0.1   & 0.01  & 0.01  & 0.001 & 0.1   & 0.1   & 0.01  & 0.1   & 0.001 & 0.1 \\
+$\alpha^{(2)}$ & 0.06  & 0.09  & 0.06  & 0.09  & 0.06  & 0.3   & 0.06  & 0.3   & 0.06  & 0.9   & 0.2   & 0.08  & 0.9   & 0.06  & 0     & 1 \\
+$w^{(2)}$ & 7     & 4     & 10    & 3     & 6     & 2     & 4     & 4     & 1     & 9     & 9     & 2     & 3     & 10    & 1     & -* \bigstrut[b]\\
+\hline
+\multicolumn{8}{l}{\small *The best validation accuracy is obtained without global aggregation.} \\
+\end{tabular}%
+\end{adjustbox}
+\end{table*}
+\endgroup

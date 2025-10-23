@@ -1,0 +1,591 @@
+\appendix
+\setcounter{proposition}{0}
+\section{Details of Theoretical Analysis} \label{app:all-proofs}
+\subsection{Conditions for TACT to correct a wrong prediction}
+\label{app:prop_correct}
+We first restate Proposition~\ref{pp:improve} as follows:
+\begin{proposition} \label{app:pp:improve}
+For any $z$ that is misclassified by the learned decision boundary $\Delta q$, the misclassification can be corrected by using the representation obtained after removing the top-$m$ principal components, if both of the following two conditions are satisfied: 
+\setcounter{equation}{3}
+\begin{equation}
+    y\sum_{i=1}^m\alpha_i\gamma_i <0 \quad \text{and}
+    \quad 
+    y\sum_{i=m+1}^d\alpha_i\gamma_i >0
+    \label{app:eq:improve_1}
+\end{equation}
+\begin{equation} \label{app:eq:improve_2}
+\left|\sum_{i=1}^m\alpha_i\gamma_i\right| >\left|\sum_{i=m+1}^d\alpha_i\gamma_i\right|
+\end{equation}
+\end{proposition}
+\setcounter{equation}{7}
+\begin{proof}
+As the learned decision boundary $\Delta q$ cannot classify $z$ correctly, we have:
+\begin{align}
+    yz \cdot \Delta q & <0 \notag \\
+    y\sum_{i=1}^d \alpha_ie_i \cdot \sum_{i=1}^d \gamma_i e_i &< 0\notag \\
+    y\sum_{i=1}^d \alpha_i \gamma_i (e_i \cdot e_i) &< 0 \notag \\
+    y\sum_{i=1}^d \alpha_i \gamma_i &< 0 \notag \\
+    y\sum_{i=1}^m \alpha_i \gamma_i + y\sum_{i=m+1}^d \alpha_i \gamma_i&< 0 \label{app:eq:z_q}
+\end{align}
+TACT updates $z$ to $\hat{z}$ and $q$ to $\hat{q}$ via causal trimming, and the resulting prediction is correct if and only if $y\hat{z} \cdot \Delta \hat{q} > 0$, which leads to:
+\begin{align}
+    y\hat{z} \cdot \Delta \hat{q} & > 0 \notag \\
+    y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=m+1}^d \gamma_i e_i &> 0 \notag \\
+    y\sum_{i=m+1}^d \alpha_i \gamma_i (e_i \cdot e_i) &> 0 \notag \\
+    y\sum_{i=m+1}^d \alpha_i \gamma_i &> 0 \label{app:eq:hat_z_q}
+\end{align}
+By combining Equation \eqref{app:eq:z_q} and \eqref{app:eq:hat_z_q}, we can derive:
+\begin{equation}
+    y\sum_{i=1}^m \alpha_i \gamma_i < -y\sum_{i=m+1}^d \alpha_i \gamma_i < 0
+    \label{eq:top_m_q}
+\end{equation}
+In addition: 
+\begin{equation}
+    \left|\sum_{i=1}^m \alpha_i \gamma_i\right| > \left|\sum_{i=m+1}^d \alpha_i \gamma_i \right|
+\end{equation}
+\end{proof}
+
+\subsection{Conditions for trimmed representations to preserve causal features}
+\label{app:prop_rep}
+\begin{proposition}
+[Causal Preservation]
+\label{app:pp:correct_causal}
+For any original representation $z$, the trimmed representation $\hat{z}$ preserves the correct prediction under the causal decision boundary $\Delta p$ 
+if any one of the following conditions holds:
+    \setcounter{equation}{5}
+    \begin{equation}
+        \begin{cases}
+        y\sum\limits_{i=1}^m\eta_i\alpha_i\gamma_i = 0 \\
+        y\sum\limits_{i=1}^m\eta_i\alpha_i\gamma_i < 0 \\
+        0<y\sum\limits_{i=1}^m\eta_i\alpha_i\gamma_i < y\sum\limits_{i=1}^d\eta_i\alpha_i\gamma_i
+    \end{cases}
+    \label{app:eq:correct_causal}
+    \end{equation}
+\end{proposition}
+Equation \eqref{eq:correct_causal} characterizes three cases: (a) the top-$m$ PCs have no contribution to the causal prediction; (b)  the top-$m$ PCs has a negative influence on the causal prediction and thus their removal is beneficial; (c) the top-$m$ PCs has a positive contribution, but the representation forms by all PCs contribute even more strongly.
+When the top-$m$ PCs have no contribution to the causal predictions, they are considered non-causal features. In other words, the removed component $z-\hat{z}$ does not contain causal information. 
+When the top-$m$ PCs contain causal information, $m$ should be selected such that the causal information in the top-$m$ PCs 
+contributes less to the prediction compared to all the PCs, ensuring that the trimmed representation $\hat{z}$ remains causally informative.
+
+The proof provided here corresponds to this corrected version.
+\setcounter{equation}{11}
+\begin{proof}
+As the causal decision boundary $\Delta p$ can classify $z$ correctly, we have:
+\begin{align}
+    yz \cdot \Delta p & >0 \notag \\
+    y\sum_{i=1}^d \alpha_ie_i \cdot \sum_{i=1}^d \eta_i\gamma_i e_i &> 0\notag \\
+    y\sum_{i=1}^d \eta_i \alpha_i\gamma_i (e_i \cdot e_i) &> 0 \notag \\
+    y\sum_{i=1}^d \eta_i \alpha_i\gamma_i &> 0 \notag \\
+    y\sum_{i=1}^m \eta_i \alpha_i\gamma_i + y\sum_{i=m+1}^d \eta_i \alpha_i\gamma_i&> 0
+    \label{app:eq:z_p}
+\end{align}
+By rearranging Equation \eqref{app:eq:z_p}, we can derive:
+\begin{equation}
+     y\sum_{i=m+1}^d \eta_i \alpha_i\gamma_i> -y\sum_{i=1}^m \eta_i \alpha_i\gamma_i
+    \label{eq:top_m_p}
+\end{equation}
+Using causal decision boundary to predict $\hat{z}$, the prediction is correct if and only if $y\hat{z}\cdot \Delta p > 0$, which leads to: 
+\begin{align}
+    y\hat{z}\cdot \Delta p & > 0 \notag \\
+    y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=m+1}^d \eta_i\gamma_i e_i &> 0 \notag \\
+    y\sum_{i=m+1}^d \eta_i \alpha_i\gamma_i (e_i \cdot e_i) &> 0 \notag \\
+    y\sum_{i=m+1}^d \eta_i \alpha_i\gamma_i &> 0 \label{app:eq:hat_z_p}
+\end{align}
+
+Given Equation \eqref{eq:top_m_p}, Equation \eqref{app:eq:hat_z_p} is satisfied if any one of the following conditions holds: 
+
+\begin{numcases}{}
+    y\sum_{i=m+1}^d \eta_i\alpha_i \gamma_i> -y\sum_{i=1}^m \eta_i\alpha_i \gamma_i \geq 0 \label{app:eq:causal_1}\\
+      y\sum_{i=m+1}^d \eta_i\alpha_i \gamma_i> 0 > -y\sum_{i=1}^m \eta_i\alpha_i \gamma_i \label{app:eq:causal_2}\quad 
+\end{numcases}
+Equation \eqref{app:eq:causal_1} leads to:
+\begin{equation}
+    y\sum_{i=1}^m \eta_i\alpha_i \gamma_i \leq 0
+\end{equation}
+By adding $y\sum_{i=1}^m \eta_i\alpha_i \gamma_i$ to Equation \eqref{app:eq:causal_2}, we can derive:
+\begin{equation}
+    y\sum_{i=1}^d\eta_i\alpha_i\gamma_i > y\sum_{i=1}^m\eta_i\alpha_i\gamma_i > 0
+\end{equation}
+\end{proof}
+
+\subsection{Conditions for TACT to preserve a correct prediction}
+\label{app:prop_trimmed_miss}
+\begin{proposition} \label{app:pp:rep_space_rm_new}
+Suppose  $z$ is correctly classified by the learned decision boundary $\Delta q$. The trimmed representation $\hat{z}$ obtained via TACT will still be classified correctly if either of the conditions holds: 
+\begin{enumerate}
+    \item $y(z-\hat{z})\Delta q \leq 0$, or
+    \item $y(z-\hat{z})\Delta q > 0$, and Equation \eqref{app:eq:learned_correct} holds, assuming $\hat{z}$ already satisfies the Causal Preservation condition (Proposition~\ref{pp:correct_causal}).
+    \setcounter{equation}{6}
+    \begin{equation}
+        \mathrm{sign}\left(\sum_{i=m+1}^d \eta_i\alpha_i\gamma_i\right) = \mathrm{sign} \left(\sum_{i=m+1}^d \alpha_i\gamma_i\right)
+        \label{app:eq:learned_correct}
+    \end{equation}
+\end{enumerate}
+\end{proposition}
+ Equation \eqref{eq:learned_correct} requires that when classification relies only on the representations formed by the remaining PCs, the learned decision boundary makes the same prediction as the causal decision boundary. 
+Proposition \ref{pp:rep_space_rm_new} also shows that if a correct prediction is made by the learned decision boundary, TACT will preserve this correctness as long as the removed part $z-\hat{z}$ contributes negatively or does not contribute to the prediction.
+On the other hand, when the trimmed representation $\hat{z}$ contains sufficient causal information as established in Proposition \ref{pp:correct_causal}, the learned decision boundary is required to align directionally with the causal decision boundary defined by the remaining PCs.
+
+The proof provided here corresponds to this corrected version.
+\setcounter{equation}{18}
+\begin{proof}
+    As the learned decision boundary $\Delta q$ classify $z$ correctly, we have:
+    \begin{align}
+    yz \cdot \Delta q & >0 \notag \\
+    y(z-\hat{z})\cdot \Delta q + y\hat{z} \cdot \Delta q &> 0
+    \label{app:eq:z_q_correct}
+\end{align}
+We can rewrite $y\hat{z} \cdot \Delta q$ as:
+\begin{align}
+     y\hat{z} \cdot \Delta q &= y \sum_{i=m+1}^d \alpha_i e_i \cdot  \sum_{i=1}^d \gamma_i e_i \notag \\
+     &= y\sum_{i=m+1}^d \alpha_i e_i \cdot \left(  \sum_{i=1}^m \gamma_i e_i + \sum_{i=m+1}^d \gamma_i e_i \right) \notag \\
+     &= y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=1}^m \gamma_i e_i + y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=m+1}^d \gamma_i e_i \notag \\
+     &= 0 + y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=m+1}^d \gamma_i e_i \notag \\
+     &= y\hat{z}\cdot \Delta \hat{q} \label{app:eq:hat_q_equal_no_hat}
+\end{align}
+By combining Equation \eqref{app:eq:z_q_correct} and Equation \eqref{app:eq:hat_q_equal_no_hat}, we can derive: 
+\begin{equation}
+    y(z-\hat{z})\cdot \Delta q + y\hat{z} \cdot \Delta \hat{q} > 0 \label{app:eq:z_q_correct_final}
+\end{equation}
+The updated prediction by TACT is correct if and only if $y\hat{z} \cdot \Delta \hat{q}> 0$. 
+Equation \eqref{app:eq:z_q_correct_final} shows that the value of $y(z-\hat{z})\cdot \Delta q$ needs to be considered to derive the conditions under which $y\hat{z} \cdot \Delta \hat{q}> 0$.
+\begin{enumerate}
+    \item When $y(z-\hat{z})\cdot \Delta q \leq 0$, 
+    the removed part does not positively contribute to the prediction using the learned decision boundary, 
+    together with Equation \eqref{app:eq:z_q_correct_final}, we can derive: 
+    \begin{equation}\label{app:eq:correct_condition_1}
+        y\hat{z} \cdot \Delta \hat{q} > -y(z-\hat{z})\cdot \Delta q \geq 0 
+    \end{equation}
+    Equation \eqref{app:eq:correct_condition_1} suggests that $y\hat{z} \cdot \Delta \hat{q}> 0$ is always true when $y(z-\hat{z})\cdot \Delta q \leq 0$.
+    
+    \item When $y(z-\hat{z})\cdot \Delta q > 0$, the removed part positively contributes to the prediction using the learned decision boundary. 
+    We wish to connect with the causal decision boundary to understand the conditions. 
+    Therefore, we additionally assume $\hat{z}$ satisfies the Causal Preservation condition (Proposition~\ref{pp:correct_causal}), which suggests $y\hat{z}\cdot \Delta p > 0$.
+    
+    The updated prediction is correct, i.e. $y\hat{z} \cdot \Delta \hat{q}> 0$ if: 
+    \begin{align}
+        \mathrm{sign}\left(y\hat{z} \cdot \Delta p\right) &= \mathrm{sign}\left(y\hat{z} \cdot \Delta \hat{q}\right) \notag \\
+        \mathrm{sign}\left(y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=1}^d \eta_i \gamma_i e_i \right) &= \mathrm{sign}\left(y\sum_{i=m+1}^d \alpha_i e_i \cdot \sum_{i=m+1}^d \gamma_i e_i\right) \notag \\
+        \mathrm{sign}\left(y\sum_{i=m+1}^d \alpha_i\eta_i\gamma_i (e_i \cdot e_i) \right) &= \mathrm{sign}\left(y\sum_{i=m+1}^d \alpha_i\gamma_i (e_i \cdot e_i)\right) \notag \\
+        \mathrm{sign}\left(y\sum_{i=m+1}^d \alpha_i\eta_i\gamma_i \right) &= \mathrm{sign}\left(y\sum_{i=m+1}^d \alpha_i\gamma_i\right) \notag \\
+        \mathrm{sign}\left(\sum_{i=m+1}^d \eta_i\alpha_i\gamma_i \right) &= \mathrm{sign}\left(\sum_{i=m+1}^d \alpha_i\gamma_i\right)
+    \end{align}
+\end{enumerate}
+\end{proof}
+
+\section{Data Augmentation for CivilComments}
+\label{app:aug}
+CivilComments considers the following demographics mentioned in a comment: male, female, LGBTQ, Christian, Muslim, other religions, Black, White.
+We group the demographics into gender (male/female), sexuality (LGBTQ), religion (Christian/Muslim/other religions), and race (Black/White). 
+We notice that the comments tend to mention only one of the demographics in each group, and some comments mention more than one group. 
+To vary demographics, we propose to introduce new demographics to the comments.
+
+We propose to randomly insert a sentence before or after the comment. 
+The sentences being inserted are randomly drawn from a set of sentences. Each sentence in the set mentions all demographics in one of the groups. 
+The sentences are not toxic, so they would not affect the toxicity rating of the comment. Toxic comments remain toxic, and non-toxic comments remain non-toxic when the sentence is added. 
+We ask ChatGPT via the web interface (\url{https://chatgpt.com}) to generate 20 sentences for each demographic group.
+We list the sentences below. Sentences from all groups make up the set from which we randomly sample for augmentation.
+
+\begin{tcolorbox}[enhanced, breakable,
+    colback=black!10!white, 
+    colframe=black!80!white, 
+    fonttitle=\bfseries,
+    title=Gender(male/female),
+    ]
+    \squishlisttwo
+      \item ``This is a post about females and males.''
+      \item ``The discussion focuses on women and men.''
+      \item ``Females and males are the central topic here.''
+      \item ``Women and men both contribute to this conversation.''
+      \item ``This explores perspectives of females and males.''
+      \item ``The post highlights contributions of women and men.''
+      \item ``Both females and males are part of the narrative.''
+      \item ``Women and men play essential roles in this story.''
+      \item ``Females and males are equally represented here.''
+      \item ``This covers aspects of both women and men.''
+      \item ``This is a post about women and men.''
+      \item ``The discussion centers on ladies and gentlemen.''
+      \item ``Females and males are the key focus here.''
+      \item ``Girls and boys both play significant roles.''
+      \item ``Both genders are part of this discussion.''
+      \item ``This highlights contributions from men and women.''
+      \item ``Ladies and gentlemen are represented here equally.''
+      \item ``The focus is on both sexes and their roles.''
+      \item ``Womenfolk and menfolk shape this narrative.''
+      \item ``Both males and females are included in this topic.''
+    \squishend
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=black!10!white, 
+    colframe=black!80!white, 
+    enhanced, breakable, 
+    title=Sexuality (LGBTQ),
+    fonttitle=\bfseries
+]
+    \squishlisttwo
+        \item ``This is a post about LGBTQ+ and heterosexual individuals.''
+      \item ``The discussion focuses on sexual minorities and heterosexual communities.''
+      \item ``This highlights experiences of both LGBTQ+ and cisgender people.''
+      \item ``The post compares queer and non-queer perspectives.''
+      \item ``This covers topics relevant to both LGBTQ+ and straight groups.''
+      \item ``Gender-diverse and cisgender voices are included in this conversation.''
+      \item ``The focus is on LGBTQ+ and heterosexual rights and issues.''
+      \item ``Both sexual minorities and heterosexual people’s experiences are addressed here.''
+      \item ``This post examines the lives of gender-nonconforming and cisgender individuals.''
+      \item ``The post explores the intersection of queer and non-queer identities.''
+      \item ``LGBTQ+ and heterosexual people both contribute to this topic.''
+      \item ``This content engages with both gender-diverse and cisgender communities.''
+      \item ``The article offers insights into the experiences of LGBTQ+ and non-LGBTQ+ individuals.''
+      \item ``This is a post about LGBTQ+ and heterosexual experiences in society.''
+      \item ``Both sexual minorities and heterosexual groups have a place in this discussion.''
+      \item ``This conversation includes both LGBTQ+ and cisgender perspectives.''
+      \item ``We explore issues affecting both sexual minorities and heterosexual individuals.''
+      \item ``This is about the relationships between LGBTQ+ and heterosexual people.''
+      \item ``The focus is on creating unity between LGBTQ+ and cisgender communities.''
+      \item ``This post discusses challenges faced by both gender-diverse and cisgender people.''
+    \squishend
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=black!10!white, 
+    colframe=black!80!white, 
+    enhanced, breakable, 
+    title=Religion (Christian/Muslim/other religions),
+    fonttitle=\bfseries
+]
+    \squishlisttwo
+      \item ``This is a post about Christians, Muslims, and followers of other faiths.''
+      \item ``The discussion focuses on Christians, Muslims, and practitioners of different religions.''
+      \item ``This highlights the experiences of Christians, Muslims, and believers from various traditions.''
+      \item ``The post compares Christian, Muslim, and other spiritual practices.''
+      \item ``This covers topics relevant to Christians, Muslims, and people of other religious backgrounds.''
+      \item ``The voices of Christians, Muslims, and adherents of different faiths are included in this conversation.''
+      \item ``The focus is on Christian, Muslim, and interfaith perspectives.''
+      \item ``Both Christians, Muslims, and people of other beliefs contribute to this discussion.''
+      \item ``This post examines the lives of Christians, Muslims, and followers of other religions.''
+      \item ``The post explores the intersection of Christianity, Islam, and other spiritual practices.''
+      \item ``Christians, Muslims, and people from diverse faiths share common values of compassion.''
+      \item ``This content engages with Christians, Muslims, and those from various religious traditions.''
+      \item ``The article offers insights into the teachings of Christians, Muslims, and other faith communities.''
+      \item ``This is a post about Christians, Muslims, and adherents of various world religions.''
+      \item ``Both Christians, Muslims, and individuals from different belief systems are included in this conversation.''
+      \item ``The focus is on how Christians, Muslims, and people of other religions practice faith.''
+      \item ``This conversation includes insights from Christians, Muslims, and followers of other spiritual paths.''
+      \item ``We’ll explore issues affecting Christians, Muslims, and people from various religious backgrounds.''
+      \item ``This is about the relationships between Christians, Muslims, and those of other beliefs.''
+      \item ``The post discusses shared values between Christians, Muslims, and adherents of other religions.''
+    \squishend
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=black!10!white, 
+    colframe=black!80!white, 
+    enhanced, breakable, 
+    title=Race (Black/White),
+    fonttitle=\bfseries
+]
+    \squishlisttwo
+        \item ``This is a post about Black and White communities.''
+      \item ``The discussion focuses on African American and Caucasian experiences.''
+      \item ``This highlights the perspectives of Black and White individuals.''
+      \item ``The post compares the lives of Black and White people.''
+      \item ``This covers topics relevant to both Black and White races.''
+      \item ``The voices of African Americans and Caucasians are included in this conversation.''
+      \item ``The focus is on Black and White racial dynamics.''
+      \item ``Both Black and White communities contribute to this discussion.''
+      \item ``This post examines the experiences of Black and White individuals.''
+      \item ``The post explores the intersection of African American and European American identities.''
+      \item ``Black and White people play vital roles in shaping society.''
+      \item ``This content engages with the experiences of Black and White groups.''
+      \item ``The article offers insights into the lives of Black and White people in different settings.''
+      \item ``This is a post about African American and White American experiences.''
+      \item ``Both Black and White cultures have unique contributions to the world.''
+      \item ``The focus is on both Black and White perspectives in social issues.''
+      \item ``This conversation includes both Black and White voices.''
+      \item ``We’ll explore the relationship between Black and White individuals.''
+      \item ``This is about the interactions between African Americans and Caucasians.''
+      \item ``The post discusses challenges faced by both Black and White communities.''
+    \squishend
+\end{tcolorbox}
+
+\section{Augmentation Design and Selection}
+\label{app:aug_design}
+Data augmentation requires careful consideration in order to achieve strong performance. It should heuristically maximize variations along non-causal directions and minimize variations along causal directions, so that the directions corresponding to non-causal features are well identified by Principal Component Analysis. 
+
+In practice, the augmentation can be treated as a hyperparameter to search over. The data collection process that raises variation and features that affect the prediction target should be analyzed to propose a set of augmentations that are semantically invariant with respect to the prediction target, yet introduce variability in other, non-causal aspects. 
+
+For example, for the commonly studied image classification task, we recommend searching over general image augmentations, such as AutoAugment \cite{cubuk2019autoaugment} and RandomAugment \cite{cubuk2020randaugment}. These augmentations preserve the critical causal features, particularly the shape information of objects \cite{geirhos2018imagenettrained}, while simultaneously injecting variability into less essential aspects.
+Our experiments examine the effect of different augmentation strategies on datasets where images serve as the predictive input. As shown in Table~\ref{tb:aug_sensi}, augmentation affects model performance, but AutoAugment and RandomAugment could provide consistent improvements over no adaptation.
+
+The most effective way to select the augmentation is to test on a small subset of labeled test data. 
+
+\begin{table}[h]
+    \caption{Performance of TACT with different augmentation strategies.}
+    \centering
+    \small
+    \begin{tabular}{l|ccccc}
+    \toprule 
+    Augmentation &  Birdcalls & Camelyon17\tablefootnote{The performance of AutoAugment and RandomAugment on Camelyon17 is under the removal of principal components beginning with the 2nd. We observe that removing the first principal component only results in performance degradation. We hypothesize that important causal features might be present in the first principal component.} & ImageNet-R & ImageNet-V2\\
+    \midrule 
+    no TTA & 22.74 & 62.31& 41.83 & 62.97 \\
+    \midrule
+    Stain color jitter/color jitter  & 31.14$\pm$1.69 & 70.17$\pm$0.05 & 41.78$\pm$0.01 & 61.88$\pm$0.11\\
+    AutoAugment         &  27.61$\pm$2.25 & 72.04$\pm$0.12 & 43.29$\pm$0.07 & 63.33$\pm$0.10 \\
+    RandomAugment       & 32.19$\pm$1.26 & 79.71$\pm$0.07 & 43.59$\pm$0.02 & 62.99$\pm$0.10 \\
+    \bottomrule 
+    \end{tabular}
+    \label{tb:aug_sensi}
+\end{table}
+
+\section{Details of Test-Time Adaptation Experiment} \label{app:exp-details}
+\subsection{Model Used for Adaptation}
+\label{app:pretrain}
+For Birdcalls and Camelyon, to our knowledge, there were no publicly available ViT-B/32 models trained on the datasets. 
+Therefore, we train a model using the standard empirical risk minimization. The training scripts and models can be found at our code repository \url{https://github.com/NancyQuris/TACT}. 
+The details of the training are:
+\squishlisttwo
+    \item Birdcalls uses a batch size of 16 and is trained for 100 epochs. AdamW is employed as the optimizer, with a learning rate of 5e-5 and weight decay of 0.001. As specified in \cite{gao2023out}, the training starts from a weight pretrained on ImageNet, and the best model is selected by macro F1 on the in-distribution validation split.
+    \item Camelyon17 uses a batch size of 32 and is trained for 30 epochs. SGD is employed as the optimizer, with a learning rate of 5e-5 and momentum 0.9. As instructed in \cite{WILDS}, the training starts from a randomly initialized weight, and the best model is selected by the average classification accuracy on the validation domain.
+\squishend
+
+For CivilComments, we use the model provided by Wilds \cite{WILDS}. 
+The model was trained on the training domain of CivilComments using empirical risk minimization. 
+The model can be found in \url{https://worksheets.codalab.org/rest/bundles/0x17807ae09e364ec3b2680d71ca3d9623/contents/blob/best_model.pth}.
+ 
+
+For ImageNet-R and ImageNet-V2, we use the model published by torchvision. The model was trained on ImageNet using empirical risk minimization. The pretrained weight \url{ViT_B_32_Weights.IMAGENET1K_V1} is loaded to the model for test-time adaptation. 
+ 
+
+\subsection{Hyperparameter Search Space}
+\label{app:hyper}
+We perform a grid search to find the best hyperparameters for the baseline methods we compared with.
+For backpropagation-free methods, here list the details of the hyperparameters searched: 
+\squishlisttwo
+    \item T3A: Following \cite{t3a}, $M$, the number of representations stored to compute the centroid of each class is searched in $\{$1,5,20,50,100, N/A$\}$, where N/A means storing all representations.
+
+    \item LAME: Following \cite{lame}, the $k$ used in $k$-nearest neighbours is searched in $\{$1,3,5$\}$, and the kernel to compute distance is searched in $\{$kNN, linear, rbf$\}$.
+
+    \item FOA: Following \cite{foa}, we use 3 prompts. The population size is set to $4 + 3 \times \log(\text{prompt dim})$. The $\lambda$ to balance entropy and representation distance is searched in $\{$0.2, 0.4$\}$.
+\squishend
+
+For all backpropagation-based methods, we search the learning rate in $\{$1e-3, 1e-4, 1e-5, 1e-6$\}$. The adaptation is performed in a non-episodic way.
+For other hyperparameters used in each method, the details are listed below:
+\squishlisttwo
+    \item SHOT: The method was originally proposed for source-free domain adaptation \cite{shot}. Following \cite{t3a} that adapts it as a TTA strategy, $\beta$, the hyperparameter to balance information maximization and cross entropy, is set to 0.1. The hyperparameter to filter confident pseudo-labels is set to 0.9. 
+    Adam is used as the optimizer. The feature extractor is updated during adaptation. The adaptation step is set to 1. 
+    
+    \item Tent: Following \cite{tent}, SGD is used as the optimizer with momentum 0.9. The affine parameters of normalization layers are updated during adaptation. The adaptation step is set to 1.
+    
+    \item SAR: Following \cite{sar}, the margin $E_0$ is set to 0.4$\times \ln C$, where $C$ is the number of classes. To recover the model, the moving average factor is set to 0.9, and the reset constant is set to 0.2. 
+    SGD is used as the base optimizer with sharpness-aware minimization (SAM). The momentum for SGD is set to 0.9. $\rho$ in SAM is set to 0.05. The affine parameters of shallow normalization layers are updated. Normalization layers in the $9^{th}$-$11^{th}$ block in the feature extractor are frozen during adaptation. The adaptation step is set to 1. 
+    
+    \item DeYO: Following \cite{deyo}, we search over the three augmentations $\{$patch shuffling, pixel shuffling, occlusion$\}$ to destory causal features. 
+    The patch size in patch shuffling is set to 4. For occlusion, the occlusion size is set to $\left(H/2\right) \times \left(W/2\right)$, where $H$ and $W$ stand for the height and width of the image. 
+    The occulsion starts from $\left(H/4\right)^{th}$ row and $\left(W/4\right)^{th}$ column. 
+    The DeYO margin is set to 0.5$\times \ln C$, and the margin $E_0$ is set to 0.4$\times \ln C$, where $C$ is the number of classes. The PLPD threshold is searched in $\{$0.2, 0.3, 0.5$\}$. 
+    SGD is used as the optimizer with momentum 0.9. The affine parameters of shallow normalization layers are updated. Normalization layers in the $9^{th}$-$11^{th}$ block in the feature extractor are frozen during adaptation. The adaptation step is set to 1.
+    
+    \item TAST: Following \cite{tast}, we search the number of nearby support examples $N_s$ in $\{$1, 2, 4, 8$\}$. $M$, the number of support examples per class is searched in $\{$1,5,20,50,100, N/A$\}$, where N/A means storing all representations. 
+    The number of adaptation modules $N_e$ is set to 20. 
+    Adam is used as the optimizer. The trainable module added on top of the feature extractor is adapted. The adaptation step is searched in $\{$1, 3$\}$.
+    
+    \item TSD: Following \cite{tsd}, the hyperparameter for feature filter $M$ is searched in  $\{$1, 5, 20, 50, 100, N/A$\}$, where N/A denotes no entropy filter. The tradeoff parameter $\lambda$ to balance TSD loss and MSLC loss is set to 0.1. 
+    Adam is used as the optimizer. Adapting  $\{$affine parameters, classifier, feature extractor, all parameters$\}$ is searched. 
+    The adaptation step is set to 1. 
+    
+    \item PASLE: Following \cite{pasle}, we search the the threshold in $\{$0.2, 0.4, 0.6, 0.8$\}$. 
+    The threshold gap is set to 0.1. The $\tau_\text{des}$ is searched in $\{$1e-3, 1e-4$\}$. 
+    The buffer size is set to 16, 1/4 of the batch size we used. 
+    % The temperature to scale logits is set to 0.3.
+    Adam is used as the optimizer. Adapting  $\{$affine parameters, classifier, feature extractor, all parameters$\}$ is searched. 
+    The adaptation step is set to 1. 
+\squishend
+
+\subsection{Hardware and Software Used}
+We perform experiments on the NVIDIA V100 GPU with 32GB memory. 
+When the batch size is set to 64, the memory of 1 GPU is sufficient to perform test-time adaptation using TACT as well as all the baseline methods.  
+
+We implement TACT using PyTorch 2.1.2. 
+Singular vector decomposition implemented by \texttt{torch.linalg.svd()} is used to compute the principal components, as it is computationally more stable than spectral decomposition. 
+Since the covariance matrix is a symmetric positive semi-definite matrix, the singular vectors are the same as the eigenvectors.
+
+
+\section{Additional Performance Study} 
+\label{app:additional-exp}
+
+\subsection{TTA Performance on Larger Models}
+We examine TACT's effectiveness on larger models, specifically ViT-B/16 for images and BERT for texts. The experiment setup is consistent with that described in Section~\ref{sec:experiments}.
+Table~\ref{tb:larger_bb} presents the performance of TACT and other state-of-the-art backpropagation-free methods on the larger architectures.
+Across all datasets except ImageNet-R, TACT achieves the best performance, ranking second on ImageNet-R. These results demonstrate the scalability of TACT to larger models.
+
+The models for Birdcalls and Camelyon are trained under the same setting as that for ViT-B/32 stated in Appendix~\ref{app:pretrain}. We follow the guidance of CivilComments' publisher to train BERT. 
+The models we trained are included in our code repository. 
+ViT-B/16 backbone for ImageNet-R and ImageNet-V2 is published by torchvision.
+
+\begin{table}[ht]
+    \caption{Test-time adaptation performance of backpropagation-free methods on larger models. The best performance of each dataset is in bold.}
+    \centering
+    \begin{tabular}{l|ccccc}
+        \toprule
+        Method & Birdcalls & Camelyon17 & CivilComments & ImageNet-R & ImageNet-V2 \\ 
+        \midrule
+       No TTA & 27.10 & 65.37 & 67.62 & 44.06 & 69.57 \\
+        \midrule 
+       T3A  & 28.32$\pm$1.60 & 72.72$\pm$0.73 & 67.46$\pm$0.00 & 43.99$\pm$0.08 & 69.67$\pm$0.04 \\
+      LAME & 27.48$\pm$1.44 & 68.50$\pm$0.11 & 67.65$\pm$0.04 & 44.04$\pm$0.04 & 69.59$\pm$0.01 \\
+      FOA  & 27.89$\pm$0.54 & 67.15$\pm$0.67 & - & \textbf{47.53$\pm$2.73} & 69.68$\pm$0.04 \\
+      TACT & \textbf{33.65$\pm$2.11} & \textbf{72.85$\pm$0.02} & \textbf{69.76$\pm$0.44} & 45.59$\pm$0.01 & \textbf{69.71$\pm$0.02} \\
+      \bottomrule
+    \end{tabular}
+    \label{tb:larger_bb}
+\end{table}
+
+\subsection{Synergy with Training-time Augmentation} 
+The ``no TTA'' baselines of BirdCalls, Camelyon17, and CivilComments are trained without the augmentations used by TACT to identify and reduce non-causal features.  
+To assess TACT's synergy with training-time augmentation, we trained models using the same augmentations as those applied by TACT and then performed test-time adaptation. 
+For ImageNet-R and ImageNet-V2, the ``no TTA'' baseline provided by torchvision was trained with AutoAugment using the ImageNet policy. 
+
+Table~\ref{tb:train_time} shows the test-time adaptation performance of TACT on models trained with the same augmentation strategy.  
+The results show that, even when models are trained with these augmentations, TACT further improves test-time performance. This highlights TACT’s ability to synergize with training-time augmentation and provides strong evidence of its effectiveness and generalizability.
+
+
+\begin{table}[ht]
+    \caption{Test-time adaptation performance of TACT with training-time augmentation models.}
+    \centering
+    \small
+    \begin{tabular}{l|ccccc}
+        \toprule
+         & Birdcalls & Camelyon17 & CivilComments & ImageNet-R & ImageNet-V2\\
+        \midrule
+        no TTA (train time aug) & 29.86  & 74.09 & 64.60 &41.83 & 62.97\\
+        + TACT & 30.57$\pm$0.96 &  77.27$\pm$0.03 & 68.84$\pm$0.20 & 43.29$\pm$0.07& 63.33$\pm$0.10\\ 
+        \bottomrule
+    \end{tabular}
+    \label{tb:train_time}
+\end{table}
+
+\subsection{TTA Performance under Different Batch Size}
+We study the test-time adaptation performance of TACT on ImageNet-R when the test batch size varies. Table~\ref{tab:bs} shows the result when the test batch size is set to 1, 4, 16, 64 and 128, respectively. 
+The performance remains stable across different batch sizes. Even with a batch size of 1, the performance only decreases by 0.06\% compared to a batch size of 64. Moreover, TACT still improves performance by 1.7\% over the no-adaptation baseline when only one sample is available per batch during adaptation. 
+The result suggests that TACT is robust to variations in batch size, maintaining high performance even when batch sizes are small. This makes it well-suited for situations where the number of test samples per batch is constrained.
+
+\begin{table}[ht]
+    \caption{Test-time adaptation performance (\%) of TACT on ImageNet-R under different batch sizes.}
+    \small
+    \centering
+    \begin{tabular}{c|ccccc}
+    \toprule
+         no TTA & batch size = 1  & batch size = 4 & batch size = 16 & batch size = 64 & batch size = 128 \\
+        \midrule 
+         41.83 & 43.53$\pm$0.02 & 43.51$\pm$0.03 & 43.55$\pm$0.06 & 43.59$\pm$0.02 & 43.56$\pm$0.03 \\
+     \bottomrule
+    \end{tabular}
+    \label{tab:bs}
+\end{table}
+
+\subsection{Computational Cost}
+We compared the computational requirements of TACT with those of other backpropagation-free methods on the Birdcalls dataset using a ViT-b/32 backbone. 
+As shown in Table~\ref{tab:compute_cost}, TACT incurs higher time and GPU memory consumption relative to alternative approaches. Nevertheless, this additional computational cost results in substantial performance gains (Table~\ref{tb:tta}), which justifies the trade-off.
+Future work may explore optimization strategies, such as more efficient eigendecomposition techniques for PCA, to reduce the overhead.
+
+\begin{table}[ht]
+    \caption{Time and GPU memory required by backpropagation-free methods on Bridcalls.}
+    \centering
+    \begin{tabular}{l|cc}
+        \toprule
+        & time (second) & GPU memory (MB) \\
+        \midrule
+        T3A & 7.67 & 667.42\\
+        LAME & 7.34 & 667.42\\
+        FOA & 16.83 & 667.42\\
+        TACT (num aug=128) & 112.22 & 1750.21\\
+        TACT (num aug=256) & 170.00 & 2966.21 \\
+        TACT (num aug=512) & 323.62 & 5398.21\\
+        \bottomrule
+    \end{tabular}
+    \label{tab:compute_cost}
+\end{table}
+
+\subsection{Additional Visualization of Predictions after Causal Trimming}
+We provide more GradCAM visualization of the original predictions and the predictions made by TACT on samples from ImageNet-R. Figure~\ref{fig:add_gradcam} shows the visualizations. 
+
+Compared to original predictions, predictions made by TACT focus less on non-causal information. For example, TACT pays less attention to the background of the warplane example, and the blowfish example. 
+The focus on the information that is semantically correlated with the class is retained in predictions made by TACT in the above examples. 
+When the causal information is not important to the original prediction, prediction made by TACT leverages the causal information and thus turn the wrong prediction correct, as shown in the example of jellyfish and bloodhound.  
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}{0.497\linewidth}
+      \centering
+        \hspace{1.5em} {\scriptsize Input} \hspace{3.5em} {\scriptsize GradCAM} \hspace{2.5em} {\scriptsize TACT-GradCAM}\\
+        \includegraphics[width=0.325\linewidth]{figures/examples/correct_warplane.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/correct_warplan_cam.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/correct_warplane_tcam.png}
+        {\scriptsize ground truth: warplane\\}
+        \includegraphics[width=0.325\linewidth]{figures/examples/correct_blowfish.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/correct_blowfish_cam.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/correct_blowfish_tcam.png}
+        {\scriptsize ground truth: blowfish\\}
+        \caption{correct predictions}
+    \end{subfigure}
+    \begin{subfigure}{0.497\linewidth}
+        \centering
+        \hspace{1.5em} {\scriptsize Input} \hspace{3.5em} {\scriptsize GradCAM} \hspace{2.5em} {\scriptsize TACT-GradCAM}\\
+        \includegraphics[width=0.325\linewidth]{figures/examples/wrong_jellyfish.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/wrong_jellyfish_cam.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/wrong_jellyfish_tcam.png}
+        {\scriptsize ground truth: jellyfish; prediction: ant\\}
+        \includegraphics[width=0.325\linewidth]{figures/examples/wrong_dog.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/wrong_dog_cam.png}
+        \includegraphics[width=0.325\linewidth]{figures/examples/wrong_dog_tcam.png}
+        {\scriptsize ground truth: Weimaraner; prediction: bloodhound\\}
+        \caption{wrong predictions corrected by TACT}
+    \end{subfigure}
+    \caption{Additional GradCAM visualizations of the original predictions and TACT's predictions.}
+    \label{fig:add_gradcam}
+\end{figure}
+
+
+\section{Alternative Design of TACT}
+
+\subsection{ICA to Find Non-Causal Directions}
+We experiment using an alternative direction finding method, Independent Component Analysis (ICA) with TACT.
+We rank the independent components by the variance of the scalars of features on the components. 
+We remove the top independent components that have maximum variance.
+Table~\ref{tb:ica} shows the result on the Birdcalls dataset.
+ICA performs inferior to Principal Component Analysis (PCA), but better than no adaptation. 
+Although ICA overcomes the orthogonality constraints of PCA, it only looks for statistically independent components and assumes each component follows a non-Gaussian distribution. 
+Causal and non-causal features might not follow the non-Gaussian distribution assumption under augmentations that vary non-causal features.
+
+\begin{table}[ht]
+    \caption{Performance of TACT with ICA to find non-causal directions.}
+    \centering
+    \begin{tabular}{c|cc}
+        \toprule
+         no TTA &  TACT w/ PCA & TACT w/ ICA\\
+         \midrule 
+          22.74 & 31.14$\pm$1.69 & 25.53$\pm$1.06\\
+         \bottomrule
+    \end{tabular}
+    \label{tb:ica}
+\end{table}
+
+
+\subsection{Causal Trimming Based on a Threshold}
+We consider using the variance that the top principal components (PC) account for as a threshold to decide whether causal trimming is conducted or not. When the augmentation only changes non-causal features and causal features remain unchanged, datapoints that are invariant to augmentations should have smaller variance of the top PCs. Thus, if the variance is smaller than a threshold, causal trimmings will not be conducted on the data. As the range of variance is not known and it could change significantly, setting a numerical threshold might not be feasible. We consider normalized variance, where we divide the variance of top PCs by the sum of variances of all PCs.
+Table~\ref{tb:threshold} shows the result on the Birdcalls dataset. 
+Removing components based on a threshold does not outperform using no threshold.
+
+
+\begin{table}[ht]
+    \caption{Performance of TACT when causal trimming is performed based on a threshold $\tau$.}
+    \centering
+    \begin{tabular}{c|cccc}
+        \toprule
+          no TTA &  TACT & TACT ($\tau$=0.1) & TACT ($\tau$=0.2) & TACT ($\tau$=0.3)\\
+         \midrule 
+          22.74 & 31.14$\pm$1.69 & 30.99$\pm$2.18 & 31.03$\pm$2.19 & 28.03$\pm$3.12\\
+         \bottomrule
+    \end{tabular}
+    \label{tb:threshold}
+\end{table}

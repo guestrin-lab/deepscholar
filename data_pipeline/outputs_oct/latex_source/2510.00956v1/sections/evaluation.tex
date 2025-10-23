@@ -1,0 +1,135 @@
+In this section, we evaluate the effectiveness of our proposed fine-tuning approach. The primary goals of this evaluation are to answer the following key questions:
+\begin{enumerate}
+    \item Can fine-tuning be used to create a more accurate model than one solely trained with scarce real-world network data? If so, which configuration of weight handling (freezing, fine-tuning, or re-training) works best?
+    % \item What impact does freezing, fine-tuning, and re-training individual blocks have on the model's performance?
+    \item How does the availability of real-network data influence the impact of transfer learning?
+\end{enumerate}
+
+% To address these questions, we evaluate the model’s performance across various fine-tuning configurations and measure the accuracy improvements achieved when transitioning from a model trained solely on simulated data to one fine-tuned on real-world network data.
+To address these questions, we evaluate the model’s performance improvements when transitioning from a model trained solely on real-world network data to one that uses both types of data. The evaluation is performed across various fine-tuning configurations and under different network conditions.
+The simulated dataset is generated using the OMNeT++\cite{Varga2019} simulator and includes network scenarios with topologies ranging from 5 to 8 nodes and diverse routing configurations. It provides a broad and varied training foundation, covering a wide range of network conditions to enable the model to learn and adapt to diverse network configurations. The real-world network dataset is extracted from the testbed described in Section \ref{subsec:testbed}, configured as a fixed 5-router topology. The Poisson and On/Off distributions follow a static routing configuration, while the MAWI distribution considers multiple routing configurations to increase the number of available samples (needed to evaluate question 2).
+
+Both datasets consist of network scenarios, each comprising between 177 thousand and 3.6 million packets successfully sent. When predicting their behavior, they are aggregated into fixed-sized temporal windows, each 100ms long. This windowing approach can capture non-stationary traffic patterns and facilitate meaningful comparisons between simulated and real-world conditions. Furthermore, both datasets contain traffic flows based on three distinct distributions: Poisson, On/Off, and MAWI. Poisson traffic represents steady patterns characterized by exponentially distributed inter-arrival times. On/Off traffic alternates between idle periods and constant bit rate transmissions, capturing bursty network behavior. The MAWI distribution, on the other hand, follows the packet inter-arrival distribution measured in the internet traces published at the MAWI Working Group Traffic Archive~\cite{10.5555/1267724.1267775}.
+
+\begin{table}[t]
+\centering
+% \vspace{0.07in}
+\caption{Number of network scenarios per source, traffic distribution, and partition.}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\hline
+\multirow{2}{*}{Partition} & \multicolumn{3}{c}{Simulated Scenarios} & \multicolumn{3}{c}{Real Scenarios} \\
+            & Poisson        & On/Off        & MAWI       & Poisson       & On/Off        & MAWI       \\ \hline
+Training    & 3145           & 3121          & 1634         & 30            & 38            & 165           \\
+Validation  & 628            & 624            & 326          & 6             & 7             & 33            \\
+Evaluation  & -              & -              & -            & 4             & 5             & 22            \\ \hline
+\end{tabular}%
+}
+% \vspace{0.1mm}
+% \caption{Number of network scenarios available.}
+% 
+\label{tab:ds_size}
+\end{table}
+
+% providing a robust framework for evaluating the impact of fine-tuning strategies.
+Table~\ref{tab:ds_size} presents the number of network scenarios available for our study, categorized by source (simulated or real), traffic distribution (Poisson, On/Off, or MAWI), and partition (training, validation, or evaluation). This partitioning ensures that the evaluation remains unbiased and robust. Notably, the simulated dataset is significantly larger than the real-world dataset, reflecting the practical challenge of limited availability and variability in real-world network data. %This imbalance replicates the typical constraints encountered in real-world scenarios, emphasizing the importance of fine-tuning to effectively utilize the limited real-world samples.
+
+As part of the evaluation, we establish two baseline models: one trained exclusively on simulated scenarios and the other solely on real-world scenarios. We then use the simulated data only model for both manual and automated fine-tuning. Manual fine-tuning configurations and criteria for selecting these configurations are detailed in subsections~\ref{sec:proposed_ft}. The automated fine-tuning approaches are listed in Section~\ref {sec:automated_ft} and have been implemented according to their original papers, including hyperparameter values, with necessary adaptations made to fit RouteNet-F's architecture as needed.
+Our windowed implementation of the RouteNet-Fermi model is built upon their public repository\footnote{https://github.com/BNN-UPC/RouteNet-Fermi}, using TensorFlow 2.15. Model hyperparameters (e.g., embedding sizes) are borrowed directly from the original implementation. All models ran for a redundant number of epochs until the validation error stopped improving. Then, the model kept the checkpoint weights at which the error was minimized. Additional implementation details for this work are available in our public repository\footnote{https://github.com/BNN-UPC/Papers/wiki/Bridging-the-Gap-Between-Simulated-and-Real-Network-Data-Using-Transfer-Learning}.
+
+\subsection{Fine-tuning the network model}
+
+We evaluate the impact of fine-tuning by building a network model to predict the average packet delay in each temporal window for every flow. The predictions are assessed using the Mean Absolute Percentage Error (MAPE), a relative error metric. The evaluation involves first training a baseline model solely on simulated data to serve as the donor model, and then fine-tuning the pre-trained model using real-world network data. This is done both in the Poisson and On/Off scenarios.
+
+\begin{table}[t]
+\centering
+% \vspace{0.07in}
+% \caption{Results of all fine-tuning and dataset configurations. The simulated data only model is used as the donor model. Models are tasked to predict the mean packet delay for each flow-window pair. Predictions are evaluated using the MAPE and normalized relative to the model without fine-tuning. Values under 1 indicate improvement, lower is better and highlighted result is best.}
+\caption{Results of all fine-tuning configurations. Models are tasked to predict the mean packet delay for each flow-window pair. Models are evaluated using the normalized MAPE, relative to the model without fine-tuning. Values under 1 indicate improvement; lower is better, and highlighted result is best.}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{ccccc}
+\hline
+\multicolumn{3}{c}{Fine-tuning configuration} & \multicolumn{2}{c}{Normalized Delay MAPE}               \\
+Encoding      & MPA           & Readout       & Poisson        & On/Off \\ \hline
+Freeze        & Freeze        & Fine-tune     & 0.557          & 0.997                      \\
+Freeze        & Freeze        & Re-train      & 1.056          & 1.333                      \\
+Freeze        & Fine-tune     & Fine-tune     & 0.273          & 0.448                      \\
+Freeze        & Fine-tune     & Re-train      & 0.180 & 0.406             \\
+Freeze        & Re-train      & Re-train      & 0.180 & 0.406             \\
+Fine-tune     & Fine-tune     & Fine-tune     & 0.283          & 0.434                      \\
+Fine-tune     & Fine-tune     & Re-train      & 0.474          & 0.614                      \\
+Fine-tune     & Re-train      & Re-train      & 0.474          & 0.614                      \\ \hline
+\multicolumn{3}{c}{Autofreeze~\cite{liu2021autofreeze}}       & 0.131         & \textbf{0.197} \\
+\multicolumn{3}{c}{L2-SP~\cite{pmlr-v80-li18a}}       & 0.312          & 0.434                     \\ 
+\multicolumn{3}{c}{GTOT-Tuning~\cite{zhang2022fine}}       & \textbf{0.119}          & 0.207  \\ \hline
+\multicolumn{3}{c}{Simulated data only}       & 9.900          & 17.958                     \\ \hline
+\end{tabular}%
+}
+% \vspace{0.1mm}
+% \vspace{-3.5mm}
+\label{tab:results}
+\end{table}
+
+Table~\ref{tab:results} presents the MAPE for all evaluated fine-tuning configurations. Models are tasked to predict the average packet delay in each flow-window pair. The manual configurations involve varying the treatment of weights (freezing, fine-tuning, or re-training) in the three main blocks of the RouteNet-Fermi model: Encoding, MPA, and Readout. We also show the performance of the models trained exclusively on simulated data and automated finetuning methods. The results are normalized against a model trained with the real-world network data only, without fine-tuning. That is, a value of 1 indicates the same accuracy as the baseline, while lower values indicate an improvement over the baseline. 
+
+Addressing the first question raised at the beginning of the evaluation, the results demonstrate that \textit{fine-tuning consistently improves the accuracy of the network model}. All but one of the manual configurations tested reduce the model’s error across both traffic distributions compared to the baselines. The most effective configuration consists of \textit{freezing the Encoding block and re-training the Readout block}. It achieves an $82\%$ improvement over the real-world network baseline for Poisson traffic and a $59.4\%$ improvement for On/Off traffic. In this case, \textit{both fine-tuning and re-training the MPA block return similar accuracy}, showing that training correctly adjusts its weights independently of whether there is a transfer or not. 
+
+\begin{figure}[t] 
+    \centering
+  \subfloat[Poisson\label{fig:poisson_pdf}]{%
+       \includegraphics[width=\linewidth]{images/poisson_pdf.pdf}}
+  \\ \vspace{-4mm}
+  \subfloat[On/Off\label{fig:on_off_pdf}]{%
+        \includegraphics[width=\linewidth]{images/on_off_pdf.pdf}}
+  \caption{Probability Density Function (PDF) of percentage error when predicting the mean packet delay of each flow-window pair. It compares the best manual fine-tuning configuration (freezing Encoding, fine-tuning MPA, re-training Readout) against the real-world network data only model.}
+  \label{fig:pdfs} 
+\end{figure}
+
+To further illustrate the differences, Figure~\ref{fig:pdfs} illustrates Probability Density Functions (PDFs) representing the relative error distributions obtained by the best fine-tuning configuration and the real-world network data only model. 
+% Figure~\ref{fig:poisson_pdf} shows the error distributions for Poisson samples, while Figure~\ref{fig:on_off_pdf} focuses on the On/Off samples.
+In them, it is clear that the fine-tuned model's predictions are generally closer to having a 0\% error and exhibit a balance between underestimation and overestimation. In contrast, the real-world network data only model shows a clear bias in the Poisson dataset, favoring overestimation, with most predictions displaying an average relative error of approximately $-5\%$. 
+However, one manual configuration results in a performance decline across both distributions: freezing the Encoding and MPA blocks while re-training the Readout block. This underscores the potential for \textit{negative transfer}, where knowledge from the donor model hinders rather than enhances the receiver model's performance when not applied correctly.
+
+The automated fine-tuning solutions also proved effective, with both \textit{Autofreeze~\cite{liu2021autofreeze} and GTOT-Tuning~\cite{zhang2022fine} surpassing the best manual configuration}.
+Specifically, the former improves MAPE by $80\%$ over the baseline for On/Off traffic and the latter $88\%$ for Poisson traffic, cementing the value of using simulated data and fine-tuning to enhance model accuracy
+% The latter improves MAPE by $88\%$ and $79\%$ over the baseline for Poisson and On/Off traffic, respectively. This further underscores the value of using simulated data and fine-tuning to enhance model accuracy.
+
+Furthermore, models trained exclusively on simulated data showed significantly higher error rates: $9.90$ and $17.96$ times larger than the real-world network data only model in Poisson and On/Off traffic, respectively. This reaffirms that simulated data alone is insufficient for accurate real-world predictions, aligning with previous research~\cite{10635943}. Nonetheless, the success of fine-tuning demonstrates that simulated data can still provide valuable insights. Otherwise, our approach would not outperform models trained only on real-world network data.
+% and underscores the importance of fine-tuning in leveraging the abundance of simulated data while adapting to real-world conditions effectively. 
+
+% \subsection{Evaluating the impact on each RouteNet block}
+
+
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=\linewidth]{images/config_comparison.pdf}
+%     \caption{Impact of fine-tuning decisions in each RouteNet-Fermi block on the model's MAPE when predicting the average packet delay.}
+%     \label{fig:finetune_block}
+% \end{figure}
+
+% This section analyzes how different fine-tuning decisions affect the performance of each block in the RouteNet-Fermi model. Figure~\ref{fig:finetune_block} aggregates the results from Table~\ref{tab:results}, showing the impact of each fine-tuning configuration on the MAPE. The boxplots illustrate the distribution of errors, with the interquartile range highlighting variability and the red line indicating the median error for the grouped configurations.
+
+% From this analysis, we derive the following insights:
+
+% \subsubsection{Fine-tuning is the Safest Option} Fine-tuning is often the most reliable approach when transitioning from simulated to real-world scenarios. This is particularly the case for blocks like the MPA and Readout, where domain-specific dynamics differ significantly. This approach balances leveraging pre-trained knowledge with the flexibility to adapt to the target domain, minimizing the risk of negative transfer. 
+
+% \subsubsection{Freezing the MPA is Consistently the Worst Option} Freezing the MPA block consistently results in the highest errors across configurations. This suggests that the complex relationships between network elements do not fully generalize from simulation to real-world conditions and instead require adaptation.
+% % This indicates that the message-passing dynamics in the simulated domain do not fully generalize to real-world conditions. This suggests that blocks handling complex relationships between network elements require adaptation during fine-tuning.
+
+
+% \subsubsection{Freezing the Encoding Block Yields Mixed Results} Freezing the Encoding block can yield mixed results, showing lower median errors in some cases but also higher variability. This is likely due to its reliance on assumptions about shared features between simulated and real-world data. Careful consideration of input feature differences is crucial when deciding whether to freeze or fine-tune this block.
+
+\subsection{Impact of real-world network data availability}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{images/fine_tuning_size.pdf}
+
+    \caption{Impact of real-world network data availability on the resulting model's MAPE when predicting the average packet delay in each flow-window pair. Network scenarios belong to the MAWI distribution. }
+    \label{fig:fine_tune_size}
+\end{figure}
+
+In this section, we evaluate how the availability of network data impacts the benefits of transfer learning compared to training models from scratch. For this experiment, we use internet traffic traces from the MAWI distribution. Figure~\ref{fig:fine_tune_size} presents the model’s MAPE when predicting the average delay per flow-window pair with varying amounts of real-world network data. The fine-tuned model follows the best-performing manual configuration from Table~\ref{tab:results}: freezing the Encoding block, fine-tuning MPA, and re-training Readout. %Each network scenario consists of a set of traffic flows sending a total of 450 thousand to 3.4 million packets.
+
+The results show that with only five scenarios available, fine-tuning reduces the model’s MAPE from $19.01\%$ to $16.19\%$. \textit{Increasing the number of available scenarios to 10 further decreases the MAPE to $11.95\%$, a $37\%$ reduction. With 50 scenarios, the fine-tuned model achieves its largest improvement, lowering the MAPE to $9.95\%$, a $48\%$ decrease.} This demonstrates the data efficiency enabled by fine-tuning.
+However, these results also reveal their limitations: beyond 125 scenarios, fine-tuning provides no additional benefit over training with real-world network data alone. While this threshold may vary between models, RouteNet-Fermi has demonstrated the ability to achieve high accuracy even with limited training data~\cite{ferriolgalmés2022routenetfermi}. This reinforces the idea that fine-tuning is particularly valuable when real-world network data is scarce.

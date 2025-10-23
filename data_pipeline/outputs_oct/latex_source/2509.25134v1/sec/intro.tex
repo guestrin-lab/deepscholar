@@ -1,0 +1,33 @@
+\section{Introduction}
+\label{sec:intro}
+In the creative workflow, designers create and edit graphic designs at the \emph{layer} level, which is a basic unit of visual objects, such as text or images, and is commonly seen in design authoring tools like Adobe Photoshop or PowerPoint.
+Once the workflow is complete, authoring tools composite these layers into a final image and deliver it to a display device or print media, such as social media posts, flyers, and posters.
+Composite raster images do not retain layer information, making it difficult for designers to edit or retouch a raster graphic design.
+Precise decomposition of raster artwork into layers, \ie, the inverse problem of composition, addresses this situation and enables a workflow that uses existing raster artwork assets to create new artwork.
+
+In this work, we investigate graphic layer decomposition, aiming to automatically decompose a raster graphic design into a composable sequence of raster layers.
+Since designers create graphic designs in a layered format, we can view this task as restoring the original layered representation.
+Layer decomposition involves several computer vision tasks, such as object localization, segmentation, order estimation, and image inpainting.
+Unlike natural images, graphic design is a mixture of various elements, including typography, embellishments, vector art, illustrations, and even natural image materials (\cref{fig:teaser}).
+Naively applying image decomposition approaches~\cite{zhan2020self,zheng2021visiting,mulan} tuned for the natural image domain results in unintended decomposition (\eg, objects in a photo material are decomposed) or undesirable artifacts (\eg, background lighting affects solid-color vector-art), which are prohibitive for creative work.
+Graphic layer decomposition is also inherently ill-posed; there are multiple possible solutions, and a layer can be arbitrarily divided into multiple layers.
+This can be problematic, particularly when ensuring consistent evaluation.
+
+
+We propose a method for fully automatic graphic layer decomposition, {\bf \ours{}}, which we formulate as iterative \emph{top-layer} matting and background completion.
+We define a top-layer by objects appearing on the front without occlusion in the raster image, and in graphic designs, they typically contain typography at the beginning, followed by embellishment behind texts or photo materials in later iterations.
+We learn a top-layer matting model from a high-quality graphic design dataset to ensure that the layer granularity aligns with humans, and together with an off-the-shelf inpainting model and a simple-yet-effective heuristic refinement to remove artifacts, we build a complete layer decomposition pipeline for graphic designs.
+There have been a few similar attempts at fully automatic image decomposition into layer representations~\cite{mulan,accordion}, where they build a modular decomposition pipeline consisting of components for each subproblem, such as object detection~\cite{yao2023detclipv2,liu2023visual}, segmentation~\cite{ravi2024sam}, ordering~\cite{ranftl2020towards,lee2022instance}, and inpainting~\cite{rombach2022high}.
+While the stacked pipeline approach can take advantage of pre-trained models at each stage, component stacking cannot avoid error accumulation throughout the pipeline; \eg, segmentation can fail when object detection contains overlapping bounding boxes or there is a large hall in the region.
+\ours{} unifies detection, segmentation, and layer ordering by an iterative matting model to reduce the error accumulation while improving the efficiency.
+In addition, we introduce a refinement approach for both foreground and background layers utilizing the domain prior that graphic design often consists of texture-less flat regions, which improves the final decomposition quality.
+
+As layer decomposition can have multiple solutions and even humans are not consistent on the granularity of layers, we propose qualitative metrics for evaluation based on edit distance and visual quality between layer sequences aligned by dynamic time warping (DTW)~\cite{Mueller07_InformationRetrieval_SPRINGER}, which account for the inconsistency of the ground truth layers.
+We compare \ours{} with several baselines and demonstrate that our method achieves the highest quality.
+
+We summarize our contributions as follows:
+\begin{itemize}
+    \item We propose \ours{}, a fully automatic framework for layer decomposition from raster graphic designs. \ours{} unifies the subtasks inherent in layer decomposition into iterative top-layer extraction and leverages domain priors to improve the final decomposition quality.
+    \item We propose a consistent evaluation protocol for layer decomposition based on the edit distance and appearance quality between aligned layer sequences, which accounts for the ambiguity in the ground truth layer structure.
+    \item We empirically show that \ours{} achieves the highest quality compared to baselines and decomposed layers can be used for downstream graphic design editing.
+\end{itemize}

@@ -1,0 +1,33 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.06396v1,http://arxiv.org/abs/2510.06396v1,2025-10-07 19:23:53+00:00,Adaptive Protein Design Protocols and Middleware,"Computational protein design is experiencing a transformation driven by
+AI/ML. However, the range of potential protein sequences and structures is
+astronomically vast, even for moderately sized proteins. Hence, achieving
+convergence between generated and predicted structures demands substantial
+computational resources for sampling. The Integrated Machine-learning for
+Protein Structures at Scale (IMPRESS) offers methods and advanced computing
+systems for coupling AI to high-performance computing tasks, enabling the
+ability to evaluate the effectiveness of protein designs as they are developed,
+as well as the models and simulations used to generate data and train models.
+This paper introduces IMPRESS and demonstrates the development and
+implementation of an adaptive protein design protocol and its supporting
+computing infrastructure. This leads to increased consistency in the quality of
+protein design and enhanced throughput of protein design due to dynamic
+resource allocation and asynchronous workload execution.","With the advent of deep learning models that enable high-level insight into protein sequence and structure, several other advances have been made in developing genetic algorithms for design generation.
+
+The recently proposed EvoPro protocol achieves this through iterative runs of sequence generation—using either ProteinMPNN or random mutagenesis—and AlphaFold, which employs single-sequence structure prediction mode to accelerate inference\cite{gnkrk23}. 
+EvoPro shows significant advancements in coupling deep learning models for efficient sequence space exploration but faces two limitations. Eliminating MSA generation restricts EvoPro to designing binders of a specific size\cite{apco21}. As the designed domain increases in complexity, AlphaFold2 needs to utilize evolutionary information to ensure an accurately predicted structure\cite{e23}. Furthermore, AlphaFold2 is a powerful classifier, distinguishing between high- and low-quality binders\cite{mdbabb23,dcso24}. Allowing AlphaFold2 to utilize evolutionary information in its constructed MSA improves its predictive abilities and directs IMPRESS toward effectively guiding design exploration for more potent binders.
+
+The newly developed MProt-DPO protocol is another technique that enables efficient exploration of the protein design landscape \cite{dhbo24}. Sequences are generated with a protein LLM, then ranked and sorted into preference pairs to fine-tune the original model \cite{laro23}\cite{rsmo24}.
+
+MProt-DPO achieves remarkable efficiency but is restricted to purely sequence-based models. Therefore, design generation is never directly conditioned on the protein structure, but must rely on downstream MD simulations.
+
+The IMPRESS framework allows any sequence generation method to be plugged into the design pipeline, enabling both LLMs and graph-based models to fully exploit the rich functional information available in protein structures.","With the advent of deep learning models that enable high-level insight into protein sequence and structure, several other advances have been made in developing genetic algorithms for design generation.
+
+The recently proposed EvoPro protocol achieves this through iterative runs of sequence generation—using either ProteinMPNN or random mutagenesis—and AlphaFold, which employs single-sequence structure prediction mode to accelerate inference\cite{gnkrk23}. 
+EvoPro shows significant advancements in coupling deep learning models for efficient sequence space exploration but faces two limitations. Eliminating MSA generation restricts EvoPro to designing binders of a specific size\cite{apco21}. As the designed domain increases in complexity, AlphaFold2 needs to utilize evolutionary information to ensure an accurately predicted structure\cite{e23}. Furthermore, AlphaFold2 is a powerful classifier, distinguishing between high- and low-quality binders\cite{mdbabb23,dcso24}. Allowing AlphaFold2 to utilize evolutionary information in its constructed MSA improves its predictive abilities and directs IMPRESS toward effectively guiding design exploration for more potent binders.
+
+The newly developed MProt-DPO protocol is another technique that enables efficient exploration of the protein design landscape \cite{dhbo24}. Sequences are generated with a protein LLM, then ranked and sorted into preference pairs to fine-tune the original model \cite{laro23}\cite{rsmo24}.
+
+MProt-DPO achieves remarkable efficiency but is restricted to purely sequence-based models. Therefore, design generation is never directly conditioned on the protein structure, but must rely on downstream MD simulations.
+
+The IMPRESS framework allows any sequence generation method to be plugged into the design pipeline, enabling both LLMs and graph-based models to fully exploit the rich functional information available in protein structures.",N/A

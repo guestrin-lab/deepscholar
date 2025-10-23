@@ -1,0 +1,38 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.12441v1,http://arxiv.org/abs/2509.12441v1,2025-09-15 20:48:50+00:00,Automatic Network Planning with Digital Radio Twin,"Network planning seeks to determine base station parameters that maximize
+coverage and capacity in cellular networks. However, achieving optimal planning
+remains challenging due to the diversity of deployment scenarios and the
+significant simulation-to-reality discrepancy. In this paper, we propose
+\emph{AutoPlan}, a new automatic network planning framework by leveraging
+digital radio twin (DRT) techniques. We derive the DRT by finetuning the
+parameters of building materials to reduce the sim-to-real discrepancy based on
+crowdsource real-world user data. Leveraging the DRT, we design a Bayesian
+optimization based algorithm to optimize the deployment parameters of base
+stations efficiently. Using the field measurement from Husker-Net, we
+extensively evaluate \emph{AutoPlan} under various deployment scenarios, in
+terms of both coverage and capacity. The evaluation results show that
+\emph{AutoPlan} flexibly adapts to different scenarios and achieves performance
+comparable to exhaustive search, while requiring less than 2\% of its
+computation time.","Traditional approaches to BS deployment include both manual measurement and optimization-based methods. Early efforts often relied on drive testing or site surveys to evaluate signal quality at predefined locations~\cite{molisch2022wireless}, which are labor-intensive, time-consuming, and inflexible in adapting to changing user demands. To overcome these limitations, optimisation-based methods were introduced to automate the process using mathematical formulations or heuristics. 
+Chiaraviglio et al.~\cite{chiaraviglio20215g} formulated BS planning as a mixed-integer linear program under service and EMF constraints, and proposed a heuristic solution named PLATEA. While effective in balancing coverage and EMF compliance, the method relies on static environmental models and sensitive parameters, limiting its adaptability in dynamic scenarios. Similarly, Philip et al.\cite{philip2023cellular} applied meta-heuristic algorithms such as particle swarm optimization (PSO) and genetic algorithms (GA) for BS placement. Although PSO achieved better coverage and efficiency than GA, both approaches depend on simplified propagation models and static user distributions, making them less suitable for realistic and data-driven deployments.
+
+%……%6
+In contrast, AI/ML based methods aim to enhance scalability and adaptability by replacing manual engineering and handcrafted models with data-driven learning. 
+AutoBS~\cite{lee2025autobs} employs reinforcement learning to select BS locations, enabling fast inference during deployment. However, it requires large-scale pretraining on labeled environment performance pairs, which is both computationally expensive and time-consuming to collect. 
+OSSN~\cite{zheng2024transformer}, a Transformer-based framework, unifies radio map estimation and site selection to reduce reliance on exhaustive candidate evaluations. While it improves planning efficiency, its performance remains limited by the availability of training data and a lack of real-world validation. 
+Similarly, Dai and Zhang~\cite{dai2020propagation} take a hybrid approach by integrating machine learning with heuristic optimization, using a dataset of over $0.76$ million measurements to predict signal strength without explicit propagation modeling. 
+% However, it comes at the cost of high data requirements and significant computational overhead.
+
+However, existing AI/ML-based methods require extensive labelled datasets and incur substantial data collection and training costs. 
+More importantly, they tend to overlook the sim-to-real discrepancy introduced by inaccurate or incomplete modelling of physical environments, which hinders generalization in real-world deployments.","Traditional approaches to BS deployment include both manual measurement and optimization-based methods. Early efforts often relied on drive testing or site surveys to evaluate signal quality at predefined locations~\cite{molisch2022wireless}, which are labor-intensive, time-consuming, and inflexible in adapting to changing user demands. To overcome these limitations, optimisation-based methods were introduced to automate the process using mathematical formulations or heuristics. 
+Chiaraviglio et al.~\cite{chiaraviglio20215g} formulated BS planning as a mixed-integer linear program under service and EMF constraints, and proposed a heuristic solution named PLATEA. While effective in balancing coverage and EMF compliance, the method relies on static environmental models and sensitive parameters, limiting its adaptability in dynamic scenarios. Similarly, Philip et al.\cite{philip2023cellular} applied meta-heuristic algorithms such as particle swarm optimization (PSO) and genetic algorithms (GA) for BS placement. Although PSO achieved better coverage and efficiency than GA, both approaches depend on simplified propagation models and static user distributions, making them less suitable for realistic and data-driven deployments.
+
+
+In contrast, AI/ML based methods aim to enhance scalability and adaptability by replacing manual engineering and handcrafted models with data-driven learning. 
+AutoBS~\cite{lee2025autobs} employs reinforcement learning to select BS locations, enabling fast inference during deployment. However, it requires large-scale pretraining on labeled environment performance pairs, which is both computationally expensive and time-consuming to collect. 
+OSSN~\cite{zheng2024transformer}, a Transformer-based framework, unifies radio map estimation and site selection to reduce reliance on exhaustive candidate evaluations. While it improves planning efficiency, its performance remains limited by the availability of training data and a lack of real-world validation. 
+Similarly, Dai and Zhang~\cite{dai2020propagation} take a hybrid approach by integrating machine learning with heuristic optimization, using a dataset of over $0.76$ million measurements to predict signal strength without explicit propagation modeling. 
+
+
+However, existing AI/ML-based methods require extensive labelled datasets and incur substantial data collection and training costs. 
+More importantly, they tend to overlook the sim-to-real discrepancy introduced by inaccurate or incomplete modelling of physical environments, which hinders generalization in real-world deployments.",N/A

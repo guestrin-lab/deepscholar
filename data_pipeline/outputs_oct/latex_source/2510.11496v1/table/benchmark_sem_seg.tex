@@ -1,0 +1,22 @@
+\begin{table*}[t!]
+\centering
+{\fontsize{8}{10}\selectfont 
+\renewcommand{\arraystretch}{1.1}
+\setlength\tabcolsep{5.2pt}
+\begin{tabular}{l|ccc|ccc|ccc|cc}
+                          & \multicolumn{3}{c|}{Linear Probing} & \multicolumn{3}{c|}{Head Tuning (UperNet)} & \multicolumn{3}{c|}{Full Tuning (UperNet)} &   &   \\
+
+\multirow{-2}{*}{Model Name} & ADE20K & COCO & avg.                     & ADE20K & COCO & avg.                    & ADE20K & COCO & avg. & \multirow{-2}{*}{$\Delta_1$} & \multirow{-2}{*}{$\Delta_2$} \\
+\hline
+InternViT-6B-224px           & 47.2   & 42.8 & \cellcolor{gray!15}45.0  & 54.9   & 48.9 & \cellcolor{gray!15}51.9 & 58.9   & 51.6 & 55.3 & 6.9                          & 10.2                             \\
+InternViT-6B-448px-V1.0      & 43.6   & 38.5 & \cellcolor{red!15}41.0 & 55.4   & 49.4 & \cellcolor{green!15}52.4  & 58.1   & 51.7 & 54.9 & 11.3                         & 13.9                             \\
+InternViT-6B-448px-V1.2      & 40.7   & 36.1 & \cellcolor{red!15}38.4 & 55.2   & 48.8 & \cellcolor{green!15}52.0  & 58.8   & 51.7 & 55.2 & 13.6                         & 16.8                             \\
+InternViT-6B-448px-V1.5      & 40.9   & 36.3 & \cellcolor{red!15}38.6 & 55.0   & 49.1 & \cellcolor{green!15}52.0  & 58.8   & 51.5 & 55.2 & 13.4                         & 16.6                             \\
+InternViT-6B-448px-V2.5      & 39.4   & 35.6 & \cellcolor{red!15}37.5 & 55.4   & 49.7 & \cellcolor{green!15}52.6  & 58.6   & 51.8 & 55.2 & 15.1                         & 17.7                             \\
+\end{tabular}
+}
+\caption{\textbf{Semantic segmentation performance across different versions of InternViT.}
+The models are evaluated on ADE20K~\cite{zhou2017ade20k} and COCO-Stuff-164K~\cite{caesar2018cocostuff} using three configurations: linear probing, head tuning, and full tuning. The table shows the mIoU scores for each configuration and their averages. $\Delta_1$ represents the gap between head tuning and linear probing, while $\Delta_2$ shows the gap between full tuning and linear probing. A larger $\Delta$ value indicates a shift from simple linear features to more complex, nonlinear representations.
+    }
+\label{tab:benchmark_sem_seg}
+\end{table*}

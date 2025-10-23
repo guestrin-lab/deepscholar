@@ -1,0 +1,9 @@
+
+
+\section{Limitation}
+
+While \name achieves strong results across four disparate tasks, several limitations remain.
+(1) Model size and deployability. Compared with classic synchronisation backbones such as SyncNet—which is lightweight enough to be used directly as an evaluation head or even as a discriminator/loss in generation systems like Wav2Lip—\name is substantially heavier, making “drop-in loss” usage during training less practical and raising compute and memory costs for deployment. 
+
+(2) Scope of applicability. Although \name aligns audio and visual tokens well for lip-sync, expression/action understanding, and VSR, it is not a universal solution for all audio–face problems. For example, when we followed a speech-to-3DMM pipeline (in the spirit of audio-driven 3D talking-head methods) and drove 3D parameters using \name’s audio branch, the results were generally underwhelming—suggesting that additional geometry-aware supervision or models tailored to 3D priors are needed.
+(3) Factorization remains preliminary. Our decomposition into identity, vocal motion, and ambient motion is a first step; most of our downstream usage centers on the vocal-motion token. Systematically exploiting the other two factors (e.g., identity-aware editing, ambient-motion analysis/transfer) and strengthening disentanglement are promising directions for future work.

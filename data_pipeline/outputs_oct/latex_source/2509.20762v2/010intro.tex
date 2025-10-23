@@ -1,0 +1,73 @@
+\section{Introduction}\label{sec:intro}
+
+Group interactions are ubiquitous in the real world.
+For example, scholars collaborate and write a paper together~\citep{lung2018hypergraph}, people participate in the same email communication~\citep{larock2023encapsulation}, users participate in the same online Q\&A session~\citep{antelmi2023age}, and actors act in the same movie~\citep{yadati2024heal}.
+In many scenarios, in each group, a particular member plays a specifically important role, around whom the group is formed~\citep{hinds2000choosing}.
+For example, in an academic collaboration, the first or last author of a paper is often the one who connects all the authors~\citep{osborne2019authorship}.
+In an email correspondence, the sender of an email is the one who initializes the conversation to include the recipients~\citep{pallen1995guide}.
+In an online Q\&A session, the questioner starts the session for others to join~\citep{stackexchangeTourStack}.
+In a movie cast, the ensemble is often gathered around the main actor~\citep{colliderMoviesStarring}.
+
+In this work, we discuss the existence of such important individuals and call them group \textit{anchors}, in the sense that each brings together the members of a group.
+As widely observed across different domains (see \cref{tab:single_node_label}), there is often a single anchor in each group (see Section~\ref{sec:experiments:acc} for discussions and results with multiple anchors in each group).
+Notably, the concept of group anchors is defined by the real-world meaning of groups and the roles of members, which is not necessarily aligned with (sometimes even opposite to) structural importance.
+For example, the anchor (i.e., questioner) of an online Q\&A session is often a new user with low structural importance.
+Finding group anchors can help us better understand and analyze real-world group interactions, and has the following important further real-world applications:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Group-interaction prediction.} 
+    Group anchors often initiate or determine the formation of group interactions. By identifying anchors, we can better predict how groups form and evolve over time~\citep{benson2018simplicial} for, e.g., academic collaboration recommendation~\citep{liu2018context} and social group recommendation~\citep{qin2018dynamic}.
+    \item \textbf{Engagement management.} Group anchors play significant roles in group interactions and need particular attention.
+    In social networks, identifying anchors provides insights into the cohesion, longevity, and activity levels of social groups, helping administrators better maintain group engagement~\citep{malliaros2013stay}.
+    \item \textbf{Targeted marketing.} Group anchors, being central or highly influential in their groups, can be critical targets for marketing. By focusing on group anchors, marketers can effectively influence whole groups through just a few individuals~\citep{chandra2022personalization}.
+\end{itemize}
+To the best of our knowledge, we are the first to discuss the existence of group anchors and study the identification problem.
+
+\input{TABS/single_node_label}
+
+First, we introduce the concept of group anchors and the identification problem.
+For mathematical rigor, we formulate the problem as an optimization problem on hypergraphs.
+Hypergraphs allow an arbitrary number of nodes in each hyperedge and precisely model group interactions~\citep{benson2018sequences}.
+Each hyperedge represents an interacting group, with its constituent nodes as the group members.
+The anchor of each group is a node in the corresponding hyperedge.
+
+Then, we discuss our observations on real-world group anchors.
+We focus on the scenarios under label scarcity with limited training data (i.e., only a few groups have known anchors), which is common in the real world ~\citep{zhu2022introduction,zhu2005semi,yang2022semi}.
+What can we learn with limited known group anchors?
+\textbf{\textit{Our first observation}} is that topological features provide considerable information on group anchors, but they alone are insufficient.
+Specifically, a simple heuristic based on node degrees 
+performs comparably to sophisticated deep-learning methods sometimes, but it does not fully capture the underlying mechanisms of group anchors, leaving a clear gap compared to the strongest baseline.
+Also, we would like to re-emphasize that, in some scenarios, structurally insignificant nodes are more likely to be the group anchors (e.g., questioners in online Q\&A).
+\textbf{\textit{Our second observation}} is that whether an individual is the anchor or not is overall stable, yet still contextual, across different groups.
+It is ``stable'' in that if an individual is (not) the anchor in one group, they are likely (not) the anchor in other groups.
+It is ``contextual'' in that it is still possible for an individual to be the anchor in some groups but not in others.
+We further observe that it is essential to consider \textit{local competition} in each group on top of \textit{global stability} to better capture the mechanism of group anchors.
+Specifically, group anchors are well explained by
+\textit{(i)} each node has its ``anchor strength'' indicating the overall likelihood that the node is the anchor across different groups, and
+\textit{(ii)} the nodes compete locally in each group, and the one with the highest anchor strength is likely the anchor.
+
+Intuitively and explicitly based on our observations, we propose \ours, a novel method for identifying group anchors.
+Our method \ours has two stages.
+\textbf{\textit{In the first stage}}, motivated by our first observation, we train a model to utilize the information in topological features to match the known group anchors.
+After the first-stage model is trained, its predictions are used as ``references'' for the second stage.
+\textbf{\textit{In the second stage}}, motivated by our second observation, we associate each node with a single scalar (i.e., ``anchor strength''), and we train the scalars to match the known group anchors and the ``references'' from the first stage.
+After the second-stage strengths are trained, the node with the highest strength in each hyperedge is predicted as the anchor.
+
+Instead of using sophisticated architectures such as deep neural networks, we aim to make \ours efficient and lightweight by using only simple architectures with few parameters.
+This two-stage training balances fidelity to the given topology in the first stage and flexibility in the second stage.
+Notably, \ours is semi-supervised, using information from groups both with and without known group anchors, e.g., the topological features.
+In summary, the proposed method \ours is
+\textbf{\textit{(i) intuitive}}, with algorithmic designs directly based on observations on real-world datasets, and
+\textbf{\textit{(ii) efficient}}, using few parameters and demanding less computational resources, e.g., training time.
+The empirical superiority of \ours is validated via extensive experiments on thirteen real-world hypergraph datasets.
+
+To conclude, our contributions are four-fold:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{New concept and new problem (\cref{sec:problem_state}).} To the best of our knowledge, we are the first to discuss the existence of group anchors, and study the problem of identifying them in real-world group interactions under realistic settings with label scarcity.
+    This problem is of theoretical interest with various further practical applications.
+    \item \textbf{Observations (\cref{sec:observations}).} Based on the realistic scenarios with limited known group anchors, we discuss several observations on group anchors in real-world group interactions.
+    \item \textbf{Method (\cref{sec:method}).} We propose \ours, a novel method for group anchor identification, with intuitive and lightweight mechanisms motivated by our observations.
+    \item \textbf{Experiments (\cref{sec:experiments}).} Via experiments on thirteen real-world hypergraphs, we validate the empirical superiority of our method \ours w.r.t. accuracy and efficiency.
+\end{itemize}
+
+\smallsection{Reproducibility.} 
+The appendix, code, and datasets are available online in~\citep{onlineSuppl} (\url{https://github.com/bokveizen/anchor_radar}).

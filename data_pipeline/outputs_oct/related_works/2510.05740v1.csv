@@ -1,0 +1,91 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.05740v1,http://arxiv.org/abs/2510.05740v1,2025-10-07 10:01:32+00:00,Redefining Generalization in Visual Domains: A Two-Axis Framework for Fake Image Detection with FusionDetect,"The rapid development of generative models has made it increasingly crucial
+to develop detectors that can reliably detect synthetic images. Although most
+of the work has now focused on cross-generator generalization, we argue that
+this viewpoint is too limited. Detecting synthetic images involves another
+equally important challenge: generalization across visual domains. To bridge
+this gap,we present the OmniGen Benchmark. This comprehensive evaluation
+dataset incorporates 12 state-of-the-art generators, providing a more realistic
+way of evaluating detector performance under realistic conditions. In addition,
+we introduce a new method, FusionDetect, aimed at addressing both vectors of
+generalization. FusionDetect draws on the benefits of two frozen foundation
+models: CLIP & Dinov2. By deriving features from both complementary models,we
+develop a cohesive feature space that naturally adapts to changes in both
+thecontent and design of the generator. Our extensive experiments demonstrate
+that FusionDetect delivers not only a new state-of-the-art, which is 3.87% more
+accurate than its closest competitor and 6.13% more precise on average on
+established benchmarks, but also achieves a 4.48% increase in accuracy on
+OmniGen,along with exceptional robustness to common image perturbations. We
+introduce not only a top-performing detector, but also a new benchmark and
+framework for furthering universal AI image detection. The code and dataset are
+available at http://github.com/amir-aman/FusionDetect","\label{sec:related_works}
+
+% The task of distinguishing AI-generated images from real ones is a dynamic co-evolution between generative capabilities and forensic detection. To contextualize our work, we survey the key developments in this field by first outlining the evolution of generative, then categorizing the major paradigms in detection methodology.
+
+The field of AI-generated image detection is in a constant race against generative technology. To provide context for our work, we'll first review the evolution of generative models, from older GANs \cite{gan, progan, biggan} to modern diffusion models \cite{adm, ldm, glide}. We'll then look at the detection methods, highlighting how each has responded to the shifting capabilities of generative architectures. Our review shows that existing detection methods have consistently lagged behind generative advancements, a critical gap that our work aims to close by addressing the ""two-axis generalization"" problem. %\done{i rewrite it}%
+
+\subsection{Image Generation}
+% \todod{in this section you should name all works you want to bring in your comparison and 5 more work}
+
+
+The field of synthetic image generation has been reshaped over the last decade. It has transitioned from early breakthroughs with GANs \cite{progan, stylegan, biggan} to the current dominance of Diffusion Models (DMs). The advent of Denoising Diffusion Probabilistic Models (DDPMs) \cite{ddpm} marked a significant paradigm shift. Diffusion Models (DMs) and their subsequent variants have now surpassed GANs in terms of image quality, diversity, and text-to-image coherence \cite{adm}. The initial wave of practical diffusion models was led by the Latent Diffusion Model (LDM) architecture \cite{ldm}, which underpins the widely popular Stable Diffusion series. These models made high-fidelity generation accessible to the public and became a foundational tool for both research and creative applications.
+
+The pace of innovation has since accelerated, leading to a new generation of even more sophisticated architectures. Architectural upgrades in models like Stable Diffusion XL (SDXL) \cite{sdxl}, such as a larger UNet \cite{unet} and dual text-encoders, have led to significant improvements in image quality and prompt fidelity. The field continues to evolve rapidly with new open-source models like FLUX \cite{flux}, SD3.5 \cite{sd3.5}, HiDream \cite{hidream}, CogView4 \cite{cogview}, Kandinsky3 \cite{kandinsky}, PixArt-$\delta$, alongside closed-source counterparts like Google's Imagen \cite{imagen} and Midjourney \cite{midjourney} and also community finetuned models such as Juggernaut \cite{juggernaut} and Dreamshaper \cite{dreamshaper}. This model shift from GANs to diffusions generates a new class of synthetic images with distinct statistical fingerprints that challenge existing detection methodologies, a primary focus of this work.
+%\done{i rewrite the enitr subsection}
+
+
+\subsection{Image Detection}
+Detection methodologies can be broadly categorized into two main paradigms: those that seek to identify specific, inherent artifacts of the generation process, and those that leverage the general-purpose feature representations of large pretrained foundational models.
+
+
+\subsubsection*{Artifact-Based Detection}
+
+This paradigm is founded on the principle that the synthetic generation process, regardless of its sophistication, leaves behind subtle, machine-detectable traces or ""fingerprints"" \cite{dif}. Researchers have pursued these artifacts across various domains. A significant body of work targets universal image properties, analyzing inconsistencies in the frequency domain (\cite{fredect, npr, dif, f3net}), exploring local texture and patch-level correlations (\cite{patchcraft, lgrad, ssp}), or extracting unique residual noise patterns left by the generation process (\cite{dnf, lnp}). More recently, a modern class of artifact-based detectors leverages the internal mechanics of the diffusion process itself as a forensic tool. This approach is broadly divided into error-based and non-error-based methods. Error-based detectors operate on the principle that diffusion models reconstruct their own outputs with lower error than real images, using this discrepancy in pixel space (\cite{dire, sedid}), in latent space (\cite{aeroblade}), or as a guiding feature (\cite{lare}). In contrast, non-error-based methods use the diffusion pipeline in other ways, such as to generate hard negative training samples (\cite{drct}), to extract internal representations like noise maps as features (\cite{fakeinversion}), or to distill a slow, error-based model into a faster one (\cite{distildire}). A detailed overview of these detection paradigms is provided in Appendix \ref{previous_detectors}.
+
+
+Despite their successes, our experiments indicate that artifact-based detection methods face significant limitations. First, their performance is often brittle, demonstrating poor cross-generator generalization. As generative models evolve, the specific artifacts these methods rely on change, making the detectors quickly outdated. Second, they are highly sensitive to common image perturbations, like compression, which can easily destroy the subtle fingerprints they detect.
+
+
+\subsubsection*{Pretrained Feature-Based Detection}
+
+A more recent and increasingly dominant paradigm moves away from specialized artifact detection and instead leverages the rich feature spaces of large-scale, pretrained foundational models \cite{aide, unifd, bilora}. The core idea is that these models, having been trained on web-scale data, have learned robust and generalizable representations of the visual world. A pioneering work in this area is \texttt{UniFD} \cite{unifd}, which demonstrated that a simple linear classifier trained on CLIP \cite{clip} features can achieve impressive generalization across unseen generators. This highlighted the power of semantic features for the detection task. Other works have explored this vision-language connection further; for example, \texttt{Bi-LoRa} \cite{bilora} reframes the detection problem as a visual question-answering or captioning task. Methods like \texttt{LASTED} \cite{lasted} also leverage language-guided contrastive learning. \texttt{AIDE} \cite{aide}, proposed a hybrid model that combined semantic features from a pretrained CLIP model with specialized, hand-crafted modules (DCT \cite{dct} and SRM \cite{srm} filters) to capture low-level texture statistics. 
+
+% Despite their impressive generalization capabilities, these pretrained feature-based methods have notable limitations. Their effectiveness is highly dependent on the quality and robustness of the underlying foundation model; any biases or weaknesses in the base model's feature space can be inherited by the detector. A further concern is that such complex, dense architectures can introduce computational overhead, potentially leading to longer training and inference times. 
+
+The success of sophisticated hybrid approaches like AIDE \cite{aide}, raises a critical question: is it necessary to design hand-crafted modules for low-level features, or can a more effective and less complex solution be found by fusing the features of two distinct, general-purpose foundational models? To answer this question we proposed \texttt{FusionDetect} that utilized feature fusion of foundation models and experiment on the impact of such approach.
+
+% \subsection{Research Gap and Our Contribution}
+% The literature reveals a clear trajectory towards leveraging pretrained models, yet an open question remains: what is the most effective and efficient way to harness their power? Previous works have either relied on a single model's feature space \cite{unifd} or combined it with complex, specialized modules \cite{aide}. In this paper, we explore a different path. We hypothesize that a more powerful and robust representation can be achieved by directly fusing the features of two distinct, general-purpose foundational models with complementary strengths. Our proposed model, \textbf{FusionDetect}, combines the high-level semantic features of CLIP with the rich, low-level structural features from the self-supervised model DINOv2. This simple fusion strategy is designed to create a holistic feature space that is inherently robust along both the cross-generator and cross-semantic axes of generalization, without the need for specialized modules or complex architectures.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%","The field of AI-generated image detection is in a constant race against generative technology. To provide context for our work, we'll first review the evolution of generative models, from older GANs \cite{gan, progan, biggan} to modern diffusion models \cite{adm, ldm, glide}. We'll then look at the detection methods, highlighting how each has responded to the shifting capabilities of generative architectures. Our review shows that existing detection methods have consistently lagged behind generative advancements, a critical gap that our work aims to close by addressing the ""two-axis generalization"" problem. 
+
+\subsection{Image Generation}
+
+
+
+The field of synthetic image generation has been reshaped over the last decade. It has transitioned from early breakthroughs with GANs \cite{progan, stylegan, biggan} to the current dominance of Diffusion Models (DMs). The advent of Denoising Diffusion Probabilistic Models (DDPMs) \cite{ddpm} marked a significant paradigm shift. Diffusion Models (DMs) and their subsequent variants have now surpassed GANs in terms of image quality, diversity, and text-to-image coherence \cite{adm}. The initial wave of practical diffusion models was led by the Latent Diffusion Model (LDM) architecture \cite{ldm}, which underpins the widely popular Stable Diffusion series. These models made high-fidelity generation accessible to the public and became a foundational tool for both research and creative applications.
+
+The pace of innovation has since accelerated, leading to a new generation of even more sophisticated architectures. Architectural upgrades in models like Stable Diffusion XL (SDXL) \cite{sdxl}, such as a larger UNet \cite{unet} and dual text-encoders, have led to significant improvements in image quality and prompt fidelity. The field continues to evolve rapidly with new open-source models like FLUX \cite{flux}, SD3.5 \cite{sd3.5}, HiDream \cite{hidream}, CogView4 \cite{cogview}, Kandinsky3 \cite{kandinsky}, PixArt-$\delta$, alongside closed-source counterparts like Google's Imagen \cite{imagen} and Midjourney \cite{midjourney} and also community finetuned models such as Juggernaut \cite{juggernaut} and Dreamshaper \cite{dreamshaper}. This model shift from GANs to diffusions generates a new class of synthetic images with distinct statistical fingerprints that challenge existing detection methodologies, a primary focus of this work.
+
+
+
+\subsection{Image Detection}
+Detection methodologies can be broadly categorized into two main paradigms: those that seek to identify specific, inherent artifacts of the generation process, and those that leverage the general-purpose feature representations of large pretrained foundational models.
+
+
+\subsubsection*{Artifact-Based Detection}
+
+This paradigm is founded on the principle that the synthetic generation process, regardless of its sophistication, leaves behind subtle, machine-detectable traces or ""fingerprints"" \cite{dif}. Researchers have pursued these artifacts across various domains. A significant body of work targets universal image properties, analyzing inconsistencies in the frequency domain (\cite{fredect, npr, dif, f3net}), exploring local texture and patch-level correlations (\cite{patchcraft, lgrad, ssp}), or extracting unique residual noise patterns left by the generation process (\cite{dnf, lnp}). More recently, a modern class of artifact-based detectors leverages the internal mechanics of the diffusion process itself as a forensic tool. This approach is broadly divided into error-based and non-error-based methods. Error-based detectors operate on the principle that diffusion models reconstruct their own outputs with lower error than real images, using this discrepancy in pixel space (\cite{dire, sedid}), in latent space (\cite{aeroblade}), or as a guiding feature (\cite{lare}). In contrast, non-error-based methods use the diffusion pipeline in other ways, such as to generate hard negative training samples (\cite{drct}), to extract internal representations like noise maps as features (\cite{fakeinversion}), or to distill a slow, error-based model into a faster one (\cite{distildire}). A detailed overview of these detection paradigms is provided in Appendix \ref{previous_detectors}.
+
+
+Despite their successes, our experiments indicate that artifact-based detection methods face significant limitations. First, their performance is often brittle, demonstrating poor cross-generator generalization. As generative models evolve, the specific artifacts these methods rely on change, making the detectors quickly outdated. Second, they are highly sensitive to common image perturbations, like compression, which can easily destroy the subtle fingerprints they detect.
+
+
+\subsubsection*{Pretrained Feature-Based Detection}
+
+A more recent and increasingly dominant paradigm moves away from specialized artifact detection and instead leverages the rich feature spaces of large-scale, pretrained foundational models \cite{aide, unifd, bilora}. The core idea is that these models, having been trained on web-scale data, have learned robust and generalizable representations of the visual world. A pioneering work in this area is \texttt{UniFD} \cite{unifd}, which demonstrated that a simple linear classifier trained on CLIP \cite{clip} features can achieve impressive generalization across unseen generators. This highlighted the power of semantic features for the detection task. Other works have explored this vision-language connection further; for example, \texttt{Bi-LoRa} \cite{bilora} reframes the detection problem as a visual question-answering or captioning task. Methods like \texttt{LASTED} \cite{lasted} also leverage language-guided contrastive learning. \texttt{AIDE} \cite{aide}, proposed a hybrid model that combined semantic features from a pretrained CLIP model with specialized, hand-crafted modules (DCT \cite{dct} and SRM \cite{srm} filters) to capture low-level texture statistics. 
+
+
+
+The success of sophisticated hybrid approaches like AIDE \cite{aide}, raises a critical question: is it necessary to design hand-crafted modules for low-level features, or can a more effective and less complex solution be found by fusing the features of two distinct, general-purpose foundational models? To answer this question we proposed \texttt{FusionDetect} that utilized feature fusion of foundation models and experiment on the impact of such approach.",N/A

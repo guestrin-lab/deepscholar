@@ -1,0 +1,12 @@
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/pipeline_v2.pdf}
+    \caption{Summary of the proposed hybrid approach. Simulated network scenarios are used to first train a network model. Then, this model is fine-tuned using a smaller dataset from real-world network data.}
+    \label{fig:transfer_learning_pipeline}
+\end{figure}
+
+Building accurate ML models for network behavior prediction faces a fundamental challenge: the scarcity and diversity of real-world network data. Network data often requires extensive testbed deployments or prolonged production network monitoring. Privacy concerns and hardware limitations further restrict access to critical metrics, such as detailed packet captures or router-specific configurations.
+In contrast, simulated data is abundant and diverse but fails to capture the nuances of real-world network dynamics, including hardware-specific behaviors and unexpected edge cases. This mismatch results in models that perform well on simulated scenarios but struggle when applied to real-world networks.
+
+To address this issue, we propose a hybrid approach that combines the strengths of simulated and real-world data using transfer learning, illustrated in Figure~\ref{fig:transfer_learning_pipeline}.
+The core idea is to train an ML network model on simulated data and later refine it with real-world network data. We begin by leveraging the diversity and abundance of synthetic scenarios to learn generalized patterns. Using a network simulator, for example, we can generate a comprehensive dataset with diverse network configurations and scenarios. Then, we fine-tune the model by transferring weights from the simulated network model while using a small dataset of real-world network data to adapt it to the specific environment. By doing so, we aim to bridge the gap between simulation and reality, enabling the model to make accurate predictions in real-world scenarios with minimal reliance on extensive real-world datasets.

@@ -1,0 +1,123 @@
+\begin{table*}[htb]
+\centering
+\caption{\textbf{Quantitative comparison in text-to-image generation} for Qwen-Image and Qwen-Image-Lightning (a distilled version). Best results are highlighted in \textbf{bold}, and second-best are \underline{underlined}.}
+\vspace{-3mm}
+  \resizebox{\textwidth}{!}{ % Make table width equal to text width
+    \begin{tabular}{l | c  c | c  c | c  c | c c c}
+        \toprule
+        \multirow{2}{*}{\textbf{Method}}
+        & \multicolumn{4}{c|}{\textbf{Acceleration}} 
+        & \multicolumn{2}{c|}{\textbf{Quality Metrics}} 
+        & \multicolumn{3}{c}{\textbf{Perceptual Metrics}}\rule{0pt}{2ex}\\
+        \cline{2-10}
+        & \textbf{Latency(s) \(\downarrow\)} 
+        & \textbf{Speed \(\uparrow\)} 
+        & \textbf{FLOPs(T) \(\downarrow\)}  
+        & \textbf{Speed \(\uparrow\)} 
+        & \textbf{ImageReward\(\uparrow\)} 
+        & \textbf{CLIP\(\uparrow\)} 
+        & \textbf{PSNR\(\uparrow\)} 
+        & \textbf{SSIM\(\uparrow\)}
+        & \textbf{LPIPS\(\downarrow\)}\rule{0pt}{2ex}\\
+        \midrule
+
+\textbf{$50$ steps}
+& 127.40 \textcolor{gray!70}{\scriptsize (+0.0\%)} & 1.00$\times$ & 12917.56 & 1.00$\times$ & 1.25 \textcolor{gray!70}{\scriptsize (+0.0\%)} & 35.59 \textcolor{gray!70}{\scriptsize (+0.0\%)} & $\infty$ & 1.00 & 0.00 \\
+
+\textbf{$50\%$ steps }
+& 64.10 \textcolor{gray!70}{\scriptsize (-49.6\%)} & 1.99$\times$ & 6458.78 & 2.00$\times$ & 1.20 \textcolor{gray!70}{\scriptsize (-4.0\%)} & 35.31 \textcolor{gray!70}{\scriptsize (-0.6\%)} & 30.54 & 0.75 & 0.28 \\
+
+\textbf{$20\%$ steps} {\textcolor{red}{$^{\dagger}$}}
+& 25.92 \textcolor{gray!70}{\scriptsize (-79.6\%)} & 4.89$\times$ & 2583.51 & 5.00$\times$ & 0.94 \textcolor{gray!70}{\scriptsize (-26.4\%)} & 34.95 \textcolor{gray!70}{\scriptsize (-1.0\%)} & 28.59 & 0.61 & 0.52 \\
+
+\midrule
+
+\textbf{FORA}($\mathcal{N}$=4){\textcolor{red}{$^{\dagger}$}}
+& 38.43 \textcolor{gray!70}{\scriptsize (-70.0\%)} & 3.32$\times$ & 3359.99 & 3.84$\times$ & 0.93 \textcolor{gray!70}{\scriptsize (-25.6\%)} & 34.40 \textcolor{gray!70}{\scriptsize (-3.3\%)} & 28.66 & 0.59 & 0.51 \\
+
+\textbf{\texttt{ToCa}}($\mathcal{N}$=8, $\mathcal{R}$=75\%){\textcolor{red}{$^{\dagger}$}}
+& 61.37 \textcolor{gray!70}{\scriptsize (-51.8\%)} & 2.08$\times$ & 2991.34 & 4.32$\times$ & \underline{1.02} \textcolor{gray!70}{\scriptsize (-18.4\%)} & \underline{34.96} \textcolor{gray!70}{\scriptsize (-1.8\%)} & \underline{28.93} & \underline{0.63} & \underline{0.44} \\
+
+\textbf{\texttt{DuCa}}($\mathcal{N}$=9, $\mathcal{R}$=80\%){\textcolor{red}{$^{\dagger}$}}
+& 34.73 \textcolor{gray!70}{\scriptsize (-72.7\%)} & 3.67$\times$ & 2958.13 & 4.37$\times$ & 0.77 \textcolor{gray!70}{\scriptsize (-38.4\%)} & 34.62 \textcolor{gray!70}{\scriptsize (-2.7\%)} & 28.45 & 0.58 & 0.55 \\
+
+\textbf{TaylorSeer}($\mathcal{N}$=6)
+& \underline{30.75} \textcolor{gray!70}{\scriptsize (-75.9\%)} & \underline{4.14}$\times$ & \textbf{2583.97} & \textbf{5.00}$\times$ & 1.01 \textcolor{gray!70}{\scriptsize (-19.2\%)} & 34.71 \textcolor{gray!70}{\scriptsize (-2.5\%)} & 28.58 & 0.62 & 0.46 \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa}($\mathcal{N}$=6)
+& \textbf{29.80} \textcolor[HTML]{0f98b0}{\scriptsize (-76.6\%)} & \textbf{4.28}$\times$ & \underline{2584.70} & \underline{5.00}$\times$ & \textbf{1.20} \textcolor[HTML]{0f98b0}{\scriptsize (-4.0\%)} & \textbf{35.39} \textcolor[HTML]{0f98b0}{\scriptsize (-0.6\%)} & \textbf{29.67} & \textbf{0.78} & \textbf{0.33} \\
+
+\midrule
+
+\textbf{FORA}($\mathcal{N}$=6){\textcolor{red}{$^{\dagger}$}}
+& 28.69 \textcolor{gray!70}{\scriptsize (-77.5\%)} & 4.44$\times$ & 2326.74 & 5.55$\times$ & 0.48 \textcolor{gray!70}{\scriptsize (-61.6\%)} & 33.34 \textcolor{gray!70}{\scriptsize (-6.3\%)} & 28.48 & 0.55 & 0.59 \\
+
+\textbf{\texttt{ToCa}}($\mathcal{N}$=12, $\mathcal{R}$=85\%){\textcolor{red}{$^{\dagger}$}}
+& 50.95 \textcolor{gray!70}{\scriptsize (-60.0\%)} & 2.50$\times$ & 2406.20 & 5.37$\times$ & 0.55 \textcolor{gray!70}{\scriptsize (-56.0\%)} & \underline{34.08} \textcolor{gray!70}{\scriptsize (-4.2\%)} & \underline{28.69} & \underline{0.57} & \underline{0.53} \\
+
+\textbf{\texttt{DuCa}}($\mathcal{N}$=12, $\mathcal{R}$=90\%){\textcolor{red}{$^{\dagger}$}}
+& 28.57 \textcolor{gray!70}{\scriptsize (-77.6\%)} & 4.46$\times$ & 2171.56 & 5.95$\times$ & 0.41 \textcolor{gray!70}{\scriptsize (-67.2\%)} & 33.38 \textcolor{gray!70}{\scriptsize (-6.2\%)} & 28.38 & \underline{0.57} & 0.60 \\
+
+\textbf{TaylorSeer}($\mathcal{N}$=9){\textcolor{red}{$^{\dagger}$}}
+& \underline{24.64} \textcolor{gray!70}{\scriptsize (-80.7\%)} & \underline{5.17}$\times$ & \underline{2067.29} & \underline{6.25}$\times$ & \underline{0.73} \textcolor{gray!70}{\scriptsize (-41.6\%)} & 32.97 \textcolor{gray!70}{\scriptsize (-7.4\%)} & 28.25 & 0.56 & 0.58 \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa}($\mathcal{N}$=10)
+& \textbf{22.45} \textcolor[HTML]{0f98b0}{\scriptsize (-82.4\%)} & \textbf{5.68}$\times$ & \textbf{1809.38} & \textbf{7.14}$\times$ & \textbf{1.02} \textcolor[HTML]{0f98b0}{\scriptsize (-18.4\%)} & \textbf{35.00} \textcolor[HTML]{0f98b0}{\scriptsize (-1.7\%)} & \textbf{28.86} & \textbf{0.64} & \textbf{0.44} \\
+
+
+\midrule
+\textbf{Qwen-Image-Lightning: 8 steps} 
+& 7.27\textcolor{gray!70}{\scriptsize (+0.0\%)}  & 1.00$\times$ & 560.96 & 1.00$\times$ & 1.30\textcolor{gray!70}{\scriptsize (+0.0\%)} & 35.26\textcolor{gray!70}{\scriptsize (+0.0\%)} & $\infty$ & 1.00 & 0.00 \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa ($\mathcal{N}$=2): 8 steps}
+& 5.29 \textcolor[HTML]{0f98b0}{\scriptsize (-27.2\%)} 
+& 1.37$\times$ 
+& 350.61 
+& 1.60$\times$ 
+& \textbf{1.29} \textcolor[HTML]{0f98b0}{\scriptsize (-0.8\%)} 
+& 35.23 \textcolor[HTML]{0f98b0}{\scriptsize (-0.1\%)} 
+& \textbf{33.01} 
+& \textbf{0.83} 
+& \textbf{0.12} \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa ($\mathcal{N}$=3): 8 steps}
+& 4.63 \textcolor[HTML]{0f98b0}{\scriptsize (-36.3\%)} 
+& 1.57$\times$ 
+& 282.26 
+& 1.99$\times$ 
+& 1.28 \textcolor[HTML]{0f98b0}{\scriptsize (-1.5\%)} 
+& 35.10 \textcolor[HTML]{0f98b0}{\scriptsize (-0.5\%)} 
+& 31.36 
+& 0.77 
+& 0.18 \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa ($\mathcal{N}$=4): 8 steps}
+& \textbf{3.29} \textcolor[HTML]{0f98b0}{\scriptsize (-54.9\%)} 
+& \textbf{2.21}$\times$ 
+& \textbf{140.25} 
+& \textbf{4.00}$\times$ 
+& 1.29 \textcolor[HTML]{0f98b0}{\scriptsize (-0.8\%)} 
+& \textbf{35.94} \textcolor[HTML]{0f98b0}{\scriptsize (+1.9\%)} 
+& 29.25 
+& 0.62
+& 0.36 \\
+\bottomrule
+\end{tabular}
+}
+
+\label{table:qwen-image-Metrics}
+\raggedright
+{\scriptsize
+\begin{itemize}[leftmargin=10pt,topsep=0pt]
+\item\textcolor{red}{$\dagger$} Methods exhibit significant degradation in image quality. 
+\vspace{-1.5mm}
+\item\textcolor{gray!70}{Gray}: Baseline-relative degradation in quality and gains in latency. \textcolor[HTML]{0f98b0}{Blue}: \textbf{FreqCa} achieves minimal degradation with large latency gains.
+\end{itemize}
+}
+\vspace{-2mm}
+\end{table*}

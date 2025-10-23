@@ -1,0 +1,60 @@
+\subsubsection{Evaluation Results}
+\begin{table}[tb]
+    \centering
+    \resizebox{1\textwidth}{!}{
+    \begin{tabular}{l|cccccccc|c}
+        \toprule
+         Model &  \makecell{AI2D\\(w M)} & \makecell{AI2D\\(w/o M)}  & \makecell{ChartQA\\(test)} & \makecell{TextVQA\\(val)} & \makecell{DocVQA\\(test)} & \makecell{InfoVQA\\(test)} & \makecell{OCR\\Bench} & \makecell{SEED\\2-Plus} & Overall\\
+         \hline
+         Qwen2.5-VL-3B~\cite{bai2025qwen2_5}   & 81.4& 91.3*& 84.2*& 79.2*& 93.0*& 77.0*& 82.6*& 68.2*& 82.1  \\
+         BlueLM-2.5-3B~\cite{xiong2025bluelm} & 83.0& - & - & - & - & - & 82.6& - & -\\
+         BlueLM-2.5-3B-thinking~\cite{xiong2025bluelm} &  82.6& - & - & - & - & - & 84.0& - & -\\
+         Qianfan-VL-3B~\cite{dong2025qianfan} &  81.4& - & 81.8& 80.1& - & -  & 83.1& 67.6& - \\
+         Gemma3-4B~\cite{gemmateam2025gemma3} &  70.7& 86.3*& 33.7& 57.7& 70.0*& 43.0*& 66.0& 60.7& 61.0\\
+         Phi-3.5-Vision-4B~\cite{abdin2024phi3} & 77.8& 87.6*& 70.0*& 65.1*& 69.0*& 35.0*& 59.9& 62.2& 65.8\\
+         Phi-4-Multimodal ~\cite{abouelenin2025phi} & 82.3& 91.7*& 81.4& 75.6& 93.2& 72.7& 84.4& 68.5& 81.2\\
+         Ovis2-4B~\cite{lu2024ovis} & 85.7& 94.2*& 84.2*& \textbf{83.2}*& 94.0*& 79.0*& \textbf{91.1}&69.3& 85.1\\
+         MiniCPM-V-4-4B~\cite{yao2024minicpm} & 82.9& 93.0*& 84.4& 80.8& 93.0*& 69.0*& 89.4& 67.0& 82.4\\
+         R-4B-RL~\cite{jiang2025r} & \textbf{86.2}& -& -& -& 91.0& -& 83.6& -& -\\
+         InternVL3.5-4B~\cite{wang2025internvl3} & 82.6& 92.3& 86.0& 77.9& 92.4& 78.0*& 82.2& 69.4& 82.6\\
+         \rowcolor{gray!15} AndesVL-4B-Instruct &84.5& \textbf{94.6}& 87.8& 81.6& \textbf{96.0}& 81.0& 86.1& 70.9& 85.3\\
+         \rowcolor{gray!15} AndesVL-4B-Thinking & 84.9& 94.1& \textbf{90.4}& 82.1&95.4& \textbf{81.9}& 87.0& \textbf{72.0}& \textbf{86.0}\\
+         \hline
+         Qwen2-VL-2B~\cite{wang2024qwen2vl} & 74.7& 84.1*& 72.5*& 79.5*& 90.0*& 65.0*& 79.7& 61.2& 75.8\\
+         MiniCPM-V-2B~\cite{yao2024minicpm} &  62.9& 68.8*& 55.6& 73.2& 71.0*& 40.0*& 60.5& 51.9& 60.5\\
+         SAIL-VL-1.5-2B~\cite{dong2025scalable} &  \textbf{83.7}& \textbf{92.4}*& 78.4*&  \textbf{82.0}& 92.0*& 72.0*& 88.5& 68.0*& 82.1\\
+          SAIL-VL2-2B~\cite{yin2025sail} & 83.0*& -& -&  -& 93.1*& -& \textbf{89.5}* & -& -\\
+        Ovis2-2B~\cite{lu2024ovis} &  82.7& 91.8*& 81.3*& 80.0*& 92.0*& 72.0*& 87.3& 67.4& 81.8\\
+         InternVL3-2B~\cite{zhu2025internvl3} & 78.7& 87.4& 80.2& 77.0& 88.0*& 67.0*& 83.5& 64.6& 78.3\\
+         InternVL3.5-2B~\cite{wang2025internvl3} & 78.8& 89.1& 80.7& 76.5& 89.4& 70.8& 83.6& 68.0& 79.6\\
+         \rowcolor{gray!15} AndesVL-2B-Instruct & 80.1& 89.9&\textbf{87.4}& 79.9& \textbf{94.2}& \textbf{74.2}& 84.6& \textbf{68.8}& \textbf{82.4}\\
+         \rowcolor{gray!15} AndesVL-2B-Thinking & 77.8& 89.3& 86.6& 80.0& 93.9& 72.9& 82.9& 67.1& 81.3\\
+         \hline
+         Ovis2-1B~\cite{lu2024ovis} &  \textbf{76.4}& 85.3*& 74.9*& \textbf{78.4}*& 89.0*& 64.0*& \textbf{89.0}& 61.4& 77.3
+\\
+         InternVL3-1B~\cite{zhu2025internvl3} & 69.4& 78.3& 75.3& 74.1& 81.9& 53.7& 79.0& 58.2& 71.2
+\\
+         InternVL3.5-1B~\cite{wang2025internvl3} & 69.3& 81.8& 77.7& 71.5& 85.6& 60.5& 79.5& 62.3& 73.5
+\\
+         \rowcolor{gray!15} AndesVL-1B-Instruct & 71.5& 83.8& 80.4& 77.0& \textbf{91.5}& 65.3& 78.9& 64.8& 76.7
+\\
+         \rowcolor{gray!15} AndesVL-1B-Thinking & 74.4& \textbf{86.1}& \textbf{82.3}& 76.2& 91.4& \textbf{65.8}& 77.7& \textbf{65.5}& \textbf{77.4}\\
+         \hline
+         SmolVLM2-0.5B~\cite{marafioti2025smolvlm} &  57.3& 59.5*& 59.6& 60.3& 70.0*& 29.0*& 60.9& 47.7& 55.5
+\\
+         \rowcolor{gray!15} AndesVL-0.6B-Instruct & 68.4& 82.1& \textbf{78.2}& 69.7& \textbf{89.5}& \textbf{63.4}& 72.2& \textbf{64.3}& \textbf{73.5}
+\\
+         \rowcolor{gray!15} AndesVL-0.6B-Thinking & \textbf{68.8}& \textbf{82.9}& \textbf{78.2}& \textbf{68.9}& 88.8& 61.0& \textbf{73.8}& 64.0& 73.3\\
+         \bottomrule
+    \end{tabular}}
+    \caption{Comparison of OCR, chart, and document understanding performance. The best results are marked in \textbf{bold}. Data marked with * are from our evaluation, while others are from their original papers or the OpenCompass leaderboard.}
+    \label{tab:benchmark_text_rich}
+\end{table}
+
+Table~\ref{tab:benchmark_text_rich} shows a detailed comparison of AndesVL with several existing promising MLLMs on OCR-related benchmarks. AndesVL demonstrates superior or competitive performance to them. 
+
+Among existing models, our AndesVL-4B-Thinking model claims the top rank with an overall score of 86.0, and it achieves the top results on four of eight benchmarks.  Meanwhile, the AndesVL-4B-Instruct model also delivers strong and comparable performance on text-rich tasks with a score of 85.3. Most notably, on ChartQA, the AndesVL-4B-Thinking model scores 90.4, exceeding the previous best, InternVL3.5-4B (86.0), by 4.4 points. A similar marked advantage is observed on DocVQA. AndesVL's success on the ChartQA and DocVQ benchmarks, featuring long-text images and complex questions, directly illustrates its ability to not only recognize long texts accurately but also apply advanced reasoning to solve challenging, contextual problems effectively.
+
+Moreover, the advantages over existing models on text-rich tasks persist down to our smaller-scale versions. To be specific, our proposed AndesVL-2B-Instruct, AndesVL-1B-Thinking, and AndesVL-0.6B-Instruct models all rank first in their respective model-size groups, with overall scores of 82.4, 77.4, and 73.5, respectively.
+
+These outcomes demonstrate the effectiveness of our models' multimodal recognition and comprehension capabilities across a variety of text-rich tasks.

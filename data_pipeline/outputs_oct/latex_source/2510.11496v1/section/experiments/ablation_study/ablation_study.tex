@@ -1,0 +1,44 @@
+\subsection{Ablation Studies}
+
+\begin{table}[tb]
+    \centering
+    \resizebox{1\textwidth}{!}{
+    \begin{tabular}{c|c|c|c|c|c|c}
+    \toprule
+         \multirow{1}{*}{Model}& \multirow{1}{*}{MMVet}& \makecell{MathVerse\\(vision-only)}&\multirow{1}{*}{RealWorldQA}&\multirow{1}{*}{OCRBench}& \multirow{1}{*}{HallusionBench }& \multirow{1}{*}{Overall}\\
+         \hline
+         AndesVL-2B-Instruct-Base & 48.3 & 22.8 & 65.1 & 82.4 & 49.3 & 53.6\\
+         AndesVL-2B-Instruct-SFT  & 51.0 & 25.9 & 66.9 & 83.9 & 49.4 & 55.4\\
+         AndesVL-2B-Instruct-MPO  & 52.0 & 26.8 & 67.8 & 84.6 & 51.8 & 56.6\\
+         \bottomrule
+    \end{tabular}}
+    \caption{Comparison on several general benchmarks among AndesVL-2B-Instruct-Base, AndesVL-2B-Instruct-SFT and AndesVL-2B-Instruct-MPO.}
+    \label{tab:ablation_1}
+\end{table}
+
+\begin{table}[tb]
+    \centering
+    \resizebox{1\textwidth}{!}{
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+    \toprule
+         \multirow{1}{*}{Model}& \makecell{MathVista\\(mini)}& \makecell{MathVision}& \multirow{1}{*}{WeMath} &\makecell{MathVerse\\(vision-only)} &\multirow{1}{*}{MMMU} & \multirow{1}{*}{MMMU\_Pro} & \multirow{1}{*}{Overall}\\
+         \hline
+         AndesVL-2B-Thinking-Base & 68.1 & 32.1 & 38.2 & 51.7 & 48.0 & 35.7 & 45.6\\
+         AndesVL-2B-Thinking-SFT  & 69.7 & 32.0 & 37.0 & 52.3 & 52.6 & 35.5 & 46.5\\
+         AndesVL-2B-Thinking-RL   & 73.3 & 35.2 & 41.1 & 54.8 & 52.1 & 37.3 & 49.0\\
+         \hline
+         AndesVL-4B-Thinking-Base & 76.2 & 48.1 & 49.5 & 64.9 & 62.3 & 46.0 & 57.8\\
+         AndesVL-4B-Thinking-SFT  & 77.4 & 48.4 & 54.2 & 66.4 & 64.8 & 48.7 & 60.0\\
+         AndesVL-4B-Thinking-RL   & 79.4 & 51.0 & 57.4 & 66.9 & 66.9 & 51.4 & 62.2\\
+         \bottomrule
+    \end{tabular}}
+    \caption{Comparison on several reasoning and math benchmarks among  AndesVL-2B-Thinking-Base, AndesVL-2B-Thinking-SFT, AndesVL-2B-Thinking-RL, AndesVL-4B-Thinking-Base, AndesVL-4B-Thinking-SFT and AndesVL-4B-Thinking-RL.}
+    \label{tab:ablation_2}
+\end{table}
+
+In Table \ref{tab:ablation_1}, we present ablation results for AndesVL-2B-Instruct-Base, AndesVL-2B-Instruct-SFT and AndesVL-2B-Instruct-MPO. We find that MPO enhances the mathematical reasoning and multimodal understanding capabilities of the Instruct model, with the MPO model achieving improvements of over 1.0 pp and 0.9 pp on MMVet and MathVerse respectively. Furthermore, MPO improves the model's ability to resist hallucinations, yielding a 1.4 pp gain on HallusionBench. Notably, RealWorldQA and OCRBench show 0.9 pp and 0.7 pp improvement respectively. We thought that this is because MPO corrects errors made by the SFT model on instances it was originally capable of solving correctly. 
+
+In Table \ref{tab:ablation_2}, we present the ablation studies for AndesVL-2B-Thinking-Base, AndesVL-2B-Thinking-SFT, AndesVL-2B-Thinking-RL, AndesVL-4B-Thinking-Base, AndesVL-4B-Thinking-SFT and AndesVL-4B-Thinking-RL. As shown, the model trained with RL exhibits significant improvements in mathematical reasoning. For instance, performance increases by about 2 pp on MathVista, MathVision and WeMath on both AndesVL-2B-Thinking and AndesVL-4B-Thinking. Moreover, the RL-enhanced model also demonstrates improved performance on complex multimodal understanding tasks, such as over 2 pp improvement on MMMU\_Pro. These results indicate that RL significantly enhances the model’s multimodal understanding and mathematical reasoning capabilities evenif the model has only 2B parameters.
+
+Overall, both the Instruct and Thinking models exhibit improved performance after the SFT stage. For the Instruct model, MPO leads to significant gains in mathematical reasoning, multimodal understanding capabilities, OCR accuracy, and hallucination resistance. For the Thinking model, RL notably enhances its abilities in mathematical reasoning and complex multimodal understanding.
+

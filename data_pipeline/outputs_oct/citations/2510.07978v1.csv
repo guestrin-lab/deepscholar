@@ -1,0 +1,270 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,qin2024toolllm,\cite{qin2024toolllm},Tool{LLM}: Facilitating Large Language Models to Master 16000+ Real-world {API}s,,,Yujia Qin and Shihao Liang and Yining Ye and Kunlun Zhu and Lan Yan and Yaxi Lu and Yankai Lin and Xin Cong and Xiangru Tang and Bill Qian and Sihan Zhao and Lauren Hong and Runchu Tian and Ruobing Xie and Jie Zhou and Mark Gerstein and dahai li and Zhiyuan Liu and Maosong Sun,2024,,https://openreview.net/forum?id=dHng2O0Jjr,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,zhuang2023toolqa,\cite{zhuang2023toolqa},ToolQA: A Dataset for LLM Question Answering with External Tools,http://arxiv.org/abs/2306.13304v1,"Large Language Models (LLMs) have demonstrated impressive performance in
+various NLP tasks, but they still suffer from challenges such as hallucination
+and weak numerical reasoning. To overcome these challenges, external tools can
+be used to enhance LLMs' question-answering abilities. However, current
+evaluation methods do not distinguish between questions that can be answered
+using LLMs' internal knowledge and those that require external information
+through tool use. To address this issue, we introduce a new dataset called
+ToolQA, which is designed to faithfully evaluate LLMs' ability to use external
+tools for question answering. Our development of ToolQA involved a scalable,
+automated process for dataset curation, along with 13 specialized tools
+designed for interaction with external knowledge in order to answer questions.
+Importantly, we strive to minimize the overlap between our benchmark data and
+LLMs' pre-training data, enabling a more precise evaluation of LLMs' tool-use
+reasoning abilities. We conducted an in-depth diagnosis of existing tool-use
+LLMs to highlight their strengths, weaknesses, and potential improvements. Our
+findings set a new benchmark for evaluating LLMs and suggest new directions for
+future advancements. Our data and code are freely available to the broader
+scientific community on GitHub.",Yuchen Zhuang and Yue Yu and Kuan Wang and Haotian Sun and Chao Zhang,2023,,https://openreview.net/forum?id=pV1xV2RK6I,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,patil2025the,\cite{patil2025the},The Berkeley Function Calling Leaderboard ({BFCL}): From Tool Use to Agentic Evaluation of Large Language Models,,,Shishir G Patil and Huanzhi Mao and Fanjia Yan and Charlie Cheng-Jie Ji and Vishnu Suresh and Ion Stoica and Joseph E. Gonzalez,2025,,https://openreview.net/forum?id=2GmDdhBdDk,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,basu2025nestfulbenchmarkevaluatingllms,\cite{basu2025nestfulbenchmarkevaluatingllms},"NESTFUL: A Benchmark for Evaluating LLMs on Nested Sequences of API
+  Calls",http://arxiv.org/abs/2409.03797v3,"The resurgence of autonomous agents built using large language models (LLMs)
+to solve complex real-world tasks has brought increased focus on LLMs'
+fundamental ability of tool or function calling. At the core of these agents,
+an LLM must plan, execute, and respond using external tools, APIs, and custom
+functions. Research on tool calling has gathered momentum, but evaluation
+benchmarks and datasets representing the complexity of the tasks have lagged
+behind. In this work, we focus on one such complexity, nested sequencing, with
+the goal of extending existing benchmarks and evaluation. Specifically, we
+present NESTFUL, a benchmark to evaluate LLMs on nested sequences of API calls,
+i.e., sequences where the output of one API call is passed as input to a
+subsequent call. NESTFUL contains 1800+ nested sequences where all the function
+calls are executable. Experimental results on a variety of models show that the
+best-performing model (GPT-4o) achieves a full sequence match accuracy of 28%
+and a win-rate of 60%, necessitating a large scope for improvement in the
+nested sequencing aspect of function calling. Our analysis of these results
+provides possible future research directions for the community, in addition to
+a benchmark to track progress. We have released the NESTFUL dataset under the
+Apache 2.0 license at https://github.com/IBM/NESTFUL.",Kinjal Basu and Ibrahim Abdelaziz and Kiran Kate and Mayank Agarwal and Maxwell Crouse and Yara Rizk and Kelsey Bradford and Asim Munawar and Sadhana Kumaravel and Saurabh Goyal and Xin Wang and Luis A. Lastras and Pavan Kapanipathi,2025,,https://arxiv.org/abs/2409.03797,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,li2023apibank,\cite{li2023apibank},{API}-Bank: A Comprehensive Benchmark for Tool-Augmented {LLM}s,,,Minghao Li and Yingxiu Zhao and Bowen Yu and Feifan Song and Hangyu Li and Haiyang Yu and Zhoujun Li and Fei Huang and Yongbin Li,2023,,https://openreview.net/forum?id=o2HBfgY20b,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,farn2023tooltalkevaluatingtoolusageconversational,\cite{farn2023tooltalkevaluatingtoolusageconversational},ToolTalk: Evaluating Tool-Usage in a Conversational Setting,http://arxiv.org/abs/2311.10775v1,"Large language models (LLMs) have displayed massive improvements in reasoning
+and decision-making skills and can hold natural conversations with users. Many
+recent works seek to augment LLM-based assistants with external tools so they
+can access private or up-to-date information and carry out actions on behalf of
+users. To better measure the performance of these assistants, this paper
+introduces ToolTalk, a benchmark consisting of complex user intents requiring
+multi-step tool usage specified through dialogue. ToolTalk contains 28 tools
+grouped into 7 plugins, and includes a complete simulated implementation of
+each tool, allowing for fully automated evaluation of assistants that rely on
+execution feedback. ToolTalk also emphasizes tools that externally affect the
+world rather than only tools for referencing or searching information. We
+evaluate GPT-3.5 and GPT-4 on ToolTalk resulting in success rates of 26% and
+50% respectively. Our analysis of the errors reveals three major categories and
+suggests some future directions for improvement. We release ToolTalk at
+https://github.com/microsoft/ToolTalk.",Nicholas Farn and Richard Shin,2023,,https://arxiv.org/abs/2311.10775,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,yao2025taubench,\cite{yao2025taubench},\{\${\textbackslash}tau\$\}-bench: A Benchmark for {\textbackslash}underline\{T\}ool-{\textbackslash}underline\{A\}gent-{\textbackslash}underline\{U\}ser Interaction in Real-World Domains,,,Shunyu Yao and Noah Shinn and Pedram Razavi and Karthik R Narasimhan,2025,,https://openreview.net/forum?id=roNSXZpUDN,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,andriushchenko2025agentharm,\cite{andriushchenko2025agentharm},AgentHarm: A Benchmark for Measuring Harmfulness of LLM Agents,http://arxiv.org/abs/2410.09024v3,"The robustness of LLMs to jailbreak attacks, where users design prompts to
+circumvent safety measures and misuse model capabilities, has been studied
+primarily for LLMs acting as simple chatbots. Meanwhile, LLM agents -- which
+use external tools and can execute multi-stage tasks -- may pose a greater risk
+if misused, but their robustness remains underexplored. To facilitate research
+on LLM agent misuse, we propose a new benchmark called AgentHarm. The benchmark
+includes a diverse set of 110 explicitly malicious agent tasks (440 with
+augmentations), covering 11 harm categories including fraud, cybercrime, and
+harassment. In addition to measuring whether models refuse harmful agentic
+requests, scoring well on AgentHarm requires jailbroken agents to maintain
+their capabilities following an attack to complete a multi-step task. We
+evaluate a range of leading LLMs, and find (1) leading LLMs are surprisingly
+compliant with malicious agent requests without jailbreaking, (2) simple
+universal jailbreak templates can be adapted to effectively jailbreak agents,
+and (3) these jailbreaks enable coherent and malicious multi-step agent
+behavior and retain model capabilities. To enable simple and reliable
+evaluation of attacks and defenses for LLM-based agents, we publicly release
+AgentHarm at https://huggingface.co/datasets/ai-safety-institute/AgentHarm.",Maksym Andriushchenko and Alexandra Souly and Mateusz Dziemian and Derek Duenas and Maxwell Lin and Justin Wang and Dan Hendrycks and Andy Zou and J Zico Kolter and Matt Fredrikson and Yarin Gal and Xander Davies,2025,,https://openreview.net/forum?id=AC5n7xHuR1,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,boisvert2025doomarena,\cite{boisvert2025doomarena},"DoomArena: A framework for Testing AI Agents Against Evolving Security
+  Threats",http://arxiv.org/abs/2504.14064v3,"We present DoomArena, a security evaluation framework for AI agents.
+DoomArena is designed on three principles: 1) It is a plug-in framework and
+integrates easily into realistic agentic frameworks like BrowserGym (for web
+agents) and $\tau$-bench (for tool calling agents); 2) It is configurable and
+allows for detailed threat modeling, allowing configuration of specific
+components of the agentic framework being attackable, and specifying targets
+for the attacker; and 3) It is modular and decouples the development of attacks
+from details of the environment in which the agent is deployed, allowing for
+the same attacks to be applied across multiple environments. We illustrate
+several advantages of our framework, including the ability to adapt to new
+threat models and environments easily, the ability to easily combine several
+previously published attacks to enable comprehensive and fine-grained security
+testing, and the ability to analyze trade-offs between various vulnerabilities
+and performance. We apply DoomArena to state-of-the-art (SOTA) web and
+tool-calling agents and find a number of surprising results: 1) SOTA agents
+have varying levels of vulnerability to different threat models (malicious user
+vs malicious environment), and there is no Pareto dominant agent across all
+threat models; 2) When multiple attacks are applied to an agent, they often
+combine constructively; 3) Guardrail model-based defenses seem to fail, while
+defenses based on powerful SOTA LLMs work better. DoomArena is available at
+https://github.com/ServiceNow/DoomArena.",L{\'e}o Boisvert and Abhay Puri and Gabriel Huang and Mihir Bansal and Chandra Kiran Reddy Evuru and Avinandan Bose and Maryam Fazel and Quentin Cappart and Alexandre Lacoste and Alexandre Drouin and Krishnamurthy Dj Dvijotham,2025,,https://openreview.net/forum?id=GanmYQ0RpE,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,7178964,\cite{7178964},Librispeech: An ASR corpus based on public domain audio books,,,"Panayotov, Vassil and Chen, Guoguo and Povey, Daniel and Khudanpur, Sanjeev",2015,,,10.1109/ICASSP.2015.7178964,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,ardila-etal-2020-common,\cite{ardila-etal-2020-common},Common Voice: A Massively-Multilingual Speech Corpus,http://arxiv.org/abs/1912.06670v2,"The Common Voice corpus is a massively-multilingual collection of transcribed
+speech intended for speech technology research and development. Common Voice is
+designed for Automatic Speech Recognition purposes but can be useful in other
+domains (e.g. language identification). To achieve scale and sustainability,
+the Common Voice project employs crowdsourcing for both data collection and
+data validation. The most recent release includes 29 languages, and as of
+November 2019 there are a total of 38 languages collecting data. Over 50,000
+individuals have participated so far, resulting in 2,500 hours of collected
+audio. To our knowledge this is the largest audio corpus in the public domain
+for speech recognition, both in terms of number of hours and number of
+languages. As an example use case for Common Voice, we present speech
+recognition experiments using Mozilla's DeepSpeech Speech-to-Text toolkit. By
+applying transfer learning from a source English model, we find an average
+Character Error Rate improvement of 5.99 +/- 5.48 for twelve target languages
+(German, French, Italian, Turkish, Catalan, Slovenian, Welsh, Irish, Breton,
+Tatar, Chuvash, and Kabyle). For most of these languages, these are the first
+ever published results on end-to-end Automatic Speech Recognition.","Ardila, Rosana  and
+      Branson, Megan  and
+      Davis, Kelly  and
+      Kohler, Michael  and
+      Meyer, Josh  and
+      Henretty, Michael  and
+      Morais, Reuben  and
+      Saunders, Lindsay  and
+      Tyers, Francis  and
+      Weber, Gregor",2020,,https://aclanthology.org/2020.lrec-1.520/,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,di-gangi-etal-2019-must,\cite{di-gangi-etal-2019-must},{M}u{ST}-{C}: a {M}ultilingual {S}peech {T}ranslation {C}orpus,,,"Di Gangi, Mattia A.  and
+      Cattoni, Roldano  and
+      Bentivogli, Luisa  and
+      Negri, Matteo  and
+      Turchi, Marco",2019,,https://aclanthology.org/N19-1202/,10.18653/v1/N19-1202,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,11011192,\cite{11011192},IndicST: Indian Multilingual Translation Corpus For Evaluating Speech Large Language Models,,,"Shah, Sanket and Saxena, Kavya Ranjan and Bharadwaj, Kancharana Manideep and Adavanne, Sharath and Adiga, Nagaraj",2025,,,10.1109/ICASSPW65056.2025.11011192,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,javed24_interspeech,\cite{javed24_interspeech},LAHAJA: A Robust Multi-accent Benchmark for Evaluating Hindi ASR Systems,http://arxiv.org/abs/2408.11440v1,"Hindi, one of the most spoken language of India, exhibits a diverse array of
+accents due to its usage among individuals from diverse linguistic origins. To
+enable a robust evaluation of Hindi ASR systems on multiple accents, we create
+a benchmark, LAHAJA, which contains read and extempore speech on a diverse set
+of topics and use cases, with a total of 12.5 hours of Hindi audio, sourced
+from 132 speakers spanning 83 districts of India. We evaluate existing
+open-source and commercial models on LAHAJA and find their performance to be
+poor. We then train models using different datasets and find that our model
+trained on multilingual data with good speaker diversity outperforms existing
+models by a significant margin. We also present a fine-grained analysis which
+shows that the performance declines for speakers from North-East and South
+India, especially with content heavy in named entities and specialized
+terminology.",Tahir Javed and Janki Nawale and Sakshi Joshi and Eldho George and Kaushal Bhogale and Deovrat Mehendale and Mitesh M. Khapra,2024,,,10.21437/Interspeech.2024-2376,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,yang21c_interspeech,\cite{yang21c_interspeech},SUPERB: Speech processing Universal PERformance Benchmark,http://arxiv.org/abs/2105.01051v4,"Self-supervised learning (SSL) has proven vital for advancing research in
+natural language processing (NLP) and computer vision (CV). The paradigm
+pretrains a shared model on large volumes of unlabeled data and achieves
+state-of-the-art (SOTA) for various tasks with minimal adaptation. However, the
+speech processing community lacks a similar setup to systematically explore the
+paradigm. To bridge this gap, we introduce Speech processing Universal
+PERformance Benchmark (SUPERB). SUPERB is a leaderboard to benchmark the
+performance of a shared model across a wide range of speech processing tasks
+with minimal architecture changes and labeled data. Among multiple usages of
+the shared model, we especially focus on extracting the representation learned
+from SSL due to its preferable re-usability. We present a simple framework to
+solve SUPERB tasks by learning task-specialized lightweight prediction heads on
+top of the frozen shared model. Our results demonstrate that the framework is
+promising as SSL representations show competitive generalizability and
+accessibility across SUPERB tasks. We release SUPERB as a challenge with a
+leaderboard and a benchmark toolkit to fuel the research in representation
+learning and general speech processing.",Shu-wen Yang and Po-Han Chi and Yung-Sung Chuang and Cheng-I Jeff Lai and Kushal Lakhotia and Yist Y. Lin and Andy T. Liu and Jiatong Shi and Xuankai Chang and Guan-Ting Lin and Tzu-Hsien Huang and Wei-Cheng Tseng and Ko-tik Lee and Da-Rong Liu and Zili Huang and Shuyan Dong and Shang-Wen Li and Shinji Watanabe and Abdelrahman Mohamed and Hung-yi Lee,2021,,,10.21437/Interspeech.2021-1775,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,shon-etal-2023-slue,\cite{shon-etal-2023-slue},{SLUE} Phase-2: A Benchmark Suite of Diverse Spoken Language Understanding Tasks,,,"Shon, Suwon  and
+      Arora, Siddhant  and
+      Lin, Chyi-Jiunn  and
+      Pasad, Ankita  and
+      Wu, Felix  and
+      Sharma, Roshan  and
+      Wu, Wei-Lun  and
+      Lee, Hung-yi  and
+      Livescu, Karen  and
+      Watanabe, Shinji",2023,,https://aclanthology.org/2023.acl-long.496/,10.18653/v1/2023.acl-long.496,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,javed2022indicsuperbspeechprocessinguniversal,\cite{javed2022indicsuperbspeechprocessinguniversal},"IndicSUPERB: A Speech Processing Universal Performance Benchmark for
+  Indian languages",http://arxiv.org/abs/2208.11761v2,"A cornerstone in AI research has been the creation and adoption of
+standardized training and test datasets to earmark the progress of
+state-of-the-art models. A particularly successful example is the GLUE dataset
+for training and evaluating Natural Language Understanding (NLU) models for
+English. The large body of research around self-supervised BERT-based language
+models revolved around performance improvements on NLU tasks in GLUE. To
+evaluate language models in other languages, several language-specific GLUE
+datasets were created. The area of speech language understanding (SLU) has
+followed a similar trajectory. The success of large self-supervised models such
+as wav2vec2 enable creation of speech models with relatively easy to access
+unlabelled data. These models can then be evaluated on SLU tasks, such as the
+SUPERB benchmark. In this work, we extend this to Indic languages by releasing
+the IndicSUPERB benchmark. Specifically, we make the following three
+contributions. (i) We collect Kathbath containing 1,684 hours of labelled
+speech data across 12 Indian languages from 1,218 contributors located in 203
+districts in India. (ii) Using Kathbath, we create benchmarks across 6 speech
+tasks: Automatic Speech Recognition, Speaker Verification, Speaker
+Identification (mono/multi), Language Identification, Query By Example, and
+Keyword Spotting for 12 languages. (iii) On the released benchmarks, we train
+and evaluate different self-supervised models alongside a commonly used
+baseline FBANK. We show that language-specific fine-tuned models are more
+accurate than baseline on most of the tasks, including a large gap of 76\% for
+the Language Identification task. However, for speaker identification,
+self-supervised models trained on large datasets demonstrate an advantage. We
+hope IndicSUPERB contributes to the progress of developing speech language
+understanding models for Indian languages.",Tahir Javed and Kaushal Santosh Bhogale and Abhigyan Raman and Anoop Kunchukuttan and Pratyush Kumar and Mitesh M. Khapra,2022,,https://arxiv.org/abs/2208.11761,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,ma2025audiocotexploringchainofthoughtreasoning,\cite{ma2025audiocotexploringchainofthoughtreasoning},Audio-CoT: Exploring Chain-of-Thought Reasoning in Large Audio Language Model,,,Ziyang Ma and Zhuo Chen and Yuping Wang and Eng Siong Chng and Xie Chen,2025,,https://arxiv.org/abs/2501.07246,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,sakshi2025mmau,\cite{sakshi2025mmau},MMAU: A Massive Multi-Task Audio Understanding and Reasoning Benchmark,http://arxiv.org/abs/2410.19168v1,"The ability to comprehend audio--which includes speech, non-speech sounds,
+and music--is crucial for AI agents to interact effectively with the world. We
+present MMAU, a novel benchmark designed to evaluate multimodal audio
+understanding models on tasks requiring expert-level knowledge and complex
+reasoning. MMAU comprises 10k carefully curated audio clips paired with
+human-annotated natural language questions and answers spanning speech,
+environmental sounds, and music. It includes information extraction and
+reasoning questions, requiring models to demonstrate 27 distinct skills across
+unique and challenging tasks. Unlike existing benchmarks, MMAU emphasizes
+advanced perception and reasoning with domain-specific knowledge, challenging
+models to tackle tasks akin to those faced by experts. We assess 18 open-source
+and proprietary (Large) Audio-Language Models, demonstrating the significant
+challenges posed by MMAU. Notably, even the most advanced Gemini Pro v1.5
+achieves only 52.97% accuracy, and the state-of-the-art open-source Qwen2-Audio
+achieves only 52.50%, highlighting considerable room for improvement. We
+believe MMAU will drive the audio and multimodal research community to develop
+more advanced audio understanding models capable of solving complex audio
+tasks.",S Sakshi and Utkarsh Tyagi and Sonal Kumar and Ashish Seth and Ramaneswaran Selvakumar and Oriol Nieto and Ramani Duraiswami and Sreyan Ghosh and Dinesh Manocha,2025,,https://openreview.net/forum?id=TeVAZXr3yv,,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,yang-etal-2024-air,\cite{yang-etal-2024-air},{AIR}-Bench: Benchmarking Large Audio-Language Models via Generative Comprehension,,,"Yang, Qian  and
+      Xu, Jin  and
+      Liu, Wenrui  and
+      Chu, Yunfei  and
+      Jiang, Ziyue  and
+      Zhou, Xiaohuan  and
+      Leng, Yichong  and
+      Lv, Yuanjun  and
+      Zhao, Zhou  and
+      Zhou, Chang  and
+      Zhou, Jingren",2024,,https://aclanthology.org/2024.acl-long.109/,10.18653/v1/2024.acl-long.109,
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,DBLP:journals/corr/abs-2406-16020,\cite{DBLP:journals/corr/abs-2406-16020},AudioBench: A Universal Benchmark for Audio Large Language Models,http://arxiv.org/abs/2406.16020v5,"We introduce AudioBench, a universal benchmark designed to evaluate Audio
+Large Language Models (AudioLLMs). It encompasses 8 distinct tasks and 26
+datasets, among which, 7 are newly proposed datasets. The evaluation targets
+three main aspects: speech understanding, audio scene understanding, and voice
+understanding (paralinguistic). Despite recent advancements, there lacks a
+comprehensive benchmark for AudioLLMs on instruction following capabilities
+conditioned on audio signals. AudioBench addresses this gap by setting up
+datasets as well as desired evaluation metrics. Besides, we also evaluated the
+capabilities of five popular models and found that no single model excels
+consistently across all tasks. We outline the research outlook for AudioLLMs
+and anticipate that our open-sourced evaluation toolkit, data, and leaderboard
+will offer a robust testbed for future model developments.",Bin Wang and Xunlong Zou and Geyu Lin and Shuo Sun and Zhuohan Liu and Wenyu Zhang and Zhengyuan Liu and AiTi Aw and Nancy F. Chen,2024,,https://doi.org/10.48550/arXiv.2406.16020,,CoRR
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,DBLP:journals/corr/abs-2410-17196,\cite{DBLP:journals/corr/abs-2410-17196},VoiceBench: Benchmarking LLM-Based Voice Assistants,http://arxiv.org/abs/2410.17196v3,"Building on the success of large language models (LLMs), recent advancements
+such as GPT-4o have enabled real-time speech interactions through LLM-based
+voice assistants, offering a significantly improved user experience compared to
+traditional text-based interactions. However, the absence of benchmarks
+designed to evaluate these speech interaction capabilities has hindered
+progress of LLM-based voice assistants development. Current evaluations focus
+primarily on automatic speech recognition (ASR) or general knowledge evaluation
+with clean speeches, neglecting the more intricate, real-world scenarios that
+involve diverse speaker characteristics, environmental and content factors. To
+address this, we introduce VoiceBench, the first benchmark designed to provide
+a multi-faceted evaluation of LLM-based voice assistants. VoiceBench also
+includes both real and synthetic spoken instructions that incorporate the above
+three key real-world variations. Extensive experiments reveal the limitations
+of current LLM-based voice assistant models and offer valuable insights for
+future research and development in this field.",Yiming Chen and Xianghu Yue and Chen Zhang and Xiaoxue Gao and Robby T. Tan and Haizhou Li,2024,,https://doi.org/10.48550/arXiv.2410.17196,,CoRR
+VoiceAgentBench: Are Voice Assistants ready for agentic tasks?,http://arxiv.org/abs/2510.07978v1,yang2025speechrbenchmarkspeechreasoning,\cite{yang2025speechrbenchmarkspeechreasoning},SpeechR: A Benchmark for Speech Reasoning in Large Audio-Language Models,http://arxiv.org/abs/2508.02018v1,"Large audio-language models (LALMs) have achieved near-human performance in
+sentence-level transcription and emotion recognition. However, existing
+evaluations focus mainly on surface-level perception, leaving the capacity of
+models for contextual and inference-driven reasoning in speech-based scenarios
+insufficiently examined. To address this gap, we introduce SpeechR, a unified
+benchmark for evaluating reasoning over speech in large audio-language models.
+SpeechR evaluates models along three key dimensions: factual retrieval,
+procedural inference, and normative judgment. It includes three distinct
+evaluation formats. The multiple-choice version measures answer selection
+accuracy. The generative version assesses the coherence and logical consistency
+of reasoning chains. The acoustic-feature version investigates whether
+variations in stress and emotion affect reasoning performance. Evaluations on
+eleven state-of-the-art LALMs reveal that high transcription accuracy does not
+translate into strong reasoning capabilities. SpeechR establishes a structured
+benchmark for evaluating reasoning in spoken language, enabling more targeted
+analysis of model capabilities across diverse dialogue-based tasks.",Wanqi Yang and Yanda Li and Yunchao Wei and Meng Fang and Ling Chen,2025,,https://arxiv.org/abs/2508.02018,,

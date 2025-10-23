@@ -1,0 +1,208 @@
+\section{Method}
+\label{sec:method}
+
+\paragraph{Notation.}
+Let $B=\{1..T\}\times\{0..L\}$ denote the discrete base (token position, layer) and $F=\mathbb{R}^d$ the fiber (residual stream). A \emph{vertical} transport $T^{\mathrm{layer}}_{i,\ell}\!:\!F\!\to\!F$ maps $(i,\ell)\!\to\!(i,\ell{+}1)$; a \emph{horizontal} transport $T^{\mathrm{attn}}_{i\leftarrow j,\ell}\!:\!F\!\to\!F$ maps $(j,\ell)\!\to\!(i,\ell)$. We analyze in the \emph{orthogonal gauge} ($O(d)$). Unless noted, models are decoder-only Transformers with pre-LN blocks and RoPE/relative positions. Sampling knobs: probes $r$, targets $k$/layer, neighbors $m$/target.
+
+This section gives a code-first recipe for computing: (i) permutation/positional checks, (ii) gauge-aware summaries of hidden states, (iii) parameter-space symmetries, (iv) task-orbit invariance, and (v) two geometry signals—\emph{activation commutators} and an \emph{inverse-free} holonomy score via JVPs. Diagnostic visualizations (heatmaps, curvature maps, ROC curves) appear in \S\ref{sec:diagnostics}.
+
+\subsection{Permutation equivariance in self-attention: scope and limits}
+\label{sec:method-permutation}
+\paragraph{Derivation (no positions/masks).}
+With $Q=XW_Q,\ K=XW_K,\ V=XW_V$ and row-softmax $\sigma$, $\mathrm{Attn}(X)=\sigma(QK^\top/\sqrt d)\,V$. For any permutation matrix $P$,
+\[
+PX\mapsto (PQ,PK,PV)\quad\text{and}
+\]
+\[
+\sigma\!\Big(P\frac{QK^\top}{\sqrt d}P^\top\Big)=P\,\sigma\!\Big(\tfrac{QK^\top}{\sqrt d}\Big)P^\top,
+\]
+hence $\mathrm{Attn}(PX)=P\,\mathrm{Attn}(X)$ when \emph{no} positional signals/masks are present.
+
+\paragraph{How symmetry breaks in practice.}
+(i) Absolute/learned positions do not commute with $P$; (ii) causal/segment/padding masks select a non-permutation-invariant subgraph; (iii) variable length/padding induces row-dependent normalization.
+
+\paragraph{Diagnostic D1.}
+\emph{No-positions check}: $\epsilon_{\pi}=\|\mathrm{Attn}(PX)-P\mathrm{Attn}(X)\|_F/\|\mathrm{Attn}(X)\|_F$ over random $\pi$.  
+\emph{Mask curve}: sweep context length under causal masks and plot $\epsilon_{\pi}(n)$ (plots in \S\ref{sec:diagnostics}).
+
+% --- FIG: Permutation Equivariance (kept in Method)
+\begin{figure*}[th]
+\centering
+\begin{tikzpicture}[node distance=8mm, >=Latex]
+\tikzstyle{tok}=[draw, rounded corners, minimum width=9mm, minimum height=5mm, fill=cyan!10]
+\tikzstyle{blk}=[draw, rounded corners, fill=blue!18, inner sep=3pt]
+\node[tok] (x1) {x$_1$}; \node[tok, right=6mm of x1] (x2) {x$_2$}; \node[tok, right=6mm of x2] (x3) {x$_3$};
+\node[blk, below=10mm of $(x1)!0.5!(x3)$] (attn) {Self-Attention (no positions/masks)};
+\node[tok, below=10mm of attn, xshift=-14mm] (y1) {$y_1$}; \node[tok, right=6mm of y1] (y2) {$y_2$}; \node[tok, right=3mm of y2] (y3) {$y_3$};
+
+\draw[->] (x1) -- (attn); \draw[->] (x2) -- (attn); \draw[->] (x3) -- (attn);
+\draw[->] (attn) -- (y1); \draw[->] (attn) -- (y2); \draw[->] (attn) -- (y3);
+
+\node[blk, right=28mm of attn, yshift=5mm] (perm) {Permutation $\pi$};
+\node[tok, above=3mm of perm, xshift=-14mm] (xp1) {x$_{\pi(1)}$};
+\node[tok, right=6mm of xp1] (xp2) {x$_{\pi(2)}$};
+\node[tok, right=6mm of xp2] (xp3) {x$_{\pi(3)}$};
+\node[blk, below=5mm of perm] (attn2) {Self-Attention (same weights)};
+\node[tok, below=5mm of attn2, xshift=-14mm] (yp1) {$y_{\pi(1)}$};
+\node[tok, right=6mm of yp1] (yp2) {$y_{\pi(2)}$};
+\node[tok, right=6mm of yp2] (yp3) {$y_{\pi(3)}$};
+
+\draw[->] (xp1) -- (attn2); \draw[->] (xp2) -- (attn2); \draw[->] (xp3) -- (attn2);
+\draw[->] (attn2) -- (yp1); \draw[->] (attn2) -- (yp2); \draw[->] (attn2) -- (yp3);
+
+\draw[->, dashed] ($(x2.east)+(1mm,0)$) to[bend left=15] node[above]{reorder} ($(xp2.west)+(-1mm,0)$);
+\draw[->, dashed] ($(y2.east)+(1mm,0)$) to[bend left=-15] node[below]{same reorder} ($(yp2.west)+(-1mm,0)$);
+\node[above=1mm of x2] {$\mathrm{Attn}(\pi X)=\pi\,\mathrm{Attn}(X)$};
+\end{tikzpicture}
+\caption{Permutation equivariance holds only without positions/masks; outputs permute with inputs.}
+\label{fig:perm-eq}
+\end{figure*}
+
+\subsection{Positional structure: sinusoidal, relative, and RoPE}
+\label{sec:method-positional}
+\paragraph{Absolute sinusoidals.}
+A global shift by $\Delta$ induces per-frequency planar rotations on coordinates (block $2{\times}2$ $SO(2)$), stabilizing relative dot-products but \emph{not} enforcing full translation-equivariance.
+
+\paragraph{Relative encodings and RoPE.}
+RoPE rotates $Q,K$ so dot-products depend on \emph{phase differences}, controlling relative structure inside attention.
+
+% --- FIG: RoPE rotation (kept in Method)
+\begin{figure}[th]
+\centering
+\begin{tikzpicture}[>=Latex, scale=1]
+\draw[->] (-2.5,0) -- (2.5,0) node[right] {$q_{2k}$};
+\draw[->] (0,-0.2) -- (0,2.2) node[above] {$q_{2k+1}$};
+\draw[->, thick] (0,0) -- (1.5,0.6) node[midway, above] {$q$};
+\draw[->, thick, color=red] (0,0) -- ({1.5*cos(35) - 0.6*sin(35)},{1.5*sin(35)+0.6*cos(35)})
+ node[near end, right, color=red] {$R_\theta q$};
+\draw (1.1,0.44) arc[start angle=21, end angle=56, radius=1.2];
+\node at (0.9,0.95) {$\theta$};
+\end{tikzpicture}
+\caption{RoPE applies blockwise planar rotations to query/key coordinates per frequency; dot-products depend on relative phase.}
+\label{fig:rope-rotation}
+\end{figure}
+
+\paragraph{Diagnostic D2 (RoPE drift).}
+Apply small phase offsets $\delta$ and track the drift of attention-score distributions vs.\ depth/context length; summarize by area-under-drift (plots in \S\ref{sec:diagnostics}).
+
+\subsection{Rotations and O(d) gauges in representation space}
+\label{sec:method-gauge}
+\paragraph{Orthogonal gauge and invariants.}
+Hidden states are identifiable up to $R\!\in\!O(d)$; report gauge-invariant summaries (norms, pairwise cosines, principal angles).
+
+\paragraph{Gauge-fixing pipeline.}
+Whiten per layer and Procrustes-align across seeds; thereafter, log only gauge-invariant features.
+
+% --- FIG: Gauge pipeline (kept in Method)
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[node distance=5mm, >=Latex]
+\tikzstyle{blk}=[draw, rounded corners, minimum width=28mm, minimum height=10mm, fill=blue!10]
+\node[blk] (raw) {Raw features $H$};
+\node[blk, right=10mm of raw] (white) {Whiten: $H\Sigma^{-1/2}$};
+\node[blk, right=10mm of white] (proc) {Procrustes to seed 0};
+\node[blk, right=10mm of proc] (log) {Gauge-invariant logs};
+
+\draw[->] (raw) -- (white) -- (proc) -- (log);
+\end{tikzpicture}
+\caption{Gauge-fixing for reproducible analysis: whiten then align, log gauge-invariant quantities.}
+\label{fig:gauge-pipeline}
+\end{figure*}
+
+\subsection{Parameter-space symmetries}
+\label{sec:method-paramsym}
+\paragraph{MLP permutations.}
+Compensated hidden-unit permutations preserve $f(x)$ in the idealized setting; we use them as sanity checks for gauge-invariant logging.
+
+% --- FIG: MLP permutations (kept in Method)
+\begin{figure}[th]
+\centering
+\begin{tikzpicture}[node distance=8mm, >=Latex]
+\tikzstyle{mat}=[draw, rounded corners, fill=blue!6, inner sep=3pt]
+\tikzstyle{arr}=[-Latex, thick]
+
+\node[mat] (x) {$x$};
+\node[mat, right=10mm of x] (W1) {$W_1$};
+\node[mat, right=10mm of W1] (phi) {$\phi$};
+\node[mat, right=10mm of phi] (W2) {$W_2$};
+\node[mat, right=10mm of W2] (y) {$y$};
+\draw[arr] (x) -- (W1) -- (phi) -- (W2) -- (y);
+
+\node[mat, below=8mm of W1] (PW1) {$P W_1$};
+\node[mat, right=10mm of PW1] (phi2) {$\phi$};
+\node[mat, right=10mm of phi2] (W2P) {$W_2 P^{-1}$};
+
+\draw[arr] ($(x.south)+(0,-8mm)$) -- (PW1) -- (phi2) -- (W2P) -- ($(y.south)+(0,-8mm)$);
+
+\node at ($(phi)!0.5!(W2)$) [above=4mm] {$\;f(x)=W_2\phi(W_1x)$};
+\node at ($(phi2)!0.5!(W2P)$) [below=4mm] {$\;f'(x)=(W_2P^{-1})\phi(PW_1x)=f(x)$};
+
+\end{tikzpicture}
+\caption{Permuting hidden units and compensating in the next layer preserves function.}
+\label{fig:mlp-perm}
+\end{figure}
+
+\paragraph{Multi-head mixing.}
+Block-invertible head mixing can be absorbed by $W_O$ (approximate invariance). We use compensated transforms as a diagnostic; visual results in \S\ref{sec:diagnostics}.
+
+\subsection{Task-level invariances and the groupoid view}
+\label{sec:method-taskinv}
+\paragraph{Groupoid framing.}
+Semantics-preserving transforms (e.g., $\alpha$-renaming, algebraic rewrites) compose partially and may be non-invertible; we evaluate invariance over \emph{orbits}.
+
+% --- FIG: Alpha renaming (kept in Method)
+\begin{figure}[th]
+\centering
+\begin{subcaptionblock}{0.45\linewidth}
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\small]
+def add(a, b):
+    return a + b
+x = add(3, 5)
+\end{lstlisting}
+\caption{Original}
+\end{subcaptionblock}\hfill
+\begin{subcaptionblock}{0.45\linewidth}
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\small]
+def add(u, v):
+    return u + v
+y = add(3, 5)
+\end{lstlisting}
+\caption{Renamed}
+\end{subcaptionblock}
+\caption{Alpha-renaming orbit for code: predictions (e.g., pass@k) should be invariant.}
+\label{fig:alpha-rename}
+\end{figure}
+
+\paragraph{Orbit construction and D5.}
+Construct orbits and measure the \emph{invariance ratio} (IR) per input; log a failure taxonomy (predictive use in \S\ref{sec:diagnostics}).
+
+\subsection{Commutators and inverse-free curvature (definitions only)}
+\label{sec:method-comm-fiber}
+\paragraph{Activation commutator (order sensitivity).}
+For submodules $A,B$ acting on a calibration batch $X$,
+\[
+\Delta_{A,B}(X)=\|A(B(X))-B(A(X))\|_F,
+\]
+used as a map of order-sensitive pairs (see \S\ref{sec:diagnostics}).
+
+\paragraph{Inverse-free curvature (holonomy surrogate).}
+To avoid ill-posed inverses from LN/softmax/MLP, we compare two JVP paths that end in the same fiber:
+\begin{equation}
+\label{eq:invfree-kappa}
+\kappa_{\mathrm{inv}}(i,j,\ell)^2
+:= \mathbb{E}_{v}\,\big\|\,T^{\mathrm{layer}}_{i,\ell}T^{\mathrm{attn}}_{i\leftarrow j,\ell}v
+- T^{\mathrm{attn}}_{i\leftarrow j,\ell+1}T^{\mathrm{layer}}_{j,\ell}v\,\big\|_2^2.
+\end{equation}
+The Frobenius norm used in Eq.~\ref{eq:invfree-kappa} is preserved under orthogonal 
+coordinate changes. Computation, sparsity, and visualizations
+
+
+\noindent\textbf{Defaults.} Unless stated otherwise, we use the settings in Table~\ref{tab:exp-setup}: probes $r{=}6$, targets/layer $k{=}8$, neighbors $m{=}6$, commutator threshold $\tau_\Delta{=}0.10$, curvature threshold $\tau_\kappa{=}0.12$, and orbit tolerance $\delta{=}0.02$.
+
+\subsection{Cost, sparsity, and sampling}
+\label{sec:method-cost}
+Let $d$ be width, $L$ layers, $T$ tokens, $r$ Hutchinson probes, $k$ sampled targets/layer, and $m$ neighbors/target. Matrix-free JVPs yield
+\[
+\text{work}\;\approx\;\mathcal{O}\!\big(r\cdot L\cdot k\cdot m\cdot \mathrm{cost}_{\mathrm{JVP}}\big).
+\]
+We (i) sample $k$ tokens/layer (uniform or by saliency), (ii) keep top-$m$ neighbors by attention mass, (iii) \emph{scan} with frozen-softmax transports and \emph{confirm} hotspots with full JVPs, and (iv) batch $r$ probes via vmap. Defaults: $r{=}6$, $k{=}8$, $m{=}6$.

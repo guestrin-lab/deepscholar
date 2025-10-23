@@ -1,0 +1,765 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{soul}
+
+% compress vertical space
+\usepackage{caption}
+\captionsetup{font=footnotesize}
+\preto\figure{\setlength{\belowcaptionskip}{-12pt}}
+\makeatother
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{*0.1}{*0.1}    
+\titlespacing*{\subsection}{0pt}{*0.1}{*0.1} 
+\titlespacing*{\subsubsection}{0pt}{*0.1}{*0.1} 
+\setlength{\textfloatsep}{12pt} % Space between floats and text
+\setlength{\floatsep}{12pt}     % Space between two floats
+\setlength{\intextsep}{12pt}    % Space between inline floats and text
+\renewcommand{\paragraph}[1]{\par\addvspace{0.1\baselineskip}% 
+\textbf{#1}\ \ignorespaces}
+
+% convenient math commands
+\newcommand{\bb}[1]{\mathbf{#1}}
+
+\DeclareRobustCommand{\mvt}{\textsc{MVT}\xspace}
+\DeclareRobustCommand{\eks}{\textsc{EKS}\xspace}
+\DeclareRobustCommand{\vit}{\textsc{ViT}\xspace}
+
+
+\title{An Uncertainty-Aware Framework for Data-Efficient Multi-View Animal Pose Estimation
+}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{Lenny Aharon, Keemin Lee, Karan Sikka, Selmaan Chettih, \\\textbf{Cole Hurwitz, Liam Paninski \& Matthew R Whiteway} \\
+Columbia University\\
+New York, NY, USA \\
+\small{\texttt{\{la2872,kjl2175,ks3582,sc4551,ch3676,lmp2107,m.whiteway\}@columbia.edu}} \\
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+% \iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\iclrpreprint
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Multi-view pose estimation is essential for quantifying animal behavior in scientific research, yet current methods struggle to achieve accurate tracking with limited labeled data and suffer from poor uncertainty estimates. We address these challenges with a comprehensive framework combining novel training and post-processing techniques, and a model distillation procedure that leverages the strengths of these techniques to produce a more efficient and effective pose estimator. Our multi-view transformer (\mvt) utilizes pretrained backbones and enables simultaneous processing of information across all views, while a novel patch masking scheme learns robust cross-view correspondences without camera calibration. For calibrated setups, we incorporate geometric consistency through 3D augmentation and a triangulation loss. We extend the existing Ensemble Kalman Smoother (EKS) post-processor to the nonlinear case and enhance uncertainty quantification via a variance inflation technique. Finally, to leverage the scaling properties of the MVT, we design a distillation procedure that exploits improved EKS predictions and uncertainty estimates to generate high-quality pseudo-labels, thereby reducing dependence on manual labels. Our framework components consistently outperform existing methods across three diverse animal species (flies, mice, chickadees), with each component contributing complementary benefits. The result is a practical, uncertainty-aware system for reliable pose estimation that enables downstream behavioral analyses under real-world data constraints.
+\end{abstract}
+
+\section{Introduction}
+
+Pose estimation has become an indispensable tool for quantifying animal behavior in neuroscience and ethology~\citep{anderson2014toward, pereira2020quantifying}. Despite ongoing algorithmic advances in deep learning-based pose estimation systems~\citep{mathis2018deeplabcut, graving2019deepposekit, pereira2019fast, dunn2021geometric, biderman2024lightning}, significant room for improvement remains, particularly in handling complex, multi-camera setups.
+
+Multi-camera pose estimation methods fall into two paradigms depending on their use of camera calibration information. Calibrated methods leverage epipolar geometry and triangulation for superior geometric consistency~\citep{qiu2019cross, zhang2021adafuse, dunn2021geometric, liao2024multiple}, but require precise camera parameters and break down when cameras are moved (a common occurrence in longitudinal studies or field settings). Uncalibrated methods offer deployment flexibility and robustness to camera movement~\citep{shuai2022adaptive, zhou2023efficient}, but cannot exploit the powerful geometric constraints that improve pose estimation accuracy when calibration is available. 
+% To our knowledge, no existing framework provides tools that adapt to both scenarios. 
+Furthermore, both calibrated and uncalibrated approaches typically process views independently before cross-view fusion of features or heatmaps. This late fusion strategy fails to leverage the rich cross-view correlations available during feature extraction, and limits the ability of these methods to resolve ambiguous keypoints or occlusions that may be clear from alternative viewpoints.
+
+Pose estimation methods, both single- and multi-view, usually also suffer from poorly calibrated uncertainty estimates~\citep{biderman2024lightning}. Although some approaches attempt to improve uncertainty through visibility losses~\citep{doersch2023tapir} or post-processing techniques using ensembles~\citep{biderman2024lightning} and Bayesian models~\citep{zhang2021animal}, poor uncertainty calibration remains a critical bottleneck for high-precision scientific applications. Another critical constraint in our application domain of animal pose estimation is the scarcity of labeled data. This presents a fundamental challenge that current methods inadequately address, as they are typically trained on large human benchmark datasets like COCO~\citep{lin2014microsoft} or Human3.6M~\citep{ionescu2013human3} with millions of annotations, while animal behavior studies often have only hundreds of labeled frames. 
+
+In this work, we introduce a collection of techniques for improving multi-view pose estimation that addresses these fundamental limitations.
+% while providing robust performance across both calibrated and uncalibrated settings. 
+Our techniques center on enabling \textbf{early cross-view information fusion} by utilizing pretrained transformers that process pixel patches from all views simultaneously, allowing the self-attention mechanism to integrate multi-view information throughout processing rather than through late fusion strategies employed by existing methods.
+We develop a \textbf{multi-view patch masking scheme} that randomly masks pixel patches across views, forcing the model to learn robust cross-view correspondences and effectively utilize information from alternative viewpoints. 
+% This calibration-free approach makes the model robust to partial occlusions and missing local information without requiring geometric constraints.
+When camera calibration is available, we implement a \textbf{3D augmentation scheme} that maintains geometric consistency across the views and apply a \textbf{3D triangulation loss} to predictions from each pair of views. 
+This 3D loss encourages geometric consistency in the predictions themselves and provides a complementary learning signal to the patch masking scheme.
+
+To address the challenge of limited labeled data while improving uncertainty calibration, we refine a recent post-processing algorithm called the ``Ensemble Kalman Smoother'' (\eks)~\citep{biderman2024lightning}. We implement a nonlinear version and introduce a variance inflation technique that improves uncertainty estimates for both linear and nonlinear cases.
+These enhancements enable us to identify high-quality pseudo-labels from unlabeled data, which we use to train subsequent networks in a distillation framework. This approach effectively transfers the knowledge from the \eks pipeline (which requires training and inference with multiple models) into a single efficient model that achieves comparable performance with dramatically reduced computational overhead.
+% and provides strong performance improvements in limited-data regimes.
+
+% We then use these enhanced predictions to select high-quality pseudo-labels for training subsequent networks, which effectively distills the outputs of the \eks post-processor, scaling performance as more data becomes available while maintaining effectiveness in limited-data regimes and improving inference efficiency.
+
+We demonstrate the effectiveness of each contribution on three diverse multi-view pose estimation datasets spanning different animal models: flies~\citep{karashchuk2021anipose}, mice~\citep{warren2021rapid}, and chickadees~\citep{chettih2024barcoding}.
+The early-fusion multi-view transformer outperforms its single-view counterpart, with patch masking and the 3D loss contributing unique and complementary performance benefits.
+The variance-inflated nonlinear \eks outperforms the original \eks across all datasets.
+Finally, we show networks distilled from \eks outperform the original networks, with performance continuing to improve as additional \eks pseudo-labels are incorporated.
+Together, these techniques offer a collection of simple, model-agnostic approaches that each contribute unique benefits and provide more reliable keypoint tracking for downstream behavioral analyses.
+Pose estimation code is available at \url{https://github.com/paninski-lab/lightning-pose}; EKS code is available at \url{https://github.com/paninski-lab/eks}.
+
+\section{Related Work}
+
+% \subsection{Multi-view pose estimation}
+
+\paragraph{Multi-view pose estimation.} Multi-view pose estimation has advanced from a two-stage process (independent 2D detection + triangulation) to sophisticated cross-view fusion techniques~\citep{neupane2024survey}, which can be classified into calibrated approaches (which require known camera parameters) and uncalibrated approaches.
+Early calibrated approaches relied on CNNs to extract heatmaps from different views, then fused information across views using epipolar geometry~\citep{qiu2019cross, zhang2021adafuse, dunn2021geometric}.
+Epipolar transformers~\citep{he2020epipolar} enabled 2D detectors to leverage 3D-aware features through attention mechanisms along epipolar lines.
+This approach discards information not along the epipolar line from the reference view, which TransFusion~\citep{ma2021transfusion} addressed by introducing the ``epipolar field'' concept that incorporates information from the entire reference view while maintaining knowledge of epipolar constraints.
+MVGFormer~\citep{liao2024multiple} takes a set of initialized queries that encode 3D poses and iteratively refines them using ``appearance'' and ``geometry'' modules.
+% The recent MVGFormer~\citep{liao2024multiple} implements an iterative approach that takes as an input a set of initialized queries that encode 3D poses and iteratively refines them using 2 modules: (1) an ``appearance model'' projects a query onto the images to get a set of sampling points and estimate a more accurate 2D poses from the sampled features; (2) the ``geometry module'' then takes the 2D poses in all views and predicts a refined 3D pose in using triangulation, which is used to update query.
+Our 3D augmenations and loss, in contrast, are simple to implement and do not require specialized modules, allowing their use with any architecture.
+
+Modern transformer-based approaches exploit the attention mechanism to enable learning implicit cross-view relationships without explicit geometric constraints.
+The MTF-Transformer~\citep{shuai2022adaptive} pioneered calibration-free multi-view fusion by extracting features from individual views, then fusing features with a transformer head that adjusts pose features using confidence scores to reduce the effect of unreliable 2D detections.
+MHVformer~\citep{zhou2023efficient} extends this paradigm with hierarchical multi-view fusion, demonstrating that learned attention mechanisms can effectively replace hand-crafted geometric constraints.
+Our multi-view transformer and patch masking approaches are further examples of calibration-free techniques, and like the 3D augmentations and losses, are agnostic to the architecture of the backbone network (as long as it processes sequences of patch embeddings), making them flexible additions to any pose estimation pipeline.
+
+\paragraph{Pose estimation post-processing.}
+Post-processing of pose estimation outputs comes in two main categories: single-view (2D) methods and multi-view (3D) methods. Single-view approaches are typically simpler, and include median filters~\citep{mathis2018deeplabcut, syeda2024facemap} and autoencoders~\citep{karashchuk2021anipose}. Multi-view methods offer distinct advantages by leveraging information across camera
+views, for example with hierarchical Bayesian models~\citep{zhang2021animal} or probabilistic physics-based models~\citep{biderman2021inverse}. Among general multi-view approaches, Anipose~\citep{karashchuk2021anipose} provides techniques for improving 3D pose estimation through both single-view filters and a triangulation module that integrates temporal and spatial regularization across the whole skeleton. 
+% Its temporal regularization penalizes differences in 3D positions between adjacent frames (similar to the Kalman smoother approach), while spatial regularization penalizes deviations from precomputed limb lengths (and requires camera calibration). 
+Similarly, GIMBAL~\citep{zhang2021animal} implements a Bayesian model with spatiotemporal constraints over the entire skeleton, using a switching linear dynamical system for temporal smoothness and a hierarchical von Mises-Fisher distribution for spatial constraints on limb lengths and articulation angles. 
+The linear Ensemble Kalman Smoother (EKS)~\citep{biderman2024lightning} offers a calibration-free approach that implements spatiotemporal constraints over single keypoints and further improves performance using ensembles of networks. Our variance-inflated nonlinear EKS is a calibration-based extension that is more accurate in datasets with large lens distortions and provides improved uncertainty estimates, which are critical for scientific applications.
+
+% \subsection{Distillation}
+\paragraph{Distillation.}
+% There has been growing interest in distillation techniques specifically tailored for pose estimation tasks. 
+Traditional distillation approaches tailored for pose estimation have focused on compressing large teacher networks into smaller student models while maintaining performance~\citep{li2021online, yang2023effective}. More recently, pseudo-labeling strategies have emerged as a powerful learning paradigm, where confident predictions on unlabeled data are used to expand the training set~\citep{huang2023semi, li2023scarcenet}, with SelfPose3d a notable example that incorporates geometric consistency in pseudo-label generation~\citep{srivastav2024selfpose3d}. 
+% These approaches are particularly valuable in animal pose estimation contexts where labeled data is scarce, as they enable models to leverage the abundance of unlabeled video data typically available in behavioral experiments. 
+Our work extends this line of research by introducing a novel distillation framework that transfers the knowledge from an ensemble of models processed through multi-view \eks into a single efficient network.
+
+% The combination of ensemble predictions with pseudo-labeling presents unique advantages: ensemble methods provide more reliable pseudo-labels through uncertainty quantification and consensus mechanisms, while the diversity of ensemble members helps prevent the confirmation bias that can plague single-model self-training approaches. Our work extends this line of research by introducing a novel distillation framework that transfers the knowledge from an ensemble of models processed through EKS into a single efficient network, effectively combining the accuracy benefits of ensembling with the deployment advantages of a single model.
+
+
+\section{Methods}
+We first discuss our improvements to pose estimation network training: the multi-view vision transformer (\mvt), which can be used with any generic vision transformer (\vit) backbone; patch masking, which provides a rich training signal for the cross-view spatial attention of the \mvt and does not require camera calibration; and 3D augmentations and loss, which exploit camera calibration information and are agnostic to the pose estimation backbone. Next, we discuss our improvements to the Ensemble Kalman Smoother (\eks) post-processor, which provides improvements over single model predictions. Finally, we discuss how we distill the \eks post-processor into a single model that is more efficient than \eks and more performant than any single model of the original ensemble.
+
+\subsection{Multi-view vision transformer}
+All of the multi-view pose estimation techniques discussed in the Related Work section employ bespoke architectural elements. While these architectures may provide good performance with enough training data, they do not allow us to easily exploit general pretrained backbones that are useful when training models with a small number of labels. Furthermore, algorithmic simplicity is desirable for our application domain, where users are often experimental labs with little experience maintaining and debugging exotic architectures. Here we propose a simple strategy that allows the model to take advantage of multiple views and is also compatible with generic \vit backbones: rather than process pixel patches from each view independently, we process all patches simultaneously, allowing the standard self-attention mechanism to pool information within and across views. 
+
+The standard image \vit~\citep{dosovitskiy2020image} data pipeline (Fig.~\ref{fig:mvt}, \textit{top}) starts with a 2D image $\mathbf{x} \in \mathbb{R}^{H \times W \times C}$ (where $H$, $W$, $C$ are height, width, channels) and splits it into 2D patches, each with shape $(P \times P \times C)$, where the patch size $P$ is typically 16. Each patch is reshaped to a vector of length $P^2C$, and all patches are concatenated into a sequence of the $N$ flattened 2D patches $\mathbf{x}_p \in \mathbb{R}^{N \times (P^2C)}$, where $N$ is the total number of patches. Each flattened patch $\bb{x}_{p,i}$ is mapped with a trainable linear projection to a patch token $\bb{z}_i = \mathbf{W}_{\text{proj}} \mathbf{x}_{p,i} + \mathbf{b}_{\text{proj}}$.
+A standard fixed 1D position encoding $\mathbf{p}_i \in \mathbb{R}^D$ is added to the patch tokens to retain information about the patch location. 
+
+To extend this framework to $V$ camera views (Fig.~\ref{fig:mvt}, \textit{bottom}), we apply the same patch
+embedding pipeline independently to each view $\mathbf{x}^{(v)}$, $v=1,\dots,V$. Each pixel patch is
+projected and enriched with a fixed positional encoding $\mathbf{p}_i$ as before, with an additional learnable view
+encoding $\mathbf{v}_v$, resulting in $
+\tilde{\mathbf{z}}^{(v)}_i \;=\;  \mathbf{W}_{\text{proj}} \mathbf{x}^{(v,i)} + \mathbf{b}_{\text{proj}} \;+\; \mathbf{p}_i \;+\; \mathbf{v}_v$.
+Concatenating all patches from all views forms the joint input sequence
+$\mathbf{Z}_0 \in \mathbb{R}^{(NV)\times D}$ for the \vit encoder, which produces
+$\mathbf{Z}_{\text{Enc}} = \mathrm{ViTEncoder}(\mathbf{Z}_0)$. We regroup $\mathbf{Z}_{\text{Enc}}$ by
+view and reshape to the original 2D patch grids. Following ViTPose~\citep{xu2022vitpose}, which
+showed that \vit backbones retain accuracy with minimal decoders, we employ a lightweight shared
+upsampling head to map each per-view grid into keypoint heatmaps.
+See Appendix~\ref{app:mvt_arch} for details.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures_main/mvt_schematic.pdf}
+\caption{\textbf{Multi-view transformer with patch masking and 3D loss.} \textit{Top}: Single-view transformer architecture. Input frames are split into patches, embedded into a latent space, combined with a fixed position encoding, and processed through a Vision Transformer (\vit). Outputs are reshaped and passed to a heatmap head. The model is trained with a mean square error (MSE) loss between predicted and ground truth heatmaps. Multiple views are processed independently. \textit{Bottom}: Multi-view transformer architecture. Pixel patches are randomly masked before patch embedding, then added to a fixed positional and learnable view encodings. A single \vit processes all views simultaneously. The model also produces predicted 3D keypoints using 2D heatmaps and camera calibration, which are compared against ground truth 3D keypoints with an additional MSE loss.}
+\label{fig:mvt}
+\end{figure*}
+
+\subsection{Patch masking}
+The self-attention of the \mvt enables the network to utilize information from multiple views, which is particularly advantageous for handling occlusions. To encourage the model to develop this cross-view reasoning during training, we introduce a pixel space patch masking scheme inspired by the success of masked autoencoders~\citep{he2022masked} and dropout~\citep{srivastava2014dropout}. 
+Rather than dropping tokens before encoding as in~\cite{he2022masked}, we mask patches directly in
+the input image before patchification, which is more similar to an extreme form of data augmentation mimicking frequent occlusions.
+% This preserves a dense and spatially aligned token grid, which is essential for decoding into per-pixel heatmaps. 
+% After a warmup of 700 iterations, we randomly mask out 10\% of the patches from each view, which linearly increases to a maximum of 50\% after 5000 iterations.
+We use a training curriculum that starts with a short warmup period where no patches are masked, then increase the ratio of masked patches from 10\% to 50\% by the end of training.
+This technique creates gradients that flow through the attention mechanism and encourage cross-view information propagation, which in turn develops internal representations that capture statistical relationships between the different views. We also implement a related view masking technique, where we randomly mask entire views, but find patch masking produces more stable training dynamics (Fig.~\ref{fig:masking_train_curve}) and better overall performance (Fig.~\ref{fig:masking_pixerror}). See Appendix~\ref{app:mvt_masking} for details.
+
+\subsection{3D augmentations and loss}
+The \mvt produces a 2D heatmap for each keypoint in each view. Without explicit geometric constraints, it is possible for these individual 2D predictions to be geometrically inconsistent with each other. If we have access to camera parameters, we can use this additional information to encourage geometric consistency in the outputs. We first take the soft argmax of the 2D heatmaps to get predicted coordinates, following~\citet{biderman2024lightning}. 
+Then, for each keypoint, and for each pair of views, we triangulate both the ground truth keypoints and the predictions, and compute the mean square error between the two. 
+The 3D loss is weighted by a hyperparameter, which we set to be the same for both calibrated datasets (Fig.~\ref{fig:3d_losses}).
+This loss does not require any architectural modifications, and is therefore compatible with a wide range of backbones. It is also complementary to the patch masking scheme, as the 3D loss prevents the model from making predictions that are locally plausible in each view but globally impossible when considered together (Fig.~\ref{fig:mvt_ablations_pixerror}).
+
+Data augmentation is a fundamental ingredient to deep learning's success~\citep{mumuni2022data}, especially in the limited-label regime in which we are interested. The 3D loss requires geometrically consistent input images, which precludes applying geometric augmentations like rotation to each view independently. Instead, we triangulate the ground truth labels and augment the 3D poses by translating and scaling in 3D space. The augmented 3D pose is then projected back to individual 2D views. These augmentations do not affect the camera parameters; rather, they are equivalent to keeping the cameras fixed and scaling and translating the subject within the scene. For each view, we then estimate the affine transformation from the original to augmented 2D keypoints, and apply this transformation to the original image (Fig.~\ref{fig:3d_aug_example}). See Appendix~\ref{app:mvt_3daug} for details.
+
+\subsection{Variance-inflated, nonlinear, multi-view Ensemble Kalman Smoother}
+The linear multi-view Ensemble Kalman Smoother (mvEKS), introduced in~\citet{biderman2024lightning}, leverages multi-view constraints by modeling each body part independently, positing that all 2D observations of a given body part should lie in a 3D latent subspace (spatial constraint) and evolve smoothly in time (temporal constraint) (Fig.~\ref{fig:fig3}). In this work, we introduce two key advances to the \eks framework. First, we implement a nonlinear version of EKS that utilizes camera calibration information when available. Second, we implement a variance inflation technique that improves both accuracy and uncertainty estimates, both of which we exploit during distillation.
+
+\paragraph{Linear mvEKS.} Successful post-processing requires identifying which predictions need correction by accurately quantifying uncertainty for each keypoint on each frame. As shown in the original \eks publication~\citep{biderman2024lightning}, the ensemble variance provides a more accurate signal of model uncertainty than network confidence scores. The mvEKS framework integrates this uncertainty signal with spatiotemporal constraints using a probabilistic `state-space' modeling approach.
+
+We begin with the predictions of an ensemble of $M$ pose estimation networks for a single keypoint across $V$ camera views, $\bb{\tilde{X}} \in \mathbb{R}^{T \times 2V \times M}$, where $T$ represents the number of frames, and the factor of $2$ accounts for the $(x,y)$ coordinates of the keypoint in each camera view. First, we compute the median and variance across the ensemble dimension to obtain the ensemble median $\bb{X}$ and variance $\bb{D}$ matrices in $\mathbb{R}^{T \times 2V}$. We then define a state-space model for $\bb{X}$ and $\bb{D}$ as $\bb{z}_t \sim \mathcal{N}(\bb{z}_{t-1}, sE_t)$, where the state vector $\bb{z} \in \mathbb{R}^3$ captures the 3D nature of the data (Fig.~\ref{fig:latent_dim}), and $s$ is a smoothing parameter scaling the latent dynamics noise matrix $E_t$, for which we implement an automatic hyperparameter selection strategy (Fig.~\ref{fig:eks_smoothing}). 
+The 3D latent is then linearly mapped to each of $V$ 2D camera views as $\bb{x}_t \sim \mathcal{N}\left(W\bb{z}_t + \mu_x, D_t\right)$, where $W$ is the projection matrix, $\mu_x$ is an offset, and $D_t$ represents the observation uncertainty.
+Parameter estimation is described in Appendix~\ref{app:eks_linear}. We perform inference using standard Kalman filter-smoother recursions. 
+% Observations $\bb{x}_t$ with high uncertainty $D_t$ (low confidence) are automatically down-weighted by \eks. This means that cameras with an unobstructed view on a given frame (small $D_t$) can help correct frames where the keypoint is occluded in other camera views (resulting in larger ensemble variance $D_t$). However, in poorly trained models, the opposite can occasionally occur: in one camera view we may observe ``confident mistakes'' where all ensemble members output the same incorrect estimate (leading to small $D_t$, indicating high but erroneous ensemble confidence), potentially inducing errors in other camera views after running \eks (Fig.~\ref{fig:fig3}).
+% We emphasize that mvEKS does not output the true 3D location, as the model is non-identifiable.
+% Proper triangulation requires camera calibration, and packages like Anipose can combine this information with denoised mvEKS outputs to produce higher-quality 3D pose estimates.
+
+\paragraph{Nonlinear mvEKS.} The linear observation model from the previous section works well for datasets with minimal camera distortion. We can partially address larger distortions by increasing the latent space dimensionality (Fig.~\ref{fig:latent_dim}), though this approximation may fail when animals appear near frame edges where distortion is most severe. For calibrated camera setups, we can improve accuracy by replacing mvEKS's linear observations with nonlinear camera projections $f$, yielding $\bb{x}_t \sim \mathcal{N}\left(f(\bb{z}_t), D_t\right)$. The result is a nonlinear Gaussian state space model, and we perform inference using the Dynamax 
+package~\citep{linderman2025dynamax}. See Appendix~\ref{app:eks_nonlinear} for details.
+
+\paragraph{Inflating observed variances for improved uncertainty calibration.}
+Although ensemble variance provides better uncertainty estimates than individual network confidence scores, ensembles can still be overconfident in certain cases. These overconfident predictions can compromise mvEKS inference and lead to inaccurate posterior variances. To address this limitation, we implement a variance inflation procedure for predictions that are geometrically inconsistent across camera views.
+
+For each observation $\bb{x}$ corresponding to a single view, time point, and keypoint, we estimate what this prediction should be (denoted as $\hat{\bb{x}}$) based on observations from all other views using either the linear or nonlinear models defined above and an uninformative prior in the latent space. We then assess the discrepancy between $\bb{x}$ and $\hat{\bb{x}}$ using the Mahalanobis distance, which generalizes the standard $z$-score to multivariate distributions.
+If this distance exceeds a threshold value (e.g., 5), it indicates a significant mismatch between the observation and predictions from other views, relative to the posterior variance. In such cases, we double the ensemble variance for $\bb{x}$, recalculate the Mahalanobis distance, and iterate until the distance falls below the threshold, as increasing the variance progressively reduces the calculated distance. We repeat this procedure for each observation. We then fit mvEKS using the inflated ensemble variances. See Appendix~\ref{app:eks_varinf} for details.
+
+\subsection{Distillation}
+Vision transformer performance scales well with data size~\citep{zhai2022scaling}, and we observe the same behavior for our MVT (Fig.~\ref{fig:different_number_label_frames}). 
+However, significantly increasing labeled frames is infeasible for most experimental labs, especially as the annotation burden grows with camera count. To expand the labeled training pool, we leverage our improved EKS accuracy and uncertainty estimates through a pseudo-labeling approach. We apply EKS to training session videos and compute the summed EKS posterior predictive variance across all keypoints and views for each frame. From each video, we retain the $N_f$ frames with lowest variance to filter out low-quality frames where initial estimates lack geometric consistency. Since this pool likely contains many near-duplicate instances, we ensure diversity by performing $k$-means clustering on the 3D poses (from 3D PCA or triangulation) using $N_v$ clusters, then selecting the frame closest to each cluster center. This yields $N_v$ pseudo-labeled frames per video, where the pseudo-labels maintain geometric consistency across views as outputs of mvEKS. After selecting pseudo-labeled frames, we simply combine them with ground truth labels and retrain a single EKS-distilled model using the identical training procedure as the initial ensemble members. See Appendix~\ref{app:distillation} for details.
+
+\section{Experimental Setup} \label{sec:expt_setup}
+
+% \subsection{Datasets}
+\paragraph{Datasets.}
+We demonstrate our contributions on three datasets spanning different animal models (Fig.~\ref{fig:fig2}). In ``Treadmill Mouse,'' head-fixed mice run on a circular treadmill while avoiding a moving obstacle~\citep{warren2021rapid}. Seven keypoints are labeled in each of two views, captured at 250 Hz . In ``Fly-Anipose,'' head-fixed flies behave spontaneously on an air-supported ball~\citep{karashchuk2021anipose}. Thirty keypoints are labeled in each of six views, captured at 300 Hz. In ``Chickadee,'' freely moving chickadees engage in seed caching behavior in a large arena~\citep{chettih2024barcoding}. Eighteen keypoints are labeled in each of six views, captured at 60 Hz.
+
+% \subsection{Baselines}
+\paragraph{Baselines.}
+For baselines we compare to our own single-view implementation of ViTPose~\citep{xu2022vitpose}, which outperforms ResNet-50 (a widely used backbone in animal pose estimation packages~\citep{mathis2018deeplabcut, biderman2024lightning}) on two of three datasets (Fig.~\ref{fig:backbones}). Our baseline \mvt implementation uses the same upsampling head as the single-view ViTPose, such that all performance improvements are directly attributable to the early fusion, multi-view processing. For all transformers we use a \vit-S/16 architecture pretrained on ImageNet using DINO~\citep{caron2021emerging}, as we find this backbone compares favorably to other backbones like \vit-B/16 pretrained on ImageNet using either DINO or masked autoencoding~\citep{he2022masked}, and Segment Anything~\citep{kirillov2023segment} (Fig.~\ref{fig:backbones}). For post-processing, we consider ensembling-based baselines (ensemble median, linear \eks) as well as the established triangulation package Anipose~\citep{karashchuk2021anipose}. We describe distillation baselines in more detail in a later section.
+
+% \subsection{Evaluation}
+\paragraph{Evaluation.}
+We train models on 200 frames using three random seeds for the train/validation split. We use the ensemble standard deviation (e.s.d.) for a given keypoint and frame to assess keypoint ``difficulty'' following ~\citet{biderman2024lightning}--a larger e.s.d. across seeds and models means less consensus. We report pixel error as a function of e.s.d., with values at threshold $n$ showing errors for keypoints with e.s.d. $>n$. The leftmost side of each plot shows the error for all keypoints; moving rightward progressively filters to include only more difficult keypoints (those with higher e.s.d.).
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures_main/fig2_mvt.pdf}
+\caption{\textbf{Multi-view transformer with patch masking and 3D loss improves pose estimation.} 
+\textbf{a:} 
+\textit{Top}: Experimental setup and labeled keypoints. 
+\textit{Bottom}: Example frames for a single instance. 
+\textbf{b:} Example traces from single-view transformer (SVT; teal), and the multi-view transformer with patch masking and 3D loss (MVT++; purple; except for Treadmill Mouse, which lacks camera parameters). Bottom panels show 3D reprojection error (using 3D PCA for Treadmill Mouse), indicating more consistent predictions across views for MVT++.
+\textbf{c:} Pixel error as a function of keypoint difficulty (lower is better). Dashed vertical lines indicate the percentage of data used for the pixel error computation. Fly diagram from~\cite{karashchuk2021anipose}.
+}
+\label{fig:fig2}
+\end{figure*}
+
+\section{Results}
+
+\subsection{Multi-view transformers}
+The multi-view transformer trained with patch masking and 3D loss (which we refer to as MVT++) consistently outperforms the single-view transformer (SVT) baseline across all datasets, producing smoother predictions with lower reprojection errors (Fig.~\ref{fig:fig2}). Ablation experiments reveal the multi-view architecture alone provides substantial gains over SVT on Treadmill Mouse and Fly-Anipose datasets, with comparable performance on Chickadee (Fig.~\ref{fig:fig2}). While models using either patch masking or 3D loss individually outperform the base MVT, their combination achieves the best performance across all datasets, demonstrating these components' complementary benefits (Fig.~\ref{fig:mvt_ablations_pixerror}).
+
+To verify generalizability across different data regimes, we trained models on subsets of 100 and 400 labeled frames. The MVT++ maintains its advantage over SVT even with only 100 labeled frames, and notably, the performance gap actually increases with more training data, indicating the model scales effectively while remaining robust in limited-data scenarios (Fig.~\ref{fig:different_number_label_frames}). This scaling behavior further motivates our EKS-based distillation pipeline.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures_main/fig3_eks_Liam.pdf}
+\caption{\textbf{Multi-view Ensemble Kalman Smoother (mvEKS) improves pose estimation.}
+\textbf{a:} Keypoints are modeled as projections from a 3D latent that evolves smoothly over time. Low-uncertainty observations from reliable camera views help correct high-uncertainty observations through spatial and temporal constraints.
+\textbf{b:} Traces of a mouse paw from two camera views. The optimal smoothing parameter (green) recovers the true oscillatory motion in the partly occluded Top view, while oversmoothing (purple)
+distorts the temporal dynamics.
+\textbf{c:} Multi-view observation where predictions are consistent across views, requiring no variance inflation. 
+\textbf{d:} Inconsistent predictions across views detected by variance inflation, where the more confident predictions are correct. Orange crosses are ensemble median with ensemble variance; green crosses are
+corrected predictions from mvEKS with posterior predictive variance. 
+\textbf{e:} Inconsistent predictions between views where a highly confident but incorrect prediction in the top view dominates; mvEKS is unable to override the confident error, but the variance inflation procedure adjusts the posterior predictive variance to reflect the remaining uncertainty.
+\textbf{f:} The ensemble median (orange) outperforms individual MVT++ models (purple); nonlinear variance-inflated mvEKS (light green) achieves the best performance. Treadmill mouse (uncalibrated setup) uses linear mvEKS.
+}
+\label{fig:fig3}
+\end{figure*}
+
+\subsection{Multi-view EKS}
+
+The mvEKS (Fig.~\ref{fig:fig3}a,b) provides uncertainty estimates that ideally correlate with prediction errors. When predictions from multiple views align (Fig.~\ref{fig:fig3}c), the posterior predictive uncertainty remains low, reflecting high confidence in accurate estimates. When views disagree due to occlusions or ambiguities (Fig.~\ref{fig:fig3}d), the variance inflation procedure activates, inflating the posterior predictive variance (green crosses) while simultaneously correcting the prediction. In more challenging scenarios where views disagree but ensemble variance remains low (Fig.~\ref{fig:fig3}e), predictions may still be incorrect, resulting in a mismatch between model confidence and actual error. The variance inflation procedure addresses this by increasing the posterior uncertainty, appropriately flagging these predictions as unreliable--even when the prediction cannot be perfectly corrected (Fig.~\ref{fig:traces_paw1LH}).  
+
+We perform an ablation study to demonstrate the impact of different mvEKS components (Fig.~\ref{fig:fig3}f). The ensemble median outperforms individual MVT++ ensemble members. For calibrated datasets, our nonlinear EKS model achieves further improvements and outperforms Anipose, and dramatically outperforms linear EKS (Fig.~\ref{fig:err_ens_std_anipose}). Note uncalibrated setups cannot use Anipose or nonlinear EKS, and linear EKS still proves an effective multi-view post processor. 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures_main/fig4_distillation.pdf}
+\caption{\textbf{Pseudo-label-based distillation of EKS improves pose estimation.} 
+\textbf{a:} Schematic of our distillation procedure.
+\textbf{b:} The distilled MVT+EKS model (orange) outperforms initial ensemble member MVT++ models (purple), but does not reach the performance of EKS (green). Enforcing geometric consistency on the distilled model output (pink) brings single-model performance levels equal to that of the full MVT+EKS pipeline (green). For calibrated setups, we also compare against the state-of-the-art ResNet-50+Anipose baseline (gray), which performs comparably to our single network distilled model without any post-processing. 
+}
+\label{fig:fig4}
+\end{figure*}
+
+\subsection{Distillation}
+
+Our distillation approach simply and effectively transfers knowledge from the ensemble to a single efficient model (Fig.~\ref{fig:fig4}). As expected, EKS improves upon the base MVT++ architecture (green vs purple). The distilled MVT++ model, trained with high-quality pseudo-labels generated by EKS, achieves improvements over the original MVT++ despite using identical architecture and training procedures (orange vs purple). While the single distilled model does not reach the full performance of the MVT+EKS pipeline, it represents a significant advance in inference efficiency, delivering much better performance than any individual ensemble member while requiring only a single forward pass. Since the distilled model does not enforce geometric consistency during inference, we further enhance it by applying triangulation and reprojection, yielding our best overall performance (pink). This demonstrates our distillation framework successfully captures the knowledge learned by the ensemble, producing a practical single-model solution that approaches the accuracy of our full multi-model pipeline. This performance is enabled by our proposed frame selection method; we find that randomly selecting frames leads to degraded distillation performance (Fig.~\ref{fig:distillation_baselines}). We note that our distilled model improves upon the current state-of-the-art, Resnet-50+Anipose (gray).
+
+\section{Discussion}
+
+We introduce an uncertainty-aware framework for data-efficient multi-view animal pose estimation comprising three complementary components: improved pose estimation networks (Fig.~\ref{fig:fig2}), enhanced post-processing with the variance-inflated, nonlinear Ensemble Kalman Smoother (Fig.~\ref{fig:fig3}), and effective pseudo-label distillation (Fig.~\ref{fig:fig4}). We demonstrate how these components work together to improve performance across diverse, data-limited animal pose estimation datasets. Our framework provides benefits at every stage regardless of camera calibration availability, enabling easy adaptation to various experimental setups. Another key strength lies in the framework's simplicity: it requires no large or complex architectures that demand extensive training data, and is readily adaptable to stronger pretrained backbones as they emerge. This framework can be further improved by combining it with other techniques for limited-data regimes, such as domain-specific pretraining~\citep{wang2025self} and semi-supervised learning~\citep{biderman2024lightning}, bringing us closer to simple solutions for accurate multi-view pose estimation in scientific research settings.
+
+\vspace{15pt}
+\subsubsection*{Acknowledgments}
+
+This work was supported by the following:
+Gatsby Charitable Foundation GAT3708, NIH 1R50NS145433-01, NIH U19NS123716, NSF 1707398, the National Science Foundation and DoD OUSD (R\&E) under Cooperative Agreement
+PHY-2229929 (The NSF AI Institute for Artificial and Natural Intelligence), Simons Foundation, Wellcome Trust 216324, and funds from Zuckerman Institute Team Science.
+
+\clearpage
+\newpage
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\clearpage
+\newpage
+
+\appendix
+\section{Datasets}
+
+\subsection{Treadmill mouse}
+Head-fixed mice run on a circular treadmill while avoiding a moving obstacle~\citep{warren2021rapid}. The treadmill has a transparent floor and a mirror mounted inside at 45$^\circ$, allowing a single camera to capture two roughly orthogonal views (side and bottom views via the mirror) at 250 Hz. The camera is positioned at a large distance from the subject ($\sim$1.1 m) to minimize perspective distortion. Frame sizes are 406$\times$396 pixels. We split each frame vertically into its respective views in order to make a ``multi-camera'' dataset. Each view is reshaped during training to 128$\times$256 pixels. Seven keypoints on the mouse’s body are labeled in each view. The training/test sets consist of 789/253 instances, respectively. We use a 3-dimensional latent space for mvEKS (Fig.~\ref{fig:latent_dim}). 
+We accessed the labeled pose estimation dataset from \url{https://doi.org/10.6084/m9.figshare.24993315.v1} under the CC-BY 4.0 license.
+
+\subsection{Fly-Anipose}
+Head-fixed flies behave spontaneously on an air-supported ball, captured by six cameras at 300 Hz~\citep{karashchuk2021anipose}. Frame sizes vary by view, and frames are reshaped during training to 256$\times$256 pixels. Thirty keypoints are labeled in each view--five joints on each of six legs. 
+
+Our pose estimation models require labels for all views at a given instant in time, and although some of this data is available in the Anipose repository (\url{https://datadryad.org/dataset/doi:10.5061/dryad.nzs7h44s4}), we took a different approach to ensure a large quantity of high-quality, simultaneously labeled frames. For a subset of sessions in the data repository that contain Anipose predictions, we treat a subset of these predictions as labels for training our own models. We first remove any instance where average 3D reprojection error is $>$10 pixels. When then run $k$-means clustering on the remaining 3D poses (using 25 clusters per session) and select one example per cluster. The training/test sets consist of 377/300 instances, respectively. We use a 3-dimensional latent space for mvEKS (Fig.~\ref{fig:latent_dim}).
+
+\subsection{Chickadee}
+Freely moving chickadees engage in seed caching behavior in a large arena, captured by six cameras at 60 Hz~\citep{chettih2024barcoding}. Frame sizes vary by view but are approximately 3000$\times$1500 pixels. We created a cropped dataset using the ground truth labels to define a bounding box around the bird, and reshaped the cropped frames to 320$\times$320. Each view is reshaped during training to 256$\times$256 pixels. Eighteen keypoints on the chickadee's body are labeled in each view. The training/test set consists of 433/143 instances, respectively. We use a 6-dimensional latent space for mvEKS (Fig.~\ref{fig:latent_dim}).
+
+To produce the cropped unlabeled videos for distillation, we implemented a two-stage top-down pose estimation pipeline~\citep{pereira2020quantifying}. First, we trained a coarse detector network on full resolution frames downsampled to 256$\times$256 pixels to localize the bird within each frame. We then computed a bounding box around the bird in each view, ran inference using a pose estimation model trained specifically on cropped frames, and transformed the resulting predictions back to full-resolution coordinates before applying mvEKS.
+
+\section{Multi-view pose estimation}
+
+\subsection{Multi-view transformer} \label{app:mvt_arch}
+The power of our multi-view transformer (\mvt) approach is that it does not require any bespoke or complex architectures, which can require large amounts of data to properly train~\citep{nogueira2025markerless}. Instead, we use encoders from off-the-shelf pretrained transformers combined with simple heatmap heads, which (1) reduces the number of parameters we need to train from scratch; and (2) forces all of the complex cross-view information propagation into the backbone.
+
+We compared a variety of backbones easily accessible through Hugging Face:
+
+\begin{tabular}{p{0.95\linewidth}}
+\begin{minipage}[t]{\linewidth}
+\begin{itemize}\setlength\itemsep{0pt}
+    \item ViT B-16 pretrained on ImageNet with masked autoencoding~\citep{he2022masked}, available at \url{https://huggingface.co/facebook/vit-mae-base}. The ``base'' ViT contains $\sim$80M parameters, which is 4x larger than the ResNet-50 ($\sim$20M parameters). The ``16'' indicates the model utilizes a patch size of 16$\times$16 pixels.
+    \item ViT B-16 pretrained on ImageNet with DINO~\citep{caron2021emerging}, available at \url{https://huggingface.co/facebook/dino-vitb16}.
+    \item ViT S-16 pretrained on ImageNet with DINO, available at \url{https://huggingface.co/facebook/dino-vits16}. The ``small'' ViT contains $\sim$20M parameters, on par with ResNet-50.
+    \item ViT B-16 Segment Anything~\citep{kirillov2023segment}, available at \url{https://huggingface.co/facebook/sam-vit-base}.
+\end{itemize}
+\end{minipage}
+\end{tabular}
+
+We train the single-view version of each model with three random seeds (Appendix~\ref{app:training}) and compare to our ResNet-50 baseline pretrained with the Animal AP10K dataset~\citep{yu2021ap}. The transformers all outperform the ResNet for both Treadmill Mouse and Chickadee, but not for Fly-Anipose (Fig.~\ref{fig:backbones}). \vit/S-DINO is the best performing transformer for both Treadmill Mouse and Fly-Anipose, while being the worst for Chickadee. Given these results, we chose \vit/S-DINO for our subsequent experiments due to considerably faster training time than the ``base'' models (2-3$\times$ faster) and lower memory requirements, an important constraint for our domain application where we expect individual labs to be running these models on single consumer-grade GPUs.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig5_backbone.pdf}
+\caption{\textbf{Comparison of pretrained transformer and ResNet-50 backbones.} \vit/B is a ``base'' model ($\sim$80M parameters), \vit/S is a ``small'' model ($\sim$20M parameters); ResNet-50 has $\sim$20M parameters.}
+\label{fig:backbones}
+\end{figure*}
+
+\subsection{Patch and view masking} \label{app:mvt_masking}
+
+The success of masked autoencoding in self-supervised vision transformers~\citep{he2022masked} inspired us to take a similar approach in the supervised domain of pose estimation. For each labeled instance, we randomly select patches and zero their pixel values before adding position and view encodings. This data augmentation mimics occlusions and forces the transformer to fully exploit cross-view self-attention. We use curriculum learning starting after 700 iterations with 10\% patch masking per view, linearly increasing to 50\% by iteration 5000.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig6_view_vs_patch_train.pdf}
+\caption{\textbf{Patch masking produces smoother training curves than view masking.} Heatmap mean square error loss for the Fly-Anipose dataset (six views) for two different pixel masking strategies.
+} \label{fig:masking_train_curve}
+\end{figure}
+
+We also experimented with masking entire views rather than 16×16 patches, using a curriculum that masks single random views after 800 iterations, then two random views after 2900 iterations (if the dataset contains more than two views). However, view masking creates unstable training dynamics with discrete loss jumps (Fig.~\ref{fig:masking_train_curve}) and provides inferior performance compared to patch masking across datasets (Fig.~\ref{fig:masking_pixerror}). Additionally, view masking presents generalization challenges for datasets with varying numbers of views, while patch masking applies uniformly to any setup. We therefore adopt patch masking as our default strategy.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig7_patch_vs_view_err.pdf}
+\caption{\textbf{Patch masking outperforms view masking across datasets.}
+} \label{fig:masking_pixerror}
+\end{figure*}
+
+\subsection{3D augmentations} \label{app:mvt_3daug}
+We apply the same non-geometric augmentations to all datasets and models using the \texttt{imgaug} package with the indicated parameters and probabilities $p$:
+
+\begin{tabular}{p{0.95\linewidth}}
+\begin{minipage}[t]{\linewidth}
+\begin{itemize}\setlength\itemsep{0pt}
+  \item \texttt{\detokenize{MotionBlur(k=5, angle=90)}}, $p=0.5$
+  \item \texttt{\detokenize{CoarseDropout(p=0.02, size_percent=0.3, per_channel=0.5)}}, $p=0.5$
+  \item \texttt{\detokenize{CoarseSalt(p=0.01, size_percent=(0.05, 0.1))}}, $p=0.5$
+  \item \texttt{\detokenize{CoarsePepper(p=0.01, size_percent=(0.05, 0.1))}}, $p=0.5$
+  \item \texttt{\detokenize{AllChannelsHistogramEqualization()}}, $p=0.1$
+  \item \texttt{\detokenize{Emboss(alpha=(0, 0.5), strength=(0.5, 1.5))}}, $p=0.1$
+\end{itemize}
+\end{minipage}
+\end{tabular}
+
+For the single-view models (both ResNets and transformers), we apply additional geometric augmentations, i.e. those which affect the locations of the corresponding keypoints:
+
+\begin{tabular}{p{0.95\linewidth}}
+\begin{minipage}[t]{\linewidth}
+\begin{itemize}\setlength\itemsep{0pt}
+    \item \texttt{Affine(rotation=(-25, 25)}, $p=0.4$
+    \item \texttt{ElasticTransformation(alpha=(0, 10), sigma=5)}, $p=0.5$
+    \item \texttt{CropAndPad(percent=(-0.15, 0.15), keep\_size=False)}, $p=0.4$
+\end{itemize}
+\end{minipage}
+\end{tabular}
+
+Standard data augmentation pipelines apply transformations independently to each view, creating problems for multi-view models--particularly those using a 3D consistency loss--that require geometrically consistent augmentations across views for each labeled instance. We therefore implement a 3D data augmentation scheme that maintains geometric consistency.
+
+First, we triangulate 2D ground truth labels using camera parameters to obtain 3D keypoint positions. We randomly scale keypoints by median-centering, multiplying by a random factor drawn from $\mathcal{U}(0.8, 1.2)$, then reapplying the median. Next, we randomly translate keypoints by computing a bounding box in each dimension using the minimum and maximum keypoint coordinates, multiplying its width by a random factor from $\mathcal{U}(-0.25, 0.25)$, and shifting keypoints by the result (such that the shift will be a maximum of 25\% of the width of the animal in any direction). Since camera parameters remain fixed, this is equivalent to scaling and translating the subject within the recorded area. To augment images, we reproject the transformed 3D keypoints back to each camera view, estimate view-specific affine transformations between original and augmented labels using OpenCV's \texttt{estimateAffinePartial2D}, then apply these transformations to the images (Fig.~\ref{fig:3d_aug_example}).
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{figures_supp/data_aug_examples.pdf}
+\caption{\textbf{Example 3D augmentations.} Augmentations for datsets with camera calibration parameters combine scale and translation in the 3D space with view-independent appearance augmentations (e.g., pixel noise and brightness).}
+\label{fig:3d_aug_example}
+\end{figure*}
+
+On Fly-Anipose and Chickadee datasets, our 3D augmentation performs equivalently to independent-view augmentations (Fig.~\ref{fig:3d_aug}), verifying that the 3D scale and translation hyperparameters are reasonable. The true benefit of this augmentation scheme emerges when paired with the 3D consistency loss, detailed next.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig8_augmentations.pdf}
+\caption{\textbf{3D augmentations compare similarly to view-independent augmentations.}} 
+\label{fig:3d_aug}
+\end{figure*}
+
+\subsection{3D loss} \label{app:mvt_3dloss}
+To compute the 3D loss, we first triangulate ground truth 2D labels using camera parameters. For each camera pair, we apply OpenCV's \texttt{undistortPoints} and \texttt{triangulatePoints} functions, then take the median across all pairs for the final 3D position, following~\cite{karashchuk2021anipose}. Ground truth points that move outside the frame boundary during augmentation are marked as \texttt{NaN} and excluded from triangulation and loss computation.
+
+Next, we compute the soft argmax (2D spatial expectation) of predicted heatmaps for each keypoint and view. This differentiable operation enables coordinate estimates in downstream losses. Using the same camera parameters, we triangulate the 2D coordinate predictions for each camera pair and compute mean squared error between ground truth 3D keypoints and triangulated predictions for each pair. This forces every view to incorporate information from all other views for all keypoints. The final loss is the mean MSE across all keypoints in the batch, weighted by a scaling factor that balances this loss with the 2D heatmap loss. We find the same scaling factor works well across both datasets ($e^{0.3}$) and therefore use this value for all subsequent experiments (Fig.~\ref{fig:3d_losses}).
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig9_3d_hparam.pdf}
+\caption{\textbf{Comparison of log weight values for 3D loss.}}
+\label{fig:3d_losses}
+\end{figure*}
+
+We find that combining the 3D loss with the patch masking scheme is more powerful than either alone (Fig.~\ref{fig:mvt_ablations_pixerror}). View masking creates gradients that flow through the attention mechanisms and cross-view information propagation pathways. This encourages the development of internal representations that capture statistical relationships between different views, regardless of whether those relationships are geometrically motivated. The 3D loss creates gradients that flow back through the triangulation operation, which means the model receives feedback about how small changes in 2D predictions affect 3D geometric consistency. This encourages the development of internal representations that are naturally geometrically aware. In other words, the view masking ensures the model can handle missing information gracefully, while the 3D loss ensures that the strategies it learns for handling missing information are geometrically sound.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig11_patch_3d_loss.pdf}
+\caption{\textbf{Patch masking and 3D loss offer complementary performance benefits.}
+} \label{fig:mvt_ablations_pixerror}
+\end{figure*}
+
+\subsection{Data scaling}
+All analyses utilize models trained with 200 labeled frames, as this is a reasonable amount of labeled data for a given experimental setup. We also test models using half (100) and twice as many (400) frames to better understand how performance of our different contributions--multi-view transformer, patch masking, and 3D loss--scale with data amounts (Fig.~\ref{fig:different_number_label_frames}). Unsurprisingly, with more labels the performance for all models improves, but more interestingly the full {\mvt} also increases the performance gap over the baselines.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig14_num_frames_label.pdf}
+\caption{\textbf{Model performance as a function of labeled data.} Rightmost results for Fly-Anipose use the maximum of 377 labeled frames.}
+\label{fig:different_number_label_frames}
+\end{figure*}
+
+\section{Pose estimation training} \label{app:training}
+
+We use Lightning Pose~\citep{biderman2024lightning} to train supervised pose estimation models on each dataset. Additional details of the model architecture can be found in the original Lightning Pose publication.
+
+For training and inference, we process all camera views simultaneously for each time point. Each batch element comprises one image per camera view (e.g., with six views, a batch size of four contains 24 total images). We use a batch size of eight instances per network.
+
+During training of single-view models, we apply standard image augmentations to labeled frames, including geometric transformations (rotations, crops), color space manipulations (histogram equalization), and kernel filters (motion blur). For data augmentation in multi-view models with camera calibration, see Appendix~\ref{app:mvt_3daug}.
+
+We split the non-test data into 95\% for training and 5\% for validation. To simulate a limited-data scenario, we randomly select only 100, 200, or \texttt{max(400, total\_train\_frames)} instances from the training set. All evaluations use the model iteration with the lowest validation loss. Different ensemble members use different random seeds for the train/validation split.
+
+We train our models for 5000 iterations using the Adam optimizer~\citep{kingma2014adam} with an initial learning rate of 0.001, which is halved at iterations 2000, 3000 and 4000. The pretrained backbone remains frozen for the first 400 iterations. 
+
+\section{Variance-inflated nonlinear Ensemble Kalman Smoother} \label{app:eks}
+
+We first discuss the PCA-based linear version of EKS, describing both parameter initialization and our new automatic smoothing procedure. This version of EKS relies on the low-dimensionality of the multi-view data, which we find across all datasets (Fig.~\ref{fig:latent_dim}), and does not require camera calibration. The next section describes the nonlinear EKS, which can provide improved performance, especially for setups with larger lens distortion. Finally, we describe in detail the variance inflation procedure that leads to better uncertainty estimates.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/pca_dims_keypoints.pdf}
+\caption{\textbf{Multi-view observations are low-dimensional.}
+Variance explained for increasing numbers of Principal Component dimesnions for each dataset. Three dimensions explain more than 99\% of the variance for the mouse and fly datasets, while the chickadee dataset (which includes more camera distortion) requires five dimensions to exceed 99\% variance explained.
+}
+\label{fig:latent_dim}
+\end{figure*}
+
+\subsection{Linear EKS} \label{app:eks_linear}
+The linear EKS model described in the main text is
+\begin{eqnarray}
+\bb{z}_t &\sim& \mathcal{N}(\bb{z}_{t-1}, sE_t) \label{eq:eks_latent} \\
+\bb{x}_t &\sim& \mathcal{N}\left(W\bb{z}_t + \mu_x, D_t\right)
+\end{eqnarray}
+
+We initialize model parameters by restricting to frames with low ensemble variance and use Principal Component Analysis (PCA) to estimate $W$ and $\mu_x$. We then take temporal differences of the resulting PCA projections and compute their covariance to initialize $E_t$. Finally, we set $D_t$ as a diagonal matrix defined by the ensemble variance at time $t$.
+
+Selecting the optimal smoothing parameter $s$ in Eq.~\ref{eq:eks_latent} is crucial: too large leads to undersmoothing, while too small causes oversmoothing (Fig.~\ref{fig:fig3}b). The optimal parameter occupies a well-defined minimum in the log-likelihood loss landscape (Fig.~\ref{fig:eks_smoothing}a) and must be learned from data, as it varies substantially across keypoints and videos (Fig.~\ref{fig:eks_smoothing}b).
+To perform automatic tuning of this parameter, we use the Adam optimizer implemented in the \texttt{optax} package with learning rate set to $0.25$.
+
+We initialize $s$ using the standard deviation of the temporal differences of the initial PCA projections, which we have found to often lie near the minimum of the log-likelihood loss function. To improve the computational efficiency, we implemented a version of \eks that parallelizes over keypoints using the JAX library~\citep{jax2018github}.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig10_automatic.pdf}
+\caption{\textbf{Automatic smoothing for mvEKS.}
+\textbf{a}: Log-likelihood as a function of mvEKS smoothing parameter shows a single well-defined optimum.
+\textbf{b}: Expected motion magnitude varies by keypoint in the Treadmill Mouse dataset: the nose exhibits low expected motion (high temporal consistency), while the paws show greater
+expected variability in position across frames (pixels per millisecond).
+} 
+\label{fig:eks_smoothing}
+\end{figure*}
+
+\subsection{Nonlinear EKS} \label{app:eks_nonlinear}
+The nonlinear EKS model uses camera calibration parameters to map the latent state $\bb{z}_t$ in Eq.~\ref{eq:eks_latent} to the observations $\bb{x}_t^j$ in view $j$:
+\begin{eqnarray}
+\bb{x}_t^j &\sim& \mathcal{N}\left(f_j(\bb{z}_t), D_t^j\right),
+\end{eqnarray}
+where $f_j$ represents a standard camera model with radial and tangential distortion~\citep{hartley2003multiple}. To clearly describe this transformation, we adopt the following notation: ``world'' coordinates $\bb{z}_t$ are denoted as $(\tilde{X}, \tilde{Y}, \tilde{Z})$, and final ``image'' coordinates $\bb{x}_t^j$ for a single view as $(u, v)$. What follows describes the coordinate transformation for a single view; we apply this transformation to the world coordinates for every view (each with its own parameters) and concatenate to arrive at the final observations $\bb{x}_t$.
+
+\paragraph{Step 1: World to camera coordinates.} We first transform world coordinates to 3D camera-based coordinates using the camera extrinsics: a rotation matrix $R$ and translation vector $\bb{t}$ that define the camera's position relative to the world coordinate system:
+\begin{equation}
+\begin{pmatrix} X \\ Y \\ Z \end{pmatrix} = R \begin{pmatrix} \tilde{X} \\ \tilde{Y} \\ \tilde{Z} \end{pmatrix} + \bb{t}.
+\end{equation}
+
+\paragraph{Step 2: Perspective projection.} The camera coordinates are then normalized by dividing by the depth $Z$, which performs perspective projection onto the image plane:
+\begin{eqnarray}
+    x = X/Z \\
+    y = Y/Z.
+\end{eqnarray}
+
+\paragraph{Step 3: Distortion correction.}
+Real cameras introduce distortion that must be modeled. We apply two types:
+
+\textit{Radial distortion} accounts for lens curvature effects based on distance $r$ from the image center:
+\begin{eqnarray}
+r^2 &=& x^2 + y^2 \\
+d_r &=& 1 + k_1 r^2 + k_2 r^4,
+\end{eqnarray}
+where $k_1$ and $k_2$ are calibrated distortion coefficients.
+
+\textit{Tangential distortion} corrects for lens misalignment:
+\begin{eqnarray}
+x_t &=& 2 p_1 x y + p_2 (r^2 + 2x^2)\\
+y_t &=& 2 p_2 x y + p_1 (r^2 + 2y^2).
+\end{eqnarray}
+
+The combined distorted coordinates are:
+\begin{eqnarray}
+x_d &=& x \cdot d_r + x_t\\
+y_d &=& y \cdot d_r + y_t.
+\end{eqnarray}
+
+\paragraph{Step 4: Pixel coordinates.} Finally, we apply the intrinsic camera matrix containing focal lengths ($f_x$, $f_y$) and optical centers ($c_x$, $c_y$) to convert to pixel coordinates:
+\begin{equation}
+\begin{pmatrix} u \\ v \\ 1 \end{pmatrix} = \begin{pmatrix}
+f_x & 0 & c_x \\
+0 & f_y & c_y \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} x_d \\ y_d \\ 1 \end{pmatrix}.
+\end{equation}
+
+
+The nonlinear function $f_j$ thus combines the camera extrinsics ($R$, $\bb{t}$), distortion parameters ($k_1$, $k_2$, $p_1$, $p_2$), and camera intrinsics ($f_x$, $f_y$, $c_x$, $c_y$). For both Fly-Anipose and Chickadee datasets these parameters are obtained using standard camera calibration techniques, as described in~\cite{karashchuk2021anipose}.
+
+\subsection{Variance inflation} \label{app:eks_varinf}
+We start with the general case of computing the Mahalanobis distance with an uninformative prior; the next section details how to apply this to multi-view pose estimation for outlier detection. 
+
+Let $\bb{x} \in \mathbb{R}^{n}$ be a vector of observations. We describe these observations with a standard linear latent variable model:
+\begin{equation} \label{fa}
+p(\bb{x} | \bb{z}) = \mathcal{N}(\bb{x}|W\bb{z} + \mu_x, D),
+\end{equation}
+where $\bb{z} \in \mathbb{R}^{d}$ is a set of unobserved latent variables. For simplicity we will assume $D$ is a diagonal matrix (note that with this assumption Eq.~\ref{fa} becomes the generative model of Factor Analysis~\citep{bishop2006pattern}).
+
+The posterior distribution of the latents given the observations is
+\begin{eqnarray}
+p(\bb{z} | \bb{x}) &=& \mathcal{N}(\bb{z}|BW^{T}D^{-1}(\bb{x} - \mu_x), B) \label{posterior}\\
+&=& \mathcal{N}(\bb{z}|\mu_{z|x}, B),
+\end{eqnarray}
+where $B = (I + W^{T}D^{-1}W)^{-1}$ if the prior on $\bb{z}$ is $\mathcal{N}(0, I)$. However, this is a strong assumption, and instead we can use an uninformative prior where $\bb{z} \sim \lim_{\sigma\to\infty} \mathcal{N}(0, \sigma I)$; this results in
+\begin{equation}
+B = (W^{T}D^{-1}W)^{-1}.
+\end{equation}
+
+Next we will consider the posterior predictive distribution $p(\bb{x}'|\bb{x})$, which describes the distribution of a new observation $\bb{x}'$ given the observed data $\bb{x}$:
+\begin{equation} \label{eq:posterior_predictive}
+p(\bb{x}'|\bb{x}) = \mathcal{N}(\bb{x}'| W\mu_{z|x} + \mu_x, D + WBW^{T}).    
+\end{equation}
+
+We can now use this information to compute the distance between the original observation $\bb{x}$ and the posterior predictive distribution, which is essentially measuring the reprojection error of the observation scaled by a covariance matrix. If we define $Q = D + WBW^T$ (the covariance of the posterior predictive distribution), then the Mahalanobis distance is computed as
+\begin{equation}
+d_{\text{Maha}} = (\bb{x} - \bb{x}')^TQ^{-1}(\bb{x} - \bb{x}').
+\end{equation}
+
+For more information on these derivations see Bishop's Pattern Recognition and Machine Learning textbook~\citep{bishop2006pattern}.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/traces_paw1LH.pdf}
+\caption{\textbf{Variance inflation resolves cross-view inconsistencies in multi-view pose estimation.} 
+\textbf{a}:  Example traces from the ensemble median, (linear) mvEKS, and mvEKS with variance inflation for a single keypoint in Treadmill Mouse (left hind paw) across top and bottom views of a held-out video. A segment with an occluded paw is shaded in gray. Frames with high Mahalanobis distance indicate low confidence or disagreement across camera views. mvEKS improves temporal smoothness and cross-view coherence compared to the ensemble median, while variance inflation further resolves residual inconsistencies by penalizing overconfident predictions and enforcing agreement across views. 
+\textbf{b}: Sequence of frames (299–302) corresponding to the occlusion region in \textbf{a}. The ensemble median exhibits cross-view disagreement under occlusion. mvEKS shows improved consistency, and variance-inflated mvEKS fully aligns top and bottom view predictions through increased uncertainty regularization. }
+\label{fig:traces_paw1LH}
+\end{figure*}
+
+\paragraph{Mahalanobis distance for multi-view pose estimation.}
+We would like to use the Mahalanobis distance to measure reprojection errors of multi-view pose estimates; this distance can then provide a metric for the quality of pose estimates without ground truth labels.
+
+This metric will be computed one body part at a time (across all camera views). Assume we have $V$ camera views. For a given instant in time there will be an (x, y) prediction across all $V$ views; stack these values into a single vector $\bb{x} = [x_1, y_1, \ldots, x_V, y_V] \in \mathbb{R}^{2V}$. This $2V$-dimensional vector represents a point in 3D space, so we can model it with the linear latent variable model of Eq.~\ref{fa}. The unique approach here is that instead of learning a single covariance matrix $D$ for all observations, we will utilize observed ensemble variances that change from one observation to the next.
+
+Now, if we consider the posterior predictive variance as defined in Eq.~\ref{eq:posterior_predictive}, the resulting $Q$ would represent a single, joint measure of discrepancy across all camera views simultaneously. However, we would like to compute the posterior predictive variance $Q^v$ for a single view $v$ that incorporates information from the other views. Conditioning on the observations from the other views is straightforward in a linear model. Let us define $D^v \in \mathbb{R}^{2 \times 2}$ as the diagonal block of observed variances in $D$ for view $v$; and $W^v \in \mathbb{R}^{2 \times 3}$ as the two rows of the loading matrix $W$ that correspond to view $v$. Then
+\begin{equation}
+    Q^v = D^v + W^vB(W^v)^{T}.
+\end{equation}
+Finally, if we define $\bb{x}^v = [x_v, y_v]$ to be the observations for view $v$, then
+\begin{equation}
+    d^v_{\text{Maha}} = (\bb{x}^v - \bb{x}^{v'})^TQ^{-1}(\bb{x}^v - \bb{x}^{v'}).
+\end{equation}
+This distance $d^v_{\text{Maha}}$ is the one we compare against a threshold to determine if the observed ensemble variances in $D^v$ should be increased (in our case, scaled by a factor of two).
+
+\paragraph{Special case: two camera views.} The above is a general procedure that becomes more robust as the number of camera views $V$ increases. However, with only two views ($V=2$), we face potential indeterminacy issues. When predictions from both views are inconsistent yet each has low ensemble variance, it is impossible to determine which view (if either) is correct. Therefore, in the two-view case, if the Mahalanobis distance exceeds our threshold for one view, we inflate the variance in both views rather than trying to identify the problematic view (Fig.~\ref{fig:traces_paw1LH}).
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig16_eks_comparison.pdf}
+\caption{\textbf{Calibrated post-processor comparison.} Nonlinear EKS (light green) outperforms both linear EKS (dark green) and Anipose run on the ensemble median (i.e., same input as the EKS models; orange).} \label{fig:err_ens_std_anipose}
+\end{figure*}
+
+
+\section{Ensembling and distillation} \label{app:distillation}
+
+Our distillation pipeline processes EKS predictions consisting of 2D keypoint coordinates accompanied by uncertainty estimates. The pipeline employs a two-stage selection procedure designed to ensure both \textit{prediction quality} and \textit{pose diversity}.
+
+\paragraph{Stage 0: Inference and post-processing.} After model training is complete (here, we use ensembles of three networks, each with a different train/validation data split), inference is run on videos from the training set. The predictions are then post-processed with EKS.
+
+\paragraph{Stage 1: Quality-based filtering.}
+Frames are first filtered based on uncertainty estimates. When available, we utilize the posterior variance from the EKS; otherwise, ensemble variance is applied (for example, when using the ensemble median rather than EKS as a baseline). To quantify instance-level confidence, we compute the maximum variance across all keypoints and views:
+\begin{equation}
+    \sigma^2_{\max} = \max_{k,v} \left\{\sigma^2_{x,kv}, \sigma^2_{y,kv}\right\},
+\end{equation}
+where $k$ indexes keypoints and $v$ indexes views. Frames are ranked by $\sigma^2_{\max}$, and the $N_{f}$ frames with the lowest values are retained, prioritizing predictions with the lowest variance. We set $N_{f}=450$ for Fly-Anipose (where videos are short, $\sim$600 frames), $N_f=21,000$ for Treadmill Mouse (where videos are long, $\sim$30,000 frames) and $N_f=1200$ for Chickadee (where videos are $\sim$1800 frames).
+
+\paragraph{Stage 2: Diversity-based filtering.}
+The subset of high-confidence frames is then subjected to clustering in 3D pose space to promote diversity. When camera parameters are available, 3D poses are obtained via triangulation; otherwise, PCA-based projection is used. $k$-means clustering is performed to identify representative poses.
+% \begin{equation}
+%     \mathbf{C}^* = \arg\min_{\mathbf{C}} \sum_{i=1}^{N_{\text{frames}}} \min_{j=1}^{K} \left\| \mathbf{x}^{3D}_i - \mathbf{c}_j \right\|^2,
+% \end{equation}
+% where $\mathbf{C} = \{\mathbf{c}_1, \ldots, \mathbf{c}_K\}$ are cluster centers. 
+For each cluster $j$, we select the frame closest to its center:
+\begin{equation}
+    i^*_j = \arg\min_{i \in \mathcal{C}_j} \left\| \mathbf{x}^{3D}_i - \mathbf{c}_j \right\|^2,
+\end{equation}
+with $\mathcal{C}_j$ denoting the set of frames assigned to cluster $j$.
+
+The final selected frames are then converted into pseudo-labels using the original 2D EKS predictions. Empirically, we find that incorporating variance inflation---by leveraging the posterior variance from EKS---provides a more reliable quality measure compared to ensemble-based variance  (Fig.~\ref{fig:traces_paw1LH}), leading to improved frame selection.
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\linewidth]{figures_supp/fig17_distil_random.pdf}
+\caption{\textbf{Pseudo-label based distillation pipeline.} Targeted frame selection outperforms random selection.} \label{fig:distillation_baselines}
+\end{figure*}
+
+
+% \section{Tables}
+
+% All tables must be centered, neat, clean and legible. Do not use hand-drawn
+% tables. The table number and title always appear before the table. See
+% Table~\ref{sample-table}.
+
+% Place one line space before the table title, one line space after the table
+% title, and one line space after the table. The table title must be lower case
+% (except for first word and proper nouns); tables are numbered consecutively.
+
+% \begin{table}[t]
+% \caption{Sample table title}
+% \label{sample-table}
+% \centering
+% \begin{tabular}{ll}
+% \multicolumn{1}{c}{\bf PART}  &\multicolumn{1}{c}{\bf DESCRIPTION}
+% \\ \hline \\
+% Dendrite         &Input terminal \\
+% Axon             &Output terminal \\
+% Soma             &Cell body (contains cell nucleus) \\
+% \end{tabular}
+% 
+% \end{table}
+
+% \section{Default Notation}
+
+% In an attempt to encourage standardized notation, we have included the
+% notation file from the textbook, \textit{Deep Learning}
+%  available at
+% \url{https://github.com/goodfeli/dlbook_notation/}.  Use of this style
+% is not required and can be disabled by commenting out
+% \texttt{math\_commands.tex}.
+
+
+% \centerline{\bf Numbers and Arrays}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1in}p{3.25in}}
+% $\displaystyle a$ & A scalar (integer or real)\\
+% $\displaystyle \va$ & A vector\\
+% $\displaystyle \mA$ & A matrix\\
+% $\displaystyle \tA$ & A tensor\\
+% $\displaystyle \mI_n$ & Identity matrix with $n$ rows and $n$ columns\\
+% $\displaystyle \mI$ & Identity matrix with dimensionality implied by context\\
+% $\displaystyle \ve^{(i)}$ & Standard basis vector $[0,\dots,0,1,0,\dots,0]$ with a 1 at position $i$\\
+% $\displaystyle \text{diag}(\va)$ & A square, diagonal matrix with diagonal entries given by $\va$\\
+% $\displaystyle \ra$ & A scalar random variable\\
+% $\displaystyle \rva$ & A vector-valued random variable\\
+% $\displaystyle \rmA$ & A matrix-valued random variable\\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+% \centerline{\bf Sets and Graphs}
+% \bgroup
+% \def\arraystretch{1.5}
+
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle \sA$ & A set\\
+% $\displaystyle \R$ & The set of real numbers \\
+% $\displaystyle \{0, 1\}$ & The set containing 0 and 1 \\
+% $\displaystyle \{0, 1, \dots, n \}$ & The set of all integers between $0$ and $n$\\
+% $\displaystyle [a, b]$ & The real interval including $a$ and $b$\\
+% $\displaystyle (a, b]$ & The real interval excluding $a$ but including $b$\\
+% $\displaystyle \sA \backslash \sB$ & Set subtraction, i.e., the set containing the elements of $\sA$ that are not in $\sB$\\
+% $\displaystyle \gG$ & A graph\\
+% $\displaystyle \parents_\gG(\ervx_i)$ & The parents of $\ervx_i$ in $\gG$
+% \end{tabular}
+% \vspace{0.25cm}
+
+
+% \centerline{\bf Indexing}
+% \bgroup
+% \def\arraystretch{1.5}
+
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle \eva_i$ & Element $i$ of vector $\va$, with indexing starting at 1 \\
+% $\displaystyle \eva_{-i}$ & All elements of vector $\va$ except for element $i$ \\
+% $\displaystyle \emA_{i,j}$ & Element $i, j$ of matrix $\mA$ \\
+% $\displaystyle \mA_{i, :}$ & Row $i$ of matrix $\mA$ \\
+% $\displaystyle \mA_{:, i}$ & Column $i$ of matrix $\mA$ \\
+% $\displaystyle \etA_{i, j, k}$ & Element $(i, j, k)$ of a 3-D tensor $\tA$\\
+% $\displaystyle \tA_{:, :, i}$ & 2-D slice of a 3-D tensor\\
+% $\displaystyle \erva_i$ & Element $i$ of the random vector $\rva$ \\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+
+% \centerline{\bf Calculus}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% % NOTE: the [2ex] on the next line adds extra height to that row of the table.
+% % Without that command, the fraction on the first line is too tall and collides
+% % with the fraction on the second line.
+% $\displaystyle\frac{d y} {d x}$ & Derivative of $y$ with respect to $x$\\ [2ex]
+% $\displaystyle \frac{\partial y} {\partial x} $ & Partial derivative of $y$ with respect to $x$ \\
+% $\displaystyle \nabla_\vx y $ & Gradient of $y$ with respect to $\vx$ \\
+% $\displaystyle \nabla_\mX y $ & Matrix derivatives of $y$ with respect to $\mX$ \\
+% $\displaystyle \nabla_\tX y $ & Tensor containing derivatives of $y$ with respect to $\tX$ \\
+% $\displaystyle \frac{\partial f}{\partial \vx} $ & Jacobian matrix $\mJ \in \R^{m\times n}$ of $f: \R^n \rightarrow \R^m$\\
+% $\displaystyle \nabla_\vx^2 f(\vx)\text{ or }\mH( f)(\vx)$ & The Hessian matrix of $f$ at input point $\vx$\\
+% $\displaystyle \int f(\vx) d\vx $ & Definite integral over the entire domain of $\vx$ \\
+% $\displaystyle \int_\sS f(\vx) d\vx$ & Definite integral with respect to $\vx$ over the set $\sS$ \\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+% \centerline{\bf Probability and Information Theory}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle P(\ra)$ & A probability distribution over a discrete variable\\
+% $\displaystyle p(\ra)$ & A probability distribution over a continuous variable, or over
+% a variable whose type has not been specified\\
+% $\displaystyle \ra \sim P$ & Random variable $\ra$ has distribution $P$\\% so thing on left of \sim should always be a random variable, with name beginning with \r
+% $\displaystyle  \E_{\rx\sim P} [ f(x) ]\text{ or } \E f(x)$ & Expectation of $f(x)$ with respect to $P(\rx)$ \\
+% $\displaystyle \Var(f(x)) $ &  Variance of $f(x)$ under $P(\rx)$ \\
+% $\displaystyle \Cov(f(x),g(x)) $ & Covariance of $f(x)$ and $g(x)$ under $P(\rx)$\\
+% $\displaystyle H(\rx) $ & Shannon entropy of the random variable $\rx$\\
+% $\displaystyle \KL ( P \Vert Q ) $ & Kullback-Leibler divergence of P and Q \\
+% $\displaystyle \mathcal{N} ( \vx ; \vmu , \mSigma)$ & Gaussian distribution %
+% over $\vx$ with mean $\vmu$ and covariance $\mSigma$ \\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+% \centerline{\bf Functions}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle f: \sA \rightarrow \sB$ & The function $f$ with domain $\sA$ and range $\sB$\\
+% $\displaystyle f \circ g $ & Composition of the functions $f$ and $g$ \\
+%   $\displaystyle f(\vx ; \vtheta) $ & A function of $\vx$ parametrized by $\vtheta$.
+%   (Sometimes we write $f(\vx)$ and omit the argument $\vtheta$ to lighten notation) \\
+% $\displaystyle \log x$ & Natural logarithm of $x$ \\
+% $\displaystyle \sigma(x)$ & Logistic sigmoid, $\displaystyle \frac{1} {1 + \exp(-x)}$ \\
+% $\displaystyle \zeta(x)$ & Softplus, $\log(1 + \exp(x))$ \\
+% $\displaystyle || \vx ||_p $ & $\normlp$ norm of $\vx$ \\
+% $\displaystyle || \vx || $ & $\normltwo$ norm of $\vx$ \\
+% $\displaystyle x^+$ & Positive part of $x$, i.e., $\max(0,x)$\\
+% $\displaystyle \1_\mathrm{condition}$ & is 1 if the condition is true, 0 otherwise\\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+
+\end{document}

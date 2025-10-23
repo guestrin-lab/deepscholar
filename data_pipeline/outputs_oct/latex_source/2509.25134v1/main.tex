@@ -1,0 +1,87 @@
+
+\documentclass[10pt, twocolumn, letterpaper]{article}
+
+\usepackage[pagenumbers]{iccv} %
+
+\input{preamble}
+
+\definecolor{iccvblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref, breaklinks, colorlinks, allcolors=iccvblue]{hyperref}
+
+
+\usepackage{bm}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{comment}
+\usepackage[accsupp]{axessibility}  %
+\usepackage{etoolbox}
+
+
+\usepackage[capitalize]{cleveref}
+\crefname{appendix}{Sec.}{Secs.}
+\Crefname{appendix}{Sec.}{Secs.}
+
+\newlength\squareheight
+  \setlength\squareheight{6.75pt}
+  \newcommand\squareslash{\tikz{\draw (0,0) rectangle (\squareheight,\squareheight);\draw(0,0) -- (\squareheight,\squareheight)}}
+\DeclareMathOperator\squarediv{\squareslash}
+
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{algorithmic}
+\newcommand{\1}{\mbox{1}\hspace{-0.25em}\mbox{l}}
+
+
+
+\newcommand{\suppref}[1]{Supp.~\cref{#1}}
+\newcommand{\ours}[0]{LayerD}
+\newcommand{\Ours}[0]{LayerD}
+
+
+
+\def\paperID{9379} %
+\def\confName{ICCV}
+\def\confYear{2025}
+
+\title{\ours{}: Decomposing Raster Graphic Designs into Layers}
+
+
+\author{
+    Tomoyuki Suzuki\textsuperscript{1} \quad Kang-Jun Liu\textsuperscript{2} \quad Naoto Inoue\textsuperscript{1} \quad Kota Yamaguchi\textsuperscript{1} \\
+    $^{1}$CyberAgent \quad $^{2}$Tohoku University 
+}
+
+
+
+\begin{document}
+
+    \twocolumn[
+    \begin{@twocolumnfalse}
+    {%
+    \maketitle
+    \vspace{-3mm}
+    \centering
+    \includegraphics[keepaspectratio, width=1\linewidth]{figures/teaser.pdf}
+    \captionof{figure}{
+      \ours{} effectively decomposes raster graphic design images into layers, where the input design contains various elements such as typographic entities, embellishments, vector shapes, or even image materials.
+      Once decomposed, one can apply image editing operations such as color conversion or translation at the layer level, or further apply other post-processing such as OCR to vectorize each raster layer.
+    }
+    \label{fig:teaser}
+    \vspace{3mm}
+    }
+    \end{@twocolumnfalse}]
+    \input{sec/abstract}
+    \input{sec/intro}
+    \input{sec/related_works}
+    \input{sec/task}
+    \input{sec/method}
+    \input{sec/metrics}
+    \input{sec/experiment}
+    \input{sec/conclusion}
+    { \small \bibliographystyle{ieeenat_fullname} \bibliography{main} }
+
+    \input{sec/sup}
+    
+\end{document}

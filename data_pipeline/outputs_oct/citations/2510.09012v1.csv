@@ -1,0 +1,685 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,van2016pixelcnn,\cite{van2016pixelcnn},Conditional Image Generation with PixelCNN Decoders,http://arxiv.org/abs/1606.05328v2,"This work explores conditional image generation with a new image density
+model based on the PixelCNN architecture. The model can be conditioned on any
+vector, including descriptive labels or tags, or latent embeddings created by
+other networks. When conditioned on class labels from the ImageNet database,
+the model is able to generate diverse, realistic scenes representing distinct
+animals, objects, landscapes and structures. When conditioned on an embedding
+produced by a convolutional network given a single image of an unseen face, it
+generates a variety of new portraits of the same person with different facial
+expressions, poses and lighting conditions. We also show that conditional
+PixelCNN can serve as a powerful decoder in an image autoencoder. Additionally,
+the gated convolutional layers in the proposed model improve the log-likelihood
+of PixelCNN to match the state-of-the-art performance of PixelRNN on ImageNet,
+with greatly reduced computational cost.","Van den Oord, Aaron and Kalchbrenner, Nal and Espeholt, Lasse and Vinyals, Oriol and Graves, Alex and others",2016,,,,Advances in neural information processing systems
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,esser2021vqgan,\cite{esser2021vqgan},Taming Transformers for High-Resolution Image Synthesis,http://arxiv.org/abs/2012.09841v3,"Designed to learn long-range interactions on sequential data, transformers
+continue to show state-of-the-art results on a wide variety of tasks. In
+contrast to CNNs, they contain no inductive bias that prioritizes local
+interactions. This makes them expressive, but also computationally infeasible
+for long sequences, such as high-resolution images. We demonstrate how
+combining the effectiveness of the inductive bias of CNNs with the expressivity
+of transformers enables them to model and thereby synthesize high-resolution
+images. We show how to (i) use CNNs to learn a context-rich vocabulary of image
+constituents, and in turn (ii) utilize transformers to efficiently model their
+composition within high-resolution images. Our approach is readily applied to
+conditional synthesis tasks, where both non-spatial information, such as object
+classes, and spatial information, such as segmentations, can control the
+generated image. In particular, we present the first results on
+semantically-guided synthesis of megapixel images with transformers and obtain
+the state of the art among autoregressive models on class-conditional ImageNet.
+Code and pretrained models can be found at
+https://github.com/CompVis/taming-transformers .","Esser, Patrick and Rombach, Robin and Ommer, Bjorn",2021,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,yu2021vit_vqgan,\cite{yu2021vit_vqgan},Vector-quantized Image Modeling with Improved VQGAN,http://arxiv.org/abs/2110.04627v3,"Pretraining language models with next-token prediction on massive text
+corpora has delivered phenomenal zero-shot, few-shot, transfer learning and
+multi-tasking capabilities on both generative and discriminative language
+tasks. Motivated by this success, we explore a Vector-quantized Image Modeling
+(VIM) approach that involves pretraining a Transformer to predict rasterized
+image tokens autoregressively. The discrete image tokens are encoded from a
+learned Vision-Transformer-based VQGAN (ViT-VQGAN). We first propose multiple
+improvements over vanilla VQGAN from architecture to codebook learning,
+yielding better efficiency and reconstruction fidelity. The improved ViT-VQGAN
+further improves vector-quantized image modeling tasks, including
+unconditional, class-conditioned image generation and unsupervised
+representation learning. When trained on ImageNet at \(256\times256\)
+resolution, we achieve Inception Score (IS) of 175.1 and Fr'echet Inception
+Distance (FID) of 4.17, a dramatic improvement over the vanilla VQGAN, which
+obtains 70.6 and 17.04 for IS and FID, respectively. Based on ViT-VQGAN and
+unsupervised pretraining, we further evaluate the pretrained Transformer by
+averaging intermediate features, similar to Image GPT (iGPT). This
+ImageNet-pretrained VIM-L significantly beats iGPT-L on linear-probe accuracy
+from 60.3% to 73.2% for a similar model size. VIM-L also outperforms iGPT-XL
+which is trained with extra web image data and larger model size.","Yu, Jiahui and Li, Xin and Koh, Jing Yu and Zhang, Han and Pang, Ruoming and Qin, James and Ku, Alexander and Xu, Yuanzhong and Baldridge, Jason and Wu, Yonghui",2021,,,,arXiv preprint arXiv:2110.04627
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,ding2021cogview,\cite{ding2021cogview},CogView: Mastering Text-to-Image Generation via Transformers,http://arxiv.org/abs/2105.13290v3,"Text-to-Image generation in the general domain has long been an open problem,
+which requires both a powerful generative model and cross-modal understanding.
+We propose CogView, a 4-billion-parameter Transformer with VQ-VAE tokenizer to
+advance this problem. We also demonstrate the finetuning strategies for various
+downstream tasks, e.g. style learning, super-resolution, text-image ranking and
+fashion design, and methods to stabilize pretraining, e.g. eliminating NaN
+losses. CogView achieves the state-of-the-art FID on the blurred MS COCO
+dataset, outperforming previous GAN-based models and a recent similar work
+DALL-E.","Ding, Ming and Yang, Zhuoyi and Hong, Wenyi and Zheng, Wendi and Zhou, Chang and Yin, Da and Lin, Junyang and Zou, Xu and Shao, Zhou and Yang, Hongxia and others",2021,,,,Advances in neural information processing systems
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,ge2023seed,\cite{ge2023seed},Planting a SEED of Vision in Large Language Model,http://arxiv.org/abs/2307.08041v2,"We present SEED, an elaborate image tokenizer that empowers Large Language
+Models (LLMs) with the emergent ability to SEE and Draw at the same time.
+Research on image tokenizers has previously reached an impasse, as frameworks
+employing quantized visual tokens have lost prominence due to subpar
+performance and convergence in multimodal comprehension (compared to BLIP-2,
+etc.) or generation (compared to Stable Diffusion, etc.). Despite the
+limitations, we remain confident in its natural capacity to unify visual and
+textual representations, facilitating scalable multimodal training with LLM's
+original recipe. In this study, we identify two crucial principles for the
+architecture and training of SEED that effectively ease subsequent alignment
+with LLMs. (1) Image tokens should be independent of 2D physical patch
+positions and instead be produced with a 1D causal dependency, exhibiting
+intrinsic interdependence that aligns with the left-to-right autoregressive
+prediction mechanism in LLMs. (2) Image tokens should capture high-level
+semantics consistent with the degree of semantic abstraction in words, and be
+optimized for both discriminativeness and reconstruction during the tokenizer
+training phase. As a result, the off-the-shelf LLM is able to perform both
+image-to-text and text-to-image generation by incorporating our SEED through
+efficient LoRA tuning. Comprehensive multimodal pretraining and instruction
+tuning, which may yield improved results, are reserved for future
+investigation. This version of SEED was trained in 5.7 days using only 64 V100
+GPUs and 5M publicly available image-text pairs. Our preliminary study
+emphasizes the great potential of discrete visual tokens in versatile
+multimodal LLMs and the importance of proper image tokenizers in broader
+research.","Ge, Yuying and Ge, Yixiao and Zeng, Ziyun and Wang, Xintao and Shan, Ying",2023,,,,arXiv preprint arXiv:2307.08041
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,ramesh2021dalle,\cite{ramesh2021dalle},Zero-Shot Text-to-Image Generation,http://arxiv.org/abs/2102.12092v2,"Text-to-image generation has traditionally focused on finding better modeling
+assumptions for training on a fixed dataset. These assumptions might involve
+complex architectures, auxiliary losses, or side information such as object
+part labels or segmentation masks supplied during training. We describe a
+simple approach for this task based on a transformer that autoregressively
+models the text and image tokens as a single stream of data. With sufficient
+data and scale, our approach is competitive with previous domain-specific
+models when evaluated in a zero-shot fashion.","Ramesh, Aditya and Pavlov, Mikhail and Goh, Gabriel and Gray, Scott and Voss, Chelsea and Radford, Alec and Chen, Mark and Sutskever, Ilya",2021,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,yu2022parti,\cite{yu2022parti},Scaling Autoregressive Models for Content-Rich Text-to-Image Generation,http://arxiv.org/abs/2206.10789v1,"We present the Pathways Autoregressive Text-to-Image (Parti) model, which
+generates high-fidelity photorealistic images and supports content-rich
+synthesis involving complex compositions and world knowledge. Parti treats
+text-to-image generation as a sequence-to-sequence modeling problem, akin to
+machine translation, with sequences of image tokens as the target outputs
+rather than text tokens in another language. This strategy can naturally tap
+into the rich body of prior work on large language models, which have seen
+continued advances in capabilities and performance through scaling data and
+model sizes. Our approach is simple: First, Parti uses a Transformer-based
+image tokenizer, ViT-VQGAN, to encode images as sequences of discrete tokens.
+Second, we achieve consistent quality improvements by scaling the
+encoder-decoder Transformer model up to 20B parameters, with a new
+state-of-the-art zero-shot FID score of 7.23 and finetuned FID score of 3.22 on
+MS-COCO. Our detailed analysis on Localized Narratives as well as PartiPrompts
+(P2), a new holistic benchmark of over 1600 English prompts, demonstrate the
+effectiveness of Parti across a wide variety of categories and difficulty
+aspects. We also explore and highlight limitations of our models in order to
+define and exemplify key areas of focus for further improvements. See
+https://parti.research.google/ for high-resolution images.","Yu, Jiahui and Xu, Yuanzhong and Koh, Jing Yu and Luong, Thang and Baid, Gunjan and Wang, Zirui and Vasudevan, Vijay and Ku, Alexander and Yang, Yinfei and Ayan, Burcu Karagol and others",2022,,,,arXiv preprint arXiv:2206.10789
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,he2024mars,\cite{he2024mars},"MARS: Mixture of Auto-Regressive Models for Fine-grained Text-to-image
+  Synthesis",http://arxiv.org/abs/2407.07614v2,"Auto-regressive models have made significant progress in the realm of
+language generation, yet they do not perform on par with diffusion models in
+the domain of image synthesis. In this work, we introduce MARS, a novel
+framework for T2I generation that incorporates a specially designed Semantic
+Vision-Language Integration Expert (SemVIE). This innovative component
+integrates pre-trained LLMs by independently processing linguistic and visual
+information, freezing the textual component while fine-tuning the visual
+component. This methodology preserves the NLP capabilities of LLMs while
+imbuing them with exceptional visual understanding. Building upon the powerful
+base of the pre-trained Qwen-7B, MARS stands out with its bilingual generative
+capabilities corresponding to both English and Chinese language prompts and the
+capacity for joint image and text generation. The flexibility of this framework
+lends itself to migration towards any-to-any task adaptability. Furthermore,
+MARS employs a multi-stage training strategy that first establishes robust
+image-text alignment through complementary bidirectional tasks and subsequently
+concentrates on refining the T2I generation process, significantly augmenting
+text-image synchrony and the granularity of image details. Notably, MARS
+requires only 9% of the GPU days needed by SD1.5, yet it achieves remarkable
+results across a variety of benchmarks, illustrating the training efficiency
+and the potential for swift deployment in various applications.",Wanggui He and Siming Fu and Mushui Liu and Xierui Wang and Wenyi Xiao and Fangxun Shu and Yi Wang and Lei Zhang and Zhelun Yu and Haoyuan Li and Ziwei Huang and LeiLei Gan and Hao Jiang,2024,,https://arxiv.org/abs/2407.07614,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,wang2024emu3,\cite{wang2024emu3},Emu3: Next-Token Prediction is All You Need,http://arxiv.org/abs/2409.18869v1,"While next-token prediction is considered a promising path towards artificial
+general intelligence, it has struggled to excel in multimodal tasks, which are
+still dominated by diffusion models (e.g., Stable Diffusion) and compositional
+approaches (e.g., CLIP combined with LLMs). In this paper, we introduce Emu3, a
+new suite of state-of-the-art multimodal models trained solely with next-token
+prediction. By tokenizing images, text, and videos into a discrete space, we
+train a single transformer from scratch on a mixture of multimodal sequences.
+Emu3 outperforms several well-established task-specific models in both
+generation and perception tasks, surpassing flagship models such as SDXL and
+LLaVA-1.6, while eliminating the need for diffusion or compositional
+architectures. Emu3 is also capable of generating high-fidelity video via
+predicting the next token in a video sequence. We simplify complex multimodal
+model designs by converging on a singular focus: tokens, unlocking great
+potential for scaling both during training and inference. Our results
+demonstrate that next-token prediction is a promising path towards building
+general multimodal intelligence beyond language. We open-source key techniques
+and models to support further research in this direction.","Wang, Xinlong and Zhang, Xiaosong and Luo, Zhengxiong and Sun, Quan and Cui, Yufeng and Wang, Jinsheng and Zhang, Fan and Wang, Yueze and Li, Zhen and Yu, Qiying and others",2024,,,,arXiv preprint arXiv:2409.18869
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,sun2024llamagen,\cite{sun2024llamagen},"Autoregressive Model Beats Diffusion: Llama for Scalable Image
+  Generation",http://arxiv.org/abs/2406.06525v1,"We introduce LlamaGen, a new family of image generation models that apply
+original ``next-token prediction'' paradigm of large language models to visual
+generation domain. It is an affirmative answer to whether vanilla
+autoregressive models, e.g., Llama, without inductive biases on visual signals
+can achieve state-of-the-art image generation performance if scaling properly.
+We reexamine design spaces of image tokenizers, scalability properties of image
+generation models, and their training data quality. The outcome of this
+exploration consists of: (1) An image tokenizer with downsample ratio of 16,
+reconstruction quality of 0.94 rFID and codebook usage of 97% on ImageNet
+benchmark. (2) A series of class-conditional image generation models ranging
+from 111M to 3.1B parameters, achieving 2.18 FID on ImageNet 256x256
+benchmarks, outperforming the popular diffusion models such as LDM, DiT. (3) A
+text-conditional image generation model with 775M parameters, from two-stage
+training on LAION-COCO and high aesthetics quality images, demonstrating
+competitive performance of visual quality and text alignment. (4) We verify the
+effectiveness of LLM serving frameworks in optimizing the inference speed of
+image generation models and achieve 326% - 414% speedup. We release all models
+and codes to facilitate open-source community of visual generation and
+multimodal foundation models.","Sun, Peize and Jiang, Yi and Chen, Shoufa and Zhang, Shilong and Peng, Bingyue and Luo, Ping and Yuan, Zehuan",2024,,,,arXiv preprint arXiv:2406.06525
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,liu2024lumina_mgpt,\cite{liu2024lumina_mgpt},Lumina-mgpt: Illuminate flexible photorealistic text-to-image generation with multimodal generative pretraining,,,"Liu, Dongyang and Zhao, Shitian and Zhuo, Le and Lin, Weifeng and Qiao, Yu and Li, Hongsheng and Gao, Peng",2024,,,,arXiv preprint arXiv:2408.02657
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,chern2024anole,\cite{chern2024anole},"ANOLE: An Open, Autoregressive, Native Large Multimodal Models for
+  Interleaved Image-Text Generation",http://arxiv.org/abs/2407.06135v1,"Previous open-source large multimodal models (LMMs) have faced several
+limitations: (1) they often lack native integration, requiring adapters to
+align visual representations with pre-trained large language models (LLMs); (2)
+many are restricted to single-modal generation; (3) while some support
+multimodal generation, they rely on separate diffusion models for visual
+modeling and generation. To mitigate these limitations, we present Anole, an
+open, autoregressive, native large multimodal model for interleaved image-text
+generation. We build Anole from Meta AI's Chameleon, adopting an innovative
+fine-tuning strategy that is both data-efficient and parameter-efficient. Anole
+demonstrates high-quality, coherent multimodal generation capabilities. We have
+open-sourced our model, training framework, and instruction tuning data.","Chern, Ethan and Su, Jiadi and Ma, Yan and Liu, Pengfei",2024,,,,arXiv preprint arXiv:2407.06135
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,chameleonteam2025chameleon,\cite{chameleonteam2025chameleon},Chameleon: Mixed-Modal Early-Fusion Foundation Models,http://arxiv.org/abs/2405.09818v2,"We present Chameleon, a family of early-fusion token-based mixed-modal models
+capable of understanding and generating images and text in any arbitrary
+sequence. We outline a stable training approach from inception, an alignment
+recipe, and an architectural parameterization tailored for the early-fusion,
+token-based, mixed-modal setting. The models are evaluated on a comprehensive
+range of tasks, including visual question answering, image captioning, text
+generation, image generation, and long-form mixed modal generation. Chameleon
+demonstrates broad and general capabilities, including state-of-the-art
+performance in image captioning tasks, outperforms Llama-2 in text-only tasks
+while being competitive with models such as Mixtral 8x7B and Gemini-Pro, and
+performs non-trivial image generation, all in a single model. It also matches
+or exceeds the performance of much larger models, including Gemini Pro and
+GPT-4V, according to human judgments on a new long-form mixed-modal generation
+evaluation, where either the prompt or outputs contain mixed sequences of both
+images and text. Chameleon marks a significant step forward in a unified
+modeling of full multimodal documents.",Chameleon Team,2025,,https://arxiv.org/abs/2405.09818,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,wu2024janus,\cite{wu2024janus},"Janus: Decoupling Visual Encoding for Unified Multimodal Understanding
+  and Generation",http://arxiv.org/abs/2410.13848v1,"In this paper, we introduce Janus, an autoregressive framework that unifies
+multimodal understanding and generation. Prior research often relies on a
+single visual encoder for both tasks, such as Chameleon. However, due to the
+differing levels of information granularity required by multimodal
+understanding and generation, this approach can lead to suboptimal performance,
+particularly in multimodal understanding. To address this issue, we decouple
+visual encoding into separate pathways, while still leveraging a single,
+unified transformer architecture for processing. The decoupling not only
+alleviates the conflict between the visual encoder's roles in understanding and
+generation, but also enhances the framework's flexibility. For instance, both
+the multimodal understanding and generation components can independently select
+their most suitable encoding methods. Experiments show that Janus surpasses
+previous unified model and matches or exceeds the performance of task-specific
+models. The simplicity, high flexibility, and effectiveness of Janus make it a
+strong candidate for next-generation unified multimodal models.",Chengyue Wu and Xiaokang Chen and Zhiyu Wu and Yiyang Ma and Xingchao Liu and Zizheng Pan and Wen Liu and Zhenda Xie and Xingkai Yu and Chong Ruan and Ping Luo,2024,,https://arxiv.org/abs/2410.13848,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,chen2025janus_pro,\cite{chen2025janus_pro},Janus-pro: Unified multimodal understanding and generation with data and model scaling,,,"Chen, Xiaokang and Wu, Zhiyu and Liu, Xingchao and Pan, Zizheng and Liu, Wen and Xie, Zhenda and Yu, Xingkai and Ruan, Chong",2025,,,,arXiv preprint arXiv:2501.17811
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,jiao2025unitoken,\cite{jiao2025unitoken},"UniToken: Harmonizing Multimodal Understanding and Generation through
+  Unified Visual Encoding",http://arxiv.org/abs/2504.04423v1,"We introduce UniToken, an auto-regressive generation model that encodes
+visual inputs through a combination of discrete and continuous representations,
+enabling seamless integration of unified visual understanding and image
+generation tasks. Unlike previous approaches that rely on unilateral visual
+representations, our unified visual encoding framework captures both high-level
+semantics and low-level details, delivering multidimensional information that
+empowers heterogeneous tasks to selectively assimilate domain-specific
+knowledge based on their inherent characteristics. Through in-depth
+experiments, we uncover key principles for developing a unified model capable
+of both visual understanding and image generation. Extensive evaluations across
+a diverse range of prominent benchmarks demonstrate that UniToken achieves
+state-of-the-art performance, surpassing existing approaches. These results
+establish UniToken as a robust foundation for future research in this domain.
+The code and models are available at https://github.com/SxJyJay/UniToken.",Yang Jiao and Haibo Qiu and Zequn Jie and Shaoxiang Chen and Jingjing Chen and Lin Ma and Yu-Gang Jiang,2025,,https://arxiv.org/abs/2504.04423,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,unitok,\cite{unitok},UniTok: A Unified Tokenizer for Visual Generation and Understanding,http://arxiv.org/abs/2502.20321v2,"Visual generative and understanding models typically rely on distinct
+tokenizers to process images, presenting a key challenge for unifying them
+within a single framework. Recent studies attempt to address this by connecting
+the training of VQVAE (for autoregressive generation) and CLIP (for
+understanding) to build a unified tokenizer. However, directly combining these
+training objectives has been observed to cause severe loss conflicts. In this
+paper, we show that reconstruction and semantic supervision do not inherently
+conflict. Instead, the underlying bottleneck stems from limited
+representational capacity of discrete token space. Building on these insights,
+we introduce UniTok, a unified tokenizer featuring a novel multi-codebook
+quantization mechanism that effectively scales up the vocabulary size and
+bottleneck dimension. In terms of final performance, UniTok sets a new record
+of 0.38 rFID and 78.6% zero-shot accuracy on ImageNet. Besides, UniTok can be
+seamlessly integrated into MLLMs to unlock native visual generation capability,
+without compromising the understanding performance. Additionally, we show that
+UniTok favors cfg-free generation, reducing gFID from 14.6 to 2.5 on ImageNet
+256$\times$256 benchmark. GitHub: https://github.com/FoundationVision/UniTok.","Ma, Chuofan and Jiang, Yi and Wu, Junfeng and Yang, Jihan and Yu, Xin and Yuan, Zehuan and Peng, Bingyue and Qi, Xiaojuan",2025,,,,arXiv preprint arXiv:2502.20321
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,yu2024titok,\cite{yu2024titok},An Image is Worth 32 Tokens for Reconstruction and Generation,http://arxiv.org/abs/2406.07550v1,"Recent advancements in generative models have highlighted the crucial role of
+image tokenization in the efficient synthesis of high-resolution images.
+Tokenization, which transforms images into latent representations, reduces
+computational demands compared to directly processing pixels and enhances the
+effectiveness and efficiency of the generation process. Prior methods, such as
+VQGAN, typically utilize 2D latent grids with fixed downsampling factors.
+However, these 2D tokenizations face challenges in managing the inherent
+redundancies present in images, where adjacent regions frequently display
+similarities. To overcome this issue, we introduce Transformer-based
+1-Dimensional Tokenizer (TiTok), an innovative approach that tokenizes images
+into 1D latent sequences. TiTok provides a more compact latent representation,
+yielding substantially more efficient and effective representations than
+conventional techniques. For example, a 256 x 256 x 3 image can be reduced to
+just 32 discrete tokens, a significant reduction from the 256 or 1024 tokens
+obtained by prior methods. Despite its compact nature, TiTok achieves
+competitive performance to state-of-the-art approaches. Specifically, using the
+same generator framework, TiTok attains 1.97 gFID, outperforming MaskGIT
+baseline significantly by 4.21 at ImageNet 256 x 256 benchmark. The advantages
+of TiTok become even more significant when it comes to higher resolution. At
+ImageNet 512 x 512 benchmark, TiTok not only outperforms state-of-the-art
+diffusion model DiT-XL/2 (gFID 2.74 vs. 3.04), but also reduces the image
+tokens by 64x, leading to 410x faster generation process. Our best-performing
+variant can significantly surpasses DiT-XL/2 (gFID 2.13 vs. 3.04) while still
+generating high-quality samples 74x faster.","Yu, Qihang and Weber, Mark and Deng, Xueqing and Shen, Xiaohui and Cremers, Daniel and Chen, Liang-Chieh",2024,,,,arXiv preprint arXiv:2406.07550
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,lee2022rqvae,\cite{lee2022rqvae},Autoregressive Image Generation using Residual Quantization,http://arxiv.org/abs/2203.01941v2,"For autoregressive (AR) modeling of high-resolution images, vector
+quantization (VQ) represents an image as a sequence of discrete codes. A short
+sequence length is important for an AR model to reduce its computational costs
+to consider long-range interactions of codes. However, we postulate that
+previous VQ cannot shorten the code sequence and generate high-fidelity images
+together in terms of the rate-distortion trade-off. In this study, we propose
+the two-stage framework, which consists of Residual-Quantized VAE (RQ-VAE) and
+RQ-Transformer, to effectively generate high-resolution images. Given a fixed
+codebook size, RQ-VAE can precisely approximate a feature map of an image and
+represent the image as a stacked map of discrete codes. Then, RQ-Transformer
+learns to predict the quantized feature vector at the next position by
+predicting the next stack of codes. Thanks to the precise approximation of
+RQ-VAE, we can represent a 256$\times$256 image as 8$\times$8 resolution of the
+feature map, and RQ-Transformer can efficiently reduce the computational costs.
+Consequently, our framework outperforms the existing AR models on various
+benchmarks of unconditional and conditional image generation. Our approach also
+has a significantly faster sampling speed than previous AR models to generate
+high-quality images.","Lee, Doyup and Kim, Chiheon and Kim, Saehoon and Cho, Minsu and Han, Wook-Shin",2022,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,yu2023lfq,\cite{yu2023lfq},Language Model Beats Diffusion -- Tokenizer is Key to Visual Generation,http://arxiv.org/abs/2310.05737v3,"While Large Language Models (LLMs) are the dominant models for generative
+tasks in language, they do not perform as well as diffusion models on image and
+video generation. To effectively use LLMs for visual generation, one crucial
+component is the visual tokenizer that maps pixel-space inputs to discrete
+tokens appropriate for LLM learning. In this paper, we introduce MAGVIT-v2, a
+video tokenizer designed to generate concise and expressive tokens for both
+videos and images using a common token vocabulary. Equipped with this new
+tokenizer, we show that LLMs outperform diffusion models on standard image and
+video generation benchmarks including ImageNet and Kinetics. In addition, we
+demonstrate that our tokenizer surpasses the previously top-performing video
+tokenizer on two more tasks: (1) video compression comparable to the
+next-generation video codec (VCC) according to human evaluations, and (2)
+learning effective representations for action recognition tasks.","Yu, Lijun and Lezama, Jos{\'e} and Gundavarapu, Nitesh B and Versari, Luca and Sohn, Kihyuk and Minnen, David and Cheng, Yong and Birodkar, Vighnesh and Gupta, Agrim and Gu, Xiuye and others",2023,,,,arXiv preprint arXiv:2310.05737
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,zhao2024bsq,\cite{zhao2024bsq},Image and Video Tokenization with Binary Spherical Quantization,http://arxiv.org/abs/2406.07548v1,"We propose a new transformer-based image and video tokenizer with Binary
+Spherical Quantization (BSQ). BSQ projects the high-dimensional visual
+embedding to a lower-dimensional hypersphere and then applies binary
+quantization. BSQ is (1) parameter-efficient without an explicit codebook, (2)
+scalable to arbitrary token dimensions, and (3) compact: compressing visual
+data by up to 100$\times$ with minimal distortion. Our tokenizer uses a
+transformer encoder and decoder with simple block-wise causal masking to
+support variable-length videos as input. The resulting BSQ-ViT achieves
+state-of-the-art visual reconstruction quality on image and video
+reconstruction benchmarks with 2.4$\times$ throughput compared to the best
+prior methods. Furthermore, by learning an autoregressive prior for adaptive
+arithmetic coding, BSQ-ViT achieves comparable results on video compression
+with state-of-the-art video compression standards. BSQ-ViT also enables masked
+language models to achieve competitive image synthesis quality to GAN- and
+diffusion-based methods.",Yue Zhao and Yuanjun Xiong and Philipp Krähenbühl,2024,,https://arxiv.org/abs/2406.07548,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,zhang2025v2flow,\cite{zhang2025v2flow},"V2Flow: Unifying Visual Tokenization and Large Language Model
+  Vocabularies for Autoregressive Image Generation",http://arxiv.org/abs/2503.07493v1,"We propose V2Flow, a novel tokenizer that produces discrete visual tokens
+capable of high-fidelity reconstruction, while ensuring structural and latent
+distribution alignment with the vocabulary space of large language models
+(LLMs). Leveraging this tight visual-vocabulary coupling, V2Flow enables
+autoregressive visual generation on top of existing LLMs. Our approach
+formulates visual tokenization as a flow-matching problem, aiming to learn a
+mapping from a standard normal prior to the continuous image distribution,
+conditioned on token sequences embedded within the LLMs vocabulary space. The
+effectiveness of V2Flow stems from two core designs. First, we propose a Visual
+Vocabulary resampler, which compresses visual data into compact token
+sequences, with each represented as a soft categorical distribution over LLM's
+vocabulary. This allows seamless integration of visual tokens into existing
+LLMs for autoregressive visual generation. Second, we present a masked
+autoregressive Rectified-Flow decoder, employing a masked transformer
+encoder-decoder to refine visual tokens into contextually enriched embeddings.
+These embeddings then condition a dedicated velocity field for precise
+reconstruction. Additionally, an autoregressive rectified-flow sampling
+strategy is incorporated, ensuring flexible sequence lengths while preserving
+competitive reconstruction quality. Extensive experiments show that V2Flow
+outperforms mainstream VQ-based tokenizers and facilitates autoregressive
+visual generation on top of existing. https://github.com/zhangguiwei610/V2Flow",Guiwei Zhang and Tianyu Zhang and Mohan Zhou and Yalong Bai and Biye Li,2025,,https://arxiv.org/abs/2503.07493,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,qu2024tokenflow,\cite{qu2024tokenflow},"TokenFlow: Unified Image Tokenizer for Multimodal Understanding and
+  Generation",http://arxiv.org/abs/2412.03069v2,"We present TokenFlow, a novel unified image tokenizer that bridges the
+long-standing gap between multimodal understanding and generation. Prior
+research attempt to employ a single reconstruction-targeted Vector Quantization
+(VQ) encoder for unifying these two tasks. We observe that understanding and
+generation require fundamentally different granularities of visual information.
+This leads to a critical trade-off, particularly compromising performance in
+multimodal understanding tasks. TokenFlow addresses this challenge through an
+innovative dual-codebook architecture that decouples semantic and pixel-level
+feature learning while maintaining their alignment via a shared mapping
+mechanism. This design enables direct access to both high-level semantic
+representations crucial for understanding tasks and fine-grained visual
+features essential for generation through shared indices. Our extensive
+experiments demonstrate TokenFlow's superiority across multiple dimensions.
+Leveraging TokenFlow, we demonstrate for the first time that discrete visual
+input can surpass LLaVA-1.5 13B in understanding performance, achieving a 7.2\%
+average improvement. For image reconstruction, we achieve a strong FID score of
+0.63 at 384*384 resolution. Moreover, TokenFlow establishes state-of-the-art
+performance in autoregressive image generation with a GenEval score of 0.55 at
+256*256 resolution, achieving comparable results to SDXL.","Qu, Liao and Zhang, Huichao and Liu, Yiheng and Wang, Xu and Jiang, Yi and Gao, Yiming and Ye, Hu and Du, Daniel K and Yuan, Zehuan and Wu, Xinglong",2024,,,,arXiv preprint arXiv:2412.03069
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,chang2022maskgit,\cite{chang2022maskgit},MaskGIT: Masked Generative Image Transformer,http://arxiv.org/abs/2202.04200v1,"Generative transformers have experienced rapid popularity growth in the
+computer vision community in synthesizing high-fidelity and high-resolution
+images. The best generative transformer models so far, however, still treat an
+image naively as a sequence of tokens, and decode an image sequentially
+following the raster scan ordering (i.e. line-by-line). We find this strategy
+neither optimal nor efficient. This paper proposes a novel image synthesis
+paradigm using a bidirectional transformer decoder, which we term MaskGIT.
+During training, MaskGIT learns to predict randomly masked tokens by attending
+to tokens in all directions. At inference time, the model begins with
+generating all tokens of an image simultaneously, and then refines the image
+iteratively conditioned on the previous generation. Our experiments demonstrate
+that MaskGIT significantly outperforms the state-of-the-art transformer model
+on the ImageNet dataset, and accelerates autoregressive decoding by up to 64x.
+Besides, we illustrate that MaskGIT can be easily extended to various image
+editing tasks, such as inpainting, extrapolation, and image manipulation.","Chang, Huiwen and Zhang, Han and Jiang, Lu and Liu, Ce and Freeman, William T",2022,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,bai2024meissonic,\cite{bai2024meissonic},"Meissonic: Revitalizing Masked Generative Transformers for Efficient
+  High-Resolution Text-to-Image Synthesis",http://arxiv.org/abs/2410.08261v4,"We present Meissonic, which elevates non-autoregressive masked image modeling
+(MIM) text-to-image to a level comparable with state-of-the-art diffusion
+models like SDXL. By incorporating a comprehensive suite of architectural
+innovations, advanced positional encoding strategies, and optimized sampling
+conditions, Meissonic substantially improves MIM's performance and efficiency.
+Additionally, we leverage high-quality training data, integrate
+micro-conditions informed by human preference scores, and employ feature
+compression layers to further enhance image fidelity and resolution. Our model
+not only matches but often exceeds the performance of existing models like SDXL
+in generating high-quality, high-resolution images. Extensive experiments
+validate Meissonic's capabilities, demonstrating its potential as a new
+standard in text-to-image synthesis. We release a model checkpoint capable of
+producing $1024 \times 1024$ resolution images.","Bai, Jinbin and Ye, Tian and Chow, Wei and Song, Enxin and Chen, Qing-Guo and Li, Xiangtai and Dong, Zhen and Zhu, Lei and Yan, Shuicheng",2024,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,xie2024show_o,\cite{xie2024show_o},Show-o: One single transformer to unify multimodal understanding and generation,,,"Xie, Jinheng and Mao, Weijia and Bai, Zechen and Zhang, David Junhao and Wang, Weihao and Lin, Kevin Qinghong and Gu, Yuchao and Chen, Zhijie and Yang, Zhenheng and Shou, Mike Zheng",2024,,,,arXiv preprint arXiv:2408.12528
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,tian2024var,\cite{tian2024var},"Visual Autoregressive Modeling: Scalable Image Generation via Next-Scale
+  Prediction",http://arxiv.org/abs/2404.02905v2,"We present Visual AutoRegressive modeling (VAR), a new generation paradigm
+that redefines the autoregressive learning on images as coarse-to-fine
+""next-scale prediction"" or ""next-resolution prediction"", diverging from the
+standard raster-scan ""next-token prediction"". This simple, intuitive
+methodology allows autoregressive (AR) transformers to learn visual
+distributions fast and generalize well: VAR, for the first time, makes GPT-like
+AR models surpass diffusion transformers in image generation. On ImageNet
+256x256 benchmark, VAR significantly improve AR baseline by improving Frechet
+inception distance (FID) from 18.65 to 1.73, inception score (IS) from 80.4 to
+350.2, with around 20x faster inference speed. It is also empirically verified
+that VAR outperforms the Diffusion Transformer (DiT) in multiple dimensions
+including image quality, inference speed, data efficiency, and scalability.
+Scaling up VAR models exhibits clear power-law scaling laws similar to those
+observed in LLMs, with linear correlation coefficients near -0.998 as solid
+evidence. VAR further showcases zero-shot generalization ability in downstream
+tasks including image in-painting, out-painting, and editing. These results
+suggest VAR has initially emulated the two important properties of LLMs:
+Scaling Laws and zero-shot task generalization. We have released all models and
+codes to promote the exploration of AR/VAR models for visual generation and
+unified learning.","Tian, Keyu and Jiang, Yi and Yuan, Zehuan and Peng, Bingyue and Wang, Liwei",2024,,,,Advances in neural information processing systems
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,ma2024star,\cite{ma2024star},Star: Scale-wise text-to-image generation via auto-regressive representations,,,"Ma, Xiaoxiao and Zhou, Mohan and Liang, Tao and Bai, Yalong and Zhao, Tiejun and Chen, Huaian and Jin, Yi",2024,,,,arXiv preprint arXiv:2406.10797
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,tang2024hart,\cite{tang2024hart},HART: Efficient Visual Generation with Hybrid Autoregressive Transformer,http://arxiv.org/abs/2410.10812v1,"We introduce Hybrid Autoregressive Transformer (HART), an autoregressive (AR)
+visual generation model capable of directly generating 1024x1024 images,
+rivaling diffusion models in image generation quality. Existing AR models face
+limitations due to the poor image reconstruction quality of their discrete
+tokenizers and the prohibitive training costs associated with generating 1024px
+images. To address these challenges, we present the hybrid tokenizer, which
+decomposes the continuous latents from the autoencoder into two components:
+discrete tokens representing the big picture and continuous tokens representing
+the residual components that cannot be represented by the discrete tokens. The
+discrete component is modeled by a scalable-resolution discrete AR model, while
+the continuous component is learned with a lightweight residual diffusion
+module with only 37M parameters. Compared with the discrete-only VAR tokenizer,
+our hybrid approach improves reconstruction FID from 2.11 to 0.30 on MJHQ-30K,
+leading to a 31% generation FID improvement from 7.85 to 5.38. HART also
+outperforms state-of-the-art diffusion models in both FID and CLIP score, with
+4.5-7.7x higher throughput and 6.9-13.4x lower MACs. Our code is open sourced
+at https://github.com/mit-han-lab/hart.","Tang, Haotian and Wu, Yecheng and Yang, Shang and Xie, Enze and Chen, Junsong and Chen, Junyu and Zhang, Zhuoyang and Cai, Han and Lu, Yao and Han, Song",2024,,,,arXiv preprint arXiv:2410.10812
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,han2024infinity,\cite{han2024infinity},"Infinity: Scaling Bitwise AutoRegressive Modeling for High-Resolution
+  Image Synthesis",http://arxiv.org/abs/2412.04431v2,"We present Infinity, a Bitwise Visual AutoRegressive Modeling capable of
+generating high-resolution, photorealistic images following language
+instruction. Infinity redefines visual autoregressive model under a bitwise
+token prediction framework with an infinite-vocabulary tokenizer & classifier
+and bitwise self-correction mechanism, remarkably improving the generation
+capacity and details. By theoretically scaling the tokenizer vocabulary size to
+infinity and concurrently scaling the transformer size, our method
+significantly unleashes powerful scaling capabilities compared to vanilla VAR.
+Infinity sets a new record for autoregressive text-to-image models,
+outperforming top-tier diffusion models like SD3-Medium and SDXL. Notably,
+Infinity surpasses SD3-Medium by improving the GenEval benchmark score from
+0.62 to 0.73 and the ImageReward benchmark score from 0.87 to 0.96, achieving a
+win rate of 66%. Without extra optimization, Infinity generates a high-quality
+1024x1024 image in 0.8 seconds, making it 2.6x faster than SD3-Medium and
+establishing it as the fastest text-to-image model. Models and codes will be
+released to promote further exploration of Infinity for visual generation and
+unified tokenizer modeling.","Han, Jian and Liu, Jinlai and Jiang, Yi and Yan, Bin and Zhang, Yuqi and Yuan, Zehuan and Peng, Bingyue and Liu, Xiaobing",2024,,,,arXiv preprint arXiv:2412.04431
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,he2025nar,\cite{he2025nar},Neighboring Autoregressive Modeling for Efficient Visual Generation,http://arxiv.org/abs/2503.10696v1,"Visual autoregressive models typically adhere to a raster-order ``next-token
+prediction"" paradigm, which overlooks the spatial and temporal locality
+inherent in visual content. Specifically, visual tokens exhibit significantly
+stronger correlations with their spatially or temporally adjacent tokens
+compared to those that are distant. In this paper, we propose Neighboring
+Autoregressive Modeling (NAR), a novel paradigm that formulates autoregressive
+visual generation as a progressive outpainting procedure, following a
+near-to-far ``next-neighbor prediction"" mechanism. Starting from an initial
+token, the remaining tokens are decoded in ascending order of their Manhattan
+distance from the initial token in the spatial-temporal space, progressively
+expanding the boundary of the decoded region. To enable parallel prediction of
+multiple adjacent tokens in the spatial-temporal space, we introduce a set of
+dimension-oriented decoding heads, each predicting the next token along a
+mutually orthogonal dimension. During inference, all tokens adjacent to the
+decoded tokens are processed in parallel, substantially reducing the model
+forward steps for generation. Experiments on ImageNet$256\times 256$ and UCF101
+demonstrate that NAR achieves 2.4$\times$ and 8.6$\times$ higher throughput
+respectively, while obtaining superior FID/FVD scores for both image and video
+generation tasks compared to the PAR-4X approach. When evaluating on
+text-to-image generation benchmark GenEval, NAR with 0.8B parameters
+outperforms Chameleon-7B while using merely 0.4 of the training data. Code is
+available at https://github.com/ThisisBillhe/NAR.","He, Yefei and He, Yuanyu and He, Shaoxuan and Chen, Feng and Zhou, Hong and Zhang, Kaipeng and Zhuang, Bohan",2025,,,,arXiv preprint arXiv:2503.10696
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,yu2024rar,\cite{yu2024rar},Randomized Autoregressive Visual Generation,http://arxiv.org/abs/2411.00776v1,"This paper presents Randomized AutoRegressive modeling (RAR) for visual
+generation, which sets a new state-of-the-art performance on the image
+generation task while maintaining full compatibility with language modeling
+frameworks. The proposed RAR is simple: during a standard autoregressive
+training process with a next-token prediction objective, the input
+sequence-typically ordered in raster form-is randomly permuted into different
+factorization orders with a probability r, where r starts at 1 and linearly
+decays to 0 over the course of training. This annealing training strategy
+enables the model to learn to maximize the expected likelihood over all
+factorization orders and thus effectively improve the model's capability of
+modeling bidirectional contexts. Importantly, RAR preserves the integrity of
+the autoregressive modeling framework, ensuring full compatibility with
+language modeling while significantly improving performance in image
+generation. On the ImageNet-256 benchmark, RAR achieves an FID score of 1.48,
+not only surpassing prior state-of-the-art autoregressive image generators but
+also outperforming leading diffusion-based and masked transformer-based
+methods. Code and models will be made available at
+https://github.com/bytedance/1d-tokenizer","Yu, Qihang and He, Ju and Deng, Xueqing and Shen, Xiaohui and Chen, Liang-Chieh",2024,,,,arXiv preprint arXiv:2411.00776
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,radford2019gpt2,\cite{radford2019gpt2},Language models are unsupervised multitask learners,,,"Radford, Alec and Wu, Jeffrey and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya and others",2019,,,,OpenAI blog
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,holtzman2019top_p,\cite{holtzman2019top_p},The Curious Case of Neural Text Degeneration,http://arxiv.org/abs/1904.09751v2,"Despite considerable advancements with deep neural language models, the
+enigma of neural text degeneration persists when these models are tested as
+text generators. The counter-intuitive empirical observation is that even
+though the use of likelihood as training objective leads to high quality models
+for a broad range of language understanding tasks, using likelihood as a
+decoding objective leads to text that is bland and strangely repetitive.
+  In this paper, we reveal surprising distributional differences between human
+text and machine text. In addition, we find that decoding strategies alone can
+dramatically effect the quality of machine text, even when generated from
+exactly the same neural language model. Our findings motivate Nucleus Sampling,
+a simple but effective method to draw the best out of neural generation. By
+sampling text from the dynamic nucleus of the probability distribution, which
+allows for diversity while effectively truncating the less reliable tail of the
+distribution, the resulting text better demonstrates the quality of human text,
+yielding enhanced diversity without sacrificing fluency and coherence.","Holtzman, Ari and Buys, Jan and Du, Li and Forbes, Maxwell and Choi, Yejin",2019,,,,arXiv preprint arXiv:1904.09751
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,zhang2024edt,\cite{zhang2024edt},"EDT: Improving Large Language Models' Generation by Entropy-based
+  Dynamic Temperature Sampling",http://arxiv.org/abs/2403.14541v2,"Recently, Large Language Models (LLMs) have demonstrated outstanding
+performance across a wide range of downstream language tasks. Temperature
+sampling is a commonly used decoding strategy for LLMs' generation process.
+However, a fixed temperature parameter is used in most cases, which may not
+always be an optimal choice for balancing generation quality and diversity. In
+this paper, we propose an effective Entropy-based Dynamic Temperature (EDT)
+Sampling method, to achieve a more balanced performance in terms of both
+generation quality and diversity by dynamically selecting the temperature
+parameter. Additionally, we also show model performance and comprehensive
+analyses for 4 different generation benchmarks. Our experiments show that EDT
+significantly outperforms the existing strategies across different tasks.","Zhang, Shimao and Bao, Yu and Huang, Shujian",2024,,,,arXiv preprint arXiv:2403.14541
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,keskar2019repetition_penalty,\cite{keskar2019repetition_penalty},"CTRL: A Conditional Transformer Language Model for Controllable
+  Generation",http://arxiv.org/abs/1909.05858v2,"Large-scale language models show promising text generation capabilities, but
+users cannot easily control particular aspects of the generated text. We
+release CTRL, a 1.63 billion-parameter conditional transformer language model,
+trained to condition on control codes that govern style, content, and
+task-specific behavior. Control codes were derived from structure that
+naturally co-occurs with raw text, preserving the advantages of unsupervised
+learning while providing more explicit control over text generation. These
+codes also allow CTRL to predict which parts of the training data are most
+likely given a sequence. This provides a potential method for analyzing large
+amounts of data via model-based source attribution. We have released multiple
+full-sized, pretrained versions of CTRL at https://github.com/salesforce/ctrl.","Keskar, Nitish Shirish and McCann, Bryan and Varshney, Lav R and Xiong, Caiming and Socher, Richard",2019,,,,arXiv preprint arXiv:1909.05858
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,chuang2023dola,\cite{chuang2023dola},"DoLa: Decoding by Contrasting Layers Improves Factuality in Large
+  Language Models",http://arxiv.org/abs/2309.03883v2,"Despite their impressive capabilities, large language models (LLMs) are prone
+to hallucinations, i.e., generating content that deviates from facts seen
+during pretraining. We propose a simple decoding strategy for reducing
+hallucinations with pretrained LLMs that does not require conditioning on
+retrieved external knowledge nor additional fine-tuning. Our approach obtains
+the next-token distribution by contrasting the differences in logits obtained
+from projecting the later layers versus earlier layers to the vocabulary space,
+exploiting the fact that factual knowledge in an LLMs has generally been shown
+to be localized to particular transformer layers. We find that this Decoding by
+Contrasting Layers (DoLa) approach is able to better surface factual knowledge
+and reduce the generation of incorrect facts. DoLa consistently improves the
+truthfulness across multiple choices tasks and open-ended generation tasks, for
+example improving the performance of LLaMA family models on TruthfulQA by
+12-17% absolute points, demonstrating its potential in making LLMs reliably
+generate truthful facts.","Chuang, Yung-Sung and Xie, Yujia and Luo, Hongyin and Kim, Yoon and Glass, James and He, Pengcheng",2023,,,,arXiv preprint arXiv:2309.03883
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,leviathan2023speculative_decoding,\cite{leviathan2023speculative_decoding},Fast Inference from Transformers via Speculative Decoding,http://arxiv.org/abs/2211.17192v2,"Inference from large autoregressive models like Transformers is slow -
+decoding K tokens takes K serial runs of the model. In this work we introduce
+speculative decoding - an algorithm to sample from autoregressive models faster
+without any changes to the outputs, by computing several tokens in parallel. At
+the heart of our approach lie the observations that (1) hard language-modeling
+tasks often include easier subtasks that can be approximated well by more
+efficient models, and (2) using speculative execution and a novel sampling
+method, we can make exact decoding from the large models faster, by running
+them in parallel on the outputs of the approximation models, potentially
+generating several tokens concurrently, and without changing the distribution.
+Our method can accelerate existing off-the-shelf models without retraining or
+architecture changes. We demonstrate it on T5-XXL and show a 2X-3X acceleration
+compared to the standard T5X implementation, with identical outputs.","Leviathan, Yaniv and Kalman, Matan and Matias, Yossi",2023,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,chen2023accelerating,\cite{chen2023accelerating},Accelerating Large Language Model Decoding with Speculative Sampling,http://arxiv.org/abs/2302.01318v1,"We present speculative sampling, an algorithm for accelerating transformer
+decoding by enabling the generation of multiple tokens from each transformer
+call. Our algorithm relies on the observation that the latency of parallel
+scoring of short continuations, generated by a faster but less powerful draft
+model, is comparable to that of sampling a single token from the larger target
+model. This is combined with a novel modified rejection sampling scheme which
+preserves the distribution of the target model within hardware numerics. We
+benchmark speculative sampling with Chinchilla, a 70 billion parameter language
+model, achieving a 2-2.5x decoding speedup in a distributed setup, without
+compromising the sample quality or making modifications to the model itself.","Chen, Charlie and Borgeaud, Sebastian and Irving, Geoffrey and Lespiau, Jean-Baptiste and Sifre, Laurent and Jumper, John",2023,,,,arXiv preprint arXiv:2302.01318
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,meister2020beam_search,\cite{meister2020beam_search},"If beam search is the answer, what was the question?",http://arxiv.org/abs/2010.02650v2,"Quite surprisingly, exact maximum a posteriori (MAP) decoding of neural
+language generators frequently leads to low-quality results. Rather, most
+state-of-the-art results on language generation tasks are attained using beam
+search despite its overwhelmingly high search error rate. This implies that the
+MAP objective alone does not express the properties we desire in text, which
+merits the question: if beam search is the answer, what was the question? We
+frame beam search as the exact solution to a different decoding objective in
+order to gain insights into why high probability under a model alone may not
+indicate adequacy. We find that beam search enforces uniform information
+density in text, a property motivated by cognitive science. We suggest a set of
+decoding objectives that explicitly enforce this property and find that exact
+decoding with these objectives alleviates the problems encountered when
+decoding poorly calibrated language generation models. Additionally, we analyze
+the text produced using various decoding strategies and see that, in our neural
+machine translation experiments, the extent to which this property is adhered
+to strongly correlates with BLEU.","Meister, Clara and Vieira, Tim and Cotterell, Ryan",2020,,,,arXiv preprint arXiv:2010.02650
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,snell2024lookahead,\cite{snell2024lookahead},Scaling llm test-time compute optimally can be more effective than scaling model parameters,,,"Snell, Charlie and Lee, Jaehoon and Xu, Kelvin and Kumar, Aviral",2024,,,,arXiv preprint arXiv:2408.03314
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,guan2025rstar,\cite{guan2025rstar},rStar-Math: Small LLMs Can Master Math Reasoning with Self-Evolved Deep Thinking,,,"Guan, Xinyu and Zhang, Li Lyna and Liu, Yifei and Shang, Ning and Sun, Youran and Zhu, Yi and Yang, Fan and Yang, Mao",2025,,,,arXiv preprint arXiv:2501.04519
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,lightman2023letsverifystepstep,\cite{lightman2023letsverifystepstep},Let's Verify Step by Step,http://arxiv.org/abs/2305.20050v1,"In recent years, large language models have greatly improved in their ability
+to perform complex multi-step reasoning. However, even state-of-the-art models
+still regularly produce logical mistakes. To train more reliable models, we can
+turn either to outcome supervision, which provides feedback for a final result,
+or process supervision, which provides feedback for each intermediate reasoning
+step. Given the importance of training reliable models, and given the high cost
+of human feedback, it is important to carefully compare the both methods.
+Recent work has already begun this comparison, but many questions still remain.
+We conduct our own investigation, finding that process supervision
+significantly outperforms outcome supervision for training models to solve
+problems from the challenging MATH dataset. Our process-supervised model solves
+78% of problems from a representative subset of the MATH test set.
+Additionally, we show that active learning significantly improves the efficacy
+of process supervision. To support related research, we also release PRM800K,
+the complete dataset of 800,000 step-level human feedback labels used to train
+our best reward model.",Hunter Lightman and Vineet Kosaraju and Yura Burda and Harri Edwards and Bowen Baker and Teddy Lee and Jan Leike and John Schulman and Ilya Sutskever and Karl Cobbe,2023,,https://arxiv.org/abs/2305.20050,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,snell2024scalingllmtts,\cite{snell2024scalingllmtts},Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters,,,Charlie Snell and Jaehoon Lee and Kelvin Xu and Aviral Kumar,2024,,https://arxiv.org/abs/2408.03314,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,teng2024sjd,\cite{teng2024sjd},"Accelerating Auto-regressive Text-to-Image Generation with Training-free
+  Speculative Jacobi Decoding",http://arxiv.org/abs/2410.01699v2,"The current large auto-regressive models can generate high-quality,
+high-resolution images, but these models require hundreds or even thousands of
+steps of next-token prediction during inference, resulting in substantial time
+consumption. In existing studies, Jacobi decoding, an iterative parallel
+decoding algorithm, has been used to accelerate the auto-regressive generation
+and can be executed without training. However, the Jacobi decoding relies on a
+deterministic criterion to determine the convergence of iterations. Thus, it
+works for greedy decoding but is incompatible with sampling-based decoding
+which is crucial for visual quality and diversity in the current
+auto-regressive text-to-image generation. In this paper, we propose a
+training-free probabilistic parallel decoding algorithm, Speculative Jacobi
+Decoding (SJD), to accelerate auto-regressive text-to-image generation. By
+introducing a probabilistic convergence criterion, our SJD accelerates the
+inference of auto-regressive text-to-image generation while maintaining the
+randomness in sampling-based token decoding and allowing the model to generate
+diverse images. Specifically, SJD facilitates the model to predict multiple
+tokens at each step and accepts tokens based on the probabilistic criterion,
+enabling the model to generate images with fewer steps than the conventional
+next-token-prediction paradigm. We also investigate the token initialization
+strategies that leverage the spatial locality of visual data to further improve
+the acceleration ratio under specific scenarios. We conduct experiments for our
+proposed SJD on multiple auto-regressive text-to-image generation models,
+showing the effectiveness of model acceleration without sacrificing the visual
+quality. The code of our work is available here:
+https://github.com/tyshiwo1/Accelerating-T2I-AR-with-SJD/.","Teng, Yao and Shi, Han and Liu, Xian and Ning, Xuefei and Dai, Guohao and Wang, Yu and Li, Zhenguo and Liu, Xihui",2024,,,,arXiv preprint arXiv:2410.01699
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,jang2025lantern,\cite{jang2025lantern},"LANTERN: Accelerating Visual Autoregressive Models with Relaxed
+  Speculative Decoding",http://arxiv.org/abs/2410.03355v3,"Auto-Regressive (AR) models have recently gained prominence in image
+generation, often matching or even surpassing the performance of diffusion
+models. However, one major limitation of AR models is their sequential nature,
+which processes tokens one at a time, slowing down generation compared to
+models like GANs or diffusion-based methods that operate more efficiently.
+While speculative decoding has proven effective for accelerating LLMs by
+generating multiple tokens in a single forward, its application in visual AR
+models remains largely unexplored. In this work, we identify a challenge in
+this setting, which we term \textit{token selection ambiguity}, wherein visual
+AR models frequently assign uniformly low probabilities to tokens, hampering
+the performance of speculative decoding. To overcome this challenge, we propose
+a relaxed acceptance condition referred to as LANTERN that leverages the
+interchangeability of tokens in latent space. This relaxation restores the
+effectiveness of speculative decoding in visual AR models by enabling more
+flexible use of candidate tokens that would otherwise be prematurely rejected.
+Furthermore, by incorporating a total variation distance bound, we ensure that
+these speed gains are achieved without significantly compromising image quality
+or semantic coherence. Experimental results demonstrate the efficacy of our
+method in providing a substantial speed-up over speculative decoding. In
+specific, compared to a na\""ive application of the state-of-the-art speculative
+decoding, LANTERN increases speed-ups by $\mathbf{1.75}\times$ and
+$\mathbf{1.82}\times$, as compared to greedy decoding and random sampling,
+respectively, when applied to LlamaGen, a contemporary visual AR model. The
+code is publicly available at https://github.com/jadohu/LANTERN.",Doohyuk Jang and Sihwan Park and June Yong Yang and Yeonsung Jung and Jihun Yun and Souvik Kundu and Sung-Yub Kim and Eunho Yang,2025,,https://arxiv.org/abs/2410.03355,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,leviathan2023spec_decode,\cite{leviathan2023spec_decode},Fast Inference from Transformers via Speculative Decoding,http://arxiv.org/abs/2211.17192v2,"Inference from large autoregressive models like Transformers is slow -
+decoding K tokens takes K serial runs of the model. In this work we introduce
+speculative decoding - an algorithm to sample from autoregressive models faster
+without any changes to the outputs, by computing several tokens in parallel. At
+the heart of our approach lie the observations that (1) hard language-modeling
+tasks often include easier subtasks that can be approximated well by more
+efficient models, and (2) using speculative execution and a novel sampling
+method, we can make exact decoding from the large models faster, by running
+them in parallel on the outputs of the approximation models, potentially
+generating several tokens concurrently, and without changing the distribution.
+Our method can accelerate existing off-the-shelf models without retraining or
+architecture changes. We demonstrate it on T5-XXL and show a 2X-3X acceleration
+compared to the standard T5X implementation, with identical outputs.","Leviathan, Yaniv and Kalman, Matan and Matias, Yossi",2023,,,,
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,he2024zipar,\cite{he2024zipar},Zipar: Accelerating autoregressive image generation through spatial locality,,,"He, Yefei and Chen, Feng and He, Yuanyu and He, Shaoxuan and Zhou, Hong and Zhang, Kaipeng and Zhuang, Bohan",2024,,,,arXiv preprint arXiv:2412.04062
+Towards Better & Faster Autoregressive Image Generation: From the Perspective of Entropy,http://arxiv.org/abs/2510.09012v1,wang2024par,\cite{wang2024par},Parallelized Autoregressive Visual Generation,http://arxiv.org/abs/2412.15119v3,"Autoregressive models have emerged as a powerful approach for visual
+generation but suffer from slow inference speed due to their sequential
+token-by-token prediction process. In this paper, we propose a simple yet
+effective approach for parallelized autoregressive visual generation that
+improves generation efficiency while preserving the advantages of
+autoregressive modeling. Our key insight is that parallel generation depends on
+visual token dependencies-tokens with weak dependencies can be generated in
+parallel, while strongly dependent adjacent tokens are difficult to generate
+together, as their independent sampling may lead to inconsistencies. Based on
+this observation, we develop a parallel generation strategy that generates
+distant tokens with weak dependencies in parallel while maintaining sequential
+generation for strongly dependent local tokens. Our approach can be seamlessly
+integrated into standard autoregressive models without modifying the
+architecture or tokenizer. Experiments on ImageNet and UCF-101 demonstrate that
+our method achieves a 3.6x speedup with comparable quality and up to 9.5x
+speedup with minimal quality degradation across both image and video generation
+tasks. We hope this work will inspire future research in efficient visual
+generation and unified autoregressive modeling. Project page:
+https://yuqingwang1029.github.io/PAR-project.","Wang, Yuqing and Ren, Shuhuai and Lin, Zhijie and Han, Yujin and Guo, Haoyuan and Yang, Zhenheng and Zou, Difan and Feng, Jiashi and Liu, Xihui",2024,,,,arXiv preprint arXiv:2412.15119

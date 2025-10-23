@@ -1,0 +1,24 @@
+%
+% --- inline annotations
+%
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{\textbf{\color{red}[TODO: #1]}}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  breakautoindent=false,
+  breakindent=0ex
+  % postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+% --- disable by uncommenting  
+% \renewcommand{\TODO}[1]{}
+% \renewcommand{\todo}[1]{#1}
+

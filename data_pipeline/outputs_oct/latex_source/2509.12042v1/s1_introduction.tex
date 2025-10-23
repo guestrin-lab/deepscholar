@@ -1,0 +1,22 @@
+\section{Introduction}
+\label{sec:intro}
+
+Financial disclosures such as 10-K filings are key for investment analysis, regulatory monitoring, and risk assessment. They are long (often 100+ pages) and organized by SEC-mandated Items, for example, Item 1 (Business), Item 1A (Risk Factors), Item 7 (Management’s Discussion and Analysis), and Item 8 (Financial Statements). These sections mix narrative text, tables, and footnotes. Many financial NLP tasks, including sentiment analysis, trend detection, entity extraction, risk detection, and question answering, depend on first retrieving the right passages from these filings. Retrieval is difficult because relevant evidence may be spread across multiple Items or years, and domain synonyms (e.g., “sales” vs. “revenue”) and cross-references are common. Therefore, retrieval remains a major bottleneck for current work~\cite{docfinQA,edge2024localglobalgraphrag,selfrag2023,guo2024lightragsimplefastretrievalaugmented}.
+
+Recent efforts such as DocFinQA~\cite{docfinQA} underscore the difficulty of applying question answering to full-length financial filings. Yet these systems typically treat retrieval as a separate external step and rely on fixed-size chunks or off-the-shelf retrievers, without aligning it to the SEC Item hierarchy and the terminology used in financial reports. This reveals a broader limitation: current retrieval methods struggle with hierarchical organization, domain terms, and the need for precise evidence in financial analysis. FinGEAR directly addresses this gap by redefining retrieval as a first-class objective, tailored to the realities of regulatory filings and their analytical use cases.
+
+Recent advances in Large Language Models (LLMs)~\cite{achiam2023gpt, dubey2024llama, wu2023bloomberggpt} and Retrieval-Augmented Generation (RAG)~\cite{lewis2021retrievalaugmentedgenerationknowledgeintensivenlp} have enabled progress in financial document analysis by grounding outputs in retrieved evidence. Our analysis identifies three core limitations in current retrieval pipelines that constrain downstream performance across financial NLP tasks:
+(1) \textit{Lack of structure awareness}: fixed-size segmentation discards the logical hierarchy of disclosures, leading to misaligned context retrieval;
+(2) \textit{Lack of financial specificity}: generic retrievers fail to distinguish nuanced but crucial concepts (e.g., “net income” vs. “operating income”);
+(3) \textit{Dense-only retrieval is hard to control and explain}: pure vector similarity offers limited interpretability in evidence-heavy settings.
+
+To address these issues, we present \textbf{FinGEAR}, \textbf{Fin}ancial Mapping-\textbf{G}uided \textbf{E}nhanced \textbf{A}nswer \textbf{R}etrieval, a retrieval-centric framework designed for long, professionally authored, semi-structured disclosures. FinGEAR treats retrieval as the core problem, aiming to surface content that is structurally coherent, financially grounded, and useful across tasks.
+
+FinGEAR introduces three key contributions:
+(1) \textit{Document–Query hierarchical alignment}, which captures the structural layout of financial documents via a Summary Tree and enables query-sensitive retrieval through a structurally mirrored Question Tree;
+(2) \textit{Financial Lexicon-Aware Mapping (FLAM)}, which steers retrieval using domain-specific term clusters and lexicon-weighted scoring;
+(3) \textit{Hybrid dense–sparse retrieval}, which integrates sparse keyword anchoring with dense embedding similarity to balance interpretability and relevance.
+
+Evaluated on full 10-K filings, FinGEAR achieves up to 138\% higher retrieval F1 than flat RAG, up to 28\% over graph-based baselines (e.g., LightRAG), and up to 263\% over prior tree-based systems. Ablation studies confirm that these gains derive from the combined design of its structural and domain-aware modules. While FinGEAR does not directly optimize for reasoning tasks, downstream experiments confirm that enhanced retrieval leads to better answer accuracy, reinforcing retrieval quality as the foundation of financial document understanding.
+
+To our knowledge, FinGEAR is the first retrieval-first system tailored to financial disclosures. It offers a principled and modular foundation for structured, explainable, and task-flexible financial NLP.

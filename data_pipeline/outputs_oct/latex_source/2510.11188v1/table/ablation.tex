@@ -1,0 +1,37 @@
+\begin{table}[t]
+\small
+\centering
+\setlength{\tabcolsep}{2pt}
+\renewcommand\arraystretch{1.2}
+    \centering\small
+    \caption{\textbf{Ablation on dual-criterion context selection. } Columns show model performance when using both sequence homology and text/QA similarity (Dual), sequence homology only (SeqOnly), or text/QA similarity only (QAOnly) to guide exemplar selection. Metric: ROUGE-L.
+  }
+  \vspace{\baselineskip}
+    \begin{tabular}{l|ccc|ccc|ccc}
+\hline
+
+\hline
+
+\hline
+
+\hline
+        \multirow{2}{*}{\bf Model}& \multicolumn{3}{c|}{\bf ProtDescribe} & \multicolumn{3}{c|}{ \bf Protein2Text-QA}&\multicolumn{3}{c}{\bf Mol-Instructions}  \\
+         & Dual & SeqOnly & QAOnly & Dual & SeqOnly & QAOnly & Dual & SeqOnly & QAOnly\\ 
+\hline
+        Qwen2.5-3B~\cite{qwen2.5} & 27.32 & 20.10 & 25.24 & 28.66 & 27.76 & 25.73 & 21.35 & 20.16 & 19.68 \\
+        Mistral-7B-Instruct-v0.3~\cite{chaplot2023albert} & 29.39 & 19.46 & 25.24 & 28.59 & 21.85 & 22.68 & 19.12 & 14.31 & 17.40 \\
+         Qwen3-14B~\cite{qwen3technicalreport} & 35.53 & 22.90 & 30.52 & 25.93 & 23.26 & 25.87 & 19.82 & 15.07 & 17.58\\
+         kimi-k2~\cite{team2025kimi} & 35.91 & 28.58 & 32.43 & 21.04 & 17.10 & 18.06 & 15.54 & 12.79 & 12.09\\
+         GPT-4o~\cite{openai2024gpt4} & 35.51 & 27.72 & 32.59 & 26.86 & 23.90 & 26.45 & 19.89 & 17.46 & 17.08\\
+        
+        \cline{1-4}
+\hline
+
+\hline
+
+\hline
+
+\hline
+    \end{tabular}
+    \label{tab:ablation}
+\end{table}

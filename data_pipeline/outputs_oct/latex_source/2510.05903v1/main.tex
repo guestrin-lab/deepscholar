@@ -1,0 +1,69 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage[final]{iccv}
+
+\input{preamble}
+
+\definecolor{iccvblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,citecolor=iccvblue]{hyperref}
+
+\usepackage{xspace}
+\usepackage{framed}
+\usepackage[accsupp]{axessibility}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{cuted}
+
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{cf}\onedot} \def\Cf{\emph{Cf}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{\emph{et al}\onedot}
+\makeatother
+
+\newcommand{\Eq}{Eq.\xspace}
+\newcommand{\Eqs}{Eqs.\xspace}
+\newcommand{\Fig}{Fig.\xspace}
+\newcommand{\Figs}{Figs.\xspace}
+\newcommand{\Sec}{Sec.\xspace}
+\newcommand{\Tab}{Tab.\xspace}
+\newcommand{\Tabs}{Tabs.\xspace}
+\newcommand{\Eqref}[1]{Eq.~(\ref{#1})}
+
+\newcommand{\myparagraph}[1]{\vspace{0.5em}\noindent\textbf{#1}}
+
+\def\paperID{8342}
+\def\confName{ICCV}
+\def\confYear{2025}
+
+\title{Kaputt: A Large-Scale Dataset for Visual Defect Detection}
+
+\author{Sebastian H\"ofer$^{1}$ \and Dorian F. Henning$^{1}$ \and Artemij Amiranashvili$^{1}$ \and Douglas Morrison$^{1}$ \and Mariliza Tzes$^{1}$ \and Ingmar Posner$^{1,2}$ \and Marc Matvienko$^{1}$ \and Alessandro Rennola$^{1}$ \and Anton Milan$^{1}$\\
+\\
+$^{1}$Amazon, Fulfillment Technologies \& Robotics \quad $^{2}$University of Oxford, Applied AI Lab\\
+{\tt\small \{hoefersh,doriahen,artemija,morridou,mtzes,ingmarp,mrcmtv,arenno,antmila\}@amazon.com}
+}
+
+\begin{document}
+\maketitle
+\input{0_abstract}
+\input{1_intro}
+\input{2_related_work}
+\input{3_dataset}
+\input{4_baselines}
+\input{5_conclusion}
+\input{X_ack}
+{
+    \small
+    \bibliographystyle{ieeenat_fullname}
+    \bibliography{main}
+}
+
+\input{X_suppl}
+
+\end{document}

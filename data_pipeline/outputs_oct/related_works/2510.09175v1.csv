@@ -1,0 +1,77 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.09175v1,http://arxiv.org/abs/2510.09175v1,2025-10-10 09:17:21+00:00,Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,"Functional brain network (FBN) modeling often relies on local pairwise
+interactions, whose limitation in capturing high-order dependencies is
+theoretically analyzed in this paper. Meanwhile, the computational burden and
+heuristic nature of current hypergraph modeling approaches hinder end-to-end
+learning of FBN structures directly from data distributions. To address this,
+we propose to extract high-order FBN structures under global constraints, and
+implement this as a Global Constraints oriented Multi-resolution (GCM) FBN
+structure learning framework. It incorporates 4 types of global constraint
+(signal synchronization, subject identity, expected edge numbers, and data
+labels) to enable learning FBN structures for 4 distinct levels
+(sample/subject/group/project) of modeling resolution. Experimental results
+demonstrate that GCM achieves up to a 30.6% improvement in relative accuracy
+and a 96.3% reduction in computational time across 5 datasets and 2 task
+settings, compared to 9 baselines and 10 state-of-the-art methods. Extensive
+experiments validate the contributions of individual components and highlight
+the interpretability of GCM. This work offers a novel perspective on FBN
+structure learning and provides a foundation for interdisciplinary applications
+in cognitive neuroscience. Code is publicly available on
+https://github.com/lzhan94swu/GCM.","Because the idea of high-order FBN structure is addressed in hyper network modeling, and the design of \textbf{GCM} is inspired by the ideas of Brain Graph Interpretation (BGI)~\cite{zheng2024brainib} and Graph Structure Learning (GSL)~\cite{wang2023prose}, we briefly introduce the related works along these aspects in this section.
+
+\paragraph{Hyper Network Modeling}
+Research on FBNs aims to model and understand the cooperative functions of the brain and has prospered with the development of complex network theory~\cite{smith2011network}. Pairwise-based network modeling is a relatively mature field and has been approached from numerous perspectives utilizing diverse tools both in network science and machine learning~\cite{wang2023bayesian,power2010development,castaldo2023multi,qiao2018data, kan2022fbnetgen}. Comparatively, hypergraph inference is still in its early stages, but the field is evolving rapidly~\cite{wegner2024nonparametric,zang2024stepwise,tabar2024revealing}. Recent efforts span probabilistic modeling grounded in historical connectivity~\cite{young2021hypergraph,contisciani2022inference} or contagion traces~\cite{wang2022full}, as well as optimization-based formulations adapted to MTS~\cite{malizia2024reconstructing}. Despite these advances, their computational overhead presents a major bottleneck for scaling to real-world datasets~\cite{delabays2025hypergraph,malizia2024reconstructing}. More recently, a pioneering work proposes an end-to-end model for learning a fixed number of hyperedges from individual samples~\cite{qiu2024learning}. In contrast, our proposed \textbf{GCM}framework is explicitly designed to learn a single, generalizable FBN that represents an entire cohort (e.g., at the subject or group resolution), a distinct goal focused on cross-sample interpretability.
+
+\paragraph{Brain Graph Interpretation}
+Brain Graph Interpretation (BGI) methods aim to identify and select important edges in FBNs that contribute most to predictive outcomes~\cite{ghalmane2020extracting}. These approaches typically construct FBNs based on pairwise interactions and learn gradient-updated masks to filter structures. Some methods refine the masks dynamically during training~\cite{li2023interpretable,qu2025integrated}, others generate predictive subgraphs to facilitate interpretation~\cite{zheng2024brainib,zheng2024ci,luo2024knowledge}, integrate multiple modalities for cross-validation~\cite{qu2025integrated,gao2024comprehensive,qu2023interpretable}, or employ attention mechanisms as trainable criteria for edge selection~\cite{xu2024contrastive,hu2021gat,kim2021learning}. These methods rely on pairwise-constructed FBNs and apply post-hoc explanations without structural optimization. Consequently, their explanations are often resolution-agnostic, lacking explicit differentiation across semantic levels. In contrast, our framework directly models functional structures under global constraints at multiple modeling resolutions.
+
+\paragraph{Graph Structure Learning}
+Graph Structure Learning (GSL) treats input network structures as noisy or incomplete and aims to refine them based on node features and initial graphs~\cite{wang2023prose}. Traditional GSL research focuses on defending against adversarial attacks~\cite{ijcai2019p669,yuan2025dg}, later evolving toward task-specific structure optimization~\cite{ijcai2022reg}, mostly for node-level tasks on single graphs~\cite{wu2022nodeformer,ghiasi2025enhancing,zheng2024mulan,ng2024structure,qiu2024refining,xie2025robust}. Recent benchmarks~\cite{li2024gslb} highlight that only a few models, such as VIB-GSL~\cite{sun2022graph} and HGP-SL~\cite{zhang2019hierarchical}, address structure learning across multiple graphs. In brain network modeling, Zong et al.~\cite{zong2024new} introduced GSL to FBN learning by aligning brain regions using a diffusion model and constructing structures based on feature correlations.
+
+Unlike prior methods, \textbf{GCM} supports end-to-end extraction of high-order FBN structures by explicitly encoding modeling resolutions and global constraints, aspects often neglected in existing approaches.","Because the idea of high-order FBN structure is addressed in hyper network modeling, and the design of \textbf{GCM} is inspired by the ideas of Brain Graph Interpretation (BGI)~\cite{zheng2024brainib} and Graph Structure Learning (GSL)~\cite{wang2023prose}, we briefly introduce the related works along these aspects in this section.
+
+\paragraph{Hyper Network Modeling}
+Research on FBNs aims to model and understand the cooperative functions of the brain and has prospered with the development of complex network theory~\cite{smith2011network}. Pairwise-based network modeling is a relatively mature field and has been approached from numerous perspectives utilizing diverse tools both in network science and machine learning~\cite{wang2023bayesian,power2010development,castaldo2023multi,qiao2018data, kan2022fbnetgen}. Comparatively, hypergraph inference is still in its early stages, but the field is evolving rapidly~\cite{wegner2024nonparametric,zang2024stepwise,tabar2024revealing}. Recent efforts span probabilistic modeling grounded in historical connectivity~\cite{young2021hypergraph,contisciani2022inference} or contagion traces~\cite{wang2022full}, as well as optimization-based formulations adapted to MTS~\cite{malizia2024reconstructing}. Despite these advances, their computational overhead presents a major bottleneck for scaling to real-world datasets~\cite{delabays2025hypergraph,malizia2024reconstructing}. More recently, a pioneering work proposes an end-to-end model for learning a fixed number of hyperedges from individual samples~\cite{qiu2024learning}. In contrast, our proposed \textbf{GCM}framework is explicitly designed to learn a single, generalizable FBN that represents an entire cohort (e.g., at the subject or group resolution), a distinct goal focused on cross-sample interpretability.
+
+\paragraph{Brain Graph Interpretation}
+Brain Graph Interpretation (BGI) methods aim to identify and select important edges in FBNs that contribute most to predictive outcomes~\cite{ghalmane2020extracting}. These approaches typically construct FBNs based on pairwise interactions and learn gradient-updated masks to filter structures. Some methods refine the masks dynamically during training~\cite{li2023interpretable,qu2025integrated}, others generate predictive subgraphs to facilitate interpretation~\cite{zheng2024brainib,zheng2024ci,luo2024knowledge}, integrate multiple modalities for cross-validation~\cite{qu2025integrated,gao2024comprehensive,qu2023interpretable}, or employ attention mechanisms as trainable criteria for edge selection~\cite{xu2024contrastive,hu2021gat,kim2021learning}. These methods rely on pairwise-constructed FBNs and apply post-hoc explanations without structural optimization. Consequently, their explanations are often resolution-agnostic, lacking explicit differentiation across semantic levels. In contrast, our framework directly models functional structures under global constraints at multiple modeling resolutions.
+
+\paragraph{Graph Structure Learning}
+Graph Structure Learning (GSL) treats input network structures as noisy or incomplete and aims to refine them based on node features and initial graphs~\cite{wang2023prose}. Traditional GSL research focuses on defending against adversarial attacks~\cite{ijcai2019p669,yuan2025dg}, later evolving toward task-specific structure optimization~\cite{ijcai2022reg}, mostly for node-level tasks on single graphs~\cite{wu2022nodeformer,ghiasi2025enhancing,zheng2024mulan,ng2024structure,qiu2024refining,xie2025robust}. Recent benchmarks~\cite{li2024gslb} highlight that only a few models, such as VIB-GSL~\cite{sun2022graph} and HGP-SL~\cite{zhang2019hierarchical}, address structure learning across multiple graphs. In brain network modeling, Zong et al.~\cite{zong2024new} introduced GSL to FBN learning by aligning brain regions using a diffusion model and constructing structures based on feature correlations.
+
+Unlike prior methods, \textbf{GCM} supports end-to-end extraction of high-order FBN structures by explicitly encoding modeling resolutions and global constraints, aspects often neglected in existing approaches.","Because the idea of high-order FBN structure is addressed in hyper network modeling, and the design
+ofGCMis inspired by the ideas of Brain Graph Interpretation (BGI) [ 39] and Graph Structure
+Learning (GSL) [40], we briefly introduce the related works along these aspects in this section.
+Hyper Network ModelingResearch on FBNs aims to model and understand the cooperative
+functions of the brain and has prospered with the development of complex network theory [ 6].
+Pairwise-based network modeling is a relatively mature field and has been approached from numerous
+perspectives utilizing diverse tools both in network science and machine learning [ 9,41,42,43,44].
+Comparatively, hypergraph inference is still in its early stages, but the field is evolving rapidly [ 22,
+45,46]. Recent efforts span probabilistic modeling grounded in historical connectivity [ 20,47] or
+contagion traces [ 48], as well as optimization-based formulations adapted to MTS [ 24]. Despite
+these advances, their computational overhead presents a major bottleneck for scaling to real-world
+datasets [ 23,24]. More recently, a pioneering work proposes an end-to-end model for learning a fixed
+number of hyperedges from individual samples [ 49]. In contrast, our proposedGCMframework is
+explicitly designed to learn a single, generalizable FBN that represents an entire cohort (e.g., at the
+subject or group resolution), a distinct goal focused on cross-sample interpretability.
+Brain Graph InterpretationBrain Graph Interpretation (BGI) methods aim to identify and select
+important edges in FBNs that contribute most to predictive outcomes [ 50]. These approaches
+typically construct FBNs based on pairwise interactions and learn gradient-updated masks to filter
+structures. Some methods refine the masks dynamically during training [ 51,52], others generate
+predictive subgraphs to facilitate interpretation [ 39,53,54], integrate multiple modalities for cross-
+3
+validation [ 52,55,56], or employ attention mechanisms as trainable criteria for edge selection [ 57,
+58,59]. These methods rely on pairwise-constructed FBNs and apply post-hoc explanations without
+structural optimization. Consequently, their explanations are often resolution-agnostic, lacking
+explicit differentiation across semantic levels. In contrast, our framework directly models functional
+structures under global constraints at multiple modeling resolutions.
+Graph Structure LearningGraph Structure Learning (GSL) treats input network structures as
+noisy or incomplete and aims to refine them based on node features and initial graphs [ 40]. Traditional
+GSL research focuses on defending against adversarial attacks [ 60,61], later evolving toward task-
+specific structure optimization [ 62], mostly for node-level tasks on single graphs [ 63,64,65,66,
+67,68]. Recent benchmarks [ 69] highlight that only a few models, such as VIB-GSL [ 70] and
+HGP-SL [ 71], address structure learning across multiple graphs. In brain network modeling, Zong
+et al. [ 8] introduced GSL to FBN learning by aligning brain regions using a diffusion model and
+constructing structures based on feature correlations.
+Unlike prior methods,GCMsupports end-to-end extraction of high-order FBN structures by explicitly
+encoding modeling resolutions and global constraints, aspects often neglected in existing approaches."

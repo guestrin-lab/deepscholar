@@ -1,0 +1,104 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.21170v1,http://arxiv.org/abs/2509.21170v1,2025-09-25 13:51:56+00:00,Fine-Tuning LLMs to Analyze Multiple Dimensions of Code Review: A Maximum Entropy Regulated Long Chain-of-Thought Approach,"Large Language Models (LLMs) have shown great potential in supporting
+automated code review due to their impressive capabilities in context
+understanding and reasoning. However, these capabilities are still limited
+compared to human-level cognition because they are heavily influenced by the
+training data. Recent research has demonstrated significantly improved
+performance through fine-tuning LLMs with code review data. However, compared
+to human reviewers who often simultaneously analyze multiple dimensions of code
+review to better identify issues, the full potential of these methods is
+hampered by the limited or vague information used to fine-tune the models. This
+paper contributes MelcotCR, a chain-of-thought (COT) fine-tuning approach that
+trains LLMs with an impressive reasoning ability to analyze multiple dimensions
+of code review by harnessing long COT techniques to provide rich structured
+information. To address context loss and reasoning logic loss issues that
+frequently occur when LLMs process long COT prompts, we propose a solution that
+combines the Maximum Entropy (ME) modeling principle with pre-defined reasoning
+pathways in MelcotCR to enable more effective utilization of in-context
+knowledge within long COT prompts while strengthening the logical tightness of
+the reasoning process. Empirical evaluations on our curated MelcotCR dataset
+and the public CodeReviewer dataset reveal that a low-parameter base model,
+such as 14B Qwen2.5, fine-tuned with MelcotCR can surpass state-of-the-art
+methods in terms of the accuracy of detecting and describing code issues, with
+its performance remarkably on par with that of the 671B DeepSeek-R1 model.","\label{sec:relat}
+In this section, we review the related work that forms the foundation of this work, including automated code review, chain of thought, and maximum entropy.
+
+\subsection{Automated Code Review (ACR)}
+ACR is an essential aspect of improving software development efficiency, which aims to reduce the manual effort and time required for code assessment. The main focus of an ACR system is to detect potential code defects and suggest or generate relevant review comments. It typically comprises two components: defect detection and review comment recommendation/generation. 
+
+Defect detection aims to identify potential issues within code snippets under review. For instance, CodeT5~\cite{wang2021codet5} adopts a unified framework that supports both code understanding and generation tasks, thus facilitating multi-task learning. CodeBert~\cite{feng2020codebert} is a bimodal pre-training model tailored for programming languages and natural language, excelling in tasks such as natural language-based code search and code documentation generation. DACE~\cite{shi2019automatic} employs CNN and LSTM techniques to extract Diff features from the code, enabling the prediction of code quality in Diff patches. LogiCode~\cite{zhang2024logicode} leverages LLMs to detect logical anomalies, automatically generating Python code to identify issues such as incorrect component quantities or missing elements.
+
+Review comment recommendation/generation produces review comments through retrieval or generation methods. For example, LLaMA-Reviewer~\cite{lu2023llama} uses low-parameter fine-tuning techniques to enhance LLaMA, leading to impressive results in generating review comments. CodeReviewer~\cite{li2022codereviewer} achieves notable success in detecting code defects, generating review comments, and performing code repair tasks by developing pre-training tasks specifically designed for code review in an end-to-end manner. Notably, both studies utilize the same dataset~\cite{li2022codereviewer} for training and validating their models, assuming that the existence of review comments represents the ground truth, without evaluating whether these comments are genuinely related to the code fixes. DCR~\cite{gupta2018intelligent} learns the similarity between code commit `diffs' and review comments to retrieve comments relevant to specific code commits. CommentFinder ~\cite{hong2022commentfinder} employs deep learning techniques to retrieve pertinent code review comments, thus minimizing the time reviewers spend crafting these comments. The BitsAI-CR~\cite{ning2024defining} framework enhances ACR through a two-stage approach that combines a rule-based initial issue detection with a model called Reviewfilter for verification.  This system, implemented with a taxonomy of review rules,  achieves a precision rate of 75.0\% in review comment generation.
+% while maintaining an Outdated Rate of 26.7\% for the Go language at ByteDance.
+
+\subsection{Chain of Thought (COT)}
+COT is commonly applied in LLMs to assist in better problem-solving or decision-making~\cite{wei2022chain}. This process helps an LLM generate more accurate, context-aware, and logical output, particularly in complex tasks like code review, debugging, or code generation~\cite{10.1145/3690635, yu2024fine, nong2024chain}. COT requires breaking down a problem into smaller and manageable components and guiding the model to reason through each part step by step. For example, when analyzing code to identify potential issues, the model will first pinpoint the location of a potential problem, then describe the specific issue at that location, and finally suggest a repair solution~\cite{yu2024fine}. This sequential reasoning process helps improve the overall accuracy of the model's output and ensures that it understands the underlying issue, not just generating a quick response. 
+In addition, Yu Nong et al.~\cite{nong2024chain} investigated the use of LLMs and the COT prompting to address security vulnerabilities in software, which achieved impressive results. 
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{img/overview.pdf}
+    \caption{A schematic overview of the \MCot\ approach}
+    \label{fig:overview}
+\end{figure*}
+
+Long COT extends this idea to more complex, multi-step tasks in which the model is asked to engage in deeper reasoning, considering multiple stages or layers of a problem before reaching a conclusion~\cite{chen2025towards, xia2024beyond, wang2025multimodal}. Edward Yeo et al.~\cite{yeo2502demystifying} explored the mechanics of long COT reasoning in LLMs and found that long COT enhanced reasoning capabilities by enabling strategies such as backtracking and error correction. The researchers systematically investigated the conditions under which long COT emerged, highlighting the role of reinforcement learning (RL) in developing these capabilities. Not only in the field of coding, but also in many other non-coding fields such as translation, long COT has demonstrated extremely strong capabilities. Jiaan Wang et al.~\cite{wang2024drt} introduced DRT, a new method that used long COT reasoning to enhance neural machine translation (MT). Ruohong Zhang et al.~\cite{zhang2024improve} introduced a COT reasoning approach to improve visual-language models, which significantly enhanced performance in visual tasks by augmenting training data and incorporating reinforcement learning. It has been found that a longer reasoning process enables the model to handle tasks with more intricate dependencies, ultimately providing better solutions.
+
+\subsection{Maximum Entropy Methods}
+Traditional RL typically aims to maximize cumulative reward~\cite{kaelbling1996reinforcement}. However, pursuing only high rewards can lead to overly ``deterministic'' policies, sacrificing exploration capability~\cite{arulkumaran2017deep}. To address this issue, researchers began to incorporate the idea of ME into RL~\cite{haarnoja2017reinforcement, schulman2017equivalence, haarnoja2018soft}. Soft Actor-Critic (SAC), proposed by Haarnoja et al.~\cite{haarnoja2018soft}, is currently one of the most representative ME-based RL algorithms. It is an off-policy deep RL algorithm that maximizes both the expected cumulative reward and the entropy of the policy. 
+
+The principle of Maximum Entropy (ME) originated in information theory~\cite{jaynes1957information}. Its core idea advocates that, given known constraints, the probability distribution with the greatest entropy (informational uncertainty) should be chosen to avoid inherent bias and local optima. In short, ME fundamentally shifts the objective of policy optimization in RL to ``maximize reward + maximize entropy''~\cite{levine2018reinforcement}.
+This strategy shows impressive efficacy in RL, e.g., in text classification and machine translation, ME classifiers avoid overfitting and effectively integrate diverse features by maximizing the entropy of the conditional probability distribution~\cite{nigam1999using, el2015arabic, och2002discriminative, ittycheriah2005maximum}. These early applications have laid the groundwork for extending the ME principle to complex decision-making systems.
+
+A long COT prompt can also be viewed as a continuous and complex decision-making process. Furthermore, during an ACR process—as previously discussed—there exists an inherent need to simultaneously consider multidimensional information and perform comprehensive analysis. These characteristics demonstrate substantial comparability with features already observed in current ME-based solutions.","In this section, we review the related work that forms the foundation of this work, including automated code review, chain of thought, and maximum entropy.
+
+\subsection{Automated Code Review (ACR)}
+ACR is an essential aspect of improving software development efficiency, which aims to reduce the manual effort and time required for code assessment. The main focus of an ACR system is to detect potential code defects and suggest or generate relevant review comments. It typically comprises two components: defect detection and review comment recommendation/generation. 
+
+Defect detection aims to identify potential issues within code snippets under review. For instance, CodeT5~\cite{wang2021codet5} adopts a unified framework that supports both code understanding and generation tasks, thus facilitating multi-task learning. CodeBert~\cite{feng2020codebert} is a bimodal pre-training model tailored for programming languages and natural language, excelling in tasks such as natural language-based code search and code documentation generation. DACE~\cite{shi2019automatic} employs CNN and LSTM techniques to extract Diff features from the code, enabling the prediction of code quality in Diff patches. LogiCode~\cite{zhang2024logicode} leverages LLMs to detect logical anomalies, automatically generating Python code to identify issues such as incorrect component quantities or missing elements.
+
+Review comment recommendation/generation produces review comments through retrieval or generation methods. For example, LLaMA-Reviewer~\cite{lu2023llama} uses low-parameter fine-tuning techniques to enhance LLaMA, leading to impressive results in generating review comments. CodeReviewer~\cite{li2022codereviewer} achieves notable success in detecting code defects, generating review comments, and performing code repair tasks by developing pre-training tasks specifically designed for code review in an end-to-end manner. Notably, both studies utilize the same dataset~\cite{li2022codereviewer} for training and validating their models, assuming that the existence of review comments represents the ground truth, without evaluating whether these comments are genuinely related to the code fixes. DCR~\cite{gupta2018intelligent} learns the similarity between code commit `diffs' and review comments to retrieve comments relevant to specific code commits. CommentFinder ~\cite{hong2022commentfinder} employs deep learning techniques to retrieve pertinent code review comments, thus minimizing the time reviewers spend crafting these comments. The BitsAI-CR~\cite{ning2024defining} framework enhances ACR through a two-stage approach that combines a rule-based initial issue detection with a model called Reviewfilter for verification.  This system, implemented with a taxonomy of review rules,  achieves a precision rate of 75.0\
+
+
+\subsection{Chain of Thought (COT)}
+COT is commonly applied in LLMs to assist in better problem-solving or decision-making~\cite{wei2022chain}. This process helps an LLM generate more accurate, context-aware, and logical output, particularly in complex tasks like code review, debugging, or code generation~\cite{10.1145/3690635, yu2024fine, nong2024chain}. COT requires breaking down a problem into smaller and manageable components and guiding the model to reason through each part step by step. For example, when analyzing code to identify potential issues, the model will first pinpoint the location of a potential problem, then describe the specific issue at that location, and finally suggest a repair solution~\cite{yu2024fine}. This sequential reasoning process helps improve the overall accuracy of the model's output and ensures that it understands the underlying issue, not just generating a quick response. 
+In addition, Yu Nong et al.~\cite{nong2024chain} investigated the use of LLMs and the COT prompting to address security vulnerabilities in software, which achieved impressive results. 
+
+
+
+Long COT extends this idea to more complex, multi-step tasks in which the model is asked to engage in deeper reasoning, considering multiple stages or layers of a problem before reaching a conclusion~\cite{chen2025towards, xia2024beyond, wang2025multimodal}. Edward Yeo et al.~\cite{yeo2502demystifying} explored the mechanics of long COT reasoning in LLMs and found that long COT enhanced reasoning capabilities by enabling strategies such as backtracking and error correction. The researchers systematically investigated the conditions under which long COT emerged, highlighting the role of reinforcement learning (RL) in developing these capabilities. Not only in the field of coding, but also in many other non-coding fields such as translation, long COT has demonstrated extremely strong capabilities. Jiaan Wang et al.~\cite{wang2024drt} introduced DRT, a new method that used long COT reasoning to enhance neural machine translation (MT). Ruohong Zhang et al.~\cite{zhang2024improve} introduced a COT reasoning approach to improve visual-language models, which significantly enhanced performance in visual tasks by augmenting training data and incorporating reinforcement learning. It has been found that a longer reasoning process enables the model to handle tasks with more intricate dependencies, ultimately providing better solutions.
+
+\subsection{Maximum Entropy Methods}
+Traditional RL typically aims to maximize cumulative reward~\cite{kaelbling1996reinforcement}. However, pursuing only high rewards can lead to overly ``deterministic'' policies, sacrificing exploration capability~\cite{arulkumaran2017deep}. To address this issue, researchers began to incorporate the idea of ME into RL~\cite{haarnoja2017reinforcement, schulman2017equivalence, haarnoja2018soft}. Soft Actor-Critic (SAC), proposed by Haarnoja et al.~\cite{haarnoja2018soft}, is currently one of the most representative ME-based RL algorithms. It is an off-policy deep RL algorithm that maximizes both the expected cumulative reward and the entropy of the policy. 
+
+The principle of Maximum Entropy (ME) originated in information theory~\cite{jaynes1957information}. Its core idea advocates that, given known constraints, the probability distribution with the greatest entropy (informational uncertainty) should be chosen to avoid inherent bias and local optima. In short, ME fundamentally shifts the objective of policy optimization in RL to ``maximize reward + maximize entropy''~\cite{levine2018reinforcement}.
+This strategy shows impressive efficacy in RL, e.g., in text classification and machine translation, ME classifiers avoid overfitting and effectively integrate diverse features by maximizing the entropy of the conditional probability distribution~\cite{nigam1999using, el2015arabic, och2002discriminative, ittycheriah2005maximum}. These early applications have laid the groundwork for extending the ME principle to complex decision-making systems.
+
+A long COT prompt can also be viewed as a continuous and complex decision-making process. Furthermore, during an ACR process—as previously discussed—there exists an inherent need to simultaneously consider multidimensional information and perform comprehensive analysis. These characteristics demonstrate substantial comparability with features already observed in current ME-based solutions.","In this section, we review the related work that forms the foundation of this work, including
+automated code review, chain of thought, and maximum entropy.
+2.1 Automated Code Review (ACR)
+ACR is an essential aspect of improving software development efficiency, which aims to reduce the
+manual effort and time required for code assessment. The main focus of an ACR system is to detect
+potential code defects and suggest or generate relevant review comments. It typically comprises
+two components: defect detection and review comment recommendation/generation.
+Defect detection aims to identify potential issues within code snippets under review. For instance,
+CodeT5 [ 50] adopts a unified framework that supports both code understanding and generation
+tasks, thus facilitating multi-task learning. CodeBert [ 10] is a bimodal pre-training model tailored
+for programming languages and natural language, excelling in tasks such as natural language-based
+code search and code documentation generation. DACE [ 44] employs CNN and LSTM techniques
+to extract Diff features from the code, enabling the prediction of code quality in Diff patches.
+LogiCode [ 62] leverages LLMs to detect logical anomalies, automatically generating Python code
+to identify issues such as incorrect component quantities or missing elements.
+Review comment recommendation/generation produces review comments through retrieval or
+generation methods. For example, LLaMA-Reviewer [ 31] uses low-parameter fine-tuning techniques
+to enhance LLaMA, leading to impressive results in generating review comments. CodeReviewer [ 30]
+achieves notable success in detecting code defects, generating review comments, and performing
+code repair tasks by developing pre-training tasks specifically designed for code review in an
+end-to-end manner. Notably, both studies utilize the same dataset [ 30] for training and validating
+their models, assuming that the existence of review comments represents the ground truth, without
+evaluating whether these comments are genuinely related to the code fixes. DCR [ 14] learns the
+similarity between code commit ‘diffs’ and review comments to retrieve comments relevant to
+specific code commits. CommentFinder [ 17] employs deep learning techniques to retrieve pertinent
+code review comments, thus minimizing the time reviewers spend crafting these comments. The
+BitsAI-CR [ 33] framework enhances ACR through a two-stage approach that combines a rule-based
+J. ACM, Vol. 37, No. 4, Article"

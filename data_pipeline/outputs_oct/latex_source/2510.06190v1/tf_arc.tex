@@ -1,0 +1,70 @@
+\section{Encoder Transformer Architecture} \label{appendix:encoder}
+
+This section presents encoder-only Transformers, which form the backbone of MDM. We will first establish the sequence-wise extension operation, then define the core components, including bidirectional self-attention, multi-head mechanisms, and feed-forward layers, before assembling the complete architecture.
+
+We consider an encoder-only Transformer with $H$ heads, $L$ layers, hidden size $d$, and feed-forward width $w$. We will use the following notations:
+
+\begin{definition}[Position-Indexed Seq-to-Embedding Function]\label{def:Fpos}
+    For a set $B$, let $\F(B)$ denote the set of all functions $\psi$ such that for every sequence $x=(x_1,\ldots,x_n)\in\Sigma^*$ and every index $i\in[n]$, the value $\psi(x,i)\in B$ is defined. We write this succinctly as
+    \begin{equation}
+        \psi:(\Sigma^*,\mathbb N)\to B.
+    \end{equation}
+and call this \emph{position-indexed seq-to-embedding function}. We also define $\F = \cup_{d\in \mathbb{N}^+} \F(\mathbb{R}^d)$ as the union of all such classes across real spaces of all output dimensions.
+\end{definition}
+    
+\begin{definition}[Canonical Extension to Seq-to-Seq Function]\label{def:seq-ext}
+Given a position-indexed seq-to-embedding function $\psi \in \F(B)$, its \emph{canonical extension} is defined as:
+\begin{equation}
+    \overline{\psi}:\Sigma^* \to B^*
+    \quad\text{where}\quad
+    [\overline{\psi}(x)]_i = \psi(x,i)\qquad(i\in[|x|]).
+\end{equation}
+For elementwise functions $g:\mathbb{R}^d\to\mathbb{R}^{d'}$, we define $\overline{g}:(\mathbb{R}^d)^*\to(\mathbb{R}^{d'})^*$ by $[\overline{g}(h_{1:n})]_i=g(h_i)$, which is a special case where $\psi(h_{1:n},i) = g(h_i)$ (ignoring cross-position context). When the arity is clear, we reuse the bar notation for both position-indexed and elementwise extensions.
+\end{definition}
+
+We now define the individual components of encoder Transformers:
+
+\paragraph{Bidirectional Self-Attention.} The key difference from decoder Transformers is bidirectional attention, where each position can attend to all positions in the sequence. Let $d_h$ be the head dimension. For $W_Q,W_K,W_V\in\mathbb{R}^{d_h\times d}$ and $W_O\in\mathbb{R}^{d\times d_h}$, we define single-head attention on sequence of embeddings $h_{1:n}\in(\mathbb{R}^d)^n$ for any $n\in\mathbb{N}^+$:
+\begin{align}
+q_i&=W_Q h_i,\quad k_j=W_K h_j,\quad v_j=W_V h_j \\
+[\sa_\theta(h_{1:n})]_i &= W_O\sum_{j=1}^n \alpha_{ij} v_j
+\end{align}
+with $\alpha_{i,\cdot}=\softmax\big((q_i^\top k_j)_{j=1}^n\big)$, $\theta=(W_Q,W_K,W_V,W_O)$. Position $i$ attends to all $j\in[n]$ without causal restrictions. We use standard $1/\sqrt{d_h}$ scaling.
+
+\paragraph{Multi-Head Attention.} With $\theta_{\mha}=(\theta^{(1)},\ldots,\theta^{(H)})$, we combine heads via summation:
+\begin{equation}
+[\mha_{\theta_{\mha}}(h_{1:n})]_i = \sum_{t=1}^{H} [\sa_{\theta^{(t)}}(h_{1:n})]_i
+\end{equation}
+for any $i\in[n]$. Note that this differs from practical implementations which concatenate heads with dimension $d/H$ each, but maintains equivalent theoretical expressivity.
+
+\paragraph{Feed-Forward and Projection.} Let $w=d_{\ff}$. For $W_1\in\mathbb{R}^{w\times d}$ and $W_2\in\mathbb{R}^{d\times w}$:
+\begin{equation}
+\ff_\theta(h)=W_2\,\sigma(W_1 h)
+\end{equation}
+For output projection, $\proj_\vartheta:\mathbb{R}^d\to\mathbb{R}^{|\Sigma|}$ with $\proj_\vartheta(h)=\vartheta h$ and $\vartheta\in\mathbb{R}^{|\Sigma|\times d}$. We apply these via sequence-wise extension: $\overline{\ff}$ and $\overline{\proj}$. 
+
+For AP-MDM as described in \Cref{sec:any_process}, besides the above heads for $\unmask$, it would require three additional binary classification heads on top of the final layer: $\proj_R: \mathbb{R}^d \to \mathbb{R}$ for $\remask$, $\proj_I: \mathbb{R}^d \to \mathbb{R}$ for $\inser$, and $\proj_D: \mathbb{R}^d \to \mathbb{R}$ for $\delete$ operations, each followed by sigmoid activation. Therefore, $\proj_\vartheta$ is a mapping from $\mathbb{R}^d$ to $\mathbb{R}^{|\Sigma|+3}$.
+
+\paragraph{Embeddings.} Define token embedding $\te:\Sigma\to\mathbb{R}^d$ and positional embedding $\pe:\mathbb{N}^+\to\mathbb{R}^d$ (which can be flexibly chosen and will be specified when used). Combined as $\overline{\te}+\overline{\pe}$. We write $\te,\pe$ for their sequence-wise extensions when clear from context.
+
+\paragraph{Residual Connections.} The identity function $\Id_d: \mathbb{R}^d \to \mathbb{R}^d$ is defined by $\Id_d(x) = x$. A \emph{residual connection} is defined as $f + \Id_d$, where $\Id_d$ is the identity function.
+
+
+Next, we assemble these components into the encoder transformer architecture:
+
+\begin{definition}[Encoder Transformer layer]
+\label{def:enc-layer}
+An encoder layer is defined as:
+\begin{equation}
+\EncTF_{\mha,\ff} = (\overline{\ff_{\ff}}+\overline{\Id_d})\circ(\mha_{\theta_\mha}+\overline{\Id_d}):(\mathbb{R}^d)^*\to(\mathbb{R}^d)^*
+\end{equation}
+\end{definition}
+
+\begin{definition}[Encoder Transformer]
+\label{def:encoder}
+With parameters $\theta=(\theta_{\te}$,$\theta_{\pe}$,$(\theta^{(\ell)}_{\mha})_{\ell=1}^L$,$ (\theta^{(\ell)}_{\ff})_{\ell=1}^L$,$\theta_{\proj})$, the encoder transformer is:
+\begin{equation}
+\Enc_\theta = \overline{\proj_{\theta_{\proj}}}\circ\left(\bigcirc_{\ell=1}^L \EncTF_{\theta^{(\ell)}_{\mha},\theta^{(\ell)}_{\ff}}\right) \circ\big(\te_{\theta_{\te}}+\pe_{\theta_{\pe}}\big)
+\end{equation}
+The model applies embeddings, then $L$ encoder layers, then position-wise projection to vocabulary logits. Output length equals input length $n$.
+\end{definition}

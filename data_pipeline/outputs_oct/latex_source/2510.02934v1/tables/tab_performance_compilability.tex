@@ -1,0 +1,83 @@
+
+\begin{table*}\centering
+\caption{{Correctness assessment performance in \textit{\textbf{compilability}} criterion }}
+\label{tab:rq1_performance_compilability}
+%\resizebox{ extwidth}{!}{ % use this if the table is too large
+\begin{tabular}{l|l|rr|rrr}\toprule
+Code LLM& &\multicolumn{2}{c}{Independent-unit code} &\multicolumn{2}{|c}{Repo-level code} \\\cmidrule{3-6}
+ & &Accuracy &F1-Score &Accuracy &F1-Score \\
+ \midrule
+\multirow{7}{*}{\deepseek-1.3B} 
+
+&\cellcolor[HTML]{ffe599}\oracle &\cellcolor[HTML]{ffe599}0.90 &\cellcolor[HTML]{ffe599}0.86 &\cellcolor[HTML]{ffe599}0.67 &\cellcolor[HTML]{ffe599}0.67  \\
+&\inhouse &0.53 &0.37 &0.48 &0.32 \\
+&\external &\textbf{0.91} &\textbf{0.89} &0.55 &0.50 \\
+&CodeBERT &0.84 &0.83 &0.61 &0.60 \\
+&CodeT5+ &0.88 &0.84 &0.61 &0.59 \\
+&\openia &0.88 &0.85 &0.60 &0.59 \\
+% &\oracle &\underline{0.90} &\underline{0.86} &\textbf{0.67} &\textbf{0.67} \\
+&\tool &\text{0.89} &\text{0.85} &\textbf{0.65} &\textbf{0.65} \\
+
+
+\midrule
+\multirow{7}{*}{\deepseek-6.7B} 
+&\cellcolor[HTML]{ffe599}\oracle &\cellcolor[HTML]{ffe599}0.96 &\cellcolor[HTML]{ffe599}0.94 &\cellcolor[HTML]{ffe599}0.68 &\cellcolor[HTML]{ffe599}0.68  \\
+
+&\inhouse &0.76 &0.65 &0.61 &0.46 \\
+&\external &0.94 &0.94 &0.61 &0.55 \\
+&CodeBERT &0.94 &0.93 &0.57 &0.58 \\
+&CodeT5+ &\textbf{0.96} &0.94 &0.58 &0.59 \\
+&\openia &\textbf{0.96} &0.94 &0.61 &0.61 \\
+% &\oracle &\textbf{0.96} &0.94 &\textbf{0.68} &\textbf{0.68} \\
+&\tool &\textbf{0.96} &\textbf{0.95} &\textbf{0.64} &\textbf{0.64} \\
+
+\midrule
+\multirow{7}{*}{\codellama-7B} 
+&\cellcolor[HTML]{ffe599}\oracle &\cellcolor[HTML]{ffe599}0.90 &\cellcolor[HTML]{ffe599}0.86 &\cellcolor[HTML]{ffe599}0.66 &\cellcolor[HTML]{ffe599}0.66  \\
+
+&\inhouse &0.39 &0.22 &0.58 &0.42 \\
+&\external &\textbf{0.91} &\textbf{0.88} &0.60 &0.55 \\
+&CodeBERT &0.87 &0.84 &0.55 &0.55 \\
+&CodeT5+ &0.56 &0.65 &0.60 &0.59 \\
+&\openia &0.88 &0.86 &0.60 &0.61 \\
+% &\oracle &0.90 &0.86 &\textbf{0.66} &\textbf{0.66} \\
+&\tool &0.90 &0.86 &\textbf{0.66} &\textbf{0.66} \\
+
+\midrule
+\multirow{7}{*}{\codellama-13B} 
+&\cellcolor[HTML]{ffe599}\oracle &\cellcolor[HTML]{ffe599}0.90 &\cellcolor[HTML]{ffe599}0.88 &\cellcolor[HTML]{ffe599}0.70 &\cellcolor[HTML]{ffe599}0.71  \\
+
+&\inhouse &0.41 &0.23 &0.57 &0.42 \\
+&\external &\textbf{0.91} &\textbf{0.91} &0.60 &0.54 \\
+&CodeBERT &0.81 &0.79 &0.60 &0.59 \\
+&CodeT5+ &0.90 &0.88 &0.62 &0.62 \\
+&\openia &0.87 &0.87 &0.66 &0.66 \\
+% &\oracle &0.90 &0.88 &\textbf{0.70} &\textbf{0.71} \\
+&\tool &0.90 &0.87 &\textbf{0.69} &\textbf{0.69} \\
+
+\midrule
+\multirow{7}{*}{\magiccoder-7B} 
+&\cellcolor[HTML]{ffe599}\oracle &\cellcolor[HTML]{ffe599}0.96 &\cellcolor[HTML]{ffe599}0.94 &\cellcolor[HTML]{ffe599}0.68 &\cellcolor[HTML]{ffe599}0.69  \\
+
+&\inhouse &0.73 &0.62 &0.60 &0.45 \\
+&\external &0.95 &\textbf{0.95} &\textbf{0.66} &0.63 \\
+&CodeBERT &0.94 &0.93 &0.58 &0.58 \\
+&CodeT5+ &0.88 &0.90 &0.57 &0.57 \\
+&\openia &\textbf{0.96} &0.94 &0.61 &0.61 \\
+% &\oracle &\textbf{0.96} &0.94 &\textbf{0.68} &\textbf{0.69} \\
+&\tool &\textbf{0.96} &0.94 &\textbf{0.66} &\textbf{0.67} \\
+
+\midrule
+\multirow{7}{*}{\codegemma-7B} 
+&\cellcolor[HTML]{ffe599}\oracle &\cellcolor[HTML]{ffe599}0.88 &\cellcolor[HTML]{ffe599}0.86 &\cellcolor[HTML]{ffe599}0.68 &\cellcolor[HTML]{ffe599}0.68  \\
+
+&\inhouse &0.44 &0.27 &0.52 &0.36 \\
+&\external &0.88 &0.86 &0.55 &0.49 \\
+&CodeBERT &0.81 &0.82 &0.58 &0.56 \\
+&CodeT5+ &0.78 &0.80 &0.61 &0.60 \\
+&\openia &0.84 &0.79 &0.67 &0.67 \\
+% &\oracle &0.88 &0.86 &\underline{0.68} &\underline{0.68} \\
+&\tool &\textbf{0.90} &\textbf{0.89} &\textbf{0.69} &\textbf{0.69} \\
+\bottomrule
+\end{tabular}
+\end{table*}

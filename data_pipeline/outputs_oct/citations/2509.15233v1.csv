@@ -1,0 +1,310 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,li2023chatharuhi,\cite{li2023chatharuhi},ChatHaruhi: Reviving Anime Character in Reality via Large Language Model,http://arxiv.org/abs/2308.09597v1,"Role-playing chatbots built on large language models have drawn interest, but
+better techniques are needed to enable mimicking specific fictional characters.
+We propose an algorithm that controls language models via an improved prompt
+and memories of the character extracted from scripts. We construct ChatHaruhi,
+a dataset covering 32 Chinese / English TV / anime characters with over 54k
+simulated dialogues. Both automatic and human evaluations show our approach
+improves role-playing ability over baselines. Code and data are available at
+https://github.com/LC1332/Chat-Haruhi-Suzumiya .","Li, Cheng and Leng, Ziang and Yan, Chenxi and Shen, Junyi and Wang, Hao and Mi, Weishi and Fei, Yaying and Feng, Xiaoyang and Yan, Song and Wang, HaoSheng and others",2023,,,,arXiv preprint arXiv:2308.09597
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,zhou2024characterglm,\cite{zhou2024characterglm},CharacterGLM: Customizing Social Characters with Large Language Models,,,"Zhou, Jinfeng and Chen, Zhuang and Wan, Dazhen and Wen, Bosi and Song, Yi and Yu, Jifan and Huang, Yongkang and Ke, Pei and Bi, Guanqun and Peng, Libiao and others",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,characterllm,\cite{characterllm},Character-LLM: A Trainable Agent for Role-Playing,,,"Shao, Yunfan and Li, Linyang and Dai, Junqi and Qiu, Xipeng",2023,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,wang2024rolellm,\cite{wang2024rolellm},"RoleLLM: Benchmarking, Eliciting, and Enhancing Role-Playing Abilities
+  of Large Language Models",http://arxiv.org/abs/2310.00746v3,"The advent of Large Language Models (LLMs) has paved the way for complex
+tasks such as role-playing, which enhances user interactions by enabling models
+to imitate various characters. However, the closed-source nature of
+state-of-the-art LLMs and their general-purpose training limit role-playing
+optimization. In this paper, we introduce RoleLLM, a framework to benchmark,
+elicit, and enhance role-playing abilities in LLMs. RoleLLM comprises four
+stages: (1) Role Profile Construction for 100 roles; (2) Context-Based
+Instruction Generation (Context-Instruct) for role-specific knowledge
+extraction; (3) Role Prompting using GPT (RoleGPT) for speaking style
+imitation; and (4) Role-Conditioned Instruction Tuning (RoCIT) for fine-tuning
+open-source models along with role customization. By Context-Instruct and
+RoleGPT, we create RoleBench, the first systematic and fine-grained
+character-level benchmark dataset for role-playing with 168,093 samples.
+Moreover, RoCIT on RoleBench yields RoleLLaMA (English) and RoleGLM (Chinese),
+significantly enhancing role-playing abilities and even achieving comparable
+results with RoleGPT (using GPT-4).","Wang, Noah and Peng, Zy and Que, Haoran and Liu, Jiaheng and Zhou, Wangchunshu and Wu, Yuhan and Guo, Hongcheng and Gan, Ruitong and Ni, Zehao and Yang, Jian and others",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,lu2024ditto,\cite{lu2024ditto},"Large Language Models are Superpositions of All Characters: Attaining
+  Arbitrary Role-play via Self-Alignment",http://arxiv.org/abs/2401.12474v1,"Considerable efforts have been invested in augmenting the role-playing
+proficiency of open-source large language models (LLMs) by emulating
+proprietary counterparts. Nevertheless, we posit that LLMs inherently harbor
+role-play capabilities, owing to the extensive knowledge of characters and
+potential dialogues ingrained in their vast training corpora. Thus, in this
+study, we introduce Ditto, a self-alignment method for role-play. Ditto
+capitalizes on character knowledge, encouraging an instruction-following LLM to
+simulate role-play dialogues as a variant of reading comprehension. This method
+creates a role-play training set comprising 4,000 characters, surpassing the
+scale of currently available datasets by tenfold regarding the number of roles.
+Subsequently, we fine-tune the LLM using this self-generated dataset to augment
+its role-playing capabilities. Upon evaluating our meticulously constructed and
+reproducible role-play benchmark and the roleplay subset of MT-Bench, Ditto, in
+various parameter scales, consistently maintains a consistent role identity and
+provides accurate role-specific knowledge in multi-turn role-play
+conversations. Notably, it outperforms all open-source role-play baselines,
+showcasing performance levels comparable to advanced proprietary chatbots.
+Furthermore, we present the first comprehensive cross-supervision alignment
+experiment in the role-play domain, revealing that the intrinsic capabilities
+of LLMs confine the knowledge within role-play. Meanwhile, the role-play styles
+can be easily acquired with the guidance of smaller models. We open-source
+related resources at https://github.com/OFA-Sys/Ditto.","Lu, Keming and Yu, Bowen and Zhou, Chang and Zhou, Jingren",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,dai2024mmrole,\cite{dai2024mmrole},"MMRole: A Comprehensive Framework for Developing and Evaluating
+  Multimodal Role-Playing Agents",http://arxiv.org/abs/2408.04203v2,"Recently, Role-Playing Agents (RPAs) have garnered increasing attention for
+their potential to deliver emotional value and facilitate sociological
+research. However, existing studies are primarily confined to the textual
+modality, unable to simulate humans' multimodal perceptual capabilities. To
+bridge this gap, we introduce the concept of Multimodal Role-Playing Agents
+(MRPAs), and propose a comprehensive framework, MMRole, for their development
+and evaluation, which comprises a personalized multimodal dataset and a robust
+evaluation approach. Specifically, we construct a large-scale, high-quality
+dataset, MMRole-Data, consisting of 85 characters, 11K images, and 14K single
+or multi-turn dialogues. Additionally, we present a robust evaluation approach,
+MMRole-Eval, encompassing eight metrics across three dimensions, where a reward
+model is designed to score MRPAs with the constructed ground-truth data for
+comparison. Moreover, we develop the first specialized MRPA, MMRole-Agent.
+Extensive evaluation results demonstrate the improved performance of
+MMRole-Agent and highlight the primary challenges in developing MRPAs,
+emphasizing the need for enhanced multimodal understanding and role-playing
+consistency. The data, code, and models are all available at
+https://github.com/YanqiDai/MMRole.","Dai, Yanqi and Hu, Huanran and Wang, Lei and Jin, Shengjie and Chen, Xu and Lu, Zhiwu",2024,,,,arXiv preprint arXiv:2408.04203
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,LUandLI2025RoleMRC,\cite{LUandLI2025RoleMRC},"RoleMRC: A Fine-Grained Composite Benchmark for Role-Playing and
+  Instruction-Following",http://arxiv.org/abs/2502.11387v1,"Role-playing is important for Large Language Models (LLMs) to follow diverse
+instructions while maintaining role identity and the role's pre-defined ability
+limits. Existing role-playing datasets mostly contribute to controlling role
+style and knowledge boundaries, but overlook role-playing in
+instruction-following scenarios. We introduce a fine-grained role-playing and
+instruction-following composite benchmark, named RoleMRC, including: (1)
+Multi-turn dialogues between ideal roles and humans, including free chats or
+discussions upon given passages; (2) Role-playing machine reading
+comprehension, involving response, refusal, and attempts according to passage
+answerability and role ability; (3) More complex scenarios with nested,
+multi-turn and prioritized instructions. The final RoleMRC features a 10.2k
+role profile meta-pool, 37.9k well-synthesized role-playing instructions, and
+1.4k testing samples. We develop a pipeline to quantitatively evaluate the
+fine-grained role-playing and instruction-following capabilities of several
+mainstream LLMs, as well as models that are fine-tuned on our data. Moreover,
+cross-evaluation on external role-playing datasets confirms that models
+fine-tuned on RoleMRC enhances instruction-following without compromising
+general role-playing and reasoning capabilities. We also probe the neural-level
+activation maps of different capabilities over post-tuned LLMs. Access to our
+RoleMRC, RoleMRC-mix and Codes: https://github.com/LuJunru/RoleMRC.","Lu, Junru and Li, Jiazheng and Shen, Guodong and Gui, Lin and An, Siyu and He, Yulan and Yin, Di and Sun, Xing",2025,,,,arXiv preprint arXiv:2502.11387
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,wang2025coser,\cite{wang2025coser},CoSER: Coordinating LLM-Based Persona Simulation of Established Roles,http://arxiv.org/abs/2502.09082v2,"Role-playing language agents (RPLAs) have emerged as promising applications
+of large language models (LLMs). However, simulating established characters
+presents a challenging task for RPLAs, due to the lack of authentic character
+datasets and nuanced evaluation methods using such data. In this paper, we
+present CoSER, a collection of a high-quality dataset, open models, and an
+evaluation protocol towards effective RPLAs of established characters. The
+CoSER dataset covers 17,966 characters from 771 renowned books. It provides
+authentic dialogues with real-world intricacies, as well as diverse data types
+such as conversation setups, character experiences and internal thoughts.
+Drawing from acting methodology, we introduce given-circumstance acting for
+training and evaluating role-playing LLMs, where LLMs sequentially portray
+multiple characters in book scenes. Using our dataset, we develop CoSER 8B and
+CoSER 70B, i.e., advanced open role-playing LLMs built on LLaMA-3.1 models.
+Extensive experiments demonstrate the value of the CoSER dataset for RPLA
+training, evaluation and retrieval. Moreover, CoSER 70B exhibits
+state-of-the-art performance surpassing or matching GPT-4o on our evaluation
+and three existing benchmarks, i.e., achieving 75.80% and 93.47% accuracy on
+the InCharacter and LifeChoice benchmarks respectively.","Wang, Xintao and Wang, Heng and Zhang, Yifei and Yuan, Xinfeng and Xu, Rui and Huang, Jen-tse and Yuan, Siyu and Guo, Haoran and Chen, Jiangjie and Wang, Wei and others",2025,,,,arXiv preprint arXiv:2502.09082
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,wang2024gpt4video,\cite{wang2024gpt4video},"GPT4Video: A Unified Multimodal Large Language Model for
+  lnstruction-Followed Understanding and Safety-Aware Generation",http://arxiv.org/abs/2311.16511v2,"While the recent advances in Multimodal Large Language Models (MLLMs)
+constitute a significant leap forward in the field, these models are
+predominantly confined to the realm of input-side multimodal comprehension,
+lacking the capacity for multimodal content generation. To fill this gap, we
+present GPT4Video, a unified multi-model framework that empowers Large Language
+Models (LLMs) with the capability of both video understanding and generation.
+Specifically, we develop an instruction-following-based approach integrated
+with the stable diffusion generative model, which has demonstrated to
+effectively and securely handle video generation scenarios. GPT4Video offers
+the following benefits: 1) It exhibits impressive capabilities in both video
+understanding and generation scenarios. For example, GPT4Video outperforms
+Valley by 11.8\% on the Video Question Answering task, and surpasses NExt-GPT
+by 2.3\% on the Text to Video generation task. 2) it endows the LLM/MLLM with
+video generation capabilities without requiring additional training parameters
+and can flexibly interface with a wide range of models to perform video
+generation. 3) it maintains a safe and healthy conversation not only in
+output-side but also the input side in an end-to-end manner. Qualitative and
+qualitative experiments demonstrate that GPT4Video holds the potential to
+function as a effective, safe and Humanoid-like video assistant that can handle
+both video understanding and generation scenarios.","Wang, Zhanyu and Wang, Longyue and Zhao, Zhen and Wu, Minghao and Lyu, Chenyang and Li, Huayang and Cai, Deng and Zhou, Luping and Shi, Shuming and Tu, Zhaopeng",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,weng2024longvlm,\cite{weng2024longvlm},LongVLM: Efficient Long Video Understanding via Large Language Models,http://arxiv.org/abs/2404.03384v3,"Empowered by Large Language Models (LLMs), recent advancements in Video-based
+LLMs (VideoLLMs) have driven progress in various video understanding tasks.
+These models encode video representations through pooling or query aggregation
+over a vast number of visual tokens, making computational and memory costs
+affordable. Despite successfully providing an overall comprehension of video
+content, existing VideoLLMs still face challenges in achieving detailed
+understanding due to overlooking local information in long-term videos. To
+tackle this challenge, we introduce LongVLM, a simple yet powerful VideoLLM for
+long video understanding, building upon the observation that long videos often
+consist of sequential key events, complex actions, and camera movements. Our
+approach proposes to decompose long videos into multiple short-term segments
+and encode local features for each segment via a hierarchical token merging
+module. These features are concatenated in temporal order to maintain the
+storyline across sequential short-term segments. Additionally, we propose to
+integrate global semantics into each local feature to enhance context
+understanding. In this way, we encode video representations that incorporate
+both local and global information, enabling the LLM to generate comprehensive
+responses for long-term videos. Experimental results on the VideoChatGPT
+benchmark and zero-shot video question-answering datasets demonstrate the
+superior capabilities of our model over the previous state-of-the-art methods.
+Qualitative examples show that our model produces more precise responses for
+long video understanding. Code is available at
+https://github.com/ziplab/LongVLM.","Weng, Yuetian and Han, Mingfei and He, Haoyu and Chang, Xiaojun and Zhuang, Bohan",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,videollava,\cite{videollava},Video-LLaVA: Learning United Visual Representation by Alignment Before Projection,,,"Lin, Bin and Ye, Yang and Zhu, Bin and Cui, Jiaxi and Ning, Munan and Jin, Peng and Yuan, Li",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,wang2024videoagent,\cite{wang2024videoagent},"VideoAgent: Long-form Video Understanding with Large Language Model as
+  Agent",http://arxiv.org/abs/2403.10517v1,"Long-form video understanding represents a significant challenge within
+computer vision, demanding a model capable of reasoning over long multi-modal
+sequences. Motivated by the human cognitive process for long-form video
+understanding, we emphasize interactive reasoning and planning over the ability
+to process lengthy visual inputs. We introduce a novel agent-based system,
+VideoAgent, that employs a large language model as a central agent to
+iteratively identify and compile crucial information to answer a question, with
+vision-language foundation models serving as tools to translate and retrieve
+visual information. Evaluated on the challenging EgoSchema and NExT-QA
+benchmarks, VideoAgent achieves 54.1% and 71.3% zero-shot accuracy with only
+8.4 and 8.2 frames used on average. These results demonstrate superior
+effectiveness and efficiency of our method over the current state-of-the-art
+methods, highlighting the potential of agent-based approaches in advancing
+long-form video understanding.","Wang, Xiaohan and Zhang, Yuhui and Zohar, Orr and Yeung-Levy, Serena",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,Recap,\cite{Recap},Video ReCap: Recursive Captioning of Hour-Long Videos,http://arxiv.org/abs/2402.13250v6,"Most video captioning models are designed to process short video clips of few
+seconds and output text describing low-level visual concepts (e.g., objects,
+scenes, atomic actions). However, most real-world videos last for minutes or
+hours and have a complex hierarchical structure spanning different temporal
+granularities. We propose Video ReCap, a recursive video captioning model that
+can process video inputs of dramatically different lengths (from 1 second to 2
+hours) and output video captions at multiple hierarchy levels. The recursive
+video-language architecture exploits the synergy between different video
+hierarchies and can process hour-long videos efficiently. We utilize a
+curriculum learning training scheme to learn the hierarchical structure of
+videos, starting from clip-level captions describing atomic actions, then
+focusing on segment-level descriptions, and concluding with generating
+summaries for hour-long videos. Furthermore, we introduce Ego4D-HCap dataset by
+augmenting Ego4D with 8,267 manually collected long-range video summaries. Our
+recursive model can flexibly generate captions at different hierarchy levels
+while also being useful for other complex video understanding tasks, such as
+VideoQA on EgoSchema. Data, code, and models are available at:
+https://sites.google.com/view/vidrecap","Islam, Md Mohaiminul and Ho, Ngan and Yang, Xitong and Nagarajan, Tushar and Torresani, Lorenzo and Bertasius, Gedas",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,shen2024longvu,\cite{shen2024longvu},"LongVU: Spatiotemporal Adaptive Compression for Long Video-Language
+  Understanding",http://arxiv.org/abs/2410.17434v1,"Multimodal Large Language Models (MLLMs) have shown promising progress in
+understanding and analyzing video content. However, processing long videos
+remains a significant challenge constrained by LLM's context size. To address
+this limitation, we propose LongVU, a spatiotemporal adaptive compression
+mechanism thats reduces the number of video tokens while preserving visual
+details of long videos. Our idea is based on leveraging cross-modal query and
+inter-frame dependencies to adaptively reduce temporal and spatial redundancy
+in videos. Specifically, we leverage DINOv2 features to remove redundant frames
+that exhibit high similarity. Then we utilize text-guided cross-modal query for
+selective frame feature reduction. Further, we perform spatial token reduction
+across frames based on their temporal dependencies. Our adaptive compression
+strategy effectively processes a large number of frames with little visual
+information loss within given context length. Our LongVU consistently surpass
+existing methods across a variety of video understanding benchmarks, especially
+on hour-long video understanding tasks such as VideoMME and MLVU. Given a
+light-weight LLM, our LongVU also scales effectively into a smaller size with
+state-of-the-art video understanding performance.","Shen, Xiaoqian and Xiong, Yunyang and Zhao, Changsheng and Wu, Lemeng and Chen, Jun and Zhu, Chenchen and Liu, Zechun and Xiao, Fanyi and Varadarajan, Balakrishnan and Bordes, Florian and others",2024,,,,arXiv preprint arXiv:2410.17434
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,wang2025internvideo2.5,\cite{wang2025internvideo2.5},InternVideo2.5: Empowering Video MLLMs with Long and Rich Context Modeling,,,"Wang, Yi and Li, Xinhao and Yan, Ziang and He, Yinan and Yu, Jiashuo and Zeng, Xiangyu and Wang, Chenting and Ma, Changlian and Huang, Haian and Gao, Jianfei and others",2025,,,,arXiv preprint arXiv:2501.12386
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,CLIP,\cite{CLIP},Learning Transferable Visual Models From Natural Language Supervision,http://arxiv.org/abs/2103.00020v1,"State-of-the-art computer vision systems are trained to predict a fixed set
+of predetermined object categories. This restricted form of supervision limits
+their generality and usability since additional labeled data is needed to
+specify any other visual concept. Learning directly from raw text about images
+is a promising alternative which leverages a much broader source of
+supervision. We demonstrate that the simple pre-training task of predicting
+which caption goes with which image is an efficient and scalable way to learn
+SOTA image representations from scratch on a dataset of 400 million (image,
+text) pairs collected from the internet. After pre-training, natural language
+is used to reference learned visual concepts (or describe new ones) enabling
+zero-shot transfer of the model to downstream tasks. We study the performance
+of this approach by benchmarking on over 30 different existing computer vision
+datasets, spanning tasks such as OCR, action recognition in videos,
+geo-localization, and many types of fine-grained object classification. The
+model transfers non-trivially to most tasks and is often competitive with a
+fully supervised baseline without the need for any dataset specific training.
+For instance, we match the accuracy of the original ResNet-50 on ImageNet
+zero-shot without needing to use any of the 1.28 million training examples it
+was trained on. We release our code and pre-trained model weights at
+https://github.com/OpenAI/CLIP.","Radford, Alec and Kim, Jong Wook and Hallacy, Chris and Ramesh, Aditya and Goh, Gabriel and Agarwal, Sandhini and Sastry, Girish and Askell, Amanda and Mishkin, Pamela and Clark, Jack and others",2021,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,flamingo,\cite{flamingo},Flamingo: a Visual Language Model for Few-Shot Learning,http://arxiv.org/abs/2204.14198v2,"Building models that can be rapidly adapted to novel tasks using only a
+handful of annotated examples is an open challenge for multimodal machine
+learning research. We introduce Flamingo, a family of Visual Language Models
+(VLM) with this ability. We propose key architectural innovations to: (i)
+bridge powerful pretrained vision-only and language-only models, (ii) handle
+sequences of arbitrarily interleaved visual and textual data, and (iii)
+seamlessly ingest images or videos as inputs. Thanks to their flexibility,
+Flamingo models can be trained on large-scale multimodal web corpora containing
+arbitrarily interleaved text and images, which is key to endow them with
+in-context few-shot learning capabilities. We perform a thorough evaluation of
+our models, exploring and measuring their ability to rapidly adapt to a variety
+of image and video tasks. These include open-ended tasks such as visual
+question-answering, where the model is prompted with a question which it has to
+answer; captioning tasks, which evaluate the ability to describe a scene or an
+event; and close-ended tasks such as multiple-choice visual question-answering.
+For tasks lying anywhere on this spectrum, a single Flamingo model can achieve
+a new state of the art with few-shot learning, simply by prompting the model
+with task-specific examples. On numerous benchmarks, Flamingo outperforms
+models fine-tuned on thousands of times more task-specific data.","Alayrac, Jean-Baptiste and Donahue, Jeff and Luc, Pauline and Miech, Antoine and Barr, Iain and Hasson, Yana and Lenc, Karel and Mensch, Arthur and Millican, Katherine and Reynolds, Malcolm and others",2022,,,,Advances in neural information processing systems
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,sun2024emu,\cite{sun2024emu},Emu: Generative Pretraining in Multimodality,http://arxiv.org/abs/2307.05222v2,"We present Emu, a Transformer-based multimodal foundation model, which can
+seamlessly generate images and texts in multimodal context. This omnivore model
+can take in any single-modality or multimodal data input indiscriminately
+(e.g., interleaved image, text and video) through a one-model-for-all
+autoregressive training process. First, visual signals are encoded into
+embeddings, and together with text tokens form an interleaved input sequence.
+Emu is then end-to-end trained with a unified objective of classifying the next
+text token or regressing the next visual embedding in the multimodal sequence.
+This versatile multimodality empowers the exploration of diverse pretraining
+data sources at scale, such as videos with interleaved frames and text,
+webpages with interleaved images and text, as well as web-scale image-text
+pairs and video-text pairs. Emu can serve as a generalist multimodal interface
+for both image-to-text and text-to-image tasks, and supports in-context image
+and text generation. Across a broad range of zero-shot/few-shot tasks including
+image captioning, visual question answering, video question answering and
+text-to-image generation, Emu demonstrates superb performance compared to
+state-of-the-art large multimodal models. Extended capabilities such as
+multimodal assistants via instruction tuning are also demonstrated with
+impressive performance.","Sun, Quan and Yu, Qiying and Cui, Yufeng and Zhang, Fan and Zhang, Xiaosong and Wang, Yueze and Gao, Hongcheng and Liu, Jingjing and Huang, Tiejun and Wang, Xinlong",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,li2023blip,\cite{li2023blip},Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models,,,"Li, Junnan and Li, Dongxu and Savarese, Silvio and Hoi, Steven",2023,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,chen2024internvl,\cite{chen2024internvl},"InternVL: Scaling up Vision Foundation Models and Aligning for Generic
+  Visual-Linguistic Tasks",http://arxiv.org/abs/2312.14238v3,"The exponential growth of large language models (LLMs) has opened up numerous
+possibilities for multimodal AGI systems. However, the progress in vision and
+vision-language foundation models, which are also critical elements of
+multi-modal AGI, has not kept pace with LLMs. In this work, we design a
+large-scale vision-language foundation model (InternVL), which scales up the
+vision foundation model to 6 billion parameters and progressively aligns it
+with the LLM, using web-scale image-text data from various sources. This model
+can be broadly applied to and achieve state-of-the-art performance on 32
+generic visual-linguistic benchmarks including visual perception tasks such as
+image-level or pixel-level recognition, vision-language tasks such as zero-shot
+image/video classification, zero-shot image/video-text retrieval, and link with
+LLMs to create multi-modal dialogue systems. It has powerful visual
+capabilities and can be a good alternative to the ViT-22B. We hope that our
+research could contribute to the development of multi-modal large models. Code
+and models are available at https://github.com/OpenGVLab/InternVL.","Chen, Zhe and Wu, Jiannan and Wang, Wenhai and Su, Weijie and Chen, Guo and Xing, Sen and Zhong, Muyan and Zhang, Qinglong and Zhu, Xizhou and Lu, Lewei and others",2024,,,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,instructBLIP,\cite{instructBLIP},"InstructBLIP: Towards General-purpose Vision-Language Models with
+  Instruction Tuning",http://arxiv.org/abs/2305.06500v2,"Large-scale pre-training and instruction tuning have been successful at
+creating general-purpose language models with broad competence. However,
+building general-purpose vision-language models is challenging due to the rich
+input distributions and task diversity resulting from the additional visual
+input. Although vision-language pretraining has been widely studied,
+vision-language instruction tuning remains under-explored. In this paper, we
+conduct a systematic and comprehensive study on vision-language instruction
+tuning based on the pretrained BLIP-2 models. We gather 26 publicly available
+datasets, covering a wide variety of tasks and capabilities, and transform them
+into instruction tuning format. Additionally, we introduce an instruction-aware
+Query Transformer, which extracts informative features tailored to the given
+instruction. Trained on 13 held-in datasets, InstructBLIP attains
+state-of-the-art zero-shot performance across all 13 held-out datasets,
+substantially outperforming BLIP-2 and larger Flamingo models. Our models also
+lead to state-of-the-art performance when finetuned on individual downstream
+tasks (e.g., 90.7% accuracy on ScienceQA questions with image contexts).
+Furthermore, we qualitatively demonstrate the advantages of InstructBLIP over
+concurrent multimodal models. All InstructBLIP models are open-sourced at
+https://github.com/salesforce/LAVIS/tree/main/projects/instructblip.","Wenliang Dai and
+                  Junnan Li and
+                  Dongxu Li and
+                  Anthony Meng Huat Tiong and
+                  Junqi Zhao and
+                  Weisheng Wang and
+                  Boyang Li and
+                  Pascale Fung and
+                  Steven C. H. Hoi",2023,,http://papers.nips.cc/paper\_files/paper/2023/hash/9a6a435e75419a836fe47ab6793623e6-Abstract-Conference.html,,
+Video2Roleplay: A Multimodal Dataset and Framework for Video-Guided Role-playing Agents,http://arxiv.org/abs/2509.15233v1,li2024llavanext-strong,\cite{li2024llavanext-strong},LLaVA-NeXT: Stronger LLMs Supercharge Multimodal Capabilities in the Wild,,,"Li, Bo and Zhang, Kaichen and Zhang, Hao and Guo, Dong and Zhang, Renrui and Li, Feng and Zhang, Yuanhan and Liu, Ziwei and Li, Chunyuan",2024,May,https://llava-vl.github.io/blog/2024-05-10-llava-next-stronger-llms/,,

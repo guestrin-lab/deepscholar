@@ -1,0 +1,29 @@
+\section{Ablation Studies}
+\label{app:ablations}
+
+\input{depds/tab_abl}
+
+\input{depds/tab_avsync_celebvhq}
+
+\input{depds/tab_avsync_celebvtext}
+
+\input{depds/tab_avsync_mead}
+
+\input{depds/tab_avsync_ravdness}
+
+\paragraph{Two-Bypass Face-Aware Masking.}
+We evaluate four variants on \textbf{Hallo3} using the same A/V synchronisation protocol as the main results (Acc$_{\pm K}$, Offset, R-precision; see \tabref{tab:abl_sync_hallo3}). 
+\textit{A1 (Uniform-only)} severely underperforms: heavy uniform masking hides the lip region, the contrastive loss scarcely decreases, and all sync metrics degrade markedly. 
+\textit{A2 (Face-aware-only)} trains the contrastive objective but yields weaker reconstruction guidance, producing normal yet inferior sync scores. 
+\textit{A3 (Two-bypass w/o photometric)} restores learning stability but, without motion-view photometric jitter, motion tokens leak appearance; alignment improves over A2 but remains below the best. 
+\textit{A4 (Two-bypass + photometric, ours)} is strongest across all metrics, confirming that a uniform view for reconstruction context plus a face-preserving view—with photometric perturbations—for prompt tokens best supports token-level A/V alignment.
+
+\paragraph{Audio Feature Adaptation.}
+We compare \textit{B1 (Last-layer only)} versus \textit{B2 (Concat$\rightarrow$Adapter, ours)}. 
+B1 is consistently worse than A2 and B2: using only the wav2vec~2.0 final layer emphasizes semantic content and attenuates fine-grained timing, leading to lower Acc$_{\pm K}$, higher Offset, and reduced R-precision. 
+B2 concatenates all hidden layers and adapts them to the visual width, yielding the highest synchronisation scores among the audio variants.
+
+\paragraph{Decoder Cross-Attention.}
+We ablate \textit{C1 (No cross-attention)} against \textit{C2 (CA to id+amb+$c_t$, ours)}. 
+In C1, when prompt tokens are simply concatenated with patch tokens before self-attention, the decoder tends to ignore them, slightly underperforming A3. 
+C2 explicitly cross-attends to identity, ambient, and the conditioning token $c_t\!\in\!\{\mathbf{z}^{\mathrm{voc}}_t,\mathbf{A}_t\}$, which improves A/V alignment and yields the best overall sync metrics.

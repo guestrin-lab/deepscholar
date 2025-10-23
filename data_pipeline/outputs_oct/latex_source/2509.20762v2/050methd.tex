@@ -1,0 +1,122 @@
+\section{The Proposed Method: \ours}\label{sec:method}
+
+We shall introduce the proposed method \ours for group anchor identification, whose mechanisms are intuitively and explicitly based on our observations in \cref{sec:observations}.
+
+\revisekddcolor
+\smallsection{Overview.}
+The proposed method \ours has two stages.
+In Stage 1, based on \cref{intu:topological_feat} (topological features are informative about group anchors), we train a multilayer perceptron (MLP) to learn a \textit{topology-based score} for each node-hyperedge pair $(v, e)$.
+In Stage 2, based on \cref{intu:global_consistency} (anchorship is overall stable across different hyperedges), we train a scalar \textit{anchor strength} for each node shared across all hyperedges.
+Based on our further analysis of \cref{intu:global_consistency} (\cref{tab:scalar_acc}), we use \textit{global strength aggregation} to obtain an aggregated score for each node from different hyperedges.
+Finally, in hyperedge, we predict the node with the highest aggregated score as the anchor.
+Notably, \ours is semi-supervised, using information from hyperedges both with and without known anchors, e.g., the topological features.
+
+\color{black}
+
+\subsection{Stage 1: \revisekdd{MLP Training and Topology-based Scores of Node-Hyperedge Pairs}}\label{sec:method:stage1}
+
+\smallsection{Overview.}
+Based on \cref{intu:topological_feat} (topological features are informative about group anchors), we aim to train a model to exploit the correlations between topological features and anchorship.
+The model is intended to be lightweight, using a simple architecture and only topological features as inputs
+to fit known anchors.
+\revisekdd{Specifically, we train a multilayer perceptron (MLP) to learn a \textit{topology-based score} for each node-hyperedge pair $(v, e)$, so that in each hyperedge $e$ with the ground-truth anchor $v^*$, the score of $(v^*, e)$ should be higher than that of $(v', e)$ for other nodes $v' \in e$.}
+After training, the topology-based scores will be used as a reference to guide the training in Stage 2.
+See Algorithm~\ref{algo:stage1} for an algorithmic overview.
+
+\smallsection{Topological features.}
+In principle, any topological features can be used.
+Specifically, in our experiments, for a fair comparison, we use the same four topological features used in our baselines methods~\citep{choe2023classification,zheng2024co} (see \cref{sec:exp_settings}):
+\textbf{(1) node degree} (see \cref{sec:prelim}),
+\textbf{(2\&3) eigenvector centrality}~\citep{bonacich1987power} and \textbf{PageRank centrality}~\citep{page1999pagerank} computed on the weighted clique expansion, and \textbf{(4) coreness}~\citep{sun2020fully,seidman1983network}.
+Specifically, given input topology $V$ and $E$, to each node-hyperedge pair $(v, e)$ with $v \in e$, we associate a 33-dimensional feature vector:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Global features (24 dimensions).} For each of the four node centrality measures, we normalize and/or aggregate it in six different ways: \textbf{(1)} min-max normalization, \textbf{(2)} rank normalization, and \textbf{(3-6)} four different aggregations: means and standard deviations of local min-max and rank normalization.
+    For each node, its global features are shared across all the hyperedges that contain the node.
+    \item \textbf{Local features (9 dimensions).}
+    For each of the four node centrality measures, we normalize it locally in each hyperedge $e$ in two different ways: \textbf{(1)} local min-max normalization and \textbf{(2)} local rank normalization.
+    We also include the size of $e$, which is a scalar, as a local feature for all the nodes in $e$.
+    For each node, its local features can be distinct in different hyperedges, which allows flexibility in modeling the edge-dependent nature of group anchors.
+\end{itemize}
+We construct a topological feature matrix $X$ by collecting the 33-dimensional feature vectors $X_{v;e}$ for all node pairs.
+See Appendix~\ref{appx:feature_process} for more details on the features. 
+
+\smallsection{\revisekdd{MLP training and topology-based scores.}}
+We use an MLP parameterized with $\theta$ to obtain the \textit{topology-based scores} $s^{(1)}_{v;e}$ of each node-hyperedge pair $(v, e)$: 
+    $s^{(1)}_{v;e} = \operatorname{MLP}(X; \theta)$,
+with loss function
+\begin{equation}\label{eq:loss_stage_1}
+    \mathcal{L}^{(1)} = -\sum\nolimits_{e \in E'} \log 
+    \left(\exp\left(s^{(1)}_{A(e);e}\right) \middle/ \sum\nolimits_{u \in e} \exp\left(s^{(1)}_{u;e}\right)\right),
+\end{equation}
+where $E'$ is the set of hyperedges with known anchors and $A(e)$ is the anchor in each $e \in E'$ (see \cref{prob:seed_identification}).
+Minimizing the loss function encourages a large (relative) score $s^{(1)}_{A(e);e}$ of the anchor compared to $s^{(1)}_{u;e}$ for other nodes $u \in e$.
+
+\input{ALGS/stage2}
+
+\subsection{\revisekdd{Stage 2: Anchor Strength Learning, Global Aggregation, and Final Prediction}}\label{sec:method:stage2}
+
+\smallsection{Overview.}
+Based on \cref{intu:global_consistency}, we aim to find anchor strengths (scalars indicating the overall likelihood that each node is the anchor), together with local competition and global aggregation, to explain the known anchors.
+\revisekdd{Specifically, for each node, we train a scalar \textit{anchor strength} shared across all hyperedges, 
+so that 
+(1) in each hyperedge $e$ with the ground-truth anchor $v^*$, the anchor strength of $v^*$ should be higher than that of other nodes $v' \in e$, and
+(2) based on \cref{intu:topological_feat} again, the relative relations of the strengths in each hyperedge should align well with the topology-based scores in Stage 1.
+Then, based on our further analysis of \cref{intu:global_consistency} (\cref{tab:scalar_acc}), we use \textit{global strength aggregation}, i.e., compute the anchor proportion (see \cref{def:seed_member_prop_purity}) assuming the predictions based on the learned anchor strengths are all correct, to further enhance the prediction robustness and accuracy.
+Finally, in hyperedge, we predict the node with the highest aggregated score as the anchor.}
+See Algorithm~\ref{algo:stage2} for an algorithmic overview.
+
+\smallsection{\revisekdd{Anchor strength learning.}}
+Let $s^{(2)}_v$ be the learnable anchor strength of each node $v$.
+The loss function consists of two parts.
+The first part, similar to that in Stage 1, aims to fit the known anchors:
+\begin{equation}\label{eq:loss_stage_2_label}
+    \mathcal{L}^{(2)}_1 = -\sum\nolimits_{e \in E'} \log \left({\exp\left(s^{(2)}_{A(e)}\right)} \middle/ {\sum\nolimits_{u \in e} \exp\left(s^{(2)}_u\right)}\right).
+\end{equation}
+The second part aligns with the learned scores from Stage 1:
+\begin{equation}\label{eq:loss_stage_2_align}
+    \mathcal{L}^{(2)}_2 = -\sum\nolimits_{e \in E'}
+    \frac{\exp\left(s^{(2)}_{A(e)}\right)}{\sum\nolimits_{u \in e} \exp\left(s^{(2)}_u\right)} \cdot \frac{\exp\left(s^{(1)}_{A(e);e}\right)}{\sum\nolimits_{u \in e} \exp\left(s^{(1)}_{u;e}\right)},
+\end{equation}
+which measures the distance between $s^{(1)}_{v;e}$'s and $s^{(2)}_v$'s after within-edge normalization.
+The final loss function is $\mathcal{L}^{(2)} = \mathcal{L}^{(2)}_1 + \alpha^{(2)} \mathcal{L}^{(2)}_2$ with a hyperparameter coefficient $\alpha^{(2)}$.
+
+\smallsection{Global strength aggregation.}
+Recall the observation of the high accuracy of anchor proportions (see \cref{tab:scalar_acc} in \cref{sec:intuition:global_consistency}).
+The anchor proportion of a node $v$ can be seen as the global aggregation of its anchor indicators $\mathbf{1}[A(e) = v]$.\footnote{$\mathbf{1}[A(e) = v] = 1$ if $A(e) = v$, and $\mathbf{1}[A(e) = v] = 0$ otherwise.}
+Inspired by this, after learning anchor strengths $s^{(2)}_v$'s, we first find the node $\hat{A}(e)$ with the highest learned strengths in each hyperedge $e$, i.e., $\hat{A}(e) = \arg \max_{v^* \in e} s^{(2)}_{v^*}, \forall e \in E$ (we randomly pick one if multiple nodes have the highest learned anchor strength), and compute the predicted anchor proportion $\hat{p}_v$ of each node $v$:
+\begin{equation}\label{eq:pred_member_prop}
+\small
+    \hat{p}_v = \frac{1}{d_v} \left({w^{(2)} 
+    \sum\nolimits_{e \in E'} \mathbf{1}[A(e) = v]
+    + \sum\nolimits_{e \in E \setminus E'} \mathbf{1}[\hat{A}(e) = v]}\right),
+\end{equation}
+where we use a hyperparameter $w^{(2)}$ as the global aggregation weight on training (i.e., ground-truth) labels.
+Such global aggregation considers the predictions across different hyperedges and increases the prediction robustness~\citep{kumar2018rev2}.
+
+\smallsection{\revisekdd{Final prediction.}}
+Finally, in each hyperedge, we predict the node with the highest aggregated score $\hat{p}_v$ as the anchor.
+
+\input{TABS/single_node_res}
+
+\subsection{Complexity Analysis}\label{sec:method:complexity}
+
+Due to its simplicity, \ours has low complexity, especially time complexity and the number of learnable parameters.
+For the whole process of \ours,
+the training time complexity is
+$O(\sum_{e \in E} (n^{(1)}_{ep} |e| n_{f} D_h + n^{(2)}_{ep}))$,
+the inference time complexity is
+$O(\sum_{e \in E} |e| n_{f} D_h)$,
+the space complexity is
+$O(n_{f} (D_h + \sum_{e \in E} |e|))$, and
+the number of learnable parameters is
+$O(D_h (n_{f} + 2) + 1 + |V|)$.
+
+\smallsection{Notes.}
+In our experiments, we use $D_h = 64$, $n_f = 33$ (see \cref{sec:method:stage1}), and $n^{(1)}_{ep} = n^{(2)}_{ep} = 100$.
+For $|V|$ and $|e|$, see \cref{tab:dataset_summary}.
+See Appendix~\ref{appx:complexity} for the detailed analysis.
+
+
+
+
+

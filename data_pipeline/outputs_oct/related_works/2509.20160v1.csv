@@ -1,0 +1,157 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.20160v1,http://arxiv.org/abs/2509.20160v1,2025-09-24 14:28:37+00:00,Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,"Deep Neural Networks (DNNs) have had a significant impact on domains like
+autonomous vehicles and smart cities through low-latency inferencing on edge
+computing devices close to the data source. However, DNN training on the edge
+is poorly explored. Techniques like federated learning and the growing capacity
+of GPU-accelerated edge devices like NVIDIA Jetson motivate the need for a
+holistic characterization of DNN training on the edge. Training DNNs is
+resource-intensive and can stress an edge's GPU, CPU, memory and storage
+capacities. Edge devices also have different resources compared to workstations
+and servers, such as slower shared memory and diverse storage media. Here, we
+perform a principled study of DNN training on individual devices of three
+contemporary Jetson device types: AGX Xavier, Xavier NX and Nano for three
+diverse DNN model--dataset combinations. We vary device and training parameters
+such as I/O pipelining and parallelism, storage media, mini-batch sizes and
+power modes, and examine their effect on CPU and GPU utilization, fetch stalls,
+training time, energy usage, and variability. Our analysis exposes several
+resource inter-dependencies and counter-intuitive insights, while also helping
+quantify known wisdom. Our rigorous study can help tune the training
+performance on the edge, trade-off time and energy usage on constrained
+devices, and even select an ideal edge hardware for a DNN workload, and, in
+future, extend to federated learning too. As an illustration, we use these
+results to build a simple model to predict the training time and energy per
+epoch for any given DNN across different power modes, with minimal additional
+profiling.","\label{sec:related}
+
+There is growing interest in training DNNs on the edge
+and it offers several systems research challenges~\cite{paise22}.
+However, there is a lack of rigorous empirical studies to characterize their performance and the specific challenges in effectively leveraging them. We address this gap in this paper. 
+
+Liu et al.~\cite{tx2_training} examine DNN training workloads on the Jetson TX2 with respect to memory, CPU/GPU utilization and power consumption. They also correlate the analysis to lower level operations in DNN models. However, they do not experiment with varying power modes and framework configurations as we do, and the TX2 is an older architecture.
+The Flower federated learning framework~\cite{beutel2020flower} supports heterogeneous environments including edge devices. They present results of deploying Flower on virtual Android devices and on Jetson TX2 edge accelerators. However, the edge is just a validation platform in their work and they do not offer any detailed analysis of the performance of the edge for training.
+
+There exists literature on evaluating edge devices for model inferencing.
+DeepEdgeBench~\cite{baller2021deepedgebench} compares the inference time and power consumption for edge devices such as NVIDIA Jetson Nano, Google Coral and Raspberry Pi 4 for \mobilenet v2 but training is not considered.
+Others~\cite{tk1_europar} study Jetson TX1 and TK1 using roofline models for both the CPU and GPU with a matrix multiplication as the workload. While important, matrix multiplication is limited to the GPU. The training pipeline is I/O intensive and exercises disk, memory, CPU and GPU. We study this holistically.
+
+MLPerf~\cite{MLSYS2020_02522a2b} is a community effort to provide a uniform framework for quantifying the performance of ML Hardware and Systems. The benchmark suite spans a number of application domains and datasets, and prescribes a quality threshold that must be met by any implementation. While such a suite is essential for measuring the overall impact of systems or optimizations on training, it does not measure low-level system metrics like the IO reads. MLPerf also lacks a training suite for edge devices. We adopt a similar training benchmark in our study, which is viable on edge devices.
+
+There has also been specific attention on the energy usage and variability of edge devices. Holly, et al.~\cite{edge_config} correlate CPU and GPU frequencies and the number of CPU cores with the latency, power and energy for inferening on the Jetson Nano. Some~\cite{frqswitching} examine the effect of these on power consumption for stream processing workloads. We focus on the impact of such configurations, including storage media and DNN framework settings, on the end-to-end time and energy consumed for DNN training workloads on the Jetson AGX Xavier. Snowflakes~\cite{snowflakes} reports a detailed study on the latency and power variability observed across Jetson AGX Xaviers for inferencing. We too evaluate the variability, but for a training workload and we do not observe any variability.
+
+
+There is a larger body of work on training on GPU workstations and servers.
+Mohan, et al.~\cite{mohan2021analyzing} characterize the training data pipeline and how it affects training time on desktop GPUs. They also analyze the effect of the OS page cache on data access. However, their study only considers server-grade GPUs which are much more powerful and have exclusive and faster GPU RAM when compared to edge devices.
+They also propose a modified caching mechanism that minimises I/O caused by thrashing. Once the page cache is full, all further accesses are sent to disk without evicting existing data in the cache. Quiver~\cite{kumar2020quiver} proposes a caching strategy based on substitutability. Accesses that cause a miss in the cache are substituted with other data that are present in the cache without interfering with training requirements and single access per epoch.
+Our detailed study and analysis can help design such optimization strategies for training on edge accelerators.
+
+Lastly, our paper enables accurate modeling of DNN training time and energy usage for the diverse power modes of these devices. This is key for federated learning when devices in a training round need to complete at about the same time~\cite{google-sysml}. Current techniques use simple approximations like over-sampling of devices~\cite{google-sysml}. We provide initial promising results in this direction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[t]
+\centering
+\footnotesize
+\vspace{-0.1in}
+\caption{Specifications of NVIDIA Jetson Devices Evaluated}
+\label{tbl:jetsonspecs}
+\vspace{-0.1in}
+\begin{tabular}{L{3.5cm}|R{1.5cm}|R{2.3cm}|R{2.3cm}|R{2.3cm}}
+\toprule
+\textbf{Feature} & \textbf{Nano}~\cite{powermodes_nano}  &  Xavier \textbf{NX}~\cite{powermodes_nxagx} & \textbf{AGX} Xavier~\cite{powermodes_nxagx} & AGX \textbf{Orin}~\cite{powermodes_orin}\\
+\midrule
+ARM CPU Architecture & A57 & Carmel & Carmel &  A78AE\\ 
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+CPU Cores$^\dagger$ & 4 & 6 & 8 & 12\\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+CPU Frequency (MHz)$^\dagger$ & 1479 & 1900 & 2265 & 2200\\ \hline
+GPU Architecture & Maxwell & Volta & Volta & Ampere\\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+CUDA/Tensor Cores & 128/--& 384/48 & 512/64 & 2048/64\\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+GPU Frequency (MHz)$^\dagger$ & 921 & 1100 & 1377 & 1300\\ \hline
+RAM (GB) & 4 & 8 & 32 & 32\\ \hline
+Storage Interfaces & $\mu$SD, USB & $\mu$SD, NVMe, USB & $\mu$SD, eMMC, eSATA, NVMe, USB & $\mu$SD, eMMC, NVMe, USB \\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+Memory Frequency (MHz)$^\dagger$ & 1600 & 1600 &  2133 & 3200\\ \hline
+Power (W)$^\dagger$ & 10 & 15$^*$ & 65$^\#$ & 60\\ \hline
+Price (USD) & $\$129$ & $\$399$ & $\$999$ & $\$1999$  \\
+\bottomrule
+\multicolumn{5}{L{13cm}}{$^\dagger$~This is the maximum possible value across all power modes.
+Actual value depends on the power mode used (Table~\ref{tbl:power}).
+\quad 
+$^*$ This peak power is for Jetpack release $v4.5.1$ and earlier. 
+\quad 
+$^\#$ The data sheet does not list the power for the MAXN peak power mode. We report the power adapter rating of $65W$.
+}
+\end{tabular}
+\vspace{-0.15in}
+\end{table}","There is growing interest in training DNNs on the edge
+and it offers several systems research challenges~\cite{paise22}.
+However, there is a lack of rigorous empirical studies to characterize their performance and the specific challenges in effectively leveraging them. We address this gap in this paper. 
+
+Liu et al.~\cite{tx2_training} examine DNN training workloads on the Jetson TX2 with respect to memory, CPU/GPU utilization and power consumption. They also correlate the analysis to lower level operations in DNN models. However, they do not experiment with varying power modes and framework configurations as we do, and the TX2 is an older architecture.
+The Flower federated learning framework~\cite{beutel2020flower} supports heterogeneous environments including edge devices. They present results of deploying Flower on virtual Android devices and on Jetson TX2 edge accelerators. However, the edge is just a validation platform in their work and they do not offer any detailed analysis of the performance of the edge for training.
+
+There exists literature on evaluating edge devices for model inferencing.
+DeepEdgeBench~\cite{baller2021deepedgebench} compares the inference time and power consumption for edge devices such as NVIDIA Jetson Nano, Google Coral and Raspberry Pi 4 for \mobilenet v2 but training is not considered.
+Others~\cite{tk1_europar} study Jetson TX1 and TK1 using roofline models for both the CPU and GPU with a matrix multiplication as the workload. While important, matrix multiplication is limited to the GPU. The training pipeline is I/O intensive and exercises disk, memory, CPU and GPU. We study this holistically.
+
+MLPerf~\cite{MLSYS2020_02522a2b} is a community effort to provide a uniform framework for quantifying the performance of ML Hardware and Systems. The benchmark suite spans a number of application domains and datasets, and prescribes a quality threshold that must be met by any implementation. While such a suite is essential for measuring the overall impact of systems or optimizations on training, it does not measure low-level system metrics like the IO reads. MLPerf also lacks a training suite for edge devices. We adopt a similar training benchmark in our study, which is viable on edge devices.
+
+There has also been specific attention on the energy usage and variability of edge devices. Holly, et al.~\cite{edge_config} correlate CPU and GPU frequencies and the number of CPU cores with the latency, power and energy for inferening on the Jetson Nano. Some~\cite{frqswitching} examine the effect of these on power consumption for stream processing workloads. We focus on the impact of such configurations, including storage media and DNN framework settings, on the end-to-end time and energy consumed for DNN training workloads on the Jetson AGX Xavier. Snowflakes~\cite{snowflakes} reports a detailed study on the latency and power variability observed across Jetson AGX Xaviers for inferencing. We too evaluate the variability, but for a training workload and we do not observe any variability.
+
+
+There is a larger body of work on training on GPU workstations and servers.
+Mohan, et al.~\cite{mohan2021analyzing} characterize the training data pipeline and how it affects training time on desktop GPUs. They also analyze the effect of the OS page cache on data access. However, their study only considers server-grade GPUs which are much more powerful and have exclusive and faster GPU RAM when compared to edge devices.
+They also propose a modified caching mechanism that minimises I/O caused by thrashing. Once the page cache is full, all further accesses are sent to disk without evicting existing data in the cache. Quiver~\cite{kumar2020quiver} proposes a caching strategy based on substitutability. Accesses that cause a miss in the cache are substituted with other data that are present in the cache without interfering with training requirements and single access per epoch.
+Our detailed study and analysis can help design such optimization strategies for training on edge accelerators.
+
+Lastly, our paper enables accurate modeling of DNN training time and energy usage for the diverse power modes of these devices. This is key for federated learning when devices in a training round need to complete at about the same time~\cite{google-sysml}. Current techniques use simple approximations like over-sampling of devices~\cite{google-sysml}. We provide initial promising results in this direction.
+
+
+\begin{table}[t]
+\centering
+\footnotesize
+\vspace{-0.1in}
+\caption{Specifications of NVIDIA Jetson Devices Evaluated}
+\vspace{-0.1in}
+\begin{tabular}{L{3.5cm}|R{1.5cm}|R{2.3cm}|R{2.3cm}|R{2.3cm}}
+\toprule
+\textbf{Feature} & \textbf{Nano}~\cite{powermodes_nano}  &  Xavier \textbf{NX}~\cite{powermodes_nxagx} & \textbf{AGX} Xavier~\cite{powermodes_nxagx} & AGX \textbf{Orin}~\cite{powermodes_orin}\\
+\midrule
+ARM CPU Architecture & A57 & Carmel & Carmel &  A78AE\\ 
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+CPU Cores$^\dagger$ & 4 & 6 & 8 & 12\\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+CPU Frequency (MHz)$^\dagger$ & 1479 & 1900 & 2265 & 2200\\ \hline
+GPU Architecture & Maxwell & Volta & Volta & Ampere\\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+CUDA/Tensor Cores & 128/--& 384/48 & 512/64 & 2048/64\\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+GPU Frequency (MHz)$^\dagger$ & 921 & 1100 & 1377 & 1300\\ \hline
+RAM (GB) & 4 & 8 & 32 & 32\\ \hline
+Storage Interfaces & $\mu$SD, USB & $\mu$SD, NVMe, USB & $\mu$SD, eMMC, eSATA, NVMe, USB & $\mu$SD, eMMC, NVMe, USB \\
+\noalign{\global\arrayrulewidth=0.1pt}\arrayrulecolor{lightgray}\hline
+\noalign{\global\arrayrulewidth=0.4pt}\arrayrulecolor{black}
+Memory Frequency (MHz)$^\dagger$ & 1600 & 1600 &  2133 & 3200\\ \hline
+Power (W)$^\dagger$ & 10 & 15$^*$ & 65$^\#$ & 60\\ \hline
+Price (USD) & $\$129$ & $\$399$ & $\$999$ & $\$1999$  \\
+\bottomrule
+\multicolumn{5}{L{13cm}}{$^\dagger$~This is the maximum possible value across all power modes.
+Actual value depends on the power mode used (Table~\ref{tbl:power}).
+\quad 
+$^*$ This peak power is for Jetpack release $v4.5.1$ and earlier. 
+\quad 
+$^\#$ The data sheet does not list the power for the MAXN peak power mode. We report the power adapter rating of $65W$.
+}
+\end{tabular}
+\vspace{-0.15in}
+\end{table}",N/A

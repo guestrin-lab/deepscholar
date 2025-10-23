@@ -1,0 +1,1197 @@
+\documentclass{article}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+\usepackage{dsfont}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2025
+
+% The authors should use one of these tracks.
+% Before accepting by the NeurIPS conference, select one of the options below.
+% 0. "default" for submission
+ % \usepackage{neurips_2025}
+% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
+% 1. "main" option is used for the Main Track
+%  \usepackage[main]{neurips_2025}
+% 2. "position" option is used for the Position Paper Track
+%  \usepackage[position]{neurips_2025}
+% 3. "dandb" option is used for the Datasets & Benchmarks Track
+ % \usepackage[dandb]{neurips_2025}
+% 4. "creativeai" option is used for the Creative AI Track
+%  \usepackage[creativeai]{neurips_2025}
+% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop]{neurips_2025}
+% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop]{neurips_2025}
+
+% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
+% 1. Main Track
+ % \usepackage[main, final]{neurips_2025}
+% 2. Position Paper Track
+%  \usepackage[position, final]{neurips_2025}
+% 3. Datasets & Benchmarks Track
+ % \usepackage[dandb, final]{neurips_2025}
+% 4. Creative AI Track
+%  \usepackage[creativeai, final]{neurips_2025}
+% 5. Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop, final]{neurips_2025}
+% 6. Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop, final]{neurips_2025}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
+% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
+% \workshoptitle{AICC: Workshop on AI for Climate and Conservation}
+
+% "preprint" option is used for arXiv or other preprint submissions
+\usepackage[preprint]{neurips_2025}
+\bibliographystyle{plainnat} % TODO: Figure out how to make references work
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2025}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage{siunitx}
+\sisetup{detect-all} % Same font as surrounding for siunits
+\sisetup{per-mode = symbol}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subcaption} 
+\usepackage{paralist}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{wrapfig}
+\usepackage[acronym]{glossaries}
+\glsdisablehyper
+
+\makeglossaries
+\newacronym{mlwp}{MLWP}{Machine learning Weather Prediction}
+\newacronym{lam}{LAM}{Limited-Area Modeling}
+\newacronym{crps}{CRPS}{Continuous Ranked Probability Score}
+\newacronym{cdf}{CDF}{Cumulative Distribution Function}
+\newacronym{rmse}{RMSE}{Root Mean Squared Error}
+\newacronym{ssr}{SSR}{Spread-Skill Ratio}
+
+
+
+
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
+\title{CRPS-LAM: Regional ensemble weather forecasting from matching marginals}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{Erik Larsson \\
+Linköping University, Sweden\\
+\texttt{erik.larsson@liu.se} \\
+\And
+Joel Oskarsson \\
+Linköping University, Sweden\\
+\texttt{joel.oskarsson@outlook.com} \\
+\And
+Tomas Landelius \\
+SMHI, Sweden\\
+\texttt{tomas.landelius@smhi.se}
+\And
+Fredrik Lindsten \\
+Linköping University, Sweden\\
+\texttt{fredrik.lindsten@liu.se}
+}
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Machine learning for weather prediction increasingly relies on ensemble methods to provide probabilistic forecasts. Diffusion-based models have shown strong performance in \acrfull{lam} but remain computationally expensive at sampling time. Building on the success of global weather forecasting models trained based on \acrfull{crps}, we introduce CRPS-LAM, a probabilistic \acrshort{lam} forecasting model trained with a CRPS-based objective. By sampling and injecting a single latent noise vector into the model, CRPS-LAM generates ensemble members in a single forward pass, achieving sampling speeds up to $39\times$ faster than a diffusion-based model. We evaluate the model on the MEPS regional dataset, where CRPS-LAM matches the low errors of diffusion models. By retaining also fine-scale forecast details, the method stands out as an effective approach for probabilistic regional weather forecasting.
+\end{abstract}
+
+\section{Introduction}
+Machine learning methods for simulating atmospheric dynamics are revolutionizing modern weather forecasting \citep{pangu,graphcast,lang2024aifsecmwfsdatadriven,gencast,lang2024aifscrpsensembleforecastingusing,fourcastnet3}.
+Offering fast and accurate forecasts, these \acrfull{mlwp} methods have great potential for predicting and understanding both everyday weather conditions and extreme events.
+While initial \acrshort{mlwp} methods used deterministic models to produce single forecasts \citep{pangu,lang2024aifsecmwfsdatadriven}, the field is increasingly moving towards more useful ensemble forecasting models \citep{gencast,lang2024aifscrpsensembleforecastingusing,fourcastnet3,FGNalet2025skillfuljointprobabilisticweather}.
+These methods use conditional generative models to sample forecasts from the distribution of possible future atmospheric states.
+Such sampled ensemble members can then be used to estimate probabilities of specific atmospheric conditions, or studied by meteorologists in order to understand possible future scenarios.
+These developments towards \acrshort{mlwp} ensemble forecasting are happening both for the global domain, and for the regional setting considered in this work.
+Regional \acrshort{mlwp} allows for building high-resolution models without excessive computational and memory costs, while enabling training on high-quality region-specific datasets.
+
+Initial attempts at \acrshort{mlwp} ensemble forecasting for regional domains have either failed to reproduce all high-frequency details \citep{oskarsson2024probabilistic} or used computationally expensive diffusion models \citep{stormCast,larsson2025diffusionlam}.
+Building on methodology proven succesful for global forecasting \citep{FGNalet2025skillfuljointprobabilisticweather}, we show that such a regional ensemble forecasting model can be trained by matching only marginal distributions through a loss function based on the \acrfull{crps}. We propose a regional weather forecasting model where a single latent noise vector introduces stochasticity in the model, allowing for sampling realistic ensemble members in only a single forward pass through the network.
+
+\paragraph{Problem definition.}
+In this paper, we address the problem of probabilistic \acrshort{mlwp} in the context of \acrfull{lam}, following the formulation of \citet{larsson2025diffusionlam}. In \acrshort{lam} forecasting, the data is a gridded representation of a region of interest with positions $G$. The atmospheric state at lead time $t$ is denoted by $X^t \in \mathbb{R}^{|G| \times d_x}$, where $d_x$ denotes the number of variables per grid point. The model also uses time-dependent forcing inputs $F^t$ (e.g., time of day) and static spatial fields $S$ (e.g., orography and land–sea mask). To separate the area of prediction from the boundary, we define an interior region input $I^t = \{{X_{I}^{t-1:t}, F_{I}^{t-1:t+1}, S_{I}}\}$ and a boundary region input $B^t = \{{X_{B}^{t-1:t+1}, F_{B}^{t-1:t+1}, S_{B}}\}$ (see \cref{fig:model_process}). To generate ensemble forecasts for the interior region we want to sample from the conditional distribution $p\big(X^{t+1}_{I} \mid I^t, B^t\big)$.
+
+\begin{figure}[H]
+\begin{center}
+\vspace{-0.5em} % reduce space below figure
+\includegraphics[width=\textwidth]{figures/CRPS-LAM.pdf}
+\end{center}
+\caption{An overview of the forecasting process showing the inputs and outputs of the model (adapted from \citep{larsson2025diffusionlam}).}
+\label{fig:model_process}
+\vspace{-1em} % reduce space below figure
+\end{figure}
+
+\paragraph{Our main contributions are:}
+\begin{inparaenum}[1)]
+    \item We introduce a CRPS-based probabilistic model for limited-area weather forecasting, producing forecasts with a fraction of the computational cost of state-of-the-art diffusion models. 
+    \item Through experiments on the MEPS \acrshort{lam} dataset, we demonstrate that our model produces competitive ensemble forecasts that exhibit both fine-scale detail and physically consistent spatial structures.
+\end{inparaenum}
+
+%\section{Related Work}
+\paragraph{Related Work.}
+% Scoring rule based training objectives have been applied in a range of probabilistic prediction tasks, including hand pose estimation from images \citep{disconets} and, more recently,
+\looseness=-1 Recently, CRPS-based training objectives have been successfully applied to global \acrshort{mlwp} models \citep{prob_fc_scoring_rules,lang2024aifscrpsensembleforecastingusing,lang_multi-scale,fourcastnet3,FGNalet2025skillfuljointprobabilisticweather,oskarsson2024probabilistic}. These approaches differ primarily in how the \acrshort{crps} is estimated and how stochasticity is introduced into the model. However, all these methods can produce skillful ensemble forecasts with a single forward pass through the network. A particularly convenient formulation is that of \citet{FGNalet2025skillfuljointprobabilisticweather}, which employs a similar conditioning mechanism commonly used in diffusion models, thereby enabling a simple transformation from a diffusion-based model to a CRPS-based one.
+
+Previous approaches to probabilistic \acrshort{lam} have primarily relied on diffusion-based methods \citep{stormCast,larsson2025diffusionlam,hrrrcast}. Diffusion models have demonstrated strong forecasting performance, but at substantial computational cost during sampling of ensemble members. The Graph-EFM latent variable model \citep{oskarsson2023graph-lam} is capable of probabilistic \acrshort{lam} forecasting in a single forward pass, similar to our method.
+Although it also incorporates a CRPS-based regularization term in its training objective, the Graph-EFM training mainly relies on a more involved variational framework.
+
+\section{Method}
+% Proper Scoring Rules
+Scoring rules provide a principled way to evaluate the quality of probabilistic forecasts. Given a predicted distribution $p$ and an observed value $x \sim q$, a scoring rule $s(p, x)$ quantifies how well $p$ agrees with the observation \citep{gneiting2007strictly}.
+We define $s(p,q) = \mathbb{E}_{q}[s(p,x)]$ and say that $s$ is a \emph{proper scoring rule} if it satisfies $s(q, q) \leq s(p, q)$ for all $p$ and $q$. The scoring rule is \emph{strictly proper} when equality holds only for $p = q$, ensuring that the lowest score is only achieved by the true data distribution. In other words, a strictly proper scoring rule prefers forecasts whose ensemble members are sampled from the same distribution as the observed data.
+Naturally, minimizing such scoring rules is of interest for training probabilistic forecasting models.
+
+One such strictly proper scoring rule is the \acrlong{crps} \citep{gneiting2007strictly}, defined as the squared difference between the \acrfull{cdf} $F$ of the forecast distribution $p$, and the empirical CDF of the observation. For a univariate real-valued distribution, the \acrshort{crps} is defined as
+\begin{equation}
+    \text{CRPS}(F, x) = \int_{\mathbb{R}} \big(F(\hat{x}) - \mathds{1}(\hat{x} \geq x)\big)^2 \, \mathrm{d}\hat{x}
+    \label{eq:crps_cdf}
+    =
+    \mathbb{E}_p\big[|\hat{x} - x|\big] - \frac{1}{2}\mathbb{E}_{p,p}\big[|\hat{x} - \hat{x}'|\big],
+\end{equation}
+where the empirical CDF of the observation is given by the step function $\mathds{1}(\hat{x} \geq x)$. 
+The second equality is a reformulation of the \acrshort{crps} using another independent identical random variable ${\hat{x}' \sim p}$. This formulation can be used as a basis for empirical estimators.
+For an ensemble forecast ${\{\hat{x}_n\}_{n=1}^N \sim p}$ with $N$ ensemble members and an observation $x$, one useful estimator is the \emph{fair} \acrshort{crps}
+\begin{equation}
+    \text{CRPS}_{\text{fair}}(\{\hat{x}_n\}_{n=1}^N, x) = \frac{1}{N} \sum_{n=1}^{N} \lvert \hat{x}_{n} - x \rvert 
+   - \frac{1}{2N(N-1)} 
+   \sum_{n=1}^{N} \sum_{n^*=1}^{N} 
+   \lvert \hat{x}_{n} - \hat{x}_{n^*} \rvert,
+\end{equation}
+which provides an unbiased estimate of the \acrshort{crps} with respect to the number of ensemble members \citep{fairCRPS}.
+
+We follow the procedure introduced in \citet{FGNalet2025skillfuljointprobabilisticweather}, where the backbone neural network of a diffusion model is repurposed as a CRPS-based model. Our backbone architecture is almost identical to that of \citet{larsson2025diffusionlam}, with the exception that the noise encoding is implemented as a single linear layer instead of Fourier embeddings. Specifically, a noise vector of $32$ dimensions is sampled as $z \sim \mathcal{N}(0,I)$, transformed through a linear layer, and injected into the network via conditional normalization layers \citep{chen2021adaspeechadaptivetextspeech,song2020score,karras2022elucidating}. Given the interior state $I^t$ and boundary conditions $B^t$, the network then generates probabilistic forecasts of the interior at the next time step $I^{t+1} \sim p\!\left(X_{I}^{t+1} \,\middle|\, I^t, B^t\right)$.  To extend forecasts to longer horizons, we employ an autoregressive rollout strategy, where predicted states are recursively used as inputs for subsequent steps.
+
+\paragraph{Training.} Our training objective is the CRPS, and since our forecasts are represented by empirical ensemble distributions we use the unbiased fair \acrshort{crps} estimator proposed by \citet{fairCRPS}. Our \acrshort{crps} loss is thereby defined as  
+% \begin{equation}\label{eq:training_loss}
+%    \mathcal{L} = \frac{1}{T \, |G_I|}
+%    \sum_{t=1}^T \sum_{g \in G_{I}} \sum_{d}^{d_x} \Bigg( 
+%    \frac{1}{N}\sum_{n=1}^{N} \lvert \hat{X}^{t}_{g, d, n} - X^{t}_{g, d} \rvert 
+%    - \frac{1}{2 N (N-1)} 
+%    \sum_{n=1}^{N} \sum_{n^*=1}^{N} 
+%    \lvert \hat{X}^{t}_{g, d, n} - \hat{X}^{t}_{g, d, n^*} \rvert 
+%    \Bigg),
+% \end{equation}
+\begin{equation}\label{eq:training_loss}
+   \mathcal{L}_{g, d} = 
+   \frac{1}{N}\sum_{n=1}^{N} \lvert \hat{X}_{g, d, n} - X_{g, d} \rvert 
+   - \frac{1}{2 N (N-1)} 
+   \sum_{n=1}^{N} \sum_{n^*=1}^{N} 
+   \lvert \hat{X}_{g, d, n} - \hat{X}_{g, d, n^*} \rvert,
+\end{equation}
+for each grid point $g \in G_I$ and variable $d \in d_x$, where $N$ denotes the number of ensemble members and $\hat{X}$ the predicted state. We compute the loss averaged over the spatial dimensions and summed across all variables. We train first for single-step prediction and then using autoregressive rollouts up to time step 2, where the loss is averaged across both time steps, following the approach of \citet{oskarsson2024probabilistic}.
+While \cref{eq:training_loss} can be minimized by only matching marginal distributions for each location and variable, similarly to \citep{FGNalet2025skillfuljointprobabilisticweather} we rely on the fact that all outputs depend on the same noise vector $z$ to correctly capture the joint forecast distribution. Additionally, our architecture, which utilizes convolutional neural networks, shares weights across spatial locations, thereby promoting spatially coherent forecasts.
+
+\section{Experiments}
+The models\footnote{The code and implementation details will be made publicly available upon acceptance of this paper at \url{https://github.com/ErikLarssonDev/neural-lam/tree/CRPS-LAM}.} are evaluated on the MEPS \acrshort{lam} dataset\footnote{The MEPS dataset is openly available at \url{https://nextcloud.liu.se/s/meps}}, using \acrfull{rmse}, \acrshort{crps}, \acrfull{ssr}, and a spectral analysis of the produced forecasts. 
+We refer to \citet{larsson2025diffusionlam} for details about the MEPS dataset and metric definitions. 
+We compare the forecasting performance of CRPS-LAM to the Diffusion-LAM \citep{larsson2025diffusionlam} diffusion model and the Graph-EFM latent variable model \citep{oskarsson2024probabilistic}.
+All forecast trajectories are initialized from the ground-truth states and generated autoregressively up to a lead time of \SI{57}{\hour}, with 25 ensemble members produced for each model. The model is trained to perform \SI{3}{\hour} forecasts (see \cref{fig:model_process}) and is rolled out autoregressively to produce longer forecasts. CRPS-LAM can generate \SI{57}{\hour} forecasts in approximately \SI{0.5}{\second} per ensemble member on a single A100 GPU. Moreover, an arbitrary number of ensemble members can be sampled in parallel through batched inference on one or multiple GPUs. This corresponds to a sampling speed comparable to that of Graph-EFM or a deterministic model (on a per-member basis) and approximately $39\times$ faster than Diffusion-LAM, depending on the number of solver steps that are used. The results show that CRPS-LAM achieves performance competitive with both Diffusion-LAM and Graph-EFM in terms of the sample quality exemplified in  \cref{fig:qualitative_results}, as well as pixelwise performance metrics in  \cref{fig:quantitative_results}.
+\begin{figure}[H]
+\vspace{-.5em} % reduce space above figure
+    \centering
+        \includegraphics[width=0.9\textwidth]{figures/samples/ens_comparison.pdf}
+    \caption{Forecasts at \SI{57}{h} lead time for \texttt{r\_2}. The faded area constitutes the boundary region.}
+    \vspace{-1em} % reduce space below figure
+    \label{fig:qualitative_results}
+\end{figure}
+\begin{figure}[H]
+\vspace{-0.5em}
+    \centering
+    \includegraphics[width=\textwidth, trim={0.3cm 0.3cm 0.3cm 0.3cm}, clip]{figures/spskr/spskr_legend.pdf}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_Mean.pdf}
+        \caption{\acrshort{rmse}}
+        \label{fig:subfigure1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_Mean.pdf}
+        \caption{\acrshort{crps}}
+        \label{fig:subfigure1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_Mean.pdf}
+        \caption{\acrshort{ssr}}
+        \label{fig:subfigure2}
+    \end{subfigure}
+    \caption{The mean of the normalized \acrshort{rmse}, \acrshort{crps}, and \acrshort{ssr} for all variables.}
+    \vspace{-1em}
+    \label{fig:quantitative_results}
+\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \begin{minipage}{0.45\textwidth}
+%         By investigating the spectra of the fields produced by the models in \cref{fig:spectra_r2} we also note that CRPS-LAM retains more fine-scale details than Graph-EFM, but lose some of the highest frequency components still captured by Diffusion-LAM. More detailed results for each variable are shown in \cref{apx:detailed_results}.
+%     \end{minipage}
+%     \begin{minipage}{0.5\textwidth}
+%         \begin{subfigure}[b]{\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth, trim={0.25cm 0.3cm 0.3cm 0.2cm}, clip]{figures/spectra/r_2_19.pdf}
+%         \caption{The energy spectra of \texttt{r\_2} at lead time \SI{57}{\hour}}.
+%         \label{fig:spectra_r2}
+%     \end{subfigure}
+%     \end{minipage}
+% \end{figure}
+\begin{wrapfigure}[12]{r}{0.43\textwidth}
+\vspace{-2em}
+    \centering
+    \includegraphics[width=\linewidth, trim={0.25cm 0.3cm 0.2cm 0.2cm}, clip]{figures/spectra/r_2_paper_19.pdf}
+    \caption{Energy spectra of humidity at \SI{57}{\hour}}.
+    \label{fig:spectra_r2}
+    \vspace{-1em}
+\end{wrapfigure}
+ CRPS-LAM shows low errors, comparable with Diffusion-LAM, while retaining the fast inference speed of Graph-EFM by only requiring a single forward pass to sample the next time step. A well calibrated ensemble should have $\text{SSR} \approx 1$, yet all models exhibit some degree of underdispersion. CRPS-LAM achieves ensemble calibration comparable to the best-performing model, Graph-EFM, whereas Diffusion-LAM shows stronger underdispersion, particularly at longer lead times. By investigating the spectra of the fields produced by the models in \cref{fig:spectra_r2} we also note that CRPS-LAM retains more fine-scale details than Graph-EFM, but lose some of the highest frequency components still captured by Diffusion-LAM. More detailed results are shown in \cref{apx:detailed_results}.
+% \begin{figure}[H]
+%     \centering
+%     \vfill
+%     % \includegraphics[width=\textwidth]{figures/spectra/spectra_legend.pdf}
+%     \begin{subfigure}[b]{0.30\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{figures/spectra/spectra_legend_column.pdf}
+%         \label{fig:subfigure1}
+%     \end{subfigure}
+%      % \vfill
+%     \hspace{5em}
+%     \begin{subfigure}[b]{0.5\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth, trim={0.3cm 0.3cm 0.3cm 0.2cm}, clip]{figures/spectra/r_2_19.pdf}
+%         % \caption{\texttt{r\_2}}
+%         \label{fig:subfigure1}
+%     \end{subfigure}
+    % \hfill
+    % \begin{subfigure}[b]{0.32\textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth]{figures/spectra/nlwrs_0_19.pdf}
+    %     \caption{\texttt{nlwrs}}
+    %     \label{fig:subfigure1}
+    % \end{subfigure}
+    % \hfill
+    % \begin{subfigure}[b]{0.40\textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth]{figures/spectra/u_65_19.pdf}
+    %     \caption{\texttt{u\_65}}
+    %     \label{fig:subfigure2}
+    % \end{subfigure}
+%     \caption{The energy spectra of \texttt{r\_2} at lead time \SI{57}{\hour}}.
+%     \label{fig:spectra_r2}
+% \end{figure}
+\section{Conclusion}
+This work introduces CRPS-LAM, a new efficient probabilistic limited-area weather forecasting model that is competitive with diffusion-based baselines and outperforms existing latent-variable approaches. We demonstrate that CRPS-LAM produces skillful forecasts on the MEPS \acrshort{lam} dataset, while retaining highly efficient sampling. Interesting directions for future research include exploring new ways to incorporate latent variables into the model to enhance performance. Further performance improvements could likely also be gained by increasing the model size or exploring more advanced training strategies, such as extending the number of autoregressive training steps.
+
+\section*{Acknowledgements}
+This research is financially supported by the Swedish Research Council (grant no: 2020-04122, 2024-05011)
+the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and Alice Wallenberg Foundation,
+and
+the Excellence Center at Linköping--Lund in Information Technology (ELLIIT).
+Our computations were enabled by the Berzelius resource at the National Supercomputer Centre, provided by the  Knut and Alice Wallenberg Foundation.
+Landelius was funded by the Swedish Energy Agency and the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 883973–EnerDigit.
+
+\bibliography{references}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage% Added this for clear separation
+\appendix
+\crefalias{section}{appendix}
+\section{Table of notation} 
+The notation that is used in this paper is summarized in \cref{tab:notation}.
+\begin{table}[h]
+\caption{Table of notation.}
+\label{tab:notation}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ll}
+\multicolumn{1}{l}{\bf Notation}  &\multicolumn{1}{l}{\bf Description}
+\\ \hline
+$X^t$ & Full weather state including both the interior and the boundary at lead time $t$ \\
+$X^t_{I}$ & Interior of weather state at lead time $t$ \\
+$X^t_{B}$ & Boundary of weather state at lead time $t$ \\
+$X^t_{g, d}$ & Weather variable $d$ at grid position $g$ at lead time $t$ \\
+$\hat{X}^t_{g, d}$ & Predicted weather variable $d$ at grid position $g$ at lead time $t$ \\
+$G$ & The grid points in a full weather state $X^t$ \\
+$G_{I}$ & The grid points in the interior of a weather state $X^t_{I}$ \\
+$F^t$ & Forcing variables at lead time $t$ \\
+$S$ & Static variables for each position in the grid $G$ \\
+$I^t$ & Interior input $\{X_{I}^{t-1:t}, F_{I}^{t-1:t+1}, S_{I}\}$ at lead time $t$ \\
+$B^t$ & Boundary input $\{X^{t-1:t+1}_{B}, F^{t-1:t+1}_{B}, S_{B}\}$ at lead time $t$ \\
+$d_x$ & The number of weather variables in each grid cell of each state $X^t$ \\
+$T$ & Number of forecast steps in a sampled trajectory \\
+$N$ & Number of ensemble members \\
+$z$ & Latent noise vector \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+% \section{List of Acronyms}
+% \printglossary[type=\acronymtype]
+
+\section{Experiment Details}
+An overview schematic of our architecture of our backbone model is shown in \cref{fig:unet} with the details of each U-Net shown in \cref{fig:unet_block}. Note that the MLP blocks are different from the U-Net blocks and consist of a two-layer MLP followed by a conditional layer normalization, where the latent variable $z$ is included as an additional conditioning input.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/unet.pdf}
+\end{center}
+\caption{An overview of the backbone model.}
+\label{fig:unet}
+\end{figure}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/unet_block.pdf}
+\end{center}
+\caption{A description of each U-Net block.}
+\label{fig:unet_block}
+\vspace{-1em} % reduce space below figure
+\end{figure}
+
+The training procedure for CRPS-LAM is summarized in \cref{tab:training_steps}. We begin by training the model on single-step forecasts until convergence, after which we extend the training to two-step autoregressive rollouts. In this setup, we did not observe any additional benefits from training with more autoregressive steps.
+
+\begin{table}[h!]
+\centering
+\caption{Training schedule.}
+\label{tab:training_steps}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Epochs} & \textbf{Learning Rate} & \textbf{Autoregressive Steps} \\
+\midrule
+600  & 0.001   & 1 \\
+400  & 0.0001  & 1 \\
+200  & 0.00001 & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+During the initial training phase, we sometimes observe instability where the model collapses into producing near-deterministic forecasts, effectively minimizing the mean absolute error of each ensemble member while neglecting the latent variable. Similar behavior has been reported by \citet{lang2024aifscrpsensembleforecastingusing}, who proposed a modified training objective to address it, and by \citet{fourcastnet3}, who mitigated the issue by using a biased \acrshort{crps} estimator with a large ensemble early in training, later transitioning to a smaller ensemble and the unbiased fair \acrshort{crps} estimator. 
+
+Prior to introducing autoregressive training with two-step trajectories, we observed artifacts in a small subset of ensemble members at longer lead times. However, these artifacts disappeared once the model was trained with autoregressive forecasting steps, suggesting that training with multiple autoregressive steps helps stabilize the usage of latent variables at longer lead times. 
+
+In contrast to Graph-EFM and Diffusion-LAM, we do not apply any weighting of the loss function across atmospheric levels or variables, as we found it unnecessary to achieve competitive results. However, if it is desired to emphasize specific atmospheric levels or variables, such weighting could easily be incorporated into the loss function within this framework.
+
+When preparing the dataset, we subsampled every fourth grid point, reducing the spatial resolution from the native \SI{2.5}{\kilo\meter} of MEPS to \SI{10}{\kilo\meter}. Consequently, spectral components at wavenumbers above $10^2$ are not physically meaningful, since the models cannot represent scales finer than those resolved by the input data. In an operational setting, such unresolved scales should be suppressed by applying a suitable low-pass filter.
+
+\section{Additional results}\label{apx:detailed_results}
+We provide detailed per-variable evaluation results in \cref{fig:rmse_all}, \cref{fig:crps_all}, and \cref{fig:spskr_all}, together with a \SI{57}{\hour} forecast example for a randomly selected test case in \cref{fig:samples_all}. The corresponding energy spectra for all variables are shown in \cref{fig:spectra_all_0,fig:spectra_all_1,fig:spectra_all_2,fig:spectra_all_3}. For an evaluation of deterministic models and less competitive probabilistic baselines on the MEPS dataset, we refer the reader to \citet{oskarsson2023graph-lam,oskarsson2024probabilistic}.
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{\textwidth}%
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/nlwrs_0.pdf}
+        \caption{\texttt{nlwrs\_0}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat%
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/nswrs_0.pdf}
+        \caption{\texttt{nswrs\_0}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/pres_0g.pdf}
+        \caption{\texttt{pres\_0g}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/pres_0s.pdf}
+        \caption{\texttt{pres\_0s}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/r_2.pdf}
+        \caption{\texttt{r\_2}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/r_65.pdf}
+        \caption{\texttt{r\_65}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/t_2.pdf}
+        \caption{\texttt{t\_2}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/t_65.pdf}
+        \caption{\texttt{t\_500}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/t_500.pdf}
+        \caption{\texttt{t\_65}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/t_850.pdf}
+        \caption{\texttt{t\_850}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/u_65.pdf}
+        \caption{\texttt{u\_65}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/u_850.pdf}
+        \caption{\texttt{u\_850}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/v_65.pdf}
+        \caption{\texttt{v\_65}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/v_850.pdf}
+        \caption{\texttt{v\_850}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/wvint_0.pdf}
+        \caption{\texttt{wvint\_0}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/z_1000.pdf}
+        \caption{\texttt{z\_1000}}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[tbp]\ContinuedFloat
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,height=0.98\textheight,keepaspectratio]{figures/samples/z_500.pdf}
+        \caption{\texttt{z\_500}}
+    \end{subfigure}
+    \caption{An ensemble forecasts for each variable at \SI{57}{\hour}.}
+    \label{fig:samples_all}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/rmse/rmse_legend.pdf}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_nlwrs_0.pdf}
+        \caption{\texttt{nlwrs\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_nswrs_0.pdf}
+        \caption{\texttt{nswrs\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_pres_0g.pdf}
+        \caption{\texttt{pres\_0g}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_pres_0s.pdf}
+        \caption{\texttt{pres\_0s}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_r_2.pdf}
+        \caption{\texttt{r\_2}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_r_65.pdf}
+        \caption{\texttt{r\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_t_2.pdf}
+        \caption{\texttt{t\_2}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_t_500.pdf}
+        \caption{\texttt{t\_500}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_t_65.pdf}
+        \caption{\texttt{t\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_t_850.pdf}
+        \caption{\texttt{t\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_u_65.pdf}
+        \caption{\texttt{u\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_u_850.pdf}
+        \caption{\texttt{u\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_v_65.pdf}
+        \caption{\texttt{v\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_v_850.pdf}
+        \caption{\texttt{v\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_wvint_0.pdf}
+        \caption{\texttt{wvint\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_z_1000.pdf}
+        \caption{\texttt{z\_1000}}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/rmse/rmse_z_500.pdf}
+        \caption{\texttt{z\_500}}
+    \end{subfigure}
+    \hfill
+    \caption{The \acrshort{rmse} results for each variable.}
+    \label{fig:rmse_all}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/crps/crps_legend.pdf}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_nlwrs_0.pdf}
+        \caption{\texttt{nlwrs\_0}}
+        % \label{fig:subfigure1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_nswrs_0.pdf}
+        \caption{\texttt{nswrs\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_pres_0g.pdf}
+        \caption{\texttt{pres\_0g}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_pres_0s.pdf}
+        \caption{\texttt{pres\_0s}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_r_2.pdf}
+        \caption{\texttt{r\_2}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_r_65.pdf}
+        \caption{\texttt{r\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_t_2.pdf}
+        \caption{\texttt{t\_2}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_t_500.pdf}
+        \caption{\texttt{t\_500}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_t_65.pdf}
+        \caption{\texttt{t\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_t_850.pdf}
+        \caption{\texttt{t\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_u_65.pdf}
+        \caption{\texttt{u\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_u_850.pdf}
+        \caption{\texttt{u\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_v_65.pdf}
+        \caption{\texttt{v\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_v_850.pdf}
+        \caption{\texttt{v\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_wvint_0.pdf}
+        \caption{\texttt{wvint\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_z_1000.pdf}
+        \caption{\texttt{z\_1000}}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/crps/crps_z_500.pdf}
+        \caption{\texttt{z\_500}}
+    \end{subfigure}
+    \hfill
+    \caption{The \acrshort{crps} results for each variable.}
+    \label{fig:crps_all}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/spskr/spskr_legend.pdf}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_nlwrs_0.pdf}
+        \caption{\texttt{nlwrs\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_nswrs_0.pdf}
+        \caption{\texttt{nswrs\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_pres_0g.pdf}
+        \caption{\texttt{pres\_0g}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_pres_0s.pdf}
+        \caption{\texttt{pres\_0s}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_r_2.pdf}
+        \caption{\texttt{r\_2}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_r_65.pdf}
+        \caption{\texttt{r\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_t_2.pdf}
+        \caption{\texttt{t\_2}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_t_500.pdf}
+        \caption{\texttt{t\_500}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_t_65.pdf}
+        \caption{\texttt{t\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_t_850.pdf}
+        \caption{\texttt{t\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_u_65.pdf}
+        \caption{\texttt{u\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_u_850.pdf}
+        \caption{\texttt{u\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_v_65.pdf}
+        \caption{\texttt{v\_65}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_v_850.pdf}
+        \caption{\texttt{v\_850}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_wvint_0.pdf}
+        \caption{\texttt{wvint\_0}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_z_1000.pdf}
+        \caption{\texttt{z\_1000}}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spskr/spskr_z_500.pdf}
+        \caption{\texttt{z\_500}}
+    \end{subfigure}
+    \hfill
+    \caption{The \acrshort{ssr} results for each variable.}
+    \label{fig:spskr_all}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/spectra/spectra_legend.pdf}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/nlwrs_0_1.pdf}
+        \caption{\texttt{nlwrs\_0} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/nlwrs_0_10.pdf}
+        \caption{\texttt{nlwrs\_0} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/nlwrs_0_19.pdf}
+        \caption{\texttt{nlwrs\_0} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/nswrs_0_1.pdf}
+        \caption{\texttt{nswrs\_0} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/nswrs_0_10.pdf}
+        \caption{\texttt{nswrs\_0} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/nswrs_0_19.pdf}
+        \caption{\texttt{nswrs\_0} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/pres_0g_1.pdf}
+        \caption{\texttt{pres\_0g} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/pres_0g_10.pdf}
+        \caption{\texttt{pres\_0g} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/pres_0g_19.pdf}
+        \caption{\texttt{pres\_0g} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/pres_0s_1.pdf}
+        \caption{\texttt{pres\_0s} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/pres_0s_10.pdf}
+        \caption{\texttt{pres\_0s} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/pres_0s_19.pdf}
+        \caption{\texttt{pres\_0s} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/r_2_1.pdf}
+        \caption{\texttt{r\_2} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/r_2_10.pdf}
+        \caption{\texttt{r\_2} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/r_2_19.pdf}
+        \caption{\texttt{r\_2} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \caption{The energy spectra for each variable at the lead times \SI{3}{\hour}, \SI{30}{\hour}, and \SI{57}{\hour}.}
+    \label{fig:spectra_all_0}
+\end{figure}
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/r_65_1.pdf}
+        \caption{\texttt{r\_65} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/r_65_10.pdf}
+        \caption{\texttt{r\_65} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/r_65_19.pdf}
+        \caption{\texttt{r\_65} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_2_1.pdf}
+        \caption{\texttt{t\_2} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_2_10.pdf}
+        \caption{\texttt{t\_2} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_2_19.pdf}
+        \caption{\texttt{t\_2} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_500_1.pdf}
+        \caption{\texttt{t\_500} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_500_10.pdf}
+        \caption{\texttt{t\_500} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_500_19.pdf}
+        \caption{\texttt{t\_500} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_65_1.pdf}
+        \caption{\texttt{t\_65} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_65_10.pdf}
+        \caption{\texttt{t\_65} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_65_19.pdf}
+        \caption{\texttt{t\_65} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_850_1.pdf}
+        \caption{\texttt{t\_850} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_850_10.pdf}
+        \caption{\texttt{t\_850} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/t_850_19.pdf}
+        \caption{\texttt{t\_850} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+
+    \caption{The energy spectra for each variable at the lead times \SI{3}{\hour}, \SI{30}{\hour}, and \SI{57}{\hour}.}
+    \label{fig:spectra_all_1}
+\end{figure}
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/u_65_1.pdf}
+        \caption{\texttt{u\_65} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/u_65_10.pdf}
+        \caption{\texttt{u\_65} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/u_65_19.pdf}
+        \caption{\texttt{u\_65} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/u_850_1.pdf}
+        \caption{\texttt{u\_850} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/u_850_10.pdf}
+        \caption{\texttt{u\_850} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/u_850_19.pdf}
+        \caption{\texttt{u\_850} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/v_65_1.pdf}
+        \caption{\texttt{v\_65} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/v_65_10.pdf}
+        \caption{\texttt{v\_65} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/v_65_19.pdf}
+        \caption{\texttt{v\_65} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/v_850_1.pdf}
+        \caption{\texttt{v\_850} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/v_850_10.pdf}
+        \caption{\texttt{v\_850} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/v_850_19.pdf}
+        \caption{\texttt{v\_850} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/wvint_0_1.pdf}
+        \caption{\texttt{wvint\_0} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/wvint_0_10.pdf}
+        \caption{\texttt{wvint\_0} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/wvint_0_19.pdf}
+        \caption{\texttt{wvint\_0} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \caption{The energy spectra for each variable at the lead times \SI{3}{\hour}, \SI{30}{\hour}, and \SI{57}{\hour}.}
+    \label{fig:spectra_all_2}
+\end{figure}
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/z_1000_1.pdf}
+        \caption{\texttt{z\_1000} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/z_1000_10.pdf}
+        \caption{\texttt{z\_1000} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/z_1000_19.pdf}
+        \caption{\texttt{z\_1000} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/z_500_1.pdf}
+        \caption{\texttt{z\_500} at \SI{3}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/z_500_10.pdf}
+        \caption{\texttt{z\_500} at \SI{30}{\hour}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/spectra/z_500_19.pdf}
+        \caption{\texttt{z\_500} at \SI{57}{\hour}}
+    \end{subfigure}
+    \hfill
+    \caption{The energy spectra for each variable at the lead times \SI{3}{\hour}, \SI{30}{\hour}, and \SI{57}{\hour}.}
+    \label{fig:spectra_all_3}
+\end{figure}
+
+\end{document}

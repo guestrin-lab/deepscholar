@@ -1,0 +1,143 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+% \usepackage{hyperref}
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[breaklinks,colorlinks,citecolor=cvprblue]{hyperref}
+\usepackage{url}
+
+% New packages and commands
+\usepackage[ruled]{algorithm2e} % For algorithms
+\renewcommand{\algorithmcfname}{ALGORITHM}
+\SetAlFnt{\small}
+\SetAlCapFnt{\small}
+\SetAlCapNameFnt{\small}
+\SetAlCapHSkip{0pt}
+
+\newcommand{\mycommentstyle}[1]{\color[HTML]{0671b9}{\small #1}}
+\SetKwComment{Comment}{\mycommentstyle{// }}{}
+\definecolor{mycommentcolor}{HTML}{0671b9}
+
+\newcommand{\todo}[1]{\textcolor{purple}{[TODO] \emph{#1}}}
+\newcommand{\anyi}[1]{\textcolor{red}{[Anyi] #1}}
+
+\usepackage{bm}
+\usepackage{booktabs} % For formal tables
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{subcaption}
+
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{algorithm}{Alg.}{Algs.}
+
+% Add a period to the end of an abbreviation unless there's one
+% already, then \xspace.
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{cf}\onedot} \def\Cf{\emph{Cf}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\iid{i.i.d\onedot} \def\wolog{w.l.o.g\onedot}
+\def\etal{\emph{et al}\onedot}
+\makeatother
+
+\newcommand{\sref}[1]{\S\ref{#1}}
+\newcommand{\sssection}[1]{\noindent\textbf{#1}}
+
+
+\title{Taming Flow-based I2V Models for\\Creative Video Editing}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{
+% Antiquus S.~Hippocampus, Natalia Cerebro \& Amelie P. Amygdale \thanks{ Use footnote for providing further information
+% about author (webpage, alternative address)---\emph{not} for acknowledging
+% funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu}
+% \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+Xianghao Kong$^1$, Hansheng Chen$^2$, Yuwei Guo$^3$, Lvmin Zhang$^2$,\\ ~\textbf{Gordon Wetzstein$^2$, Maneesh Agrawala$^2$, Anyi Rao$^1$} \\
+$^1$~HKUST, $^2$~Stanford University, $^3$~CUHK \\
+% Address \\
+% \texttt{email}
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+\maketitle
+
+\begin{figure}[h!]
+  \vspace{-3pt}
+  \centering
+  \includegraphics[width=\linewidth]{figs/teaser.pdf}
+  \caption{Illustration of IF-V2V, a lightweight plug-and-play method for creative video editing (\sref{sec:intro}). It effectively combines the capability of black-box image editing approaches and flow-matching-based I2V models without inversion and optimization, achieving various creative editing tasks with high visual quality.}
+  \label{fig:teaser}
+\end{figure}
+
+\begin{abstract}
+Although image editing techniques have advanced significantly, video editing, which aims to manipulate videos according to user intent, remains an emerging challenge.
+% Video editing, which aims to manipulate input videos towards the user's intention, is still in its infancy compared to well-developed image editing approaches. 
+Most existing image-conditioned video editing methods either require inversion with model-specific design or need extensive optimization, limiting their capability of leveraging up-to-date image-to-video (I2V) models to transfer the editing capability of image editing models to the video domain. 
+% To this end, we propose IF-V2V, an inversion-free image-conditioned video editing method that can be applied to any flow-matching-based I2V models without optimization. 
+To this end, we propose IF-V2V, an \underline{I}nversion-\underline{F}ree method that can adapt off-the-shelf flow-matching-based I2V models for video editing without significant computational overhead.
+To circumvent inversion, we devise Vector Field Rectification with Sample Deviation to incorporate information from the source video into the denoising process by introducing a deviation term into the denoising vector field. To further ensure consistency with the source video in a model-agnostic way, we introduce Structure-and-Motion-Preserving Initialization to generate motion-aware temporally correlated noise with structural information embedded. We also present a Deviation Caching mechanism to minimize the additional computational cost for denoising vector rectification without significantly impacting editing quality. Evaluations demonstrate that our method achieves superior editing quality and consistency over existing approaches, offering a lightweight plug-and-play solution to realize visual creativity.
+\end{abstract}
+
+\input{sec/1_intro}
+\input{sec/2_related}
+\input{sec/3_method}
+\input{sec/4_exp}
+\input{sec/5_conclusion}
+
+% \subsubsection*{Author Contributions}
+% If you'd like to, you may include  a section for author contributions as is done
+% in many journals. This is optional and at the discretion of the authors.
+
+% \subsubsection*{Acknowledgments}
+% Use unnumbered third level headings for the acknowledgments. All
+% acknowledgments, including those to funding agencies, go at the end of the paper.
+
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\appendix
+\input{sec/X_suppl}
+
+\end{document}

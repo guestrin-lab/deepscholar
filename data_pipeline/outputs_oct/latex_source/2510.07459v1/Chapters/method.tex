@@ -1,0 +1,146 @@
+\section{Method}\label{sec:method}
+In this section, we introduce our uncertainty-based gating  MoE framework. We begin by outlining the general formulation of MoE in Section \ref{subsec:det_moe}. Subsequently, we present our proposed method, which extends this general MoE formulation to an
+uncertainty-based gating model, as detailed in Section \ref{subsec:unc_moe}. Finally, in Section \ref{subsec:tsf_mogu}, we demonstrate a concrete application of our mechanism to the task of time series forecasting.
+\subsection{Input-based Gating  Mixture-of-Experts}\label{subsec:det_moe}
+A general formulation for an MoE network \citep{jacobs1991adaptive} can be defined as follows:
+\begin{equation}\label{eq:moe}
+    x  \rightarrow  ( w_i(x), y_i(x)), \hspace{1cm} i=1,...,k 
+\end{equation}
+where $x$ denotes the input, $y_i$ is the prediction of the $i$-th expert and $w_i$ is the weight the model assigns to that expert's prediction. The model's output is then calculated as the weighted sum of these expert predictions:
+\begin{equation}\label{eq:moe_pred}
+    \hat{y} = \sum w_i(x){y_i}(x).
+\end{equation}
+Optimizing an MoE is achieved by minimizing the following loss:
+\begin{equation}\label{eq:moe_loss}
+    \mathcal{L}_{\scriptscriptstyle \text{MoE}}= \sum w_i(x)\mathcal{L}(y_i(x), y) 
+\end{equation}
+where $y$ is the ground truth label and $\mathcal{L}$ is the loss function for the target task. 
+
+Typically, an MoE comprises a set of individual expert neural networks (often architecturally identical) that predict the outputs $y_i$, along with an additional gating neural module responsible for predicting the expert weights $w_i$. In its initial conception \citep{jacobs1991adaptive}, both the experts and the gating module were realized as feedforward networks (the latter incorporating a softmax layer for weight prediction). However, the underlying formulation is adaptable, and subsequent research has introduced diverse architectural implementations. Additionally, MoEs have also been implemented as layers within larger models~\citep{shazeer2017outrageously}, which we refer to as 'latent MoEs'. 
+%In this work, we focus on the general formulation provided in Eq.(~\ref{eq:mog}).
+
+\subsection{MoGU: Mixture-of-Gaussians with Uncertainty-based Gating}\label{subsec:unc_moe}
+
+We now describe our proposed framework, which extends MoEs to a Mixture-of-Gaussians with Uncertainty-based Gating (MoGU).
+\paragraph{From MoE to MoG.}
+We can add to each expert an uncertainty component that indicates how much the expert is confident in its decision: 
+\begin{equation}\label{eq:mog}
+    x  \rightarrow  ( w_i(x), y_i(x), \sigma^2_i(x)), \hspace{1cm} i=1,...,k. 
+\end{equation}
+We can interpret $\sigma^2_i(x)$ as a variance term associated with the $i$-th expert. 
+The experts' predictions and their variances can be jointly trained by replacing the individual expert loss $\mathcal{L}$ in Eq.~(\ref{eq:moe_loss}) with the Gaussian Negative Log Likelihood (NLL) loss, denoted by $\mathcal{L}_{\scriptscriptstyle \text{NLLG}}$:
+\begin{equation}
+    \mathcal{L}_{\scriptscriptstyle \text{MoG}}= \sum w_i(x)\mathcal{L_{  \scriptscriptstyle \text{  NLLG}}}(y;y_i(x), \sigma_i^2(x)))
+    \label{eq:mog_loss}
+\end{equation}
+with:
+\begin{equation}
+    \mathcal{L}_{\scriptscriptstyle \text{NLLG}}(y; \mu, \sigma^2) = \frac{1}{2}(\log(\max(\sigma^2, \epsilon)) + \frac{ (\mu - y)^2 }{\max(\sigma^2, \epsilon)})
+\end{equation}
+where $\epsilon$ is used for stability.
+\begin{comment}
+The experts' predictions and their variances can be jointly trained using a MoG loss function:
+\begin{equation}\label{eq:mog_loss}
+    \mathcal{L}_{}= - \log (\sum_i w_i(x)\mathcal{N}(y;y_i(x), \sigma_i^2(x))) 
+\end{equation}
+where $\mathcal{N}$ is the Normal density function and the loss
+has the form of a Negative Log Likelihood (NLL) of a Mixture of Gaussian (MoG) distributions.
+\end{comment}
+Similarly to the MoE formulation (Eq. (\ref{eq:moe_loss})), the weights $w_i(x)$ are obtained through a softmax layer, which is computed by a separate gating module in addition to the experts given the input. 
+
+This model thus assumes that the conditional distribution of the labels $y$ given $x$  is an MoG. Therefore, at the inference step, the model prediction is given by:
+ \begin{equation}
+ \hat{y} = E ( y|x) = \sum w_i(x)y_i(x)
+ \end{equation}
+ and its variance is:
+\begin{equation}
+\Var(y|x)  = \underbrace{\sum w_i(x) \sigma_i^2(x)}_{\text{aleatoric uncertainty}} +  \underbrace{\sum w_i(x) (\hat{y}-y_i(x))^2}_{\text{epistemic uncertainty}}.
+\label{var-mog}
+\end{equation}
+The first term of (\ref{var-mog}) can be viewed as the \textit{aleatoric uncertainty} and the second term is the \textit{epistemic uncertainty} (see e.g. \citep{gal2016dropout}). Here, we use the experts and an ensemble of regression models (instead of extracting the ensemble from the dropout mechanism).
+
+\paragraph{From MoG to MoGU.}
+Once we add an uncertainty term for each expert, we can also interpret this term as the expert’s relevance to the prediction task for the given input signal. We can thus transform the expert confidence information into relevance weights, allowing us to replace the standard input-based MoE gating mechanism, with a decision function that is based on expert uncertainties.
+We next present an alternative model, where the gating mechanism is based on using the variance of expert predictions as an uncertainty weight when combining the experts.
+
+We can view each expert as an independently sampled noisy version of the true value $y$:  $y_i \sim \mathcal{N} ( y, \sigma_i^2(x))$. It can be easily verified that the maximum likelihood estimation of $y$ based on the experts' decisions $y_1,...,y_k$ is: 
+\begin{equation}\hat{y} = 
+%\arg \max_y p ( y_1,...,y_k; y , \sigma_1, ..., \sigma_k ) = 
+\arg \max_y \sum_i \log \mathcal{N} ( y_i, ; y , \sigma_i^2) = 
+\sum_i w_i y_i
+\end{equation}
+ s.t.
+\begin{equation}
+    w_i = \frac{ \sigma_i^{-2} }{ \sum_j \sigma_j^{-2}}.
+    \label{widef}
+\end{equation}
+In other words, each expert is weighted in inverse proportion to its variance (i.e., proportional to its precision).
+In contrast to traditional MoEs where gating is learned as an auxiliary neural module, MoGU derives gating weights directly from uncertainty estimates, reframing expert selection as probabilistic inference rather than an additional prediction task.
+We can thus substitute Eq. (\ref{widef})  in Eq.~(\ref{eq:mog_loss}), to obtain the following loss function:
+\begin{equation}
+    \mathcal{L}_{\scriptscriptstyle \text{MoGU}}= \sum_i  \frac{ \sigma_i^{-2}(x)}{\sum_j \sigma_j^{-2}(x)}\mathcal{L}_{\scriptscriptstyle \text{NLLG}}(y;y_i(x), \sigma_i^2(x))).
+\end{equation}
+\begin{comment}
+  We can thus couple the variance and weight parameters of the MoE model and obtain the loss function:
+\begin{equation}\label{eq:mog_loss}
+    \mathcal{L}_{}= - \log ( \frac{ \sigma_i^{-2}(x)}{\sum_j \sigma_j^{-2}(x)}\mathcal{N}(y;y_i(x), \sigma_i^2(x))) 
+\end{equation}  
+\end{comment}
+
+%At the inference step, the model prediction is  % \begin{equation}
+ %\hat{y} = E ( y|x) = \sum_i \frac{y_i(x)}{\sigma_i^2(x)}   /  \sum_i \frac{1}{\sigma_i^2(x)}
+% \end{equation}
+ Further substituting (\ref{widef}) in (\ref{var-mog}) we obtain the variance reported by the MoGU model:
+\begin{equation}
+\Var(y|x)  = \underbrace{ \frac{1}{\frac{1}{k}\sum_j \sigma_j^{-2}(x)} }_{\text{aleatoric uncertainty}} +  \underbrace{\sum_i \frac{ \sigma_i^{-2}(x)}{\sum_j \sigma_j^{-2}(x)} (\hat{y}-y_i(x))^2}_{\text{epistemic uncertainty}}.
+\label{eq:var-mogu}
+\end{equation}
+
+\begin{comment}
+\begin{equation}
+\Var(y|x)  =\frac{1}{ \frac{1}{k}\sum_i \frac{1}{\sigma_i^2(x)}} +
+\sum_i  \frac{(\hat{y}-y_i(x))^2}{\sigma_i^2(x)} /
+\sum_i  \frac{1}{\sigma_i^2(x)}
+\label{varmog2}
+\end{equation}
+\end{comment}
+Note that here  the aleatoric uncertainty (the first additive term of  (\ref{eq:var-mogu}))  is simply the harmonic mean of the variances of the individual expert predictions.
+
+
+
+We provide a pseudo-code for MoGU in our Appendix as well as a complete PyTorch implementation to reproduce the results reported in our paper.
+
+\subsection{Time Series Forecasting with MoGU}\label{subsec:tsf_mogu}
+We demonstrate the application of the MoGU approach to multivariate time series forecasting. The forecasting task is to predict future values of a system with multiple interacting variables. Given a sequence of $T$ observations for $V$ variables, represented by the matrix $x \in \mathbb{R}^{T \times V}$, the objective is to forecast the future values
+$y\in \mathbb{R}^{(T+h) \times V}$ where $h$ is the forecasting horizon.
+
+Traditional neural forecasting models(forecasting 'experts') typically follow a two-step process. First, a neural module $g$, such as a Multi-Layer Perceptron (MLP) or a Transformer, encodes the input time series $x$ into a latent representation. Second, a fully connected layer $f$ regresses the future values $y$ from the latent representation $g(x)$. This process can be generally expressed as:
+\begin{equation}\label{eq:mog-tsf}
+    x  \rightarrow  f(g(x)).
+\end{equation}
+
+To apply MoGU for time series forecasting, we need to extend  forecasting experts with an uncertainty component as described in Eq. (\ref{eq:mog}), by estimating the variance of the forecast in addition to the predicted values. 
+
+We implement this extension by introducing an additional MLP, denoted as $f'$, which predicts the variance $\sigma^2$ from the latent representation $g(x)$. The MLP $f'$ consists of a single hidden fully connected layer that maintains the same dimensionality as $g(x)$. The output of this layer is then passed through a Softplus function to ensure the variance is always non-negative and to promote numerical stability during training:
+\begin{equation}\label{eq:mog-tsf2}
+    \sigma^2(x) = \log_2(1 + e^{f'(g(x))}).
+\end{equation}
+
+The complete MoGU forecasting process is given by the following equation:
+\begin{equation}\label{eq:mog-tsf3}
+    x  \rightarrow  ( w_i, f_i(g_i(x)), \sigma_i^2(x)), \hspace{1cm} i=1,...,k 
+\end{equation}
+where $w_i$ is computed as in Eq.~(\ref{widef})
+and $\sigma_i^2(x)$ is defined in Eq. (\ref{eq:mog-tsf2}).
+
+
+
+
+
+
+
+
+
+
+
+

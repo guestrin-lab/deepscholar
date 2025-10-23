@@ -1,0 +1,142 @@
+\begin{figure*}
+% \vspace{-0.5em}
+
+  \centering
+  \includegraphics[width=2\columnwidth]{Fig/CIR-CoT_fig3.pdf}
+  \vspace{-1em}
+  \caption{Overview of the proposed baseline CIR-CoT. The method leverages MLLMs to generate reasoning chains for the target image and obtain its embedding token \texttt{<emb>}, followed by contrastive learning to improve retrieval.}
+  \label{fig:method}
+  \vspace{-1.2em}
+% \vspace{-1em}
+  
+\end{figure*}
+\section{Method}
+In this section, We first present the problem formulation of the Composed Image Retrieval task. This is followed by a description of the procedure for constructing a CoT-annotated dataset in Sec.\ref{method_one}, which provides the foundation for reasoning-aware retrieval. Subsequently, we present the architecture of our proposed CIR-CoT model in Sec.\ref{method_two}, highlighting how structured chain-of-thought reasoning is integrated into the retrieval framework. Finally, the training strategy and objectives are introduced in Sec.~\ref{method_three}.
+
+\noindent \textbf{Problem Formulation.}
+Let $\mathcal{D} = \{(I_i, M_i, T_i)\}_{i=1}^{N}$ denote the CIR dataset, where $r_i$ is the reference image, $M_i$ is the modification instruction, and $T_i$ is the corresponding target image. Given a reference image $I_i$ and a modification instruction $M_i$, the goal of Composed Image Retrieval (CIR) is to learn a retrieval function
+\begin{equation}
+f(I_i, M_i) \rightarrow \hat{T}_i \in \mathcal{D}_c,
+\end{equation}
+where $\mathcal{D}_c$ denotes the set of candidate images in the database, and $\hat{T}_i$ is the image retrieved by the model in response to the query $(I_i, M_i)$. The learning process aims to maximize the accuracy of the matching such that $\hat{T}_i = T_i$.
+
+This formulation emphasizes the challenge of capturing the compositional relationship between the reference image and the modification instruction, requiring the model to reason over both visual and textual modalities to retrieve the correct target.
+
+
+
+% Given $(r_i, m_i)$, the goal of Composed Image Retrieval (CIR) is to learn a retrieval function 
+% \begin{equation}
+% f(r_i, m_i) \rightarrow \hat{t}_i \in \mathcal{I},
+% \end{equation}
+% where $\mathcal{I}$ is the image database and $\hat{t}_i$ is the retrieved image. The objective is to maximize the matching accuracy such that $\hat{t}_i = t_i$ for each query.  
+
+\subsection{Data generation}
+\label{method_one}
+Fig.~\ref{fig:data} presents the overall procedure for structured CoT annotation. We begin by extracting the multimodal query, the reference image, and the modification instruction from the FashionIQ and CIRR datasets, which provide diverse and realistic benchmarks for compositional retrieval. These elements are then automatically annotated to generate structured reasoning traces that decompose the query into interpretable steps. To ensure the reliability and quality of the annotated data, we further employ multiple MLLMs as expert judges to evaluate the generated reasoning and remove any instances that are inconsistent or logically unsound.
+
+More specifically, we employ Qwen2.5-VL 72B to generate the automated annotation in a single inference pass, which is divided into three stages:
+\begin{enumerate}
+\item \textbf{Caption Stage:} The model is guided to focus on the visual details of the reference image, capturing all visible objects, attributes, and contextual elements. This stage ensures that fine-grained information is preserved and prevents the model from overlooking important visual details.
+
+\item \textbf{Reasoning Stage: }This is the core stage, where the model is instructed to provide a chain-of-thought explanation. Concretely, the model executes the following steps:
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Comprehend the instruction:} extract the core visual goal, i.e., what to add, remove, or change.
+  \item \textbf{Align with the reference image:} map the instruction's intent to existing objects, attributes, and spatial relationships in the image.
+  \item \textbf{Determine concrete visual adjustments:} decide whether the change requires addition, removal, repositioning, attribute modification, and identify the specific target entities.
+  \item \textbf{Form a clear reasoning chain:} present a step-by-step logical explanation of how the adjustments transform the reference image into the target image, and explain why each modification is necessary.
+\end{itemize}
+This process ensures that the reasoning explicitly ties the user's modification intent to fine-grained visual details and yields interpretable, stepwise transformation traces.
+\item \textbf{Conclusion Stage:} Based on the preceding reasoning, the model produces a clear and comprehensive description of the resulting target image after applying the instruction. This final description serves as the semantic representation of the image to be retrieved.
+
+\end{enumerate}
+
+In addition, after the automated annotation, we adopt \textbf{the Annotation Filtering}, following the practice in~\cite{chen2024mllm}, to ensure annotation quality and mitigate hallucinations. Specifically, the content generated in the Conclusion Stage is extracted and compared against the ground-truth target image. Multiple MLLMs, including recent advanced models such as InternVL3~\cite{zhu2025internvl3}, MiMo-VL~\cite{Yue2025MiMoVLTR}, and Keye-VL~\cite{team2025kwai}, are employed to assign multi-level scores that assess consistency. Finally, annotations with significant discrepancies are discarded.
+\subsection{CIR-CoT Architecture}
+\label{method_two}
+
+In Fig.~\ref{fig:method}, we present an overview of the proposed CIR-CoT framework. 
+The architecture consists of a vision encoder $f_{\text{VE}}$, a projection module $f_{\text{proj}}$, and a large language model $f_{\text{LLM}}$. 
+Given a reference image $I$ and a modification instruction $M$, the vision encoder first extracts visual features:
+\begin{equation}
+v = f_{\text{VE}}(I),
+\end{equation}
+where $v$ denotes the visual representation of the reference image. 
+These features are then mapped into the language embedding space by the projection layer:
+
+\begin{equation}
+\tilde{v} = f_{\text{proj}}(v),
+\end{equation}
+which produces $\tilde{v}$ as the language-aligned visual embedding to be consumed by the LLM.
+
+The instruction $M$ is tokenized and embedded into $\tilde{m}$, and concatenated with the projected visual feature $\tilde{v}$. 
+The fused sequence is then fed into the LLM backbone, which autoregressively generates a sequence of output tokens:
+\begin{equation}
+\hat{y}_{\text{txt}} = f_{\text{LLM}}([\tilde{v}, \tilde{m}]) = (y_1,\dots,y_T),
+\end{equation}
+where $T$ denotes the sequence length and each $y_t$ corresponds to a generated token. 
+The generation process follows the standard conditional factorization:
+\begin{equation}
+p_\theta(\hat{y}_{\text{txt}}\mid \tilde{v}, \tilde{m}) = \prod_{t=1}^{T} p_\theta(y_t \mid y_{<t}, \tilde{v}, \tilde{m}),
+\end{equation}
+
+By design, $\hat{y}_{\text{txt}}$ contains a structured chain-of-thought (CoT) reasoning trace that explicitly decomposes the query into interpretable steps:
+\begin{equation}
+\mathcal{R}(I, M) = \{s_1, s_2, \dots, s_K\},
+\end{equation}
+where each $s_k$ denotes a reasoning step.
+
+
+
+
+
+Beyond generating the reasoning sequence, CIR-CoT appends a special token \texttt{<emb>} at the end of the output to summarize the target image representation. 
+We extract the last-layer hidden state corresponding to this token as the target image embedding:
+\begin{equation}
+e_q = f_{\text{LLM}}^{\text{last}}(\texttt{<emb>}).
+\end{equation}
+This embedding $e_q$ serves as a compact representation of the user’s intent and captures the semantic characteristics of the target image.
+
+
+
+\subsection{Training Strategy and Objectives}
+\label{method_three}
+We adopt a two-stage training strategy to adapt the MLLM backbone for compositional image retrieval. 
+The motivation is that general-purpose MLLMs are primarily optimized for text generation rather than retrieval, and thus cannot directly produce compact embeddings suitable for matching tasks. 
+To address this, we progressively guide the model to learn how to compress user input semantics into the designated \texttt{<emb>} token.
+
+\textbf{Stage 1: Textual Embedding Pretraining.} 
+Inspired by~\cite{jiang2024e5}, we first pretrain the model on a large-scale textual dataset, specifically the natural language inference (NLI) dataset.
+During training, we design a simple prompt: 
+\textit{``Summarize the above sentence in one word: \texttt{<emb>}''}, 
+which encourages the LLM to encode the essential semantics of the input into the \texttt{<emb>} token. 
+This stage equips the model with the ability to perform semantic compression in the purely textual domain.
+
+\textbf{Stage 2: Multimodal CoT Adaptation.} 
+After pretraining, we further fine-tune the model on the CoT-annotated multimodal dataset constructed in Sec.~\ref{method_one}. 
+This stage transfers the semantic compression ability to multimodal queries by training the model to not only generate structured reasoning traces but also summarize the final target image into the \texttt{<emb>} token, which serves as the target image embedding for retrieval.
+
+
+To optimize the retrieval ability, the model is trained end-to-end with a combination of the text generation loss and the InfoNCE loss.
+
+During training, the autoregressive generation of reasoning traces is supervised using a cross-entropy loss:
+\begin{equation}
+\mathcal{L}_{\text{txt}} = \mathbf{CE}(y_{\text{txt}}, \hat{y}_{\text{txt}}),
+\end{equation}
+where $y_{\text{txt}}$ denotes the ground-truth sequence, and $\hat{y}_{\text{txt}}$ is the predicted sequence generated by the model. This objective ensures that the LLM produces faithful and interpretable reasoning sequences aligned with the annotated CoT data.
+
+To learn discriminative embeddings for retrieval, we adopt the InfoNCE loss~\cite{oord2018representation}. Given a batch of $N$ query–image pairs $\{(e_q^j, e_i^j)\}_{j=1}^N$, we aim to align each query with its corresponding target image while pushing it away from negatives within the batch. 
+The InfoNCE loss is defined as:
+\begin{equation}
+\mathcal{L}_{\text{InfoNCE}} = - \frac{1}{N} \sum_{j=1}^{N} 
+\log \frac{\exp \left( \text{sim}(e_q^j, e_i^j) / \tau \right)}
+{\sum_{k=1}^{N} \exp \left( \text{sim}(e_q^j, e_i^k) / \tau \right)},
+\end{equation}
+where $\text{sim}(\cdot,\cdot)$ denotes the cosine similarity function, and $\tau$ is a temperature hyperparameter. 
+
+
+
+The overall training objective combines the two losses:
+\begin{equation}
+\mathcal{L} = \lambda_{txt}\mathcal{L}_{txt} + \lambda_{\text{Info}}\mathcal{L}_{\text{InfoNCE}},
+\end{equation}
+where $\lambda_{txt}$ and $\lambda_{\text{Info}}$ are weighting coefficients that balance the two objectives.

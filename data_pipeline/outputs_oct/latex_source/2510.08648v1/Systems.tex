@@ -1,0 +1,174 @@
+
+\begin{figure*}[th!]
+\centering
+\begin{tikzpicture}[node distance=10mm, >=Latex]
+\tikzstyle{blk}=[draw, rounded corners, fill=gray!27,
+                 minimum height=10mm, text width=34mm, align=center]
+\tikzstyle{sig}=[draw, rounded corners, fill=yellow!30,
+                 minimum height=10mm, text width=40mm, align=center]
+
+\node[blk] (groupkit) {LLM-GroupKit \\ (E1--E7 diagnostics)};
+\node[sig, right=8mm of groupkit] (signals)
+  {Signals (CSV):\\ commutator $\Delta$, curvature $\kappa$, invariance ratio, gauge stats};
+\node[blk, right=36mm of signals, yshift=11mm] (tb) {LLM TestBench \\ (generator, oracle, fuzzer)};
+\node[blk, right=36mm of signals, yshift=-11mm] (ci) {CI / Release Gate};
+
+\draw[->] (groupkit) -- (signals);
+\draw[->] (signals) -- (tb)
+  node[midway, above, align=center, text width=32mm]
+  {prioritize orbits,\\choose canaries};
+\draw[->] (signals) -- (ci)
+  node[midway, below, align=center, text width=36mm]
+  {thresholds,\\regression checks};
+\draw[->] (tb) -- (ci)
+  node[midway, right, align=center, text width=26mm]
+  {test outcomes,\\counterexamples};
+
+\end{tikzpicture}
+\caption{Diagnostics feed an LLM-driven TestBench and CI gate.}
+\label{fig:systems-wiring}
+\vspace{-.1in}
+\end{figure*}
+
+% =========================
+% SYSTEMS
+% =========================
+\vspace{-.1in}
+\section{Systems Implications}
+\label{sec:systems}
+
+Our diagnostics expose \emph{geometry-derived signals} that an \textbf{LLM-driven TestBench} can consume to generate, prioritize, and evaluate tests. Figure~\ref{fig:systems-wiring} shows the wiring: \textbf{LLM-GroupKit} (E1--E7) produces signals; a \textbf{TestBench} uses them to steer metamorphic testing (e.g., $\alpha$-renaming orbits), reordering canaries, and fuzzing; a \textbf{CI/Release Gate} enforces thresholds.
+
+
+\vspace{-.06in}
+\subsection{Signal interfaces and data contracts}
+\label{sec:systems-interfaces}
+Diagnostics emit append-only, schema-versioned CSVs designed to be \emph{gauge-stable}. Features are logged \emph{after} gauge-fixing (whiten+Procrustes), except raw $\kappa_{\mathrm{inv}}$ which uses orthogonal projections.
+\begin{itemize}[leftmargin=1.2em,itemsep=-0.5em,topsep=-0.5em]
+\item \textbf{holonomy.csv}: \texttt{position:int, layer:int, kappa:float, model:str, seed:int, ts:iso8601, schema:int}
+\item \textbf{commutator.csv}: \texttt{i:int, j:int, value:float, block:str, model:str, seed:int, ts:iso8601, schema:int}
+\item \textbf{ir.csv}: \texttt{input\_id:str, IR:float, tol:float, label:int, model:str, seed:int, ts:iso8601, schema:int}
+\item \textbf{gauge\_stats.csv}: \texttt{layer:int, seed:int, kendall\_tau:float, probe\_var:float, model:str, ts:iso8601, schema:int}
+\end{itemize}
+Artifacts include model hash, seeds, and timestamps for forensic replay.
+
+\vspace{-.06in}
+\subsection{From signals to actions: TestBench policies}
+\label{sec:systems-policy}
+We map signals to conservative defaults (Table~\ref{tab:signal-actions-tb}); the TestBench can override per workload.
+
+\begin{table*}[ht]
+\centering
+\caption{Signal-to-action mapping for an LLM-driven TestBench and CI.}
+\label{tab:signal-actions-tb}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Signal & Consumer & Default action \\
+\midrule
+Low $\Delta_{A,B}$ & TestBench & Generate/favor fuse+reorder canaries; expect low drift \\
+High $\Delta_{A,B}$ & TestBench & Mark reorder-unsafe; synthesize AB/BA counterexamples \\
+Low $\kappa_{\max/p95}$ & TestBench & Run orbits in parallel; increase fuzz budget \\
+High $\kappa_{\max/p95}$ & TestBench & Sequentialize orbits; add stronger oracles/checkers \\
+IR failures & TestBench & Escalate severity; auto-generate minimal counterexample \\
+Gauge-stable $\downarrow$ variance & CI/Gate & Accept build; freeze probe config \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\paragraph{Example: curvature-aware test generation.}
+\begin{lstlisting}[
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  breakatwhitespace=true,
+  columns=fullflexible,
+  keepspaces=true,
+  postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+  caption={Curvature-guided test planning with an LLM generator and oracle.},
+]
+def plan_tests(inputs, kappa_map, delta_map, tau_kappa=0.12, tau_delta=0.10):
+    tests = []
+    for x in inputs:
+        # prioritize positions/layers with high curvature
+        hot = select_hotspots(kappa_map[x], quantile=0.95, thr=tau_kappa)
+        # metamorphic orbits: alpha-rename, algebraic rewrites, paraphrases
+        orbits = llm_generate_orbits(x, hotspots=hot, budget="adaptive")
+        # decide whether to include reorder/fuse canaries
+        if mean_delta(delta_map[x]) <= tau_delta:
+            tests.append(make_fuse_reorder_canaries(x))
+        tests.extend(orbits)
+    return tests
+\end{lstlisting}
+
+\vspace{-.1in}
+\subsection{Deployment patterns}
+\label{sec:systems-runtime}
+Pick a pattern by latency budget:
+\begin{enumerate}[leftmargin=1.2em,itemsep=-0.5em,topsep=-0.5em]
+\item \textbf{Sidecar (recommended):} a co-process computes signals and enqueues prioritized tests; the TestBench drains with a 200--500\,ms window.
+\item \textbf{In-service (low latency):} inline light scans (\emph{frozen-softmax}); rate-limit heavy JVP confirmation.
+\item \textbf{Batch (offline):} nightly full maps for dashboards; thresholds updated via config.
+\end{enumerate}
+Use Fig.~\ref{fig:diagnostic-suite}(c) (\S\ref{sec:metrics}) to budget; keep \texttt{Total} $\le 20\%$.
+
+\vspace{-.06in}
+\subsection{Observability and CI gates}
+\label{sec:systems-ci}
+Dashboards track ROC AUC/AP (\S\ref{sec:metrics}), $\rho(\Delta,\delta)$, variance/rank stability, and overhead. CI fails on regressions (e.g., variance ratio $>0.6$ post gauge-fix, AUC drop $>0.03$). Each build snapshots model hash, seeds, knob settings, and schema versions.
+
+\vspace{-.06in}
+\subsection{Failure modes and mitigations}
+\label{sec:systems-failure}
+\textbf{Stale signals:} expire maps after $T$ minutes or model-hash change.  
+\textbf{Threshold drift:} recalibrate (Platt/Isotonic) on fresh labels.  
+\textbf{Nondeterminism:} fix seeds; log RNG states; align via Procrustes before comparisons.  
+\textbf{Long-range effects:} enlarge loop radius if IR failures appear off-hotspot.
+
+\vspace{-.1in}
+\subsection{Knobs and defaults}
+\label{sec:systems-knobs}
+Expose: probes $r{=}6$, targets/layer $k{=}8$, neighbors $m{=}6$, $\tau_{\Delta}{=}0.10$, $\tau_{\kappa}{=}0.12$, tolerance $\delta{=}0.02$ (see also Table~\ref{tab:exp-setup}); sweep in ablations.
+
+\vspace{-.06in}
+\subsection{End-to-end flows}
+\label{sec:systems-flows}
+\textbf{Test-first release:} compute signals $\rightarrow$ generate curvature/commutator-guided tests $\rightarrow$ run orbits+canaries $\rightarrow$ gate on IR/ROC/overhead thresholds.  
+\textbf{Reactive repair:} on failure, auto-synthesize minimal counterexample, suggest patch, and re-run targeted orbits; persist gauge-fixed traces for audit.
+
+\paragraph{Takeaway.} Curvature and commutator signals give an \emph{LLM-first testing substrate}: they prioritize which tests to run, where to search for counterexamples, and when a build is safe to ship.
+
+\vspace{-.06in}
+\subsection{High-confidence applications for LLM systems}
+\label{sec:llm-applications}
+
+Beyond general deployment hygiene, our diagnostics enable specific reliability improvements in LLM production systems.
+
+\paragraph{Prompt robustness testing.}
+Measure $\kappa_{\mathrm{inv}}$ under semantics-preserving prompt variations such as paraphrases, template changes, or role reorderings. High curvature flags brittle prompts that need stabilization or explicit invariance constraints. \emph{Example:} customer-service prompts should maintain low $\kappa_{\mathrm{inv}}$ across rephrasings like “Please help me” versus “I need assistance.” Curvature spikes indicate training gaps.
+
+\paragraph{RAG passage ordering sensitivity.}
+When retrieval returns ranked documents \cite{lewis2020retrieval}, passage order can spuriously affect outputs due to position bias. Commutators $\Delta_{A,B}$ between passage positions quantify reordering risk. Systems can: (i) shuffle low-$\Delta$ passages freely for parallelism, (ii) preserve high-$\Delta$ ordering with sequential processing, and (iii) add order-invariance verification for critical queries.
+
+\paragraph{Fine-tuning stability audits.}
+Task-specific fine-tuning can degrade invariances. WILSON provides before and after curvature maps. Regions where $\kappa_{\mathrm{inv}}$ increases post-tuning flag potential regressions. CI gates reject runs that increase curvature beyond accepted thresholds on held-out metamorphic test suites.
+
+\paragraph{Multi-turn conversation drift.}
+Long conversations accumulate context \cite{PathAGIChang2024,SocraSynthChangCSCI2023,chang2025MACIDD}. Curvature maps identify layers and positions where context integration becomes order-sensitive. Systems can trigger summarization when $\kappa_{\mathrm{inv}}$ rises above a threshold, route high-$\kappa$ turns to sequential processing, and log drift for post-hoc debugging.
+
+\paragraph{Chain-of-thought pathway stability.}
+Different CoT \cite{WeiCoT2022} reasoning traces (e.g., ``step by step'' versus ``let us think'') should yield consistent answers. Commutators between chain-of-thought templates measure pathway sensitivity. High $\Delta$ indicates fragile reasoning that benefits from ensemble or self-consistency decoding.
+
+\paragraph{Confidence estimates.}
+Curvature serves as an uncertainty proxy. Predictions from high-$\kappa$ regions have higher variance under benign perturbations. Systems can surface low-confidence warnings to users, route uncertain queries to human review, and trigger additional verification for high-$\kappa$ outputs.
+
+\paragraph{Integration pattern.}
+Applications follow a common workflow:
+\begin{enumerate}[leftmargin=1.2em,itemsep=-0.5em,topsep=-0.5em]
+\item Compute curvature and commutator maps.
+\item Set domain-specific thresholds via calibration.
+\item Emit signals (as metrics) to the orchestration layer.
+\item Take action: reject, retry, verify, or route differently.
+\end{enumerate}
+
+All applications require only the diagnostic signals described earlier in Section~4, with no model retraining or architectural changes.

@@ -1,0 +1,39 @@
+\subsection{Informative Representation Selector}
+
+To identify the most informative internal states within the compact set $\mathcal{H}^*$, \tool employs the \textit{attention-based mechanism} that learns to dynamically prioritize representations based on their relevance to code correctness assessment. 
+% 
+%
+%
+%
+%
+Particularly, in \textit{Informative Representation Selector}, the attention mechanism assigns a learned importance score to each internal state, quantifying its contribution to the final prediction.
+%
+%
+By aggregating the internal states weighted by these scores, the correctness predictor can emphasize the most informative signals while effectively down-weighting irrelevant ones, enabling general and robust assessment across diverse code LLMs.
+
+
+
+Specifically, the input of the informative representation selector module is $\mathcal{H}^* = \{h_{l,i} \mid l \in \{1, 1 + k, \dots, 1 + \lfloor \frac{L-1}{k}\rfloor . k\}, i \in {S}\}$, where $S$ denotes the set of four selected token positions, $S =$ \{\texttt{first token}, \texttt{last token}, \texttt{first code token}, \texttt{last code token}\}. 
+The selector module assigns a weighted score (attention score) $\alpha_{l,i}$ to each internal state $h_{l,i}$, indicating its importance for correctness prediction. The weighted representation is then computed as:
+%
+\begin{equation}
+    z_{l,i} = \alpha_{l,i} \cdot h_{l,i}
+\end{equation}
+%
+The collection of all the weighted vectors $z_{l,i}$ forms the output set $\mathcal{Z}^*$, which summarizes the weighted contributions of the internal states in $\mathcal{H}^*$ to the final correctness prediction. 
+
+To compute attention scores  $\alpha_{l,i}$, each internal state in $\mathcal{H}^*$ is linearly projected and normalized via softmax:
+%
+\begin{equation}
+\label{eq:attention_score}
+    \alpha_{l,i} = \text{softmax}(H \cdot W_a + b_a)_{l,i}
+\end{equation}
+%
+In Eq.~\ref{eq:attention_score}, $H \in \mathbb{R}^{(L^* \times 4) \times d}$ is the flattened matrix formed by stacking all vectors in $\mathcal{H}^*$. The parameters $W_a \in \mathbb{R}^{d \times 1}$ and $b_a \in \mathbb{R}$ are learnable weights that define the attention scoring function.  The softmax ensures that attention scores across all positions sum to $1$, enabling a normalized weighting over the entire set $\mathcal{H}^*$, i.e., $\sum_{l, i}\alpha_{l,i} = 1$. All the attention scores form an attention sets $\mathcal{A} = \{a_{l,i}\}$.
+
+
+In \tool, the parameters $W_a$ and $b_a$ are jointly trained with the code correctness predictor using supervised learning. During training, the model receives examples of LLM-generated code along with their correctness labels, which are assigned according the evaluation criteria, e.g., compilability or functionality (Sec.~\ref{sec:problem_formulation}). The cross-entropy loss is measured and back-propagated through the attention mechanism, enabling the model to learn which internal states are most indicative of correctness.
+
+
+
+

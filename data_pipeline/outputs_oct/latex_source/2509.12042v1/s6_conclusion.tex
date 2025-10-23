@@ -1,0 +1,26 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We present FinGEAR, a retrieval-first framework for 10-K filings that integrates a finance lexicon (FLAM) for Item-level mapping and dual trees for within-Item indexing. Using full 10-Ks aligned with FinQA queries, FinGEAR demonstrates improved retrieval quality across depths compared with flat, graph-based, and prior tree-based RAG baselines, and yields higher downstream answer accuracy. Ablation studies show that each module is necessary for overall performance. We focus on 10-Ks for their length, standardized section hierarchy, and regulatory importance. The design is modular: FLAM enables global navigation across Items, while the dual trees index and traverse local content. This supports adaptation of FinGEAR to other semi-structured documents by enhancing domain lexicons to reflect evolving terminology.
+
+\section{Limitations}
+\label{sec:limitations}
+
+FinGEAR is a structured retrieval framework designed for financial filings, but its performance and applicability are subject to several limitations.
+
+\textbf{Domain specificity.} FinGEAR is developed and evaluated primarily on U.S. 10-K reports, which follow standardized regulatory structures. While the framework is not hard-coded to SEC formats, it assumes the existence of segmentable content with hierarchical or pseudo-hierarchical cues. Its generalizability to unstructured financial documents (e.g., earnings calls) or reports from different jurisdictions remains untested and requires further adaptation.
+
+\textbf{Lexicon dependence.} The system relies on stable financial terminology across filings. While this holds for regulatory disclosures, emerging financial language or sector-specific terms may weaken the quality of keyword mapping and clustering, impacting retrieval alignment over time.
+
+\textbf{Parsing sensitivity.} FinGEAR assumes that documents are accurately parsed and structurally consistent. Severe formatting inconsistencies (e.g., OCR errors or HTML-to-text misalignments) could affect the quality of tree construction and retrieval, especially in noisy or historical filings.
+
+\textbf{Limited reasoning.} FinGEAR focuses on semantic retrieval and does not perform explicit financial reasoning or computation (e.g., ratio calculation, time-series forecasting). Retrieved evidence supports qualitative assessments, but numerical understanding remains out of scope.
+
+\textbf{Evaluation coverage.} The evaluation is conducted on a specific dataset (FinQA) with a limited number of annotated gold spans. As FinQA only labels one relevant span per query, retrieval performance may be underestimated. Broader assessment across multiple QA datasets or real-world analyst workflows is needed for a fuller view of utility.
+
+\textbf{Source bias.} Although FinGEAR does not introduce new biases, it inherits those embedded in financial documents and lexicons. If companies omit, downplay, or frame certain disclosures, the retrieved content will reflect those reporting biases.
+
+Despite these limitations, FinGEAR offers a modular, interpretable foundation for structure-aware retrieval in financial analysis. Future work should explore its generalization to more diverse corpora, integration with lightweight reasoning modules, and robustness to document parsing noise.
+
+\section*{Acknowledgments}
+We acknowledge support from the Centre for Investing Innovation at the University of Edinburgh. 

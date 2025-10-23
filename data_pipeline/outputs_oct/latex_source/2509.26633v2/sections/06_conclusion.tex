@@ -1,0 +1,8 @@
+\section{Conclusion}
+% \guanya{future work: jointly optimize the whole trajectory, handle noisy motions, learning autonomous policies, etc}
+
+In this work, we tackled a key data bottleneck caused by a lack of high-quality, interaction-aware retargeting pipeline in humanoid whole-body loco-manipulation. 
+We introduced \OmniRetarget, a unified, interaction-preserving data generation engine that leverages an interaction mesh within a single constrained optimization. Our experiments showed that \OmniRetarget significantly outperforms prior methods in kinematic quality, producing a diverse set of artifact-free trajectories from single demonstrations. 
+This high-quality data enabled a proprioceptive RL policy, trained with minimal formulation, to achieve long-horizon dynamic skills on a physical humanoid via zero-shot sim-to-real transfer.
+
+Ultimately, \OmniRetarget demonstrates a paradigm shift from patching lower-quality reference motions with complex reward engineering to solving the problem at its source with principled data generation. While our current frame-by-frame optimization is mostly effective, future work could explore jointly optimizing the entire trajectory to enhance the framework's robustness to noisier motion sources, such as video data, or learning autonomous visuomotor policies. By open-sourcing our complete framework and the large-scale dataset of retargeted trajectories, we hope to accelerate progress towards more agile, capable, and versatile humanoid robots. \looseness=-1

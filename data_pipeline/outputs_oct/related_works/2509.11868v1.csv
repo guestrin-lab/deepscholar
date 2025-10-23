@@ -1,0 +1,72 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.11868v1,http://arxiv.org/abs/2509.11868v1,2025-09-15 12:39:55+00:00,Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,"Language and embodied perspective taking are essential for human
+collaboration, yet few computational models address both simultaneously. This
+work investigates the PerspAct system [1], which integrates the ReAct (Reason
+and Act) paradigm with Large Language Models (LLMs) to simulate developmental
+stages of perspective taking, grounded in Selman's theory [2]. Using an
+extended director task, we evaluate GPT's ability to generate internal
+narratives aligned with specified developmental stages, and assess how these
+influence collaborative performance both qualitatively (action selection) and
+quantitatively (task efficiency). Results show that GPT reliably produces
+developmentally-consistent narratives before task execution but often shifts
+towards more advanced stages during interaction, suggesting that language
+exchanges help refine internal representations. Higher developmental stages
+generally enhance collaborative effectiveness, while earlier stages yield more
+variable outcomes in complex contexts. These findings highlight the potential
+of integrating embodied perspective taking and language in LLMs to better model
+developmental dynamics and stress the importance of evaluating internal speech
+during combined linguistic and embodied tasks.","Recent advancements in collaborative AI emphasize the importance of effective perspective taking to improve human-AI interactions. The foundational ReAct framework introduced by Yao et al. \cite{yao2023react} has enabled agents to reason and act efficiently in dynamic collaborative environments. Extending this framework, PerspAct \cite{patania2025perspact} integrates active vision and explicit perspective taking, demonstrating enhanced situated collaboration skills.
+
+Developmental psychology literature addresses the gradual evolution of perspective taking abilities through various models. We choose to refer to Selman's model, where he establishes five stages of perspective taking \cite{selman1980growth, selman1971taking}:
+
+\begin{itemize}
+    \item \textbf{Egocentric (Stage 0, undifferentiated, before age 6)}: 
+    The child physically distinguishes themselves from others but remains socially egocentric, assuming that other think as they do. 
+
+    \item \textbf{Differentiated, subjective (Stage 1, ages 6–8)}: 
+    Children acknowledge that others may hold perspectives different from their own, typically due to having access to different information, but still struggle to accurately judge others' viewpoints.
+
+    \item \textbf{Self-reflective, reciprocal (Stage 2, ages 8–10)}: 
+    Children can metaphorically ""step into another person's shoes"", recognizing and validating differing perspectives as appropriate given distinct situational contexts.
+
+    \item \textbf{Mutual, third-person (Stage 3, ages 10–12)}: 
+    Children begin viewing interactions from a more neutral, third-person perspective, simultaneously managing multiple viewpoints and integrating them into a shared understanding.
+
+    \item \textbf{Societal (Stage 4, ages 12 and beyond)}: 
+    Adolescents develop an understanding of how perspectives are embedded in broader societal frameworks, influenced by institutional roles, norms, and values. They recognize that an individual's perspective is shaped by their social context and position.
+\end{itemize}
+%check
+%This theoretical model has been applied widely in education and social psychology contexts, examining correlations between perspective taking proficiency, social skills, and empathy \cite{hoffman2000empathy, eisenberg1987empathy}. However, its integration into computational frameworks remains limited.
+
+Recent cognitive science studies suggest perspective taking can be linked to linguistic competencies such as personal pronoun use, highlighting the importance of developmental linguistics in perspective taking \cite{ricard1999personal}. Nematzadeh et al. \cite{nematzadeh2018evaluating} evaluate computational models' capacity for inferring mental states within narrative contexts, underscoring the critical role of linguistic representation in perspective taking tasks. Moreover, Rashkin et al. \cite{rashkin2018modeling} emphasize the importance of empathetic and perspective-aware dialogue generation, highlighting how language models can be tailored to address complex social cognition scenarios.
+
+A growing number of recent studies have also evaluated LLMs' implicit theory of mind capabilities across diverse tasks. For example, Chen et al. \cite{chen2024tombench} and Wang et al. \cite{wang2025rethinking} propose novel benchmarks for probing ToM reasoning in GPT-based models, while Zhou et al. \cite{zhou2023sotopia} investigate LLMs’ ability to manage social beliefs and predict others’ behaviour in interactive settings. These approaches, however, tend to focus on behavioural outcomes rather than grounding LLM reasoning in structured developmental frameworks.
+
+Although wide research has been conducted on perspective taking, not many authors have adopted a developmental framework. In this work, we aim to bridge these developmental insights with contemporary AI by exploring how developmental theories can enhance collaborative capabilities of modern LLM frameworks.","Recent advancements in collaborative AI emphasize the importance of effective perspective taking to improve human-AI interactions. The foundational ReAct framework introduced by Yao et al. \cite{yao2023react} has enabled agents to reason and act efficiently in dynamic collaborative environments. Extending this framework, PerspAct \cite{patania2025perspact} integrates active vision and explicit perspective taking, demonstrating enhanced situated collaboration skills.
+
+Developmental psychology literature addresses the gradual evolution of perspective taking abilities through various models. We choose to refer to Selman's model, where he establishes five stages of perspective taking \cite{selman1980growth, selman1971taking}:
+
+\begin{itemize}
+    \item \textbf{Egocentric (Stage 0, undifferentiated, before age 6)}: 
+    The child physically distinguishes themselves from others but remains socially egocentric, assuming that other think as they do. 
+
+    \item \textbf{Differentiated, subjective (Stage 1, ages 6–8)}: 
+    Children acknowledge that others may hold perspectives different from their own, typically due to having access to different information, but still struggle to accurately judge others' viewpoints.
+
+    \item \textbf{Self-reflective, reciprocal (Stage 2, ages 8–10)}: 
+    Children can metaphorically ""step into another person's shoes"", recognizing and validating differing perspectives as appropriate given distinct situational contexts.
+
+    \item \textbf{Mutual, third-person (Stage 3, ages 10–12)}: 
+    Children begin viewing interactions from a more neutral, third-person perspective, simultaneously managing multiple viewpoints and integrating them into a shared understanding.
+
+    \item \textbf{Societal (Stage 4, ages 12 and beyond)}: 
+    Adolescents develop an understanding of how perspectives are embedded in broader societal frameworks, influenced by institutional roles, norms, and values. They recognize that an individual's perspective is shaped by their social context and position.
+\end{itemize}
+
+
+
+Recent cognitive science studies suggest perspective taking can be linked to linguistic competencies such as personal pronoun use, highlighting the importance of developmental linguistics in perspective taking \cite{ricard1999personal}. Nematzadeh et al. \cite{nematzadeh2018evaluating} evaluate computational models' capacity for inferring mental states within narrative contexts, underscoring the critical role of linguistic representation in perspective taking tasks. Moreover, Rashkin et al. \cite{rashkin2018modeling} emphasize the importance of empathetic and perspective-aware dialogue generation, highlighting how language models can be tailored to address complex social cognition scenarios.
+
+A growing number of recent studies have also evaluated LLMs' implicit theory of mind capabilities across diverse tasks. For example, Chen et al. \cite{chen2024tombench} and Wang et al. \cite{wang2025rethinking} propose novel benchmarks for probing ToM reasoning in GPT-based models, while Zhou et al. \cite{zhou2023sotopia} investigate LLMs’ ability to manage social beliefs and predict others’ behaviour in interactive settings. These approaches, however, tend to focus on behavioural outcomes rather than grounding LLM reasoning in structured developmental frameworks.
+
+Although wide research has been conducted on perspective taking, not many authors have adopted a developmental framework. In this work, we aim to bridge these developmental insights with contemporary AI by exploring how developmental theories can enhance collaborative capabilities of modern LLM frameworks.",N/A

@@ -1,0 +1,39 @@
+\begin{table}[!t]
+    % \captionsetup{justification=centering}
+\centering
+\tablestyle{10pt}{1.2}
+\begin{tabular}{l|c|ccc|c}
+\multirow{2}{*}{model name} & \multirow{2}{*}{\#param} & {WinoGrande} & {HellaSwag} & {BBH} & \multirow{2}{*}{avg.} \\
+& & (0-shot) & (0-shot) & (0-shot) \\
+\hline
+% \multicolumn{5}{c}{\purplecolor{{\ding{72}API Models}}} \\
+GPT-3.5 & -- & 68.7 & 70.2 & 41.9 & 60.3\\
+\hline
+% \multicolumn{5}{c}{\greencolor{{$\triangle$ $\sim7B\ Models$}}} \\
+Llama2-7B-Chat & 7B & 51.5 & 49.5 & 41.4 & 47.5\\
+Llama2-13B-Chat & 13B & 50.8 & 57.0 & 49.7 & 52.5 \\
+
+Mistral-7B-Instruct-v0.2 & 7.3B & 50.8 & 64.1 & 46.4 & 53.8\\
+Mixtral-8x7B-Instruct-v0.1 & 46.7B & 60.9 & 80.3 & 57.3 & 66.2 \\
+
+Baichuan2-7B-Chat & 7B & 49.9 & 36.4 & 35.9 & 40.7\\
+Baichuan2-13B-Chat & 13B & 50.9 & 34.4 & 42.5 & 42.6 \\
+
+Qwen-7B-Chat & 7B & 54.2 & 61.9 & 45.5 & 53.9 \\
+Qwen-14B-Chat & 14B & 55.7 & 79.2 & 55.8 & 63.6 \\
+
+ChatGLM3-6B & 6.2B & 61.7 & 73.1 & 56.0 & 63.6\\
+\hline
+\rowcolor{gray!15}
+InternLM2-Chat-7B-SFT & 7B & 65.8 & {83.5} & 60.9 & {70.1} \\
+\rowcolor{gray!15}
+InternLM2-Chat-7B & 7B & {65.8} & 83.0 & {61.2} & 70.0 \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B-SFT & 20B & {75.0} & {85.9} & 66.9 & 75.9\\
+\rowcolor{gray!15}
+InternLM2-Chat-20B & 20B & 74.8 & 85.8 & {68.3} & {76.3} \\
+\end{tabular}
+    \vspace{2mm}
+    \caption{\textbf{Comparison of reasoning tasks.}}
+    \label{tab:reasoning_result}
+\end{table}

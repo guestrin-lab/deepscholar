@@ -1,0 +1,49 @@
+\section{Introduction}
+\vspace{-0.6em}
+Recent progress in multimodal large language models (MLLMs)~\cite{MLLM-flamingo, MLLM-gpt4o, MLLM-qwen2vl, MLLM-qwen2.5vl} has enabled impressive cross-modal reasoning capabilities, but also amplified safety concerns~\cite{liu2024safety,ye2025survey}. Earlier studies focused on \textbf{explicit risks} such as harmful content, privacy leakage, and misuse potential~\cite{safe-risk-figstep, spavl, mmsafetybench, vlguard}, which are relatively straightforward to detect and filter. More recent work, however, has revealed \textbf{implicit risks}~\cite{mssbench,mdit, MMSafeAware} that emerge from subtle cross-modal interactions, hidden cues, and reasoning shortcuts. These risks highlight that ensuring the reliability of MLLMs requires moving beyond surface-level safety checks toward deeper mechanisms that account for reasoning dynamics.
+
+
+Existing approaches to improving safety can be divided into two categories. \textbf{Training-based alignment} incorporates safety during model development through curated datasets, reinforcement learning with preference models, or reasoning verification~\cite{spavl,safe-algin-saferlhfv,safe-guard-guardreasoner}. More recent advances explore generative reward modeling~\cite{safe-algin-G-RLHF-V} and distillation of safe reasoning paths~\cite{safe-guard-vlmguard} to guide corrective behaviors. In contrast, \textbf{inference-time defenses} regulate model behavior at deployment via input manipulation, output filtering, safety modules, or intent-aware prompting~\cite{safe-guard-esco,safe-guard-eta,safe-guard-mllmprotector,safe-guard-sia}. While these strategies provide valuable safeguards, most operate at the level of outcomes, leaving the underlying reasoning process largely unconstrained. This gap prevents models from developing \textbf{intrinsic safety awareness}, limiting their robustness in complex multimodal settings.
+
+  
+
+A central question therefore arises: \textit{how can MLLMs develop \textbf{safety-aware reasoning} rather than relying solely on surface-level safeguards?} Recent progress in large reasoning models (LRMs), such as \llmname{OpenAI’s O1}~\cite{MLRM-o1} and \llmname{DeepSeek-R1}~\cite{MLRM-r1}, demonstrates the power of reasoning-centered training for advancing performance across mathematical~\cite{MLRM-math-lmmr1, MLRM-math-ursa}, biomedical~\cite{lingshu,cello1}, and perceptual~\cite{MLRM-per-perception, MLRM-per-visionr1} tasks. These developments suggest a paradigm shift: from pattern-matching toward structured reasoning. However, current reasoning-based RL pipelines remain outcome-driven. They often incur a \textit{reasoning tax}~\cite{safe-safemlrm}, where reasoning improves task accuracy but safety signals remain under-optimized, leaving blind spots in harmful or misleading contexts.
+
+
+Motivated by this gap, we introduce \textbf{\method}, a safety-aligned reinforcement learning framework that integrates safety directly into the reasoning process. Unlike prior approaches that either rely on outcome-level constraints or treat safety as an auxiliary objective, \method{} operationalizes safety through curated data selection, structured rollout correction, and multi-dimensional reward modeling, ensuring that safety is reinforced as an intrinsic component of multimodal reasoning.
+
+
+
+\textbf{Present Framework.} \textbf{\method} is a safety-aligned reinforcement learning framework that embeds safety-awareness directly into the reasoning process, shifting safety from a passive safeguard to an active driver of reasoning. The framework has four stages: (I) \textit{Safety Benchmark}, a curated dataset (\ourdata) that highlights safety-critical and reasoning-sensitive cases by balancing response quality and instability; (II) \textit{Safety-Aware Rollout}, where unsafe outputs are not discarded but reflected on and corrected, making self-analysis part of the reasoning chain; (III) \textit{Reward Modeling}, which translates multi-dimensional feedback, including visual grounding, fluency, logical coherence, and safety, into structured reward signals with explicit penalties for hallucinations and unsafe shortcuts; and (IV) \textit{Safety-Aware Optimization}, which integrates these signals into GRPO \citep{MLRM-grpo} to reinforce safe reasoning patterns while leveraging corrected outputs during training. By aligning data, rollout, reward, and optimization under the principle of safety-aware reasoning, \textbf{\method} establishes safety as a core driver of robust and trustworthy multimodal reasoning.
+
+
+
+
+
+
+
+
+
+
+\textbf{Experimental Observation.} The empirical results highlight an advancement in how safety is operationalized within multimodal reasoning, particularly by incorporating it into the reasoning process. While previous approaches often relied on model scaling or output filtering to improve safety, \method{} adopts a structural perspective. It explicitly models \textit{safety-aware reasoning} as a core objective that guides the model’s internal thought trajectory rather than only shaping the final response. This positions safety alignment as an integrated and generalizable design mechanism that influences both intermediate reasoning and final outputs.
+As shown in Figure~\ref{fig:show1}, \method{} achieves strong results across six safety-critical benchmarks. At the 3B scale, it reaches \textbf{70.15} (safety) and \textbf{78.97} (helpfulness), improving over its base by \textbf{+30}, and outperforming open-source models with over \textbf{10$\times$} parameters, such as Skywork-R1V3-38B, Qwen2.5VL-72B, and GLM4.5V-106B. At 7B, this trend strengthens, with \method{} attaining \textbf{81.91 / 84.45}, and exceeding GPT-5-Mini and Gemini-2.5-Flash by \textbf{+6.5} and \textbf{+16.8} in safety.
+Beyond mean scores, \method{} exhibits \textit{distributional robustness}, maintaining high safety across tasks, avoiding collapse on specific benchmarks, and preserving \textit{stable helpfulness} without trade-offs. These findings suggest that safety-aware reasoning is not only scalable but also transferable, enabling more reliable and controllable multimodal systems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

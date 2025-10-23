@@ -1,0 +1,35 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\setlength{\abovecaptionskip}{0.1cm}
+\setlength{\belowcaptionskip}{0.1cm}
+\caption{Performance of sampling strategies on various models.
+``Baseline'' is original sampling; ``+Prob./Ours'' refers to Sec.~\ref{sec_entropy_temperature}; ``+Masking/+Scale-wise'' are paradigm-specific from Sec~\ref{sec_adaption_more_ar}.
+}
+\setlength{\tabcolsep}{4.5mm}{
+\resizebox{0.9\columnwidth}{!}{%
+\begin{tabular}{@{}ll|cccc@{}}
+\toprule
+Method                       & Config. & FID$\downarrow$   & CLIP-Score$\uparrow$ & DPG$\uparrow$ & HPSv2.1$\uparrow$ \\ \midrule
+SDv2.1~\cite{rombach2022stablediffusion} & - & 22.87 & 26.31 & 68.09 & 26.38 \\
+PixArt-$\alpha$~\cite{chen2023pixart_alpha} & - & 33.23 & 25.70 & 71.52 & 30.04 \\
+SDXL~\cite{podell2023sdxl} & - & 23.20 & 26.46 & 74.21 & 28.54 \\
+SDv3-medium~\cite{esser2024sdv3} & - & 29.82 & 26.24 & 85.85 & 30.22 \\ \midrule
+\multirow{2}{*}{LlamaGen~\cite{sun2024llamagen}}    & Baseline    & 21.94 & 25.95 & 43.51 & 21.24  \\
+                             & Ours        & \textbf{20.36} &  \textbf{25.96}  & \textbf{48.63} & \textbf{21.39}            \\ \midrule
+\multirow{2}{*}{Lumina-mGPT~\cite{liu2024lumina_mgpt}} & Baseline    & 29.15 & 26.04     & 79.68 & \textbf{28.92}
+\\
+                             & Ours        & \textbf{27.44} & \textbf{26.25}      & \textbf{79.77} & 28.87  \\ \midrule
+\multirow{3}{*}{Meissonic~\cite{bai2024meissonic}}   & Baseline    & 53.61 & 25.27      & 63.83 & 29.33   \\
+                             & +Prob.      & \textbf{48.37} & 25.49      & 66.19 & 29.94   \\
+                             & +Masking.   & 48.43 & \textbf{25.54}      & \textbf{67.08} & \textbf{30.04}   \\ \midrule
+\multirow{3}{*}{STAR~\cite{ma2024star}}        & Baseline    & 35.05 & 25.43      & 70.25 & 28.79   \\
+                             & +Prob.      & 32.75 & 25.56      & 70.83 & 28.93   \\
+                             & +Scale-wise & \textbf{32.37} & \textbf{25.61}      & \textbf{70.86} & \textbf{29.06}   \\ \bottomrule
+\end{tabular}
+}}
+\label{tab_results}
+\vspace{-3mm}
+\end{table}

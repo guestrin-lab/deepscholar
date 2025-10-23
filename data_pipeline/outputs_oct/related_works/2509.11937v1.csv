@@ -1,0 +1,39 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.11937v1,http://arxiv.org/abs/2509.11937v1,2025-09-15 13:56:06+00:00,MMORE: Massive Multimodal Open RAG & Extraction,"We introduce MMORE, an open-source pipeline for Massive Multimodal Open
+RetrievalAugmented Generation and Extraction, designed to ingest, transform,
+and retrieve knowledge from heterogeneous document formats at scale. MMORE
+supports more than fifteen file types, including text, tables, images, emails,
+audio, and video, and processes them into a unified format to enable downstream
+applications for LLMs. The architecture offers modular, distributed processing,
+enabling scalable parallelization across CPUs and GPUs. On processing
+benchmarks, MMORE demonstrates a 3.8-fold speedup over single-node baselines
+and 40% higher accuracy than Docling on scanned PDFs. The pipeline integrates
+hybrid dense-sparse retrieval and supports both interactive APIs and batch RAG
+endpoints. Evaluated on PubMedQA, MMORE-augmented medical LLMs improve
+biomedical QA accuracy with increasing retrieval depth. MMORE provides a
+robust, extensible foundation for deploying task-agnostic RAG systems on
+diverse, real-world multimodal data. The codebase is available at
+https://github.com/swiss-ai/mmore.","% % mention LLMWhisperer (this is not open-source and its paid, so our contribution here is easy)
+% % doctr - they only do document parsing 
+% % Surya - this one is the most relevant because we use it in our pipeline for PDFs intesively. The difference is we only reuse surya for PDFs and we offer native parallelization on multi-node multi-gpu systems in contrast
+
+Large-scale transformation of unstructured documents into structured, machine‑readable format has attracted substantial attention. We group prior work into two strands: \textbf{(i)} document ingestion and parsing pipelines, and \textbf{(ii)} RAG frameworks. To our knowledge, neither line of work simultaneously offers the modality coverage and end‑to‑end throughput required for industrial‑ and small‑scale multimodal assistants that we target with \mmore{}.\\
+\textbf{Document Ingestion Pipelines.} GPU‑accelerated microservice suites such as \textit{NV‑Ingest}~\cite{nvingest} convert PDFs and office documents into page‑level JSON enriched with text blocks, tables, and graphics, and can optionally export embeddings for downstream indexing. \textit{Docling}~\cite{auer2024docling} extends the modality set to spreadsheets, and other common formats, but executes primarily on a single node and therefore exhibits limited throughput in production settings. Classical OCR tools like \textit{doctr}~\cite{doctr2021} handle text detection and recognition but rely on external systems for layout, embeddings, and indexing. \textit{Surya}~\cite{paruchuri2025surya} adds multilingual OCR and layout analysis but lacks built-in multi-GPU or cluster parallelism. Commercial services such as \textit{LLMWhisperer}~\cite{llmwhisperer2025} offer similar functionality behind a paywall, which restricts reproducibility and hinders open experimentation. In contrast, \mmore{} combines extraction, transformation, embedding, and indexing into a single open‑source pipeline that natively parallelizes across multi‑node, multi‑GPU deployments. Moreover, \mmore{} uniquely handles audiovisual assets, enabling unified RAG over text, images, and time‑based media. \\
+\textbf{RAG Frameworks.} Open‑source libraries such as \textit{LangChain}~\cite{Chase_LangChain_2022} and \textit{LlamaIndex}~\cite{Liu_LlamaIndex_2022} provide high-level abstractions for chunking, embedding, retrieval, and prompting. However, they rely on external loaders for modality‑specific parsing and give no guidance on efficient high-throughput ingestion. 
+Several recent pipelines, such as \textit{Unstructured.io}~\cite{unstructured2025} and Haystack~\cite{haystack2019} for document parsing, or \textit{M3IT}~\cite{li2023m3it} and \textit{OpenFlamingo}~\cite{awadalla2023openflamingo} for multimodal model alignment, address specific components of this pipeline. Yet none provide an integrated, open-source framework that supports ingestion, transformation, and retrieval across heterogeneous, real-world file types at scale. 
+
+\mmore{} combines a scalable ingestion layer with a task-agnostic retrieval API, unifying document processing and RAG tools to enable multimodal assistants from raw enterprise data in one library.
+%%% vérifier les sourches encore","Large-scale transformation of unstructured documents into structured, machine‑readable format has attracted substantial attention. We group prior work into two strands: \textbf{(i)} document ingestion and parsing pipelines, and \textbf{(ii)} RAG frameworks. To our knowledge, neither line of work simultaneously offers the modality coverage and end‑to‑end throughput required for industrial‑ and small‑scale multimodal assistants that we target with \mmore{}.\\
+\textbf{Document Ingestion Pipelines.} GPU‑accelerated microservice suites such as \textit{NV‑Ingest}~\cite{nvingest} convert PDFs and office documents into page‑level JSON enriched with text blocks, tables, and graphics, and can optionally export embeddings for downstream indexing. \textit{Docling}~\cite{auer2024docling} extends the modality set to spreadsheets, and other common formats, but executes primarily on a single node and therefore exhibits limited throughput in production settings. Classical OCR tools like \textit{doctr}~\cite{doctr2021} handle text detection and recognition but rely on external systems for layout, embeddings, and indexing. \textit{Surya}~\cite{paruchuri2025surya} adds multilingual OCR and layout analysis but lacks built-in multi-GPU or cluster parallelism. Commercial services such as \textit{LLMWhisperer}~\cite{llmwhisperer2025} offer similar functionality behind a paywall, which restricts reproducibility and hinders open experimentation. In contrast, \mmore{} combines extraction, transformation, embedding, and indexing into a single open‑source pipeline that natively parallelizes across multi‑node, multi‑GPU deployments. Moreover, \mmore{} uniquely handles audiovisual assets, enabling unified RAG over text, images, and time‑based media. \\
+\textbf{RAG Frameworks.} Open‑source libraries such as \textit{LangChain}~\cite{Chase_LangChain_2022} and \textit{LlamaIndex}~\cite{Liu_LlamaIndex_2022} provide high-level abstractions for chunking, embedding, retrieval, and prompting. However, they rely on external loaders for modality‑specific parsing and give no guidance on efficient high-throughput ingestion. 
+Several recent pipelines, such as \textit{Unstructured.io}~\cite{unstructured2025} and Haystack~\cite{haystack2019} for document parsing, or \textit{M3IT}~\cite{li2023m3it} and \textit{OpenFlamingo}~\cite{awadalla2023openflamingo} for multimodal model alignment, address specific components of this pipeline. Yet none provide an integrated, open-source framework that supports ingestion, transformation, and retrieval across heterogeneous, real-world file types at scale. 
+
+\mmore{} combines a scalable ingestion layer with a task-agnostic retrieval API, unifying document processing and RAG tools to enable multimodal assistants from raw enterprise data in one library.","Large-scale transformation of unstructured documents into
+structured, machine -readable format has attracted substan-
+tial attention. We group prior work into two strands:(i)
+document ingestion and parsing pipelines, and(ii)RAG
+frameworks. To our knowledge, neither line of work si-
+multaneously offers the modality coverage and end -to-end
+throughput required for industrial -and small -scale multi-
+modal assistants that we target withMMORE.
+1arXiv:2509.11937v1 [cs.SE]"

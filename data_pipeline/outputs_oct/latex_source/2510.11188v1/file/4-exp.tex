@@ -1,0 +1,74 @@
+\section{Experiments}
+
+\subsection{setup}
+\paragraph{Evaluation Datasets}
+
+We comprehensively evaluated our method using 3 text-based protein understanding datasets: \blackcircle{1} ProtDescribe~\cite{xu2023protst} comprises 553,052 high-quality protein–text pairs extracted from Swiss-Prot. Each instance pairs an amino-acid sequence with a single textual description obtained by concatenating four annotation fields in a fixed order: protein name, function, subcellular location, and similarity. The resulting descriptions average 40–60 tokens.
+% 
+\blackcircle{2} Protein2Text-QA~\cite{Protein2Text2025} comprises 209,847 open-ended question–answer pairs covering 5,574 unique proteins. Each instance consists of an amino-acid sequence, a free-form question, and a concise answer; all QAs are automatically generated from PubMed abstracts/discussion/introduction sections and presented as conversational natural-language text without fixed templates.
+% 
+\blackcircle{3} Mol-Instructions~\cite{fang2023mol} comprises 2.04 M instruction instances divided into three major sections: molecule-oriented, protein-oriented, and biomolecular-text. The protein-oriented section alone contributes 505 K instructions covering diverse tasks. Each sample is formatted as a natural-language “instruction–input–output” triplet: the input is a UniProt amino-acid sequence, and the output is a free-text answer tailored to the specific task.
+
+
+\paragraph{Models} All experiments are conducted under identical prompting protocols. We first evaluate the proposed adaptive context construction method on frozen LLMs, including Qwen2.5-3B~\cite{qwen2.5}, Mistral-7B-Instruct-v0.3~\cite{chaplot2023albert}, Qwen3-14B~\cite{qwen3technicalreport}, Kimi-k2~\cite{team2025kimi}, and GPT-4o~\cite{openai2024gpt4}, to test few-shot and compositional reasoning capabilities, thereby mimicking the dynamics of second language acquisition. In addition, we also evaluate fine-tuned protein-oriented LLMs, such as BioT5-plus-base~\cite{pei2023biot5} and ProLLaMA~\cite{lv2025prollama}, which have been explicitly trained on large-scale protein corpora. These models serve as a baseline for comparison, allowing us to examine the performance gains of our method in general-purpose frozen LLMs relative to specialized protein LLMs.
+
+
+\paragraph{Metrics} 
+
+We evaluate model outputs using both an automatic metric (ROUGE-L~\cite{lin2002manual}) and human evaluation. ROUGE-L~\cite{lin2002manual}, though widely used for text generation, primarily measures lexical overlap and may not fully capture semantic correctness in protein-related QA. To address this limitation, five evaluators rated the quality of generated answers on a 0–5 scale, where 0 denotes garbled and unreadable content, intermediate scores reflect increasing levels of informativeness and accuracy, and 5 represents fully correct outputs (detailed scoring rubrics are provided in Appendix~\ref{appendix:human_rate}). This combined evaluation provides a more reliable assessment of factual accuracy and overall comprehensibility.
+
+
+\subsection{Quality of Dataset}
+Figure~\ref{fig:dataset} (a-f) provides a multidimensional analysis of the protein sequences included in our dataset. The collection spans a wide range of sequence lengths, from short peptides to large multi-domain proteins, and covers proteins from 4,135 species across diverse evolutionary lineages. At the family level, the dataset comprises 63,749 families and 1,115 superfamilies, ensuring representation of both well-studied proteins and rare functional groups. Additional annotations capture domain composition, catalytic activity classes, and gene ontology categories, collectively highlighting the long-tail distribution across sequence space and functional categories. 
+% 
+This diversity ensures broad biological coverage while posing realistic challenges in inferring functions for proteins, particularly for infrequent families and underexplored functions.
+
+Figure~\ref{fig:dataset} (g,h) summarizes the distribution of tasks and token composition within the dataset. The corpus encompasses four distinct protein-QA types, with sample counts ranging from 11,693 (attribute-based QA) to 32,444 (true/false QA), thereby providing balanced coverage across multiple functional perspectives. 
+% 
+In terms of token composition, amino-acid sequences constitute nearly 70 \% of the corpus, reflecting the sequence-centric nature of protein understanding tasks and highlighting the need for models to align symbolic sequence information with natural-language context effectively.
+
+\input{figure/dataset_analysis}
+
+\subsection{Main Results}
+\paragraph{Accuracy gains from context-driven exposure}
+
+Table~\ref{tab:main} presents that our method consistently improves performance on three text-based protein understanding datasets.
+% 
+Our method raises the average ROUGE-L by 7\% across diverse open-source models and GPT-4o~\cite{openai2024gpt4}, with a maximum gain of 17.2\%, demonstrating that context-driven exposure allows LLMs to acquire protein semantics and reason about function directly from sequence and textual context without any parameter updates. 
+% 
+Larger models benefit more, suggesting that greater capacity enhances the ability to leverage contextual cues, consistent with learning protein meaning through in-context analogy and reasoning.
+% 
+In contrast, fine-tuned protein LLMs such as ProLLaMA-7B~\cite{lv2025prollama} do not surpass frozen LLMs augmented with our method, likely due to limited training coverage and task-specific rigidity. This underscores the our method as a lightweight alternative that enables general-purpose LLMs to potentially exceed the performance of domain-adapted models.
+
+\input{table/reasoning_ability}
+
+Human evaluation further demonstrates that exposing models to curated protein–language contexts improves the perceived quality of outputs (Figure~\ref{fig:human_rating}).
+% 
+Across all rated instances, inter-rater consistency was substantial (Krippendorff’s $\alpha$ = 0.72\%), ensuring reliable annotations; the detailed rubric is given in Appendix~\ref{appendix:human_rate}.
+% 
+Models receiving context-driven exposures achieve higher or comparable ratings on most tasks (left panel), with the clearest improvements observed on Protein2Text-QA~\cite{Protein2Text2025} and several Mol-Instructions~\cite{fang2023mol} subtasks.
+% 
+Furthermore, pairwise win/lose analyses (right panel) show that outputs generated with context-driven exposure are preferred in the majority of comparisons, with win rates systematically exceeding loss rates.
+\input{figure/human_rating}
+
+\paragraph{Varying exemplar number ($k$)}
+Figure~\ref{fig:varying_k} illustrates how model performance varies with the number of exemplars ($k$) provided in context across different datasets. Performance generally improves as $k$ increases, but only up to a task-dependent optimum; beyond this point, additional exemplars offer little benefit or even introduce noise. 
+% 
+The optimal $k$ differs by task. For ProtDescribe~\cite{xu2023protst}, which involves fixed attribute-centric questions, a larger set of bilingual exemplars from related proteins helps the model capture recurring patterns, with performance peaking at $k=10$–$11$. In contrast, Protein2Text-QA~\cite{Protein2Text2025} requires open-ended and integrative reasoning, where only a small number of highly relevant exemplars are beneficial; here, performance peaks earlier at $k=3$–$4$. 
+% 
+In our experiments, we therefore adopt the task-specific optimal settings: $k=11$ for ProtDescribe~\cite{xu2023protst}, $k=4$ for Protein2Text-QA~\cite{Protein2Text2025}, and $k=4$ for Mol-Instructions~\cite{fang2023mol}. 
+
+\input{figure/varying_k}
+
+\paragraph{Ablation on dual-criterion context selection}
+Table~\ref{tab:ablation} shows that using both sequence homology and text/QA similarity (Dual) outperforms either criterion alone, providing complementary signals that maximize the effectiveness of context-driven exemplar selection. On average across three datasets, using only sequence homology reduces performance by 5.2\%, and using only text/QA similarity reduces performance by 2.8\% compared to Dual, though all variants still outperform zero-shot models.
+
+
+
+\input{table/ablation}
+
+\paragraph{Case studies and qualitative evaluation}
+
+Figure~\ref{fig:qualitative_examples} illustrates that context-driven exposure produces concise, function-specific descriptions consistent with UniProt annotations. In the two examples shown, the model correctly identifies ``intrinsically disordered regions'', and ``[4Fe-4S] RNA methyltransferase activity'', whereas zero-shot outputs remain generic. 
+
+\input{figure/qualitative_examples}

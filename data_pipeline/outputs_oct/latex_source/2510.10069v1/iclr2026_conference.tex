@@ -1,0 +1,106 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{adjustbox}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor} 
+\usepackage{fontawesome5}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{makecell} 
+\usepackage{amssymb}
+\usepackage{amsmath} 
+\usepackage{fontawesome5} 
+\usepackage{mdframed}
+\usepackage{wrapfig}
+% macro
+\newcommand{\name}{SyncLipMAE\xspace}
+% 如果你喜欢小型大写：\newcommand{\name}{\textsc{SyncLipMAE}\xspace}
+
+
+\title{\name: Contrastive Masked Pretraining for Audio–Visual Talking-Face Representations}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\makeatletter
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\makeatother
+\author{%
+\textbf{Zeyu Ling}\textsuperscript{1,*}\quad
+\textbf{Xiaodong Gu}\textsuperscript{2,*}\quad
+\textbf{Jiangnan Tang}\textsuperscript{2}\quad
+\textbf{Changqing Zou}\textsuperscript{1,\dag} \\
+\textsuperscript{1}\,State Key Laboratory of CAD\&CG, Zhejiang University \quad
+\textsuperscript{2}\,ByteDance \\
+% 邮箱：为避免超出页边，手工分成两行；同域名用学术写法合并
+\texttt{\{zeyuling, changqing.zou\}@zju.edu.cn}\\
+\texttt{vactor1994@gmail.com, jiangnantang@outlook.com}
+}
+
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\new}{\marginpar{NEW}}
+\newcommand{\tabref}[1]{\mbox{Tab~\ref{#1}}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\input{sections/sec_0_abstract}
+
+\input{sections/sec_1_intro}
+
+\input{sections/sec_2_related_work}
+
+\input{sections/sec_3_method}
+
+\input{sections/sec_4_app}
+
+\input{sections/sec_5_exp}
+
+\input{sections/sec_6_conclusion}
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\clearpage
+\appendix
+
+\input{sections/sec_appendix_0_ablation}
+
+\input{sections/sec_appendix_1_more_results}
+
+\input{sections/sec_appendix_2_limitation}
+\end{document}

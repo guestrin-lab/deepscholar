@@ -1,0 +1,96 @@
+\begin{table*}[t!]
+\centering
+{\fontsize{8}{10}\selectfont 
+\renewcommand{\arraystretch}{0.95}
+\setlength\tabcolsep{1.5pt}
+\newcommand{\TextVQA}{\makecell{TextVQA\\(val)}}
+\newcommand{\ChartQA}{\makecell{ChartQA\\(test avg)}}
+\newcommand{\DocVQA}{\makecell{DocVQA\\(test)}}
+\newcommand{\InfoVQA}{\makecell{InfoVQA\\(test)}}
+\newcommand{\TableVQA}{\makecell{TableVQA\\Bench}}
+\newcommand{\CharXiv}{\makecell{CharXiv\\(RQ / DQ)}}
+\newcommand{\SEEDTP}{\makecell{SEED-2\\Plus}}
+\newcommand{\VCREN}{\makecell{VCR-EN-Easy\\(EM / Jaccard)}}
+\newcommand{\VCRZH}{\makecell{VCR-ZH\\(EM/Jaccard)}}
+\newcommand{\OCRBench}{\makecell{OCR\\Bench}}
+\newcommand{\AITD}{\makecell{AI2D\\(w / wo M)}}
+\newcommand{\lsp}{--\ \ \ \ \ \ }
+\newcommand{\rsp}{\ \ \ \ \ --~}
+\newcommand{\TODO}{\textcolor{red}{TODO}}
+\newcommand{\newicon}{\includegraphics[height=1em]{figure/new.pdf}}
+\begin{tabular}{l|cccccccccc}
+Model Name                                 & \AITD       & \ChartQA & \TextVQA & \DocVQA & \InfoVQA & \OCRBench & \SEEDTP & \CharXiv    & \VCREN       & Overall \\
+\hline
+LLaVA-OneVision-0.5B~\cite{li2024llavaov}  & 57.1 / \lsp & 61.4     & --       & 70.0    & 41.8     & 565       & --      & --          & --           & --      \\
+InternVL2-1B~\cite{chen2024far}            & 64.1 / 70.5 & 72.9     & 70.5     & 81.7    & 50.9     & 754       & 54.3    & 18.1 / 30.7 & 21.5 / 48.4  & 54.9    \\
+InternVL2.5-1B~\cite{chen2024expanding}    & 69.3 / 77.8 & 75.9     & 72.0     & 84.8    & 56.0     & 785       & 59.0    & 19.0 / 38.4 & 91.5 / 97.0  & 68.3    \\
+\rowcolor{gray!15}
+InternVL3-1B                               & 69.4 / 78.3 & 75.3     & 74.1     & 81.9    & 53.7     & 790       & 58.2    & 21.0 / 47.1 & 89.3 / 96.2  & 68.6    \\
+% \hline
+Qwen2-VL-2B~\cite{wang2024qwen2vl}         & 74.7 / 84.6 & 73.5     & 79.7     & 90.1    & 65.5     & 809       & 62.4    & --          & 81.5 / \lsp  & --      \\
+Qwen2.5-VL-3B~\cite{bai2025qwen2_5}        & 81.6 / \lsp & 84.0     & 79.3     & 93.9    & 77.1     & 797       & 67.6    & 31.3 / 58.6 & --           & --      \\
+Aquila-VL-2B~\cite{gu2024aquilavl}         & 75.0 / \lsp & 76.5     & 76.4     & 85.0    & 58.3     & 772       & 63.0    & --          & 70.0 / \lsp  & --      \\
+InternVL2-2B~\cite{chen2024far}            & 74.1 / 82.3 & 76.2     & 73.4     & 86.9    & 58.9     & 784       & 60.0    & 21.0 / 40.6 & 32.9 / 59.2  & 62.0    \\
+InternVL2.5-2B~\cite{chen2024expanding}    & 74.9 / 83.5 & 79.2     & 74.3     & 88.7    & 60.9     & 804       & 60.9    & 21.3 / 49.7 & 93.2 / 97.6  & 72.1    \\
+\rowcolor{gray!15}
+InternVL3-2B                               & 78.7 / 87.4 & 80.2     & 77.0     & 88.3    & 66.1     & 835       & 64.6    & 28.3 / 54.7 & 91.2 / 96.9  & 74.7    \\
+\hline
+% Phi-3.5-Vision-4B~\cite{abdin2024phi3}     & 77.8 / 87.6 & 81.8     & 72.0     & 69.3    & 36.6     & 599       & 62.2    & --          & 39.3 / 60.4  & --       \\
+% Mini-InternVL-4B-V1.5~\cite{gao2024mini}   & 76.9 / 86.6 & 81.0     & 72.5     & 87.7    & 64.6     & 638       & 62.6    & --          & 19.0 / 47.8  & --       \\
+% InternVL2-4B~\cite{chen2024far}            & 78.9 / 87.8 & 81.5     & 74.4     & 89.2    & 67.0     & 788       & 63.9    & 24.5 / 48.0 & 33.7 / 61.1  & 65.7     \\
+% InternVL2.5-4B                             & 81.4 / 90.5 & 84.0     & 76.8     & 91.6    & 72.1     & 828       & 66.9    & 24.9 / 61.7 & 93.7 / 97.8  & 77.0     \\
+% \rowcolor{gray!15}
+% InternVL3-4B                               &  /          &          &          &         &          &           &         &             &              &          \\
+% \hline
+Ovis1.6-Gemma2-9B~\cite{lu2024ovis}        & 84.4 / \lsp & --       & --       & --      & --       & 830       & --      & --          & --           & --      \\
+MiniCPM-V2.6~\cite{yao2024minicpm}         & 82.1 / \lsp & 82.4     & 80.1     & 90.8    & --       & 852       & 65.7    & 31.0 / 57.1 & 73.9 / 85.7  & --      \\
+Molmo-7B-D~\cite{deitke2024molmo}          & \rsp / 93.2 & 84.1     & 81.7     & 92.2    & 72.6     & 694       & --      & --          & --           & --      \\
+Qwen2-VL-7B~\cite{wang2024qwen2vl}         & 83.0 / 92.1 & 83.0     & 84.3     & 94.5    & 76.5     & 866       & 69.0    & --          & 89.7 / 93.8  & --      \\
+Qwen2.5-VL-7B~\cite{bai2025qwen2_5}        & 83.9 / \lsp & 87.3     & 84.9     & 95.7    & 82.6     & 864       & 70.4    & 42.5/73.9   & --           & --      \\
+InternVL2-8B~\cite{chen2024far}            & 83.8 / 91.7 & 83.3     & 77.4     & 91.6    & 74.8     & 794       & 67.5    & 31.2 / 56.1 & 37.9 / 61.5  & 69.7    \\
+InternVL2.5-8B~\cite{chen2024expanding}    & 84.5 / 92.8 & 84.8     & 79.1     & 93.0    & 77.6     & 822       & 69.7    & 32.9 / 68.6 & 92.6 / 97.4  & 79.6    \\
+\rowcolor{gray!15}
+InternVL3-8B                               & 85.2 / 92.6 & 86.6     & 80.2     & 92.7    & 76.8     & 880       & 69.7    & 37.6 / 73.6 & 94.5 / 98.1  & 81.3    \\
+\rowcolor{gray!15}
+InternVL3-9B                               & 84.6 / 92.9 & 86.2     & 79.4     & 93.6    & 79.6     & 877       & 68.8    & 38.0 / 72.5 & 94.2 / 97.9  & 81.3    \\
+\rowcolor{gray!15}
+InternVL3-14B                              & 86.0 / 93.7 & 87.3     & 80.5     & 94.1    & 83.6     & 875       & 70.3    & 43.1 / 82.2 & 94.8 / 98.2  & 83.4    \\
+\hline
+InternVL-Chat-V1.5~\cite{chen2024far}      & 80.7 / 89.8 & 83.8     & 80.6     & 90.9    & 72.5     & 724       & 66.3    & 29.2 / 58.5 & 14.7 / 51.4  & 65.9    \\
+InternVL2-26B~\cite{chen2024far}           & 84.5 / 92.5 & 84.9     & 82.3     & 92.9    & 75.9     & 825       & 67.6    & 33.4 / 62.4 & 74.5 / 86.7  & 76.7    \\
+InternVL2.5-26B~\cite{chen2024expanding}   & 86.4 / 94.4 & 87.2     & 82.4     & 94.0    & 79.8     & 852       & 70.8    & 35.9 / 73.5 & 94.4 / 98.0  & 81.8    \\
+Qwen2.5-VL-32B~\cite{bai2025qwen2_5}       & --          & --       & --       & 94.8    & 83.4     & --        & --      & --          & --           & --      \\
+Cambrian-34B~\cite{tong2024cambrian}       & 79.5 / \lsp & 75.6     & 76.7     & 75.5    & 46.0     & 600       & --      & 27.3 / 59.7 & 79.7 / 89.3  & --      \\
+VILA-1.5-40B~\cite{lin2024vila}            & 69.9 / \lsp & 67.2     & 73.6     & --      & --       & 460       & --      & 24.0 / 38.7 & --           & --      \\
+InternVL2-40B~\cite{chen2024far}           & 86.6 / 94.5 & 86.2     & 83.0     & 93.9    & 78.7     & 837       & 69.2    & 32.3 / 66.0 & 84.7 / 92.6  & 79.3    \\
+InternVL2.5-38B~\cite{chen2024expanding}   & 87.6 / 95.1 & 88.2     & 82.7     & 95.3    & 83.6     & 842       & 71.2    & 42.4 / 79.6 & 94.7 / 98.2  & 83.6    \\
+\rowcolor{gray!15}
+InternVL3-38B                              & 88.9 / 95.5 & 89.2     & 83.9     & 95.4    & 85.0     & 886       & 71.6    & 46.4 / 87.2 & 96.1 / 98.7  & 85.5    \\
+\hline
+% GPT-4o-Mini~\cite{gpt4v}                 & 77.8 / --   & --       & --       & --      & --       & 785       & --      & 34.1 / 74.9 & 83.6 / 87.8  & --      \\
+GPT-4V~\cite{gpt4v}                        & 78.2 / 89.4 & 78.5     & 78.0     & 88.4    & 75.1     & 645       & 53.8    & 37.1 / 79.9 & 52.0 / 65.4  & 70.0    \\
+GPT-4o-20240513~\cite{gpt4v}               & 84.6 / 94.2 & 85.7     & 77.4     & 92.8    & 79.2     & 736       & 72.0    & 47.1 / 84.5 & 91.6 / 96.4  & 81.6    \\
+% Claude-3-Sonnet~\cite{claude3series2024} & 69.9 / 88.7 & 81.1     & --       & 89.5    & --       & 646       & --      & 32.2 / 73.7 & --           & --      \\
+Claude-3-Opus~\cite{claude3series2024}     & 70.6 / 88.1 & 80.8     & 67.5     & 89.3    & 55.6     & 694       & 44.2    & 30.2 / 71.6 & 62.0 / 77.7  & 67.3    \\
+Claude-3.5-Sonnet~\cite{claude3series2024} & 81.2 / 94.7 & 90.8     & 74.1     & 95.2    & 74.3     & 788       & 71.7    & 60.2 / 84.3 & 63.9 / 74.7  & 78.7    \\
+Gemini-1.5-Pro~\cite{reid2024gemini1_5}    & 79.1 / 94.4 & 87.2     & 78.8     & 93.1    & 81.0     & 754       & --      & 43.3 / 72.0 & 62.7 / 77.7  & --      \\
+% Llama3-V-70B~\cite{dubey2024llama3}      & \rsp / 93.0 & 83.2     & 83.4     & 92.2    & --       & --        & --      & --          & --           & --      \\
+LLaVA-OneVision-72B~\cite{li2024llavaov}   & 85.6 / \lsp & 83.7     & 80.5     & 91.3    & 74.9     & 741       & --      & --          & --           & --      \\
+NVLM-D-72B~\cite{dai2024nvlm}              & 85.2 / 94.2 & 86.0     & 82.1     & 92.6    & --       & 853       & --      & --          & --           & --      \\
+Molmo-72B~\cite{deitke2024molmo}           & \rsp / 96.3 & 87.3     & 83.1     & 93.5    & 81.9     & --        & --      & --          & --           & --      \\
+Qwen2-VL-72B~\cite{wang2024qwen2vl}        & 88.1 / \lsp & 88.3     & 85.5     & 96.5    & 84.5     & 877       & --      & --          & 91.3 / 94.6  & --      \\
+Qwen2.5-VL-72B~\cite{bai2025qwen2_5}       & 88.7 / \lsp & 89.5     & 83.5     & 96.4    & 87.3     & 885       & 73.0    & 49.7 / 87.4 & --           & --      \\
+InternVL2-Llama3-76B~\cite{chen2024far}    & 87.6 / 94.8 & 88.4     & 84.4     & 94.1    & 82.0     & 839       & 69.7    & 38.9 / 75.2 & 83.2 / 91.3  & 81.1    \\
+InternVL2.5-78B~\cite{chen2024expanding}   & 89.1 / 95.7 & 88.3     & 83.4     & 95.1    & 84.1     & 854       & 71.3    & 42.4 / 82.3 & 95.7 / 94.5  & 83.9    \\
+\rowcolor{gray!15}
+InternVL3-78B                              & 89.7 / 96.0 & 89.7     & 84.3     & 95.4    & 86.5     & 906       & 71.9    & 46.0 / 85.1 & 96.0 / 98.6  & 85.8    \\
+% \rowcolor{gray!15}
+% InternVL2.5-Pro                          &             &          &          &         &          &           &         &             &              & --      \\
+\end{tabular}
+}
+\caption{\textbf{Comparison of OCR, chart, and document understanding performance.} We evaluate OCR-related capabilities across 9 benchmarks, including AI2D~\cite{kembhavi2016ai2d}, ChartQA~\cite{masry2022chartqa}, TextVQA~\cite{singh2019textvqa}, DocVQA~\cite{mathew2021docvqa}, InfoVQA~\cite{mathew2022infographicvqa}, OCRBench~\cite{liu2023ocrbench}, SEED-2-Plus~\cite{li2024seedbench2plus}, CharXiv~\cite{wang2024charxiv}, and VCR~\cite{zhang2024vcr}.
+Part of results are collected from \cite{dubey2024llama3, deitke2024molmo, claude3series2024, wang2024charxiv, zhang2024vcr} and the OpenCompass leaderboard~\cite{opencompass2023}.
+}
+\vspace{-0.5em}
+\label{tab:benchmark_ocr}
+\end{table*}

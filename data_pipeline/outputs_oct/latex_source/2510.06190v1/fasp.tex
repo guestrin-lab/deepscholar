@@ -1,0 +1,324 @@
+
+\section{Key Tool: Encoder Full-Access Sequence Processing (\efasp)} \label{appendix:fasp}
+
+
+In this section, we develop Full-Access Sequence Processing for encoders (\efasp), a programming language whose programs describe the construction process of seq-to-embedding functions that are equivalent to those computed by encoder-only Transformers. This extends the \texttt{FASP} framework originally developed for decoder-only Transformers in \citet{yang2025pencil}. Similar connections have also been established in \citet{weiss2021thinking,yang2024counting}.
+
+$\efasp$ is the key technical tool that will be used to prove \Cref{thm:main_mdm}, \Cref{thm:any_order} and \Cref{thm:main_apmdm}.
+
+
+
+\subsection{Definition of $\efasp$}\label{subsec:encoder_fasp_definition}
+
+\paragraph{Notations.} Recall that in \Cref{appendix:encoder}, we defined the position-indexed seq-to-embedding function space $\F(B)$ as the set of all functions $\psi$ that map a sequence and a position index to an element in $B$:
+\begin{equation}
+    \psi:(\Sigma^*,[\cdot])\to B
+\end{equation}
+That is, for every sequence $\mathbf{x}=(x_1,\ldots,x_n)\in\Sigma^*$ and every index $i\in[n]$, we have $\psi(\mathbf{x},i)\in B$. We also define $\F = \cup_{d\in \mathbb{N}^+} \F(\mathbb{R}^d)$ as the union of all such classes across real spaces of all output dimensions. For any position-indexed function $\psi \in \F(B)$, its canonical extension $\seq{\psi}:\Sigma^* \to B^*$ is defined by $[\seq{\psi}(\mathbf{x})]_i = \psi(\mathbf{x},i)$ for $i\in[|\mathbf{x}|]$. This allows us to convert position-indexed functions to sequence-to-sequence functions when needed. 
+
+Also recall that $\pe:\mathbb{N}^+\to\mathbb{R}^{d}$ is a positional embedding, and we additionally define $\op_{\act}$ as a class of activation functions. We formally define $\efasp$ as follows:
+
+\begin{definition}[Encoder-FASP]\label{def:efasp}   
+    An $\efasp$ program is a sequence of position-indexed seq-to-embedding functions $\psi_1,\ldots,\psi_T$ constructed inductively. At each step $t\in[T]$, the program maintains a set of defineable position-indexed seq-to-embedding functions $\dfnb_t$, and defines a new function by applying operators to functions in $\dfnb_t$. We define the defineable functions at step $t\in[T]$:
+    \begin{align}
+        \dfnb_t \triangleq \{\te, \pe\} \cup \{\psi_i \mid  1\le i\le t-1\}
+    \end{align}
+    where $\te(\mathbf{x},i) = \te(x_i)$ and $\pe(\mathbf{x},i) = \pe(i)$ are the token and positional embedding functions respectively, viewed as position-indexed seq-to-embedding functions. $\psi_t$ at step $t$ has to be defined by applying one of the following four \emph{primitive} operators on already-defined functions from $\dfnb_t$:
+    
+    \begin{enumerate}
+    \item \textbf{Concatenation}: For $\psi, \psi' \in \dfnb_t$ with $\psi \in \F(\mathbb{R}^{d_1})$ and $\psi' \in \F(\mathbb{R}^{d_2})$, define
+    \begin{equation}
+        [\psi, \psi'](\mathbf{x}, i) = (\psi(\mathbf{x}, i) \| \psi'(\mathbf{x}, i)) \in \mathbb{R}^{d_1 + d_2}
+    \end{equation}
+    where $\|$ denotes vector concatenation.
+    
+    \item \textbf{Linear Projection}: For $\psi \in \dfnb_t$ with $\psi \in \F(\mathbb{R}^d)$ and matrix $W \in \mathbb{R}^{d' \times d}$, define
+    \begin{equation}
+        (W \circ \psi)(\mathbf{x}, i) = W \cdot \psi(\mathbf{x}, i) \in \mathbb{R}^{d'}
+    \end{equation}
+    
+    \item \textbf{Nonlinear Activation}:\footnote{We allow multi-variable activation functions like Gated ReLU (ReGLU), $x,y\mapsto x[y]_+$.} For $\psi \in \dfnb_t$ with $\psi \in \F(\mathbb{R}^d)$ and $\sigma \in \op_\act$, define
+    \begin{equation}
+        (\sigma \circ \psi)(\mathbf{x}, i) = \sigma(\psi(\mathbf{x}, i))
+    \end{equation}
+    
+    
+    \item \textbf{Encoder Average-Hard Attention}: For $q, k \in \F(\mathbb{R}^d)$ and $v \in \F(\mathbb{R}^{d'})$ where $q, k, v \in \dfnb_t$, define
+    \begin{equation} \label{eq:aha}
+        \aha(q, k, v)(\mathbf{x}, i) = \frac{1}{|A_i|} \sum_{j \in A_i} v(\mathbf{x}, j)
+    \end{equation}
+    where $A_i = \arg\max_{j \in [|\mathbf{x}|]} \langle q(\mathbf{x}, i), k(\mathbf{x}, j) \rangle$ and ties are averaged uniformly. This attention can be seen as a pecial case of standard softmax attention with temperature approaching 0~\citep{merrill2022saturated}.
+    \end{enumerate}
+    
+Finally, when we want to use $\efasp$ to define a function mapping from a sequence of tokens $\Sigma^*$ and a position index $i$ to a single token in $\Sigma$, we can define $\psi \in \F(\mathbb{R}^{|\Sigma|})$ and return $\arg\max \psi(\mathbf{x}, i)$ (the token corresponding to the largest logit at the position $i$).\footnote{We could assume an arbitrary order to break ties, but we omit this for simplicity. In our examples we always ensure the argmax is unique.}
+\end{definition}
+
+We denote the set of all position-indexed seq-to-embedding functions defineable by $\efasp$ with position embedding $\pe$ and activation functions $\op_\act$ as $\efasp[\pe;\op_{\act}]$, where $\pe$ can be either $\bipe$ or $\SEQ$. The expressivity of $\efasp$ depends on the specific positional embedding and activation functions used.
+
+
+\subsection{Equivalence with Encoder Transformer}
+\label{subsec:equiv_encoder_tf}
+
+We now establish the equivalence between $\efasp$ and encoder-only Transformers, and define the specific instantiation considered in the proof of this paper.
+
+\begin{definition}[Encoder Transformer Function Class]\label{def:encoder_tf_class}
+Let $\F_{\text{EncTF}[\pe;\op_{\act}]}$ be the class of seq-to-embedding functions that can be expressed by encoder-only Transformers of finite depth, where the positional embedding uses $\pe$ (either $\bipe$ or $\SEQ$), feed-forward layers use activation functions from $\op_{\act}$, attention layers use average-hard attention as defined in \Cref{eq:aha}, and all intermediate computations use finite precision arithmetic.
+    \end{definition}
+    
+It is straightforward to see that both variants are equivalent to their corresponding Transformer function classes: 
+
+\begin{lemma}[Equivalence of $\efasp$ and Encoder Transformers]\label{thm:efasp_equiv_encoder}
+For any positional embedding $\pe \in \{\bipe, \SEQ\}$ and activation function class $\op_{\act}$, the following equivalence holds:
+\begin{equation}
+\efasp[\pe;\op_{\act}] = \F_{\text{EncTF}[\pe;\op_{\act}]}
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof Sketch]
+\textbf{Forward direction}: Each $\efasp$ primitive operator (concatenation, linear projection, nonlinear activation, encoder attention) directly corresponds to operations in encoder Transformers. Concatenation involves merging multiple smaller Transformers into a larger Transformer that produces the same output. \textbf{Reverse direction}: Any encoder Transformer can be expressed as an $\efasp$ program by decomposing each layer into primitive operations.
+
+The detailed proof, including the treatment of closed operators and inductive construction, is invariant to decoder or encoder Transformers, and thus is identical to \citet{yang2025pencil}; we omit the details.
+\end{proof}
+
+Intuitively, this equivalence holds because $\efasp$ 
+programs capture the computational 
+structure of encoder Transformers. Each step in an 
+$\efasp$ program corresponds to defining a new seq-to-
+embedding function by applying primitive operators to 
+previously defined functions, which mirrors how 
+smaller Transformers are constructed into a deeper  and wider Transformer that produces the same output. The Transformer corresponding to the program is of depth $\mathcal{O}(1)$ (given constant $T$) and embedding size $\mathcal{O}(\max\{d_\pe, d_\te\})$, by construction in the proof of \Cref{thm:efasp_equiv_encoder}.
+
+\subsection{Two Variants of $\efasp$}
+
+Throughout this paper, we consider two variants of $\efasp$ based on different positional embeddings, both using the same activation functions.
+
+\paragraph{Variant 1: Binary Positional Encoding}
+We define $\efasp$ with binary positional embedding $\bipe: \mathbb{N}^+ \to \{0,1\}^{\lceil \log_2 S(n) \rceil}$:
+\begin{equation}
+\bipe(i) = \text{binary representation of } i \text{ using } \lceil \log_2 S(n) \rceil \text{ bits}
+\end{equation}
+This representation uses $\lceil \log_2 S(n) \rceil$ bits to represent all possible positions within the maximum context length $S(n)$, and aligns with the address representation in PRAM (\Cref{appendix:pram}) for efficient bitwise arithmetic operations. 
+% \zhiyuan{here we should restrict the domain range to $S(n)$ instead of $\mathbb{N}^+$. consider call it a different name, maybe $\efasp_n$ }
+
+\paragraph{Variant 2: Integer Positional Encoding}
+We also define $\efasp$ with integer positional embedding $\SEQ: \mathbb{N}^+ \to \mathbb{N}^+$:
+\begin{equation}
+\SEQ(i) = i
+\end{equation}
+This is the identity mapping over $\mathbb{N}^+$ that directly uses the position index as a scalar feature, as considered in the original decoder-only \texttt{FASP} framework \citep{yang2025pencil}.
+
+\paragraph{Activation Functions}
+Both variants use the same class of activation functions $\op_{\act} = \{\text{ReGLU}\}$, where Gated ReLU (ReGLU)~\citep{dauphin2017language} is defined as $\text{ReGLU}(x,y) = x \cdot [y]_+ = x \cdot \max(y, 0)$ for $x,y \in \mathbb{R}$. With Gated ReLU as the primitive activation, we can express ReLU and multiplication operations through the following identities:
+\begin{align}
+\text{ReLU}(x) = \text{ReGLU}(x,1), \quad x \times y = \text{ReGLU}(x,y) - \text{ReGLU}(x,-y)
+\end{align}
+Therefore, having ReGLU allows us to express both ReLU and multiplication (reverse is also true), making both variants equivalent:
+\begin{align}
+\efasp[\bipe; \text{ReGLU}] &= \efasp[\bipe; [\cdot]_+, \times] \\
+\efasp[\SEQ; \text{ReGLU}] &= \efasp[\SEQ; [\cdot]_+, \times]
+\end{align}
+where $[\cdot]_+$ and $\times$ are the ReLU and multiplication respectively.
+
+\subsection{Original Supported Operators}
+
+With the four primitive operators in $\efasp$ and the activation functions defined above, the following operators can be included in both variants $\efasp[\bipe; [\cdot]_+, \times]$ and $\efasp[\SEQ; [\cdot]_+, \times]$, adapted from the decoder version of \texttt{FASP}:
+
+\emph{Arithmetic Operators}
+\begin{itemize}
+\item $\texttt{add}(\psi_1, \psi_2) = \psi_1 + \psi_2$: Element-wise addition
+\item $\texttt{minus}(\psi_1, \psi_2) = \psi_1 - \psi_2$: Element-wise subtraction  
+\item $\texttt{multi}(\psi_1, \psi_2) = \psi_1 \times \psi_2$: Element-wise multiplication
+\item $\texttt{max}(\psi_1, \psi_2)$: Element-wise maximum
+\item $\texttt{min}(\psi_1, \psi_2)$: Element-wise minimum
+\end{itemize}
+
+\emph{Boolean Operators}
+For $\psi_1, \psi_2 \in \F(\{0,1\})$:
+\begin{itemize}
+\item $\texttt{and}(\psi_1, \psi_2) = \min(\psi_1, \psi_2)$: Logical AND
+\item $\texttt{or}(\psi_1, \psi_2) = \lnot(\lnot \psi_1 \land \lnot \psi_2)$: Logical OR
+\item $\texttt{not}(\psi) = 1 - \psi$: Logical NOT
+\item $\texttt{xor}(\psi_1, \psi_2)$: Logical XOR
+\end{itemize}
+
+\emph{Comparison Operators}
+For $\psi_1, \psi_2 \in \F(\mathbb{Z})$:
+\begin{itemize}
+\item $\texttt{leq}(\psi_1, \psi_2) = [\psi_2 - \psi_1 + 1]_+ - [\psi_2 - \psi_1]_+$: Less than or equal
+\item $\texttt{geq}(\psi_1, \psi_2) = \texttt{leq}(\psi_2, \psi_1)$: Greater than or equal
+\item $\texttt{eq}(\psi_1, \psi_2) = \texttt{leq}(\psi_1, \psi_2) \land \texttt{leq}(\psi_2, \psi_1)$: Equality
+\item $\texttt{lt}(\psi_1, \psi_2) = \texttt{leq}(\psi_1, \psi_2 - 1)$: Less than
+\item $\texttt{gt}(\psi_1, \psi_2) = \texttt{lt}(\psi_2, \psi_1)$: Greater than
+\end{itemize}
+
+\emph{Sequence Aggregation Operators}
+\begin{itemize}
+\item $\texttt{seq\_max}(\psi)$: Returns the maximum value across all positions in the sequence
+\item $\texttt{seq\_min}(\psi)$: Returns the minimum value across all positions in the sequence  
+\item $\texttt{seq\_and}(\psi) = \texttt{seq\_min}(\psi)$: Logical AND across all positions
+\item $\texttt{seq\_or}(\psi) = \texttt{seq\_max}(\psi)$: Logical OR across all positions
+\item $\texttt{seq\_sum}(\psi)$: Sum of values across all positions (requires $\log n$ positional embedding)
+\item $\texttt{seq\_avg}(\psi) = \frac{1}{n}\sum_{j=1}^{n} \psi(x_{1:j})$: Average across all positions
+\end{itemize}
+
+\emph{Positional Operators}
+\begin{itemize}
+\item $\texttt{is\_first}(i) = \mathbf{1}[i=1]$: Indicator for first position
+\item $\texttt{inv\_seq\_len}(i) = 1/n$: Inverse of sequence length
+\item $\texttt{is\_pos\_k}(i) = \mathbf{1}[i=k]$: Indicator for position $k$
+\end{itemize}
+
+\emph{Control Flow Operators}
+\begin{itemize}
+\item $\texttt{if\_then\_else}(\psi_{\text{cond}}, \psi_{\text{true}}, \psi_{\text{false}})$ or $\texttt{ite}(\psi_{\text{cond}}, \psi_{\text{true}}, \psi_{\text{false}})$: If-then-else conditional selection
+\end{itemize}
+
+\emph{Attention Variants}
+\begin{itemize}
+\item $\texttt{aha}(q, k, v)$: Standard average-hard attention (encoder bidirectional)
+\item $\texttt{rha}(q, k, v)$: Rightmost-hard attention (breaks ties by selecting rightmost position)
+\item $\texttt{rightmost\_exact\_match}(q, k, v)$: Rightmost exact match (returns default if no exact match)
+\end{itemize}
+
+\subsection{Additional Operators and Justifications}
+
+
+Next we give the semantics of some additional operators used in the PRAM simulation programs and justify their closure in the $\efasp$ framework.
+
+% \paragraph{Token and Embedding Operators.}
+% These operators handle token-level operations and embedding conversions, all implementable using $\efasp$ primitives:
+% \begin{itemize}
+% \item $\texttt{embed}(\sigma)$: For token $\sigma \in \Sigma$, returns the embedding vector $\te(\sigma) \in \mathbb{R}^d$. This is a primitive operator in $\efasp$.
+% \item $\texttt{bin}(\psi)$: For $\psi \in \F(\mathbb{R}^d)$, converts real-valued embeddings to binary representations $\{0,1\}^d$ using ReLU thresholding. Implemented as $\texttt{bin}(\psi) = [\psi - 0.5]_+$ followed by $\min(\cdot, 1)$.
+% \item $\texttt{ite}(\psi_{\text{cond}}, \psi_{\text{true}}, \psi_{\text{false}})$: If-then-else conditional selection. Already included in original $\efasp$ operators.
+% \item $\texttt{int}(\psi)$: For $\psi \in \F(\{0,1\}^m)$, converts $m$-bit binary to integer via $\sum_{k=1}^m 2^{k-1} \psi_k$. Implementable using linear projection.
+% \end{itemize}
+
+% \paragraph{Positional and Sequence Operators.}
+% These operators handle position-based computations and can be expressed using attention mechanisms and arithmetic operations:
+% \begin{itemize}
+% \item $\texttt{is\_last}(\mathbf{x}, i)$: Indicator for last position, implementable as $\mathbf{1}[i = |\mathbf{x}|]$ using sequence length computation.
+% \item $\texttt{rightmost\_sep\_pos}(\mathbf{x}, i)$: Uses $\texttt{rightmost\_exact\_match}$ with \texttt{[SEP]} token as query to find rightmost separator.
+% \item $\texttt{distance\_to\_sep}(\mathbf{x}, i)$: Computed as $i - \texttt{rightmost\_sep\_pos}(\mathbf{x}, i)$ using subtraction.
+% \item $\texttt{processor\_id}(\mathbf{x}, i)$: Implemented as $\lfloor \texttt{distance\_to\_sep}(\mathbf{x}, i) / 8 \rfloor$ using division and floor operations.
+% \item $\texttt{inner\_processor\_id}(\mathbf{x}, i)$: Computed as $\texttt{distance\_to\_sep}(\mathbf{x}, i) \bmod 8$ using modulo operation.
+% \end{itemize}
+
+% \paragraph{PRAM-Specific Operators.}
+% These operators provide PRAM simulation capabilities through learned transformations and global state tracking:
+% \begin{itemize}
+% \item $\texttt{get\_instruction}(\text{addr})$: Fetches instruction via learned mapping $W_{\mathrm{INSTR}}: \mathbb{R}^w \to \mathbb{R}^w$ where PRAM instruction set is hardcoded in parameters. Implementable as linear projection followed by $\texttt{bin}(\cdot)$.
+% \item $\texttt{is\_sep}(\mathbf{x}, i)$: Indicator for \texttt{[SEP]} tokens, implemented as $\mathbf{1}[x_i = \texttt{[SEP]}]$ using equality comparison.
+% \item $\texttt{all\_halt}(\mathbf{x})$: Global predicate using $\texttt{seq\_and}$ to check if all processor program counters equal \texttt{HALT\_CODE}.
+% \end{itemize}
+
+% \paragraph{Closure Justification.}
+% All operators above are closed under the $\efasp$ framework: token operations use primitive embeddings and linear projections; positional operations combine attention mechanisms with arithmetic; PRAM-specific operations use learned parameters within linear transformations. The bit operations ($\ll$, $\gg$, $\&$, $\oplus$) used in the programs are already defined in the bitwise arithmetic operators below.
+
+\subsubsection*{Bitwise Arithmetic Operators}
+
+These operators are defined in the encoder-$\efasp$ framework using activations $\{[\cdot]_+, \times\}$ (equivalently ReGLU) and are independent of the specific positional embedding choice. All inputs and outputs are position-indexed seq-to-embedding functions in $\F(\{0,1\}^m)$ where $\psi(\mathbf{x}, i) \in \{0,1\}^m$ encodes an $m$-bit integer with LSB at coordinate 1. All arithmetic is modulo $2^m$.
+
+\paragraph{Bitwise Addition.} 
+Given $\psi_1, \psi_2 \in \F(\{0,1\}^m)$, write at position $(\mathbf{x}, i)$:
+\begin{equation}
+\psi_1(\mathbf{x}, i) =: \mathbf{a} = (a_1, \ldots, a_m), \quad \psi_2(\mathbf{x}, i) =: \mathbf{b} = (b_1, \ldots, b_m) \in \{0,1\}^m
+\end{equation}
+Bitwise addition is defined as adding two $m$-bit integers modulo $2^m$. This can be constructed  using the primitive operators (and other operators that are already defined) in \Cref{def:efasp}, which follows an approach similar to standard carry-lookahead, and is a constant-depth, polylogarithmic-width construction:
+
+Define for $k \in [m]$ the local propagate/generate bits:
+\begin{equation}
+p_k = a_k \oplus b_k = a_k + b_k - 2a_k b_k, \quad g_k = a_k \wedge b_k = a_k b_k
+\end{equation}
+
+Let $S_0 = 0$ and $S_j = \sum_{t \leq j} p_t$ for $j \in [m]$ (computed by a single linear layer). For $1 \leq j < i \leq m$, define the interval-all-ones gate:
+\begin{equation}
+Q_{j,i} = \mathrm{eq}_0\left((S_{i-1} - S_j) - ((i-1) - j)\right)
+\end{equation}
+where $\mathrm{eq}_k(u) := 2\left([u-(k-\frac{1}{2})]_+ - 2[u-k]_+ + [u-(k+\frac{1}{2})]_+\right)$ equals 1 at $u = k$ and 0 at all other integers.
+
+The carry into bit $i$ is:
+\begin{equation}
+C_i = \begin{cases}
+0, & i = 1 \\
+1 - \mathrm{eq}_0\left(\sum_{j=1}^{i-1} g_j Q_{j,i}\right), & i \geq 2
+\end{cases}
+\end{equation}
+
+The sum bits are $s_i = p_i \oplus C_i = p_i + C_i - 2p_i C_i$. We define:
+\begin{equation}
+\texttt{bit\_add}_m(\psi_1, \psi_2)(\mathbf{x}, i) := \mathbf{s} = (s_1, \ldots, s_m) \in \{0,1\}^m
+\end{equation}
+
+\paragraph{Bitwise Subtraction.}
+For $\psi_1, \psi_2 \in \F(\{0,1\}^m)$, define:
+\begin{equation}
+\texttt{bit\_minus}_m(\psi_1, \psi_2) := \texttt{bit\_add}_m(\psi_1, \neg\psi_2) \dotplus 1
+\end{equation}
+where $\neg$ is bitwise NOT (elementwise $1 - \cdot$) and ``$\dotplus 1$" adds the constant vector $\mathbf{e}_1 = (1, 0, \ldots, 0)$ via the same $\texttt{bit\_add}_m$.
+
+\paragraph{Logical Shifts.}
+Let $\psi \in \F(\{0,1\}^m)$ and $\tau \in \F(\{0,1\}^m)$. At position $(\mathbf{x}, i)$, write $\mathbf{a} = \psi(\mathbf{x}, i) = (a_1, \ldots, a_m)$ and define the shift amount:
+\begin{equation}
+t = \mathrm{int}(\tau) = \sum_{r=1}^m 2^{r-1} \tau_r \in \{0, \ldots, m\}
+\end{equation}
+
+For $k \in [m]$, we define:
+\begin{align}
+[\texttt{shift\_left}_m(\psi, \tau)]_k &= \sum_{s=0}^{\min\{m, k-1\}} \mathrm{eq}_s(t) \cdot a_{k-s} \\
+[\texttt{shift\_right}_m(\psi, \tau)]_k &= \sum_{s=0}^{\min\{m, m-k\}} \mathrm{eq}_s(t) \cdot a_{k+s}
+\end{align}
+where out-of-range indices are treated as 0, and $\mathrm{eq}_s(\cdot)$ is the integer-equality gate realized by three ReLUs.
+
+\paragraph{Complexity Analysis.}
+All operators act locally at each position on $\F(\{0,1\}^m)$ without cross-position communication, and are composed from $\efasp$ primitives. Throughout $m = \Theta(\log n)$.
+
+The witness enumeration method for bitwise addition requires: \textbf{(i)} one linear layer for $(p, g)$ and prefix sums $(S_j)$; \textbf{(ii)} one nonlinear layer for witnesses $Q_{j,i}$ (each uses 3 ReLUs) and products $g_j Q_{j,i}$; \textbf{(iii)} linear aggregation and threshold for carries $C_i$; \textbf{(iv)} local polynomial for $s_i = p_i \oplus C_i$. This achieves constant depth (3-4 layers) and width $\mathcal{O}(m^2) = \mathcal{O}((\log n)^2)$ (polylogarithmic in $n$). Bitwise subtraction uses two's complement and reuses the same addition circuit with identical complexity bounds. Logical shifts compute the shift amount $t$ and all candidate shifts in parallel, then use equality gates for selection, also achieving constant depth and $\mathcal{O}(m^2)$ width.
+
+All constructions use only $\efasp$ primitives (linear projections, ReLU/ReGLU activations, multiplication). By the equivalence established in \Cref{appendix:fasp}, these are realizable by constant-depth encoder Transformers.
+
+% \subsubsection*{Basic PRAM Operators}
+
+% We now define the basic operators needed for PRAM simulation, working with the $\efasp[\SEQ; [\cdot]_+, \times]$ variant and the input format established in the Setup. All these operators are position-indexed sequence-to-embedding mappings that extract semantic information from the encoded PRAM state.
+
+% \paragraph{Position Type Predicates.}
+% These predicates identify the semantic role of each position in the input sequence.
+% \begin{align}
+% \mathrm{is\_pn}(\mathbf{x}, i) &:= \mathrm{is\_first}(\mathbf{x}, i) = \mathbf{1}[i = 1] \\
+% \mathrm{is\_addr}(\mathbf{x}, i) &:= \neg \mathrm{is\_first}(\mathbf{x}, i) \wedge (\SEQ(\mathbf{x}, i) \bmod 2 = 0) \\
+% \mathrm{is\_data}(\mathbf{x}, i) &:= \neg \mathrm{is\_first}(\mathbf{x}, i) \wedge (\SEQ(\mathbf{x}, i) \bmod 2 = 1) \\
+% \mathrm{is\_mask}(\mathbf{x}, i) &:= \mathbf{1}[x_i = \mask]
+% \end{align}
+% These predicates partition the sequence positions into four disjoint types: $\mathrm{is\_pn}$ identifies the processor count position (position 1), $\mathrm{is\_addr}$ identifies address positions (even positions > 1), $\mathrm{is\_data}$ identifies data positions (odd positions > 1), and $\mathrm{is\_mask}$ identifies mask token positions.
+
+% \paragraph{Global Information and Processor ID.}
+% These operators provide global PRAM configuration information and assign processor IDs based on position.
+% \begin{align}
+% \mathrm{PN}(\mathbf{x}) &:= \mathrm{seq\_max}(\mathrm{ite}(\mathrm{is\_pn}(\mathbf{x}, \cdot), \mathrm{bin}(\te(\mathbf{x}, \cdot)), \mathbf{0}_w)) \in \{0,1\}^w \\
+% \mathrm{proc\_id}(\mathbf{x}, i) &:= \SEQ(\mathbf{x}, i) \bmod \mathrm{int}(\mathrm{PN}(\mathbf{x}))
+% \end{align}
+% The first operator $\mathrm{PN}(\mathbf{x})$ extracts the total processor count from the sequence, while $\mathrm{proc\_id}(\mathbf{x}, i)$ assigns each position a processor ID by taking the position modulo the processor count. Here $\mathrm{int}(\cdot)$ converts the $w$-bit representation back to an integer value.
+
+\paragraph{Instruction Access Operations.}
+This operator enables instruction fetching from memory by address lookup, which is essential for PRAM simulation.
+\begin{align}
+\mathrm{get\_instruction}(\mathbf{x}, i) &:= \mathrm{bin}(W_{\mathrm{INSTR}} \circ \mathrm{ite}(\mathrm{is\_addr}(\mathbf{x}, \cdot), \mathrm{bin}(\te(\mathbf{x}, \cdot)), \mathbf{0}_w))(\mathbf{x}, i) \in \{0,1\}^w
+\end{align}
+where $W_{\mathrm{INSTR}}: \mathbb{R}^w \to \mathbb{R}^w$ is a learned linear transformation (MLP layer) that maps address bits to instruction bits. This operator first extracts the address bits from address positions (even positions > 1) by converting their token embeddings to binary representations, then applies the instruction lookup transformation $W_{\mathrm{INSTR}}$ to produce the corresponding instruction encoding. The PRAM instruction set (LOAD, STORE, ADD, SUB, etc., as defined in \Cref{appendix:pram}) is hardcoded into the parameters of $W_{\mathrm{INSTR}}$ during training, enabling the model to perform instruction fetching through learned address-to-instruction mappings.
+
+
+
+% \paragraph{Additional operators.} We also consider the following operators that are not included in the decoder version of \texttt{FASP}, but are supported by our encoder version and used in our proofs:
+
+% \emph{Bitwise Arithmetic Operators}
+
+% For PRAM simulation and address computation, we define the following bitwise operations on $m$-bit binary representations where $m = O(\log n)$:
+
+% \begin{itemize}
+% \item $\texttt{bit\_add}_m(\psi_1, \psi_2)$: Binary addition of two $m$-bit addresses (with carry propagation)
+% \item $\texttt{bit\_minus}_m(\psi_1, \psi_2)$: Binary subtraction using two's complement arithmetic  
+% \item $\texttt{shift\_left}_m(\psi, k)$: Left logical shift by $k$ positions (equivalent to multiplication by $2^k$)
+% \item $\texttt{shift\_right}_m(\psi, k)$: Right logical shift by $k$ positions (equivalent to division by $2^k$)
+% \end{itemize}
+
+% These operators can be implemented using polynomial-width MLPs with ReGLU activations by leveraging standard binary arithmetic algorithms. The key insight is that any Boolean function on $m$ bits can be computed by a two-layer network of width $2^m = \text{poly}(n)$, making these operations tractable for address-sized operands.

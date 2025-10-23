@@ -1,0 +1,261 @@
+% This class has a lot of options, so please check deepmind.cls for more details.
+% This is a minimal set for most needs.
+\documentclass[11pt, a4paper, logo]{googlecloud}
+
+% Omit dates for reproducibility.
+\pdfinfoomitdate 1
+\pdftrailerid{redacted}
+
+% This avoids duplicate hyperref bookmark entries when using \bibentry (e.g. via \citeas).
+\makeatletter
+\renewcommand\bibentry[1]{\nocite{#1}{\frenchspacing\@nameuse{BR@r@#1\@extra@b@citeb}}}
+\makeatother
+
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+
+\usepackage{kantlipsum, lipsum}
+\usepackage{dsfont}
+% \usepackage{gdm-colors}
+
+% Sometimes you will get errors about pdflink ending up in diffrent position. Try this and
+% comment it out again when you are done with your document.
+%\hypersetup{draft}
+
+% Set the bibliography options here.
+\usepackage[authoryear, sort&compress, round]{natbib}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[loose]{minitoc}
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{hyperref}       % hyperlinks
+\usepackage[nameinlink]{cleveref}
+\usepackage{bbm}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{subcaption}
+% \usepackage{subfigure}
+\usepackage{soul}
+% \usepackage{floatrow}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{blindtext}
+\usepackage{tablefootnote}
+% \usepackage{fdsymbol}. % cause an error
+\usepackage{amsfonts}
+\usepackage[flushleft]{threeparttable}
+% \usepackage{colortbl}
+\usepackage{bbding}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{bm}
+\usepackage{arydshln}
+% \usepackage{subfigure}
+\usepackage{enumitem}
+\usepackage{setspace}
+% \usepackage{mathabx}
+\usepackage{color}
+\usepackage{longtable}
+% \usepackage{booktabs}
+
+\usepackage[normalem]{ulem}
+\usepackage{ulem}
+\usepackage[nomargin,inline,marginclue,draft]{fixme}
+\usepackage{balance}
+\usepackage{verbatim}
+\usepackage{diagbox}
+\usepackage{changepage}
+\usepackage{amssymb}
+\usepackage{pifont}
+
+\usepackage{array}   % Optional: Improves table column alignment
+
+
+\usepackage{makecell}
+\usepackage{tabularray}
+
+% \usepackage{kantlipsum, lipsum}
+% \usepackage{dsfont}
+% % \usepackage{gdm-colors}
+% % Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{tcolorbox}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\newcommand{\greencheck}{\textcolor{green}{\ding{51}}}
+\newcommand{\redx}{\textcolor{red}{\ding{55}}}
+
+% % custom packages and commands
+% \usepackage{graphicx}
+% \usepackage{hyperref}
+% \usepackage{url}
+% \usepackage{xcolor}
+% \usepackage{tabularx}
+% \usepackage{multicol}
+% \usepackage{colortbl}
+% \usepackage{booktabs}
+% \usepackage{xspace}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{algpseudocode}
+% \usepackage{algorithmicx}
+% \usepackage{bbm, mathtools}
+% \usepackage{wrapfig}
+% \usepackage{hyperref}
+% % \hypersetup{
+% %   colorlinks,
+% %   citecolor=blue,
+% %   linkcolor=red,
+% %   urlcolor=blue
+% % }
+
+\usepackage{tcolorbox}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakindent=0ex,
+  breakatwhitespace=true,
+  tabsize=2
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\lstset{escapeinside={<@}{@>}}
+ 
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+\newcommand{\stitle}[1]{\noindent \textbf{#1.}}
+
+% Drafting notes
+\newcommand{\chengrun}[1]{\textcolor{cyan}{\bf \small [Chengrun: #1]}}
+
+\title{LLM-based Multi-Agent Blackboard System for Information Discovery in Data Science}
+
+\correspondingauthor{Alireza Salemi (asalemi@cs.umass.edu), Mihir Parmar (mihirparmar@google.com), Jinsung Yoon (jinsungyoon@google.com), and Hamid Palangi (hamidpalangi@google.com)}
+
+% \renewcommand{\today}{}
+
+% --- AUTHOR DEFINITIONS ---
+% 1. Use \footnotemark without a number.
+\author[1]{Alireza Salemi$^{\dag}$}
+\author[2]{Mihir Parmar}
+\author[2]{Palash Goyal}
+\author[2]{Yiwen Song}
+\author[2]{Jinsung Yoon}
+\author[1]{Hamed Zamani}
+\author[2]{Hamid Palangi$^*$}
+\author[2]{Tomas Pfister$^*$}
+% --------------------------
+
+
+\affil[1]{University of Massachusetts Amherst}
+\affil[2]{Google Cloud AI Research}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\input{section/abstract}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+\doparttoc % Tell to minitoc to generate a toc for the parts
+\faketableofcontents % Run a fake tableofcontents command for the partocs
+\maketitle
+
+% --- FOOTNOTE TEXT DEFINITION ---
+% This block defines the footnote text and forces the marker to be a dagger (\dag).
+\begingroup
+    % 2. Temporarily redefine the footnote marker to \dag
+    \renewcommand\thefootnote{\dag} 
+    
+    % 3. Use \footnotetext to display the text. The marker is now \dag.
+    \footnotetext{Work done as a Student Researcher at Google.}
+    \renewcommand\thefootnote{*}
+    \footnotetext{Joint last authors.}
+\endgroup
+
+% Reset the footnote counter back to 0 for the main document body, 
+% although it's usually unnecessary with the \begingroup/\endgroup.
+\setcounter{footnote}{0}
+% ----------------------------------
+
+
+\input{section/introduction}
+\input{section/problem}
+\input{section/method}
+\input{section/experiment}
+\input{section/related}
+\input{section/conclusion}
+
+\newpage
+
+\bibliographystyle{abbrvnat}
+\nobibliography*
+\bibliography{ref}
+
+\newpage
+\appendix
+\renewcommand{\partname}{}
+\renewcommand{\thepart}{}
+\addcontentsline{toc}{section}{Appendix} 
+\part{Appendix}
+\parttoc
+\newpage
+\let\clearpage\relax
+\input{section/appendix}
+\end{document}
+

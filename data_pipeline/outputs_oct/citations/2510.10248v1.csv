@@ -1,0 +1,308 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,moleculargraph,\cite{moleculargraph},Molecular Graph Convolutions: Moving Beyond Fingerprints,http://arxiv.org/abs/1603.00856v3,"Molecular ""fingerprints"" encoding structural information are the workhorse of
+cheminformatics and machine learning in drug discovery applications. However,
+fingerprint representations necessarily emphasize particular aspects of the
+molecular structure while ignoring others, rather than allowing the model to
+make data-driven decisions. We describe molecular ""graph convolutions"", a
+machine learning architecture for learning from undirected graphs, specifically
+small molecules. Graph convolutions use a simple encoding of the molecular
+graph---atoms, bonds, distances, etc.---which allows the model to take greater
+advantage of information in the graph structure. Although graph convolutions do
+not outperform all fingerprint-based methods, they (along with other
+graph-based methods) represent a new paradigm in ligand-based virtual screening
+with exciting opportunities for future improvement.",Steven Kearnes and Kevin McCloskey and Marc Berndl and others,2016,,https://doi.org/10.1007/s10822-016-9938-8,10.1007/s10822-016-9938-8,Journal of Computer-Aided Molecular Design
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,schnet,\cite{schnet},SchNet - a deep learning architecture for molecules and materials,http://arxiv.org/abs/1712.06113v3,"Deep learning has led to a paradigm shift in artificial intelligence,
+including web, text and image search, speech recognition, as well as
+bioinformatics, with growing impact in chemical physics. Machine learning in
+general and deep learning in particular is ideally suited for representing
+quantum-mechanical interactions, enabling to model nonlinear potential-energy
+surfaces or enhancing the exploration of chemical compound space. Here we
+present the deep learning architecture SchNet that is specifically designed to
+model atomistic systems by making use of continuous-filter convolutional
+layers. We demonstrate the capabilities of SchNet by accurately predicting a
+range of properties across chemical space for \emph{molecules and materials}
+where our model learns chemically plausible embeddings of atom types across the
+periodic table. Finally, we employ SchNet to predict potential-energy surfaces
+and energy-conserving force fields for molecular dynamics simulations of small
+molecules and perform an exemplary study of the quantum-mechanical properties
+of C$_{20}$-fullerene that would have been infeasible with regular ab initio
+molecular dynamics.","Sch{\""u}tt, Kristof and Sauceda, Huziel and Kindermans, Pieter-Jan and Chmiela, Stefan and M{\""u}ller, Klaus-Robert and Tkatchenko, Alexandre",2018,,,,Bulletin of the American Physical Society
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,mpnn,\cite{mpnn},Neural Message Passing for Quantum Chemistry,http://arxiv.org/abs/1704.01212v2,"Supervised learning on molecules has incredible potential to be useful in
+chemistry, drug discovery, and materials science. Luckily, several promising
+and closely related neural network models invariant to molecular symmetries
+have already been described in the literature. These models learn a message
+passing algorithm and aggregation procedure to compute a function of their
+entire input graph. At this point, the next step is to find a particularly
+effective variant of this general approach and apply it to chemical prediction
+benchmarks until we either solve them or reach the limits of the approach. In
+this paper, we reformulate existing models into a single common framework we
+call Message Passing Neural Networks (MPNNs) and explore additional novel
+variations within this framework. Using MPNNs we demonstrate state of the art
+results on an important molecular property prediction benchmark; these results
+are strong enough that we believe future work should focus on datasets with
+larger molecules or more accurate ground truth labels.","Gilmer, Justin and Schoenholz, Samuel S and Riley, Patrick F and Vinyals, Oriol and Dahl, George E",2017,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,rgcl,\cite{rgcl},Let Invariant Rationale Discovery Inspire Graph Contrastive Learning,http://arxiv.org/abs/2206.07869v1,"Leading graph contrastive learning (GCL) methods perform graph augmentations
+in two fashions: (1) randomly corrupting the anchor graph, which could cause
+the loss of semantic information, or (2) using domain knowledge to maintain
+salient features, which undermines the generalization to other domains. Taking
+an invariance look at GCL, we argue that a high-performing augmentation should
+preserve the salient semantics of anchor graphs regarding
+instance-discrimination. To this end, we relate GCL with invariant rationale
+discovery, and propose a new framework, Rationale-aware Graph Contrastive
+Learning (RGCL). Specifically, without supervision signals, RGCL uses a
+rationale generator to reveal salient features about graph
+instance-discrimination as the rationale, and then creates rationale-aware
+views for contrastive learning. This rationale-aware pre-training scheme endows
+the backbone model with the powerful representation ability, further
+facilitating the fine-tuning on downstream tasks. On MNIST-Superpixel and MUTAG
+datasets, visual inspections on the discovered rationales showcase that the
+rationale generator successfully captures the salient features (i.e.
+distinguishing semantic nodes in graphs). On biochemical molecule and social
+network benchmark datasets, the state-of-the-art performance of RGCL
+demonstrates the effectiveness of rationale-aware views for contrastive
+learning. Our codes are available at https://github.com/lsh0520/RGCL.","Li, Sihang and Wang, Xiang and Zhang, An and Wu, Yingxin and He, Xiangnan and Chua, Tat-Seng",2022,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,simsgt,\cite{simsgt},Rethinking Tokenizer and Decoder in Masked Graph Modeling for Molecules,http://arxiv.org/abs/2310.14753v2,"Masked graph modeling excels in the self-supervised representation learning
+of molecular graphs. Scrutinizing previous studies, we can reveal a common
+scheme consisting of three key components: (1) graph tokenizer, which breaks a
+molecular graph into smaller fragments (i.e., subgraphs) and converts them into
+tokens; (2) graph masking, which corrupts the graph with masks; (3) graph
+autoencoder, which first applies an encoder on the masked graph to generate the
+representations, and then employs a decoder on the representations to recover
+the tokens of the original graph. However, the previous MGM studies focus
+extensively on graph masking and encoder, while there is limited understanding
+of tokenizer and decoder. To bridge the gap, we first summarize popular
+molecule tokenizers at the granularity of node, edge, motif, and Graph Neural
+Networks (GNNs), and then examine their roles as the MGM's reconstruction
+targets. Further, we explore the potential of adopting an expressive decoder in
+MGM. Our results show that a subgraph-level tokenizer and a sufficiently
+expressive decoder with remask decoding have a large impact on the encoder's
+representation learning. Finally, we propose a novel MGM method SimSGT,
+featuring a Simple GNN-based Tokenizer (SGT) and an effective decoding
+strategy. We empirically validate that our method outperforms the existing
+molecule self-supervised learning methods. Our codes and checkpoints are
+available at https://github.com/syr-cn/SimSGT.","Liu, Zhiyuan and Shi, Yaorui and Zhang, An and Zhang, Enzhi and Kawaguchi, Kenji and Wang, Xiang and Chua, Tat-Seng",2023,,,,Advances in Neural Information Processing Systems
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,unimol,\cite{unimol},Uni-Mol: A Universal 3D Molecular Representation Learning Framework,,,"Zhou, Gengmo and Gao, Zhifeng and Ding, Qiankun and Zheng, Hang and Xu, Hongteng and Wei, Zhewei and Zhang, Linfeng and Ke, Guolin",2023,,https://openreview.net/forum?id=6K2RM6wVqKu,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,gnn-chemistry-applications,\cite{gnn-chemistry-applications},Graph neural networks as a potential tool in improving virtual screening programs,,,"Alves, Luiz Anastacio and Ferreira, Natiele Carla da Silva and Maricato, Victor and Alberto, Anael Viana Pinto and Dias, Evellyn Araujo and Jose Aguiar Coelho, Nt",2022,,,,Frontiers in Chemistry
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,smiles,\cite{smiles},"SMILES, a chemical language and information system. 1. Introduction to methodology and encoding rules",,,"Weininger, David",1988,,,,Journal of chemical information and computer sciences
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,moleculargpt,\cite{moleculargpt},"MolecularGPT: Open Large Language Model (LLM) for Few-Shot Molecular
+  Property Prediction",http://arxiv.org/abs/2406.12950v2,"Molecular property prediction (MPP) is a fundamental and crucial task in drug
+discovery. However, prior methods are limited by the requirement for a large
+number of labeled molecules and their restricted ability to generalize for
+unseen and new tasks, both of which are essential for real-world applications.
+To address these challenges, we present MolecularGPT for few-shot MPP. From a
+perspective on instruction tuning, we fine-tune large language models (LLMs)
+based on curated molecular instructions spanning over 1000 property prediction
+tasks. This enables building a versatile and specialized LLM that can be
+adapted to novel MPP tasks without any fine-tuning through zero- and few-shot
+in-context learning (ICL). MolecularGPT exhibits competitive in-context
+reasoning capabilities across 10 downstream evaluation datasets, setting new
+benchmarks for few-shot molecular prediction tasks. More importantly, with just
+two-shot examples, MolecularGPT can outperform standard supervised graph neural
+network methods on 4 out of 7 datasets. It also excels state-of-the-art LLM
+baselines by up to 15.7% increase on classification accuracy and decrease of
+17.9 on regression metrics (e.g., RMSE) under zero-shot. This study
+demonstrates the potential of LLMs as effective few-shot molecular property
+predictors. The code is available at https://github.com/NYUSHCS/MolecularGPT.","Liu, Yuyan and Ding, Sirui and Zhou, Sheng and Fan, Wenqi and Tan, Qiaoyu",2024,,,,arXiv preprint arXiv:2406.12950
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,biot5-plus,\cite{biot5-plus},Biot5+: Towards generalized biological understanding with iupac integration and multi-task tuning,,,"Pei, Qizhi and Wu, Lijun and Gao, Kaiyuan and Liang, Xiaozhuan and Fang, Yin and Zhu, Jinhua and Xie, Shufang and Qin, Tao and Yan, Rui",2024,,,,arXiv preprint arXiv:2402.17810
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,scilitllm,\cite{scilitllm},SciLitLLM: How to Adapt LLMs for Scientific Literature Understanding,http://arxiv.org/abs/2408.15545v5,"Scientific literature understanding is crucial for extracting targeted
+information and garnering insights, thereby significantly advancing scientific
+discovery. Despite the remarkable success of Large Language Models (LLMs), they
+face challenges in scientific literature understanding, primarily due to (1) a
+lack of scientific knowledge and (2) unfamiliarity with specialized scientific
+tasks.
+  To develop an LLM specialized in scientific literature understanding, we
+propose a hybrid strategy that integrates continual pre-training (CPT) and
+supervised fine-tuning (SFT), to simultaneously infuse scientific domain
+knowledge and enhance instruction-following capabilities for domain-specific
+tasks.cIn this process, we identify two key challenges: (1) constructing
+high-quality CPT corpora, and (2) generating diverse SFT instructions. We
+address these challenges through a meticulous pipeline, including PDF text
+extraction, parsing content error correction, quality filtering, and synthetic
+instruction creation. Applying this strategy, we present a suite of LLMs:
+SciLitLLM, specialized in scientific literature understanding. These models
+demonstrate promising performance on scientific literature understanding
+benchmarks.
+  Our contributions are threefold: (1) We present an effective framework that
+integrates CPT and SFT to adapt LLMs to scientific literature understanding,
+which can also be easily adapted to other domains. (2) We propose an LLM-based
+synthesis method to generate diverse and high-quality scientific instructions,
+resulting in a new instruction set -- SciLitIns -- for supervised fine-tuning
+in less-represented scientific domains. (3) SciLitLLM achieves promising
+performance improvements on scientific literature understanding benchmarks.","Li, Sihang and Huang, Jin and Zhuang, Jiaxi and Shi, Yaorui and Cai, Xiaochen and Xu, Mingjun and Wang, Xiang and Zhang, Linfeng and Ke, Guolin and Cai, Hengxing",2024,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,reactxt,\cite{reactxt},"ReactXT: Understanding Molecular ""Reaction-ship"" via
+  Reaction-Contextualized Molecule-Text Pretraining",http://arxiv.org/abs/2405.14225v1,"Molecule-text modeling, which aims to facilitate molecule-relevant tasks with
+a textual interface and textual knowledge, is an emerging research direction.
+Beyond single molecules, studying reaction-text modeling holds promise for
+helping the synthesis of new materials and drugs. However, previous works
+mostly neglect reaction-text modeling: they primarily focus on modeling
+individual molecule-text pairs or learning chemical reactions without texts in
+context. Additionally, one key task of reaction-text modeling -- experimental
+procedure prediction -- is less explored due to the absence of an open-source
+dataset. The task is to predict step-by-step actions of conducting chemical
+experiments and is crucial to automating chemical synthesis. To resolve the
+challenges above, we propose a new pretraining method, ReactXT, for
+reaction-text modeling, and a new dataset, OpenExp, for experimental procedure
+prediction. Specifically, ReactXT features three types of input contexts to
+incrementally pretrain LMs. Each of the three input contexts corresponds to a
+pretraining task to improve the text-based understanding of either reactions or
+single molecules. ReactXT demonstrates consistent improvements in experimental
+procedure prediction and molecule captioning and offers competitive results in
+retrosynthesis. Our code is available at https://github.com/syr-cn/ReactXT.","Liu, Zhiyuan and Shi, Yaorui and Zhang, An and Li, Sihang and Zhang, Enzhi and Wang, Xiang and Kawaguchi, Kenji and Chua, Tat-Seng",2024,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,molca,\cite{molca},"MolCA: Molecular Graph-Language Modeling with Cross-Modal Projector and
+  Uni-Modal Adapter",http://arxiv.org/abs/2310.12798v4,"Language Models (LMs) have demonstrated impressive molecule understanding
+ability on various 1D text-related tasks. However, they inherently lack 2D
+graph perception - a critical ability of human professionals in comprehending
+molecules' topological structures. To bridge this gap, we propose MolCA:
+Molecular Graph-Language Modeling with Cross-Modal Projector and Uni-Modal
+Adapter. MolCA enables an LM (e.g., Galactica) to understand both text- and
+graph-based molecular contents via the cross-modal projector. Specifically, the
+cross-modal projector is implemented as a Q-Former to connect a graph encoder's
+representation space and an LM's text space. Further, MolCA employs a uni-modal
+adapter (i.e., LoRA) for the LM's efficient adaptation to downstream tasks.
+Unlike previous studies that couple an LM with a graph encoder via cross-modal
+contrastive learning, MolCA retains the LM's ability of open-ended text
+generation and augments it with 2D graph information. To showcase its
+effectiveness, we extensively benchmark MolCA on tasks of molecule captioning,
+IUPAC name prediction, and molecule-text retrieval, on which MolCA
+significantly outperforms the baselines. Our codes and checkpoints can be found
+at https://github.com/acharkq/MolCA.","Liu, Zhiyuan and Li, Sihang and Luo, Yanchen and Fei, Hao and Cao, Yixin and Kawaguchi, Kenji and Wang, Xiang and Chua, Tat-Seng",2023,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,mol-llm,\cite{mol-llm},Mol-LLM: Multimodal Generalist Molecular LLM with Improved Graph Utilization,,,"Lee, Chanhui and Ko, Hanbum and Song, Yuheon and Jeong, YongJun and Hormazabal, Rodrigo and Han, Sehui and Bae, Kyunghoon and Lim, Sungbin and Kim, Sungwoong",2025,,,,arXiv preprint arXiv:2502.02810
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,chemvlm,\cite{chemvlm},"ChemVLM: Exploring the Power of Multimodal Large Language Models in
+  Chemistry Area",http://arxiv.org/abs/2408.07246v5,"Large Language Models (LLMs) have achieved remarkable success and have been
+applied across various scientific fields, including chemistry. However, many
+chemical tasks require the processing of visual information, which cannot be
+successfully handled by existing chemical LLMs. This brings a growing need for
+models capable of integrating multimodal information in the chemical domain. In
+this paper, we introduce \textbf{ChemVLM}, an open-source chemical multimodal
+large language model specifically designed for chemical applications. ChemVLM
+is trained on a carefully curated bilingual multimodal dataset that enhances
+its ability to understand both textual and visual chemical information,
+including molecular structures, reactions, and chemistry examination questions.
+We develop three datasets for comprehensive evaluation, tailored to Chemical
+Optical Character Recognition (OCR), Multimodal Chemical Reasoning (MMCR), and
+Multimodal Molecule Understanding tasks. We benchmark ChemVLM against a range
+of open-source and proprietary multimodal large language models on various
+tasks. Experimental results demonstrate that ChemVLM achieves competitive
+performance across all evaluated tasks. Our model can be found at
+https://huggingface.co/AI4Chem/ChemVLM-26B.","Li, Junxian and Zhang, Di and Wang, Xunzhi and Hao, Zeying and Lei, Jingdi and Tan, Qian and Zhou, Cai and Liu, Wei and Yang, Yaotian and Xiong, Xinrui and others",2025,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,instructmol,\cite{instructmol},"InstructMol: Multi-Modal Integration for Building a Versatile and
+  Reliable Molecular Assistant in Drug Discovery",http://arxiv.org/abs/2311.16208v2,"The rapid evolution of artificial intelligence in drug discovery encounters
+challenges with generalization and extensive training, yet Large Language
+Models (LLMs) offer promise in reshaping interactions with complex molecular
+data. Our novel contribution, InstructMol, a multi-modal LLM, effectively
+aligns molecular structures with natural language via an instruction-tuning
+approach, utilizing a two-stage training strategy that adeptly combines limited
+domain-specific data with molecular and textual information. InstructMol
+showcases substantial performance improvements in drug discovery-related
+molecular tasks, surpassing leading LLMs and significantly reducing the gap
+with specialized models, thereby establishing a robust foundation for a
+versatile and dependable drug discovery assistant.","Cao, He and Liu, Zijing and Lu, Xingyu and Yao, Yuan and Li, Yu",2025,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,chemcrow,\cite{chemcrow},Augmenting large language models with chemistry tools,,,"M. Bran, Andres and Cox, Sam and Schilter, Oliver and Baldassari, Carlo and White, Andrew D and Schwaller, Philippe",2024,,,,Nature Machine Intelligence
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,molt5,\cite{molt5},Translation between Molecules and Natural Language,http://arxiv.org/abs/2204.11817v3,"We present $\textbf{MolT5}$ $-$ a self-supervised learning framework for
+pretraining models on a vast amount of unlabeled natural language text and
+molecule strings. $\textbf{MolT5}$ allows for new, useful, and challenging
+analogs of traditional vision-language tasks, such as molecule captioning and
+text-based de novo molecule generation (altogether: translation between
+molecules and language), which we explore for the first time. Since
+$\textbf{MolT5}$ pretrains models on single-modal data, it helps overcome the
+chemistry domain shortcoming of data scarcity. Furthermore, we consider several
+metrics, including a new cross-modal embedding-based metric, to evaluate the
+tasks of molecule captioning and text-based molecule generation. Our results
+show that $\textbf{MolT5}$-based models are able to generate outputs, both
+molecules and captions, which in many cases are high quality.","Edwards, Carl and Lai, Tuan and Ros, Kevin and Honke, Garrett and Cho, Kyunghyun and Ji, Heng",2022,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,relm,\cite{relm},"ReLM: Leveraging Language Models for Enhanced Chemical Reaction
+  Prediction",http://arxiv.org/abs/2310.13590v1,"Predicting chemical reactions, a fundamental challenge in chemistry, involves
+forecasting the resulting products from a given reaction process. Conventional
+techniques, notably those employing Graph Neural Networks (GNNs), are often
+limited by insufficient training data and their inability to utilize textual
+information, undermining their applicability in real-world applications. In
+this work, we propose ReLM, a novel framework that leverages the chemical
+knowledge encoded in language models (LMs) to assist GNNs, thereby enhancing
+the accuracy of real-world chemical reaction predictions. To further enhance
+the model's robustness and interpretability, we incorporate the confidence
+score strategy, enabling the LMs to self-assess the reliability of their
+predictions. Our experimental results demonstrate that ReLM improves the
+performance of state-of-the-art GNN-based methods across various chemical
+reaction datasets, especially in out-of-distribution settings. Codes are
+available at https://github.com/syr-cn/ReLM.","Shi, Yaorui and Zhang, An and Zhang, Enzhi and Liu, Zhiyuan and Wang, Xiang",2023,,,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,cot,\cite{cot},Chain-of-Thought Prompting Elicits Reasoning in Large Language Models,http://arxiv.org/abs/2201.11903v6,"We explore how generating a chain of thought -- a series of intermediate
+reasoning steps -- significantly improves the ability of large language models
+to perform complex reasoning. In particular, we show how such reasoning
+abilities emerge naturally in sufficiently large language models via a simple
+method called chain of thought prompting, where a few chain of thought
+demonstrations are provided as exemplars in prompting. Experiments on three
+large language models show that chain of thought prompting improves performance
+on a range of arithmetic, commonsense, and symbolic reasoning tasks. The
+empirical gains can be striking. For instance, prompting a 540B-parameter
+language model with just eight chain of thought exemplars achieves state of the
+art accuracy on the GSM8K benchmark of math word problems, surpassing even
+finetuned GPT-3 with a verifier.","Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and ichter, brian and Xia, Fei and Chi, Ed and Le, Quoc V and Zhou, Denny",2022,,https://proceedings.neurips.cc/paper_files/paper/2022/file/9d5609613524ecf4f15af0f7b31abca4-Paper-Conference.pdf,,
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,openai-o1,\cite{openai-o1},OpenAI o1 System Card,http://arxiv.org/abs/2412.16720v1,"The o1 model series is trained with large-scale reinforcement learning to
+reason using chain of thought. These advanced reasoning capabilities provide
+new avenues for improving the safety and robustness of our models. In
+particular, our models can reason about our safety policies in context when
+responding to potentially unsafe prompts, through deliberative alignment. This
+leads to state-of-the-art performance on certain benchmarks for risks such as
+generating illicit advice, choosing stereotyped responses, and succumbing to
+known jailbreaks. Training models to incorporate a chain of thought before
+answering has the potential to unlock substantial benefits, while also
+increasing potential risks that stem from heightened intelligence. Our results
+underscore the need for building robust alignment methods, extensively
+stress-testing their efficacy, and maintaining meticulous risk management
+protocols. This report outlines the safety work carried out for the OpenAI o1
+and OpenAI o1-mini models, including safety evaluations, external red teaming,
+and Preparedness Framework evaluations.","Jaech, Aaron and Kalai, Adam and Lerer, Adam and Richardson, Adam and El-Kishky, Ahmed and Low, Aiden and Helyar, Alec and Madry, Aleksander and Beutel, Alex and Carney, Alex and others",2024,,,,arXiv preprint arXiv:2412.16720
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,gemini,\cite{gemini},Gemini: A Family of Highly Capable Multimodal Models,http://arxiv.org/abs/2312.11805v5,"This report introduces a new family of multimodal models, Gemini, that
+exhibit remarkable capabilities across image, audio, video, and text
+understanding. The Gemini family consists of Ultra, Pro, and Nano sizes,
+suitable for applications ranging from complex reasoning tasks to on-device
+memory-constrained use-cases. Evaluation on a broad range of benchmarks shows
+that our most-capable Gemini Ultra model advances the state of the art in 30 of
+32 of these benchmarks - notably being the first model to achieve human-expert
+performance on the well-studied exam benchmark MMLU, and improving the state of
+the art in every one of the 20 multimodal benchmarks we examined. We believe
+that the new capabilities of the Gemini family in cross-modal reasoning and
+language understanding will enable a wide variety of use cases. We discuss our
+approach toward post-training and deploying Gemini models responsibly to users
+through services including Gemini, Gemini Advanced, Google AI Studio, and Cloud
+Vertex AI.","Team, Gemini and Anil, Rohan and Borgeaud, Sebastian and Alayrac, Jean-Baptiste and Yu, Jiahui and Soricut, Radu and Schalkwyk, Johan and Dai, Andrew M and Hauth, Anja and Millican, Katie and others",2023,,,,arXiv preprint arXiv:2312.11805
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,claude,\cite{claude},AI Governance and Accountability: An Analysis of Anthropic's Claude,http://arxiv.org/abs/2407.01557v1,"As AI systems become increasingly prevalent and impactful, the need for
+effective AI governance and accountability measures is paramount. This paper
+examines the AI governance landscape, focusing on Anthropic's Claude, a
+foundational AI model. We analyze Claude through the lens of the NIST AI Risk
+Management Framework and the EU AI Act, identifying potential threats and
+proposing mitigation strategies. The paper highlights the importance of
+transparency, rigorous benchmarking, and comprehensive data handling processes
+in ensuring the responsible development and deployment of AI systems. We
+conclude by discussing the social impact of AI governance and the ethical
+considerations surrounding AI accountability.","Priyanshu, Aman and Maurya, Yash and Hong, Zuofei",2024,,,,arXiv preprint arXiv:2407.01557
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,ppo,\cite{ppo},Proximal Policy Optimization Algorithms,http://arxiv.org/abs/1707.06347v2,"We propose a new family of policy gradient methods for reinforcement
+learning, which alternate between sampling data through interaction with the
+environment, and optimizing a ""surrogate"" objective function using stochastic
+gradient ascent. Whereas standard policy gradient methods perform one gradient
+update per data sample, we propose a novel objective function that enables
+multiple epochs of minibatch updates. The new methods, which we call proximal
+policy optimization (PPO), have some of the benefits of trust region policy
+optimization (TRPO), but they are much simpler to implement, more general, and
+have better sample complexity (empirically). Our experiments test PPO on a
+collection of benchmark tasks, including simulated robotic locomotion and Atari
+game playing, and we show that PPO outperforms other online policy gradient
+methods, and overall strikes a favorable balance between sample complexity,
+simplicity, and wall-time.","Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg",2017,,,,arXiv preprint arXiv:1707.06347
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,rlhf,\cite{rlhf},Training language models to follow instructions with human feedback,,,"Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and others",2022,,,,Advances in neural information processing systems
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,grpo,\cite{grpo},"DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open
+  Language Models",http://arxiv.org/abs/2402.03300v3,"Mathematical reasoning poses a significant challenge for language models due
+to its complex and structured nature. In this paper, we introduce DeepSeekMath
+7B, which continues pre-training DeepSeek-Coder-Base-v1.5 7B with 120B
+math-related tokens sourced from Common Crawl, together with natural language
+and code data. DeepSeekMath 7B has achieved an impressive score of 51.7% on the
+competition-level MATH benchmark without relying on external toolkits and
+voting techniques, approaching the performance level of Gemini-Ultra and GPT-4.
+Self-consistency over 64 samples from DeepSeekMath 7B achieves 60.9% on MATH.
+The mathematical reasoning capability of DeepSeekMath is attributed to two key
+factors: First, we harness the significant potential of publicly available web
+data through a meticulously engineered data selection pipeline. Second, we
+introduce Group Relative Policy Optimization (GRPO), a variant of Proximal
+Policy Optimization (PPO), that enhances mathematical reasoning abilities while
+concurrently optimizing the memory usage of PPO.","Shao, Zhihong and Wang, Peiyi and Zhu, Qihao and Xu, Runxin and Song, Junxiao and Bi, Xiao and Zhang, Haowei and Zhang, Mingchuan and Li, YK and Wu, Yang and others",2024,,,,arXiv preprint arXiv:2402.03300
+Reasoning-Enhanced Large Language Models for Molecular Property Prediction,http://arxiv.org/abs/2510.10248v1,rlvr,\cite{rlvr},Reinforcement learning for reasoning in large language models with one training example,,,"Wang, Yiping and Yang, Qing and Zeng, Zhiyuan and Ren, Liliang and Liu, Liyuan and Peng, Baolin and Cheng, Hao and He, Xuehai and Wang, Kuan and Gao, Jianfeng and others",2025,,,,arXiv preprint arXiv:2504.20571

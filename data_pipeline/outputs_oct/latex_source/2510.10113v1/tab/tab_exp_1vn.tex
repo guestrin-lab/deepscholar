@@ -1,0 +1,88 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table*}[tbp]
+\centering
+\footnotesize
+\begin{tabular}{ll|YYYY|YYY}
+\toprule
+\textbf{Eye}           & \textbf{Method}  & \textbf{Control} & \textbf{Fix} & \textbf{Select} & \textbf{Any} & \textbf{Occlusion} & \textbf{Light} & \textbf{Angle} \\
+\midrule
+\multirow{9}{*}{Left}  & Gabor~\cite{daugman2009iris}           & 91.99          & 86.44      & 48.52         & 49.40      & 65.72            & 65.57        & 50.01        \\
+                       & OM~\cite{sun2008ordinal}              & 85.55          & 79.04      & 45.15         & 44.79      & 45.58            & 62.30        & 47.16        \\
+                       & Maxout~\cite{zhang2018deep}          & 97.70          & 93.97      & 76.97         & 76.12      & 77.39            & 81.97        & 79.96        \\
+                       & Maxout-BA~\cite{wei2022towards}       & 98.74          & 95.79      & 82.18         & 81.78      & 89.40            & 88.52        & 85.75        \\
+                       & UE-UGCL~\cite{wei2022towards}         & 99.35          & 97.27      & 89.92         & 88.83      & 93.64            & 96.72        & 93.25        \\
+                       & CM~\cite{wei2022contextual}              & 99.59          & 98.19      & \underline{93.59}         & \underline{92.65}      & \underline{95.41}            & 95.08        & \textbf{96.14}        \\
+                       & ComplexIrisNet~\cite{nguyen2022complex}  & \underline{99.67}          & 97.89      & 92.52         & 91.14      & 93.64            & 96.72        & 95.18        \\
+                       & IR-Norm        & \textbf{99.76}          & \underline{98.26}      & 92.28         & 91.99      & 95.41            & \underline{98.36}        & 94.75        \\
+                       & \textbf{IR-BBox} (ours) & 99.52          & \textbf{98.91}      & \textbf{93.87}         & \textbf{94.39}      & \textbf{98.23}            & \textbf{98.36}        & \underline{95.49}        \\
+\midrule
+\multirow{9}{*}{Right} & Gabor~\cite{daugman2009iris}           & 86.80          & 80.41      & 45.10         & 45.63      & 71.43            & 59.21        & 46.64        \\
+                       & OM~\cite{sun2008ordinal}              & 84.01          & 77.20      & 44.06         & 44.77      & 62.86            & 55.26        & 46.26        \\
+                       & Maxout~\cite{zhang2018deep}          & 93.72          & 89.91      & 70.41         & 70.34      & 86.26            & 73.68        & 72.85        \\
+                       & Maxout-BA~\cite{wei2022towards}       & 95.78          & 92.21      & 76.49         & 75.65      & 88.71            & 72.37        & 79.08        \\
+                       & UE-UGCL~\cite{wei2022towards}         & 98.21          & 95.60      & 86.58         & 86.41      & 95.10            & 76.32        & 89.28        \\
+                       & CM~\cite{wei2022contextual}              & 99.18          & 97.49      & \underline{91.90}         & \underline{91.47}      & 96.60            & \underline{97.37}        & \underline{94.28}        \\
+                       & ComplexIrisNet~\cite{nguyen2022complex}  & \underline{99.30}          & 97.07      & 91.00         & 90.04      & 96.46            & 92.11        & 94.00        \\
+                       & IR-Norm        & 99.25          & \underline{97.76}      & 91.55         & 91.43      & \underline{98.50}            & 90.79        & 93.86        \\
+                       & \textbf{IR-BBox} (ours) & \textbf{99.51}          & \textbf{98.86}      & \textbf{94.44}         & \textbf{94.17}    & \textbf{99.57}            & \textbf{100.00}       & \textbf{94.44}        \\
+\midrule
+\multirow{9}{*}{Dual}  & Gabor~\cite{daugman2009iris}           & 76.56          & 73.23      & -               & 30.57      & 58.06            & 43.08        & 40.75        \\
+                       & OM~\cite{sun2008ordinal}              & 64.68          & 61.34      & -               & 22.83      & 46.93            & 16.92        & 32.42        \\
+                       & Maxout~\cite{zhang2018deep}          & 90.92          & 88.55      & -               & 59.10      & 78.60            & 66.15        & 70.32        \\
+                       & Maxout-BA~\cite{wei2022towards}       & 93.48          & 91.37      & -               & 65.86      & 83.74            & 72.31        & 76.20        \\
+                       & UE-UGCL~\cite{wei2022towards}         & 98.01          & 96.25      & -               & 79.34      & 95.72            & 73.85        & 89.04        \\
+                       & CM~\cite{wei2022contextual}              & 97.97          & 96.54      & -               & \underline{86.03}      & 94.29            & 80.00        & \underline{93.54}        \\
+                       & ComplexIrisNet~\cite{nguyen2022complex}  & \underline{98.49}          & \underline{96.98}      & -               & 84.72      & 94.58            & \underline{86.15}        & 92.94        \\
+                       & IR-Norm        & 98.33          & 96.98      & -               & 85.26      & \underline{96.86}            & 83.08        & 92.30        \\
+                       & \textbf{IR-BBox} (ours) & \textbf{99.03}          & \textbf{98.27}      & -               & \textbf{88.93}    & \textbf{97.48}            & \textbf{98.41}        & \textbf{93.84}       \\
+\bottomrule
+\end{tabular}
+\caption{Identification accuracy ($\uparrow$) of SOTAs and the proposed method on general and factor-specific test protocols.}
+\label{tab:exp-1vn}
+\end{table*}
+
+% \begin{table*}[tbp]
+% \centering
+% \small
+% \begin{tabular}{ll|YYYY|YYY}
+% \toprule
+% \textbf{Eye}           & \textbf{Method}    & \textbf{Control} & \textbf{Fix} & \textbf{Select} & \textbf{Any} & \textbf{Occlusion} & \textbf{Pupil} & \textbf{Angle} \\
+% \midrule
+% \multirow{9}{*}{Left}  & Gabor~\cite{daugman2009iris}              & 81.31          & 68.00      & 40.78         & 40.85      & 33.58            & 40.29           & 42.33        \\
+%                        & OM~\cite{sun2008ordinal}                 & 73.55          & 59.72      & 34.48         & 33.14      & 26.77            & 23.88           & 35.64        \\
+%                        & Maxout~\cite{zhang2018deep}             & 90.69          & 78.06      & 68.93         & 67.88      & 49.24            & 56.71           & 72.34        \\
+%                        & Maxout-BA~\cite{wei2022towards}          & 91.45          & 78.55      & 73.42         & 72.08      & 49.74            & 55.22           & 77.04        \\
+%                        & UE-UGCL~\cite{wei2022towards}            & 92.15          & 80.62      & 80.01         & 78.67      & 57.07            & 61.19           & 83.34        \\
+%                        & CM~\cite{wei2022contextual}                 & 92.44          & 81.08      & 83.52         & 82.42      & 57.32            & 61.19           & 86.33        \\
+%                        & ComplexIrisNet~\cite{nguyen2022complex}     & 92.42          & 80.78      & 82.96         & 80.93      & 57.07            & 62.69           & 85.66        \\
+%                        & IR-Norm          & 92.70          & 77.43      & 78.65         & 78.75      & 54.82            & 53.65           & 85.37        \\
+%                        & IR-BBox   (ours) & 92.93          & 78.66      & 80.55         & 81.87      & 57.08            & 54.87           & 85.89        \\
+% \midrule
+% \multirow{9}{*}{Right} & Gabor~\cite{daugman2009iris}              & 83.73          & 67.34      & 37.89         & 38.85      & 47.28            & 37.97           & 41.18        \\
+%                        & OM~\cite{sun2008ordinal}                 & 76.31          & 60.32      & 32.92         & 33.84      & 41.40            & 25.31           & 36.11        \\
+%                        & Maxout~\cite{zhang2018deep}             & 91.44          & 76.04      & 64.27         & 64.32      & 61.19            & 45.56           & 67.44        \\
+%                        & Maxout-BA~\cite{wei2022towards}          & 92.88          & 77.58      & 68.85         & 68.89      & 62.44            & 46.83           & 72.39        \\
+%                        & UE-UGCL~\cite{wei2022towards}            & 95.89          & 81.21      & 79.54         & 79.40      & 71.04            & 48.10           & 83.15        \\
+%                        & CM~\cite{wei2022contextual}                 & 95.98          & 81.63      & 84.14         & 83.84      & 72.62            & 51.90           & 87.76        \\
+%                        & ComplexIrisNet~\cite{nguyen2022complex}     & 96.17          & 82.11      & 84.27         & 83.07      & 73.08            & 50.63           & 87.66        \\
+%                        & IR-Norm          & 97.09          & 79.24      & 81.85         & 81.40      & 71.01            & 39.70           & 86.16        \\
+%                        & IR-BBox (ours)   & 97.86          & 81.42      & 86.60         & 86.48      & 71.51            & 48.52           & 88.67        \\
+% \midrule
+% \multirow{9}{*}{Dual}  & Gabor~\cite{daugman2009iris}              & 71.80          & 64.02      & -               & 30.56      & 44.77            & 43.07           & 40.75        \\
+%                        & OM~\cite{sun2008ordinal}                 & 60.66          & 53.63      & -               & 22.83      & 36.19            & 16.92           & 32.42        \\
+%                        & Maxout~\cite{zhang2018deep}             & 85.28          & 77.44      & -               & 59.11      & 60.61            & 66.15           & 70.33        \\
+%                        & Maxout-BA~\cite{wei2022towards}          & 87.66          & 79.89      & -               & 65.86      & 64.57            & 72.30           & 76.26        \\
+%                        & UE-UGCL~\cite{wei2022towards}            & 91.91          & 84.16      & -               & 79.33      & 73.81            & 73.84           & 89.04        \\
+%                        & CM~\cite{wei2022contextual}                 & 91.88          & 84.42      & -               & 86.05      & 72.72            & 80              & 93.54        \\
+%                        & ComplexIrisNet~\cite{nguyen2022complex}     & 92.37          & 84.80      & -               & 84.72      & 72.94            & 86.15           & 92.94        \\
+%                        & IR-Norm          & 92.37          & 78.75      & -               & 81.08      & 67.00            & 75.38           & 91.87        \\
+%                        & IR-BBox (ours)   & 93.27          & 81.40      & -               & 87.91      & 69.08            & 95.38           & 93.71       \\
+% \bottomrule
+% \end{tabular}
+% \caption{Identification performance of SOTAs and the proposed method on variation-based protocols. Results are reported in rank-1 accuracy ($\uparrow$).{\color{blue} Results to be updated!}}
+% \label{tab:off-axis-identification}
+% \end{table*}
+
+
+

@@ -1,0 +1,110 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs} %
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{tablefootnote}
+
+\usepackage[hidelinks]{hyperref}
+
+
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[flushleft]{threeparttable}
+\usepackage{MnSymbol}
+\usepackage{lipsum}
+
+\usepackage{bigstrut}
+\usepackage{colortbl}
+\usepackage{wrapfig}
+
+\captionsetup[table]{font=small,skip=2pt}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep}
+\setlist[enumerate]{noitemsep}
+
+
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e} %
+
+\usepackage[capitalize,noabbrev]{cleveref}
+
+
+
+
+ 
+
+
+
+
+\input{dfn}
+
+
+\let\citep\cite
+\let\citet\cite
+\begin{document}
+
+\title{Identifying Group Anchors in Real-World\\Group Interactions Under Label Scarcity}
+
+\author{
+Fanchen Bu\textsuperscript{1},
+Geon Lee\textsuperscript{2},
+Minyoung Choe\textsuperscript{2}, and
+Kijung Shin\textsuperscript{1,2}\\
+\textsuperscript{1}School of Electrical Engineering and
+\textsuperscript{2}Kim Jaechul Graduate School of AI, KAIST, Republic of Korea\\
+\{boqvezen97, geonlee0325, minyoung.choe, kijungs\}@kaist.ac.kr
+}
+\maketitle
+
+\nocite{onlineSuppl}
+\input{000abstract}
+
+\input{010intro}
+\input{020prelim}
+\input{030relwk}
+\input{040probl}
+\input{041obsvt}
+\input{050methd}
+\input{060exprm}
+\input{070concl}
+
+\section*{Acknowledgments}
+{\small This work was partly supported by the National Research Foundation of Korea (NRF) grant funded by the Korea government (MSIT) (No. RS-2024-00406985, 40\%). This work was partly supported by Institute of Information \& Communications Technology Planning \& Evaluation (IITP) grant funded by the Korea government (MSIT) (No. RS-2022-II220157, Robust, Fair, Extensible Data-Centric Continual Learning, 50\%) (No. RS-2019-II190075, Artificial Intelligence Graduate School Program (KAIST), 10\%).
+The authors give thanks to Yijia Zheng (University of Amsterdam) for valuable discussions and for sharing the source code of CoNHD.
+}
+
+\normalem
+\bibliographystyle{IEEEtran}
+\bibliography{ref}
+
+
+\clearpage
+\onecolumn
+
+
+\appendices
+\input{100appendix}
+
+
+\end{document}

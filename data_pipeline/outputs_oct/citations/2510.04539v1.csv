@@ -1,0 +1,392 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,ho2020denoising,\cite{ho2020denoising},Denoising Diffusion Probabilistic Models,http://arxiv.org/abs/2006.11239v2,"We present high quality image synthesis results using diffusion probabilistic
+models, a class of latent variable models inspired by considerations from
+nonequilibrium thermodynamics. Our best results are obtained by training on a
+weighted variational bound designed according to a novel connection between
+diffusion probabilistic models and denoising score matching with Langevin
+dynamics, and our models naturally admit a progressive lossy decompression
+scheme that can be interpreted as a generalization of autoregressive decoding.
+On the unconditional CIFAR10 dataset, we obtain an Inception score of 9.46 and
+a state-of-the-art FID score of 3.17. On 256x256 LSUN, we obtain sample quality
+similar to ProgressiveGAN. Our implementation is available at
+https://github.com/hojonathanho/diffusion","Ho, Jonathan and Jain, Ajay and Abbeel, Pieter",2020,,,,Advances in neural information processing systems
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,rombach2022high,\cite{rombach2022high},High-resolution image synthesis with latent diffusion models,,,"Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Bj{\""o}rn",2022,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,chen2023fantasia3d,\cite{chen2023fantasia3d},"Fantasia3D: Disentangling Geometry and Appearance for High-quality
+  Text-to-3D Content Creation",http://arxiv.org/abs/2303.13873v3,"Automatic 3D content creation has achieved rapid progress recently due to the
+availability of pre-trained, large language models and image diffusion models,
+forming the emerging topic of text-to-3D content creation. Existing text-to-3D
+methods commonly use implicit scene representations, which couple the geometry
+and appearance via volume rendering and are suboptimal in terms of recovering
+finer geometries and achieving photorealistic rendering; consequently, they are
+less effective for generating high-quality 3D assets. In this work, we propose
+a new method of Fantasia3D for high-quality text-to-3D content creation. Key to
+Fantasia3D is the disentangled modeling and learning of geometry and
+appearance. For geometry learning, we rely on a hybrid scene representation,
+and propose to encode surface normal extracted from the representation as the
+input of the image diffusion model. For appearance modeling, we introduce the
+spatially varying bidirectional reflectance distribution function (BRDF) into
+the text-to-3D task, and learn the surface material for photorealistic
+rendering of the generated surface. Our disentangled framework is more
+compatible with popular graphics engines, supporting relighting, editing, and
+physical simulation of the generated 3D assets. We conduct thorough experiments
+that show the advantages of our method over existing ones under different
+text-to-3D task settings. Project page and source codes:
+https://fantasia3d.github.io/.","Chen, Rui and Chen, Yongwei and Jiao, Ningxin and Jia, Kui",2023,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,lin2023magic3d,\cite{lin2023magic3d},Magic3D: High-Resolution Text-to-3D Content Creation,http://arxiv.org/abs/2211.10440v2,"DreamFusion has recently demonstrated the utility of a pre-trained
+text-to-image diffusion model to optimize Neural Radiance Fields (NeRF),
+achieving remarkable text-to-3D synthesis results. However, the method has two
+inherent limitations: (a) extremely slow optimization of NeRF and (b)
+low-resolution image space supervision on NeRF, leading to low-quality 3D
+models with a long processing time. In this paper, we address these limitations
+by utilizing a two-stage optimization framework. First, we obtain a coarse
+model using a low-resolution diffusion prior and accelerate with a sparse 3D
+hash grid structure. Using the coarse representation as the initialization, we
+further optimize a textured 3D mesh model with an efficient differentiable
+renderer interacting with a high-resolution latent diffusion model. Our method,
+dubbed Magic3D, can create high quality 3D mesh models in 40 minutes, which is
+2x faster than DreamFusion (reportedly taking 1.5 hours on average), while also
+achieving higher resolution. User studies show 61.7% raters to prefer our
+approach over DreamFusion. Together with the image-conditioned generation
+capabilities, we provide users with new ways to control 3D synthesis, opening
+up new avenues to various creative applications.","Lin, Chen-Hsuan and Gao, Jun and Tang, Luming and Takikawa, Towaki and Zeng, Xiaohui and Huang, Xun and Kreis, Karsten and Fidler, Sanja and Liu, Ming-Yu and Lin, Tsung-Yi",2023,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,metzer2023latent,\cite{metzer2023latent},Latent-NeRF for Shape-Guided Generation of 3D Shapes and Textures,http://arxiv.org/abs/2211.07600v1,"Text-guided image generation has progressed rapidly in recent years,
+inspiring major breakthroughs in text-guided shape generation. Recently, it has
+been shown that using score distillation, one can successfully text-guide a
+NeRF model to generate a 3D object. We adapt the score distillation to the
+publicly available, and computationally efficient, Latent Diffusion Models,
+which apply the entire diffusion process in a compact latent space of a
+pretrained autoencoder. As NeRFs operate in image space, a naive solution for
+guiding them with latent score distillation would require encoding to the
+latent space at each guidance step. Instead, we propose to bring the NeRF to
+the latent space, resulting in a Latent-NeRF. Analyzing our Latent-NeRF, we
+show that while Text-to-3D models can generate impressive results, they are
+inherently unconstrained and may lack the ability to guide or enforce a
+specific 3D structure. To assist and direct the 3D generation, we propose to
+guide our Latent-NeRF using a Sketch-Shape: an abstract geometry that defines
+the coarse structure of the desired object. Then, we present means to integrate
+such a constraint directly into a Latent-NeRF. This unique combination of text
+and shape guidance allows for increased control over the generation process. We
+also show that latent score distillation can be successfully applied directly
+on 3D meshes. This allows for generating high-quality textures on a given
+geometry. Our experiments validate the power of our different forms of guidance
+and the efficiency of using latent rendering. Implementation is available at
+https://github.com/eladrich/latent-nerf","Metzer, Gal and Richardson, Elad and Patashnik, Or and Giryes, Raja and Cohen-Or, Daniel",2023,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,wang2024prolificdreamer,\cite{wang2024prolificdreamer},"ProlificDreamer: High-Fidelity and Diverse Text-to-3D Generation with
+  Variational Score Distillation",http://arxiv.org/abs/2305.16213v2,"Score distillation sampling (SDS) has shown great promise in text-to-3D
+generation by distilling pretrained large-scale text-to-image diffusion models,
+but suffers from over-saturation, over-smoothing, and low-diversity problems.
+In this work, we propose to model the 3D parameter as a random variable instead
+of a constant as in SDS and present variational score distillation (VSD), a
+principled particle-based variational framework to explain and address the
+aforementioned issues in text-to-3D generation. We show that SDS is a special
+case of VSD and leads to poor samples with both small and large CFG weights. In
+comparison, VSD works well with various CFG weights as ancestral sampling from
+diffusion models and simultaneously improves the diversity and sample quality
+with a common CFG weight (i.e., $7.5$). We further present various improvements
+in the design space for text-to-3D such as distillation time schedule and
+density initialization, which are orthogonal to the distillation algorithm yet
+not well explored. Our overall approach, dubbed ProlificDreamer, can generate
+high rendering resolution (i.e., $512\times512$) and high-fidelity NeRF with
+rich structure and complex effects (e.g., smoke and drops). Further,
+initialized from NeRF, meshes fine-tuned by VSD are meticulously detailed and
+photo-realistic. Project page and codes:
+https://ml.cs.tsinghua.edu.cn/prolificdreamer/","Wang, Zhengyi and Lu, Cheng and Wang, Yikai and Bao, Fan and Li, Chongxuan and Su, Hang and Zhu, Jun",2024,,,,Advances in Neural Information Processing Systems
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,xu2024bayesian,\cite{xu2024bayesian},Bayesian Diffusion Models for 3D Shape Reconstruction,http://arxiv.org/abs/2403.06973v2,"We present Bayesian Diffusion Models (BDM), a prediction algorithm that
+performs effective Bayesian inference by tightly coupling the top-down (prior)
+information with the bottom-up (data-driven) procedure via joint diffusion
+processes. We show the effectiveness of BDM on the 3D shape reconstruction
+task. Compared to prototypical deep learning data-driven approaches trained on
+paired (supervised) data-labels (e.g. image-point clouds) datasets, our BDM
+brings in rich prior information from standalone labels (e.g. point clouds) to
+improve the bottom-up 3D reconstruction. As opposed to the standard Bayesian
+frameworks where explicit prior and likelihood are required for the inference,
+BDM performs seamless information fusion via coupled diffusion processes with
+learned gradient computation networks. The specialty of our BDM lies in its
+capability to engage the active and effective information exchange and fusion
+of the top-down and bottom-up processes where each itself is a diffusion
+process. We demonstrate state-of-the-art results on both synthetic and
+real-world benchmarks for 3D shape reconstruction.","Xu, Haiyang and Lei, Yu and Chen, Zeyuan and Zhang, Xiang and Zhao, Yue and Wang, Yilin and Tu, Zhuowen",2024,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,srivastava2025lay,\cite{srivastava2025lay},Lay-Your-Scene: Natural Scene Layout Generation with Diffusion Transformers,,,"Srivastava, Divyansh and Zhang, Xiang and Wen, He and Wen, Chenru and Tu, Zhuowen",2025,,,,arXiv preprint arXiv:2505.04718
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,zeng2025yolo,\cite{zeng2025yolo},Yolo-count: Differentiable object counting for text-to-image generation,,,"Zeng, Guanning and Zhang, Xiang and Wang, Zirui and Xu, Haiyang and Chen, Zeyuan and Li, Bingnan and Tu, Zhuowen",2025,,,,arXiv preprint arXiv:2508.00728
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,hu2021lora,\cite{hu2021lora},LoRA: Low-Rank Adaptation of Large Language Models,http://arxiv.org/abs/2106.09685v2,"An important paradigm of natural language processing consists of large-scale
+pre-training on general domain data and adaptation to particular tasks or
+domains. As we pre-train larger models, full fine-tuning, which retrains all
+model parameters, becomes less feasible. Using GPT-3 175B as an example --
+deploying independent instances of fine-tuned models, each with 175B
+parameters, is prohibitively expensive. We propose Low-Rank Adaptation, or
+LoRA, which freezes the pre-trained model weights and injects trainable rank
+decomposition matrices into each layer of the Transformer architecture, greatly
+reducing the number of trainable parameters for downstream tasks. Compared to
+GPT-3 175B fine-tuned with Adam, LoRA can reduce the number of trainable
+parameters by 10,000 times and the GPU memory requirement by 3 times. LoRA
+performs on-par or better than fine-tuning in model quality on RoBERTa,
+DeBERTa, GPT-2, and GPT-3, despite having fewer trainable parameters, a higher
+training throughput, and, unlike adapters, no additional inference latency. We
+also provide an empirical investigation into rank-deficiency in language model
+adaptation, which sheds light on the efficacy of LoRA. We release a package
+that facilitates the integration of LoRA with PyTorch models and provide our
+implementations and model checkpoints for RoBERTa, DeBERTa, and GPT-2 at
+https://github.com/microsoft/LoRA.","Hu, Edward J and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu",2021,,,,arXiv preprint arXiv:2106.09685
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,houlsby2019parameter,\cite{houlsby2019parameter},Parameter-Efficient Transfer Learning for NLP,http://arxiv.org/abs/1902.00751v2,"Fine-tuning large pre-trained models is an effective transfer mechanism in
+NLP. However, in the presence of many downstream tasks, fine-tuning is
+parameter inefficient: an entire new model is required for every task. As an
+alternative, we propose transfer with adapter modules. Adapter modules yield a
+compact and extensible model; they add only a few trainable parameters per
+task, and new tasks can be added without revisiting previous ones. The
+parameters of the original network remain fixed, yielding a high degree of
+parameter sharing. To demonstrate adapter's effectiveness, we transfer the
+recently proposed BERT Transformer model to 26 diverse text classification
+tasks, including the GLUE benchmark. Adapters attain near state-of-the-art
+performance, whilst adding only a few parameters per task. On GLUE, we attain
+within 0.4% of the performance of full fine-tuning, adding only 3.6% parameters
+per task. By contrast, fine-tuning trains 100% of the parameters per task.","Houlsby, Neil and Giurgiu, Andrei and Jastrzebski, Stanislaw and Morrone, Bruna and De Laroussilhe, Quentin and Gesmundo, Andrea and Attariyan, Mona and Gelly, Sylvain",2019,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,li2021prefix,\cite{li2021prefix},Prefix-tuning: Optimizing continuous prompts for generation,,,"Li, Xiang Lisa and Liang, Percy",2021,,,,arXiv preprint arXiv:2101.00190
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,liu2021p,\cite{liu2021p},"P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally
+  Across Scales and Tasks",http://arxiv.org/abs/2110.07602v3,"Prompt tuning, which only tunes continuous prompts with a frozen language
+model, substantially reduces per-task storage and memory usage at training.
+However, in the context of NLU, prior work reveals that prompt tuning does not
+perform well for normal-sized pretrained models. We also find that existing
+methods of prompt tuning cannot handle hard sequence labeling tasks, indicating
+a lack of universality. We present a novel empirical finding that properly
+optimized prompt tuning can be universally effective across a wide range of
+model scales and NLU tasks. It matches the performance of finetuning while
+having only 0.1%-3% tuned parameters. Our method P-Tuning v2 is an
+implementation of Deep Prompt Tuning \cite{li2021prefix,qin2021learning}
+optimized and adapted for NLU. Given the universality and simplicity of
+P-Tuning v2, we believe it can serve as an alternative to finetuning and a
+strong baseline for future research.Our code and data are released at
+https://github.com/THUDM/P-tuning-v2.","Liu, Xiao and Ji, Kaixuan and Fu, Yicheng and Tam, Weng Lam and Du, Zhengxiao and Yang, Zhilin and Tang, Jie",2021,,,,arXiv preprint arXiv:2110.07602
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,avrahami2022blended,\cite{avrahami2022blended},Blended Diffusion for Text-driven Editing of Natural Images,http://arxiv.org/abs/2111.14818v2,"Natural language offers a highly intuitive interface for image editing. In
+this paper, we introduce the first solution for performing local (region-based)
+edits in generic natural images, based on a natural language description along
+with an ROI mask. We achieve our goal by leveraging and combining a pretrained
+language-image model (CLIP), to steer the edit towards a user-provided text
+prompt, with a denoising diffusion probabilistic model (DDPM) to generate
+natural-looking results. To seamlessly fuse the edited region with the
+unchanged parts of the image, we spatially blend noised versions of the input
+image with the local text-guided diffusion latent at a progression of noise
+levels. In addition, we show that adding augmentations to the diffusion process
+mitigates adversarial results. We compare against several baselines and related
+methods, both qualitatively and quantitatively, and show that our method
+outperforms these solutions in terms of overall realism, ability to preserve
+the background and matching the text. Finally, we show several text-driven
+editing applications, including adding a new object to an image,
+removing/replacing/altering existing objects, background replacement, and image
+extrapolation. Code is available at:
+https://omriavrahami.com/blended-diffusion-page/","Avrahami, Omri and Lischinski, Dani and Fried, Ohad",2022,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,hertz2022prompt,\cite{hertz2022prompt},Prompt-to-Prompt Image Editing with Cross Attention Control,http://arxiv.org/abs/2208.01626v1,"Recent large-scale text-driven synthesis models have attracted much attention
+thanks to their remarkable capabilities of generating highly diverse images
+that follow given text prompts. Such text-based synthesis methods are
+particularly appealing to humans who are used to verbally describe their
+intent. Therefore, it is only natural to extend the text-driven image synthesis
+to text-driven image editing. Editing is challenging for these generative
+models, since an innate property of an editing technique is to preserve most of
+the original image, while in the text-based models, even a small modification
+of the text prompt often leads to a completely different outcome.
+State-of-the-art methods mitigate this by requiring the users to provide a
+spatial mask to localize the edit, hence, ignoring the original structure and
+content within the masked region. In this paper, we pursue an intuitive
+prompt-to-prompt editing framework, where the edits are controlled by text
+only. To this end, we analyze a text-conditioned model in depth and observe
+that the cross-attention layers are the key to controlling the relation between
+the spatial layout of the image to each word in the prompt. With this
+observation, we present several applications which monitor the image synthesis
+by editing the textual prompt only. This includes localized editing by
+replacing a word, global editing by adding a specification, and even delicately
+controlling the extent to which a word is reflected in the image. We present
+our results over diverse images and prompts, demonstrating high-quality
+synthesis and fidelity to the edited prompts.","Hertz, Amir and Mokady, Ron and Tenenbaum, Jay and Aberman, Kfir and Pritch, Yael and Cohen-Or, Daniel",2022,,,,arXiv preprint arXiv:2208.01626
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,kawar2023imagic,\cite{kawar2023imagic},Imagic: Text-Based Real Image Editing with Diffusion Models,http://arxiv.org/abs/2210.09276v3,"Text-conditioned image editing has recently attracted considerable interest.
+However, most methods are currently either limited to specific editing types
+(e.g., object overlay, style transfer), or apply to synthetically generated
+images, or require multiple input images of a common object. In this paper we
+demonstrate, for the very first time, the ability to apply complex (e.g.,
+non-rigid) text-guided semantic edits to a single real image. For example, we
+can change the posture and composition of one or multiple objects inside an
+image, while preserving its original characteristics. Our method can make a
+standing dog sit down or jump, cause a bird to spread its wings, etc. -- each
+within its single high-resolution natural image provided by the user. Contrary
+to previous work, our proposed method requires only a single input image and a
+target text (the desired edit). It operates on real images, and does not
+require any additional inputs (such as image masks or additional views of the
+object). Our method, which we call ""Imagic"", leverages a pre-trained
+text-to-image diffusion model for this task. It produces a text embedding that
+aligns with both the input image and the target text, while fine-tuning the
+diffusion model to capture the image-specific appearance. We demonstrate the
+quality and versatility of our method on numerous inputs from various domains,
+showcasing a plethora of high quality complex semantic image edits, all within
+a single unified framework.","Kawar, Bahjat and Zada, Shiran and Lang, Oran and Tov, Omer and Chang, Huiwen and Dekel, Tali and Mosseri, Inbar and Irani, Michal",2023,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,meng2021sdedit,\cite{meng2021sdedit},"SDEdit: Guided Image Synthesis and Editing with Stochastic Differential
+  Equations",http://arxiv.org/abs/2108.01073v2,"Guided image synthesis enables everyday users to create and edit
+photo-realistic images with minimum effort. The key challenge is balancing
+faithfulness to the user input (e.g., hand-drawn colored strokes) and realism
+of the synthesized image. Existing GAN-based methods attempt to achieve such
+balance using either conditional GANs or GAN inversions, which are challenging
+and often require additional training data or loss functions for individual
+applications. To address these issues, we introduce a new image synthesis and
+editing method, Stochastic Differential Editing (SDEdit), based on a diffusion
+model generative prior, which synthesizes realistic images by iteratively
+denoising through a stochastic differential equation (SDE). Given an input
+image with user guide of any type, SDEdit first adds noise to the input, then
+subsequently denoises the resulting image through the SDE prior to increase its
+realism. SDEdit does not require task-specific training or inversions and can
+naturally achieve the balance between realism and faithfulness. SDEdit
+significantly outperforms state-of-the-art GAN-based methods by up to 98.09% on
+realism and 91.72% on overall satisfaction scores, according to a human
+perception study, on multiple tasks, including stroke-based image synthesis and
+editing as well as image compositing.","Meng, Chenlin and He, Yutong and Song, Yang and Song, Jiaming and Wu, Jiajun and Zhu, Jun-Yan and Ermon, Stefano",2021,,,,arXiv preprint arXiv:2108.01073
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,ramesh2022hierarchical,\cite{ramesh2022hierarchical},Hierarchical Text-Conditional Image Generation with CLIP Latents,http://arxiv.org/abs/2204.06125v1,"Contrastive models like CLIP have been shown to learn robust representations
+of images that capture both semantics and style. To leverage these
+representations for image generation, we propose a two-stage model: a prior
+that generates a CLIP image embedding given a text caption, and a decoder that
+generates an image conditioned on the image embedding. We show that explicitly
+generating image representations improves image diversity with minimal loss in
+photorealism and caption similarity. Our decoders conditioned on image
+representations can also produce variations of an image that preserve both its
+semantics and style, while varying the non-essential details absent from the
+image representation. Moreover, the joint embedding space of CLIP enables
+language-guided image manipulations in a zero-shot fashion. We use diffusion
+models for the decoder and experiment with both autoregressive and diffusion
+models for the prior, finding that the latter are computationally more
+efficient and produce higher-quality samples.","Ramesh, Aditya and Dhariwal, Prafulla and Nichol, Alex and Chu, Casey and Chen, Mark",2022,,,,arXiv preprint arXiv:2204.06125
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,brooks2023instructpix2pix,\cite{brooks2023instructpix2pix},InstructPix2Pix: Learning to Follow Image Editing Instructions,http://arxiv.org/abs/2211.09800v2,"We propose a method for editing images from human instructions: given an
+input image and a written instruction that tells the model what to do, our
+model follows these instructions to edit the image. To obtain training data for
+this problem, we combine the knowledge of two large pretrained models -- a
+language model (GPT-3) and a text-to-image model (Stable Diffusion) -- to
+generate a large dataset of image editing examples. Our conditional diffusion
+model, InstructPix2Pix, is trained on our generated data, and generalizes to
+real images and user-written instructions at inference time. Since it performs
+edits in the forward pass and does not require per example fine-tuning or
+inversion, our model edits images quickly, in a matter of seconds. We show
+compelling editing results for a diverse collection of input images and written
+instructions.","Brooks, Tim and Holynski, Aleksander and Efros, Alexei A",2023,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,cao2024mvinpainter,\cite{cao2024mvinpainter},"MVInpainter: Learning Multi-View Consistent Inpainting to Bridge 2D and
+  3D Editing",http://arxiv.org/abs/2408.08000v3,"Novel View Synthesis (NVS) and 3D generation have recently achieved prominent
+improvements. However, these works mainly focus on confined categories or
+synthetic 3D assets, which are discouraged from generalizing to challenging
+in-the-wild scenes and fail to be employed with 2D synthesis directly.
+Moreover, these methods heavily depended on camera poses, limiting their
+real-world applications. To overcome these issues, we propose MVInpainter,
+re-formulating the 3D editing as a multi-view 2D inpainting task. Specifically,
+MVInpainter partially inpaints multi-view images with the reference guidance
+rather than intractably generating an entirely novel view from scratch, which
+largely simplifies the difficulty of in-the-wild NVS and leverages unmasked
+clues instead of explicit pose conditions. To ensure cross-view consistency,
+MVInpainter is enhanced by video priors from motion components and appearance
+guidance from concatenated reference key&value attention. Furthermore,
+MVInpainter incorporates slot attention to aggregate high-level optical flow
+features from unmasked regions to control the camera movement with pose-free
+training and inference. Sufficient scene-level experiments on both
+object-centric and forward-facing datasets verify the effectiveness of
+MVInpainter, including diverse tasks, such as multi-view object removal,
+synthesis, insertion, and replacement. The project page is
+https://ewrfcas.github.io/MVInpainter/.","Cao, Chenjie and Yu, Chaohui and Fu, Yanwei and Wang, Fan and Xue, Xiangyang",2024,,,,arXiv preprint arXiv:2408.08000
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,chen2024proedit,\cite{chen2024proedit},"ProEdit: Simple Progression is All You Need for High-Quality 3D Scene
+  Editing",http://arxiv.org/abs/2411.05006v1,"This paper proposes ProEdit - a simple yet effective framework for
+high-quality 3D scene editing guided by diffusion distillation in a novel
+progressive manner. Inspired by the crucial observation that multi-view
+inconsistency in scene editing is rooted in the diffusion model's large
+feasible output space (FOS), our framework controls the size of FOS and reduces
+inconsistency by decomposing the overall editing task into several subtasks,
+which are then executed progressively on the scene. Within this framework, we
+design a difficulty-aware subtask decomposition scheduler and an adaptive 3D
+Gaussian splatting (3DGS) training strategy, ensuring high quality and
+efficiency in performing each subtask. Extensive evaluation shows that our
+ProEdit achieves state-of-the-art results in various scenes and challenging
+editing tasks, all through a simple framework without any expensive or
+sophisticated add-ons like distillation losses, components, or training
+procedures. Notably, ProEdit also provides a new way to control, preview, and
+select the ""aggressivity"" of editing operation during the editing process.","Chen, Jun-Kun and Wang, Yu-Xiong",2024,,,,arXiv preprint arXiv:2411.05006
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,chen2024gaussianeditor,\cite{chen2024gaussianeditor},"GaussianEditor: Swift and Controllable 3D Editing with Gaussian
+  Splatting",http://arxiv.org/abs/2311.14521v4,"3D editing plays a crucial role in many areas such as gaming and virtual
+reality. Traditional 3D editing methods, which rely on representations like
+meshes and point clouds, often fall short in realistically depicting complex
+scenes. On the other hand, methods based on implicit 3D representations, like
+Neural Radiance Field (NeRF), render complex scenes effectively but suffer from
+slow processing speeds and limited control over specific scene areas. In
+response to these challenges, our paper presents GaussianEditor, an innovative
+and efficient 3D editing algorithm based on Gaussian Splatting (GS), a novel 3D
+representation. GaussianEditor enhances precision and control in editing
+through our proposed Gaussian semantic tracing, which traces the editing target
+throughout the training process. Additionally, we propose Hierarchical Gaussian
+splatting (HGS) to achieve stabilized and fine results under stochastic
+generative guidance from 2D diffusion models. We also develop editing
+strategies for efficient object removal and integration, a challenging task for
+existing methods. Our comprehensive experiments demonstrate GaussianEditor's
+superior control, efficacy, and rapid performance, marking a significant
+advancement in 3D editing. Project Page:
+https://buaacyw.github.io/gaussian-editor/","Chen, Yiwen and Chen, Zilong and Zhang, Chi and Wang, Feng and Yang, Xiaofeng and Wang, Yikai and Cai, Zhongang and Yang, Lei and Liu, Huaping and Lin, Guosheng",2024,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,haque2023instruct,\cite{haque2023instruct},Instruct-nerf2nerf: Editing 3d scenes with instructions,,,"Haque, Ayaan and Tancik, Matthew and Efros, Alexei A and Holynski, Aleksander and Kanazawa, Angjoo",2023,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,dong2024vica,\cite{dong2024vica},Vica-nerf: View-consistency-aware 3d editing of neural radiance fields,,,"Dong, Jiahua and Wang, Yu-Xiong",2024,,,,Advances in Neural Information Processing Systems
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,chen2024consistdreamer,\cite{chen2024consistdreamer},"ConsistDreamer: 3D-Consistent 2D Diffusion for High-Fidelity Scene
+  Editing",http://arxiv.org/abs/2406.09404v1,"This paper proposes ConsistDreamer - a novel framework that lifts 2D
+diffusion models with 3D awareness and 3D consistency, thus enabling
+high-fidelity instruction-guided scene editing. To overcome the fundamental
+limitation of missing 3D consistency in 2D diffusion models, our key insight is
+to introduce three synergetic strategies that augment the input of the 2D
+diffusion model to become 3D-aware and to explicitly enforce 3D consistency
+during the training process. Specifically, we design surrounding views as
+context-rich input for the 2D diffusion model, and generate 3D-consistent,
+structured noise instead of image-independent noise. Moreover, we introduce
+self-supervised consistency-enforcing training within the per-scene editing
+procedure. Extensive evaluation shows that our ConsistDreamer achieves
+state-of-the-art performance for instruction-guided scene editing across
+various scenes and editing instructions, particularly in complicated
+large-scale indoor scenes from ScanNet++, with significantly improved sharpness
+and fine-grained textures. Notably, ConsistDreamer stands as the first work
+capable of successfully editing complex (e.g., plaid/checkered) patterns. Our
+project page is at immortalco.github.io/ConsistDreamer.","Chen, Jun-Kun and Bul{\`o}, Samuel Rota and M{\""u}ller, Norman and Porzi, Lorenzo and Kontschieder, Peter and Wang, Yu-Xiong",2024,,,,
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,mildenhall2021nerf,\cite{mildenhall2021nerf},NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis,http://arxiv.org/abs/2003.08934v2,"We present a method that achieves state-of-the-art results for synthesizing
+novel views of complex scenes by optimizing an underlying continuous volumetric
+scene function using a sparse set of input views. Our algorithm represents a
+scene using a fully-connected (non-convolutional) deep network, whose input is
+a single continuous 5D coordinate (spatial location $(x,y,z)$ and viewing
+direction $(\theta, \phi)$) and whose output is the volume density and
+view-dependent emitted radiance at that spatial location. We synthesize views
+by querying 5D coordinates along camera rays and use classic volume rendering
+techniques to project the output colors and densities into an image. Because
+volume rendering is naturally differentiable, the only input required to
+optimize our representation is a set of images with known camera poses. We
+describe how to effectively optimize neural radiance fields to render
+photorealistic novel views of scenes with complicated geometry and appearance,
+and demonstrate results that outperform prior work on neural rendering and view
+synthesis. View synthesis results are best viewed as videos, so we urge readers
+to view our supplementary video for convincing comparisons.","Mildenhall, Ben and Srinivasan, Pratul P and Tancik, Matthew and Barron, Jonathan T and Ramamoorthi, Ravi and Ng, Ren",2021,,,,Communications of the ACM
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,kerbl20233d,\cite{kerbl20233d},3D Gaussian Splatting for Real-Time Radiance Field Rendering,http://arxiv.org/abs/2308.04079v1,"Radiance Field methods have recently revolutionized novel-view synthesis of
+scenes captured with multiple photos or videos. However, achieving high visual
+quality still requires neural networks that are costly to train and render,
+while recent faster methods inevitably trade off speed for quality. For
+unbounded and complete scenes (rather than isolated objects) and 1080p
+resolution rendering, no current method can achieve real-time display rates. We
+introduce three key elements that allow us to achieve state-of-the-art visual
+quality while maintaining competitive training times and importantly allow
+high-quality real-time (>= 30 fps) novel-view synthesis at 1080p resolution.
+First, starting from sparse points produced during camera calibration, we
+represent the scene with 3D Gaussians that preserve desirable properties of
+continuous volumetric radiance fields for scene optimization while avoiding
+unnecessary computation in empty space; Second, we perform interleaved
+optimization/density control of the 3D Gaussians, notably optimizing
+anisotropic covariance to achieve an accurate representation of the scene;
+Third, we develop a fast visibility-aware rendering algorithm that supports
+anisotropic splatting and both accelerates training and allows realtime
+rendering. We demonstrate state-of-the-art visual quality and real-time
+rendering on several established datasets.","Kerbl, Bernhard and Kopanas, Georgios and Leimk{\""u}hler, Thomas and Drettakis, George",2023,,,,ACM Trans. Graph.
+C3Editor: Achieving Controllable Consistency in 2D Model for 3D Editing,http://arxiv.org/abs/2510.04539v1,chen2024dge,\cite{chen2024dge},DGE: Direct Gaussian 3D Editing by Consistent Multi-view Editing,http://arxiv.org/abs/2404.18929v3,"We consider the problem of editing 3D objects and scenes based on open-ended
+language instructions. A common approach to this problem is to use a 2D image
+generator or editor to guide the 3D editing process, obviating the need for 3D
+data. However, this process is often inefficient due to the need for iterative
+updates of costly 3D representations, such as neural radiance fields, either
+through individual view edits or score distillation sampling. A major
+disadvantage of this approach is the slow convergence caused by aggregating
+inconsistent information across views, as the guidance from 2D models is not
+multi-view consistent. We thus introduce the Direct Gaussian Editor (DGE), a
+method that addresses these issues in two stages. First, we modify a given
+high-quality image editor like InstructPix2Pix to be multi-view consistent. To
+do so, we propose a training-free approach that integrates cues from the 3D
+geometry of the underlying scene. Second, given a multi-view consistent edited
+sequence of images, we directly and efficiently optimize the 3D representation,
+which is based on 3D Gaussian Splatting. Because it avoids incremental and
+iterative edits, DGE is significantly more accurate and efficient than existing
+approaches and offers additional benefits, such as enabling selective editing
+of parts of the scene.",Minghao Chen and Iro Laina and Andrea Vedaldi,2024,,,,arXiv preprint arXiv:2404.18929

@@ -1,0 +1,43 @@
+% =========================
+% CONCLUSION + LIMITATIONS
+% =========================
+\section{Conclusion and Limitations}
+\label{sec:conclusion}
+
+We proposed a minimal, \emph{post-hoc} geometric lens for Transformers that yields actionable signals for reliability and performance. The core ingredients are: (i) an \textbf{inverse-free} holonomy score $\kappa_{\mathrm{inv}}$ computed with JVPs (Eq.~\eqref{eq:invfree-kappa}) on a discrete bundle over (position, layer), (ii) \textbf{activation commutators} $\Delta_{A,B}$ to quantify order sensitivity, and (iii) a light \textbf{orthogonal gauge-fix} (whiten\,$+$\,Procrustes) to stabilize analysis and logging. We specified data contracts and a preregistered evaluation plan (E1--E7) with metrics in \S\ref{sec:metrics} and procedures in \S\ref{sec:experiments}. The intended impact is twofold: predict when invariances will break and indicate when fusions/reorderings are safe—under tight runtime budgets.
+
+\subsection{Limitations.}
+\label{sec:limits}
+\begin{itemize}[leftmargin=1.2em,itemsep=0pt]
+\item \textbf{Analogy scope.} The attention-as-connection view is an \emph{operational analogy} on discrete transports. We do not claim a continuous principal-bundle model of full networks nor that linguistic structure is represented as exact group actions.
+\item \textbf{Approximation error.} The \emph{frozen-softmax} scan ignores cross-head coupling and context dependence; we confirm only hotspots with full JVP loops. Edge-wise Jacobians and local $1{\times}1$ rectangles approximate broader interactions.
+\item \textbf{Coverage \& predictiveness.} Sampling $(r,k,m)$ trades sensitivity for cost. Some failures arise from long-range interactions outside sampled loops; conversely, high curvature need not always surface as user-visible error without the right stimulus.
+\item \textbf{Compute overhead.} Although matrix-free, complexity scales as $\mathcal{O}(rLkm\cdot\mathrm{cost}_{\mathrm{JVP}})$ (\S\ref{sec:method-cost}). Budgets and defaults (Table~\ref{tab:exp-setup}) are crucial to keep total overhead $\le 10$--$20\%$.
+\item \textbf{External validity.} Our methods target decoder-only Transformers with pre-LN residual blocks and RoPE/relative positions. Extensions to encoder–decoder models, structured caches, and mixture-of-experts are left to future work.
+\item \textbf{Threats to validity (planned experiments).} IR labels depend on orbit construction and pass@k choices; distribution shift between calibration batches and deployment inputs can affect $\Delta$–$\delta$ correlations and $\kappa$ calibration.
+\item \textbf{Gauge-invariance proof.} A prior proof attempt for gauge invariance had a flaw. We therefore report empirical gauge-behavior checks and unit tests, and leave a formal proof to future work.
+\end{itemize}
+
+\subsection{Future work.}
+\begin{enumerate}[leftmargin=1.2em,itemsep=0pt]
+\item \textbf{Execute preregistered E1--E7} across multiple open models and report measured AUC/AP, $\rho(\Delta,\delta)$, drift areas, variance ratios, and overhead with CIs.
+\item \textbf{Sharper theory.} Tighten bounds for Hutchinson/JVP estimation error; study loop-size dependence and concentration; explore alternative gauges (block-orthogonal, subspace-restricted).
+\item \textbf{Broader invariances.} Beyond code $\alpha$-renaming: canonical algebraic rewrites, unit conversions, symbolic equalities, and templated paraphrases with ground-truth equivalence certificates.
+\item \textbf{Efficiency.} Low-rank/Jacobian-sketch variants; streaming probes; adaptive loop selection (active sampling from attention sparsity or saliency).
+\item \textbf{LLM-assisted testing.} Use LLMs to propose invariance orbits, generate minimal counterexamples, and triage hotspots identified by $\kappa_{\mathrm{inv}}$ and $\Delta$.
+\item \textbf{Visualization \& observability.} Curvature/commutator dashboards with gauge-stable traces; CI gates that fail on reproducibility regressions and miscalibrated thresholds.
+\item \textbf{Architectural reach.} Apply the diagnostics to encoder–decoder, state-space models, and retrieval-augmented pipelines; study how memory modules alter holonomy patterns.
+% --- Append to 8.2 Future work list, before \end{enumerate} ---
+\item \textbf{Integration with semantic anchoring frameworks.}
+The Unified Cognitive Consciousness Theory (UCCT) models LLMs as pattern repositories activated by semantic anchors such as few-shot prompts, RAG, and fine-tuning. We hypothesize that WILSON diagnostics can improve anchoring quality by:
+\begin{enumerate}[label=(\roman*), leftmargin=1.4em, itemsep=0pt]
+  \item \textbf{Anchor placement:} prefer low-$\kappa_{\mathrm{inv}}$ regions where pattern representations are stable and order-insensitive, which may improve few-shot success rates;
+  \item \textbf{Cluster quality filtering:} use curvature as a stability score for UCCT pattern clusters. High-$\kappa$ regions may contain fragile or order-sensitive patterns that are unreliable anchoring targets;
+  \item \textbf{Orbit construction:} use $\kappa_{\mathrm{inv}}$ maps to predict which semantic variations (for example, $\alpha$-renamings and paraphrases) will break invariance, allowing UCCT to focus testing on high-risk variants and trust low-$\kappa$ transformations;
+  \item \textbf{Cross-method coherence:} WILSON and UCCT capture different aspects of stability, computational versus semantic. Testing whether $\kappa_{\mathrm{inv}}$ correlates with UCCT anchoring strength $S$ or an invariance ratio $IR$ could reveal whether geometric stability predicts semantic robustness.
+\end{enumerate}
+These hypotheses require empirical validation. A shared protocol would compute both WILSON and UCCT metrics on the same tasks (for example, base arithmetic and code synthesis) and measure correlations. If $\kappa_{\mathrm{inv}}$ significantly predicts UCCT anchoring success ($R^2 > 0.5$), the integration could guide prompt engineering and model selection in practice. We leave this to future work, noting that WILSON's gauge-stable logging (\S4.3) already addresses reproducibility challenges that UCCT encounters in cross-seed comparisons.
+\end{enumerate}
+
+\paragraph{Takeaway.}
+Inverse-free holonomy and activation commutators provide \emph{localized, gauge-stable} signals that are cheap enough to deploy and strong enough to guide testing and safe optimizations. We view these tools as a practical substrate on which more principled invariance testing and reliability engineering for LLMs can be built.

@@ -1,0 +1,61 @@
+\begin{table*}[t!]
+\centering
+\caption{Comparison of detectors on our proposed OmniGen test set on Average Precision (\%). Models marked with * were evaluated using their official pretrained weights. Best results are in \textbf{bold} and second best is \underline{underlined}.}
+\label{tab:omnigen_results_ap}
+\resizebox{\textwidth}{!}{%
+% Define a new column type for the highlighted column
+\newcolumntype{H}{>{\columncolor{blue!10}}c}
+\begin{tabular}{l|ccccccccccccH}
+\toprule
+\textbf{Generator} & \rotateheader{UNIFD*} & \rotateheader{BILORA*} & \rotateheader{LASTED*} & \rotateheader{UNIFD} & \rotateheader{AIDE*} & \rotateheader{LASTED} & \rotateheader{AIDE} & \rotateheader{SSP*} & \rotateheader{SSP} & \rotateheader{DNF} & \rotateheader{NPR} & \rotateheader{DIF*} & \rotateheader{\textbf{Ours}} \\
+\midrule
+GPT-4o & 58.7 & 58.1 & 72.0 & 81.2 & 90.4 & 75.9 & 85.3 & 99.8 & 99.9 & 99.7 & \textbf{100} & 99.7 & \underline{99.7} \\
+Imagen 4 & 46.1 & 71.2 & 66.8 & 65.9 & 50.8 & 93.8 & 53.3 & 87.2 & 92.5 & \textbf{100} & 99.8 & \underline{100} & 99.8 \\
+Imagen 4 Ultra & 46.7 & 71.7 & 56.6 & 64.8 & 50.9 & 93.6 & 53.2 & 86.9 & 92.7 & \textbf{100} & 99.6 & \underline{100} & 99.8 \\
+FLUX 1 dev & 39.4 & 72.2 & 68.1 & 73.4 & 94.2 & 79.2 & 93.9 & 99.8 & 99.8 & \textbf{100} & 99.9 & 99.4 & \underline{99.9} \\
+Kandinsky 3 & 63.4 & 63.7 & 79.7 & 70.7 & 93.2 & 89.2 & 96.9 & 99.8 & 99.8 & 100 & 99.9 & \underline{100} & \textbf{100} \\
+PixArt-$\delta$ & 60.4 & 67.3 & 74.0 & 84.3 & 93.7 & 87.9 & 96.0 & 99.0 & 99.0 & 100 & 99.8 & \underline{99.9} & \textbf{100} \\
+Juggernaut v11 & 51.1 & 69.0 & 81.8 & 83.1 & 98.1 & 89.7 & 98.7 & 99.5 & 99.8 & 97.8 & \textbf{99.9} & 99.9 & 99.2 \\
+Dreamshaper & 52.5 & 67.3 & 75.7 & 84.0 & 99.0 & 96.7 & 99.1 & 99.9 & \textbf{100} & 98.9 & 99.7 & \underline{100} & 99.9 \\
+CogView4-6B & 48.5 & 66.8 & 72.8 & 91.5 & 98.8 & 84.6 & 99.0 & 99.8 & 98.8 & 97.8 & \underline{100} & 100 & \textbf{100} \\
+HiDream-I1 & 37.6 & 67.3 & 70.6 & 71.3 & 71.4 & 84.5 & 96.8 & 98.3 & 99.3 & \textbf{100} & 99.8 & \underline{100} & 99.9 \\
+SD3.5-medium & 55.0 & 71.6 & 72.2 & 85.6 & 91.6 & 78.3 & 96.2 & 99.3 & 99.2 & \underline{100} & 99.9 & \textbf{100} & 99.9 \\
+MidJourney v7 & 73.2 & 71.5 & 58.6 & 61.3 & 88.1 & 86.8 & 97.7 & 97.6 & 99.8 & \underline{99.8} & 98.9 & \textbf{99.98} & 98.3 \\
+\midrule
+\textbf{STD} & 10.18 & 4.12 & 7.48 & 9.72 & 17.55 & 6.50 & 17.02 & 4.82 & 2.72 & 0.90 & \underline{0.30} & \textbf{0.18} & 0.51 \\
+\textbf{Mean} & 52.72 & 68.14 & 70.74 & 76.42 & 85.03 & 86.68 & 88.83 & 97.24 & 98.38 & 99.49 & \underline{99.77} & \textbf{99.91} & 99.69 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+
+% \begin{table*}[h!]
+% \centering
+% \caption{Comparison of detectors on our proposed OmniGen test set on Average Precision (\%). Models marked with * were evaluated using their official pretrained weights. All other baselines were retrained on our custom training set. Best results are in \textbf{bold} and second best is \underline{underlined}}
+% \label{tab:omnigen_results_ap}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{l|cccccccccccc|c|c}
+% \toprule
+% \multirow{2}{*}{\textbf{Detector}} & \rotateheader{GPT-4o} & \rotateheader{Imagen 4} & \rotateheader{Imagen 4 Ultra} & \rotateheader{FLUX 1 dev} & \rotateheader{Kandinsky 3} & \rotateheader{PixArt-$\delta$} & \rotateheader{Juggernaut v11} & \rotateheader{Dreamshaper} & \rotateheader{CogView4-6B} & \rotateheader{HiDream-I1} & \rotateheader{SD3.5-medium} & \rotateheader{MidJourney v7} & \multirow{2}{*}{\textbf{STD}} & \multirow{2}{*}{\textbf{Mean}} \\
+%  & & & & & & & & & & & & & & \\
+% \midrule
+
+% UNIFD* & 58.7 & 46.1 & 46.7 & 39.4 & 63.4 & 60.4 & 51.1 & 52.5 & 48.5 & 37.6 & 55.0 & 73.2 & 10.18 & 52.72 \\
+% BiLora* & 58.1 & 71.2 & 71.7 & 72.2 & 63.7 & 67.3 & 69.0 & 67.3 & 66.8 & 67.3 & 71.6 & 71.5 & 4.12 & 68.14 \\
+% LASTED* & 72.0 & 66.8 & 56.6 & 68.1 & 79.7 & 74.0 & 81.8 & 75.7 & 72.8 & 70.6 & 72.2 & 58.6 & 7.48 & 70.74 \\
+% UNIFD & 81.2 & 65.9 & 64.8 & 73.4 & 70.7 & 84.3 & 83.1 & 84.0 & 91.5 & 71.3 & 85.6 & 61.3 & 9.72 & 76.42 \\
+% AIDE* & 90.4 & 50.8 & 50.9 & 94.2 & 93.2 & 93.7 & 98.1 & 99.0 & 98.8 & 71.4 & 91.6 & 88.1 & 17.55 & 85.03 \\
+% LASTED & 75.9 & 93.8 & 93.6 & 79.2 & 89.2 & 87.9 & 89.7 & 96.7 & 84.6 & 84.5 & 78.3 & 86.8 & 6.50 & 86.68 \\
+% AIDE & 85.3 & 53.3 & 53.2 & 93.9 & 96.9 & 96.0 & 98.7 & 99.1 & 99.0 & 96.8 & 96.2 & 97.7 & 17.02 & 88.83 \\
+% SSP* & 99.8 & 87.2 & 86.9 & 99.8 & 99.8 & 99.0 & 99.5 & 99.9 & 99.8 & 98.3 & 99.3 & 97.6 & 4.82 & 97.24 \\
+% SSP & 99.9 & 92.5 & 92.7 & 99.8 & 99.8 & 99.0 & 99.8 & 100 & 98.8 & 99.3 & 99.2 & 99.8 & 2.72 & 98.38 \\
+% DNF & 99.7 & 100 & 100 & 100 & 100 & 100 & 97.8 & 98.9 & 97.8 & 100 & 100 & 99.8 & 0.90 & 99.49 \\
+% NPR & 100 & 99.8 & 99.6 & 99.9 & 99.9 & 99.8 & 99.9 & 99.7 & 100 & 99.8 & 99.9 & 98.9 & 0.30 & 99.77 \\
+% DIF* & 99.7 & 100 & 100 & 99.4 & 100 & 99.9 & 99.9 & 100 & 100 & 100 & 100 & 99.98 & \underline{0.18} & \underline{99.91} \\
+% \rowcolor{blue!10}
+% \textbf{FusionDetect} & 99.7 & 99.8 & 99.8 & \underline{99.9} & \textbf{100} & \textbf{100} & 99.2 & \underline{99.9} & \textbf{100} & \underline{99.9} & \underline{99.9} & 98.3 & 0.51 & 99.69 \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table*}

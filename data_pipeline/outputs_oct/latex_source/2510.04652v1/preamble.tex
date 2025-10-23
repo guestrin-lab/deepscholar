@@ -1,0 +1,66 @@
+
+% ==========================
+%%Command for personalized joins
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+% ==========================
+
+
+% ==========================
+% Move these commands to a preamble. Feel free to change the symbols if you don't like them.
+
+\newcommand{\logic}	{\ensuremath{\mathcal{L}}}	% The base language
+\newcommand{\UCPF}	{\ensuremath{\mathcal{UCPF}}}% The usage control policy framework
+\newcommand{\UCRs}	{\ensuremath{\mathcal{R}_{\logic}}}	% The set of usage control rules
+\newcommand{\Triples}	{\ensuremath{\mathcal{T}}}	% all potential triples
+\newcommand{\URs}	{\ensuremath{\mathcal{R}}}	% all potential usage rules
+\newcommand{\SAffairs}	{\ensuremath{\mathcal{S}}}	% The state of affairs
+\newcommand{\AND}		{\ensuremath{\curlywedge}}
+\newcommand{\OR}		{\ensuremath{\curlyvee}}
+\newcommand{\NOT}		{\ensuremath{\sim}}
+\newcommand{\IMPL}		{\ensuremath{\rightsquigarrow}}
+% Used to combine usage control rules
+
+\newcommand{\obl}	{\ensuremath{\mathbf{O}}}
+\newcommand{\dis}	{\ensuremath{\mathbf{D}}}
+\newcommand{\prh}	{\ensuremath{\mathbf{P}}}
+\newcommand{\all}	{\ensuremath{\mathbf{A}}}
+% The four deontic modalities considered
+
+\newcommand{\compl}{\ensuremath{\rhd}}	% A snapshot complying with a usage policy
+\newcommand{\actions}   {\ensuremath{\mathcal{A}}}
+\newcommand{\actionsp}   {\ensuremath{\mathcal{AP}}}
+\newcommand{\facts}     {\ensuremath{\mathcal{F}}}
+\newcommand{\elements}     {\ensuremath{\mathcal{E}}}
+\newcommand{\deontics}  {\ensuremath{\mathcal{D}}}
+\newcommand{\elpat}     {\ensuremath{\mathcal{EP}}}
+\newcommand{\rules}     {\ensuremath{\mathcal{R}}}
+\newcommand{\ucp}     {\ensuremath{\mathcal{P}}}
+\newcommand{\kb}     {\ensuremath{\mathcal{K}}}
+\newcommand{\CR}     {\ensuremath{\mathcal{CR}}}
+
+%=======================extension
+
+\newcommand{\extendedActions}   {\ensuremath{\mathcal{EAP}}}
+\newcommand{\events}   {\ensuremath{\mathcal{EV}}}
+\newcommand{\extendedObligations}   {\ensuremath{\mathcal{EO}}}
+
+\newcommand{\violatedO}   {\ensuremath{\mathcal{VO}}}
+\newcommand{\activeO}   {\ensuremath{\mathcal{AO}}}
+\newcommand{\fulfilledO}   {\ensuremath{\mathcal{FO}}}
+\newcommand{\notSatisifedO}   {\ensuremath{\mathcal{NSO}}}
+\newcommand{\expiredO}   {\ensuremath{\mathcal{EO}}}
+
+% ==========================
+
+\newcommand{\ANDS}     {\ensuremath{\mathcal{A}}}
+\newcommand{\FILTER}     {\ensuremath{\mathcal{F}}}
+\newcommand{\OPT}     {\ensuremath{\mathcal{O}}}
+\newcommand{\UNION}     {\ensuremath{\mathcal{U}}}
+\newcommand{\MINUS}     {\ensuremath{\mathcal{M}}}
+
+
+

@@ -1,0 +1,202 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,wang2023can,\cite{wang2023can},Can Language Models Solve Graph Problems in Natural Language?,http://arxiv.org/abs/2305.10037v3,"Large language models (LLMs) are increasingly adopted for a variety of tasks
+with implicit graphical structures, such as planning in robotics, multi-hop
+question answering or knowledge probing, structured commonsense reasoning, and
+more. While LLMs have advanced the state-of-the-art on these tasks with
+structure implications, whether LLMs could explicitly process textual
+descriptions of graphs and structures, map them to grounded conceptual spaces,
+and perform structured operations remains underexplored. To this end, we
+propose NLGraph (Natural Language Graph), a comprehensive benchmark of
+graph-based problem solving designed in natural language. NLGraph contains
+29,370 problems, covering eight graph reasoning tasks with varying complexity
+from simple tasks such as connectivity and shortest path up to complex problems
+such as maximum flow and simulating graph neural networks. We evaluate LLMs
+(GPT-3/4) with various prompting approaches on the NLGraph benchmark and find
+that 1) language models do demonstrate preliminary graph reasoning abilities,
+2) the benefit of advanced prompting and in-context learning diminishes on more
+complex graph problems, while 3) LLMs are also (un)surprisingly brittle in the
+face of spurious correlations in graph and problem settings. We then propose
+Build-a-Graph Prompting and Algorithmic Prompting, two instruction-based
+approaches to enhance LLMs in solving natural language graph problems.
+Build-a-Graph and Algorithmic prompting improve the performance of LLMs on
+NLGraph by 3.07% to 16.85% across multiple tasks and settings, while how to
+solve the most complicated graph reasoning tasks in our setup with language
+models remains an open research question. The NLGraph benchmark and evaluation
+code are available at https://github.com/Arthur-Heng/NLGraph.","Wang, Heng and Feng, Shangbin and He, Tianxing and Tan, Zhaoxuan and Han, Xiaochuang and Tsvetkov, Yulia",2023,,,,Advances in Neural Information Processing Systems
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,fatemi2023talk,\cite{fatemi2023talk},Talk like a Graph: Encoding Graphs for Large Language Models,http://arxiv.org/abs/2310.04560v1,"Graphs are a powerful tool for representing and analyzing complex
+relationships in real-world applications such as social networks, recommender
+systems, and computational finance. Reasoning on graphs is essential for
+drawing inferences about the relationships between entities in a complex
+system, and to identify hidden patterns and trends. Despite the remarkable
+progress in automated reasoning with natural text, reasoning on graphs with
+large language models (LLMs) remains an understudied problem. In this work, we
+perform the first comprehensive study of encoding graph-structured data as text
+for consumption by LLMs. We show that LLM performance on graph reasoning tasks
+varies on three fundamental levels: (1) the graph encoding method, (2) the
+nature of the graph task itself, and (3) interestingly, the very structure of
+the graph considered. These novel results provide valuable insight on
+strategies for encoding graphs as text. Using these insights we illustrate how
+the correct choice of encoders can boost performance on graph reasoning tasks
+inside LLMs by 4.8% to 61.8%, depending on the task.","Fatemi, Bahare and Halcrow, Jonathan and Perozzi, Bryan",2023,,,,arXiv preprint arXiv:2310.04560
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,li2024can,\cite{li2024can},"Can Large Language Models Analyze Graphs like Professionals? A
+  Benchmark, Datasets and Models",http://arxiv.org/abs/2409.19667v3,"The need to analyze graphs is ubiquitous across various fields, from social
+networks to biological research and recommendation systems. Therefore, enabling
+the ability of large language models (LLMs) to process graphs is an important
+step toward more advanced general intelligence. However, current LLM benchmarks
+on graph analysis require models to directly reason over the prompts describing
+graph topology, and are thus limited to small graphs with only a few dozens of
+nodes. In contrast, human experts typically write programs based on popular
+libraries for task solving, and can thus handle graphs with different scales.
+To this end, a question naturally arises: can LLMs analyze graphs like
+professionals? In this paper, we introduce ProGraph, a manually crafted
+benchmark containing 3 categories of graph tasks. The benchmark expects
+solutions based on programming instead of directly reasoning over raw inputs.
+Our findings reveal that the performance of current LLMs is unsatisfactory,
+with the best model achieving only 36% accuracy. To bridge this gap, we propose
+LLM4Graph datasets, which include crawled documents and auto-generated codes
+based on 6 widely used graph libraries. By augmenting closed-source LLMs with
+document retrieval and fine-tuning open-source ones on the codes, we show
+11-32% absolute improvements in their accuracies. Our results underscore that
+the capabilities of LLMs in handling structured data are still under-explored,
+and show the effectiveness of LLM4Graph in enhancing LLMs' proficiency of graph
+analysis. The benchmark, datasets and enhanced open-source models are available
+at https://github.com/BUPT-GAMMA/ProGraph.","Li, Xin and Chen, Weize and Chu, Qizhi and Li, Haopeng and Sun, Zhaojun and Li, Ran and Qian, Chen and Wei, Yiwei and Shi, Chuan and Liu, Zhiyuan and others",2024,,,,Advances in Neural Information Processing Systems
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,he2024g,\cite{he2024g},G-retriever: Retrieval-augmented generation for textual graph understanding and question answering,,,"He, Xiaoxin and Tian, Yijun and Sun, Yifei and Chawla, Nitesh and Laurent, Thomas and LeCun, Yann and Bresson, Xavier and Hooi, Bryan",2024,,,,Advances in Neural Information Processing Systems
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,sarthi2024raptor,\cite{sarthi2024raptor},RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval,http://arxiv.org/abs/2401.18059v1,"Retrieval-augmented language models can better adapt to changes in world
+state and incorporate long-tail knowledge. However, most existing methods
+retrieve only short contiguous chunks from a retrieval corpus, limiting
+holistic understanding of the overall document context. We introduce the novel
+approach of recursively embedding, clustering, and summarizing chunks of text,
+constructing a tree with differing levels of summarization from the bottom up.
+At inference time, our RAPTOR model retrieves from this tree, integrating
+information across lengthy documents at different levels of abstraction.
+Controlled experiments show that retrieval with recursive summaries offers
+significant improvements over traditional retrieval-augmented LMs on several
+tasks. On question-answering tasks that involve complex, multi-step reasoning,
+we show state-of-the-art results; for example, by coupling RAPTOR retrieval
+with the use of GPT-4, we can improve the best performance on the QuALITY
+benchmark by 20% in absolute accuracy.","Sarthi, Parth and Abdullah, Salman and Tuli, Aditi and Khanna, Shubh and Goldie, Anna and Manning, Christopher D",2024,,,,
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,li2024simple,\cite{li2024simple},"Simple Is Effective: The Roles of Graphs and Large Language Models in
+  Knowledge-Graph-Based Retrieval-Augmented Generation",http://arxiv.org/abs/2410.20724v4,"Large Language Models (LLMs) demonstrate strong reasoning abilities but face
+limitations such as hallucinations and outdated knowledge. Knowledge Graph
+(KG)-based Retrieval-Augmented Generation (RAG) addresses these issues by
+grounding LLM outputs in structured external knowledge from KGs. However,
+current KG-based RAG frameworks still struggle to optimize the trade-off
+between retrieval effectiveness and efficiency in identifying a suitable amount
+of relevant graph information for the LLM to digest. We introduce SubgraphRAG,
+extending the KG-based RAG framework that retrieves subgraphs and leverages
+LLMs for reasoning and answer prediction. Our approach innovatively integrates
+a lightweight multilayer perceptron with a parallel triple-scoring mechanism
+for efficient and flexible subgraph retrieval while encoding directional
+structural distances to enhance retrieval effectiveness. The size of retrieved
+subgraphs can be flexibly adjusted to match the query's need and the downstream
+LLM's capabilities. This design strikes a balance between model complexity and
+reasoning power, enabling scalable and generalizable retrieval processes.
+Notably, based on our retrieved subgraphs, smaller LLMs like
+Llama3.1-8B-Instruct deliver competitive results with explainable reasoning,
+while larger models like GPT-4o achieve state-of-the-art accuracy compared with
+previous baselines -- all without fine-tuning. Extensive evaluations on the
+WebQSP and CWQ benchmarks highlight SubgraphRAG's strengths in efficiency,
+accuracy, and reliability by reducing hallucinations and improving response
+grounding.","Li, Mufei and Miao, Siqi and Li, Pan",2024,,,,arXiv preprint arXiv:2410.20724
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,edge2024local,\cite{edge2024local},"From Local to Global: A Graph RAG Approach to Query-Focused
+  Summarization",http://arxiv.org/abs/2404.16130v2,"The use of retrieval-augmented generation (RAG) to retrieve relevant
+information from an external knowledge source enables large language models
+(LLMs) to answer questions over private and/or previously unseen document
+collections. However, RAG fails on global questions directed at an entire text
+corpus, such as ""What are the main themes in the dataset?"", since this is
+inherently a query-focused summarization (QFS) task, rather than an explicit
+retrieval task. Prior QFS methods, meanwhile, do not scale to the quantities of
+text indexed by typical RAG systems. To combine the strengths of these
+contrasting methods, we propose GraphRAG, a graph-based approach to question
+answering over private text corpora that scales with both the generality of
+user questions and the quantity of source text. Our approach uses an LLM to
+build a graph index in two stages: first, to derive an entity knowledge graph
+from the source documents, then to pregenerate community summaries for all
+groups of closely related entities. Given a question, each community summary is
+used to generate a partial response, before all partial responses are again
+summarized in a final response to the user. For a class of global sensemaking
+questions over datasets in the 1 million token range, we show that GraphRAG
+leads to substantial improvements over a conventional RAG baseline for both the
+comprehensiveness and diversity of generated answers.","Edge, Darren and Trinh, Ha and Cheng, Newman and Bradley, Joshua and Chao, Alex and Mody, Apurva and Truitt, Steven and Metropolitansky, Dasha and Ness, Robert Osazuwa and Larson, Jonathan",2024,,,,arXiv preprint arXiv:2404.16130
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,deng2023implicit,\cite{deng2023implicit},Implicit Chain of Thought Reasoning via Knowledge Distillation,http://arxiv.org/abs/2311.01460v1,"To augment language models with the ability to reason, researchers usually
+prompt or finetune them to produce chain of thought reasoning steps before
+producing the final answer. However, although people use natural language to
+reason effectively, it may be that LMs could reason more effectively with some
+intermediate computation that is not in natural language. In this work, we
+explore an alternative reasoning approach: instead of explicitly producing the
+chain of thought reasoning steps, we use the language model's internal hidden
+states to perform implicit reasoning. The implicit reasoning steps are
+distilled from a teacher model trained on explicit chain-of-thought reasoning,
+and instead of doing reasoning ""horizontally"" by producing intermediate words
+one-by-one, we distill it such that the reasoning happens ""vertically"" among
+the hidden states in different layers. We conduct experiments on a multi-digit
+multiplication task and a grade school math problem dataset and find that this
+approach enables solving tasks previously not solvable without explicit
+chain-of-thought, at a speed comparable to no chain-of-thought.","Deng, Yuntian and Prasad, Kiran and Fernandez, Roland and Smolensky, Paul and Chaudhary, Vishrav and Shieber, Stuart",2023,,,,arXiv preprint arXiv:2311.01460
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,wang2023explicit,\cite{wang2023explicit},Explicit and Implicit Knowledge Distillation via Unlabeled Data,http://arxiv.org/abs/2302.08771v2,"Data-free knowledge distillation is a challenging model lightweight task for
+scenarios in which the original dataset is not available. Previous methods
+require a lot of extra computational costs to update one or more generators and
+their naive imitate-learning lead to lower distillation efficiency. Based on
+these observations, we first propose an efficient unlabeled sample selection
+method to replace high computational generators and focus on improving the
+training efficiency of the selected samples. Then, a class-dropping mechanism
+is designed to suppress the label noise caused by the data domain shifts.
+Finally, we propose a distillation method that incorporates explicit features
+and implicit structured relations to improve the effect of distillation.
+Experimental results show that our method can quickly converge and obtain
+higher accuracy than other state-of-the-art methods.","Wang, Yuzheng and Ge, Zuhao and Chen, Zhaoyu and Liu, Xian and Ma, Chuangjia and Sun, Yunquan and Qi, Lizhe",2023,,,,
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,li2024direct,\cite{li2024direct},Direct Preference Knowledge Distillation for Large Language Models,http://arxiv.org/abs/2406.19774v2,"In the field of large language models (LLMs), Knowledge Distillation (KD) is
+a critical technique for transferring capabilities from teacher models to
+student models. However, existing KD methods face limitations and challenges in
+distillation of LLMs, including efficiency and insufficient measurement
+capabilities of traditional KL divergence. It is shown that LLMs can serve as
+an implicit reward function, which we define as a supplement to KL divergence.
+In this work, we propose Direct Preference Knowledge Distillation (DPKD) for
+LLMs. DPKD utilizes distribution divergence to represent the preference loss
+and implicit reward function. We re-formulate KD of LLMs into two stages: first
+optimizing and objective consisting of implicit reward and reverse KL
+divergence and then improving the preference probability of teacher outputs
+over student outputs. We conducted experiments and analysis on various datasets
+with LLM parameters ranging from 120M to 13B and demonstrate the broad
+applicability and effectiveness of our DPKD approach. Meanwhile, we prove the
+value and effectiveness of the introduced implicit reward and output preference
+in KD through experiments and theoretical analysis. The DPKD method outperforms
+the baseline method in both output response precision and exact match
+percentage. Code and data are available at https://aka.ms/dpkd.","Li, Yixing and Gu, Yuxian and Dong, Li and Wang, Dequan and Cheng, Yu and Wei, Furu",2024,,,,arXiv preprint arXiv:2406.19774
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,levy2025more,\cite{levy2025more},"More Documents, Same Length: Isolating the Challenge of Multiple
+  Documents in RAG",http://arxiv.org/abs/2503.04388v1,"Retrieval-augmented generation (RAG) provides LLMs with relevant documents.
+Although previous studies noted that retrieving many documents can degrade
+performance, they did not isolate how the quantity of documents affects
+performance while controlling for context length. We evaluate various language
+models on custom datasets derived from a multi-hop QA task. We keep the context
+length and position of relevant information constant while varying the number
+of documents, and find that increasing the document count in RAG settings poses
+significant challenges for LLMs. Additionally, our results indicate that
+processing multiple documents is a separate challenge from handling long
+contexts. We also make the datasets and code available:
+https://github.com/shaharl6000/MoreDocsSameLen .","Levy, Shahar and Mazor, Nir and Shalmon, Lihi and Hassid, Michael and Stanovsky, Gabriel",2025,,,,arXiv preprint arXiv:2503.04388
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,warfield2024vector,\cite{warfield2024vector},Do Vector Databases Lose Accuracy at Scale?,,,"Warfield, Daniel and Fletcher, Benjamin",2024,October,https://www.eyelevel.ai/post/do-vector-databases-lose-accuracy-at-scale,,EyeLevel.ai Blog
+Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,http://arxiv.org/abs/2510.10806v1,jiang2024longrag,\cite{jiang2024longrag},LongRAG: Enhancing Retrieval-Augmented Generation with Long-context LLMs,http://arxiv.org/abs/2406.15319v3,"In traditional RAG framework, the basic retrieval units are normally short.
+The common retrievers like DPR normally work with 100-word Wikipedia
+paragraphs. Such a design forces the retriever to search over a large corpus to
+find the `needle' unit. In contrast, the readers only need to generate answers
+from the short retrieved units. The imbalanced `heavy' retriever and `light'
+reader design can lead to sub-optimal performance. The loss of contextual
+information in the short, chunked units may increase the likelihood of
+introducing hard negatives during the retrieval stage. Additionally, the reader
+might not fully leverage the capabilities of recent advancements in LLMs. In
+order to alleviate the imbalance, we propose a new framework LongRAG,
+consisting of a `long retriever' and a `long reader'. In the two
+Wikipedia-based datasets, NQ and HotpotQA, LongRAG processes the entire
+Wikipedia corpus into 4K-token units by grouping related documents. By
+increasing the unit size, we significantly reduce the total number of units.
+This greatly reduces the burden on the retriever, resulting in strong retrieval
+performance with only a few (less than 8) top units. Without requiring any
+training, LongRAG achieves an EM of 62.7% on NQ and 64.3% on HotpotQA, which
+are on par with the (fully-trained) SoTA model. Furthermore, we test on two
+non-Wikipedia-based datasets, Qasper and MultiFieldQA-en. LongRAG processes
+each individual document as a single (long) unit rather than chunking them into
+smaller units. By doing so, we achieve an F1 score of 25.9% on Qasper and 57.5%
+on MultiFieldQA-en. Our study offers insights into the future roadmap for
+combining RAG with long-context LLMs.","Jiang, Ziyan and Ma, Xueguang and Chen, Wenhu",2024,,,,arXiv preprint arXiv:2406.15319

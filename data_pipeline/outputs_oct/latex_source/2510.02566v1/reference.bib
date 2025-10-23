@@ -1,0 +1,680 @@
+
+% Journals
+
+% First the Full Name is given, then the abbreviation used in the AMS Math
+% Reviews, with an indication if it could not be found there.
+% Note the 2nd overwrites the 1st, so swap them if you want the full name.
+
+ %{AMS}
+ @String{AMSTrans = "American Mathematical Society Translations" }
+ @String{AMSTrans = "Amer. Math. Soc. Transl." }
+ @String{BullAMS = "Bulletin of the American Mathematical Society" }
+ @String{BullAMS = "Bull. Amer. Math. Soc." }
+ @String{ProcAMS = "Proceedings of the American Mathematical Society" }
+ @String{ProcAMS = "Proc. Amer. Math. Soc." }
+ @String{TransAMS = "Transactions of the American Mathematical Society" }
+ @String{TransAMS = "Trans. Amer. Math. Soc." }
+
+ %ACM
+ @String{CACM = "Communications of the {ACM}" }
+ @String{CACM = "Commun. {ACM}" }
+ @String{CompServ = "Comput. Surveys" }
+ @String{JACM = "J. ACM" }
+ @String{ACMMathSoft = "{ACM} Transactions on Mathematical Software" }
+ @String{ACMMathSoft = "{ACM} Trans. Math. Software" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newsletter" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newslett." }
+
+ @String{AmerSocio = "American Journal of Sociology" }
+ @String{AmerStatAssoc = "Journal of the American Statistical Association" }
+ @String{AmerStatAssoc = "J. Amer. Statist. Assoc." }
+ @String{ApplMathComp = "Applied Mathematics and Computation" }
+ @String{ApplMathComp = "Appl. Math. Comput." }
+ @String{AmerMathMonthly = "American Mathematical Monthly" }
+ @String{AmerMathMonthly = "Amer. Math. Monthly" }
+ @String{BIT = "{BIT}" }
+ @String{BritStatPsych = "British Journal of Mathematical and Statistical
+          Psychology" }
+ @String{BritStatPsych = "Brit. J. Math. Statist. Psych." }
+ @String{CanMathBull = "Canadian Mathematical Bulletin" }
+ @String{CanMathBull = "Canad. Math. Bull." }
+ @String{CompApplMath = "Journal of Computational and Applied Mathematics" }
+ @String{CompApplMath = "J. Comput. Appl. Math." }
+ @String{CompPhys = "Journal of Computational Physics" }
+ @String{CompPhys = "J. Comput. Phys." }
+ @String{CompStruct = "Computers and Structures" }
+ @String{CompStruct = "Comput. \& Structures" }
+ @String{CompJour = "The Computer Journal" }
+ @String{CompJour = "Comput. J." }
+ @String{CompSysSci = "Journal of Computer and System Sciences" }
+ @String{CompSysSci = "J. Comput. System Sci." }
+ @String{Computing = "Computing" }
+ @String{ContempMath = "Contemporary Mathematics" }
+ @String{ContempMath = "Contemp. Math." }
+ @String{Crelle = "Crelle's Journal" }
+ @String{GiornaleMath = "Giornale di Mathematiche" }
+ @String{GiornaleMath = "Giorn. Mat." } % didn't find in AMS MR., ibid.
+
+ %IEEE
+ @String{Computer = "{IEEE} Computer" }
+ @String{IEEETransComp = "{IEEE} Transactions on Computers" }
+ @String{IEEETransComp = "{IEEE} Trans. Comput." }
+ @String{IEEETransAC = "{IEEE} Transactions on Automatic Control" }
+ @String{IEEETransAC = "{IEEE} Trans. Automat. Control" }
+ @String{IEEESpec = "{IEEE} Spectrum" } % didn't find in AMS MR
+ @String{ProcIEEE = "Proceedings of the {IEEE}" }
+ @String{ProcIEEE = "Proc. {IEEE}" } % didn't find in AMS MR
+ @String{IEEETransAeroElec = "{IEEE} Transactions on Aerospace and Electronic
+     Systems" }
+ @String{IEEETransAeroElec = "{IEEE} Trans. Aerospace Electron. Systems" }
+
+ @String{IMANumerAna = "{IMA} Journal of Numerical Analysis" }
+ @String{IMANumerAna = "{IMA} J. Numer. Anal." }
+ @String{InfProcLet = "Information Processing Letters" }
+ @String{InfProcLet = "Inform. Process. Lett." }
+ @String{InstMathApp = "Journal of the Institute of Mathematics and
+     its Applications" }
+ @String{InstMathApp = "J. Inst. Math. Appl." }
+ @String{IntControl = "International Journal of Control" }
+ @String{IntControl = "Internat. J. Control" }
+ @String{IntNumerEng = "International Journal for Numerical Methods in
+     Engineering" }
+ @String{IntNumerEng = "Internat. J. Numer. Methods Engrg." }
+ @String{IntSuper = "International Journal of Supercomputing Applications" }
+ @String{IntSuper = "Internat. J. Supercomputing Applic." } % didn't find
+%% in AMS MR
+ @String{Kibernetika = "Kibernetika" }
+ @String{JResNatBurStand = "Journal of Research of the National Bureau
+     of Standards" }
+ @String{JResNatBurStand = "J. Res. Nat. Bur. Standards" }
+ @String{LinAlgApp = "Linear Algebra and its Applications" }
+ @String{LinAlgApp = "Linear Algebra Appl." }
+ @String{MathAnaAppl = "Journal of Mathematical Analysis and Applications" }
+ @String{MathAnaAppl = "J. Math. Anal. Appl." }
+ @String{MathAnnalen = "Mathematische Annalen" }
+ @String{MathAnnalen = "Math. Ann." }
+ @String{MathPhys = "Journal of Mathematical Physics" }
+ @String{MathPhys = "J. Math. Phys." }
+ @String{MathComp = "Mathematics of Computation" }
+ @String{MathComp = "Math. Comp." }
+ @String{MathScand = "Mathematica Scandinavica" }
+ @String{MathScand = "Math. Scand." }
+ @String{TablesAidsComp = "Mathematical Tables and Other Aids to Computation" }
+ @String{TablesAidsComp = "Math. Tables Aids Comput." }
+ @String{NumerMath = "Numerische Mathematik" }
+ @String{NumerMath = "Numer. Math." }
+ @String{PacificMath = "Pacific Journal of Mathematics" }
+ @String{PacificMath = "Pacific J. Math." }
+ @String{ParDistComp = "Journal of Parallel and Distributed Computing" }
+ @String{ParDistComp = "J. Parallel and Distrib. Comput." } % didn't find
+%% in AMS MR
+ @String{ParComputing = "Parallel Computing" }
+ @String{ParComputing = "Parallel Comput." }
+ @String{PhilMag = "Philosophical Magazine" }
+ @String{PhilMag = "Philos. Mag." }
+ @String{ProcNAS = "Proceedings of the National Academy of Sciences
+                    of the USA" }
+ @String{ProcNAS = "Proc. Nat. Acad. Sci. U. S. A." }
+ @String{Psychometrika = "Psychometrika" }
+ @String{QuartMath = "Quarterly Journal of Mathematics, Oxford, Series (2)" }
+ @String{QuartMath = "Quart. J. Math. Oxford Ser. (2)" }
+ @String{QuartApplMath = "Quarterly of Applied Mathematics" }
+ @String{QuartApplMath = "Quart. Appl. Math." }
+ @String{RevueInstStat = "Review of the International Statisical Institute" }
+ @String{RevueInstStat = "Rev. Inst. Internat. Statist." }
+
+ %SIAM
+ @String{JSIAM = "Journal of the Society for Industrial and Applied
+     Mathematics" }
+ @String{JSIAM = "J. Soc. Indust. Appl. Math." }
+ @String{JSIAMB = "Journal of the Society for Industrial and Applied
+     Mathematics, Series B, Numerical Analysis" }
+ @String{JSIAMB = "J. Soc. Indust. Appl. Math. Ser. B Numer. Anal." }
+ @String{SIAMAlgMeth = "{SIAM} Journal on Algebraic and Discrete Methods" }
+ @String{SIAMAlgMeth = "{SIAM} J. Algebraic Discrete Methods" }
+ @String{SIAMAppMath = "{SIAM} Journal on Applied Mathematics" }
+ @String{SIAMAppMath = "{SIAM} J. Appl. Math." }
+ @String{SIAMComp = "{SIAM} Journal on Computing" }
+ @String{SIAMComp = "{SIAM} J. Comput." }
+ @String{SIAMMatrix = "{SIAM} Journal on Matrix Analysis and Applications" }
+ @String{SIAMMatrix = "{SIAM} J. Matrix Anal. Appl." }
+ @String{SIAMNumAnal = "{SIAM} Journal on Numerical Analysis" }
+ @String{SIAMNumAnal = "{SIAM} J. Numer. Anal." }
+ @String{SIAMReview = "{SIAM} Review" }
+ @String{SIAMReview = "{SIAM} Rev." }
+ @String{SIAMSciStat = "{SIAM} Journal on Scientific and Statistical
+     Computing" }
+ @String{SIAMSciStat = "{SIAM} J. Sci. Statist. Comput." }
+
+ @String{SoftPracExp = "Software Practice and Experience" }
+ @String{SoftPracExp = "Software Prac. Experience" } % didn't find in AMS MR
+ @String{StatScience = "Statistical Science" }
+ @String{StatScience = "Statist. Sci." }
+ @String{Techno = "Technometrics" }
+ @String{USSRCompMathPhys = "{USSR} Computational Mathematics and Mathematical
+     Physics" }
+ @String{USSRCompMathPhys = "{U. S. S. R.} Comput. Math. and Math. Phys." }
+ @String{VLSICompSys = "Journal of {VLSI} and Computer Systems" }
+ @String{VLSICompSys = "J. {VLSI} Comput. Syst." }
+ @String{ZAngewMathMech = "Zeitschrift fur Angewandte Mathematik und
+     Mechanik" }
+ @String{ZAngewMathMech = "Z. Angew. Math. Mech." }
+ @String{ZAngewMathPhys = "Zeitschrift fur Angewandte Mathematik und Physik" }
+ @String{ZAngewMathPhys = "Z. Angew. Math. Phys." }
+
+% Publishers % ================================================= |
+
+ @String{Academic = "Academic Press" }
+ @String{ACMPress = "{ACM} Press" }
+ @String{AdamHilger = "Adam Hilger" }
+ @String{AddisonWesley = "Addison-Wesley" }
+ @String{AllynBacon = "Allyn and Bacon" }
+ @String{AMS = "American Mathematical Society" }
+ @String{Birkhauser = "Birkh{\"a}user" }
+ @String{CambridgePress = "Cambridge University Press" }
+ @String{Chelsea = "Chelsea" }
+ @String{ClaredonPress = "Claredon Press" }
+ @String{DoverPub = "Dover Publications" }
+ @String{Eyolles = "Eyolles" }
+ @String{HoltRinehartWinston = "Holt, Rinehart and Winston" }
+ @String{Interscience = "Interscience" }
+ @String{JohnsHopkinsPress = "The Johns Hopkins University Press" }
+ @String{JohnWileySons = "John Wiley and Sons" }
+ @String{Macmillan = "Macmillan" }
+ @String{MathWorks = "The Math Works Inc." }
+ @String{McGrawHill = "McGraw-Hill" }
+ @String{NatBurStd = "National Bureau of Standards" }
+ @String{NorthHolland = "North-Holland" }
+ @String{OxfordPress = "Oxford University Press" }  %address Oxford or London?
+ @String{PergamonPress = "Pergamon Press" }
+ @String{PlenumPress = "Plenum Press" }
+ @String{PrenticeHall = "Prentice-Hall" }
+ @String{SIAMPub = "{SIAM} Publications" }
+ @String{Springer = "Springer-Verlag" }
+ @String{TexasPress = "University of Texas Press" }
+ @String{VanNostrand = "Van Nostrand" }
+ @String{WHFreeman = "W. H. Freeman and Co." }
+
+%Entries
+@inproceedings{Luo2022EmbodiedSH,
+  author    = {Zhengyi Luo and Shun Iwase and Ye Yuan and Kris Kitani},
+  title     = {Embodied Scene-aware Human Pose Estimation},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2022}
+}
+
+@inproceedings{xu2022vitpose,
+  author    = {Yufei Xu and Jing Zhang and Qiming Zhang and Dacheng Tao},
+  title     = {Vi{TP}ose: Simple Vision Transformer Baselines for Human Pose Estimation},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2022}
+}
+
+@inproceedings{cai2023smplerx,
+  author     = {Zhongang Cai and Wanqi Yin and Ailing Zeng and Chen Wei and Qingping Sun and Yanjun Wang and Hui En Pang and Haiyi Mei and Mingyuan Zhang and Lei Zhang and Chen Change Loy and Lei Yang and Ziwei Liu},
+  title      = {{SMPLer-X}: Scaling Up Expressive Human Pose and Shape Estimation},
+  booktitle  = {Advances in Neural Information Processing Systems (NeurIPS), Datasets and Benchmarks Track},
+  year       = {2023}
+}
+
+@inproceedings{yuan2020residual,
+  title={Residual force control for agile human behavior imitation and extended motion synthesis},
+  author={Yuan, Ye and Kitani, Kris},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  year={2020}
+}
+
+@inproceedings{zhang2024incorporating,
+  author    = {Yufei Zhang and Jeffrey O. Kephart and Qiang Ji},
+  title     = {Incorporating Physics Principles for Precise Human Motion Prediction},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2024}
+}
+
+@inproceedings{zhang2024physpt,
+  author    = {Yufei Zhang and Jeffrey O. Kephart and Zijun Cui and Qiang Ji},
+  title     = {PhysPT: Physics-aware Pretrained Transformer for Estimating Human Dynamics from Monocular Videos},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2024}
+}
+
+@inproceedings{TRACE,
+  author    = {Yu Sun and Qian Bao and Wu Liu and Tao Mei and Michael J. Black},
+  title     = {TRACE: 5D Temporal Regression of Avatars with Dynamic Cameras in 3D Environments},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2023}
+}
+
+@inproceedings{TRAM,
+  author    = {Yufu Wang and Ziyun Wang and Lingjie Liu and Kostas Daniilidis},
+  title     = {TRAM: Global Trajectory and Motion of 3D Humans from in-the-wild Videos},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2024}
+}
+
+@inproceedings{WHAM,
+  author    = {Soyong Shin and Juyong Kim and Eni Halilaj and Michael J. Black},
+  title     = {WHAM: Reconstructing World-grounded Humans with Accurate 3D Motion},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2024}
+}
+
+@inproceedings{ye2023slahmr,
+  author    = {Vickie Ye and Georgios Pavlakos and Jitendra Malik and Angjoo Kanazawa},
+  title     = {Decoupling Human and Camera Motion from Videos in the Wild},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2023}
+}
+
+@inproceedings{PHALP,
+  author    = {Jathushan Rajasegaran and Georgios Pavlakos and Angjoo Kanazawa and Jitendra Malik},
+  title     = {Tracking People by Predicting 3D Appearance, Location \& Pose},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2022}
+}
+
+
+
+@inproceedings{yuan2022glamr,
+  author    = {Ye Yuan and Umar Iqbal and Pavlo Molchanov and Kris Kitani and Jan Kautz},
+  title     = {GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2022}
+}
+
+@inproceedings{li2022dnd,
+  author    = {Jiefeng Li and Siyuan Bian and Chao Xu and Gang Liu and Gang Yu and Cewu Lu},
+  title     = {D\&D: Learning Human Dynamics from Dynamic Camera},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2022}
+}
+
+@inproceedings{goel2023humans,
+  author    = {Shubham Goel and Georgios Pavlakos and Jathushan Rajasegaran and Angjoo Kanazawa and Jitendra Malik},
+  title     = {Humans in 4{D}: Reconstructing and Tracking Humans with Transformers},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2023}
+}
+
+
+@inproceedings{AMASS:ICCV:2019,
+  author    = {Naureen Mahmood and Nima Ghorbani and Nikolaus F. Troje and Gerard Pons-Moll and Michael J. Black},
+  title     = {{AMASS}: Archive of Motion Capture as Surface Shapes},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2019}
+}
+
+@inproceedings{STAR:2020,
+  author    = {Ahmed A. A. Osman and Timo Bolkart and Michael J. Black},
+  title     = {{STAR}: A Sparse Trained Articulated Human Body Regressor},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2020}
+}
+
+
+@inproceedings{SMPL-X:2019,
+  author    = {Georgios Pavlakos and Vasileios Choutas and Nima Ghorbani and Timo Bolkart and Ahmed A. A. Osman and Dimitrios Tzionas and Michael J. Black},
+  title     = {Expressive Body Capture: 3D Hands, Face, and Body from a Single Image},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2019}
+}
+
+
+ @inproceedings{SMPLX-Lite,
+    title = {{SMPLX-Lite: A Realistic and Drivable Avatar Benchmark with Rich Geometry and Texture Annotations}},
+    author = {Yujiao Jiang, Qingmin Liao, Zhaolong Wang, Xiangru Lin, Zongqing Lu, Yuxi Zhao, Hanqing Wei, Jingrui Ye, Yu Zhang, Zhijing Shao},
+    booktitle = {Proceedings of the IEEE International Conference on Multimedia and Expo (ICME)},
+    year = {2024}
+  }
+
+@inproceedings{50649,
+  author    = {Hongyi Xu and Eduard Gabriel Bazavan and Andrei Zanfir and Bill Freeman and Rahul Sukthankar and Cristian Sminchisescu},
+  title     = {GHUM \& GHUML: Generative 3D Human Shape and Articulated Pose Models},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2020}
+}
+
+
+
+
+@InProceedings{10.1007/978-3-319-46454-1_34,
+author="Bogo, Federica
+and Kanazawa, Angjoo
+and Lassner, Christoph
+and Gehler, Peter
+and Romero, Javier
+and Black, Michael J.",
+editor="Leibe, Bastian
+and Matas, Jiri
+and Sebe, Nicu
+and Welling, Max",
+title="Keep It SMPL: Automatic Estimation of 3D Human Pose and Shape from a Single Image",
+booktitle="Proceedings of the European Conference on Computer Vision (ECCV)",
+year="2016"
+}
+
+@inproceedings{Arnab_CVPR_2019,
+  author    = {Anurag Arnab and Carl Doersch and Andrew Zisserman},
+  title     = {Exploiting Temporal Context for 3D Human Pose Estimation in the Wild},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2019}
+}
+
+
+@inproceedings{MuVS:3DV:2017,
+  author    = {Yinghao Huang and Federica Bogo and Christoph Lassner and Angjoo Kanazawa and Peter V. Gehler and Javier Romero and Ijaz Akhter and Michael J. Black},
+  title     = {Towards Accurate Marker-less Human Shape and Pose Estimation over Time},
+  booktitle = {Proceedings of the International Conference on 3D Vision (3DV)},
+  year      = {2017}
+}
+
+
+@inproceedings{xiang2019monocular,
+  author    = {Donglai Xiang and Hanbyul Joo and Yaser Sheikh},
+  title     = {Monocular Total Capture: Posing Face, Body, and Hands in the Wild},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2019}
+}
+
+@inproceedings{luo2024universal,
+  author    = {Zhengyi Luo and Jinkun Cao and Josh Merel and Alexander Winkler and Jing Huang and Kris M. Kitani and Weipeng Xu},
+  title     = {Universal Humanoid Motion Representations for Physics-Based Control},
+  booktitle = {Proceedings of the International Conference on Learning Representations (ICLR)},
+  year      = {2024}
+}
+
+@inproceedings{wagener2022mocapact,
+  author    = {Nolan Wagener and Andrey Kolobov and Felipe Vieira Frujeri and Ricky Loynd and Ching-An Cheng and Matthew Hausknecht},
+  title     = {{MoCapAct}: A Multi-Task Dataset for Simulated Humanoid Control},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2022}
+}
+
+
+@inproceedings{Luo_2024_CVPR,
+  author    = {Zhengyi Luo and Jinkun Cao and Rawal Khirodkar and Alexander Winkler and Kris Kitani and Weipeng Xu},
+  title     = {Real-Time Simulated Avatar from Head-Mounted Sensors},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2024}
+}
+
+
+@inproceedings{Luo2023PerpetualHC,
+  author    = {Zhengyi Luo and Jinkun Cao and Alexander W. Winkler and Kris Kitani and Weipeng Xu},
+  title     = {Perpetual Humanoid Control for Real-Time Simulated Avatars},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2023}
+}
+
+@inproceedings{peng2021neural,
+  author    = {Sida Peng and Yuanqing Zhang and Yinghao Xu and Qianqian Wang and Qing Shuai and Hujun Bao and Xiaowei Zhou},
+  title     = {Neural Body: Implicit Neural Representations with Structured Latent Codes for Novel View Synthesis of Dynamic Humans},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2021}
+}
+
+@inproceedings{rempe2021humor,
+  author    = {Davis Rempe and Tolga Birdal and Aaron Hertzmann and Jimei Yang and Srinath Sridhar and Leonidas J. Guibas},
+  title     = {HuMoR: 3D Human Motion Model for Robust Pose Estimation},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2021}
+}
+
+
+@inproceedings{tripathi2023intuitivephysics,
+  author    = {Shashank Tripathi and Lea M{\"u}ller and Chun-Hao P. Huang and Omid Taheri and Michael J. Black and Dimitrios Tzionas},
+  title     = {3D Human Pose Estimation via Intuitive Physics},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2023}
+}
+
+@inproceedings{yang2023ppr,
+  author    = {Gengshan Yang and Shuo Yang and John Z. Zhang and Zachary Manchester and Deva Ramanan},
+  title     = {PPR: Physically Plausible Reconstruction from Monocular Videos},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2023}
+}
+
+
+@inproceedings{gartner2022diffphy,
+  author    = {Erik G{\"a}rtner and Mykhaylo Andriluka and Erwin Coumans and Cristian Sminchisescu},
+  title     = {Differentiable Dynamics for Articulated 3D Human Motion Reconstruction},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2022}
+}
+
+
+
+
+
+
+
+
+
+
+
+@article{2022-TOG-ASE,
+  author    = {Peng, Xue Bin and Guo, Yunrong and Halper, Lina and Levine, Sergey and Fidler, Sanja},
+  title     = {ASE: Large-Scale Reusable Adversarial Skill Embeddings for Physically Simulated Characters},
+  journal   = {ACM Transactions on Graphics (TOG)},
+  year      = {2022}
+}
+
+@inproceedings{dou2022case,
+  author    = {Zhiyang Dou and Xuelin Chen and Qingnan Fan and Taku Komura and Wenping Wang},
+  title     = {C·ASE: Learning Conditional Adversarial Skill Embeddings for Physics-based Characters},
+  booktitle = {SIGGRAPH Asia Conference
+Papers (SA Conference Papers)},
+  year      = {2023}
+}
+
+
+@article{tessler2023calm,
+  author    = {Chen Tessler and Yoni Kasten and Yunrong Guo and Shie Mannor and Gal Chechik and Xue Bin Peng},
+  title     = {CALM: Conditional Adversarial Latent Models for Directable Virtual Characters},
+  journal   = {ACM Transactions on Graphics (TOG)},
+  year      = {2023}
+}
+
+
+
+
+
+
+
+
+@article{tessler2024maskedmimic,
+  author    = {Chen Tessler and Yunrong Guo and Ofir Nabati and Gal Chechik and Xue Bin Peng},
+  title     = {MaskedMimic: Unified Physics-Based Character Control Through Masked Motion Inpainting},
+  journal   = {ACM Transactions on Graphics (TOG)},
+  year      = {2024}
+}
+
+
+@article{h36m_pami,
+author = {Ionescu, Catalin and Papava, Dragos and Olaru, Vlad and Sminchisescu,  Cristian},
+title = {Human3.6M: Large Scale Datasets and Predictive Methods for 3D Human Sensing in Natural Environments},
+journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)},
+year = {2014}
+}
+
+@inproceedings{schwarzer2021data,
+  title={Data-Efficient Reinforcement Learning with Self-Predictive Representations},
+  author={Schwarzer, Max and Anand, Ankesh and Rybkin, Oleh and others},
+  booktitle={Proceedings of the International Conference on Learning Representations (ICLR)},
+  year={2021}
+}
+
+
+@inproceedings{kaufmann2023emdb,
+  author    = {Manuel Kaufmann and Jie Song and Chen Guo and Kaiyue Shen and Tianjian Jiang and Chengcheng Tang and Juan Jos{\'e} Z{\'a}rate and Otmar Hilliges},
+  title     = {{EMDB}: The Electromagnetic Database of Global 3D Human Pose and Shape in the Wild},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2023}
+}
+
+
+
+
+@inproceedings{yuan2021simpoe,
+  author    = {Ye Yuan and Shih-En Wei and Tomas Simon and Kris Kitani and Jason Saragih},
+  title     = {SimPoE: Simulated Character Control for 3D Human Pose Estimation},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2021}
+}
+
+
+@inproceedings{todorov2012mujoco,
+  author    = {Emanuel Todorov and Tom Erez and Yuval Tassa},
+  title     = {MuJoCo: A Physics Engine for Model-Based Control},
+  booktitle = {Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year      = {2012}
+}
+
+
+@inproceedings{makoviychuk2021isaac,
+  author    = {Viktor Makoviychuk and Lukasz Wawrzyniak and Yunrong Guo and Michelle Lu and Kier Storey and Miles Macklin and David Hoeller and Nikita Rudin and Arthur Allshire and Ankur Handa and Gavriel State},
+  title     = {Isaac Gym: High Performance {GPU} Based Physics Simulation For Robot Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS), Datasets and Benchmarks Track},
+  year      = {2021}
+}
+
+
+@misc{yolov8,
+  author       = {Glenn Jocher and Ayush Chaurasia and Jing Qiu},
+  title        = {Ultralytics YOLOv8},
+  year         = {2023},
+  howpublished = {\url{https://github.com/ultralytics/ultralytics}},
+}
+
+@inproceedings{li2022cliff,
+  author    = {Zhihao Li and Jianzhuang Liu and Zhensong Zhang and Songcen Xu and Youliang Yan},
+  title     = {CLIFF: Carrying Location Information in Full Frames into Human Pose and Shape Estimation},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2022}
+}
+
+
+@inproceedings{NEURIPS2023_7ac484b0,
+  author    = {Zachary Teed and Lahav Lipson and Jia Deng},
+  title     = {Deep Patch Visual Odometry},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2023}
+}
+
+
+@inproceedings{10.1145/3550469.3555411,
+author = {Winkler, Alexander and Won, Jungdam and Ye, Yuting},
+title = {QuestSim: Human Motion Tracking from Sparse Sensors with Simulated Avatars},
+year = {2022},
+booktitle = {SIGGRAPH Asia Conference Papers (SA Conference Papers)}
+}
+
+
+
+@article{shimada2020physcap,
+  author    = {Soshi Shimada and Vladislav Golyanik and Weipeng Xu and Christian Theobalt},
+  title     = {PhysCap: Physically Plausible Monocular 3D Motion Capture in Real Time},
+  journal   = {ACM Transactions on Graphics (TOG)},
+  year      = {2020}
+}
+
+
+
+
+
+@article{peng2018sfv,
+  author    = {Xue Bin Peng and Angjoo Kanazawa and Jitendra Malik and Pieter Abbeel and Sergey Levine},
+  title     = {SFV: Reinforcement Learning of Physical Skills from Videos},
+  journal   = {ACM Transactions on Graphics (TOG)},
+  year      = {2018}
+}
+
+
+@inproceedings{winkler2022questsim,
+  author    = {Alexander Winkler and Jungdam Won and Yuting Ye},
+  title     = {QuestSim: Human Motion Tracking from Sparse Sensors with Simulated Avatars},
+  booktitle = {SIGGRAPH Asia Conference Papers (SA Conference Papers)},
+  year      = {2022}
+}
+
+@misc{li2021learn,
+      title={Learn to Dance with AIST++: Music Conditioned 3D Dance Generation}, 
+      author={Ruilong Li and Shan Yang and David A. Ross and Angjoo Kanazawa},
+      year={2021},
+      eprint={2101.08779},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+@misc{kobayashi2023motion,
+      title={Motion Capture Dataset for Practical Use of AI-based Motion Editing and Stylization}, 
+      author={Makito Kobayashi and Chen-Chieh Liao and Keito Inoue and Sentaro Yojima and Masafumi Takahashi},
+      year={2023},
+      eprint={2306.08861},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+@misc{yin2025smplest,
+  author       = {Wanqi Yin and Zhongang Cai and Ruisi Wang and Ailing Zeng and Chen Wei and Qingping Sun and Haiyi Mei and Yanjun Wang and Hui En Pang and Mingyuan Zhang and Lei Zhang and Chen Change Loy and Atsushi Yamashita and Lei Yang and Ziwei Liu},
+  title        = {{SMPLest-X}: Ultimate Scaling for Expressive Human Pose and Shape Estimation},
+  year         = {2025},
+  eprint       = {2501.09782},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CV}
+}
+
+@misc{zhang2024plug,
+  author       = {Zhang, Youliang and Li, Ronghui and Zhang, Yachao and Pan, Liang and Wang, Jingbo and Liu, Yebin and Li, Xiu},
+  title        = {A Plug-and-Play Physical Motion Restoration Approach for In-the-Wild High-Difficulty Motions},
+  year         = {2024},
+  eprint       = {2412.17377},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CV}
+}
+
+
+@inproceedings{shen2024gvhmr,
+  author    = {Zehong Shen and Huaijin Pi and Yan Xia and Zhi Cen and Sida Peng and Zechen Hu and Hujun Bao and Ruizhen Hu and Xiaowei Zhou},
+  title     = {World-Grounded Human Motion Recovery via Gravity-View Coordinates},
+  booktitle = {SIGGRAPH Asia Conference Papers (SA Conference Papers)},
+  year      = {2024}
+}
+
+@inproceedings{jiang2023drop,
+  author    = {Yifeng Jiang and Jungdam Won and Yuting Ye and C. Karen Liu},
+  title     = {DROP: Dynamics Responses from Human Motion Prior and Projective Dynamics},
+  booktitle = {SIGGRAPH Asia Conference Papers (SA Conference Papers)},
+  year      = {2023}
+}
+
+@article{SMPL:2015,
+      author = {Loper, Matthew and Mahmood, Naureen and Romero, Javier and Pons-Moll, Gerard and Black, Michael J.},
+      title = {{SMPL}: A Skinned Multi-Person Linear Model},
+      journal = {ACM Transactions on Graphics (TOG)},
+      year = {2015}
+}
+
+%% 2.2 
+@article{
+	2018-TOG-deepMimic,
+	author = {Peng, Xue Bin and Abbeel, Pieter and Levine, Sergey and van de Panne, Michiel},
+	title = {DeepMimic: Example-guided Deep Reinforcement Learning of Physics-based Character Skills},
+	journal = {ACM Transactions on Graphics (TOG)},
+	year = {2018}
+} 
+
+@misc{wang2024skillmimic,
+          title={SkillMimic: Learning Reusable Basketball Skills from Demonstrations}, 
+          author={Yinhuai Wang and Qihan Zhao and Runyi Yu and Ailing Zeng and Jing Lin and Zhengyi Luo and Hok Wai Tsui and Jiwen Yu and Xiu Li and Qifeng Chen and Jian Zhang and Lei Zhang and Ping Tan},
+          year={2024},
+          eprint={2408.15270v1},
+          archivePrefix={arXiv},
+          primaryClass={cs.CV}
+      }
+@article{AMP,
+author = {Peng, Xue Bin and Ma, Ze and Abbeel, Pieter and Levine, Sergey and Kanazawa, Angjoo},
+title = {AMP: adversarial motion priors for stylized physics-based character control},
+year = {2021},
+journal = {ACM Transactions on Graphics (TOG)}
+}

@@ -1,0 +1,98 @@
+\section{Additional experimental results}
+\label{sec_add_exp}
+
+\subsection{Generation performance on an additional dataset}
+Since the COCO2017 dataset used in the main experiments contains only 5,000 images, it may lead to slight estimation bias in the FID computation, as FID becomes more reliable with larger sample sizes. To assess the potential misjudgment of model performance caused by limited image numbers, we further evaluated the metrics on a larger dataset, COCO2014, as shown in Table~\ref{tab_supp_coco2014}.
+
+\begin{table}[]
+\centering
+\caption{Evaluation on the larger COCO2014 dataset (compared to COCO2017 in the main text). 
+The results demonstrate that the improvements brought by our method remain consistent and significant across datasets.}
+\setlength{\tabcolsep}{5.5mm}{
+\resizebox{0.7\columnwidth}{!}{%
+\begin{tabular}{@{}llc|cc@{}}
+\toprule
+\textbf{Model} & \textbf{Method} &  & \textbf{FID}$\downarrow$ & \textbf{CLIP-Score}$\uparrow$ \\ 
+\midrule
+\multirow{2}{*}{LlamaGen~\cite{sun2024llamagen}} 
+ & Baseline &  & 13.37 & \textbf{0.2561} \\
+ & Ours     &  & \textbf{11.59} & 0.2560 \\ 
+\midrule
+\multirow{2}{*}{Meissonic~\cite{bai2024meissonic}} 
+ & Baseline &  & 44.54 & 0.2567 \\
+ & Ours+Mask &  & \textbf{38.95} & \textbf{0.2590} \\ 
+\midrule
+\multirow{2}{*}{STAR~\cite{ma2024star}} 
+ & Baseline &  & 24.86 & 0.2581 \\
+ & Ours+Scale &  & \textbf{22.09} & \textbf{0.2598} \\ 
+\midrule
+\multirow{2}{*}{Lumina-mGPT~\cite{liu2024lumina_mgpt}} 
+ & Baseline &  & 18.23 & 0.2641 \\
+ & Ours &  & \textbf{16.16} & \textbf{0.2659} \\ 
+\bottomrule
+\end{tabular}
+}}
+\label{tab_supp_coco2014}
+\vspace{-3mm}
+\end{table}
+
+\subsection{Effect of random seeds on model performance}
+
+Due to the autoregressive nature of our model, each token is sampled from a probability distribution, making the generated images sensitive to random seeds. Specifically, we observed that metrics such as FID, CLIP-Score, DPG, and HPS may vary with different random seeds.
+To further analyze this effect, we randomly selected 10 seeds from the range $[0, 1e6]$, ran the generation model 10 times under these conditions, and computed the mean and standard deviation of the results. As shown in the table below, random seeds have little impact on the performance gain introduced by our method, further confirming the robustness and effectiveness of our approach. See Table~\ref{tab_supp_rand_seed}.
+
+
+\begin{table}[h]
+\centering
+\setlength{\abovecaptionskip}{0.1cm}
+\setlength{\belowcaptionskip}{0.1cm}
+\caption{Mean and standard deviation over 10 random seeds. Our method consistently outperforms the baseline with statistically significant improvements.}
+\setlength{\tabcolsep}{2mm}{
+\resizebox{1.0\columnwidth}{!}{%
+\begin{tabular}{l|cc|cc|cc}
+\toprule
+%\hline
+     & \multicolumn{2}{c|}{LlamaGen}        & \multicolumn{2}{c|}{Meissonic} & \multicolumn{2}{c}{STAR} \\ \cline{2-7} 
+     & Baseline                     & Ours & Baaseline        & Ours       & Baseline      & Ours     \\ \hline
+FID$\downarrow$  & 21.79 $\pm$ 0.16 & 20.24 $\pm$ 0.08      & 53.31 $\pm$ 0.33 & 48.18 $\pm$ 0.29            & 35.48 $\pm$ 0.29 & 33.12 $\pm$ 0.49          \\
+CLIP$\uparrow$ & 25.95 $\pm$ 0.02 & 25.95 $\pm$ 0.03      & 25.30 $\pm$ 0.02 & 25.62 $\pm$ 0.03            & 25.47 $\pm$ 0.02 & 25.63 $\pm$ 0.03          \\
+DPG$\uparrow$  & 43.74 $\pm$ 0.34 & 48.87 $\pm$ 0.32      & 64.07 $\pm$ 0.13 & 66.91 $\pm$ 0.17          & 70.28 $\pm$ 0.12 & 70.40 $\pm$ 0.11          \\
+HPS$\uparrow$  & 21.23 $\pm$ 0.03 & 21.40 $\pm$ 0.04      & 29.33 $\pm$ 0.03 & 30.06 $\pm$ 0.02            & 28.70 $\pm$ 0.08 & 29.07 $\pm$ 0.11          \\ %\hline
+\bottomrule
+\end{tabular}
+}}
+\label{tab_supp_rand_seed}
+\vspace{-3mm}
+\end{table}
+
+
+\subsection{Entropy $\&$ top-$p$ and temperature}
+In the main text, we analyze the relationship between our entropy-based sampling strategy and existing sampling parameters such as CFG and top-$K$. By combining our method with these parameters, we observe improved robustness, reducing sensitivity to hyperparameter choices and yielding better FID and CLIP-Score. Here, we further examine other sampling parameters—top-p and temperature—which are rarely used in autoregressive models due to their tendency to distort the output distribution and severely degrade either FID or CLIP-Score. Comparative results between our method and the baseline are shown in Fig.~\ref{fig_supp_ab_param_2}.
+
+\input{figs/supp/ab_param_2}
+
+\subsection{Additional comparison with top-$K$ and CFG}
+In Sec.~4.4 of the main paper, we discussed the differences between our method and existing sampling strategies (Top-$K$ and CFG) using LlamaGen. Here, we provide additional comparisons on other models to analyze the relationship between entropy-aware temperature and these conventional sampling approaches, results are presented in Fig.~\ref{fig_supp_ab_param_meissonic} and Fig.~\ref{fig_supp_ab_param_star}.
+Consistent with our observations in Sec. 4.4 in maintext, the proposed strategy mitigates performance fluctuations caused by hyperparameter choices (e.g., CFG and top-K), leading to a better balance between fidelity and text-image alignment.
+
+\input{figs/supp/ab_param_meissonic}
+\input{figs/supp/ab_param_star}
+
+% 对于
+\subsection{Additional evaluation of performance regarding temperature}
+In the main text, we analyzed how adjusting the sampling temperature of tokens in different entropy ranges affects the generation quality for LlamaGen. Here, we further extend the study to more models. See Fig.~\ref{fig_supp_ab_temperature_star}.
+
+\begin{figure*}[h]
+\setlength{\abovecaptionskip}{0.1cm}
+\setlength{\belowcaptionskip}{0.1cm}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figs/supp/files/add_plot_fid_clip_tradeoff_entropy_star.pdf}
+% \fbox{\rule{0pt}{2in} \rule{1\linewidth}{0pt}}
+\end{center}
+% \vspace{-3mm}
+\caption{
+Varying temperature by entropy range affects FID and CLIP score: lower-entropy tokens benefit from higher temperatures, and vice versa. Experiments are conducted on STAR using the COCO2017 validation split by varying temperature across entropy ranges.
+}
+\vspace{-0.3cm}%%压缩图片后间隔
+\label{fig_supp_ab_temperature_star}
+\end{figure*}

@@ -1,0 +1,888 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{lscape}
+\usepackage{fancyhdr}
+\usepackage{afterpage}
+\usepackage{subcaption}
+\usepackage{tikz,pgfplots}
+\usepackage{tcolorbox}
+\usetikzlibrary{external} 
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows.meta}
+\usepackage{lipsum,adjustbox}
+\usepackage[font=small,labelfont=bf]{caption}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\usepackage{amsthm}
+\usepackage{authblk}
+
+
+\title{Task-Level Insights from Eigenvalues across Sequence Models}
+
+\author[1]{\textbf{Rahel Rickenbach}$^*$}
+\author[1,2]{\textbf{Jelena Trisovic}$^*$}
+\author[1]{\textbf{Alexandre Didier}}
+\author[1]{\textbf{Jerome Sieber$^{\dag}$}}
+\author[1]{\textbf{Melanie N. Zeilinger$^{\dag}$}}
+\affil[ ]{\texttt{\{rrahel, tjelena, adidier, jsieber, mzeilinger\}@ethz.ch}}
+\affil[1]{ETH Zurich}
+\affil[2]{ETH AI Center}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\pgfplotsset{compat=1.18}
+\iclrfinalcopy 
+\begin{document}
+
+
+\maketitle
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\footnotetext[1]{Authors contributed equally (shared first authorship).}
+\footnotetext[2]{Authors contributed equally (shared last authorship).}
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\setcounter{footnote}{0}
+\begin{abstract}
+Although softmax attention drives state-of-the-art performance for sequence models, its quadratic complexity limits scalability, motivating linear alternatives such as state space models (SSMs).
+While these alternatives improve efficiency, their fundamental differences in information processing remain poorly understood. In this work, we leverage the recently proposed dynamical systems framework to represent softmax, norm and linear attention as dynamical systems, enabling a structured comparison with SSMs by analyzing their respective eigenvalue spectra. 
+Since eigenvalues capture essential aspects of dynamical system behavior, we conduct an extensive empirical analysis across diverse sequence models and benchmarks. We first show that eigenvalues influence essential aspects of memory and long-range dependency modeling, revealing spectral signatures that align with task requirements. Building on these insights, we then investigate how architectural modifications in sequence models impact both eigenvalue spectra and task performance.  This correspondence further strengthens the position of eigenvalue analysis as a principled metric for interpreting, understanding, and ultimately improving the capabilities of sequence models.
+\end{abstract}
+
+\section{Introduction}
+
+
+Deep sequence models have emerged as the backbone of modern artificial intelligence applications, demonstrating remarkable capabilities through their ability to learn complex patterns in large-scale datasets~\citep{bommasani2021opportunities}. The transformer~\citep{Transformer}, with softmax attention as its backbone, has been the dominant paradigm driving these advances. However, its quadratic complexity with respect to sequence length represents a critical bottleneck, limiting the practical deployment of these models for long-context applications~\citep{Tay2021}. To address this limitation, numerous linear attention variants, including state space models (SSMs), have been proposed, which achieve linear complexity while attempting to preserve the expressive capabilities of softmax attention~\citep{Katharopoulos2020,Gu2022,s5,Orvieto2023, mamba2,xlstm,schlag2021linear}. Despite these advances, a fundamental question remains: \textit{how do different model classes process and retain information?} The recently proposed dynamical systems framework (DSF)~\citep{sieber2024understanding} provides a unified perspective for analyzing masked attention and its linear alternatives as dynamical systems. This framework builds the foundation for this paper, enabling the investigation of the sequence model eigenvalues. This is motivated by the fact that eigenvalues are known to govern the stability, memory retention, and information flow within dynamical systems, yet their empirical behavior in sequence models remains unexplored. While the eigenvalues of the state transition matrix in SSMs  are often explicitly constrained during model design, attention-based models do not impose spectral constraints. Understanding whether characteristic eigenvalue patterns still emerge can reveal (a)  fundamental insights into how different sequence models balance stability, expressiveness, and long-range dependency modeling, and (b) whether the transition of eigenvalues from initialization to the fully trained model aligns with the demands of the task. To achieve this, we leverage the DSF to (i) conduct a comprehensive empirical analysis of eigenvalue spectra across different attention mechanisms and SSMs over a variety of tasks, and (ii) introduce design choices informed by our findings from (i). We then analyze their influence on performance, as well as the corresponding eigenvalue spectra. As a result of the conducted studies, we reveal a link between the eigenvalue distribution and good performance on tasks with specific memory requirements. Specifically, we observe a high concentration of eigenvalues close to one when long memory is important, and similar peaks close to zero when memory selectiveness is required by the task. These insights highlight the potential of the proposed metric as a tool for understanding sequence model behavior and guiding architectural decisions.   
+
+
+\paragraph{Notation:} We denote with $N$ the hidden state size, with $d$ the model size, and with $L$ the sequence length. We use subscripts, e.g., $\cdot_i$, to denote the time index (or input dependency). Specifically, $v_i$ represents the value of vector $v$ at time $i$, and $\abs{v_i}_{\infty}$ its infinity norm. We use $u_i$ to denote the $i$-th input and use bold notation to indicate sequences, i.e., $\mathbf{v}_i=[v_1,\dots,v_i]$, the identity matrix of size $\mathbb{R}^{n \times n}$ is denoted as $\mathbb{I}_n$, and $\bm{\lambda}(A)$ denotes all $n$ eigenvalues of a matrix $A \in \mathbb{R}^{n \times n}$.
+
+\section{Related Work}
+
+The challenge of modeling long-range dependencies has been a central theme in sequence modeling across recurrent, state space, and attention-based approaches. To better understand the strengths and limitations of each model class from the linear system point of view, researchers have so far employed two primary analytical tools: eigenvalue spectra and memory functions.
+
+\paragraph{Eigenvalue-based analyses.}  Eigenvalue spectra provide a principled way to characterize stability, and the relationship between remembering and forgetting, i.e., memory retention, and information decay in dynamical systems. This perspective has a long history in recurrent neural networks (RNNs), where eigenvalue normalization was introduced to mitigate vanishing gradients while preserving controlled memory decay~\citep{helfrich2019eigenvaluenormalizedrecurrentneural}. Later analyses investigated how different eigenvalue spectra encode solutions to temporal tasks, revealing that seemingly diverse eigenvalue distributions can correspond to functionally equivalent memory behaviors~\citep{Jarne_2022}. More recently, similar ideas have been extended to SSMs, where the eigenvalues of the transition matrix are shown to govern stability and memory.  Early works on SSMs studied how careful initialization, motivated by the eigenvalue placement, can provide models with long-range dependency, enabling them to compete with RNNs and transformers on synthetic benchmarks~\citep{Gu2020,Fu2023}. Beyond initialization, subsequent works focused on structural re-parameterizations. In particular, the eigenvalues of the transition matrix have been shown to play a crucial role in governing the stability and memory length of SSMs~\citep{wang2024stablessmalleviatingcursememory,grazzi2025unlockingstatetrackinglinearrnns}. This perspective directly connects to earlier analyses of RNNs, where eigenvalue spectra determine the decay rates of information. 
+
+\paragraph{Memory function analyses.}A complementary line of work analyzes long-term dependency through the lens of memory functions~\citep{oppenheim1997signals}, which have a strong relation to the eigenvalues of the system. These functions quantify how much influence past inputs have on current outputs, typically formalized via norms of system response functions or spectral measures. For SSMs, memory functions provide a principled way to characterize expressivity and effective memory horizons~\citep{wang2023state}. For RNNs, memory functions are used to prevent rapid decay of state memory~\citep{Su_2019}.
+
+In attention-based architectures, however, analyses have largely focused on mechanisms for extending memory. Early work demonstrated that even simple feed-forward architectures equipped with attention can solve long-memory tasks, outperforming classical recurrent networks~\citep{raffel2016feedforwardnetworksattentionsolve}. Later, augmenting self-attention with persistent memory slots was proposed as a way to extend the memory context~\citep{sukhbaatar2019augmentingselfattentionpersistentmemory}. Other works analyze the statistical properties of the attention score matrices themselves~\citep{bao2024self,bhojanapalli2021eigen}, revealing certain regularities in how attention distributes over inputs. While insightful, these approaches remain tied to the score-matrix formulation and do not naturally translate into a framework that allows systematic comparison with SSMs. By contrast, memory functions have been successfully applied to RNNs and SSMs, but they require architecture-specific design choices and do not generalize easily to linear parameter-varying (LPV) systems, such as attention-based models and Mamba~\citep{mamba2}. The recently proposed DSF addresses this gap by recasting masked attention itself as a dynamical system, thereby making eigenvalue analysis applicable. This unifying perspective enables systematic cross-architectural comparisons of memory behavior, which is leveraged in this work to provide the first comprehensive eigenvalue-based analysis of attention mechanisms, enabling a direct comparison with SSMs. Moreover, casting all these models into the eigenvalue perspective not only unifies their study, but also makes it possible to draw on the vast body of results from linear system theory to analyze and interpret their behavior in order to guide the model design choices.
+
+\section{Preliminaries}
+
+Before presenting our analysis, we detail how the DSF allows for eigenvalue computations of both attention and state space models, and then review the connection between eigenvalues and memory in dynamical systems.
+
+\subsection{The dynamical systems framework}
+The dynamical systems framework \citep{sieber2024understanding} represents \emph{causal} (i.e., masked) attention-based models or SSMs as dynamical systems. A discrete-time dynamical system models how an output $y_i\in\mathbb{R}^d$ is achieved given inputs $u_i\in\mathbb{R}^d$ through an internal hidden state $h_i \in \mathbb{R}^N$, which evolves over time according to a difference equation. In particular, the DSF formulates a sequence model as a discrete-time LPV dynamical system, i.e.,
+\begin{equation}\label{eqn:LTV}
+    h_{i} = \Lambda_{i}h_{i-1} + B_{i}u_{i}, \quad
+    y_i = C_i h_i + D_iu_i,
+\end{equation}
+where $h_i$ is initialized with $h_{-1}=0$, $\Lambda_i \in \mathbb{R}^{N \times N}$ is a diagonal or diagonal plus low rank state transition matrix, $B_i \in \mathbb{R}^{N \times d}$ and $C_i \in \mathbb{R}^{d \times N}$ are the input and output matrices, respectively, and $D_i \in \mathbb{R}^{d \times d}$ is a scaled skip connection. In this formulation, $\Lambda_i, B_i, C_i$ can be input-dependent, e.g., $\Lambda_i = f(u_i)$.
+
+All SSMs investigated in this paper are natively written in the DSF and we can directly analyze their eigenvalues $\bm{\lambda}(\Lambda_i)$. For attention, we follow the reformulation provided in \citep{sieber2024understanding}, which uses the convolutional representation of \eqref{eqn:LTV}, i.e., $\mathbf{y} = \mathbf \Phi \mathbf{u}$, where the convolutional kernel $\mathbf \Phi$ is defined in Appendix~\ref{app:dsf-details}. Note that $\mathbf \Phi$ has the same interpretation as the attention matrix, i.e., $\textrm{softmax}(\mathbf{q}\mathbf{k}^\top)$ for softmax attention. Hence, defining $q_i = W_Qu_i \in \mathbb{R}^m, k_j = W_Ku_j \in \mathbb{R}^m$, with $W_Q \in \mathbb{R}^{m\times d}$, $W_K \in \mathbb{R}^{m\times d}$, and $W_V \in \mathbb{R}^{d\times d}$, and rewriting the latter in the form
+\begin{equation}\label{eq:separable}
+    y_i = \sum_{j=0}^{i} \frac{\phi(q_i)^\top\psi(k_j)}{\eta(q_i, \mathbf{k}_i)} W_V u_j,
+\end{equation}
+where $\phi(\cdot) : \mathbb{R}^m \rightarrow \mathbb{R}^n$, $\psi(\cdot) : \mathbb{R}^m \rightarrow \mathbb{R}^n$, and $\eta(\cdot, \cdot) : \mathbb{R}^m \times \mathbb{R}^{m \times (i+1)} \rightarrow \mathbb{R}$, it has been shown that the transition dynamics $\Lambda_i$ are solely governed by a scalar defined through the normalization terms and can be computed exactly using:
+\begin{align}
+    \Lambda_{i} &= \frac{ \eta(q_{i-1}, \mathbf{k}_{i-1})}{ \eta(q_i, \mathbf{k}_i)} \mathbb{I}_{N} \in \mathbb{R}^{N \times N}. \label{eqn:Lambda} 
+\end{align}
+This normalization term then follows as $\eta(q_i, \mathbf{k}_i) = (\mathrm{elu}(q_i) + 1) \sum_{j = 0}^{i}(\mathrm{elu}(k_j) + 1)$ for linear attention \citep{Katharopoulos2020} and as $\eta(q_i, \mathbf{k}_i) = \sum_{j=0}^i \exp(q_i k_j^\top)$ for softmax attention. In both cases, the normalization depends explicitly on the queries and keys. In contrast, norm attention resolves this dependence: its normalization can be defined directly as a general nonlinear function of $u$, for which we adopt the softplus function in our formulation. Interested readers are referred to \citep{sieber2024understanding} for a more detailed discussion of the framework and Appendix~\ref{app:dsf-details} for a more detailed derivation.
+
+
+\subsection{Relationship of Eigenvalues and Memory}
+
+In linear system theory~\citep{kailath1980linear}, the eigenvalues of a system's dynamics matrix are fundamental to understanding the behavior of the system. For a linear system of the form \mbox{$h_{i}=\Lambda_ih_{i-1} + B_i u_i$}, the eigenvalues encode crucial information about the system's memory characteristics. Eigenvalues near zero induce rapid forgetting, i.e., features decay quickly and have minimal influence on future states. Conversely, eigenvalues close to the unit circle of the complex plane\footnote{A discrete-time dynamical system is stable if its eigenvalues are within the unit circle, i.e., $\abs{\bm{\lambda}(\Lambda_i)}_{\infty} \leq 1$. To avoid numerical issues during training, SSMs thus constrain the eigenvalues to the unit circle.} enable long-term memory retention, allowing information to persist across many time steps. The placement of eigenvalues thus directly determines whether a model favors short-term or long-term memory retention.
+
+
+\section{Empirical Study}
+\label{sec:empirical_study}
+To investigate model- and task-specific patterns in the respective eigenvalue distributions, we conduct an ablation study spanning multiple benchmarks. In the DSF, we analyze eigenvalue distributions across different models, tasks, layers, and heads, and investigate whether particular spectral signatures align with the type of memory and processing required, or the performance obtained. 
+
+\subsection{Methodology} 
+\label{subsec:methodology}
+
+\paragraph{Task selection:}
+We select five tasks designed to probe distinct model capabilities. Specifically, we use a subset of the Long Range Arena (LRA) benchmarks \citep{Tay2021}, consisting of (i) \textit{Long ListOps}, which tests reasoning over deeply nested structures where every token in the input sequence is essential; (ii) \textit{Byte-level text classification} (IMDb), which evaluates compositional generalization and the ability to process long natural-language sequences with sparse informative signals; and (iii) \textit{Image classification from pixel sequences} (CIFAR-10), which emphasizes learning sparse local and global spatial relationships.
+
+In addition, we include (iv) the \textit{MQAR} task \citep{zoology2023}, which requires associative recall, stressing a model’s ability to retain and retrieve specific elements of the input sequence with high fidelity, as well as (v) the next token prediction task on \textit{WikiText-103} \citep{merity2016pointer} dataset, which underscores the models capabilities relevant for natural language processing. Together, these tasks capture a spectrum of challenges: long-context reasoning, compositionality, spatial structure learning, and selective memory. 
+
+\paragraph{Model selection:} We evaluate six representative architectures: two linear time-invariant (LTI) SSMs (S4 \citep{S4} and LRU \citep{LRU}), one LPV SSM (Mamba-2 \citep{mamba2}), and three causal attention mechanisms (softmax attention~\citep{Transformer}, norm attention~\citep{sieber2024understanding} and linear attention~\citep{Katharopoulos2020}). To ensure a fair comparison, for each task we fix the overall architecture and tune the remaining hyperparameters to achieve competitive performance relative to the best known baselines. The complete training details are provided in Appendix~\ref{app:exp-details}.
+
+\subsection{Results and Discussion}
+
+Task performance and the corresponding eigenvalue distributions for all models are shown in Figure~\ref{fig:main_plot} (for complex eigenvalues, magnitudes are reported). Since the eigenvalues of Mamba-2 and attention-based models depend on the input, we compute them over a batch of test data and report the batch-averaged distributions (for task-specific batch sizes, see Appendix~\ref{app:exp-details}). For multi-headed models, we present results from a single head; remaining heads and additional random seeds are reported in Appendix~\ref{app:additional_results}. Based on our observations, we make the following statement:
+
+\begin{tcolorbox}[width=\linewidth, sharp corners=all, colback=white!95!black]
+Eigenvalues capture essential aspects of
+stability, memory, and long-range dependency modeling, not only for LTI SSMs, but also LPV models and attention mechanisms. In other words, downstream task requirements are reflected in spectral signatures of eigenvalues.
+\end{tcolorbox}
+
+  \begin {figure} 
+\centering
+\begin{adjustbox}{max height=0.99\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+     \node (pic0) at (-10.0, 25.5) {\includegraphics[width=23cm]
+    {Legend.pdf}};
+    
+    \node (pic1) at (-10.0, 18.4) {\includegraphics[width=24.5cm]
+    {CIFAR-10_head0_all_layers6_seed1919_with_init_all_models_layer_select.pdf}};
+    
+    \node (pic2) at (-10.0, 7.6) {\includegraphics[width=24.5cm]
+    {IMDb_head0_all_layers4_seed1919_with_init_all_models_layer_select.pdf}};
+    
+    \node (pic3) at (-10.0, -3.2) {\includegraphics[width=24.5cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_all_models_layer_select.pdf}};
+
+    \node (pic4) at (-10.0, -14.0) {\includegraphics[width=24.5cm]
+    {WikiText_head0_all_layers6_seed1919_with_init_all_models_layer_select.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\end{figure}
+
+  \begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=0.6]
+
+    \node (pic1) at (-10.0, 18) {\includegraphics[width=19cm]
+    {MQAR_head0_all_layers2_seed1919_with_init_all_models_layer_select.pdf}};
+    
+\end{tikzpicture}
+
+\end{adjustbox}
+\vspace{-0.5em}
+\caption{Eigenvalue distributions for one head, across models, selected layers, and tasks. Bars show the percentage of eigenvalues within discretized ranges (chosen to emphasize eigenvalues near zero and near one). Light and dark bars indicate the distribution at initialization and after training, respectively. Error bars denote standard deviation across input sequences. Model performance, measured as perplexity for WikiText (lower is better) and percentage of correct output sequences for the other tasks (higher is better), is indicated in parentheses. Complete plots for all layers, heads and multiple seeds are provided in Appendix~\ref{app:additional_results}.}
+\vspace{-1.2em}
+ \label{fig:main_plot}
+ \end{figure}
+
+
+ This claim is supported by the conducted ablation study, which shows that task-dependent eigenvalue distributions reveal distinct memory retention and gating behaviors. When long-term memory is critical, we consistently observe a strong concentration of eigenvalues near one, whereas tasks that require selective forgetting exhibit peaks near zero.  This aligns with results derived for LTI SSMs using memory functions \citep{wang2023state} and our assumption rooted in linear system theory, that eigenvalues close to zero induce rapid forgetting, and eigenvalues close to one are responsible for long-term memory. On LRA tasks, which require long-term memory, all well-performing models not only avoid placing eigenvalues close to zero, but show prominent peaks around one, at least in the first layer and often across all layers.  By contrast, attention models distribute eigenvalues both near zero and well above one, which can be interpreted as gating, with low eigenvalues inducing selective forgetting, possibly contributing to poor performance on all LRA tasks. The existence of eigenvalues larger than one could potentially be problematic, as it causes unstable discrete-time dynamics of LPV systems. This might further contribute to the shortcomings of attention on LRA benchmarks. Softmax attention is especially affected: across all spectra, it shows a nearly balanced mix of very low and very high eigenvalues, which can be detrimental, particularly on CIFAR-10, and to a lesser degree on IMDb, where the gating effect is less pronounced. An extreme example of an LRA task is ListOps, where every token is crucial. Here, we find that all models, including attention, avoid placing eigenvalues close to zero. It is interesting that this behavior extends to attention models, despite the fact that their eigenvalues are not explicitly designed but instead emerge from learned weight matrices and can hence take any value. The fact that attention still avoids near-zero eigenvalues in this setting reinforces our hypothesis linking small eigenvalues to selective forgetting: when forgetting is harmful, the model tries not to, albeit imperfectly. In contrast, Mamba-2, as an LPV SSM, occupies a middle ground: its eigenvalue distribution avoids excessive gating, while still allowing selective placement near zero, enabling competitive performance not only on LRA benchmarks but also on MQAR and WikiText. There, selective forgetting proves beneficial, since only highly specific information needs to be retained. LTI SSMs, by comparison, rarely place any eigenvalues close to zero, and consistently underperform attention on both of these tasks.
+
+In LTI SSMs, eigenvalue placement is known to influence training stability \citep{LRU, Gu2020}, yet our analysis suggests that the initial eigenvalue configuration is not preserved during training and therefore cannot fully explain the final eigenvalue distributions. For instance, S4 is initialized with eigenvalues having the magnitude primarily in the range $(0.5,1)$, but this distribution consistently shifts towards a sharp concentration around~$1$ across tasks and layers. LRU, though also initialized close to~$1$, often drifts away from the initialization, most notably on ListOps and CIFAR-10. A similar departure from initialization is observed in both Mamba-2 and softmax attention, where the resulting eigenvalue spectra differ substantially from the starting distributions. In contrast, linear attention largely retains the overall shape of its initialization, raising the question of the potential importance of a task-dependent initialization.
+
+\section{Architectural Modifications and Their Spectral Impact}
+
+In this section, we study how architectural modifications shape the eigenvalue spectrum and how these changes correlate with model performance. In particular, we consider five architectural variations: gating, convolution, varying the number of layers, an LTI-inspired version of Mamba-2, and alternative normalization functions in norm attention. In the remainder of this section, we provide details for each modification and the conclusions we draw after investigating its eigenvalue spectra, which can be summarized in the following:
+
+\begin{tcolorbox}[width=\linewidth, sharp corners=all, colback=white!95!black]
+Architectural changes are reflected not only in model performance but also in the eigenvalue spectra of trained models. Such modifications alleviate specific challenges in the underlying dynamical system, freeing capacity for other aspects of sequence modeling, i.e., selective forgetting when convolution is introduced, and memory retention when gating is added. 
+\end{tcolorbox}
+
+
+
+\subsection{Gating}
+
+As discussed in Section \ref{sec:empirical_study}, we observe a correlation between the gating behavior of a model and the selective-memory demands of the task. For example, in ListOps, where all input information is essential, models tend not to perform gating, whereas on other tasks, they exhibit diverse gating strategies with varying success. Motivated by this, we investigate how attention models behave when equipped with an explicit gating mechanism. Following \citet{yang2024gated}, we augment each layer with a gating mechanism: the input to each layer is linearly projected, passed through a SiLU activation, and used to multiplicatively gate the layer’s output. This introduces a learnable, input-dependent modulation that can adaptively control the contribution of each layer to the forward pass.
+
+  \begin {figure}  
+\centering
+\begin{adjustbox}{max height=2\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-13.0, 6.5) {\includegraphics[width=7.95cm]{IMDb_head0_all_layers4_seed1919_with_init_lin_att_compare_gating_conv_layer_select.pdf}};
+
+    \node (pic2) at (-4.9, 6.5) {\includegraphics[width=7.5cm]    {IMDb_head0_all_layers4_seed1919_with_init_sm_att_compare_gating_conv_layer_select.pdf}};
+
+
+    \node (pic3) at (2.8, 6.5) {\includegraphics[width=7.5cm]
+    {IMDb_head0_all_layers4_seed1919_with_init_norm_att_compare_gating_conv_layer_select.pdf}};
+
+    \node (pic5) at (-13.0, -0.5) {\includegraphics[width=7.95cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_lin_att_compare_gating_conv_layer_select.pdf}};
+
+    \node (pic6) at (-4.9, -0.5) {\includegraphics[width=7.5cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_sm_att_compare_gating_conv_layer_select.pdf}};
+
+
+    \node (pic7) at (2.8, -0.5) {\includegraphics[width=7.5cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_norm_att_compare_gating_conv_layer_select.pdf}};
+
+    \node (pic8) at (-13.0, -6.5) {\includegraphics[width=7.95cm]
+    {MQAR_head0_all_layers2_seed1919_with_init_lin_att_compare_gating_conv_layer_select.pdf}};
+
+    \node (pic9) at (-4.9, -6.5) {\includegraphics[width=7.5cm]
+    {MQAR_head0_all_layers2_seed1919_with_init_sm_att_compare_gating_conv_layer_select.pdf}};
+
+
+    \node (pic10) at (2.8, -6.5) {\includegraphics[width=7.5cm]
+    {MQAR_head0_all_layers2_seed1919_with_init_norm_att_compare_gating_conv_layer_select.pdf}};
+
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Comparison of the effects of gating and convolution on the eigenvalue spectra for one head, across selected tasks, models, and layers. Complete plots for all layers and tasks are provided in Appendix~\ref{app:additional_results}. 
+\vspace{-1.5em}}
+  \label{fig:gating_conv}
+\end{figure}
+
+Figure \ref{fig:gating_conv} illustrates that introducing an explicit gating mechanism alleviates the need for the dynamical system to implement gating implicitly, while still allowing it when beneficial. This effect is particularly pronounced on IMDb, where the eigenvalue distribution shifts away from zero, indicating that the dynamical system is primarily leveraged for memory preservation and state space expansion once gating is explicitly handled. Viewed through the lens of our novel metric, this shift reflects a redistribution of eigenvalues away from the selectivity regime (near zero) toward the memory regime (near one). An exception arises on \textit{ListOps}, which does not exhibit low eigenvalues prior to gating but develops them once gating is introduced (see e.g., softmax attention layer 1). This behavior may stem from the task’s unique requirement to preserve all input information without selective suppression, causing explicit gating to interact with the dynamics in an atypical way. Another possibility is that the eigenvalues of the gated model have little influence on performance and can therefore drift freely. The precise mechanism behind this effect remains unclear, and we leave a deeper investigation of this phenomenon to future work. Additionally, as reported in Section~\ref{sec:empirical_study}, models that perform extensive gating exhibit decreased performance on CIFAR-10, an effect that is also observed when softmax and linear attention models are augmented with gating in Appendix~\ref{app:additional_results}.
+
+\subsection{Convolution} 
+
+Motivated by the strong performance of Mamba-2 on LRA, MQAR, and WikiText, we adapt attention models to more closely mirror its architecture. Specifically, we prepend each layer with a 1D convolution along the sequence dimension, applied to all hidden channels with kernel size $d_{\text{conv}}$ and appropriate padding to preserve length. This lightweight operation introduces local interactions among neighboring tokens prior to the main transformation, thereby enriching the input with short-range contextual information.
+
+
+
+
+
+Introduction of convolution causes a shift in the eigenvalue spectrum, with eigenvalues occurring more frequently near zero and less frequently near one (see e.g., softmax attention on IMDb in Figure \ref{fig:gating_conv}). Since, according to linear system theory, eigenvalues close to one correspond to slowly decaying modes that preserve information, while those near zero correspond to rapidly vanishing modes, this change in spectral distribution indicates that convolution alleviates the task of maintaining long-term memory in the recurrent dynamics by providing local context directly. Consequently, the dynamical system allocates a larger portion of its capacity to selective processing. This change in the eigenvalues aligns with consistent performance gains on tasks requiring selective memory, underscoring a link between introducing convolution, spectral structure, and task-level outcomes. The only exceptions arise in linear attention and the \textsc{ListOps} task, where exhaustive memory preservation remains critical and the benefits of selectivity diminish.
+
+\subsection{Varying the Number of Layers} 
+
+\begin {figure}[h] 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+        
+    \node (pic1) at (-13.0, 10.5) {\includegraphics[width=7.95cm]
+    {MQAR_head0_layer1_seed1919_with_init_mamaba_2_compare_mqar_layers_new.pdf}};
+
+    \node (pic2) at (-5.25, 10.5) {\includegraphics[width=7.55cm]
+    {MQAR_head0_layer1_seed1919_with_init_sm_att_compare_mqar_layers_new.pdf}};
+
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distribution comparison for single-layer Mamba-2 and softmax attention models with and without convolution on MQAR. Results for one out of four heads are shown.
+}
+ \label{fig:num_layers}
+\end{figure}
+
+Given the observation suggesting that a layer-dependent task division for softmax attention is present in Figure~\ref{fig:main_plot}), we investigate the effect of varying the number of layers on MQAR task. Specifically, when using two layers, the second layer exhibits clear gating-like behavior, following a first layer characterized by stronger memory retention. Prior work~\citep{okpekpe2025recalling} hypothesizes that, in single-layer models, attention undergoes a phase transition where it attempts to form induction heads, but the model lacks sufficient expressivity to fully exploit this mechanism, requiring greater depth to do so~\citep{sanford2024one}. Adding convolution in that study alleviates this limitation and enables task completion. 
+
+Building on this insight and our observation that adding convolution relieves the dynamical model of the task of memory retention, we aim to explain these phenomena by analyzing the corresponding eigenvalue spectra shown in Figure \ref{fig:num_layers}. These provide a quantitative view of memory retention and gating dynamics.
+As expected, with convolution offloading memory retention, both single-layer softmax attention and Mamba-2 successfully learn the task, despite not being able to do it with one layer otherwise. In this setting, the sole role assumed by the dynamical system is gating, highlighting how architectural modifications can reallocate functional responsibilities across layers and how this is directly reflected in the eigenvalue distributions.
+
+
+\subsection{Normalization of Norm Attention} 
+
+  \begin {figure}[h] 
+\centering
+\begin{adjustbox}{max height=0.7\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-13.0, 10.5) {\includegraphics[width=7.95cm]
+    {CIFAR-10_head0_all_layers6_seed1919_with_init_norm_att_init_compare_no_elu_new.pdf}};
+
+    \node (pic2) at (-5.25, 10.5) {\includegraphics[width=7.55cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_norm_att_init_compare_no_elu_new.pdf}};
+
+
+    \node (pic3) at (-0.3, 10.5) {\includegraphics[width=2.23cm]
+    {CIFAR-10_head0_all_layers6_seed1919_with_init_pseudo_lti_new.pdf}};
+
+    \node (pic4) at (2.0, 10.5) {\includegraphics[width=2.23cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_pseudo_lti_new.pdf}};
+
+
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions on CIFAR-10 and ListOps for one of the heads for: (left, with white background) norm attention with  convolution and different normalization functions; (right, with grey background) Mamba-2 as LTI. Complete plots for all layers and tasks are provided in Appendix~\ref{app:additional_results}.
+}
+    \label{fig:normalization}
+\end{figure}
+
+
+
+In the norm attention model, we systematically replace the normalization function to test its influence on the distribution of the eigenvalues, and whether the incurred changes affect the model performance, according to the findings in Section \ref{sec:empirical_study}. Specifically, for norm attention with explicit convolution, we substitute the original \texttt{softplus} normalization with two alternatives: \texttt{exponential} and \texttt{sigmoid}, as each choice affects the range of the normalized values differently. 
+
+
+As illustrated by Figure \ref{fig:normalization}, different normalization functions lead to different eigenvalue distributions, reflecting trade-offs between memory and selectivity. Exponential normalization places eigenvalues that promote selectivity, sigmoid keeps them close to one, emphasizing memory retention, and softplus exhibits an intermediate pattern combining both regimes. While these distributions are generally maintained during training, certain tasks, e.g., ListOps, show that exponential normalization can converge to a configuration that implies memory retention. Furthermore, the gating behavior induced by exponential normalization on CIFAR-10 results in a substantial performance drop, consistent with our observation in Section~\ref{sec:empirical_study} 
+that this task is adversely affected by gating.
+
+\subsection{Mamba-2 as a Pseudo-LTI} 
+
+Motivated by the strong performance of SSMs with LTI structure on LRA tasks, and by the high variance observed in input-dependent eigenvalues (particularly pronounced in Mamba-2 on ListOps), we construct a pseudo-LTI variant of Mamba-2. Concretely, we modify the discretization step so that the state matrix $\Lambda$ is computed with respect to a fixed sampling interval, rather than an input-dependent one. This ensures that $\Lambda$ remains constant across inputs, while allowing input-dependencies to be absorbed into the input matrix $B$.
+% variance as motivation
+
+According to Figure \ref{fig:normalization}, this modification of Mamba-2 yields a behavior analogous to S4, both in performance on ListOps and eigenvalue distribution, with all eigenvalues remaining close to one, while the time-varying dynamics are assumed to be captured through the input matrix $B$. More fine-grained plots are provided in Appendix~\ref{app:additional_results}, revealing that eigenvalues still shift from their initial distribution, though only within a narrow range.
+ 
+
+\section{Conclusion}
+
+Across diverse sequence modeling benchmarks, we leveraged a unified dynamical systems representation of SSMs and attention to conduct an extensive empirical analysis of eigenvalue distributions. This study revealed characteristic eigenvalue distributions distinguishing attention models from their linear counterparts and demonstrated the efficacy of eigenvalues in capturing essential aspects of selectivity and memory retention. We also identified correlations between spectral properties and task requirements or model selection. Furthermore, we highlighted how architectural modifications, such as gating, convolution, and layer variations, manifest in the eigenvalue spectrum. Taken together, our results show that eigenvalue analysis may serve as a systematic method for understanding the capabilities of sequence models on a given task, opening up new possibilities for initialization schemes and architectural design choices that encourage spectral properties well-suited to particular tasks.
+
+\paragraph{Limitations:}
+
+While analyzing the eigenvalues of the state space interpretation reflects effects of several architectural changes, other components of these models also shape their behavior, and a complete understanding requires further investigation. Additionally, we analyze eigenvalue magnitudes within predefined bins, but finer-grained analyses may provide supplementary insights. Extending these analyses to capture the full complexity of model dynamics, as well as other choices, such as positional embeddings, represents an important direction for future research.
+
+\section*{Reproducibility Statement}
+
+We have made efforts to ensure the reproducibility of our results. The eigenvalue computations follow the procedure described in the DSF paper~\citep{sieber2024understanding}, with full derivation and computation details referenced therein. In Appendix~\ref{app:exp-details}, we provide training configurations, hyperparameter choices, and experimental settings, together with additional clarifications of our methodology. Furthermore, all datasets used are standard benchmarks,  and are also described in Appendix~\ref{app:exp-details}. The code is available at \url{https://github.com/IntelligentControlSystems/Task-Level-Insights-from-Eigenvalues-across-Sequence-Models}. 
+
+\section*{Funding Acknowledgement}
+
+This research was supported by the ETH AI Center through an ETH AI Center doctoral/postdoctoral fellowship to Jelena Trisovic.
+
+
+% \section*{Acknowledgement of AI-assisted Tools}
+
+% This paper has benefited from AI-assisted editing tools used for grammar and style polishing.
+
+
+\bibliography{main}
+\bibliographystyle{iclr2026_conference}
+
+\newpage
+
+\section*{Appendix}
+\appendix
+\section{Additional Details on the DSF}
+\label{app:dsf-details}
+The LPV dynamics~\eqref{eqn:LTV} can also be written in a convolutional representation, i.e., $\mathbf{y} = \mathbf \Phi \mathbf{u}$, where the kernel $\mathbf \Phi$ is defined as
+\begin{equation}\label{eq:conv-LTV}
+    \mathbf \Phi = \begin{bmatrix}
+        C_0B_0 + D_0 & & & \\ C_1\Lambda_1B_0 & C_1B_1 + D_1 &  &  \\ \vdots & \ddots & \ddots & \\ C_L\prod_{k=1}^{L} \Lambda_k B_0 & \dots & C_L\Lambda_{L}B_{L-1} & C_LB_L + D_L
+    \end{bmatrix}.
+\end{equation}
+Note that the kernel $\mathbf \Phi$ has the same dimensions as the attention matrix, i.e., $\textrm{softmax}(\mathbf{q}\mathbf{k}^\top)$ for softmax attention, and that the two matrices are equivalent, up to a scaling factor $W_V$. Using Lemma~1 in \citet{sieber2024understanding}, all considered masked attention can be written in the form given by~\eqref{eqn:LTV} as
+\begin{subequations}\label{eqn:dsf_attention}
+\begin{align}
+    \Lambda_{i} &= \frac{ \eta(q_{i-1}, \mathbf{k}_{i-1})}{ \eta(q_i, \mathbf{k}_i)} \mathbb{I}_{N} \in \mathbb{R}^{N \times N}, \label{eqn:Lambda_app} \\
+    B_i &= \left(\frac{1}{\eta(q_{i-1}, \mathbf{k}_{i-1})} \mathbb{I}_d \otimes \psi(k_j)\right) W_V \in \mathbb{R}^{N \times d}, \\
+    C_i &= \mathbb{I}_d \otimes \phi(q_i)^\top \in \mathbb{R}^{d \times N},
+\end{align}
+\end{subequations}
+where $\otimes$ denotes the Kronecker product and the transition dynamics $\Lambda_i$ are solely governed by a scalar defined through normalization terms in \eqref{eqn:Lambda_app}. The detailed derivation of softmax attention as an LPV system are provided in~\cite[Appendix~B]{sieber2024understanding}.
+
+
+\section{Experimental Details}
+\label{app:exp-details}
+
+This section contains details about experimental results provided in Section~\ref{sec:empirical_study}. The experiments were performed  on the long range arena~(LRA) benchmark~\citep{Tay2021}, the multi-query associative recall~(MQAR) benchmark~\citep{zoology2023} and the WikiText benchmark~\citep{merity2016pointer}. To obtain these results, we combined the  LRA\footnote{\url{https://github.com/google-research/long-range-arena}} and Zoology\footnote{\url{https://github.com/HazyResearch/zoology}} code bases. 
+
+\paragraph{Model Details}
+We evaluate the following three architecture classes on all tasks:
+\begin{enumerate}
+    \item \textbf{Attention:} softmax attention~\citep{Transformer}, linear attention~\citep{Katharopoulos2020} and norm-attention~\citep{sieber2024understanding}. In all three settings, we employ a standard GPT-2–style multi-headed Transformer, where the attention block is replaced by the respective attention mechanism. Each attention block is followed by a task-dependent multi-layer perceptron. For fairness, all three variants share the same overall architecture and hyperparameters, differing only in the attention function, learning rate, dropout, and batch size. Furthermore, softmax and linear attention use learnable positional token embeddings, while norm attention does not.
+    \item \textbf{Linear parameter-varying state space models:} Mamba-2~\citep{mamba2}. We use the same GPT-2 style multi-headed Transformer backbone with learnable token embeddings but no positional encoding, substituting the attention block with the SSD block, where we additionally apply a 1D short-convolution, with a filter of dimension 4 across sequence length to the input of each layer. The implementation follows the official codebase.\footnote{\url{https://github.com/state-spaces/mamba}}
+    \item \textbf{Linear time-invariant state space models:} S4~\citep{S4} and LRU~\citep{LRU}. We use one-hot encoding of the input, followed by a stacked encoder model architecture, which consists of a linear encoder followed by SSM blocks corresponding to the specific model. We adapt the S4\footnote{\url{https://github.com/state-spaces/s4}} and unofficial LRU\footnote{\url{https://github.com/NicolasZucchet/minimal-LRU}} code bases and integrate them into our framework. To ensure a fair comparison, we keep the architecture and all hyperparameters of both models constant, except for the learning rate, dropout and batch size.
+\end{enumerate}
+
+All models are trained and evaluated over five different tasks (3 LRA tasks, MQAR and WikiText-103), while their architectures were fixed for each task (with the architecture details provided in Table~\ref{tab:architecture}), with the aim to keep the models comparable in size. In the remainder of the section, we provide task-wise details of experiments.
+
+\subsection{LRA experiments}
+\paragraph{Training details}
+
+As outlined in Section \ref{subsec:methodology}, we restrict our experiments to a subset of LRA tasks: CIFAR-10, IMDb, and ListOps. For all LRA experiments, we follow the training protocol below:
+\begin{itemize}
+    \item \textbf{Optimizer and schedule:} Linear warmup with cosine annealing and AdamW optimizer~\citep{adamw}, trained for a constant number of epochs per task, as indicated in Table \ref{tab:architecture}.
+    \item \textbf{Position information:} Positional embeddings~\citep{Brown2020} are used only for linear and softmax attention.
+    \item \textbf{Data:} Each model is trained on the subset of standard datasets from the LRA benchmark, summarized below; full details can be found in~\citep{Tay2021}.
+    \begin{enumerate}
+    \item Long List Operations (\texttt{ListOps}): This benchmark tests a model’s ability to handle hierarchical dependencies across long input sequences. The task involves predicting the outcome of mathematical expressions built from nested \emph{mean}, \emph{median}, \emph{max}, and \emph{min} operations.\footnote{For instance, $\texttt{input: max(4, 3, min(2, 3), 1, 0, median(1, 5, 8, 9, 2)},$ $\texttt{output:  5}.$} It is framed as a ten-class classification problem, with input lengths of up to 2k tokens. 
+    \item Byte-Level Text Classification  (\texttt{IMDb}): This task measures a model’s ability to identify sentiment in long tokenized texts. The dataset is composed of IMDb movie reviews, each labeled as either positive or negative. It is formulated as a binary classification problem with input sequences of up to 4k tokens.
+    \item Image Classification from Pixel Sequences (\texttt{CIFAR-10}): This benchmark assesses a model’s capacity to infer 2D spatial structure from linearized pixel sequences. The dataset contains vectorized images belonging to one of ten categories (e.g., horse, car). The task is framed as a ten-class classification problem with input sequences of up to 1k tokens.
+\end{enumerate}
+\end{itemize}
+
+
+\paragraph{Performed Experiments} We run all six models with task-wise parameters given in Table~\ref{tab:architecture} on the described subset of LRA tasks for four different random seeds. For each of the runs, we  provide the eigenvalue distributions in the corresponding figures of the main text and Appendix~\ref{sec:app_D}. Note that we do not optimize the hyperparameters and we use the comparable model sizes to make comparison sensible, and therefore the reported accuracies might be lower than in the original LRA paper~\citep{Tay2021}.
+
+
+\subsection{MQAR experiments}
+\paragraph{Training Details}
+For all MQAR runs, we use the following training protocol:
+\begin{itemize}
+    \item \textbf{Optimizer and schedule:} Linear warmup with duration of 10\% and cosine annealing, with AdamW optimizer~\citep{adamw}. For each run, we sweep the learning rates in $\texttt{logspace}(-4, -2, 4)$ and train for 40 000 steps with a global batch size of $64$. This is the same setup as in~\citep{zoology2023}.
+    \item \textbf{Position information:} Positional embeddings~\citep{Brown2020} are used for linear and softmax attention models only, and not for the SSM architecture classes. This is the same setup as in~\citep{zoology2023}.
+    \item \textbf{Data:} Each model is trained on an MQAR dataset with 100,000 datapoints and evaluated on 3,000 datapoints. This is the same setup as in~\citep{zoology2023}. The data and its order are constant for all runs, with the number of key-value pairs equal to 64 and an input sequence length of 512, corresponding to the most challenging task from~\citep{zoology2023}. 
+\end{itemize}
+
+\paragraph{Performed Experiments} We run all six models on the above-specified MQAR task, for 4 different seeds. For each model, we apply the architecture settings in Table~\ref{tab:architecture} and sweep over the learning rates. We only report the results of the best-performing learning rate in the corresponding figures of the main text and Appendix~\ref{sec:app_D}.
+
+\subsection{WikiText experiments}
+\paragraph{Training Details}
+For all WikiText experiments, we use the following training protocol:
+\begin{itemize}
+    \item \textbf{Optimizer and schedule:} Linear warmup $3000$ steps and cosine annealing, with AdamW optimizer~\citep{adamw}. We train for 130 000 steps with a global batch size of $8$. 
+    \item \textbf{Position information:} Positional embeddings~\citep{Brown2020} are used for softmax and linear attention models only.
+    \item \textbf{Data:} We use Wikitext-103, which contains 103 million tokens extracted from the set of verified articles on Wikipedia. Aside from featuring a large vocabulary, it also retains the original case, punctuation and numbers. Given the fact that it is composed of full articles, this dataset is well-suited for evaluating a model's ability to take advantage of long term dependencies. 
+\end{itemize}
+
+\paragraph{Performed Experiments} We run all models on the above-specified WikiText task for four different seeds. For each model, we apply the architecture settings in Table~\ref{tab:architecture} and  report the results in the corresponding figures of the main text and Appendix~\ref{sec:app_D}.
+
+
+\begin{table}[h]
+ \caption{Common architectures for different tasks. Eval BSZ corresponds to the size of the batch used for the computation of eigenvalues of attention models and Mamba-2. 
+    }
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tabular}{lccccccccccc}
+\toprule
+ & Depth & Model dim $d$ & State dim $N$ & Heads & Mixer dim & Iterations & Eval BSZ \\
+\midrule
+CIFAR-10 & 6 & 512 & 64 &  4 & 128 & 50 epochs &  64\\
+IMDb & 4 & 128 & 64 & 4 & 512 & 30 epochs & 32 \\
+ListOps & 6 & 128 & 64 & 4 & 256 & 50 epochs &  32 \\
+\midrule
+MQAR & 2 & 128 & 128 & 1 & - & 40k steps & 64\\
+\midrule
+WikiText & 6 & 512 & 512 & 8 & 512 & 130k steps & 8\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+    \label{tab:architecture}
+\end{table}
+
+\newpage
+\section{Additional Results}\label{app:additional_results}
+\label{sec:app_D}
+
+With results in the main text being limited to a single head, we leverage this section to extend our empirical analysis to further head dimensions of all investigated multi-head models (Mamba-2 and attention models) and benchmark tasks. Note that since MQAR has been trained with a single head, no further results are displayed in the following. To further strengthen our empirical investigation, we subsequently display results for three additional random seeds, all models, and all benchmark tasks. The overview of all presented results is given below:
+
+\begin{itemize}
+    \item Figure~\ref{fig:main_plot_appendix}: contains all missing layers from Figure~\ref{fig:main_plot};
+    \item Figures~\ref{fig:heads_cifar_plot}- \ref{fig:heads_imdb_plot}: show remaining heads for the same models from Figure~\ref{fig:main_plot} on LRA tasks;
+    \item Figures~\ref{fig:heads_wikitext_plot}- \ref{fig:heads_wikitext_plot2}: show remaining heads for the same models from Figure~\ref{fig:main_plot} on WikiText benchmark;
+    \item Figures~\ref{fig:cifar_seeds1}-\ref{fig:wiki_seeds2}: illustrate eigenvalue spectra for one of the heads over three additional seeds for all models and tasks;
+    \item Figure~\ref{fig:gating_conv_lra_appendix}: comparison of attention models with explicit convolution and gating for one of the heads on LRA tasks (extension of Figure~\ref{fig:gating_conv});
+    \item Figure~\ref{fig:gating_conv_wikitext_appendix}: comparison of attention models with explicit convolution and gating for one of the heads on WikiText benchmark (extension of Figure~\ref{fig:gating_conv})
+        \item Table~\ref{tab:performance} and Figure~\ref{fig:heatmaps}: summarized performance of nominal models from Figure~\ref{fig:main_plot} and the absolute change in performance after introducing the architectural changes (introduction of explicit gating and convolution, as well as the change of normalization function for norm attention);
+    \item 
+    Figure~\ref{fig:norm_init_appendix}: comparison of different normalization functions for norm attention models on all tasks (extension of Figure~\ref{fig:normalization});
+    \item Figure~\ref{fig:gating_conv_mamba2_appendix}: contains eigenvalue distributions for all layers of one of the heads for Mamba-2 pseudo-LTI variation on all LRA tasks (extension of Figure~\ref{fig:normalization}), as well as fine-grained eigenvalue distribution plots showing that the eigenvalues shift after training, though almost negligibly.
+\end{itemize}
+
+The provided figures showcase the robustness of our conclusions and their extension to different seeds, model heads, and tasks not directly provided in the main paper.
+
+All figures make use of the same legend as Figure \ref{fig:main_plot}, once again displayed in Figure \ref{fig:legend}, below. Thereby, bars show the proportion of eigenvalues falling within discretized ranges. Lightly shaded and darker bars indicate the distribution at initialization and after training, respectively. Error bars denote standard deviation across input sequences. Model performance, measured as perplexity for WikiText
+(lower is better) and percentage of correct output sequences for the other (higher is better), is indicated in the parentheses. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\linewidth]{Legend.pdf}
+    \caption{Plot legend of all subsequent figures.  }
+    \label{fig:legend}
+\end{figure}
+
+  \begin {figure} 
+\centering
+\begin{adjustbox}{max height=0.99\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=20cm]
+    {CIFAR-10_head0_all_layers6_seed1919_with_init_all_models_layer_all.pdf}};
+    
+    \node (pic3) at (-10.0, -8) {\includegraphics[width=20cm]
+    {ListOps_head0_all_layers6_seed1919_with_init_all_models_layer_all.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\end{figure}
+
+  \begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=22cm]
+    {IMDb_head0_all_layers4_seed1919_with_init_all_models_layer_all.pdf}};
+    
+    \node (pic3) at (-10.0, -7) {\includegraphics[width=22cm]
+    {WikiText_head0_all_layers6_seed1919_with_init_all_models_layer_all.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions for one head, across all models, layers, and tasks (excluding MQAR).
+}
+  \label{fig:main_plot_appendix}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 8.5) {\includegraphics[width=11.85cm]
+    {CIFAR-10_Head_2_head1_all_layers6_seed1919_with_init_comp_head_2.pdf}};
+
+    \node (pic2) at (1.65, 8.5) {\includegraphics[width=11.3cm]
+    {CIFAR-10_Head_3_head2_all_layers6_seed1919_with_init_comp_head_3.pdf}};
+
+    \node (pic3) at (-4.5, -8.9) {\includegraphics[width=11.85cm]
+    {CIFAR-10_Head_4_head3_all_layers6_seed1919_with_init_comp_head_4.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across remaining heads and all layers for CIFAR-10.}
+ \label{fig:heads_cifar_plot}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 8.5) {\includegraphics[width=11.85cm]
+    {ListOps_Head_2_head1_all_layers6_seed1919_with_init_comp_head_2.pdf}};
+
+    \node (pic2) at (1.65, 8.5) {\includegraphics[width=11.3cm]
+    {ListOps_Head_3_head2_all_layers6_seed1919_with_init_comp_head_3.pdf}};
+
+    \node (pic3) at (-4.5, -8.9) {\includegraphics[width=11.85cm]
+    {ListOps_Head_4_head3_all_layers6_seed1919_with_init_comp_head_4.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across remaining heads and all layers for ListOps.}
+ \label{fig:heads_listops_plot}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 8.5) {\includegraphics[width=11.85cm]
+    {IMDb_Head_2_head1_all_layers4_seed1919_with_init_comp_head_2.pdf}};
+
+
+    \node (pic2) at (1.65, 8.5) {\includegraphics[width=11.3cm]
+    {IMDb_Head_3_head2_all_layers4_seed1919_with_init_comp_head_3.pdf}};
+
+
+    \node (pic3) at (-4.5, -3.9) {\includegraphics[width=11.85cm]
+    {IMDb_Head_4_head3_all_layers4_seed1919_with_init_comp_head_4.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across remaining heads and all layers for IMDb.}
+ \label{fig:heads_imdb_plot}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 8.5) {\includegraphics[width=11.85cm]
+    {WikiText_Head_2_head1_all_layers6_seed1919_with_init_comp_head.pdf}};
+
+    \node (pic2) at (1.65, 8.5) {\includegraphics[width=11.3cm]
+    {WikiText_Head_3_head2_all_layers6_seed1919_with_init_comp_head.pdf}};
+
+    \node (pic3) at (-10.0, -8.9) {\includegraphics[width=11.85cm]
+    {WikiText_Head_4_head3_all_layers6_seed1919_with_init_comp_head.pdf}};
+
+    \node (pic3) at (1.65, -8.9) {\includegraphics[width=11.3cm]
+    {WikiText_Head_5_head4_all_layers6_seed1919_with_init_comp_head.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across 4 additional heads and all layers for WikiText.}
+ \label{fig:heads_wikitext_plot}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 8.5) {\includegraphics[width=11.85cm]
+    {WikiText_Head_6_head5_all_layers6_seed1919_with_init_comp_head.pdf}};
+
+    \node (pic2) at (1.65, 8.5) {\includegraphics[width=11.3cm]
+    {WikiText_Head_7_head6_all_layers6_seed1919_with_init_comp_head.pdf}};
+
+    \node (pic3) at (-4.5, -8.9) {\includegraphics[width=11.85cm]
+    {WikiText_Head_8_head7_all_layers6_seed1919_with_init_comp_head.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across remaining heads and all layers for WikiText.}
+ \label{fig:heads_wikitext_plot2}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=16cm]
+    {CIFAR-10_Seed_2_head0_all_layers6_seed1717_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+    \node (pic3) at (-10.0, -5) {\includegraphics[width=16cm]
+    {CIFAR-10_Seed_3_head0_all_layers6_seed2222_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and two out of three additional random seeds for \mbox{CIFAR-10}.}
+\label{fig:cifar_seeds1}
+\end{figure}
+
+\begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=16cm]
+    {CIFAR-10_Seed_4_head0_all_layers6_seed2929_with_init_all_models_layer_all_seed_sweeps.pdf}};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and one remaining additional random seed for CIFAR-10.}
+\label{fig:cifar_seeds2}
+\end{figure}
+
+
+\begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=16cm]
+    {ListOps_Seed_2_head0_all_layers6_seed1717_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+    \node (pic3) at (-10.0, -5) {\includegraphics[width=16cm]
+    {ListOps_Seed_3_head0_all_layers6_seed2222_with_init_all_models_layer_all_seed_sweeps.pdf}};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and two out of three additional random seeds for ListOps.}
+\label{fig:listops_seeds1}
+\end{figure}
+
+\begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=16cm]
+    {ListOps_Seed_4_head0_all_layers6_seed2929_with_init_all_models_layer_all_seed_sweeps.pdf}};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and one remaining additional random seed for ListOps.}
+\label{fig:listops_seeds2}
+\end{figure}
+
+\begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-10.0, 10.5) {\includegraphics[width=14.2cm]
+    {IMDb_Seed_2_head0_all_layers4_seed1717_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+    \node (pic3) at (-10.0, 1.4) {\includegraphics[width=14.2cm]
+    {IMDb_Seed_3_head0_all_layers4_seed2222_with_init_all_models_layer_all_seed_sweeps.pdf}};
+
+    \node (pic4) at (-10.0, -7.7) {\includegraphics[width=14.2cm]
+    {IMDb_Seed_4_head0_all_layers4_seed2929_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and three additional random seeds for IMDb.}
+\label{fig:imdb_seeds}
+\end{figure}
+
+\begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.88\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 6.5) {\includegraphics[width=16cm]
+    {MQAR_Seed_2_head0_all_layers2_seed1717_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+    \node (pic3) at (-10.0, 0) {\includegraphics[width=16cm]
+    {MQAR_Seed_3_head0_all_layers2_seed2222_with_init_all_models_layer_all_seed_sweeps.pdf}};
+
+    \node (pic4) at (-10.0, -6.5) {\includegraphics[width=16cm]
+    {MQAR_Seed_4_head0_all_layers2_seed2929_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and three additional random seeds for MQAR.}
+\label{fig:mqar_seeds}
+\end{figure}
+
+\begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=16cm]
+    {WikiText_Seed_2_head6_all_layers6_seed1717_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+    \node (pic3) at (-10.0, -5) {\includegraphics[width=16cm]
+    {WikiText_Seed_3_head6_all_layers6_seed2222_with_init_all_models_layer_all_seed_sweeps.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and two out of three additional random seeds for \mbox{WikiText}.}
+\label{fig:wiki_seeds1}
+\end{figure}
+
+\begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.82\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-10.0, 10) {\includegraphics[width=16cm]
+    {WikiText_Seed_4_head6_all_layers6_seed2929_with_init_all_models_layer_all_seed_sweeps.pdf}};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions across models, layers, and one remaining additional random seed for WikiText.}
+\label{fig:wiki_seeds2}
+\end{figure}
+
+  \begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-13.0, 6.5) {\includegraphics[width=7.95cm]{CIFAR-10__Lin_Att_head0_all_layers6_seed1919_with_init_lin_att_compare_gating_conv_layer_all.pdf}};
+
+    \node (pic2) at (-4.9, 6.5) {\includegraphics[width=7.5cm]    {CIFAR-10__Sm_Att_head0_all_layers6_seed1919_with_init_sm_att_compare_gating_conv_layer_all.pdf}};
+
+
+    \node (pic3) at (2.8, 6.5) {\includegraphics[width=7.5cm]
+    {CIFAR-10__Norm_Att_head0_all_layers6_seed1919_with_init_norm_att_compare_gating_conv_layer_all.pdf}};
+
+    \node (pic5) at (-13.0, -4.5) {\includegraphics[width=7.95cm]
+    {IMDb_Lin_Att_head0_all_layers4_seed1919_with_init_lin_att_compare_gating_conv_layer_all.pdf}};
+
+    \node (pic6) at (-4.9, -4.5) {\includegraphics[width=7.5cm]
+    {IMDb_Sm_Att_head0_all_layers4_seed1919_with_init_sm_att_compare_gating_conv_layer_all.pdf}};
+
+
+    \node (pic7) at (2.8, -4.5) {\includegraphics[width=7.5cm]
+    {IMDb__Norm_Att_head0_all_layers4_seed1919_with_init_norm_att_compare_gating_conv_layer_all.pdf}};
+
+    \node (pic8) at (-13.0, -15.5) {\includegraphics[width=7.95cm]
+    {ListOps_Lin_Att_head0_all_layers6_seed1919_with_init_lin_att_compare_gating_conv_layer_all.pdf}};
+
+    \node (pic9) at (-4.9, -15.5) {\includegraphics[width=7.5cm]
+    {ListOps_Sm_Att_head0_all_layers6_seed1919_with_init_sm_att_compare_gating_conv_layer_all.pdf}};
+
+
+    \node (pic10) at (2.8, -15.5) {\includegraphics[width=7.5cm]
+    {ListOps_Norm_Att_head0_all_layers6_seed1919_with_init_norm_att_compare_gating_conv_layer_all.pdf}};
+
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Comparison of the effects of gating and convolution on the eigenvalue spectra for one head, across CIFAR-10, IMDb, and ListOps, the three investigated attention models, and all layers. 
+}
+  \label{fig:gating_conv_lra_appendix}
+\end{figure}
+
+  \begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-13.0, 6.5) {\includegraphics[width=7.95cm]{WikiText_Lin_Att_head0_all_layers6_seed1919_with_init_lin_att_compare_gating_conv_layer_all.pdf}};
+
+    \node (pic2) at (-4.9, 6.5) {\includegraphics[width=7.5cm]    {WikiText_Sm_Att_head0_all_layers6_seed1919_with_init_sm_att_compare_gating_conv_layer_all.pdf}};
+
+
+    \node (pic3) at (2.8, 6.5) {\includegraphics[width=7.5cm]
+    {WikiText_Norm_Att_head0_all_layers6_seed1919_with_init_norm_att_compare_gating_conv_layer_all.pdf}};
+
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Comparison of the effects of gating and convolution on the eigenvalue spectra for one head, WikiText, the three investigated attention models, and all layers.
+}
+  \label{fig:gating_conv_wikitext_appendix}
+\end{figure}
+
+\newpage
+
+\begin{table}[h]
+ \caption{Performance of models across different tasks for the nominal seed shown in Figure \ref{fig:main_plot}.
+ \label{tab:performance}
+    }
+\centering
+\begin{tabular}{lccccccccccc}
+\toprule
+ & S4 & LRU & Mamba-2 & Lin Att & Sm Att & Norm Att &\\
+\midrule
+CIFAR-10 & $\mathbf{89.0}$ & 68.9 & 66.6 &  44.7 & 32.8 & 48.7 \\
+IMDb & 81.5 & 86.1 & $\mathbf{86.8}$ & 63.7 & 62.1 & 66.4 \\
+ListOps & $\mathbf{55.5}$ & 40.1 & 53.9 & 40.9 & 39.7 &  41.5\\
+\midrule
+MQAR & $<1.5$ & $<1.5$ & $\mathbf{>99.0}$ & $<1.5$ &  $\mathbf{>99.0}$ & $<1.5$ \\
+\midrule
+WikiText & $74.3$ & $60.9$ & $40.1$ & $39.5$ &  $\mathbf{34.4}$ & $43.0$\\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.99\linewidth]{heatmaps_all.pdf}
+    \caption{The absolute change in performance after each architectural change across models and tasks. For gating and convolution, the difference is computed in comparison to the nominal models shown in Figure~\ref{fig:main_plot}, whose performance is summarized in Table \ref{tab:performance}. For normalization, the difference is computed with respect to the performance of norm attention with convolution and softplus as normalization function, shown in Figure~\ref{fig:norm_init_appendix}.}
+    \label{fig:heatmaps}
+\end{figure}
+
+\newpage
+
+ \begin {figure} 
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+
+    \node (pic1) at (-10.0, 8.5) {\includegraphics[width=11.85cm]
+    {CIFAR-10_Norm_Att_with_conv_head0_all_layers6_seed1919_with_init_norm_att_init_compare_no_elu_all_layers.pdf}};
+
+    \node (pic2) at (1.65, 8.5) {\includegraphics[width=11.3cm]
+    {ListOps_Norm_Att_with_conv_head0_all_layers6_seed1919_with_init_norm_att_init_compare_no_elu_all_layers.pdf}};
+
+    \node (pic3) at (-10.0, -8.2) {\includegraphics[width=11.85cm]
+    {WikiText_Norm_Att_with_conv_head0_all_layers6_seed1919_with_init_norm_att_init_compare_no_elu_all_layers.pdf}};
+
+    \node (pic6) at (1.65, -5.7) {\includegraphics[width=11.5cm]
+    {IMDb_Norm_Att_with_conv_head0_all_layers4_seed1919_with_init_norm_att_init_compare_no_elu_all_layers.pdf}};
+
+    \node (pic4) at (1.65, -13.95) {\includegraphics[width=11.5cm]
+    {MQAR_Norm_Att_with_conv_head0_all_layers2_seed1919_with_init_norm_att_init_compare_no_elu_all_layers.pdf}};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue distributions for all tasks and one of the heads for norm attention with convolution, using different normalization functions.}
+ \label{fig:norm_init_appendix}
+\end{figure}
+
+  \begin {figure}
+\centering
+\begin{adjustbox}{max height=\textheight, max width=0.98\textwidth}
+\begin{tikzpicture}[scale=1.0]
+    
+    \node (pic1) at (-13.0, 9.5) {\includegraphics[width=7.95cm]{CIFAR-10_Mamba-2_head0_all_layers6_seed1919_with_init_pseudo_lti_all_layeres.pdf}};
+
+    \node (pic2) at (-4.9, 9.5) {\includegraphics[width=7.5cm]    {ListOps_Mamba-2_head0_all_layers6_seed1919_with_init_pseudo_lti_all_layeres.pdf}};
+
+
+    \node (pic3) at (2.9, 11.5) {\includegraphics[width=7.6cm]
+    {IMDb_Mamba-2_head0_all_layers4_seed1919_with_init_pseudo_lti_all_layeres.pdf}};
+
+    \node (pic0) at (-4.9, 1.0) {\includegraphics[width=22.5cm]{Legend_nom_range_full_True.pdf}};
+
+    \node (pic4) at (-13.0, -7.5) {\includegraphics[width=7.95cm]{CIFAR-10_Mamba-2_head0_all_layers6_seed1919_with_init_pseudo_lti_all_layeres_fine_grained.pdf}};
+
+    \node (pic5) at (-4.9, -7.5) {\includegraphics[width=7.5cm]    {ListOps_Mamba-2_head0_all_layers6_seed1919_with_init_pseudo_lti_all_layeres_fine_grained.pdf}};
+
+
+    \node (pic6) at (2.9, -5.5) {\includegraphics[width=7.6cm]
+    {IMDb_Mamba-2_head0_all_layers4_seed1919_with_init_pseudo_lti_all_layeres_fine_grained.pdf}};
+
+    \node (pic0) at (-4.9, -16.0) {\includegraphics[width=22.5cm]{Legend_custom_full_True.pdf}};
+    
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Eigenvalue spectra of Mamba-2 Pseudo LTI, one head, across all layers and LRA models. Standard binning is presented in the top row of plots, followed by a more fine-grained visualization around one. The corresponding legends are provided below the respective plots. 
+}
+  \label{fig:gating_conv_mamba2_appendix}
+\end{figure}
+
+
+
+\end{document}

@@ -1,0 +1,23 @@
+\begin{table*}[t!]
+\centering
+\caption{Robustness analysis under common image perturbations. All models are subjected to varying levels of JPEG compression and Gaussian blur. Results are reported as Acc / AP (\%).}
+\label{tab:robustness_results}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|c|ccc|ccc}
+\toprule
+& & \multicolumn{3}{c|}{\textbf{JPEG Compression}} & \multicolumn{3}{c}{\textbf{Gaussian Blur}} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-8}
+\textbf{Detector} & \textbf{No Degradation} & QF=95 & QF=75 & QF=50 & $\sigma=1.0$ & $\sigma=2.0$ & $\sigma=3.0$ \\
+\midrule
+DNF & \resultscell{71.61}{89.12} & \resultscell{59.83}{72.44} & \resultscell{59.80}{70.77} & \resultscell{50.89}{68.18} & \resultscell{50.89}{44.23} & \resultscell{50.88}{37.10} & \resultscell{41.96}{40.96} \\
+UNIFD & \resultscell{63.38}{72.54} & \resultscell{61.65}{70.18} & \resultscell{61.91}{70.74} & \resultscell{61.38}{70.20} & \resultscell{59.85}{69.26} & \resultscell{59.11}{68.02} & \resultscell{58.38}{66.02} \\
+LASTED & \resultscell{70.35}{57.58} & \resultscell{69.43}{55.94} & \resultscell{69.83}{57.53} & \resultscell{69.14}{55.28} & \resultscell{69.34}{57.68} & \resultscell{69.12}{57.19} & \resultscell{69.82}{57.22} \\
+AIDE & \resultscell{74.49}{86.88} & \resultscell{67.50}{79.20} & \resultscell{66.22}{74.71} & \resultscell{64.77}{70.92} & \resultscell{68.32}{76.47} & \resultscell{67.82}{76.81} & \resultscell{66.66}{75.64} \\
+NPR & \resultscell{74.33}{85.50} & \resultscell{52.30}{53.50} & \resultscell{51.50}{52.50} & \resultscell{51.30}{51.90} & \resultscell{66.30}{72.80} & \resultscell{56.20}{60.20} & \resultscell{54.50}{56.80} \\
+SSP & \resultscell{76.86}{86.72} & \resultscell{52.77}{63.11} & \resultscell{51.32}{55.66} & \resultscell{51.05}{54.83} & \resultscell{57.48}{61.74} & \resultscell{54.49}{58.64} & \resultscell{53.27}{57.47} \\
+\rowcolor{blue!10}
+\textbf{FusionDetect} & \textbf{\resultscell{80.91}{90.43}} & \textbf{\resultscell{80.94}{91.04}} & \textbf{\resultscell{81.03}{91.10}} & \textbf{\resultscell{80.45}{91.08}} & \textbf{\resultscell{80.92}{92.64}} & \textbf{\resultscell{79.32}{92.34}} & \textbf{\resultscell{78.87}{92.00}} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}

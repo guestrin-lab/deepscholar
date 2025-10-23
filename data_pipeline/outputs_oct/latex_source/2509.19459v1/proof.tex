@@ -1,0 +1,323 @@
+\section{Proof}
+
+\begin{theorem}\label{thm:thm1}
+Supposed that function $F$ calls $G(x_1, ..., x_n)$ and some objects are
+escaped and non-clean in the program state of $F$ right before calling
+$G$.  If the \textit{marksObjDirEsc} bit is set in $G$ under the
+calling context, while none of $x_1, ..., x_n$ is escaped and non-clean,
+then this is a robustness violation.
+\end{theorem}
+
+\begin{proof}
+If the \textit{marksObjDirEsc} bit is set in $G$ under the calling
+context, and none of $G$'s parameters is escaped and dirty, then $G$
+must make some object $O$ escaped and dirty, and $O$ is different from
+the objects that are already escaped and dirty before calling $G$ in
+$F$.  Therefore, calling $G$ causes a robustness violation.
+\end{proof}
+
+\begin{theorem}\label{thm:thm2}
+Suppose that function $F$ calls $G(x_1, ..., x_n)$ and no objects are
+escaped and non-clean in the program state of $F$ right before calling
+$G$. Then if calling $G$ causes any robustness violation, the
+violation will be detected while analyzing $G$ with the calling
+context.
+\end{theorem}
+
+\begin{proof}
+Since no objects are escaped and dirty in the program state of $F$
+before calling $G$, the calling context of $G$ has all of its elements
+being $\tuple{\text{captured}, \text{clean}}$.
+So if calling $G$ causes any robustness
+violation in $F$, the violation will be detected while analyzing $G$
+with the calling context.
+\end{proof}
+
+\begin{theorem}\label{thm:thm3}
+Supposed that function $F$ calls $G(x_1, ..., x_n)$ and some objects are
+escaped and non-clean in the program state of $F$ right before calling
+$G$.  Suppose some of $x_1, ..., x_n$ is escaped and non-clean.
+Then if there is a robustness violation caused by calling $G$ from $F$,
+some robustness violation is reported.
+\end{theorem}
+
+\begin{proof}
+Suppose that there is one escaped and dirty object $O$ in the program
+state of $F$ before calling $G$.  Then $O$ must be one of $G$'s
+parameters.  Therefore, the only case that causes a robustness
+violation is where $G$ makes some other object escaped and dirty
+before flushing $O$.  This violation can be detected when analyzing
+$g$ with its calling context.
+
+Now suppose that there are more than one escaped and dirty objects in
+the program state of $F$ before calling $G$.  Without loss of
+generality, assume that there are exactly two such objects $O_1$ and $O_2$.
+Suppose $O_1$ is passed into $G$ while $O_2$ is not.  If $G$ makes any
+object other than $O_1$ escaped and dirty, then this is the same case
+as the previous paragraph.  If $G$ stores to $O_1$, there is a
+robustness violation between the pair $O_1$ and $O_2$. However, a
+robustness violation already exists between the pair before calling
+$G$.
+\end{proof}
+
+\begin{lemma}\label{lemma:esc}
+If a PM location \code{x} is reachable from persistent data structure roots,
+then the escape analysis will mark \code{x} and its alias as escaped.
+\end{lemma}
+
+\begin{proof}
+We will prove the statement for intraprocedural analysis first,
+and then prove for the interprocedural analysis.
+
+\textit{Case 1:}
+If \code{x} is stored to some data structure via \code{*y = x},
+then \code{x} and all elements in its alias set $\AliasMap{(\code{x})}$
+are marked as escaped by the second transfer function
+in Figure~\ref{fig:esctransfer}.
+Furthermore, if \code{x} is later loaded from \code{y}, say \code{a = *y},
+then \code{a} is an alias of \code{x}.
+Note that although \code{a} is not in the alias set $\AliasMap{(\code{x})}$
+of \code{x}, \code{a} is also marked as escaped by
+the third transfer function in Figure~\ref{fig:esctransfer}.
+
+\textit{Case 2:}
+If \code{x} is added to the alias set $\AliasMap{(\code{a})}$
+of some variable \code{a} via \code{a = x}, and
+later \code{a} is made escaped via \code{*y = a},
+then the second transfer function in Figure~\ref{fig:esctransfer}
+marks the entire set $\AliasMap{\code{a}}$ as escaped.
+
+\textit{Case 3:}
+If \code{x} has already escaped, and later an alias of \code{x}
+is created via \code{y = x}, then the first transfer function
+in Figure~\ref{fig:esctransfer} marks \code{y} as escaped.
+
+For interprocedural analysis, we only need to consider two cases.
+
+\textit{Case 1:}
+Supposed that \code{x} has already escaped in some function \code{H},
+then \code{y} becomes an alias of \code{x} in some function
+\code{G(x, y, ...)}, where \code{H} is the caller of \code{G}.
+Note that the function cached results also contain the may-alias
+information between function parameters and the return value.
+So the analysis will use the cached result to mark \code{y} as escaped.
+
+\textit{Case 2:}
+Supposed that \code{y} becomes an alias of \code{x} in some function
+\code{F(x, y, ...)}, and then \code{x} escapes in some function
+\code{G(x, ...)} (or \code{y} escapes in \code{G(y, ...)}),
+where \code{F} and \code{G} share the same caller \code{H}.
+Right after calling \code{F} in \code{H}, \code{H} has the information
+that \code{y} may alias \code{x}.
+If \code{x} escapes in \code{G(x, ...)},
+then when the analysis uses the cached result of \code{G}
+to mark \code{x} as escaped, it also marks the variables that may alias
+\code{x} as escaped.
+The case is similar when we have \code{y} escape in \code{G(y, ...)}
+instead of \code{x} escaping in \code{G(x, ...)}.
+\end{proof}
+
+\begin{figure}[!h]
+\begin{subfigure}{0.22\textwidth}
+{\footnotesize
+  \begin{lstlisting}
+ void F(...) {
+   x = 1;
+   y = 1;
+ }
+\end{lstlisting}
+\caption{Subcase A.1}
+  }
+\end{subfigure}
+\begin{subfigure}{0.22\textwidth}
+  {\footnotesize
+  \begin{lstlisting}
+ void F(){
+   x = 1;
+   G(y, ...);
+ }
+  \end{lstlisting}
+  }
+\caption{Subcase A.2}
+\end{subfigure}
+\begin{subfigure}{0.22\textwidth}
+  {\footnotesize
+  \begin{lstlisting}
+ void F() {
+   G(x, ...);
+   y = 1;
+  }
+  \end{lstlisting}
+  }
+\caption{Subcase A.3}
+\end{subfigure}
+\begin{subfigure}{0.22\textwidth}
+  {\footnotesize
+  \begin{lstlisting}
+ void F() {
+   G$_1$(x, ...);
+   G$_2$(y, ...);
+ }
+  \end{lstlisting}
+  }
+\caption{Subcase A.4}
+\end{subfigure}
+
+\caption{Assume that $\code{x}$ and $\code{y}$ are PM locations that reside on different cache lines and are escaped and clean initially.\label{fig:proof-example}}
+\end{figure}
+
+\begin{figure}[!htbp]
+\vspace{-.45cm}
+\begin{subfigure}{.15\textwidth}
+\vspace{.45cm}
+\begin{center}
+\includegraphics[scale=0.50]{figures/proof-case-intervio}
+\end{center}
+\vspace{.45cm}
+\caption{Subcase B.1}
+\end{subfigure}
+\begin{subfigure}{.15\textwidth}
+\vspace{.45cm}
+\begin{center}
+\includegraphics[scale=0.50]{figures/proof-case-simple}
+\end{center}
+\vspace{.45cm}
+\caption{Subcase B.2}
+\end{subfigure}
+\begin{subfigure}{.15\textwidth}
+\begin{center}
+\includegraphics[scale=0.50]{figures/proof-case-complex}
+\end{center}
+\caption{Subcase B.3}
+\end{subfigure}
+\caption{Assume that $\code{x}$ and $\code{y}$ are PM locations that reside on different cache lines and are escaped and clean initially, where \textit{sb} represents the sequenced-before relation, and \textit{hb} represents the happens-before relation.\label{fig:proof-inter}}
+\end{figure}
+
+
+
+\begin{theorem}\label{thm:report}
+If a program has a robustness violation, then it will be detected by \tool.
+\end{theorem}
+
+\begin{proof}
+A robustness violation must involve two stores $S$ and $T$
+that write to PM locations \code{x} and \code{y} on
+different cache lines such that \code{x} and \code{y}
+are reachable from persistent data structure roots,
+that $S$ happens before $T$,
+and that \code{x} is not flushed before the store to \code{y}.
+By Lemma~\ref{lemma:esc}, we can assume that
+both \code{x} and \code{y} have been marked as escaped.
+We next enumerate the cases and show that our analysis reports some error
+or warning. For simplicity, we assume \code{x} and \code{y}
+are two different PM objects.
+The same proof will apply if they are fields of
+the same PM object that reside on different cache lines.
+
+\paragraph{Case A} We first consider the case where the stores $S$
+and $T$ are in the same thread.
+
+Figure~\ref{fig:proof-example} presents a few subcases.
+Without loss of generality, we assume that functions \code{G, G$_1$, G$_2$}
+write to their first parameters without flushing them.
+Although there can be chains of function calls in practice, those
+cases are not different from the cases presented in
+Figure~\ref{fig:proof-example}.
+\textit{Subcase A.1} is obvious, as the analysis
+detects two escaped and dirty objects at \code{y = 1} and reports an error.
+For \textit{Subcase A.2}, the analysis also reports some robustness violation
+according to Theorem~\ref{thm:thm3}.
+\textit{Subcase A.3} is similar to \textit{Subcase A.1},
+as we assume \code{G} writes to its first parameter.
+\textit{Subcase A.4} is similar to \textit{Subcase A.2}.
+
+\paragraph{Case B} Now we consider the case where the stores $S$
+and $T$ are in two different thread.
+Since we assume $S$ happens before $T$, there are three possible subcases
+as presented in Figure~\ref{fig:proof-inter}.
+The $\stackrel{\textit{hb}}{\rightarrow}$ edges represent the happens-before
+relation, and the $\stackrel{\textit{sb}}{\rightarrow}$ edges represent the
+sequenced-before relation or the program order.
+
+In \textit{Subcase B.1}, since $N$ is sequenced before $T$,
+we can assume that operations $N$ and $T$ are in the same function, say $F$.
+Since $N$ happens after $S$, $S$ is an atomic store,
+and $N$ is either an atomic load or atomic RMW that reads from \code{x}.
+In either case, by the transfer functions in Figure~\ref{fig:perstransfer},
+\code{x} is dirty right after the operation $N$.
+Thus, there are two escaped and dirty objects after the store $T$,
+and the analysis reports a bug while analyzing the function $F$.
+
+In \textit{Subcase B.2}, since $M$ happens before $T$ that performs a store
+to \code{y}, $T$ is an atomic RMW operation,
+and $M$ can be an atomic store or atomic RMW that stores to \code{y}.
+Since $S$ is sequenced before $M$, we can assume that $S$ and $M$
+are in the same function, say $F$.
+By the same reasoning as \textit{Subcase B.1},
+there are two escaped and dirty objects after the operation $M$,
+and the analysis reports a bug while analyzing the function $F$.
+
+In \textit{Subcase B.3}, the operations $M$ and $N$ establish a
+happens-before relation. Although, the operations $S$ and $T$ are
+not necessarily atomics, that does not change the proof.
+There are three possibilities.
+Subcase B.3.1) If $M$ and $N$ are atomic operations that
+read from or write to persistent memory locations, then it is similar
+to \textit{Subcase B.1} and \textit{Subcase B.2}.
+Subcase B.3.2) If $M$ and $N$ are atomic operations on non-persistent memory locations, then $M$ must be a release operation and we require that (a) all cache lines must be clean before doing any release operation and
+(b) any function call in which all parameters are clean in the calling context
+that contains a release operation marks itself as having done a
+release operation, and thus all cache lines must be clean
+before making such a function call.
+Subcase B.3.3) If $M$ and $N$ are locking operations where $M$ is an release and $N$ is an acquire, it is the same as Subcase B.3.2.
+
+\paragraph{Other Cases}
+We will discuss some other cases in this paragraph.
+Note that the above proof also applies if \code{x} and \code{y}
+are array elements. If \code{x} is some object reachable from
+some function parameter, recall
+our strategy where we create a new label when \code{x} is dereferenced.
+The new label is marked as escaped by the transfer functions in
+Figure~\ref{fig:esctransfer}.  Thus, the proof above also applies.
+Lastly, if \code{x} is an address computed by pointer arithmetic,
+then we will throw a warning right after the store to \code{x}.
+\end{proof}
+
+
+
+\begin{theorem}
+If \tool does not report a robustness violation, then any execution of the program is one under strict persistency.
+\end{theorem}
+
+\begin{proof}If \tool does not report a robustness violation, there is at most one escaped and non-clean object at each program point of the data flow analysis, whose transition to non-clean state is not solely due to atomic loads. Then for any execution of the program, such an object is always flushed to the clean state before another one appears, which matches the definition of strict persistency that “persistency memory order is identical to volatile memory order.”
+\end{proof}
+
+
+
+\begin{theorem}\label{thm:noreport}
+After \tool transforms a program by inserting flushes and fences, \tool will not report any robustness violations in the program. 
+\end{theorem}
+
+\begin{proof}
+Since in the transformation, \tool inserts \code{clwb} after stores whenever it detects a robustness violation, we can assume without loss of generality that all stores are immediately flushed with \code{clwb} instructions. 
+Then we need to prove that the inserted fences effectively eliminate all robustness violations. We will proceed by analyzing the cases discussed in Theorem~\ref{thm:report}. 
+
+\paragraph{Case A} We first consider the case where the stores $S$
+and $T$ are in the same thread.
+For \textit{Subcase A.1} and \textit{Subcase A.2}, fences will be inserted after \code{x = 1}.
+For \textit{Subcase A.3} and \textit{Subcase A.4}, fences will be inserted at the exits of functions \code{G} and \code{G$_1$}.
+In any case, \code{x} becomes clean before the store to \code{y}. So there is no robustness violation.
+
+\paragraph{Case B} Now we consider the case where the stores $S$
+and $T$ are in two different thread.
+
+In \textit{Subcase B.1}, $N$ and $T$ are in the same thread, and $N$ is either an atomic load or atomic RMW that reads from \code{x}. In either case, fences will be inserted 
+after $N$ and before $T$, transferring \code{x} to the clean state before the store to \code{y}.
+
+In \textit{Subcase B.2}, $S$ and $M$ are in the same thread, and $M$ is either an atomic store or atomic RMW that stores to \code{y}. Fences will be inserted after $S$ and before $M$, transferring \code{x} to the clean state before the store to \code{y}.
+
+In \textit{Subcase B.3}, there are three possibilities. Subcase B.3.1 is similar to \textit{Subcase B.1} and \textit{Subcase B.2}, so we omit the discussions here. Subcase B.3.2) $M$ is a release operation. Fences will be inserted before $M$ since \code{x} is in the state of \code{clwb}. Thus, the robustness violation is eliminated. Subcase B.3.3 is similar to Subcase B.3.2. 
+
+\textit{Other Cases}. If \code{x} and \code{y} are array elements, fences will be inserted after the store to \code{x} as well as at function exits to eliminate robustness violations. The case is similar if \code{x} is some object reachable from function parameters.
+If \code{x} is an address computed by pointer arithmetic, then fences will be conservatively inserted after the stores to \code{x}. 
+\end{proof}

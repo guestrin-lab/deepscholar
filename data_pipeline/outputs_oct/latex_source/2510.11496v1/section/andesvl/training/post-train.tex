@@ -1,0 +1,54 @@
+\subsubsection{Post-train}
+
+The AndesVL post-training process consists of two main stages: supervised fine-tuning (SFT) and reinforcement learning (RL). SFT is utilized for both instruction and thinking models. Notably, mixed preference optimization (MPO)~\cite{wang2024mpo} is adopted for refining the instruction models, while Group Relative Policy Optimization (GRPO)~\cite{guo2025deepseek} is employed for the thinking models. Following the application of SFT and MPO to AndesVL-Base, we derive the \textit{AndesVL-Instruct} model. Conversely, the \textit{AndesVL-Thinking} model is attained through the application of SFT and GRPO.
+
+% Additionally, building on \textit{AndesVL-SFT} (which results from SFT on AndesVL-Base), we executed domain-specific fine-tuning to enhance its capabilities in mathematical reasoning and UI understandability through Long-Chain-of-Thought (CoT) Distillation and UI data fine-tuning. Consequently, this resulted in two specialized models: \textit{AndesVL-math} and \textit{AndesVL-UI}.
+
+\paragraph{SFT}
+Supervised fine-tuning (SFT) of the pre-trained AndesVL model is conducted utilizing meticulously formatted instruction data. Recognizing the critical influence of data diversity and quality on the performance of downstream tasks, an extensive array of multimodal instruction data is compiled, covering a wide range of task areas. To improve the model's conversational abilities, the Chat-ML instruction data format is employed.
+
+The instruction dataset is meticulously crafted to introduce the model to multiple input modalities, enabling the development of strong representational learning capabilities. Additionally, the dataset encompasses a diverse range of task objectives, such as image captioning, visual question answering, text summarization, and code generation. This deliberate diversification in data sources and task outlines is designed to enhance the model's generalization capacity and remain robust across various application scenarios. Compliance with the Chat-ML format supports seamless integration with contemporary dialogue-oriented systems, thus promoting coherent and informative conversation exchanges. This strategic SFT method is essential for unlocking the full potential of the AndesVL model, thereby facilitating its effective use in real-world scenarios.
+
+\paragraph{MPO}
+Direct preference optimization (DPO) has emerged as the dominant approach for aligning LLMs with human preferences, as highlighted in \cite{rafailov2024dpo}, which can avoid complex on-policy RL pipelines and is suitable for training non-thinking models. Leveraging its effectiveness in language processing, recent research has extended the application of DPO to multimodal settings \cite{li2023silkie, zhou2024aligning}. Nonetheless, two challenges arise when implementing DPO in MLLM: the scarcity of comprehensive, high-quality multimodal reasoning preference datasets and DPO's inability to assess the absolute quality of individual responses. To address these issues, a novel approach known as Mixed Preference Optimization (MPO) was introduced by~\cite{wang2024mpo}, which has shown enhancements across various multimodal reasoning evaluation sets.
+
+We borrowed the MMPR dataset and MPO from \cite{wang2024mpo}. During the training process, a joint loss consisting of preference loss $\mathcal{L}_p$, quality loss $\mathcal{L}_q$, and generation loss $\mathcal{L}_g$ was used, which can be formulated as
+$$
+\mathcal{L} = w_p \mathcal{L}_p + w_q \mathcal{L}_q + w_g \mathcal{L}_g.
+$$
+The preference loss $\mathcal{L}_p$ is formulated as
+\begin{equation}
+    \mathcal{L}_{p}=-\log \sigma\left(\beta \log \frac{\pi_{\theta}\left(y_{c} \mid x\right)}{\pi_{0}\left(y_{c} \mid x\right)}-\beta \log \frac{\pi_{\theta}\left(y_{r} \mid x\right)}{\pi_{0}\left(y_{r} \mid x\right)}\right),
+\end{equation}
+where $\beta$ is the KL penalty coefficient, $x$, $y_{c}$, and $y_{r}$ are user query, chosen response, and rejected response,
+respectively. The policy model  $\pi_{\theta}$  is initialized from model $\pi_{0}$.
+
+The quality loss $\mathcal{L}_q$ is formulated as
+\begin{equation}
+    \mathcal{L}_{q}=-\log \sigma(\beta \log \frac{\pi_{\theta}\left(y_{c} \mid x\right)}{\pi_{0}\left(y_{c} \mid x\right)}-\delta)-\log \sigma(\beta \log \frac{\pi_{\theta}\left(y_{r} \mid x\right)}{\pi_{0}\left(y_{r} \mid x\right)}-\delta),
+\end{equation}
+where $\delta$ represents the reward shift, which is introduced by \cite{jung2024bco}, calculated as the moving average of previous rewards to stabilize training.
+
+The generation loss $\mathcal{L}_g$ is the standard cross-entropy loss:
+$$
+\mathcal{L}_g = -\sum_{t=1}^{T} \log p_\theta(y_t \mid x, y_{<t}),
+$$
+where $p_\theta$ represents the conditional probability distribution of the language model over tokens.
+
+\paragraph{GRPO}
+In terms of training thinking model, subsequent to the SFT phase, our research transitions to on-policy RL training.
+%这里添加具体的数据来源,校对数字，写法
+Initially, a dataset comprising approximately 200k high-quality data pairs is collected from different sources, which will be detailed in Sec.~\ref{sec:post-train_data}. A difficulty score is subsequently assigned to each data sample, serving as a metric derived from the number of correct responses elicited across eight successive rollouts of the SFT version of AndesVL. Empirical observations indicate that data samples exhibiting either extreme difficulty or excessive simplicity do not meaningfully contribute to learning gains following reinforcement training. Consequently, we strategically select a subset of data with difficulty scores ranging from 1 to 4 for our training regimen. This refinement yields a final training dataset of 43.6K examples, including 15.3K pure text samples and 28.3K multimodal data instances. 
+
+Recent work on ReVisual-R1 \cite{chen2025advancing} has demonstrated that subsequent text-only RL training, following a multimodal RL phase, further enhances multimodal reasoning capabilities. Our experiments with AndesVL similarly reveal that this two-stage RL training paradigm significantly improves the model's multimodal reasoning. Furthermore, we observed that training the model with RL in an ``easy-to-hard'' manner more effectively enhances model performance; thus, training samples are ordered according to their difficulty scores. Consequently, AndesVL also undergoes a two-stage training process, incorporating this easy-to-hard curriculum, utilizing the GRPO~\cite{shao2024deepseekmath} algorithm. The empirical results unequivocally showcase a notable enhancement in AndesVL's domain-specific reasoning capabilities.
+
+
+%\paragraph{Long CoT Distillation.}
+%Research on DeepSeek-R1~\cite{guo2025deepseek} and Qwen3~\cite{yang2025qwen3} indicates that a smaller model with 4B parameters can inherit the Chain-of-Thought (CoT) reasoning abilities from a larger one. In our study, we utilized a method of data distillation, drawing from two main sources: high-quality, human-annotated chart calculation CoT data produced by DeepSeek and publicly available distillation datasets from DeepSeek. 
+%Moreover, taking cues from the ``thinking fusion'' data format proposed in Qwen3~\cite{yang2025qwen3}, we developed two datasets: the ``thinking'' set, which contains reasoning steps, and the ``no thinking'' set, from which such steps are omitted. This dual approach enables us to seamlessly transition between models that do and do not support the reflective thinking process.
+
+%The long COT data were used to further fine-tune the AndesVL-SFT model to obtain the so-called \textit{AndesVL-math}, which achieved much better math ability without apparent general capability decrease.
+
+%\paragraph{UI Data Fine-tuning.}
+%In addition, a fine-tuning stage based on our sophisticated curated mobile UI dataset (see Sec.~\ref{sec:specific_domain_data} and Appendix~\ref{app:andesui_dataset}) to establish a specialized domain model named \textit{AndesVL-UI}, which is dedicated to mobile UI understanding.
+

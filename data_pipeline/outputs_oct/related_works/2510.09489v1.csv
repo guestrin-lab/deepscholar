@@ -1,0 +1,87 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.09489v1,http://arxiv.org/abs/2510.09489v1,2025-10-10 15:52:23+00:00,Two-Stage Gaussian Splatting Optimization for Outdoor Scene Reconstruction,"Outdoor scene reconstruction remains challenging due to the stark contrast
+between well-textured, nearby regions and distant backgrounds dominated by low
+detail, uneven illumination, and sky effects. We introduce a two-stage Gaussian
+Splatting framework that explicitly separates and optimizes these regions,
+yielding higher-fidelity novel view synthesis. In stage one, background
+primitives are initialized within a spherical shell and optimized using a loss
+that combines a background-only photometric term with two geometric
+regularizers: one constraining Gaussians to remain inside the shell, and
+another aligning them with local tangential planes. In stage two, foreground
+Gaussians are initialized from a Structure-from-Motion reconstruction, added
+and refined using the standard rendering loss, while the background set remains
+fixed but contributes to the final image formation. Experiments on diverse
+outdoor datasets show that our method reduces background artifacts and improves
+perceptual quality compared to state-of-the-art baselines. Moreover, the
+explicit background separation enables automatic, object-free environment map
+estimation, opening new possibilities for photorealistic outdoor rendering and
+mixed-reality applications.","Gaussian Splatting (GS) has emerged as a powerful real-time scene representation technique, achieving high-fidelity rendering through optimized anisotropic Gaussian primitives (Kerbl et al. \cite{kerbl2023gsplatting}). Beyond object-centric scenes, recent works have extended GS to handle large-scale and outdoor environments using different approaches to the problem.
+
+Kulhanek et al. identified a relevant issue with outdoor scenes reconstruction, as the Gaussians couldn't be created in the sky with Structure-from-Motion (SfM) initialization \cite{Kulhanek2025}. To overcome this problem, the authors sampled points on a sphere around the scene and added them to the rest of the points used to initialize the Gaussians.
+Wang et al. adopted another strategy and implemented a pipeline with different neural modules. They separate the sky from more detailed elements in the scene (e.g., buildings) and generate a cubemap to render the sky \cite{wang2025}. However, while the resulting sky reconstruction looks visually realistic, in some instances (i.e., sky with clouds), it struggles to reproduce images close to the ground truth.
+
+Cheng et al. introduced GaussianPro, using progressive densification strategies to bolster robustness in texture-poor and large outdoor regions \cite{cheng2024gaussianpro}.
+Lin et al. proposed VastGaussian, partitioning large scenes into parallel-optimized volumes, allowing real-time splatting across large environments \cite{lin2024vastgaussian}.
+Ren et al. developed Octree-GS, employing hierarchical levels of detail (LoD) via octree structures to adaptively manage rendering fidelity in large landscapes \cite{ren2024octreegs}.
+In some works, authors tried to tackle the side effects of handling large environments.
+Zhang et al. presented GaussianSpa, an optimization-based sparsification framework that reduces point count while preserving visual quality, critical for memory-efficient large-scale GS \cite{zhang2024gaussianspa}.
+Pateux et al. designed BOGausS, a better-optimized training regime with confidence-aware updates and rate-distortion densification to enhance GS performance under real-world capture variability \cite{pateux2024bogauss}.
+Franke et al. introduced a trilinear point splatting scheme blending GS and neural rendering, showing effective large-scale landscape rendering at real-time rates \cite{franke2024trips}.
+
+Despite these advances, current GS approaches often rely on dense viewpoint coverage, structured capture, or point priors. Modeling distant background regions (e.g., sky, distant mountains, etc.) remains challenging. In Kerbl et al. \cite{Kerbletal2024}, the authors introduce a hierarchy of 3D Gaussians to preserve the visual quality for extensive scenarios. Furthermore, they use a small set of Gaussians to define a spherical skybox just for the sky. With a similar strategy, our method addresses the gaps between nearby and distant elements (including but not limited to the sky) by combining ""standard"" Gaussians within a defined foreground depth for detailed local fidelity, with a spherical shell of Gaussians (SSG) designed to model the background elements.","Gaussian Splatting (GS) has emerged as a powerful real-time scene representation technique, achieving high-fidelity rendering through optimized anisotropic Gaussian primitives (Kerbl et al. \cite{kerbl2023gsplatting}). Beyond object-centric scenes, recent works have extended GS to handle large-scale and outdoor environments using different approaches to the problem.
+
+Kulhanek et al. identified a relevant issue with outdoor scenes reconstruction, as the Gaussians couldn't be created in the sky with Structure-from-Motion (SfM) initialization \cite{Kulhanek2025}. To overcome this problem, the authors sampled points on a sphere around the scene and added them to the rest of the points used to initialize the Gaussians.
+Wang et al. adopted another strategy and implemented a pipeline with different neural modules. They separate the sky from more detailed elements in the scene (e.g., buildings) and generate a cubemap to render the sky \cite{wang2025}. However, while the resulting sky reconstruction looks visually realistic, in some instances (i.e., sky with clouds), it struggles to reproduce images close to the ground truth.
+
+Cheng et al. introduced GaussianPro, using progressive densification strategies to bolster robustness in texture-poor and large outdoor regions \cite{cheng2024gaussianpro}.
+Lin et al. proposed VastGaussian, partitioning large scenes into parallel-optimized volumes, allowing real-time splatting across large environments \cite{lin2024vastgaussian}.
+Ren et al. developed Octree-GS, employing hierarchical levels of detail (LoD) via octree structures to adaptively manage rendering fidelity in large landscapes \cite{ren2024octreegs}.
+In some works, authors tried to tackle the side effects of handling large environments.
+Zhang et al. presented GaussianSpa, an optimization-based sparsification framework that reduces point count while preserving visual quality, critical for memory-efficient large-scale GS \cite{zhang2024gaussianspa}.
+Pateux et al. designed BOGausS, a better-optimized training regime with confidence-aware updates and rate-distortion densification to enhance GS performance under real-world capture variability \cite{pateux2024bogauss}.
+Franke et al. introduced a trilinear point splatting scheme blending GS and neural rendering, showing effective large-scale landscape rendering at real-time rates \cite{franke2024trips}.
+
+Despite these advances, current GS approaches often rely on dense viewpoint coverage, structured capture, or point priors. Modeling distant background regions (e.g., sky, distant mountains, etc.) remains challenging. In Kerbl et al. \cite{Kerbletal2024}, the authors introduce a hierarchy of 3D Gaussians to preserve the visual quality for extensive scenarios. Furthermore, they use a small set of Gaussians to define a spherical skybox just for the sky. With a similar strategy, our method addresses the gaps between nearby and distant elements (including but not limited to the sky) by combining ""standard"" Gaussians within a defined foreground depth for detailed local fidelity, with a spherical shell of Gaussians (SSG) designed to model the background elements.","Gaussian Splatting (GS) has emerged as a powerful real-time scene
+representation technique, achieving high-fidelity rendering through
+optimized anisotropic Gaussian primitives (Kerbl et al. [6]). Be-
+yond object-centric scenes, recent works have extended GS to handle
+large-scale and outdoor environments using different approaches to
+the problem.
+Kulhanek et al. identified a relevant issue with outdoor scenes re-
+construction, as the Gaussians couldn’t be created in the sky with
+Structure-from-Motion (SfM) initialization [9]. To overcome this
+problem, the authors sampled points on a sphere around the scene and
+added them to the rest of the points used to initialize the Gaussians.
+Wang et al. adopted another strategy and implemented a pipeline
+with different neural modules. They separate the sky from more de-
+tailed elements in the scene (e.g., buildings) and generate a cubemap
+to render the sky [16]. However, while the resulting sky reconstruc-
+tion looks visually realistic, in some instances (i.e., sky with clouds),
+it struggles to reproduce images close to the ground truth.
+Cheng et al. introduced GaussianPro, using progressive densifi-
+cation strategies to bolster robustness in texture-poor and large out-
+door regions [4]. Lin et al. proposed VastGaussian, partitioning large
+scenes into parallel-optimized volumes, allowing real-time splatting
+across large environments [10]. Ren et al. developed Octree-GS,
+employing hierarchical levels of detail (LoD) via octree structures
+to adaptively manage rendering fidelity in large landscapes [12]. In
+some works, authors tried to tackle the side effects of handling large
+environments. Zhang et al. presented GaussianSpa, an optimization-
+based sparsification framework that reduces point count while pre-
+serving visual quality, critical for memory-efficient large-scale GS
+[18]. Pateux et al. designed BOGausS, a better-optimized training
+regime with confidence-aware updates and rate-distortion densifica-
+tion to enhance GS performance under real-world capture variabil-
+ity [11]. Franke et al. introduced a trilinear point splatting schemeblending GS and neural rendering, showing effective large-scale land-
+scape rendering at real-time rates [5].
+Despite these advances, current GS approaches often rely on dense
+viewpoint coverage, structured capture, or point priors. Modeling dis-
+tant background regions (e.g., sky, distant mountains, etc.) remains
+challenging. In Kerbl et al. [7], the authors introduce a hierarchy of
+3D Gaussians to preserve the visual quality for extensive scenarios.
+Furthermore, they use a small set of Gaussians to define a spherical
+skybox just for the sky. With a similar strategy, our method addresses
+the gaps between nearby and distant elements (including but not lim-
+ited to the sky) by combining ""standard"" Gaussians within a defined
+foreground depth for detailed local fidelity, with a spherical shell of
+Gaussians (SSG) designed to model the background elements."

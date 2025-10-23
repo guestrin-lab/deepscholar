@@ -1,0 +1,144 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.02389v1,http://arxiv.org/abs/2510.02389v1,2025-09-30 22:27:18+00:00,From Trace to Line: LLM Agent for Real-World OSS Vulnerability Localization,"Large language models show promise for vulnerability discovery, yet
+prevailing methods inspect code in isolation, struggle with long contexts, and
+focus on coarse function- or file-level detections - offering limited
+actionable guidance to engineers who need precise line-level localization and
+targeted patches in real-world software development. We present T2L-Agent
+(Trace-to-Line Agent), a project-level, end-to-end framework that plans its own
+analysis and progressively narrows scope from modules to exact vulnerable
+lines. T2L-Agent couples multi-round feedback with an Agentic Trace Analyzer
+(ATA) that fuses runtime evidence - crash points, stack traces, and coverage
+deltas - with AST-based code chunking, enabling iterative refinement beyond
+single pass predictions and translating symptoms into actionable, line-level
+diagnoses. To benchmark line-level vulnerability discovery, we introduce
+T2L-ARVO, a diverse, expert-verified 50-case benchmark spanning five crash
+families and real-world projects. T2L-ARVO is specifically designed to support
+both coarse-grained detection and fine-grained localization, enabling rigorous
+evaluation of systems that aim to move beyond file-level predictions. On
+T2L-ARVO, T2L-Agent achieves up to 58.0% detection and 54.8% line-level
+localization, substantially outperforming baselines. Together, the framework
+and benchmark push LLM-based vulnerability detection from coarse identification
+toward deployable, robust, precision diagnostics that reduce noise and
+accelerate patching in open-source software workflows.","\vspace{-2mm}
+For vulnerability localization task, LLM also shows great potential. Early learning based vulnerability detection papers improve localization accuracy by training models to classify whether a unit is vulnerable. LLMAO\cite{yang2024large} fine-tunes LLMs on small, manually curated buggy programs, while BAP\cite{stein2025s} learns state-of-the-art vulnerability localization without any direct localization labels, outperforming traditional baseline over eight benchmarks. However, following analysis also found data issues in widely used datasets such as Big-Vul and Devign\cite{zhou2019devign}, making people doubt about performance numbers and highlighting the needs for a realistic evaluation settings\cite{croft2023data}.
+
+\begin{wrapfigure}{r}{0.25\textwidth}
+  \vspace{-11pt}
+  \begin{minipage}{\linewidth}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{@{}lcccc@{}}
+      \toprule
+      \textbf{Study} & \rotatebox{90}{\textbf{Line Lv.}} &
+      \rotatebox{90}{\textbf{Mult. Ag.}} &
+      \rotatebox{90}{\textbf{Runtime}} &
+      \rotatebox{90}{\textbf{Iterative}} \\
+      \midrule
+      LLMAO~\citeyear{yang2024large}            & \ftcheck   & \ftcross & \ftcross & \ftcross \\
+      BAP~\citeyear{stein2025s}                & \ftcheck   & \ftcross & \ftcross & \ftcross \\
+      GenLoc~\citeyear{asad2025leveraging}          & \ftcross       & \ftcross & \ftcheck & \ftcheck \\
+      AgentFL~\citeyear{qin2024agentfl}        & \ftcross   & \ftcheck & \ftcheck & \ftcheck \\
+      CoSIL~\citeyear{jiang2025cosil}            & \ftcross   & \ftcross & \ftcross & \ftcheck \\
+      AutoFL~\citeyear{kang2024quantitative}          & \ftcross     & \ftcheck & \ftcheck & \ftcheck \\
+      LineVul~\citeyear{9796256}        & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      LOVA~\citeyear{li2024attention}              & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      MatsVD~\citeyear{10.1145/3671016.3674807}          & \ftcross  & \ftcross & \ftcross & \ftcross \\
+      xLoc~\citeyear{10.1145/3660804}              & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      LLM4FL~\citeyear{rafi2024multi}          & \ftcross   & \ftcheck & \ftcheck & \ftcheck \\
+      MemFL~\citeyear{yeo2025improving}            & \ftcross & \ftcross & \ftcheck & \ftcheck \\
+      \textbf{T2L (ours)}     & \ftcheck  & \ftcheck & \ftcheck & \ftcheck \\
+      \bottomrule
+    \end{tabular}
+    \caption{Related Works}
+    \label{tab:related_work_comparison}
+  \end{minipage}
+  \vspace{-4mm}
+\end{wrapfigure}
+
+Many prior works frame vulnerability localization at the file or function level, but this coarse granularity often fails to provide actionable guidance for developers. GenLoc \cite{asad2025leveraging} identifies potentially vulnerable files from bug reports and iteratively analyzes them using code exploration tools. AgentFL \cite{qin2024agentfl} applies a multi-agent framework for function-level localization, modeling the task as a three-step pipeline with specialized agents and tools. CoSIL \cite{jiang2025cosil} narrows the function-level search space using module call graphs and iteratively traverses them for relevant context. Similarly, AutoFL \cite{kang2024quantitative} prompts LLMs to localize method-level vulnerabilities via function-call navigation, showing that multi-step reasoning helps overcome context length limits.
+
+To offer more precise guidance, recent studies have shifted toward line- or statement-level localization. LineVul \cite{9796256} uses a Transformer-based classifier for line-level prediction, while LOVA \cite{li2024attention} introduces a self-attention framework to score and highlight vulnerable lines. MatsVD \cite{10.1145/3671016.3674807} enhances statement-level localization using dependency-aware attention, and xLoc \cite{10.1145/3660804} learns multilingual, task-specific knowledge for bug detection and localization.
+
+Building on these efforts, LLM4FL \cite{rafi2024multi} proposes a multi-agent framework leveraging graph-based retrieval and navigation to reason about failure causes. MemFL \cite{yeo2025improving} introduces external memory to incorporate project-specific knowledge, improving localization in complex, repository-scale systems.
+
+Collectively, these works push localization from file to line level and increasingly adopt multi-agent strategies for subtask coordination. However, most still rely on limited runtime evidence, single-pass predictions, or benchmarks that lack realistic project settings. Our \texttt{T2L-Agent} addresses these limitations with a planner-executor framework that incorporates runtime signals, enables dynamic feedback loops, and achieves line-level localization in real-world repository environments.
+
+% Many papers typically frame the localization task at the file or function level, though this coarse-grained approach cannot offer enough guidance for developers. GenLoc\cite{asad2025leveraging} identifies potential vulnerability files given a bug report and uses code exploration tools to iteratively analyze the code base. AgentFL\cite{qin2024agentfl} incorporates with multi-agent system for automated function level vulnerability localization. It models the task as a three step process with different agents and tools to handle specific tasks. CoSIL\cite{jiang2025cosil} enhances function level vulnerability localization by reducing the search space through module call graphs, iteratively searches the function call graph to obtain relevant contexts. Similarly, AutoFL\cite{kang2024quantitative} localizes method-level vulnerabilities through prompting an LLM and use function calls to navigate a repository, showing that multiple step reasoning can overcome context length limits.
+
+% To better help the developers with localizing the vulnerability, the line or statement level literature emerged. LineVul\cite{9796256} uses a Transformer to help line level classification. LOVA\cite{li2024attention} proposes a novel framework with self-attention to score and highlight the vulnerable lines. More recent work MatsVD\cite{10.1145/3671016.3674807} improves statement level performance using dependency aware attention, and xLoc\cite{10.1145/3660804} learns task-specific knowledge for the task of multilingual bug detection/localization. 
+
+% Building on these approaches, LLM4FL\cite{rafi2024multi} proposes a multiple agent framework to do vulnerability localization via graph based retrieval and navigation of code to reason about failure causes. MemFL\cite{yeo2025improving}, incorporates project specific knowledge through external memory to improve repository-level localization on complex systems. 
+
+% These works explore vulnerability localization from file or method level to line level, with some incorporate multi-agent systems for specific subtasks. However, most approaches still rely on limited runtime evidence, evaluate on benchmarks lacking realistic settings, or perform single-round analysis. Our T2L Agent addresses these limitations by using a planner-executor framework that achieves line level localization with runtime evidence collection, enabling dynamic feedback loops and interactions between planner and executor agents for repository setting vulnerability localization.","\vspace{-2mm}
+For vulnerability localization task, LLM also shows great potential. Early learning based vulnerability detection papers improve localization accuracy by training models to classify whether a unit is vulnerable. LLMAO\cite{yang2024large} fine-tunes LLMs on small, manually curated buggy programs, while BAP\cite{stein2025s} learns state-of-the-art vulnerability localization without any direct localization labels, outperforming traditional baseline over eight benchmarks. However, following analysis also found data issues in widely used datasets such as Big-Vul and Devign\cite{zhou2019devign}, making people doubt about performance numbers and highlighting the needs for a realistic evaluation settings\cite{croft2023data}.
+
+\begin{wrapfigure}{r}{0.25\textwidth}
+  \vspace{-11pt}
+  \begin{minipage}{\linewidth}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{@{}lcccc@{}}
+      \toprule
+      \textbf{Study} & \rotatebox{90}{\textbf{Line Lv.}} &
+      \rotatebox{90}{\textbf{Mult. Ag.}} &
+      \rotatebox{90}{\textbf{Runtime}} &
+      \rotatebox{90}{\textbf{Iterative}} \\
+      \midrule
+      LLMAO~\citeyear{yang2024large}            & \ftcheck   & \ftcross & \ftcross & \ftcross \\
+      BAP~\citeyear{stein2025s}                & \ftcheck   & \ftcross & \ftcross & \ftcross \\
+      GenLoc~\citeyear{asad2025leveraging}          & \ftcross       & \ftcross & \ftcheck & \ftcheck \\
+      AgentFL~\citeyear{qin2024agentfl}        & \ftcross   & \ftcheck & \ftcheck & \ftcheck \\
+      CoSIL~\citeyear{jiang2025cosil}            & \ftcross   & \ftcross & \ftcross & \ftcheck \\
+      AutoFL~\citeyear{kang2024quantitative}          & \ftcross     & \ftcheck & \ftcheck & \ftcheck \\
+      LineVul~\citeyear{9796256}        & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      LOVA~\citeyear{li2024attention}              & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      MatsVD~\citeyear{10.1145/3671016.3674807}          & \ftcross  & \ftcross & \ftcross & \ftcross \\
+      xLoc~\citeyear{10.1145/3660804}              & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      LLM4FL~\citeyear{rafi2024multi}          & \ftcross   & \ftcheck & \ftcheck & \ftcheck \\
+      MemFL~\citeyear{yeo2025improving}            & \ftcross & \ftcross & \ftcheck & \ftcheck \\
+      \textbf{T2L (ours)}     & \ftcheck  & \ftcheck & \ftcheck & \ftcheck \\
+      \bottomrule
+    \end{tabular}
+    \caption{Related Works}
+      \end{minipage}
+  \vspace{-4mm}
+\end{wrapfigure}
+
+Many prior works frame vulnerability localization at the file or function level, but this coarse granularity often fails to provide actionable guidance for developers. GenLoc \cite{asad2025leveraging} identifies potentially vulnerable files from bug reports and iteratively analyzes them using code exploration tools. AgentFL \cite{qin2024agentfl} applies a multi-agent framework for function-level localization, modeling the task as a three-step pipeline with specialized agents and tools. CoSIL \cite{jiang2025cosil} narrows the function-level search space using module call graphs and iteratively traverses them for relevant context. Similarly, AutoFL \cite{kang2024quantitative} prompts LLMs to localize method-level vulnerabilities via function-call navigation, showing that multi-step reasoning helps overcome context length limits.
+
+To offer more precise guidance, recent studies have shifted toward line- or statement-level localization. LineVul \cite{9796256} uses a Transformer-based classifier for line-level prediction, while LOVA \cite{li2024attention} introduces a self-attention framework to score and highlight vulnerable lines. MatsVD \cite{10.1145/3671016.3674807} enhances statement-level localization using dependency-aware attention, and xLoc \cite{10.1145/3660804} learns multilingual, task-specific knowledge for bug detection and localization.
+
+Building on these efforts, LLM4FL \cite{rafi2024multi} proposes a multi-agent framework leveraging graph-based retrieval and navigation to reason about failure causes. MemFL \cite{yeo2025improving} introduces external memory to incorporate project-specific knowledge, improving localization in complex, repository-scale systems.
+
+Collectively, these works push localization from file to line level and increasingly adopt multi-agent strategies for subtask coordination. However, most still rely on limited runtime evidence, single-pass predictions, or benchmarks that lack realistic project settings. Our \texttt{T2L-Agent} addresses these limitations with a planner-executor framework that incorporates runtime signals, enables dynamic feedback loops, and achieves line-level localization in real-world repository environments.","level, but this coarse granularity often fails to provide actionable guid-
+ance for developers. GenLoc Asad et al. (2025) identifies potentially
+vulnerable files from bug reports and iteratively analyzes them using
+code exploration tools. AgentFL Qin et al. (2024) applies a multi-agent
+framework for function-level localization, modeling the task as a three-
+step pipeline with specialized agents and tools. CoSIL Jiang et al. (2025)
+narrows the function-level search space using module call graphs and it-
+eratively traverses them for relevant context. Similarly, AutoFL Kang
+et al. (2024) prompts LLMs to localize method-level vulnerabilities via
+function-call navigation, showing that multi-step reasoning helps over-
+come context length limits.
+To offer more precise guidance, recent studies have shifted toward
+line- or statement-level localization. LineVul Fu & Tantithamthavorn
+(2022) uses a Transformer-based classifier for line-level prediction,
+while LOV A Li et al. (2024) introduces a self-attention framework to
+score and highlight vulnerable lines. MatsVD Weng et al. (2024) en-
+hances statement-level localization using dependency-aware attention, and xLoc Yang et al. (2024b)
+learns multilingual, task-specific knowledge for bug detection and localization.
+3
+Building on these efforts, LLM4FL Rafi et al. (2024) proposes a multi-agent framework leverag-
+ing graph-based retrieval and navigation to reason about failure causes. MemFL Yeo et al. (2025)
+introduces external memory to incorporate project-specific knowledge, improving localization in
+complex, repository-scale systems.
+Collectively, these works push localization from file to line level and increasingly adopt multi-agent
+strategies for subtask coordination. However, most still rely on limited runtime evidence, single-pass
+predictions, or benchmarks that lack realistic project settings. OurT2L-Agentaddresses these
+limitations with a planner-executor framework that incorporates runtime signals, enables dynamic
+feedback loops, and achieves line-level localization in real-world repository environments."

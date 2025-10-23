@@ -1,0 +1,4 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper presents AndesVL, a suite of mobile-side MLLMs with parameter sizes ranging from 0.6B to 4B. By integrating Qwen3's LLM and various visual encoders, AndesVL achieves first-tier performance on multiple open-source benchmarks and the self-developed AndesUI benchmark, especially excelling in mobile UI understanding. The proposed 1+N LoRA architecture and Quantization-Aware LoRA Fine Tuning (QALFT) framework enable efficient task adaptation and model compression. By employing our proposed OKV, meticulously designed speculative decoding techniques and compression strategies, we can achieve 1.8 bits-per-weight,  6.7x peak decoding speed ratio and up to 30.9\% memory reduction when deploying AndesVL-4B on MediaTek Dimenisity 9500 chips. This work bridges the gap between cloud-based MLLMs and edge devices, providing a practical solution for mobile-side MLLM  and paving the way for future advancements in edge AI.

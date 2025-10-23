@@ -1,0 +1,205 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,chen2015microsoft,\cite{chen2015microsoft},Microsoft COCO Captions: Data Collection and Evaluation Server,http://arxiv.org/abs/1504.00325v2,"In this paper we describe the Microsoft COCO Caption dataset and evaluation
+server. When completed, the dataset will contain over one and a half million
+captions describing over 330,000 images. For the training and validation
+images, five independent human generated captions will be provided. To ensure
+consistency in evaluation of automatic caption generation algorithms, an
+evaluation server is used. The evaluation server receives candidate captions
+and scores them using several popular metrics, including BLEU, METEOR, ROUGE
+and CIDEr. Instructions for using the evaluation server are provided.","Chen, Xinlei and Fang, Hao and Lin, Tsung-Yi and Vedantam, Ramakrishna and Gupta, Saurabh and Doll{\'a}r, Piotr and Zitnick, C Lawrence",2015,,,,arXiv preprint arXiv:1504.00325
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,hudson2019gqanewdatasetrealworld,\cite{hudson2019gqanewdatasetrealworld},"GQA: A New Dataset for Real-World Visual Reasoning and Compositional
+  Question Answering",http://arxiv.org/abs/1902.09506v3,"We introduce GQA, a new dataset for real-world visual reasoning and
+compositional question answering, seeking to address key shortcomings of
+previous VQA datasets. We have developed a strong and robust question engine
+that leverages scene graph structures to create 22M diverse reasoning
+questions, all come with functional programs that represent their semantics. We
+use the programs to gain tight control over the answer distribution and present
+a new tunable smoothing technique to mitigate question biases. Accompanying the
+dataset is a suite of new metrics that evaluate essential qualities such as
+consistency, grounding and plausibility. An extensive analysis is performed for
+baselines as well as state-of-the-art models, providing fine-grained results
+for different question types and topologies. Whereas a blind LSTM obtains mere
+42.1%, and strong VQA models achieve 54.1%, human performance tops at 89.3%,
+offering ample opportunity for new research to explore. We strongly hope GQA
+will provide an enabling resource for the next generation of models with
+enhanced robustness, improved consistency, and deeper semantic understanding
+for images and language.",Drew A. Hudson and Christopher D. Manning,2019,,https://arxiv.org/abs/1902.09506,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,geirhos2020shortcut,\cite{geirhos2020shortcut},Shortcut Learning in Deep Neural Networks,http://arxiv.org/abs/2004.07780v5,"Deep learning has triggered the current rise of artificial intelligence and
+is the workhorse of today's machine intelligence. Numerous success stories have
+rapidly spread all over science, industry and society, but its limitations have
+only recently come into focus. In this perspective we seek to distill how many
+of deep learning's problems can be seen as different symptoms of the same
+underlying problem: shortcut learning. Shortcuts are decision rules that
+perform well on standard benchmarks but fail to transfer to more challenging
+testing conditions, such as real-world scenarios. Related issues are known in
+Comparative Psychology, Education and Linguistics, suggesting that shortcut
+learning may be a common characteristic of learning systems, biological and
+artificial alike. Based on these observations, we develop a set of
+recommendations for model interpretation and benchmarking, highlighting recent
+advances in machine learning to improve robustness and transferability from the
+lab to real-world applications.","Geirhos, Robert and Jacobsen, J{\""o}rn-Henrik and Michaelis, Claudio and Zemel, Richard and Brendel, Wieland and Bethge, Matthias and Wichmann, Felix A",2020,,,,Nature Machine Intelligence
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,guan2024hallusionbenchadvanceddiagnosticsuite,\cite{guan2024hallusionbenchadvanceddiagnosticsuite},"HallusionBench: An Advanced Diagnostic Suite for Entangled Language
+  Hallucination and Visual Illusion in Large Vision-Language Models",http://arxiv.org/abs/2310.14566v5,"We introduce HallusionBench, a comprehensive benchmark designed for the
+evaluation of image-context reasoning. This benchmark presents significant
+challenges to advanced large visual-language models (LVLMs), such as
+GPT-4V(Vision), Gemini Pro Vision, Claude 3, and LLaVA-1.5, by emphasizing
+nuanced understanding and interpretation of visual data. The benchmark
+comprises 346 images paired with 1129 questions, all meticulously crafted by
+human experts. We introduce a novel structure for these visual questions
+designed to establish control groups. This structure enables us to conduct a
+quantitative analysis of the models' response tendencies, logical consistency,
+and various failure modes. In our evaluation on HallusionBench, we benchmarked
+15 different models, highlighting a 31.42% question-pair accuracy achieved by
+the state-of-the-art GPT-4V. Notably, all other evaluated models achieve
+accuracy below 16%. Moreover, our analysis not only highlights the observed
+failure modes, including language hallucination and visual illusion, but also
+deepens an understanding of these pitfalls. Our comprehensive case studies
+within HallusionBench shed light on the challenges of hallucination and
+illusion in LVLMs. Based on these insights, we suggest potential pathways for
+their future improvement. The benchmark and codebase can be accessed at
+https://github.com/tianyi-lab/HallusionBench.",Tianrui Guan and Fuxiao Liu and Xiyang Wu and Ruiqi Xian and Zongxia Li and Xiaoyu Liu and Xijun Wang and Lichang Chen and Furong Huang and Yaser Yacoob and Dinesh Manocha and Tianyi Zhou,2024,,https://arxiv.org/abs/2310.14566,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,paper3,\cite{paper3},"Towards the Human Global Context: Does the Vision-Language Model Really
+  Judge Like a Human Being?",http://arxiv.org/abs/2207.08333v1,"As computer vision and NLP make progress, Vision-Language(VL) is becoming an
+important area of research. Despite the importance, evaluation metrics of the
+research domain is still at a preliminary stage of development. In this paper,
+we propose a quantitative metric ""Equivariance Score"" and evaluation dataset
+""Human Puzzle"" to assess whether a VL model is understanding an image like a
+human. We observed that the VL model does not interpret the overall context of
+an input image but instead shows biases toward a specific object or shape that
+forms the local context. We aim to quantitatively measure a model's performance
+in understanding context. To verify the current existing VL model's capability,
+we sliced the original input image into pieces and randomly placed them,
+distorting the global context of the image. Our paper discusses each VL model's
+level of interpretation on global context and addresses how the structural
+characteristics influenced the results.",Sangmyeong Woh and Jaemin Lee and Ho joong Kim and Jinsuk Lee,2022,,,10.48550/arXiv.2207.08333,ArXiv
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,paper4,\cite{paper4},"RelationVLM: Making Large Vision-Language Models Understand Visual
+  Relations",http://arxiv.org/abs/2403.12801v1,"The development of Large Vision-Language Models (LVLMs) is striving to catch
+up with the success of Large Language Models (LLMs), yet it faces more
+challenges to be resolved. Very recent works enable LVLMs to localize
+object-level visual contents and ground text to them. Nonetheless, current
+LVLMs still struggle to precisely understand visual relations due to the lack
+of relevant data. In this work, we present RelationVLM, a large vision-language
+model capable of comprehending various levels and types of relations whether
+across multiple images or within a video. Specifically, we devise a multi-stage
+relation-aware training scheme and a series of corresponding data configuration
+strategies to bestow RelationVLM with the capabilities of understanding
+semantic relations, temporal associations and geometric transforms. Extensive
+case studies and quantitative evaluations show RelationVLM has strong
+capability in understanding such relations and emerges impressive in-context
+capability of reasoning from few-shot examples by comparison. This work fosters
+the advancements of LVLMs by enabling them to support a wider range of
+downstream applications toward artificial general intelligence.",Zhipeng Huang and Zhizheng Zhang and Zheng-Jun Zha and Yan Lu and Baining Guo,2024,,,10.48550/arXiv.2403.12801,ArXiv
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,whatsup2024,\cite{whatsup2024},"What's ""up"" with vision-language models? Investigating their struggle
+  with spatial reasoning",http://arxiv.org/abs/2310.19785v1,"Recent vision-language (VL) models are powerful, but can they reliably
+distinguish ""right"" from ""left""? We curate three new corpora to quantify model
+comprehension of such basic spatial relations. These tests isolate spatial
+reasoning more precisely than existing datasets like VQAv2, e.g., our What'sUp
+benchmark contains sets of photographs varying only the spatial relations of
+objects, keeping their identity fixed (see Figure 1: models must comprehend not
+only the usual case of a dog under a table, but also, the same dog on top of
+the same table). We evaluate 18 VL models, finding that all perform poorly,
+e.g., BLIP finetuned on VQAv2, which nears human parity on VQAv2, achieves 56%
+accuracy on our benchmarks vs. humans at 99%. We conclude by studying causes of
+this surprising behavior, finding: 1) that popular vision-language pretraining
+corpora like LAION-2B contain little reliable data for learning spatial
+relationships; and 2) that basic modeling interventions like up-weighting
+preposition-containing instances or fine-tuning on our corpora are not
+sufficient to address the challenges our benchmarks pose. We are hopeful that
+these corpora will facilitate further research, and we release our data and
+code at https://github.com/amitakamath/whatsup_vlms.","Kamath, Amita and Hessel, Jack and Chang, Kai-Wei",2023,,,,arXiv preprint arXiv:2310.19785
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,spec2024,\cite{spec2024},"Synthesize, Diagnose, and Optimize: Towards Fine-Grained Vision-Language
+  Understanding",http://arxiv.org/abs/2312.00081v2,"Vision language models (VLM) have demonstrated remarkable performance across
+various downstream tasks. However, understanding fine-grained visual-linguistic
+concepts, such as attributes and inter-object relationships, remains a
+significant challenge. While several benchmarks aim to evaluate VLMs in finer
+granularity, their primary focus remains on the linguistic aspect, neglecting
+the visual dimension. Here, we highlight the importance of evaluating VLMs from
+both a textual and visual perspective. We introduce a progressive pipeline to
+synthesize images that vary in a specific attribute while ensuring consistency
+in all other aspects. Utilizing this data engine, we carefully design a
+benchmark, SPEC, to diagnose the comprehension of object size, position,
+existence, and count. Subsequently, we conduct a thorough evaluation of four
+leading VLMs on SPEC. Surprisingly, their performance is close to random guess,
+revealing significant limitations. With this in mind, we propose a simple yet
+effective approach to optimize VLMs in fine-grained understanding, achieving
+significant improvements on SPEC without compromising the zero-shot
+performance. Results on two additional fine-grained benchmarks also show
+consistent improvements, further validating the transferability of our
+approach. Code and data are available at https://github.com/wjpoom/SPEC.","Peng, Wujian and Xie, Sicheng and You, Zuyao and Lan, Shiyi and Wu, Zuxuan",2024,,,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,agarwal-etal-2025-mvtamperbench,\cite{agarwal-etal-2025-mvtamperbench},{MVT}amper{B}ench: Evaluating Robustness of Vision-Language Models,,,"Agarwal, Amit  and
+      Panda, Srikant  and
+      Charles, Angeline  and
+      Patel, Hitesh Laxmichand  and
+      Kumar, Bhargava  and
+      Pattnayak, Priyaranjan  and
+      Rafi, Taki Hasan  and
+      Kumar, Tejaswini  and
+      Meghwani, Hansa  and
+      Gupta, Karan  and
+      Chae, Dong-Kyu",2025,,https://aclanthology.org/2025.findings-acl.963/,10.18653/v1/2025.findings-acl.963,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,pattnayak2025clinicalqa20multitask,\cite{pattnayak2025clinicalqa20multitask},Clinical QA 2.0: Multi-Task Learning for Answer Extraction and Categorization,,,Priyaranjan Pattnayak and Hitesh Laxmichand Patel and Amit Agarwal and Bhargava Kumar and Srikant Panda and Tejaswini Kumar,2025,,https://arxiv.org/abs/2502.13108,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,meghwani-etal-2025-hard,\cite{meghwani-etal-2025-hard},Hard Negative Mining for Domain-Specific Retrieval in Enterprise Systems,http://arxiv.org/abs/2505.18366v1,"Enterprise search systems often struggle to retrieve accurate,
+domain-specific information due to semantic mismatches and overlapping
+terminologies. These issues can degrade the performance of downstream
+applications such as knowledge management, customer support, and
+retrieval-augmented generation agents. To address this challenge, we propose a
+scalable hard-negative mining framework tailored specifically for
+domain-specific enterprise data. Our approach dynamically selects semantically
+challenging but contextually irrelevant documents to enhance deployed
+re-ranking models.
+  Our method integrates diverse embedding models, performs dimensionality
+reduction, and uniquely selects hard negatives, ensuring computational
+efficiency and semantic precision. Evaluation on our proprietary enterprise
+corpus (cloud services domain) demonstrates substantial improvements of 15\% in
+MRR@3 and 19\% in MRR@10 compared to state-of-the-art baselines and other
+negative sampling techniques. Further validation on public domain-specific
+datasets (FiQA, Climate Fever, TechQA) confirms our method's generalizability
+and readiness for real-world applications.","Meghwani, Hansa  and
+      Agarwal, Amit  and
+      Pattnayak, Priyaranjan  and
+      Patel, Hitesh Laxmichand  and
+      Panda, Srikant",2025,,https://aclanthology.org/2025.acl-industry.72/,10.18653/v1/2025.acl-industry.72,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,agarwal-etal-2025-fs,\cite{agarwal-etal-2025-fs},{FS}-{DAG}: Few Shot Domain Adapting Graph Networks for Visually Rich Document Understanding,,,"Agarwal, Amit  and
+      Panda, Srikant  and
+      Pachauri, Kulbhushan",2025,,https://aclanthology.org/2025.coling-industry.9/,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,wu2024vspassessingdualchallenges,\cite{wu2024vspassessingdualchallenges},"VSP: Assessing the dual challenges of perception and reasoning in
+  spatial planning tasks for VLMs",http://arxiv.org/abs/2407.01863v1,"Vision language models (VLMs) are an exciting emerging class of language
+models (LMs) that have merged classic LM capabilities with those of image
+processing systems. However, the ways that these capabilities combine are not
+always intuitive and warrant direct investigation. One understudied capability
+in VLMs is visual spatial planning -- the ability to comprehend the spatial
+arrangements of objects and devise action plans to achieve desired outcomes in
+visual scenes. In our study, we introduce VSP, a benchmark that 1) evaluates
+the spatial planning capability in these models in general, and 2) breaks down
+the visual planning task into finer-grained sub-tasks, including perception and
+reasoning, and measure the LMs capabilities in these sub-tasks. Our evaluation
+shows that both open-source and private VLMs fail to generate effective plans
+for even simple spatial planning tasks. Evaluations on the fine-grained
+analytical tasks further reveal fundamental deficiencies in the models' visual
+perception and bottlenecks in reasoning abilities, explaining their worse
+performance in the general spatial planning tasks. Our work illuminates future
+directions for improving VLMs' abilities in spatial planning. Our benchmark is
+publicly available at
+https://github.com/UCSB-NLP-Chang/Visual-Spatial-Planning.",Qiucheng Wu and Handong Zhao and Michael Saxon and Trung Bui and William Yang Wang and Yang Zhang and Shiyu Chang,2024,,https://arxiv.org/abs/2407.01863,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,zhaoarticle,\cite{zhaoarticle},Automated Quality Evaluation of Large-Scale Benchmark Datasets for Vision-Language Tasks,,,"Zhao, Ruibin and Xie, Zhiwei and Zhuang, Yipeng and Yu, Philip",2023,11,,10.1142/S0129065724500096,International Journal of Neural Systems
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,yu2024attention,\cite{yu2024attention},Attention Prompting on Image for Large Vision-Language Models,http://arxiv.org/abs/2409.17143v1,"Compared with Large Language Models (LLMs), Large Vision-Language Models
+(LVLMs) can also accept images as input, thus showcasing more interesting
+emergent capabilities and demonstrating impressive performance on various
+vision-language tasks. Motivated by text prompting in LLMs, visual prompting
+has been explored to enhance LVLMs' capabilities of perceiving visual
+information. However, previous visual prompting techniques solely process
+visual inputs without considering text queries, limiting the models' ability to
+follow text instructions to complete tasks. To fill this gap, in this work, we
+propose a new prompting technique named Attention Prompting on Image, which
+just simply overlays a text-query-guided attention heatmap on the original
+input image and effectively enhances LVLM on various tasks. Specifically, we
+generate an attention heatmap for the input image dependent on the text query
+with an auxiliary model like CLIP. Then the heatmap simply multiplies the pixel
+values of the original image to obtain the actual input image for the LVLM.
+Extensive experiments on various vison-language benchmarks verify the
+effectiveness of our technique. For example, Attention Prompting on Image
+improves LLaVA-1.5 by 3.8% and 2.9% on MM-Vet and LLaVA-Wild benchmarks,
+respectively.","Yu, Runpeng and Yu, Weihao and Wang, Xinchao",2024,,,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,papineni2002bleu,\cite{papineni2002bleu},Bleu: a method for automatic evaluation of machine translation,,,"Papineni, Kishore and Roukos, Salim and Ward, Todd and Zhu, Wei-Jing",2002,,,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,banerjee2005meteor,\cite{banerjee2005meteor},METEOR: An automatic metric for MT evaluation with improved correlation with human judgments,,,"Banerjee, Satanjeev and Lavie, Alon",2005,,,,
+RCI: A Score for Evaluating Global and Local Reasoning in Multimodal Benchmarks,http://arxiv.org/abs/2509.23673v1,tao2024probingmultimodallargelanguage,\cite{tao2024probingmultimodallargelanguage},Probing Multimodal Large Language Models for Global and Local Semantic Representations,,,Mingxu Tao and Quzhe Huang and Kun Xu and Liwei Chen and Yansong Feng and Dongyan Zhao,2024,,https://arxiv.org/abs/2402.17304,,

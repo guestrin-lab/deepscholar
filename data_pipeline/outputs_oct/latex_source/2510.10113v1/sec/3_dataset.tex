@@ -1,0 +1,190 @@
+\section{The ImmerIris Dataset}
+\label{sec:dataset}
+
+% This section introduces the 
+% 一段introduction
+
+\subsection{Data Acquisition}
+\label{subsec:data-acquisition}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_acquisition.pdf}
+    \caption{Data acquisition setup. (a) VR headset screen display, where red squares numbered 1-9 mark gaze points for sequential fixation. Camera previews assist proper wearing. A full-screen white panel gradually increases its opacity to simulate ambient illumination changes. (b) Actual data acquisition scene.}
+    \label{fig:acquisition}
+    \vspace{-5mm}
+\end{figure}
+
+We collect NIR ocular images from human subjects with a general-purpose VR headset equipped with specifically developed acquisition software. The headset features dual-eye displays to show acquisition instructions and off-axis cameras to capture images. The setup is organized to mimic immersive VR/AR experiences in the real world. All subjects are volunteers who provided informed consent, received no honorarium, and had no personal details recorded. In general, the subjects are adults aged 20-40 years, with a nearly balanced biological sex distribution. The data acquisition was approved by the institutional review board (IRB).
+
+Unlike in controlled setups where users are instructed to stop and gaze at designated sensors, the immersive setup introduces two distinctive sources of variation that recognition systems must handle robustly. First, gaze direction differs with visual content on VR displays or with real-world interaction in AR, leading to varying camera-eye geometries. Second, illumination conditions change with display brightness in VR or with environmental light in AR. To account for these factors, our acquisition protocol acquires a large number of ocular images with substantial gaze angle and illumination variations from each subject.
+
+Specifically, during acquisition, subjects wear the headset and view a 3$\times$3 grid of red squares numbered 1-9, along with a live camera preview that assists with proper positioning, as shown in~\cref{fig:acquisition}. After a quick adjustment to ensure that the ocular regions are centered within the cameras' field of view, the subjects sequentially pause and gaze at each square, thereby mimicking real-world gaze variations. At each gaze point, the headset automatically adjusts display brightness across 11 levels, from darkest to brightest, and captures 5 ocular images per eye at each level with a resolution of 640$\times$640. This procedure simulates changes in ambient illumination and induces natural variation in pupil size. In total, 110 images are captured per gaze point and 990 per subject for both eyes. The dataset enrolls 546 subjects and comprises 540,540 ocular images. It will be publicly released to support further research in this field.
+
+
+\subsection{Data Cleaning and Annotation}
+\label{subsec:data-cleaning}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_cleaning.pdf}
+    \caption{Data cleaning. (a) Ocular images failing annotation due to severe degradations are removed. (b) Distribution of images per subject, where most retain a dominant portion of samples.}
+    \label{fig:cleaning}
+    \vspace{-3mm}
+\end{figure}
+
+% Iris features may be unavailable or partly impaired due to quality degradation.
+% A key difference between conventional and immersive IR is that, in the later, images are captured in less controlled setups,
+
+In VR/AR iris acquisition, user behavior and wearing styles can be less standardized, and the devices can be rarely calibrated, \eg, with respect to interpupillary distance. Consequently, the immersive setup cannot guarantee predominantly high-quality images as in controlled setups. We therefore begin by cleaning the acquired dataset to remove severely flawed samples, and then categorize the remainings into standard and challenging cases by quality scores. % Effectively handling such challenging cases is itself a key issue for the immersive setup.
+
+% 需要detail
+We first annotate the bounding boxes of ocular regions and pupils using a trained ocular detection algorithm, and remove 36,697 images that failed annotation due to severe quality degradation. \Cref{fig:cleaning}(a) shows exemplar failure cases, including oculars outside the frame, closed eyes, or motion blur caused by blinking or gaze shifts. We further discard 4,052 images through manual inspection that are defective for iris recognition (\eg, subjects wearing colored contact lenses). After cleaning, 499,791 images remain. \Cref{fig:cleaning}(b) illustrates the distribution of images per subject. Most subjects retain nearly all of their samples, while only a few have relatively fewer. This results in a mildly imbalanced distribution favorable for recognition tasks.
+
+Next, we annotate each image with quality scores along 5 dimensions: eyelid occlusion, eyelash occlusion, pupil-to-ocular ratio, gaze angle, and light reflection. Samples with a low pupil-to-ocular ratio or high scores on the other dimensions are categorized as \textit{standard}, while the remaining are labeled as \textit{challenging}. Details of the annotation process and thresholding are yielded to the supplementary material. \Cref{fig:quality-distribution} presents the score distributions and thresholds, with approximately 46\% of images categorized as challenging in at least one quality dimension. This high proportion reflects the inherent degradations and variations of open-scene acquisition, which are among the key issues for immersive iris recognition. \Cref{fig:samples-by-type} shows challenging and standard examples. These annotations serve as the basis for constructing the test protocol described in~\cref{subsec:protocol-rationale}.
+
+% We then annotate other quality variations by scoring each image along 6 dimensions: eyelid occlusion, eyelash occlusion, pupil-to-ocular ratio, gaze angle, light reflection, and blurriness. Most samples exhibit a low pupil-to-ocular ratio or high scores in the other dimensions and are treated as \textit{standard}. Images falling outside empirical thresholds are labeled as \textit{challenging}. \Cref{fig:quality-distribution} presents the score distributions and thresholds, with approximately 46\% of images categorized as challenging. The high ratio also reveals the inherent degradations and variations of open-scene acquisition in immersive IR. \Cref{fig:samples-by-type} shows examples of challenging and standard samples. These annotations serve as the criteria for test protocol construction, later in~\cref{subsec:protocol-rationale}.
+    
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_quality_distribution.pdf}
+    \caption{Distribution of quality scores across 5 dimensions. About 46\% of samples exceed at least one quality threshold and are categorized as challenging, while the remaining are standard.}
+    \label{fig:quality-distribution}
+    \vspace{-3mm}
+\end{figure}
+
+
+% 图加一个说明：Note that angle here is scored by extremity rather than by degree. The extremity mainly reflects headset wearing conditions and is not directly determined by gaze point.
+
+% We then annotate other types of quality variations by scoring each image along 6 dimensions: eyelid occlusion, eyelash occlusion, extreme angle, light reflection, blurriness, and pupil-to-ocular ratio. A large pupil-to-ocular ratio or low scores in other dimensions indicates degradation. Images are filtered by empirical thresholds to obtain challenging samples, while the remainder are treated as standard samples. Figure~X shows the quality score distributions and thresholds, with approximately XX\% of images categorized as standard. Figure~X also shows examples of challenging samples across categories, as well as standard samples. The annotations serve as criteria for test protocols, later detailed in~\cref{subsec:protocol-rationale}.
+
+\subsection{Training and Test Set Partition}
+\label{subsec:data-division}
+
+We construct a training set and an overall test set from the cleaned data with a 7:3 partition ratio. The training set comprises 347,297 images from 380 subjects, while the test set comprises 154,184 images from 166 subjects. For labeling, the left and right eyes of each subject are treated as distinct classes. The two splits are non-overlapping by subject to ensure an open-set setting in which the recognition system must enroll and identify unseen persons. The test set is further organized into distinct protocols defined by specific criteria, which serve as the basis for benchmarking.
+
+% We further annotate other types of quality degradations by scoring each image along 6 quality dimensions: eyelid occlusion, eyelash occlusion, extreme angle, light reflection, blurriness, and pupil-to-ocular ratio. Large pupil-to-ocular ratios and low quality score of other dimension indicates degradation. We filter the images based on empirical quality thresholds to obtains challenging samples while consider the remainder standard samples. Figure X presents the overall quality score distributions and thresholds, where approximately XX\% of images are categorized as standard samples. These quality annotations serve as references for establishing test protocols focusing on open-scene hard cases, as later detailed in Sec. X. Figure X illustrates examples of hard samples across different categories, and Fig. X shows standard samples.
+
+% We construct a general training set and a comprehensive series of test protocols based on the cleaned data. The dataset is first partitioned into training and test splits at a 7:3 ratio. Specifically, the training set contains 347,297 images from 380 subjects, while the test set contains 154,184 images from 166 subjects. Following the convention in IR, the left and right eyes of the same subject are annotated as two distinct classes. The training and test sets are non-overlapping to achieve an open-set setting, where the established IR system is supposed to enroll and recognize unseen identities. We further subdivide the test set into a series of iris verification and identification protocols.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_samples_by_type.pdf}
+    \caption{Examples of challenging and standard samples.}
+    \label{fig:samples-by-type}
+\end{figure}
+
+\subsection{Protocol Design Rationale}
+\label{subsec:protocol-rationale}
+
+We define 8 test protocols from the overall test set, with 4 dedicated to evaluating iris recognition performance under unique challenging factors in the immersive setup and 4 to general evaluation. They reflect the acquisition constraints of immersive scenarios as well as the goals of recognition.
+
+
+\noindent \textbf{Challenging factors in the immersive setup.} Among the three unique challenges of immersive iris recognition discussed in~\cref{sec:intro}, we first investigate how isolated factors of quality degradation and intra-class variation affect recognition performance. These factors mainly include degradation from eyelid or eyelash \textit{occlusion} and pupil \textit{dilation}, as well as variation in environmental \textit{light} and gaze \textit{angle}. By contrast, off-axis distortion is inherent to the immersive setup and is therefore addressed later in the general evaluation. The same applies to light reflection, which, though regarded as a form of degradation, is prevalent across the dataset. We design 4 protocols to study these factors:
+
+% \noindent \textbf{Challenging factors in the immersive setup.} Recall  in~\cref{sec:intro}, the unique difficulties of immersive iris recognition lie in off-axis geometric distortion, quality degradation and intra-class variation, whose severity varies across cases. The first aim of our protocols is to examine how the latter two affect recognition performance. Based on the annotated quality scores, we concretize degradation and variation into measurable factors. We evaluate them experimentally and find that reflection and blurriness have marginal impact; further see supplementary material. In contrast, we identify degradation from eyelid or eyelash \textit{occlusion} and variation in \textit{pupil size} and \textit{gaze angle} as the decisive factors. Notably, these factors are considered rarely improvable through better acquisition processes. We design 4 protocols to study them:
+ %
+
+
+\begin{itemize}
+    \item \textbf{Immer-Occlusion.} Occlusion can partly obscure iris texture. To isolate its effect, images with eyelid or eyelash occlusion but without other degradations are selected, and gaze angle is controlled by pairing within the same gaze point (\ie, the numbered red squares); later see~\cref{subsec:protocol-organization}.
+    \item \textbf{Immer-Dilation.} Extensive pupil dilation compresses the iris texture and reduces recognizability. To study its effect, images with large pupil-to-ocular ratios, free from other degradations, are paired at a common gaze point.
+    \item \textbf{Immer-Light.} Illumination changes induce dilation and constriction, hence altering iris texture. To capture this effect, images from Immer-Dilation are each paired with those having normal pupil-to-ocular ratios.
+    \item \textbf{Immer-Angle.} Gaze angle varies naturally with headset wearing and users' focus. Images from different gaze points are paired to study this factor, where only standard samples are used to eliminate the effect of degradations.
+\end{itemize}
+
+% \begin{itemize}
+%     \item \textbf{Immer-Occlusion.} Occlusion can partly obscure iris texture. To isolate its effect, images with eyelid or eyelash occlusion, and without other degradations, are selected based on quality scores in~\cref{subsec:data-cleaning}. Gaze angle variation is constrained by pairing images from the same gaze point during \textit{pair formation}; later see~\cref{subsec:protocol-organization}.
+%     \item \textbf{Immer-Dilation.} Extensive pupil dilation can compress the iris region and may reduce texture recognizability. Images with large pupil-to-ocular ratios, free from other degradations and pair-wisely fixed to a common gaze point, are selected to study its effect.
+%     \item \textbf{Immer-Light.} Ambient illumination can cause both dilation and constriction, introducing variation in iris texture. To capture this effect, images from Immer-Dilation further are paired with those of small pupil-to-ocular ratios.
+%     \item \textbf{Immer-Angle.} Gaze angle varies naturally with changes in gaze point and headset wearing. Images from different gaze points are paired. Only standard samples are used to eliminate the impact of other degradations.
+% \end{itemize}
+
+\noindent \textbf{General evaluation.} In real-world scenarios, degradation and variation can be partly mitigated by constraining user behavior during acquisition (\eg, wearing the device properly or fixating on a target), but stricter constraints reduce convenience and generality. We therefore design 4 protocols under different degrees of acquisition freedom, determined by whether challenging samples are included and whether gaze points are restricted, to assess overall IR performance. Arranged in increasing difficulty:
+% \noindent \textbf{General evaluation.} In real-world scenarios, degradation and variation can be partly regulated through acquisition control, though stricter control naturally reduces convenience and generality. We design 4 general evaluation protocols as combinations of two factors, whether challenging samples are still acquired and whether gaze points are restricted, to evaluate the overall performance of the IR system. Arranged in increasing difficulty:
+
+\begin{itemize}
+    \item \textbf{Immer-Control.} Acquisition is strictly regulated to approximate the classical controlled setup by difficulty. This is simulated by selecting only standard samples and pairing them at the same gaze point.
+    \item \textbf{Immer-Fix.} With the user instructed to gaze at a fixed point, by careful calibration, gaze angle variation is minimized. Pairs are still drawn from the same gaze point, but both standard and challenging samples are used.
+    \item \textbf{Immer-Select.} Gaze points are further unrestricted except for those potentially causing extreme distortion (\ie, points 3/6/9 for the left eye and 1/4/7 for the right eye).
+    \item \textbf{Immer-Any.} Images are randomly selected from the test set without restriction on either gaze point or quality, representing a fully open scenario and the closest counterpart to real-world applications.
+\end{itemize}
+% \noindent \textbf{Challenging factors in immersive IR.} As introduced in~\cref{sec:intro}, the unique difficulties of immersive IR lie in off-axis distortion, which is inherent, and quality degradation and intra-class variation, which are varied across cases. Our first aim is to justify how the severity of the latter two may influence immersive IR performance. We factor the specific degradation and variation based on the annotated quality scores. Among them, we experimentally find reflection and blurriness have minor impact, and identify the remainings, \ie, degradation in eyelash and eyelid \textit{occlusion} , and variation in \textit{pupil size} and \textit{gaze point} as decisive factors. Notably, these factors are also generally considered in-improvable through acquisition processes. We construct four protocols to study these factors accordingly.
+
+% In immersive IR, images are acquired in open scenes, where both the subject and the device are under only mild control. Compared to conventional controlled setups, this introduces three unique challenges: 1) \textit{Off-axis distortion.} VR/AR headsets typically capture tilted or off-axis ocular images, where perspective distortion, \eg, the circular iris appearing elliptical and local textures being unevenly stretched, can undermine the geometric consistency assumed in controlled IR. 2) \textit{Quality degradation.} As largely self-service devices without professional calibration, VR/AR headsets produce image quality that depends on user cooperation and thus varies considerably. 3) \textit{Intra-class variation.} Environmental and behavioral factors introduce substantial intra-class variation, such as pupil size changes from illumination and viewing angle changes from varying gaze points.
+
+
+% Among them, off-axis distortion is inherent in immersive IR and the degree of quality degradation and intra-class variation can vary in specific cases. Such samples can be selected based on our annotated quality criteria. Among criteria, we find eyelid/eyelash occlusion, pupil size variation and angle variation,  are unavoidable and influence most to the IR performance. We hence propose 4 protocols to evaluate their influences.
+
+% \noindent \textbf{Challenging factors in immersive IR.} Immersive IR differs from the conventional controlled setup in the open-scene data acquisition, where both the subject and the acquisition device are under only mild control. It imposes 3 unique challenges: 1) Off-axis distortion. VR/AR headsets mainly capture tilted or off-axis ocular images. 这会造成透视畸变引起的空间失真，表现为圆形虹膜在图像中变为椭圆、局部纹理被非线性拉伸或压缩，进而破坏传统IR方法所需的几何一致性。 2) Quality degradation, as VR/AR headsets are largely self-service devices, it can instruct but cannot ensure the user to provide high quality samples（我是想说，设备不一定会像实验室环境那样有人专门调校，而依赖于大众用户的配合，从而采集的图像并不总是高质量的）. 3) Intra-class variation. 环境光会造成pupil dilation and contriction，用户的gaze point会影响图像的angle，造成丰富的类内变化。
+
+% CVPR 缩减
+% For each protocol, we define evaluations along two axes, single-eye and dual-eye testing on iris verification and identification, following the convention of iris recognition. We yield detailed discussion to the supplementary material.
+
+\subsection{Protocol Organization}
+\label{subsec:protocol-organization}
+
+% For each protocol, we define evaluations along two axes. We here briefly introduce the rationale and yield detailed discussion to the supplementary material.
+
+%  \noindent \textbf{Single-eye \textit{vs.} Dual-eye testing.}  In immersive acquisition, high-quality images from both eyes are not always available. We therefore support two modes: single-eye testing, where only one eye side is used and no cross-side pairs are formed; and dual-eye testing, where simultaneously captured left- and right-eye images are grouped and matched jointly, with acceptance only if both eyes succeed. Dual-eye testing is omitted on Immer-Select, since removing extreme gaze points leaves too few shared positions, making the task trivial compared to the single-eye setting.
+
+% \noindent \textbf{Verification \textit{vs.} Identification.} Verification is 1-to-1 matching, evaluated on sampled genuine and imposter pairs, with pair numbers capped for efficiency while ensuring accuracy at FRR@FAR(1e-5). Identification is 1-to-N matching, where a probe is compared against a unified gallery built from central gaze images without degradation. Up to 100 probes per class are sampled. Immer-Dilation is excluded from identification, as the gallery contains only normal pupil-to-ocular ratios.
+
+
+We organize concrete protocols based on~\cref{subsec:protocol-rationale}. For each protocol, we provide both single-eye and dual-eye testing on iris verification and identification tasks. See supplementary material for detailed descriptions of all protocols.
+
+\noindent \textbf{Single-eye \textit{vs.} Dual-eye testing.} In the immersive setup, open-scene acquisition makes it difficult to obtain high-quality images from both eyes at the same time. As a result, recognition systems may operate either on a single eye for quicker and more convenient use, or on both eyes jointly to improve reliability in security-sensitive applications. For each protocol, we therefore allow separate assessment in two corresponding modes: \textit{single-eye testing}, where images are drawn from the same eye side only and no cross-side pairs are formed; and \textit{dual-eye testing}, where left- and right-eye images captured simultaneously are grouped and compared against other groups, with acceptance granted only if both eyes are successfully matched. Note that we omit dual-eye testing on Immer-Select, since the removal of extreme gaze points leaves only three shared positions (points 2/5/8 for both eyes), making the task overly simplified compared to the corresponding single-eye setting.
+
+
+\noindent \textbf{Verification \textit{vs.} Identification.} \textit{Iris verification} is 1-to-1 matching, where the system determines if an input iris matches a claimed identity by comparing it to the stored iris of that identity. Verification protocols therefore consist image pairs, with genuine pairs drawn from the same subject and imposter pairs from different subjects. For each protocol, we sample pairs from the test set according to its design. Genuine pairs are included up to the maximum available or capped at 1.5M, while imposter pairs are capped at 2M for factor-specific protocols and 3M for general protocols. These caps balance efficiency with the accuracy required for FRR@FAR(1e-5), the preferred metric in this field. 
+
+\textit{Iris identification} is 1-to-N matching, where the system compares a probe image against each within a gallery of enrolled irises to determine the subject's most probable identity. We construct a unified gallery shared across all protocols, consisting of one image or dual-eye images without degradation for each class, captured at the central gaze point (\ie, point 5). For probes, up to 100 images per class are sampled according to protocol design. The Immer-Dilation protocol is not defined for identification, since the gallery is always of normal pupil-to-ocular ratio and thus no probe-gallery pair can contain two dilated samples.
+
+
+
+
+% --- deprecated ---
+
+
+% \noindent \textbf{Single-eye \textit{vs.} Dual-eye testing.} For each protocol, we allow separate assessment on a single eye side (left or right) or on dual eyes. In \textit{single-eye testing}, images are drawn from the same eye side only, and no cross-side pairs are formed. In \textit{dual-eye testing}, left- and right-eye images captured simultaneously by the camera are grouped and compared against other groups. In practice, dual-eye protocols are designed to enable recognition systems to aggregate recognition results from both eyes, thereby reducing the false acceptance rate (FAR), as later shown in~\cref{sec:benchmark}. Note that we omit dual-eye testing on Immer-Select, since the removal of extreme gaze points leaves only three shared positions (points 2/5/8 for both eyes), making the task overly simplified compared to the corresponding single-eye setting.
+
+
+% We recommend reporting performance on FRR@FAR. For all protocols except Immer-Pupil, we sample at least 1M negative pairs, enabling accurate evaluation of FRR@FAR (1e-5). For Immer-Pupil, due to the limited number of available pairs, evaluation is reported up to FRR@FAR (1e-3).
+
+% % 两类：degradation、gaze point variation
+% \noindent \textbf{Hard scenarios.} Prior studies have shown that even when ocular images are captured with high quality, several unavoidable factors can hinder accurate IR. For example, long eyelashes or partially opened eyelids may obscure the iris, and pupil dilation may compress the iris texture, making it difficult to extract complete features. In addition, because gaze points can hardly be precisely regulated in immersive settings, off-axis IR requires matching irises across different gaze angles, which remains a highly challenging problem. To this end, we construct 4 protocols covering these difficult scenarios:
+% \begin{itemize}
+%     \item \textbf{Immer-Occlusion.} Based on the quality annotations in Sec. 3.2, we select images with eyelid or eyelash occlusion to construct pairs. Each image in a pair contains only one type of degradation, i.e., falling below the threshold in a single quality dimension. Images in each pair are collected at the same gaze point to minimize angular variation and isolate the effect of occlusion, where samples from the same gaze point are considered to share the same gaze angle.
+%     \item \textbf{Immer-Dilation.} To evaluate the effect of pupil dilation, which compresses the iris texture and reduces the visible iris area, we construct pairs using samples with large pupil-to-ocular ratios. As in the first protocol, pairs are constrained to images from the same gaze point.
+%     \item \textbf{Immer-Pupil.} To assess whether models can handle intra-class variations caused by different degrees of iris compression, we construct mixed pairs consisting of one difficult sample with a large pupil ratio and one standard sample, both captured at the same gaze point.
+%     \item \textbf{Immer-Angle.} To evaluate matching performance across different gaze directions, we construct pairs using images captured at different gaze points. Unlike the previous three protocols, only standard samples are used here to eliminate the influence of other degradations.
+% \end{itemize}
+
+% \noindent \textbf{Controlled environment.} We assume that in controlled environments, users can be instructed to capture high-quality ocular images at specific gaze points. We design one protocol to evaluate this setting, which also serves as the simplest baseline benchmark in our dataset:
+% \begin{itemize}
+%     \item \textbf{Immer-Control.} Pairs are constructed from standard samples captured at the same gaze point.
+% \end{itemize}
+
+% \noindent \textbf{Open scene.} In open scene, image quality cannot be controlled, and samples may exhibit various degradations. We design three protocols to simulate this setting, based on the user’s gaze points:
+% \begin{itemize}
+%     \item \textbf{Immer-Fix.} Assuming gaze points can be controlled, pairs are sampled from the same gaze point across the dataset. Images in a pair may be standard or hard samples, potentially with single or multiple degradations.
+%     \item \textbf{Immer-Select.} Gaze points are not restricted, except for a few extreme cases (\ie, left-eye points 3,6,9 and right-eye points 1,4,7), where excessive pose may cause partial iris features to fall outside the sensor's field of view. We assume such extreme angles can be excluded.
+%     \item \textbf{Immer-Any.} No restriction is placed on gaze points or image quality, representing a fully open scenario.
+% \end{itemize}
+
+% \subsubsection{Iris Verification Protocols}
+% \label{subsubsec:verification-protocols}
+
+
+% For each testing protocol, we randomly sample pairs from the overall test set under the above constraints. We recommend reporting performance using FRR@FAR. For all protocols except Immer-pupil, we sample at least 1M negative pairs, enabling reliable evaluation of FRR@FAR (1e-5). For Immer-pupil, due to the limited number of available pairs, evaluation is reported up to FRR@FAR (1e-3). We sample as many positive pairs as possible, subject to an upper bound of 1.5M positive pairs and 2M/3M negative pairs to balance testing efficiency.
+
+% Figure X illustrates exemplar pairs for each protocol.
+
+% \subsubsection{Iris Identification Protocols}
+% \label{subsubsec:identification-protocols}
+
+% Iris identification refers to a one-to-many matching problem, where the system compares an input image (probe) against a database of enrolled irises (gallery) to determine the subject's identity. For this setting, we first construct a unified gallery and then define protocols by selecting different types of probes.
+
+% To establish the gallery, we select for each subject one image (or one group) of high-quality left- and right-eye samples captured at the central gaze point (\ie, point 5). Similar to iris verification, probes are chosen under different constraints to construct seven protocols, covering specific hard scenarios, controlled environments, open-scene settings, and different eye categories. For each protocol, 100 probe images are selected per identity and matched against the gallery.
+
+% For iris identification, we recommend reporting Rank-1 accuracy. Table X summarizes the detailed dataset statistics.

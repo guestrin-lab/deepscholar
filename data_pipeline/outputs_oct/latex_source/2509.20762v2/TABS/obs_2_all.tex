@@ -1,0 +1,36 @@
+\begingroup
+\setlength{\tabcolsep}{9pt}
+\renewcommand{\arraystretch}{0.92}
+\begin{table}[t!]
+    \centering
+    \caption{\uline{Observation 2: Whether a node is the group anchor or not is stable, yet not fully homogeneous, across different hyperedges.} The anchor purity in real-world datasets is significantly higher than in randomized ones in most cases, indicated by the small $p$-values obtained from one-sided $t$-tests, but the purity is not near 100\% in most cases.
+    \revisekdd{Here, we report statistics on all hyperedge, supplementing the statistics in \cref{tab:label_purity}.}}
+    \label{tab:obs_2_all}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{cc|cc|c}
+    \hline
+    \multicolumn{2}{c|}{\textbf{Dataset}} & Real-world & Random & $p$-value \bigstrut\\
+    \hline
+    \multirow{2}[1]{*}{\texttt{coAA}} & (first) & 0.6913{\scriptsize$\pm$0.3482} & 0.5825{\scriptsize$\pm$0.3598} & $<$0.0001 \bigstrut[t]\\
+          & (last) & 0.7306{\scriptsize$\pm$0.3392} & 0.5819{\scriptsize$\pm$0.3597} & $<$0.0001 \\
+    \multirow{2}[0]{*}{\texttt{coDB}} & (first) & 0.6863{\scriptsize$\pm$0.3546} & 0.6043{\scriptsize$\pm$0.3555} & $<$0.0001 \\
+          & (last) & 0.7501{\scriptsize$\pm$0.3307} & 0.6051{\scriptsize$\pm$0.3560} & $<$0.0001 \\
+    \multirow{2}[0]{*}{\texttt{coSM}} & (first) & 0.7423{\scriptsize$\pm$0.3650} & 0.5728{\scriptsize$\pm$0.3987} & $<$0.0001 \\
+          & (last) & 0.7753{\scriptsize$\pm$0.3515} & 0.5901{\scriptsize$\pm$0.4039} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{qaBI}} & 0.8241{\scriptsize$\pm$0.3050} & 0.5099{\scriptsize$\pm$0.3495} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{qaPH}} & 0.8216{\scriptsize$\pm$0.2929} & 0.5315{\scriptsize$\pm$0.3380} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{qaMA}} & 0.7700{\scriptsize$\pm$0.3720} & 0.6402{\scriptsize$\pm$0.3922} & 0.0076 \\
+    \multicolumn{2}{c|}{\texttt{qaST}} & 0.8649{\scriptsize$\pm$0.3162} & 0.7029{\scriptsize$\pm$0.4021} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{emEN}} & 0.9209{\scriptsize$\pm$0.1836} & 0.8537{\scriptsize$\pm$0.2162} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{emEU}} & 0.6380{\scriptsize$\pm$0.1909} & 0.5499{\scriptsize$\pm$0.1372} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{emER}} & 0.7206{\scriptsize$\pm$0.1915} & 0.5352{\scriptsize$\pm$0.0935} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{soME}} & 0.7669{\scriptsize$\pm$0.3190} & 0.6728{\scriptsize$\pm$0.3473} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{soRE}} & 0.7444{\scriptsize$\pm$0.3533} & 0.5637{\scriptsize$\pm$0.3687} & $<$0.0001 \\
+    \multicolumn{2}{c|}{\texttt{moML}} & 0.9925{\scriptsize$\pm$0.0738} & 0.4962{\scriptsize$\pm$0.3356} & $<$0.0001 \bigstrut[b]\\
+    \hline
+    \multicolumn{2}{c|}{Average} & 0.7775{\scriptsize$\pm$0.0875} & 0.5995{\scriptsize$\pm$0.0848} & - \bigstrut\\
+    \hline
+    \end{tabular}%
+\end{adjustbox}
+\end{table}
+\endgroup

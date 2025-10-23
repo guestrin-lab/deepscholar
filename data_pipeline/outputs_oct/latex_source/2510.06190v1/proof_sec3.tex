@@ -1,0 +1,362 @@
+\section{Proof of \Cref{thm:main_mdm}}
+
+\begin{theorem}[MDM Simulation of PRAM, Formal] \label{thm:main_mdm_formal}
+    For any PRAM program $\mathcal P = (I_0,\dots,I_\ell,\mathrm{addr})$ (with finite number of instructions $\ell$, and is uniform for all processors and input size $n$), that on input $\mathbf x_{\text{val}} \in \mathbb U^n$ with corresponding address $\mathbf x_{\text{addr}} \in \mathcal A^n$ that runs in $T(n)$ parallel time using at most $P(n)$ processors and outputs $\text{PRAM}_{\mathcal P}(\mathbf x_{\text{addr}}, \mathbf x_{\text{val}}) \in \mathbb U$ per procedure described in \Cref{appendix:pram}, there exists a bijection $\phi: \mathbb U \cup \mathcal A \rightarrow \Sigma$ and a special token $\texttt{[SEP]} \in \Sigma$, and a MDM with constant depth and $\log(n)$ embedding size encoder-only Transformer, on input $\mathbf{x} = ((\mathbf{z}_{2i}, \mathbf{z}_{2i+1})_{i=0}^{n-1}, \texttt{[SEP]}) \in \Sigma^{2n+1}$ where $\mathbf{z}_{2i} = \phi(\mathbf x_{\text{addr},i})$ and $\mathbf{z}_{2i+1} = \phi(\mathbf x_{\text{val},i})$, padded to $\mathcal O(P(n) \times T(n))$ context length, outputs $\phi(\text{PRAM}_{\mathcal P}(\mathbf x_{\text{addr}}, \mathbf x_{\text{val}}))$ with $\mathcal O(T(n))$ decoding steps.
+\end{theorem}
+
+% \zhiyuan{in the formal statement the width and depth of MDM with should definitely be mentioned, if the MDM is uniform (i.e., size does not depend on n), then the right way to state the theorem is to change the order of quantifiers, like "for any uniform PRAM, there is a MDM, such that for any n, ... "}
+
+The proof demonstrates that AO-MDM can simulate any PRAM algorithm. The construction is based on $\efasp$, the programming language we developed, whose definable programs are equivalent to encoder-only Transformer function class (see \Cref{appendix:fasp}). We prove \Cref{thm:main_mdm} by: \textbf{(1)} defining the setup and input format for PRAM simulation; \textbf{(2)} constructing an $\efasp$ program that simulates PRAM execution in \Cref{alg:single-processor}.
+
+
+\paragraph{Choice of Architecture / $\efasp$ Variant}
+For this simulation, we use the $\efasp[\SEQ; [\cdot]_+, \times]$ variant with integer positional encoding rather than the binary variant. This choice is crucial because MDM's context length can be exponentially large (e.g., for NP-hard problems), while PRAM's actual memory usage remains polynomial. Using $\log n$ bits to represent positions would be insufficient when the context length $n$ itself grows exponentially with the problem size, even though PRAM addresses can still be represented in $\log S(n)$ bits. To avoid confusion between MDM's context length and PRAM's memory space, we use $S_{\text{MDM}}(n)$ to denote the maximum context length and reserve $S(n)$ for PRAM's memory space.
+
+\paragraph{Input Format}
+The input that encodes the PRAM's initial memory state is a sequence $\mathbf{x} = (x_1, \ldots, x_{2n+2}) \in \Sigma^{2n+2}$ of discrete tokens from the vocabulary $\Sigma$.
+
+Let $w = \Theta(\log n)$ be the word width and recall from \Cref{appendix:pram} that the address width $a = \lceil \log_2 S(n) \rceil \leq w$ (addresses fit within words). The sequence has length $2n+2 = 1 + 2n + 1$ where:
+\begin{align}
+x_1 &\in \Sigma \quad \text{(processor count token)} \\
+x_{2i} &\in \Sigma \quad \text{(address token)} \quad \text{for } i = 1, \ldots, n \\
+x_{2i+1} &\in \Sigma \quad \text{(data token)} \quad \text{for } i = 1, \ldots, n \\
+x_{2n+2} &= \texttt{[SEP]} \quad \text{(separator token)}
+\end{align}
+
+Through token embedding $\te: \Sigma \to \mathbb{R}^d$ and subsequent linear projections, these discrete tokens are mapped to their semantic bit representations:
+\begin{align}
+\te(x_1) &\mapsto P(n) \in \{0,1\}^w \\
+\te(x_{2i}) &\mapsto \text{addr}_i \in \{0,1\}^w \quad \text{(address bits)} \\
+\te(x_{2i+1}) &\mapsto \text{val}_i \in \{0,1\}^w \quad \text{(data bits)}
+\end{align}
+for $i = 1, \ldots, n$. The \texttt{[SEP]} token serves as a separator with special meaning in the computation trace, as detailed in the next subsection. Following the standard MDM notation from \Cref{sec:preliminary}, the actual input to the MDM is the padded sequence $\mathbf{x}_0 = (x_{0,1}, x_{0,2}, \ldots, x_{0,S_{\text{MDM}}(n)}) \in \bar{\Sigma}^{S_{\text{MDM}}(n)}$ where $\bar{\Sigma} = \Sigma \cup \{\mask\}$:
+\begin{align}
+x_{0,j} &= x_j \quad \text{for } j = 1, \ldots, 2n+2 \\
+x_{0,j} &= \mask \quad \text{for } j = 2n+3, \ldots, S_{\text{MDM}}(n)
+\end{align}
+
+We aim to show that there exists an encoder-only Transformer that, given the initial memory state of a PRAM as input, can output the exact same result as the PRAM algorithm after $T_{\text{MDM}}(n) = \mathcal{O}(T(n))$ decoding steps. The Transformer will have constant depth and context length $\mathcal{O}(S_{\text{MDM}}(n))$, where $S_{\text{MDM}}(n)$ represents the MDM's context budget.
+
+
+We next provide an overview of the construction:
+
+\paragraph{Processor State and Computation Log Representation:} First, we state the representation of processor state and computation log as tokens. We represent each processor's state and one round of computation using a fixed number of tokens: program counter (1 token), register file (5 tokens), and computation log (2 tokens), for a total of 8 tokens per processor.
+
+\emph{Program Counter (PC):} A single word encoding the current instruction address.
+
+\emph{Register File:} We maintain exactly 5 registers, each storing one word. This provides sufficient computational capacity while keeping the representation tractable.
+
+\emph{Computation Log:} This log is populated only when executing \texttt{STORE [s],r} instructions, recording the target address and stored value. For all other instructions, the log remains empty (represented by special tokens).
+
+The computation trace for one parallel round can be represented as:
+\begin{align}
+\texttt{[SEP]} \; \langle \texttt{PC}_1, \texttt{R}_{1,1}, \ldots, \texttt{R}_{1,5}, \texttt{Addr}_1, \texttt{Val}_1 \rangle \; \langle \texttt{PC}_2, \texttt{R}_{2,1}, \ldots, \texttt{R}_{2,5}, \texttt{Addr}_2, \texttt{Val}_2 \rangle \; \ldots
+\end{align}
+where \texttt{[SEP]} serves as a separator token to distinguish different computation rounds and there are a total of $P(n)$ independent processors. Each processor $i \in \{1, \ldots, P(n)\}$ contributes an 8-tuple $\langle \texttt{PC}_i, \texttt{R}_{i,1}, \texttt{R}_{i,2}, \texttt{R}_{i,3}, \texttt{R}_{i,4}, \texttt{R}_{i,5}, \texttt{Addr}_i, \texttt{Val}_i \rangle$ representing its program counter, five register values, and memory write operation (address and value). The trace thus contains exactly $P(n)$ such 8-tuples per parallel round.
+
+\paragraph{Processor Assignment and Role Identification.}
+The algorithm begins by determining whether the current position contains a mask token (i.e. $\mathrm{is\_mask}$). If the position is a mask token (\textbf{Branch 1}), the algorithm continues by computing the distance to the nearest preceding \texttt{[SEP]} token. If the position is not a mask token (\textbf{Branch 2}), it indicates this position has already been unmasked (computation has already finished), and the algorithm returns the input token (or a all zero vector) which will not be unmasked per definition of MDM \Cref{sec:preliminary}).
+
+To identify the processor ID, we find the rightmost \texttt{[SEP]} token to the left of the current position (i.e. $\mathrm{rightmost\_sep\_pos}$) and compute the distance between them (i.e. $\mathrm{distance\_to\_sep}$). If this distance $> 8 \times P(n)$ (\textbf{Branch 1.1}), the position does not participate in the current computation round as it is not a token that should be ``unmasked" in this round, in this case, the algorithm returns a special embedding (a all zero vector), which results in uniform distribution during prediction and smallest confidence, ensuring that the MDM will not select this position for unmasking; if the distance $= 8 \times P(n) + 1$ (\textbf{Branch 1.2}), this position return the embedding of \texttt{[SEP]}, preparing for the next computation round; otherwise if the distance $< 8 \times P(n) + 1$ (\textbf{Branch 1.3}), the position participates in the computation of the current round. 
+
+For those positions participating in the current computation round. The corresponding processor ID (i.e. $\mathrm{processor\_id}$) is obtained by right-shifting $\mathrm{distance\_to\_sep}$ by 3 bits with zero-padding on the left (since each processor corresponds to exactly 8 tokens). The rightmost 3 bits represent the position within that processor (i.e. $\mathrm{inner\_processor\_id}$).
+
+\paragraph{Initialization of Processor State.} 
+We need to initialize the initial state of all processors at the beginning. This is determined by the current number of \texttt{[SEP]} tokens in the sequence. Specifically, when the current position is a mask token and there is exactly one \texttt{[SEP]} token (i.e. $\mathrm{seq\_sum}(\mathrm{is\_sep}) == 1$) (\textbf{Branch 3}), we consider this the initialization state. All program counters are set to 0, all registers are set to 0, and all memory locations are set to 0.
+
+
+\paragraph{Fetch Instruction and Execution (Main Loop).} According to the processor ID and inner processor position, the algorithm fetches the instruction from the instruction memory (i.e. $\mathrm{get\_instruction}$), which is hard-coded into the parameters of the model, and execute it (using $\mathrm{execute}$). Different instructions yields different execution semantics, and sequently different $8$ token state. Finally, according to the $\mathrm{inner\_processor\_id}$, the algorithm chooses what to return. The algorithm terminates when the PC of all processors are HALT.
+
+
+We now formally construct an $\efasp$ program that simulates PRAM execution (the single-processor algorithm detailed in \Cref{appendix:pram}). The semantics meanings and justifications of operators used in the program are summarized in \Cref{appendix:fasp}. The only two global operators are \texttt{seq\_sum} and \texttt{rightmost\_exact\_match} implementable by attention , otherwise are all local operators implementable by polylog-width constant-depth MLPs.
+
+The context length of MDM used by this construction is $S_{\text{MDM}}(n) = \mathcal{O}(T_{\text{par}}(n) \times P(n))$, the decoding steps is $T_{\text{MDM}}(n) = \mathcal{O}(T_{\text{par}}(n))$, where $T_{\text{par}}(n)$ is the parallel time complexity and $P(n)$ is the processor count. For the constructed Transformer, embedding size is $\log(n)$ and depth is a constant.
+
+
+{
+\captionsetup[lstlisting]{labelformat=empty} % Remove "Listing X:"
+\lstdefinestyle{customcode}{
+    basicstyle=\small\ttfamily,
+    mathescape=true,
+    commentstyle=\color{green!50!black},
+    language=python,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    frame=lines,
+    framesep=5pt,
+    tabsize=4,
+    columns=fullflexible,
+    breaklines=true,
+    keepspaces=false,
+    backgroundcolor=\color{white},
+    showstringspaces=false,
+    captionpos=b,
+    emphstyle=[1]\color{orange},
+    keywords={
+        if, elif, else, equal, max, min, if_then_else, 
+        not, and, or
+    },
+    emph={[1]get_token, get_move, get_symbol,seq_len},
+    emphstyle=[2]\color{red},
+    emph={[2]seq_sum,aha,rha,exact_match,seq_max,seq_min,rightmost_exact_match,seq_and,seq_or},
+    literate=%
+    {PE}{{{\color{orange}PE}}}{1}
+    {TE}{{{\color{orange}TE}}}{1}
+}
+
+\begin{lstlisting}[style=customcode]
+# ---------------------- Initialization ----------------------
+is_sep   = (TE == embed([SEP]))
+is_mask  = (TE == embed([MASK]))
+is_init = (seq_sum(is_sep) == 1)
+
+# Get the current and last [SEP] position
+cur_sep  = rightmost_exact_match(1, is_sep, PE)      
+dist_to_sep     = PE - cur_sep                               
+pn = rightmost_exact_match(1, is_first, TE)
+spanned_pn    = pn << 3                                   
+
+# Skip positions not participating in computation
+if (not is_mask) or (dist_to_sep > spanned_pn): return 0
+if dist_to_sep == spanned_pn + 1:  return embed([SEP])
+if is_init: return 0
+
+# Initialization
+pid        = (dist_to_sep - 1) >> 3     
+inner_id   = (dist_to_sep - 1 )[:3]     
+
+if is_init and inner_id == 1: return pid
+if is_init and inner_id != 1: return 0
+
+# ---------------------- Read previous round state ----------------------
+prev_sep   = rightmost_exact_match(1, (is_sep and (PE < cur_sep)), PE)
+prev_pid_base  = prev_sep + 1 + (pid << 3)
+
+pos_PC     = prev_pid_base + 0
+PC    = rightmost_exact_match(pos_PC, PE, TE)
+pos_R1     = prev_pid_base + 1
+R1    = rightmost_exact_match(pos_R1, PE, TE)
+pos_R2     = prev_pid_base + 2
+R2    = rightmost_exact_match(pos_R2, PE, TE)
+pos_R3     = prev_pid_base + 3
+R3    = rightmost_exact_match(pos_R3, PE, TE)
+pos_R4     = prev_pid_base + 4
+R4    = rightmost_exact_match(pos_R4, PE, TE)
+pos_R5     = prev_pid_base + 5
+R5    = rightmost_exact_match(pos_R5, PE, TE)
+
+if PC == HALT_CODE: return 0
+
+# -------------------- Fetch and execute instruction --------------------
+# Decode
+I_type, op_r, op_s, op_c, label_addr = get_instruction(PC)
+
+# Source/destination register
+Rs = (R1 if op_s == 1 else
+        R2 if op_s == 2 else
+        R3 if op_s == 3 else
+        R4 if op_s == 4 else
+        R5 if op_s == 5 else 0)
+
+Rr = (R1 if op_r == 1 else
+        R2 if op_r == 2 else
+        R3 if op_r == 3 else
+        R4 if op_r == 4 else
+        R5 if op_r == 5 else 0)
+
+
+# Default effect
+PC_next    = PC + 1
+WR_val     = Rr
+writes_reg = False
+ADDR_out   = 0      # Slot 6: only STORE overwrites address (a <= w, use word directly)
+VAL_out    = 0      # Slot 7: only STORE overwrites value
+
+#  Address read
+if   I_type == embed([LOAD]):    
+    ADDR_KEYS    = (TE if is_addr else 0)     
+    ADDR_POSVAL  = (PE if is_addr else 0)    
+
+    last_addr_pos_load = rightmost_exact_match(Rs, ADDR_KEYS, ADDR_POSVAL)
+    load_val           = rightmost_exact_match(last_addr_pos_load + 1, PE, TE)
+    WR_val = load_val
+
+# Per-instruction semantics
+elif I_type == embed([STORE]):   ADDR_out, VAL_out = Rs, Rr
+elif I_type == embed([LOADI]):   WR_val = op_c
+elif I_type == embed([ADD]):     WR_val = (Rr + Rs)
+elif I_type == embed([SUB]):     WR_val = (Rr - Rs)
+elif I_type == embed([AND]):     WR_val = (Rr & Rs)
+elif I_type == embed([XOR]):     WR_val = (Rr ^ Rs)
+elif I_type == embed([SHL]):     WR_val = (Rr << Rs)
+elif I_type == embed([SHR]):     WR_val = (Rr >> Rs)
+elif I_type == embed([BRZ]) and Rr == 0: PC_next = label_addr
+elif I_type == embed([JMP]):     PC_next = label_addr
+elif I_type == embed([HALT]):    PC_next = HALT_CODE
+
+# Register writeback: only for {LOAD, LOADI, ADD, SUB, AND, XOR, SHL, SHR}
+writes_reg = (I_type == embed([LOAD]))  or (I_type == embed([LOADI])) or \
+                (I_type == embed([ADD]))   or (I_type == embed([SUB]))   or \
+                (I_type == embed([AND]))   or (I_type == embed([XOR]))   or \
+                (I_type == embed([SHL]))   or (I_type == embed([SHR]))
+
+R1_next = (WR_val if (writes_reg and op_r == 1) else R1)
+R2_next = (WR_val if (writes_reg and op_r == 2) else R2)
+R3_next = (WR_val if (writes_reg and op_r == 3) else R3)
+R4_next = (WR_val if (writes_reg and op_r == 4) else R4)
+R5_next = (WR_val if (writes_reg and op_r == 5) else R5)
+
+# ---------- Return one of 8 slots according to inner_id ----------
+if   inner_id == 0:  return PC_next
+elif inner_id == 1:  return R1_next
+elif inner_id == 2:  return R2_next
+elif inner_id == 3:  return R3_next
+elif inner_id == 4:  return R4_next
+elif inner_id == 5:  return R5_next
+elif inner_id == 6:  return ADDR_out
+else:                return VAL_out
+\end{lstlisting}
+}
+
+
+
+
+\section{Proof of \Cref{thm:main_constrained}} \label{appendix:proof_main_constrained}
+
+
+The result stems from MDM's total amount of computation being bounded by $S(n)$ in both total steps ($T(n) \leq S(n)$) and per-step capacity (polynomial embedding size), preventing it from solving problems requiring greater computational resources.
+
+Fix an encoder-only MDM with context length $S(n)$ and $T(n)$ decoding steps. Throughout we assume constant depth/heads and log-precision arithmetic with hidden width $d=\Theta(\log(S(n)+T(n)))$ (binary positional code), as in our setup. Particularly, at each decoding step the model re-encodes a length-$S(n)$ sequence. A single forward pass is dominated by self-attention: for each position $i$ we form a query in $\mathbb{R}^d$ and take dot products with all $S(n)$ keys, then take the value-weighted sum. Counting FLOPs, one attention head costs
+    \begin{align}
+    \Theta\big(S(n)\cdot S(n)\cdot d\big)=\Theta\!\big(S(n)^2\log(S(n)+T(n))\big),
+    \end{align}
+    and the multi-head/multi-layer constants only change the leading constant. The position-wise MLP adds $\Theta(S(n)\cdot \operatorname{poly}(d))=\Theta\!\big(S(n)\operatorname{polylog}(S(n)+T(n))\big)$ FLOPs and is lower order when $S(n)\gg d$. Thus one decoding step costs
+    \begin{align}
+    \widetilde{\mathcal{O}}\big(S(n)^2\big)\quad\text{FLOPs,}
+    \end{align}
+    where $\widetilde{\mathcal{O}}(\cdot)$ suppresses polylog factors in $S(n)+T(n)$. Over $T(n)$ steps the total compute is $\widetilde{\mathcal{O}}\!\big(S(n)^2\,T(n)\big)$. In particular, when each step reveals at least one token (or a constant number), we have $T(n)\le S(n)$, yielding the unified cubic bound $\widetilde{\mathcal{O}}(S(n)^3)$. Hence any problem that needs $\omega\!\big(S(n)^3\big)$ serial time cannot be solved by MDM in the $(S(n),T(n))$ regime stated.
+
+
+\section{Proof of \Cref{thm:any_order}} \label{appendix:proof_any_order}
+
+
+
+Recall \Cref{def:masked_arm}, we defined \textbf{Masked-ARM} as an autoregressive model with encoder-only Transformer architecture that pads the input sequence with mask tokens to the maximum context length, which is also equivalent to a MDM with a fixed order (left-to-right) generation and generating one token at a time. Consider an AO-MDM with input format $\mathbf{x} = (x_1, \ldots, x_n)$ followed by a special separator token \texttt{[SEP]} at position $n+1$. 
+
+\textbf{AO-MDM Intermediate State:} At any intermediate generation step, the AO-MDM state can be represented as $\mathbf{z} = (z_1, \ldots, z_{S(n)}) \in \bar{\Sigma}^{S(n)}$ where $\bar{\Sigma} = \Sigma \cup \{\mask\}$. The sequence structure is:
+\begin{align}
+z_j &= x_j \quad \text{for } j \in [n] \quad \text{(fixed input portion)} \\
+z_{n+1} &= \texttt{[SEP]} \quad \text{(separator)} \\
+z_j &\in \Sigma \cup \{\mask\} \quad \text{for } j \in \{n+2, \ldots, S(n)\} \quad \text{(generation region)}
+\end{align}
+
+Let $\mathcal{D} = (d_1, d_2, \ldots, d_k)$ denote the sequence of positions that have been decoded (unmasked) by the AO-MDM in chronological order, where $d_i \in \{n+2, \ldots, S(n)\}$ and $z_{d_i} \neq \mask$ for all $i \in [k]$. The ordering reflects the temporal sequence in which the AO-MDM performed the unmasking operations.
+
+\begin{definition}[Position/Content Tokens and Address Encoding] \label{def:addr_tok}
+Let $\Sigma$ be the base vocabulary. We reserve a subset $\Sigma_{\mathrm{pos}} \subseteq \Sigma$ for position tokens and define a bijection $\mathrm{encode}: \{1,\ldots,S(n)\} \to \Sigma_{\mathrm{pos}}$ with inverse $\mathrm{dec\_pos}: \Sigma_{\mathrm{pos}} \to \{1,\ldots,S(n)\}$. For each decoded position $d_i$, define
+\[
+\texttt{addr}_{d_i} := \mathrm{encode}(d_i) \in \Sigma_{\mathrm{pos}} \subseteq \Sigma, \qquad \texttt{tok}_{d_i} := z_{d_i} \in \Sigma.
+\]
+Thus both address tokens and content tokens are drawn from the original vocabulary $\Sigma$. We also reserve a subset $\Sigma_{\mathrm{op}} \subseteq \Sigma$ for operator tokens used later for AP-MDM edits (\Cref{sec:any_process}).
+\end{definition}
+
+\textbf{Masked-ARM Simulation:} For each decoded token at position $d_i \in \mathcal{D}$, the Masked-ARM represents it using a 2-tuple:
+\begin{align}
+\langle \texttt{addr}_{d_i}, \texttt{tok}_{d_i} \rangle = \langle \text{encode}(d_i), z_{d_i} \rangle
+\end{align}
+where $\text{encode}(d_i)$ is a token representation of the positional index $d_i$, and $z_{d_i}$ is the actual decoded token. The target Masked-ARM sequence to be constructed is:
+\begin{align}
+\mathbf{y}_{\text{ARM}} = (x_1, \ldots, x_n, \texttt{[SEP]}, \texttt{addr}_{d_1}, \texttt{tok}_{d_1}, \ldots, \texttt{addr}_{d_k}, \texttt{tok}_{d_k}, \underbrace{\mask, \ldots, \mask}_{\text{remaining positions}})
+\end{align}
+where the sequence $\mathcal{D} = (d_1, d_2, \ldots, d_k)$ preserves the chronological order of AO-MDM's decoding operations. The Masked-ARM sequence has total length $2S(n) - n - 1 = \mathcal{O}(S(n))$, since each AO-MDM token requires two tokens (address and content) in the Masked-ARM representation.
+
+\textbf{Induction:} To prove We prove by induction that for any AO-MDM, there exists a corresponding Masked-ARM that can simulate the AO-MDM's generation process step by step for arbitrary input sequences.
+
+\begin{theorem}[AO-MDM Simulation by Masked-ARM]\label{lemma:aomdm_simulation}
+For any AO-MDM, there exists a corresponding Masked-ARM such that: for any input sequence $\mathbf{x} = (x_1, \ldots, x_n)$ and any intermediate state of the AO-MDM with decoded sequence $\mathcal{D} = (d_1, d_2, \ldots, d_k)$, the Masked-ARM, starting from the corresponding intermediate state $\mathbf{y}_{\text{ARM}}$, can generate the next address-token pair $\langle \texttt{addr}_{d_{k+1}}, \texttt{tok}_{d_{k+1}} \rangle$ such that:
+\begin{align}
+\text{encode}(d_{k+1}) &= \texttt{addr}_{d_{k+1}} \quad \text{(address matches AO-MDM's next decode position)} \\
+z_{d_{k+1}} &= \texttt{tok}_{d_{k+1}} \quad \text{(token matches AO-MDM's next decode content)}
+\end{align}
+where $d_{k+1}$ is the position that AO-MDM will decode next, and $z_{d_{k+1}}$ is the token that AO-MDM will generate at that position.
+\end{theorem}
+
+\begin{proof}
+To prove this result, we decompose the architecture of the AO-MDM into two parts: the input transformation part (which can be represented as an operator $\texttt{mdm\_embed}$) that transforms the token and position into an embedding, and the output generation part (which can be represented as an operator $\texttt{mdm\_decode}$) that transforms the embedding into logits, that is:
+\begin{equation}
+\text{AO-MDM}(\mathbf{x}) = \texttt{mdm\_decode}(\texttt{mdm\_embed}(\bar{\te}, \bar{\pe}))(\mathbf{x})
+\end{equation}
+where $\bar{\te}$ and $\bar{\pe}$ are seq-to-seq functions defined in \Cref{def:seq-ext}.
+
+This decomposition is invariant to the choice of token and position embedding functions and AO-MDM's parameter configuration. Simulating AO-MDM's generation process boils down to the following two steps:
+
+\textbf{Step 1: Replicating \texttt{mdm\_embed}.} We construct initial layers of the Masked-ARM that, given the Masked-ARM state $\mathbf{y}_{\text{ARM}}$, produce intermediate embeddings identical to $\texttt{mdm\_embed}(\mathbf{x})$ where $\mathbf{x}$ is the corresponding AO-MDM state. This transformation converts the address-token pair representation back into the embedding format that the AO-MDM expects, enabling the subsequent layers to perform identical computations. 
+We write the $\efasp$ programs (which corresponds to the encoder Transformer construction) for the construction:
+
+
+{
+\captionsetup[lstlisting]{labelformat=empty} % Remove "Listing X:"
+\lstdefinestyle{customcode}{
+    basicstyle=\small\ttfamily,
+    mathescape=true,
+    commentstyle=\color{green!50!black},
+    language=python,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    frame=lines,
+    framesep=5pt,
+    tabsize=4,
+    columns=fullflexible,
+    breaklines=true,
+    keepspaces=false,
+    backgroundcolor=\color{white},
+    showstringspaces=false,
+    captionpos=b,
+    emphstyle=[1]\color{orange},
+    keywords={
+        if, elif, else, equal, max, min, if_then_else, 
+        not, and, or
+    },
+    emph={[1]get_token, get_move, get_symbol,seq_len},
+    emphstyle=[2]\color{red},
+    emph={[2]seq_sum,aha,rha,exact_match,seq_max,seq_min,rightmost_exact_match,seq_and,seq_or},
+    literate=%
+    {PE}{{{\color{orange}PE}}}{1}
+    {TE}{{{\color{orange}TE}}}{1}
+}
+
+\begin{lstlisting}[style=customcode]
+# ---------------------- Get logits identical to AO-MDM ----------------------
+mdm_logits = mdm_decode(embed_MDM)
+tok_scores = score(mdm_logits)
+
+# AO-MDM candidate set: positions > [SEP], still [MASK], and within valid range
+cand_mask = (PE > sep_pos) and (TE_MDM == embed([MASK])) and (PE <= sn)
+cand_score = (tok_scores if cand_mask else 0)
+
+max_score  = seq_max(cand_score)
+is_best    = cand_mask and (tok_scores == max_score)
+
+# Select AO-MDM's next decode position and corresponding logits
+next_pos   = rightmost_exact_match(1, is_best, PE)
+logits_next = rightmost_exact_match(next_pos, PE, mdm_logits)
+
+# ---------------------- Emit as Masked-ARM <addr, tok> order ----------------------
+gen_slot = rightmost_exact_match(1,
+                                    (PE > sep_pos) and (PE <= sn) and (TE == embed([MASK])),
+                                    PE)
+emit_addr = (((gen_slot - sep_pos)[:1]) == 0)
+
+if PE == gen_slot:
+    result = (next_pos if emit_addr else logits_next)
+else:
+    result = 0
+
+return result
+\end{lstlisting}
+}
+
+This completes the proof.
+\end{proof}
+
+We remark the proof relies on two assumptions: 1) the function $\bar{S}(\mathbf x) = S(|\mathbf x|)$ is deterministic and computable by encoder Transformer (this is implemented by the $\texttt{sn}$ function in the $\efasp$ program for Step 1); 2) the confidence score is also dertermistic and computable by encoder Transformer (this is implemented by the $\texttt{score}$ operator in the $\efasp$ program for Step 2).

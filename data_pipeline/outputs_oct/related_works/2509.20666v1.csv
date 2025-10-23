@@ -1,0 +1,249 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.20666v1,http://arxiv.org/abs/2509.20666v1,2025-09-25 01:58:46+00:00,Understanding Mode Switching in Human-AI Collaboration: Behavioral Insights and Predictive Modeling,"Human-AI collaboration is typically offered in one of two of user control
+levels: guidance, where the AI provides suggestions and the human makes the
+final decision, and delegation, where the AI acts autonomously within
+user-defined constraints. Systems that integrate both modes, common in robotic
+surgery or driving assistance, often overlook shifts in user preferences within
+a task in response to factors like evolving trust, decision complexity, and
+perceived control. In this work, we investigate how users dynamically switch
+between higher and lower levels of control during a sequential decision-making
+task. Using a hand-and-brain chess setup, participants either selected a piece
+and the AI decided how it moved (brain mode), or the AI selected a piece and
+the participant decided how it moved (hand mode). We collected over 400
+mode-switching decisions from eight participants, along with gaze, emotional
+state, and subtask difficulty data. Statistical analysis revealed significant
+differences in gaze patterns and subtask complexity prior to a switch and in
+the quality of the subsequent move. Based on these results, we engineered
+behavioral and task-specific features to train a lightweight model that
+predicted control level switches ($F1 = 0.65$). The model performance suggests
+that real-time behavioral signals can serve as a complementary input alongside
+system-driven mode-switching mechanisms currently used. We complement our
+quantitative results with qualitative factors that influence switching
+including perceived AI ability, decision complexity, and level of control,
+identified from post-game interview analysis. The combined behavioral and
+modeling insights can help inform the design of shared autonomy systems that
+need dynamic, subtask-level control switches aligned with user intent and
+evolving task demands.","We situate our work at the intersection of mixed-initiative interaction, user preferences for control, and adaptive autonomy, drawing on research that informs how human–AI systems manage control sharing over time.
+
+\subsection{Mixed-Initiative Systems}
+Mixed-initiative systems aim to balance control between humans and AI by dynamically adjusting autonomy in response to task demands and user behavior~\cite{horvitz1999, bradshaw2004}. They emphasize agent-driven adaptation based on internal indicators like task criticality or inferred user ability~\cite{fiore2016, salikutluk_evaluation_2024, hauptman2024}, but such strategies may misalign with user preferences, leading to issues with transparency, predictability, and coordination~\cite{tambe2000, hauptman_adapt_2023}.
+
+Two common collaboration models reflect this tradeoff. In \textbf{machine-in-the-loop} systems, users maintain control while receiving AI suggestions, an approach commonly adopted in domains like healthcare, legal decision-making, writing, and software development~\cite{clark2018, green2019, kleinberg2018, roemmele_creative_2015, gero_sparks_2022, yuan_wordcraft_2022}. This mode is often preferred in contexts requiring fairness, transparency, or subjective judgment~\cite{lubars2019}, though outcomes may be skewed by a user's algorithm aversion or overreliance~\cite{bockstedt2025, jones2023people, klingbeil2024trust}.
+
+In contrast, \textbf{human-in-the-loop} systems delegate task execution to the AI, with humans monitoring or refining outputs, an approach explored in tasks like image generation and portfolio optimization~\cite{wu_adaptive_2018, ganzilla2022, buckley2021regulating}. While efficient, users often delegate sub-optimally due to poor mental models, trust asymmetries, or biases~\cite{pinski2023, fugener_cognitive_2022, milewski1997}. Survey studies highlight additional influences such as task difficulty, risk, and motivation~\cite{lubars2019}.
+
+Most prior work has focused on static or hypothetical preferences. Few studies have investigated how control preferences evolve dynamically during real-time human–AI collaboration. Our work addresses this gap by modeling control switching behavior using data from hand-and-brain chess.
+
+\subsection{User Preferences}
+A growing body of work explores the factors that shape delegation preferences, often through surveys and hypothetical scenarios~\cite{lubars2019, cvetkovic_task_2022, jin2024three, svikhnushina2023expectation}. Trust consistently emerges as a key predictor of delegation behavior, alongside task difficulty, motivation, and perceived risk~\cite{lubars2019, cvetkovic_task_2022}.
+%
+Recent longitudinal studies show increasing willingness to delegate as AI capabilities improve. \citet{jin2024three} report that users are more inclined to delegate difficult tasks, especially when trust and motivation are high. Similar patterns are seen in daily interactions with digital assistants~\cite{svikhnushina2023expectation}.
+%
+Beyond these factors, cognitive framing also shapes collaboration behavior. \citet{gurney2023role} find that biases such as risk aversion and automation over-reliance affect user effort and performance. These findings underscore the need to study preferences in behaviorally realistic settings.
+
+However, most prior work captures stated preferences, which may not reflect real-time decision-making in dynamic contexts~\cite{viney2002discrete, de2021stated}. Our study addresses this limitation by observing revealed preferences in a live, sequential decision-making task.
+
+\subsection{User Modeling and Autonomy Adaptation}
+
+Adaptive autonomy typically involves AI-driven control modulation based on system-level indicators like confidence or workload~\cite{amershi2019guidelines, roehr2010using, hauptman2024}. While effective for efficiency, such methods often lack explicit models of user control preferences, and rarely incorporate real-time behavioral signals.
+
+In parallel, user modeling work has focused on predicting trust or intent in interactive systems~\cite{guo2022building, sun2017collaborative, kraus2021modelling}, but these models are generally static and do not address moment-to-moment shifts in control needs. Recent work by \citet{gurney2023role} highlights how framing effects shape trust and reliance, further emphasizing the need for user-centered adaptation.
+%
+Building on the four-level delegability framework by \citet{lubars2019}, our setup isolates a decision boundary between object-level and action-level control, enabling the capture of fine-grained control preferences within a task. This extends prior work that primarily focused on task-level autonomy choices.
+
+\begin{comment}
+By combining real-time behavioral signals with a predictive model, our study offers a new perspective on control adaptation at the subtask level. Most autonomy-adaptive systems rely on internal AI metrics such as confidence, workload, or task priority to adjust control levels~\cite{amershi2019guidelines, roehr2010using, hauptman2024}, with limited modeling of real-time user preferences. Related work in user modeling has focused on predicting trust or intent~\cite{guo2022building, sun2017collaborative, kraus2021modelling}, but such models are typically static and lack behavioral grounding in moment-to-moment decision-making.
+
+Our work complements these approaches by combining behavioral and task-level data to model subtask-level control preferences in a live setting. Building on the four-level delegability framework~\cite{lubars2019}, we isolate a real-time decision boundary between object- and action-level control. This enables lightweight prediction of control shifts and supports the design of systems that adapt not only to task structure, but to evolving user state.
+\end{comment}
+
+
+\begin{comment}
+We situate our work at the intersection of mixed-initiative interaction, user preferences for control, and adaptive autonomy, drawing on prior research that informs how human–AI systems manage control sharing over time.
+
+\subsection{Mixed-initiative Systems}
+Mixed-initiative systems aim to balance control between humans and AI agents by dynamically adjusting autonomy in response to task demands and user behavior \cite{horvitz1999, bradshaw2004}. Prior work in this area has largely focused on agent-driven adaptation, where the AI modulates control using internal indicators such as task criticality, inferred human ability, or environmental cues \cite{fiore2016, salikutluk_evaluation_2024, hauptman2024}. These approaches prioritize task efficiency or system-side objectives, but may not align with evolving user preferences, raising challenges for transparency, predictability, and effective coordination in human–AI teams \cite{tambe2000, hauptman_adapt_2023}.
+
+Within this broader space, two collaboration models are commonly deployed. The \textbf{machine-in-the-loop} model emphasizes user agency, with the AI providing suggestions while the human remains in control. This is an approach commonly adopted in domains like healthcare, legal decision-making, writing, and software development \cite{clark2018, green2019, kleinberg2018, roemmele_creative_2015, gero_sparks_2022, yuan_wordcraft_2022}. Users often prefer this ``guidance'' mode in contexts where transparency, fairness, or subjective judgment is critical \cite{lubars2019}, though human biases such as algorithm aversion or overreliance on AI can distort outcomes \cite{bockstedt2025, jones2023people, klingbeil2024trust}.
+
+Conversely, the \textbf{human-in-the-loop} model delegates execution to the AI, with humans overseeing or refining outputs as needed, an approach used in image generation, object detection, and portfolio optimization \cite{wu_adaptive_2018, ganzilla2022, buckley2021regulating}. While this ``delegation'' mode promises efficiency, users often delegate sub-optimally due to poor mental models of the AI, trust asymmetries, or cognitive biases \cite{pinski2023, fugener_cognitive_2022, milewski1997}. Recent survey-based work has also identified task difficulty, motivation, and perceived risk as additional influences on delegation behavior \cite{cvetkovic_task_2022, lubars2019}.
+
+While prior work has explored when users prefer lower or higher levels of control in static or hypothetical contexts, few studies have investigated how user preferences evolve dynamically during real-time human-AI collaboration. Our work addresses this gap by modeling switching behavior during a task, using data from hand-and-brain chess.
+
+\subsection{User Preferences}
+A growing body of research has examined the human factors that influence delegation preferences in human-AI interaction, often through survey-based methods and hypothetical scenarios \cite{lubars2019, cvetkovic_task_2022, jin2024three, svikhnushina2023expectation}. These studies have found that trust consistently emerges as a predictor of delegation behavior, alongside perceived task difficulty, motivation, and risk \cite{lubars2019, cvetkovic_task_2022}.
+
+Recent longitudinal findings suggest that user preferences are shifting as AI becomes more capable and accessible.~\citet{jin2024three} report a rise in user willingness to delegate, especially for tasks perceived as difficult, with trust and task-dependent motivation noted as important factors. Similar trends appear in everyday interactions with digital assistants, where users are more likely to delegate when they expect usefulness and trust the system \cite{svikhnushina2023expectation}.
+
+Beyond factors like trust and risk, cognitive framing also plays a significant role in shaping human-AI collaboration behavior \cite{olszewski2024designinghumanaisystemsanthropomorphism}.~\citet{gurney2023role} showed that users exhibit framing-driven biases such as risk aversion and automation over-reliance that affect both their effort and performance when working with AI. These findings highlight the need to study user preferences in dynamic, behaviorally realistic settings.
+
+However, most of the above work relies on stated preferences, where participants self-report their intentions in abstract or hypothetical contexts. Prior research in behavioral science shows that such preferences may not align with real-time decisions in high-stakes or time-sensitive environments \cite{viney2002discrete, de2021stated}. Our work addresses this gap by capturing revealed preferences through live decisions in a sequential decision-making task. 
+
+\subsection{User Modeling and Autonomy Adaptation}
+
+Adaptive autonomy often involves modulating AI control based on internal system variables such as self-confidence, workload estimates, or inferred human intent \cite{amershi2019guidelines, roehr2010using, hauptman2024}. While these approaches improve task efficiency, they typically lack explicit models of user control preferences and rarely incorporate real-time behavioral data under cognitive and temporal constraints. Separately, user modeling research has explored predicting trust or intent in interactive systems \cite{guo2022building,sun2017collaborative, kraus2021modelling}, but these models are generally static and do not account for dynamic shifts in user control needs.
+
+More recently, \citet{gurney2023role} demonstrated how framing effects can bias user reliance on AI teammates, highlighting the critical role of cognitive biases and affective influences in shaping trust and control behavior. Our work extends this understanding by providing a behavioral account of real-time control negotiation at a finer temporal and functional granularity.
+%
+Building on the four-level delegability framework by \citet{lubars2019}, which captures user preferences across tasks via surveys, our setup isolates a decision boundary between object-level and action-level control. This allows us to capture real-time user preferences for control within a shared task, moving beyond prior studies that primarily focus on coarse, task-level autonomy decisions. %Whereas previous work investigates whether users delegate entire tasks, our approach illuminates how users dynamically negotiate control within subtasks as they unfold.
+
+By combining real-time behavioral insights with a predictive model, our study offers a novel understanding of control adaptation at the subtask level. This framing has the potential to support the design of autonomy-adaptive systems that respond not only to task outcomes, but also to evolving user strategies, trust dynamics, and control preferences in cognitively demanding collaboration.
+
+
+% A common approach to adaptive autonomy involves modulating control based on internal system variables such as confidence, workload estimates, or inferred human intent \cite{amershi2019guidelines, roehr2010using, hauptman2024}. While these approaches improve task efficiency, they rarely incorporate explicit models of user control preferences. Separately, work in user modeling has explored how to predict trust, intent, or skill in interactive systems, often using one-time estimates or offline labels \cite{chakraborti2018, reddy2018shared}. However, these models are typically static and not trained on behavioral switching data collected under cognitive and temporal constraints. Recent work by Gurney et al.~\cite{gurney2023} explores how cognitive biases like framing and anchoring affect user behavior and performance when collaborating with an AI teammate, highlighting the importance of designing experimental paradigms that capture realistic human responses in AI-supported decision-making.
+
+% Our work extends prior research by investigating how users choose between two collaboration modes, guidance and delegation, during a sequential, time-constrained task. These modes correspond to the shared-control levels explored in prior preference studies \cite{lubars2019, cvetkovic_task_2022}, but we focus on revealed preferences by observing mode-switching behavior with real-time task consequences. Unlike prior work that captures static or hypothetical preferences, we analyze how factors such as time pressure, task complexity, and perceived AI performance shape control decisions as they unfold. By pairing these behavioral insights with a trained predictive model, our work contributes both an empirical understanding of control preference dynamics and a foundation for designing autonomy-adaptive HAI systems.
+% our work
+%Our work extends this line of research by investigating choices between two collaboration modes, guidance and delegation. These modes correspond to the shared-control levels explored in prior work~\cite{lubars2019, cvetkovic_task_2022}. While existing literature primarily focuses on examining stated preferences in static, context-free scenarios we capture the revealed preferences by observing user choices that have real-time consequences for the execution of a task. We analyze collaboration mode selection in a strategic, sequential decision-making scenario, focusing on factors such as user cognitive state, time pressure and task complexity.
+
+%","We situate our work at the intersection of mixed-initiative interaction, user preferences for control, and adaptive autonomy, drawing on research that informs how human–AI systems manage control sharing over time.
+
+\subsection{Mixed-Initiative Systems}
+Mixed-initiative systems aim to balance control between humans and AI by dynamically adjusting autonomy in response to task demands and user behavior~\cite{horvitz1999, bradshaw2004}. They emphasize agent-driven adaptation based on internal indicators like task criticality or inferred user ability~\cite{fiore2016, salikutluk_evaluation_2024, hauptman2024}, but such strategies may misalign with user preferences, leading to issues with transparency, predictability, and coordination~\cite{tambe2000, hauptman_adapt_2023}.
+
+Two common collaboration models reflect this tradeoff. In \textbf{machine-in-the-loop} systems, users maintain control while receiving AI suggestions, an approach commonly adopted in domains like healthcare, legal decision-making, writing, and software development~\cite{clark2018, green2019, kleinberg2018, roemmele_creative_2015, gero_sparks_2022, yuan_wordcraft_2022}. This mode is often preferred in contexts requiring fairness, transparency, or subjective judgment~\cite{lubars2019}, though outcomes may be skewed by a user's algorithm aversion or overreliance~\cite{bockstedt2025, jones2023people, klingbeil2024trust}.
+
+In contrast, \textbf{human-in-the-loop} systems delegate task execution to the AI, with humans monitoring or refining outputs, an approach explored in tasks like image generation and portfolio optimization~\cite{wu_adaptive_2018, ganzilla2022, buckley2021regulating}. While efficient, users often delegate sub-optimally due to poor mental models, trust asymmetries, or biases~\cite{pinski2023, fugener_cognitive_2022, milewski1997}. Survey studies highlight additional influences such as task difficulty, risk, and motivation~\cite{lubars2019}.
+
+Most prior work has focused on static or hypothetical preferences. Few studies have investigated how control preferences evolve dynamically during real-time human–AI collaboration. Our work addresses this gap by modeling control switching behavior using data from hand-and-brain chess.
+
+\subsection{User Preferences}
+A growing body of work explores the factors that shape delegation preferences, often through surveys and hypothetical scenarios~\cite{lubars2019, cvetkovic_task_2022, jin2024three, svikhnushina2023expectation}. Trust consistently emerges as a key predictor of delegation behavior, alongside task difficulty, motivation, and perceived risk~\cite{lubars2019, cvetkovic_task_2022}.
+
+Recent longitudinal studies show increasing willingness to delegate as AI capabilities improve. \citet{jin2024three} report that users are more inclined to delegate difficult tasks, especially when trust and motivation are high. Similar patterns are seen in daily interactions with digital assistants~\cite{svikhnushina2023expectation}.
+
+Beyond these factors, cognitive framing also shapes collaboration behavior. \citet{gurney2023role} find that biases such as risk aversion and automation over-reliance affect user effort and performance. These findings underscore the need to study preferences in behaviorally realistic settings.
+
+However, most prior work captures stated preferences, which may not reflect real-time decision-making in dynamic contexts~\cite{viney2002discrete, de2021stated}. Our study addresses this limitation by observing revealed preferences in a live, sequential decision-making task.
+
+\subsection{User Modeling and Autonomy Adaptation}
+
+Adaptive autonomy typically involves AI-driven control modulation based on system-level indicators like confidence or workload~\cite{amershi2019guidelines, roehr2010using, hauptman2024}. While effective for efficiency, such methods often lack explicit models of user control preferences, and rarely incorporate real-time behavioral signals.
+
+In parallel, user modeling work has focused on predicting trust or intent in interactive systems~\cite{guo2022building, sun2017collaborative, kraus2021modelling}, but these models are generally static and do not address moment-to-moment shifts in control needs. Recent work by \citet{gurney2023role} highlights how framing effects shape trust and reliance, further emphasizing the need for user-centered adaptation.
+
+Building on the four-level delegability framework by \citet{lubars2019}, our setup isolates a decision boundary between object-level and action-level control, enabling the capture of fine-grained control preferences within a task. This extends prior work that primarily focused on task-level autonomy choices.
+
+\begin{comment}
+By combining real-time behavioral signals with a predictive model, our study offers a new perspective on control adaptation at the subtask level. Most autonomy-adaptive systems rely on internal AI metrics such as confidence, workload, or task priority to adjust control levels~\cite{amershi2019guidelines, roehr2010using, hauptman2024}, with limited modeling of real-time user preferences. Related work in user modeling has focused on predicting trust or intent~\cite{guo2022building, sun2017collaborative, kraus2021modelling}, but such models are typically static and lack behavioral grounding in moment-to-moment decision-making.
+
+Our work complements these approaches by combining behavioral and task-level data to model subtask-level control preferences in a live setting. Building on the four-level delegability framework~\cite{lubars2019}, we isolate a real-time decision boundary between object- and action-level control. This enables lightweight prediction of control shifts and supports the design of systems that adapt not only to task structure, but to evolving user state.
+\end{comment}
+
+
+\begin{comment}
+We situate our work at the intersection of mixed-initiative interaction, user preferences for control, and adaptive autonomy, drawing on prior research that informs how human–AI systems manage control sharing over time.
+
+\subsection{Mixed-initiative Systems}
+Mixed-initiative systems aim to balance control between humans and AI agents by dynamically adjusting autonomy in response to task demands and user behavior \cite{horvitz1999, bradshaw2004}. Prior work in this area has largely focused on agent-driven adaptation, where the AI modulates control using internal indicators such as task criticality, inferred human ability, or environmental cues \cite{fiore2016, salikutluk_evaluation_2024, hauptman2024}. These approaches prioritize task efficiency or system-side objectives, but may not align with evolving user preferences, raising challenges for transparency, predictability, and effective coordination in human–AI teams \cite{tambe2000, hauptman_adapt_2023}.
+
+Within this broader space, two collaboration models are commonly deployed. The \textbf{machine-in-the-loop} model emphasizes user agency, with the AI providing suggestions while the human remains in control. This is an approach commonly adopted in domains like healthcare, legal decision-making, writing, and software development \cite{clark2018, green2019, kleinberg2018, roemmele_creative_2015, gero_sparks_2022, yuan_wordcraft_2022}. Users often prefer this ``guidance'' mode in contexts where transparency, fairness, or subjective judgment is critical \cite{lubars2019}, though human biases such as algorithm aversion or overreliance on AI can distort outcomes \cite{bockstedt2025, jones2023people, klingbeil2024trust}.
+
+Conversely, the \textbf{human-in-the-loop} model delegates execution to the AI, with humans overseeing or refining outputs as needed, an approach used in image generation, object detection, and portfolio optimization \cite{wu_adaptive_2018, ganzilla2022, buckley2021regulating}. While this ``delegation'' mode promises efficiency, users often delegate sub-optimally due to poor mental models of the AI, trust asymmetries, or cognitive biases \cite{pinski2023, fugener_cognitive_2022, milewski1997}. Recent survey-based work has also identified task difficulty, motivation, and perceived risk as additional influences on delegation behavior \cite{cvetkovic_task_2022, lubars2019}.
+
+While prior work has explored when users prefer lower or higher levels of control in static or hypothetical contexts, few studies have investigated how user preferences evolve dynamically during real-time human-AI collaboration. Our work addresses this gap by modeling switching behavior during a task, using data from hand-and-brain chess.
+
+\subsection{User Preferences}
+A growing body of research has examined the human factors that influence delegation preferences in human-AI interaction, often through survey-based methods and hypothetical scenarios \cite{lubars2019, cvetkovic_task_2022, jin2024three, svikhnushina2023expectation}. These studies have found that trust consistently emerges as a predictor of delegation behavior, alongside perceived task difficulty, motivation, and risk \cite{lubars2019, cvetkovic_task_2022}.
+
+Recent longitudinal findings suggest that user preferences are shifting as AI becomes more capable and accessible.~\citet{jin2024three} report a rise in user willingness to delegate, especially for tasks perceived as difficult, with trust and task-dependent motivation noted as important factors. Similar trends appear in everyday interactions with digital assistants, where users are more likely to delegate when they expect usefulness and trust the system \cite{svikhnushina2023expectation}.
+
+Beyond factors like trust and risk, cognitive framing also plays a significant role in shaping human-AI collaboration behavior \cite{olszewski2024designinghumanaisystemsanthropomorphism}.~\citet{gurney2023role} showed that users exhibit framing-driven biases such as risk aversion and automation over-reliance that affect both their effort and performance when working with AI. These findings highlight the need to study user preferences in dynamic, behaviorally realistic settings.
+
+However, most of the above work relies on stated preferences, where participants self-report their intentions in abstract or hypothetical contexts. Prior research in behavioral science shows that such preferences may not align with real-time decisions in high-stakes or time-sensitive environments \cite{viney2002discrete, de2021stated}. Our work addresses this gap by capturing revealed preferences through live decisions in a sequential decision-making task. 
+
+\subsection{User Modeling and Autonomy Adaptation}
+
+Adaptive autonomy often involves modulating AI control based on internal system variables such as self-confidence, workload estimates, or inferred human intent \cite{amershi2019guidelines, roehr2010using, hauptman2024}. While these approaches improve task efficiency, they typically lack explicit models of user control preferences and rarely incorporate real-time behavioral data under cognitive and temporal constraints. Separately, user modeling research has explored predicting trust or intent in interactive systems \cite{guo2022building,sun2017collaborative, kraus2021modelling}, but these models are generally static and do not account for dynamic shifts in user control needs.
+
+More recently, \citet{gurney2023role} demonstrated how framing effects can bias user reliance on AI teammates, highlighting the critical role of cognitive biases and affective influences in shaping trust and control behavior. Our work extends this understanding by providing a behavioral account of real-time control negotiation at a finer temporal and functional granularity.
+
+Building on the four-level delegability framework by \citet{lubars2019}, which captures user preferences across tasks via surveys, our setup isolates a decision boundary between object-level and action-level control. This allows us to capture real-time user preferences for control within a shared task, moving beyond prior studies that primarily focus on coarse, task-level autonomy decisions. 
+
+By combining real-time behavioral insights with a predictive model, our study offers a novel understanding of control adaptation at the subtask level. This framing has the potential to support the design of autonomy-adaptive systems that respond not only to task outcomes, but also to evolving user strategies, trust dynamics, and control preferences in cognitively demanding collaboration.","We situate our work at the intersection of mixed-initiative
+interaction, user preferences for control, and adaptive au-
+tonomy, drawing on research that informs how human–AI
+systems manage control sharing over time.
+Mixed-Initiative Systems
+Mixed-initiative systems aim to balance control between
+humans and AI by dynamically adjusting autonomy in re-
+sponse to task demands and user behavior (Horvitz 1999;
+Bradshaw et al. 2004). They emphasize agent-driven adap-
+tation based on internal indicators like task criticality or in-
+ferred user ability (Fiore, Clodic, and Alami 2016; Salikut-
+luk et al. 2024; Hauptman, Flathmann, and McNeese 2024),
+but such strategies may misalign with user preferences, lead-
+ing to issues with transparency, predictability, and coordina-
+tion (Tambe et al. 2000; Hauptman et al. 2023).
+Two common collaboration models reflect this tradeoff. In
+machine-in-the-loopsystems, users maintain control while
+receiving AI suggestions, an approach commonly adopted in
+domains like healthcare, legal decision-making, writing, and
+software development (Clark et al. 2018; Green and Chen
+2019; Kleinberg et al. 2018; Roemmele and Gordon 2015;
+Gero, Liu, and Chilton 2022; Yuan et al. 2022). This mode is
+often preferred in contexts requiring fairness, transparency,
+or subjective judgment (Lubars and Tan 2019), though out-
+comes may be skewed by a user’s algorithm aversion or
+overreliance (Bockstedt and Buckman 2025; Jones-Jang and
+Park 2023; Klingbeil, Gr ¨utzner, and Schreck 2024).
+In contrast,human-in-the-loopsystems delegate task ex-
+ecution to the AI, with humans monitoring or refining out-
+puts, an approach explored in tasks like image generation
+and portfolio optimization (Wu et al. 2018; Evirgen and
+Chen 2022; Buckley et al. 2021). While efficient, users of-
+ten delegate sub-optimally due to poor mental models, trust
+asymmetries, or biases (Pinski, Adam, and Benlian 2023;
+F¨ugener et al. 2022; Milewski and Lewis 1997). Survey
+studies highlight additional influences such as task difficulty,
+risk, and motivation (Lubars and Tan 2019).
+Most prior work has focused on static or hypothetical
+preferences. Few studies have investigated how control pref-
+erences evolve dynamically during real-time human–AI col-
+laboration. Our work addresses this gap by modeling control
+switching behavior using data from hand-and-brain chess.User Preferences
+A growing body of work explores the factors that shape
+delegation preferences, often through surveys and hypothet-
+ical scenarios (Lubars and Tan 2019; Cvetkovic and Bit-
+tner 2022; Jin and Uchida 2024; Svikhnushina et al. 2023).
+Trust consistently emerges as a key predictor of delega-
+tion behavior, alongside task difficulty, motivation, and per-
+ceived risk (Lubars and Tan 2019; Cvetkovic and Bittner
+2022). Recent longitudinal studies show increasing willing-
+ness to delegate as AI capabilities improve. Jin and Uchida
+(2024) report that users are more inclined to delegate dif-
+ficult tasks, especially when trust and motivation are high.
+Similar patterns are seen in daily interactions with digital
+assistants (Svikhnushina et al. 2023). Beyond these factors,
+cognitive framing also shapes collaboration behavior. Gur-
+ney, Miller, and Pynadath (2023) find that biases such as risk
+aversion and automation over-reliance affect user effort and
+performance. These findings underscore the need to study
+preferences in behaviorally realistic settings.
+However, most prior work captures stated preferences,
+which may not reflect real-time decision-making in dynamic
+contexts (Viney, Lancsar, and Louviere 2002; De Corte,
+Cairns, and Grieve 2021). Our study addresses this limita-
+tion by observing revealed preferences in a live, sequential
+decision-making task.
+User Modeling and Autonomy Adaptation
+Adaptive autonomy typically involves AI-driven control
+modulation based on system-level indicators like confidence
+or workload (Amershi et al. 2019; Roehr and Shi 2010;
+Hauptman, Flathmann, and McNeese 2024). While effec-
+tive for efficiency, such methods often lack explicit models
+of user control preferences, and rarely incorporate real-time
+behavioral signals.
+In parallel, user modeling work has focused on predict-
+ing trust or intent in interactive systems (Guo et al. 2022;
+Sun et al. 2017; Kraus, Wagner, and Minker 2021), but these
+models are generally static and do not address moment-to-
+moment shifts in control needs. Recent work by Gurney,
+Miller, and Pynadath (2023) highlights how framing effects
+shape trust and reliance, further emphasizing the need for
+user-centered adaptation. Building on the four-level delega-
+bility framework by Lubars and Tan (2019), our setup iso-
+lates a decision boundary between object-level and action-
+level control, enabling the capture of fine-grained control
+preferences within a task. This extends prior work that pri-
+marily focused on task-level autonomy choices."

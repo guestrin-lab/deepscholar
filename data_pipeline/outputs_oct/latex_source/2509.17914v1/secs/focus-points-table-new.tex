@@ -1,0 +1,114 @@
+
+
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+
+\begin{table*}[t!]
+\caption{Most important specialization points of selected HPC applications and benchmarks: analysis of representative applications shows a wide diversity of specializations for accelerated and high-performance computing.}
+\label{tab:focus-points}
+\adjustbox{max width=\textwidth}{
+  \begin{tabular}{lcccC{3.3cm}cc}
+\toprule
+%\textbf{Domain} & \textbf{Name} & \makecell{\textbf{Architecture}\\\textbf{Specializations}} & \textbf{Accelerators} & \textbf{Parallel} & \textbf{Vectorization} & \textbf{Performance Libraries} \\
+\textbf{Domain} & \textbf{Name} & \makecell{\textbf{Architecture Spec.}} & \textbf{GPU Acceleration} & \textbf{Parallelism} & \textbf{Vectorization} & \textbf{Performance Libraries} \\
+\midrule
+
+Molecular Dynamics & 
+GROMACS~\cite{https://doi.org/10.1002/jcc.20291} & 
+Architecture-specific FFT & 
+OpenCL, CUDA, SYCL, HIP & 
+OpenMP, MPI & 
+Automatic, many ISAs & 
+BLAS/LAPACK, FFT (many) \\
+
+\midrule
+
+Hydrodynamics & 
+LULESH~\cite{LULESH:spec} & 
+- & 
+- & 
+OpenMP, MPI & 
+- & 
+- \\
+
+\midrule
+
+Electronic Structure & 
+\makecell{Quantum\\Espresso~\cite{Giannozzi_2009}} & 
+% 
+Compiler adaptations & 
+CUDA, OpenACC & 
+OpenMP, MPI & 
+- & 
+\makecell{BLAS/LAPACK, ELPA~\cite{AUCKENTHALER2011783},\\ScaLAPACK~\cite{234898}, FFT (many)} \\
+
+%& & & & & &\\
+
+\midrule
+
+\multirow{3}{*}{Lattice QCD} & 
+MILC~\cite{doi:10.1177/109434209100500406} & 
+Compiler adaptations & 
+CUDA, HIP, SYCL & 
+OpenMP, MPI & 
+\makecell{Compiler flags, many ISAs\\(Intel, AMD, PowerPC)} &
+\makecell{LAPACK, PRIMME~\cite{10.1145/1731022.1731031},\\FFTW~\cite{1386650}, QUDA~\cite{CLARK20101517,quda}}\\
+
+%\midrule
+\cmidrule[0.5pt]{2-7}
+
+%Lattice QCD & 
+& 
+OpenQCD~\cite{openqcd} & 
+Optimized for x86 CPUs & 
+- & 
+OpenMP, MPI  & 
+Assembly (SSE, AVX, FMA3) & 
+- \\
+
+\midrule
+
+Particle-in-Cell & 
+\makecell{VPIC~\cite{10.1063/1.2840133},\\VPIC 2.0~\cite{9444146}} & 
+Kokkos portability & 
+CUDA & 
+%\makecell{OpenMP, pthreads,\\MPI} & 
+OpenMP, MPI &
+\makecell{OpenMP and V4 library\\(many ISAs)} & 
+- \\
+
+\midrule
+
+Cloud Physics & 
+CloudSC~\cite{cloudsc} & 
+System-specific toolchains & 
+CUDA, SYCL, HIP, OpenACC & 
+OpenMP, MPI & 
+- & 
+Atlas~\cite{DECONINCK2017188} \\
+
+\midrule
+
+Weather \& Climate & 
+ICON~\cite{icon1} & 
+System-specific toolchains & 
+CUDA, HIP, OpenACC & 
+OpenMP, MPI & 
+System-specific compiler flags &
+BLAS/LAPACK \\
+
+\midrule
+
+LLM Inference & 
+llama.cpp~\cite{llamacpp} & 
+Optimization flags & 
+\makecell{Eight, including CUDA,\\HIP, SYCL} & 
+OpenMP, pthreads & 
+\makecell{Intrinsics (AVX, AVX2,\\AVX512, AMX, NEON, \dots)} & 
+BLAS (OpenBLAS, MKL, BLIS~\cite{BLIS1}) \\
+
+\bottomrule
+\end{tabular}}
+\vspace{-1em}
+\end{table*}
+

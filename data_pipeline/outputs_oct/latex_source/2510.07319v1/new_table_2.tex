@@ -1,0 +1,25 @@
+\begin{table*}[!h]
+	\centering
+	\small
+        \caption{\textbf{Hyper-parameter analysis when varying the number of proposals K.} Here, the candidate tracks are produced from the top-K proposals from the pretrained Grounding DINO plus the top-1 proposal from the finetuned one, and the result is the best candidate with the highest mIoU.}
+        \vspace{2mm}
+	\resizebox{0.85\textwidth}{!}{
+		% \setlength\tabcolsep{8pt}
+		\renewcommand\arraystretch{1.0}
+		\begin{tabular}{l|c|ccc}
+			\toprule
+			\multirow{2}{*}{Method} & \multirow{2}{*}{Box mIoU} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+			 &  & \( \mathcal{J}\&\mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+			\midrule
+			Candidate Track (Top-2 (pretrained)) & 79.1 & 73.0 & 70.0 & 76.0 \\
+			Candidate Track (Top-3 (pretrained))& 80.6 & 74.9 & 71.8 & 78.0 \\
+			Candidate Track (Top-5 (pretrained))& 81.8 & 76.2 & 73.0 & 79.5 \\
+			Candidate Track (Top-10 (pretrained))& 81.5 & 76.7 & 73.7 & 79.7 \\
+			\bottomrule
+		\end{tabular}
+	}
+	% \vspace{-6pt}
+	
+	% \vspace{5mm}
+	\label{table:num}
+\end{table*}

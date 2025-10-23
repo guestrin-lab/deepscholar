@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}if defined(HAVE\PYGZus{}MKL)}
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{transpose}\PYG{p}{(}\PYG{k+kt}{double}\PYG{o}{*}\PYG{+w}{ }\PYG{n}{A}\PYG{p}{,}
+\PYG{+w}{ }\PYG{k+kt}{double}\PYG{o}{*}\PYG{+w}{ }\PYG{n}{B}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{rows}\PYG{p}{,}
+\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{cols}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{ }\PYG{n}{mkl\PYGZus{}domatcopy}\PYG{p}{(}
+\PYG{+w}{  }\PYG{l+s+sc}{\PYGZsq{}R\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}T\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{rows}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{cols}\PYG{p}{,}
+\PYG{+w}{  }\PYG{l+m+mf}{1.0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{A}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{cols}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{B}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{rows}
+\PYG{+w}{ }\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cp}{\PYGZsh{}endif}
+\end{Verbatim}

@@ -1,0 +1,42 @@
+\begin{table*}[tbp]
+\centering
+\footnotesize
+\begin{tabular}{ll|ccc|ccc|ccc|ccc}
+\toprule
+\multirow{2}{*}{\textbf{Eye}} & \textbf{Method}           & \multicolumn{3}{c|}{\textbf{Immer-Occlusion}} & \multicolumn{3}{c|}{\textbf{Immer-Dilation}} & \multicolumn{3}{c|}{\textbf{Immer-Light}} & \multicolumn{3}{c}{\textbf{Immer-Angle}} \\
+                              & FRR@FAR (\%) $\downarrow$ & 1e-1            & 1e-3            & 1e-5           & 1e-1           & 1e-3            & 1e-5           & 1e-1             & 1e-3             & 1e-5            & 1e-1           & 1e-3          & 1e-5          \\
+\midrule
+\multirow{9}{*}{Left}         & Gabor~\cite{daugman2009iris}                     & 12.63       & 30.92       & 43.16      & 3.33       & 11.98       & 21.19      & 6.88         & 20.90        & 37.94       & 22.50      & 53.62     & 73.12     \\
+                              & OM~\cite{sun2008ordinal}                        & 8.63        & 28.45       & 45.46      & 4.62       & 16.80       & 24.23      & 7.63         & 36.12        & 65.99       & 21.23      & 68.97     & 88.93     \\
+                              & Maxout~\cite{zhang2018deep}                    & 2.45        & 22.90       & 37.54      & 0.93       & 9.34        & 24.23      & 1.69         & 18.09        & 41.86       & 5.10       & 45.20     & 75.98     \\
+                              & Maxout-BA~\cite{wei2022towards}                 & 1.68        & 20.70       & 35.07      & 1.02       & 9.00        & 21.56      & 1.28         & 15.30        & 39.74       & 2.98       & 39.14     & 73.71     \\
+                              & UE-UGCL~\cite{wei2022towards}                   & 0.63        & 13.33       & 27.66      & 0.32       & 4.14        & 11.71      & 0.50         & 6.40         & 18.67       & 1.28       & 22.13     & 55.52     \\
+                              & CM~\cite{wei2022contextual}                        & 0.50        & 7.31        & 16.59      & 0.08       & 6.59        & 12.10      & 0.34         & 5.29         & \underline{16.62}       & \textbf{0.93}       & \textbf{13.25}     & \textbf{38.92}     \\
+                              & ComplexIrisNet~\cite{nguyen2022complex}            & 0.58        & 11.67       & 29.58      & \underline{0.04}       & \underline{3.34}        & \underline{8.22}       & \underline{0.20}         & \underline{4.78}         & 21.62       & 1.07       & \underline{15.31}     & \underline{40.31}     \\
+                              & IR-Norm                 & \underline{0.48}        & \underline{5.01}        & \underline{12.35}      & 0.13       & 5.01        & 13.66      & 0.61         & 7.30         & 20.82       & 1.31       & 16.30     & 46.63     \\
+                              & \textbf{IR-BBox} (ours)          & \textbf{0.38}        & \textbf{2.51}        & \textbf{8.23}       & \textbf{0.02}       & \textbf{2.26}        & \textbf{4.53}       & \textbf{0.42}         & \textbf{2.02}         & \textbf{9.79}        & \underline{0.97}       & 16.40     & 45.04     \\
+\midrule
+\multirow{9}{*}{Right}        & Gabor~\cite{daugman2009iris}                     & 10.74       & 28.40       & 42.55      & 8.87       & 25.46       & 37.90      & 12.27        & 33.00        & 55.17       & 23.61      & 53.64     & 71.72     \\
+                              & OM~\cite{sun2008ordinal}                        & 8.50        & 27.47       & 46.61      & 8.62       & 29.60       & 43.44      & 9.44         & 42.12        & 63.49       & 24.95      & 66.18     & 88.05     \\
+                              & Maxout~\cite{zhang2018deep}                    & 3.06        & 22.03       & 33.84      & 4.64       & 20.26       & 38.69      & 3.58         & 23.71        & 40.88       & 7.55       & 48.21     & 79.96     \\
+                              & Maxout-BA~\cite{wei2022towards}                 & 1.76        & 19.88       & 30.80      & 3.31       & 17.27       & 25.31      & 2.99         & 22.88        & 40.88       & 5.31       & 42.32     & 74.85     \\
+                              & UE-UGCL~\cite{wei2022towards}                   & 0.43        & 11.32       & 26.38      & 1.00       & 12.52       & 22.45      & 1.61         & 15.49        & 33.70       & 1.75       & 22.76     & 56.77     \\
+                              & CM~\cite{wei2022contextual}                        & \underline{0.42}        & 7.44        & 19.11      & 0.88       & \underline{8.74}        & \underline{17.09}      & 1.13         & 12.36        & 27.82       & 1.01       & \textbf{15.32}     & 40.52     \\
+                              & ComplexIrisNet~\cite{nguyen2022complex}            & 0.46        & 12.26       & 27.71      & \textbf{0.21}       & 9.59        & 29.43      & \underline{0.95}         & \underline{10.50}        & \underline{26.39}       & \underline{0.97}       & 16.93     & \textbf{40.25}     \\
+                              & IR-Norm                 & 0.66        & \underline{5.31}        & \underline{12.43}      & 2.19       & 14.31       & 30.47      & 4.44         & 22.40        & 38.27       & 1.79       & \underline{16.46}     & 42.81     \\
+                              & \textbf{IR-BBox} (ours)          & \textbf{0.26}        & \textbf{2.24}        & \textbf{5.52}       & \underline{0.33}       & \textbf{8.73}        & \textbf{10.85}      & \textbf{0.49}         & \textbf{9.86}         & \textbf{21.45}       & \textbf{0.76}       & 17.74     & \underline{40.41}     \\
+\midrule
+\multirow{9}{*}{Dual}         & Gabor~\cite{daugman2009iris}                     & 9.07        & 26.02       & 39.54      & 6.77       & 20.77       & 30.55      & 8.87         & 25.90        & 41.84       & 17.77      & 44.61     & 63.70     \\
+                              & OM~\cite{sun2008ordinal}                        & 6.48        & 25.66       & 39.21      & 5.45       & 28.25       & 42.09      & 6.65         & 39.03        & 62.44       & 16.94      & 52.04     & 73.66     \\
+                              & Maxout~\cite{zhang2018deep}                    & 1.29        & 15.75       & 35.30      & 1.41       & 13.17       & 24.45      & 1.25         & 12.43        & 27.52       & 3.08       & 31.32     & 60.07     \\
+                              & Maxout-BA~\cite{wei2022towards}                 & 0.78        & 12.95       & 26.76      & 0.54       & 12.60       & 19.77      & 0.53         & 11.06        & 27.83       & 1.42       & 23.55     & 54.12     \\
+                              & UE-UGCL~\cite{wei2022towards}                   & \textbf{0.27}        & 5.10        & 17.22      & 0.27       & 3.27        & 6.53       & \textbf{0.39}         & 5.89         & 16.55       & 0.45       & 9.32      & 34.44     \\
+                              & CM~\cite{wei2022contextual}                        & \underline{0.29}        & \underline{3.77}        & \underline{10.53}      & \textbf{0.12}       & \underline{2.62}        & \underline{5.87}       & 0.53         & \underline{4.33}         & 14.99       & \underline{0.33}       & 7.25      & 25.02     \\
+                              & ComplexIrisNet~\cite{nguyen2022complex}            & 0.33        & 6.12        & 18.59      & \underline{0.16}       & 3.73        & 13.71      & 0.53         & 4.68         & \underline{12.87}       & 0.43       & 7.06      & \textbf{20.79}     \\
+                              & IR-Norm                 & 0.67        & 4.99        & 11.73      & 0.54       & 5.14        & 8.13       & 1.57         & 9.43         & 21.35       & 0.91       & \underline{6.49}      & \underline{21.13}     \\
+                              & \textbf{IR-BBox} (ours)          & 0.31        & \textbf{1.63}        & \textbf{3.92}       & 0.28       & \textbf{1.02}        & \textbf{1.87}       & \underline{0.44}         & \textbf{1.99}         & \textbf{6.12}        & \textbf{0.32}       & \textbf{6.41}      & 23.39    \\
+\bottomrule
+\end{tabular}
+\caption{Verification FRR@FAR ($\downarrow$) of SOTAs and the proposed method on factor-specific test protocols.}
+\label{tab:exp-1v1-factor}
+\end{table*}

@@ -1,0 +1,94 @@
+\begin{table*}[t!]
+\centering
+\caption{Comparison of detectors on our proposed OmniGen test set on Accuracy (\%). Models marked with * were evaluated using their official pretrained weights. Best results are in \textbf{bold} and second best is \underline{underlined}.}
+\label{tab:omnigen_results_acc}
+\resizebox{\textwidth}{!}{%
+% Define a new column type for the highlighted column
+\newcolumntype{H}{>{\columncolor{blue!10}}c}
+\begin{tabular}{l|ccccccccccccH}
+\toprule
+\textbf{Generator} & \rotateheader{DIF*} & \rotateheader{UNIFD*} & \rotateheader{UNIFD} & \rotateheader{DNF} & \rotateheader{LASTED*} & \rotateheader{BILORA*} & \rotateheader{AIDE*} & \rotateheader{AIDE} & \rotateheader{SSP*} & \rotateheader{NPR} & \rotateheader{LASTED} & \rotateheader{SSP} & \rotateheader{\textbf{Ours}} \\
+\midrule
+GPT-4o & 52.8 & 71.5 & 73.9 & 82.9 & 82.1 & 79.6 & 87.6 & 82.9 & 97.2 & \textbf{99.4} & 85.7 & \underline{98.3} & 97.3 \\
+Imagen 4 & 50.3 & 49.6 & 62.0 & 72.8 & 73.7 & 79.4 & 49.2 & 51.2 & 56.8 & 88.6 & \underline{96.7} & 74.9 & \textbf{97.5} \\
+Imagen 4 Ultra & 50.2 & 50.0 & 61.9 & 72.7 & 72.7 & 80.0 & 49.8 & 51.2 & 57.3 & 87.3 & \textbf{96.8} & 75.6 & \underline{96.4} \\
+FLUX 1 dev & 57.6 & 49.3 & 70.5 & 86.7 & 73.0 & 80.5 & 83.4 & 83.7 & \underline{97.8} & 94.2 & 88.3 & 96.7 & \textbf{98.5} \\
+Kandinsky 3 & 50.2 & 61.4 & 67.7 & 88.2 & 84.0 & 70.2 & 81.4 & 90.1 & \underline{97.8} & 92.8 & 91.2 & 97.7 & \textbf{99.3} \\
+PixArt-$\delta$ & 51.3 & 60.1 & 77.7 & 88.7 & 82.7 & 74.7 & 85.4 & 88.3 & \underline{96.6} & 84.3 & 90.2 & 94.8 & \textbf{99.0} \\
+Juggernaut v11 & 50.1 & 52.9 & 76.0 & 59.8 & 91.3 & 76.8 & 93.2 & 94.0 & 96.6 & 91.3 & 94.0 & \underline{97.2} & \textbf{99.2} \\
+Dreamshaper & 50.2 & 54.4 & 77.3 & 65.2 & 85.4 & 74.8 & 95.6 & 95.2 & 99.4 & 83.1 & 96.9 & \textbf{99.9} & \underline{98.4} \\
+CogView4-6B & 50.0 & 49.9 & 80.5 & 61.5 & 57.5 & 74.1 & 94.6 & 94.8 & 99.1 & \underline{97.6} & 90.4 & 92.9 & \textbf{99.6} \\
+HiDream-I1 & 50.4 & 49.3 & 68.5 & 89.6 & 75.7 & 74.7 & 61.7 & 90.2 & 93.7 & 87.7 & 91.6 & \underline{96.9} & \textbf{97.9} \\
+SD3.5-medium & 50.1 & 56.6 & 76.6 & 72.7 & 74.6 & 79.9 & 80.0 & 87.5 & 94.1 & \underline{95.5} & 86.5 & 92.2 & \textbf{98.2} \\
+MidJourney v7 & 51.2 & 68.0 & 58.2 & 71.0 & 60.2 & 79.7 & 76.5 & \underline{91.8} & 86.6 & 74.6 & 91.6 & \textbf{98.0} & 87.5 \\
+\midrule
+\textbf{STD} & \textbf{2.17} & 7.68 & 7.30 & 11.94 & 9.95 & 3.30 & 16.23 & 15.55 & 15.51 & 6.97 & 3.84 & 8.54 & \underline{3.26} \\
+\textbf{Mean} & 51.20 & 56.06 & 70.90 & 75.97 & 76.06 & 77.02 & 78.18 & 83.39 & 89.40 & 89.70 & 91.65 & \underline{92.90} & \textbf{97.38} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+
+% \begin{table*}[t!]
+% \centering
+% \caption{Comparison of detectors on our proposed OmniGen test set on Accuracy (\%). Models marked with * were evaluated using their official pretrained weights. All other baselines were retrained on our custom training set. Best results are in \textbf{bold} and second best is \underline{underlined}}
+% \label{tab:omnigen_results_acc}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{l|cccccccccccc|c|c}
+% \toprule
+% \multirow{2}{*}{\textbf{Detector}} & \rotateheader{GPT-4o} & \rotateheader{Imagen 4} & \rotateheader{Imagen 4 Ultra} & \rotateheader{FLUX 1 dev} & \rotateheader{Kandinsky 3} & \rotateheader{PixArt-$\delta$} & \rotateheader{Juggernaut v11} & \rotateheader{Dreamshaper} & \rotateheader{CogView4-6B} & \rotateheader{HiDream-I1} & \rotateheader{SD3.5-medium} & \rotateheader{MidJourney v7} & \multirow{2}{*}{\textbf{STD}} & \multirow{2}{*}{\textbf{Mean}} \\
+%  & & & & & & & & & & & & & & \\
+% \midrule
+% DIF* & 52.8 & 50.3 & 50.2 & 57.6 & 50.2 & 51.3 & 50.1 & 50.2 & 50.0 & 50.4 & 50.1 & 51.2 & \textbf{2.17} & 51.20 \\
+% UNIFD* & 71.5 & 49.6 & 50.0 & 49.3 & 61.4 & 60.1 & 52.9 & 54.4 & 49.9 & 49.3 & 56.6 & 68.0 & 7.68 & 56.06 \\
+% UNIFD & 73.9 & 62.0 & 61.9 & 70.5 & 67.7 & 77.7 & 76.0 & 77.3 & 80.5 & 68.5 & 76.6 & 58.2 & 7.30 & 70.90 \\
+% DNF & 82.9 & 72.8 & 72.7 & 86.7 & 88.2 & 88.7 & 59.8 & 65.2 & 61.5 & 89.6 & 72.7 & 71.0 & 11.94 & 75.97 \\
+% LASTED* & 82.1 & 73.7 & 72.7 & 73.0 & 84.0 & 82.7 & 91.3 & 85.4 & 57.5 & 75.7 & 74.6 & 60.2 & 9.95 & 76.06 \\
+% BiLora* & 79.6 & 79.4 & 80.0 & 80.5 & 70.2 & 74.7 & 76.8 & 74.8 & 74.1 & 74.7 & 79.9 & 79.7 & 3.30 & 77.02 \\
+% AIDE* & 87.6 & 49.2 & 49.8 & 83.4 & 81.4 & 85.4 & 93.2 & 95.6 & 94.6 & 61.7 & 80.0 & 76.5 & 16.23 & 78.18 \\
+% AIDE & 82.9 & 51.2 & 51.2 & 83.7 & 90.1 & 88.3 & 94.0 & 95.2 & 94.8 & 90.2 & 87.5 & \underline{91.8} & 15.55 & 83.39 \\
+% SSP* & 97.2 & 56.8 & 57.3 & \underline{97.8} & \underline{97.8} & \underline{96.6} & 96.6 & 99.4 & 99.1 & 93.7 & 94.1 & 86.6 & 15.51 & 89.40 \\
+% NPR & \textbf{99.4} & 88.6 & 87.3 & 94.2 & 92.8 & 84.3 & 91.3 & 83.1 & \underline{97.6} & 87.7 & \underline{95.5} & 74.6 & 6.97 & 89.70 \\
+% LASTED & 85.7 & \underline{96.7} & \textbf{96.8} & 88.3 & 91.2 & 90.2 & 94.0 & 96.9 & 90.4 & 91.6 & 86.5 & 91.6 & 3.84 & 91.65 \\
+% SSP & \underline{98.3} & 74.9 & 75.6 & 96.7 & 97.7 & 94.8 & \underline{97.2} & \textbf{99.9} & 92.9 & \underline{96.9} & 92.2 & \textbf{98.0} & 8.54 & \underline{92.90} \\
+% % NPR* & \textbf{99.8} & \textbf{99.8} & \textbf{99.6} & \textbf{99.9} & \textbf{99.8} & \textbf{99.9} & \textbf{99.8} & \textbf{99.9} & \textbf{99.9} & \textbf{99.8} & \textbf{99.8} & \textbf{98.2} & \textbf{0.47} & \textbf{99.68} \\
+% \rowcolor{blue!10}
+% \textbf{FusionDetect} & 97.3 & \textbf{97.5} & \underline{96.4} & \textbf{98.5} & \textbf{99.3} & \textbf{99.0} & \textbf{99.2} & \underline{98.4} & \textbf{99.6} & \textbf{97.9} & \textbf{98.2} & 87.5 & \underline{3.26} & \textbf{97.38} \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table*}
+
+
+
+% \begin{table*}[t!]
+% \centering
+% \caption{Comparison of detectors on our proposed \textbf{OmniGen Benchmark}. Models marked with * were evaluated using their official pretrained weights. All other baselines were retrained on our custom training set. Results are in the format: Acc / AP (\%). Best results are in \textbf{bold} and second best is \underline{underlined}}
+% \label{tab:omnigen_results_main}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{l|cccccccccccc|c|c}
+% \toprule
+% \multirow{2}{*}{\textbf{Detector}} & \rotateheader{GPT-4o} & \rotateheader{Imagen 4} & \rotateheader{Imagen 4 Ultra} & \rotateheader{FLUX 1 dev} & \rotateheader{Kandinsky 3} & \rotateheader{PixArt-$\delta$} & \rotateheader{Juggernaut v11} & \rotateheader{Dreamshaper} & \rotateheader{CogView4-6B} & \rotateheader{HiDream-I1} & \rotateheader{SD3.5-medium} & \rotateheader{MidJourney v7} & \multirow{2}{*}{\textbf{STD}} & \multirow{2}{*}{\textbf{Mean}} \\
+%  & & & & & & & & & & & & & & \\
+% \midrule
+% DIF* & \resultscell{52.8}{99.7} & \resultscell{50.3}{100} & \resultscell{50.2}{100} & \resultscell{57.6}{99.4} & \resultscell{50.2}{100} & \resultscell{51.3}{99.9} & \resultscell{50.1}{99.9} & \resultscell{50.2}{100} & \resultscell{50.0}{100} & \resultscell{50.4}{100} & \resultscell{50.1}{100} & \resultscell{51.2}{99.98} & \resultscell{2.17}{0.18} & \resultscell{51.20}{99.91} \\
+% UNIFD* & \resultscell{71.5}{58.7} & \resultscell{49.6}{46.1} & \resultscell{50.0}{46.7} & \resultscell{49.3}{39.4} & \resultscell{61.4}{63.4} & \resultscell{60.1}{60.4} & \resultscell{52.9}{51.1} & \resultscell{54.4}{52.5} & \resultscell{49.9}{48.5} & \resultscell{49.3}{37.6} & \resultscell{56.6}{55.0} & \resultscell{68.0}{73.2} & \resultscell{7.68}{10.18} & \resultscell{56.06}{52.72} \\
+% UNIFD & \resultscell{73.9}{81.2} & \resultscell{62.0}{65.9} & \resultscell{61.9}{64.8} & \resultscell{70.5}{73.4} & \resultscell{67.7}{70.7} & \resultscell{77.7}{84.3} & \resultscell{76.0}{83.1} & \resultscell{77.3}{84.0} & \resultscell{80.5}{91.5} & \resultscell{68.5}{71.3} & \resultscell{76.6}{85.6} & \resultscell{58.2}{61.3} & \resultscell{7.30}{9.72} & \resultscell{70.90}{76.42} \\
+% DNF & \resultscell{82.9}{99.7} & \resultscell{72.8}{100} & \resultscell{72.7}{100} & \resultscell{86.7}{100} & \resultscell{88.2}{100} & \resultscell{88.7}{100} & \resultscell{59.8}{97.8} & \resultscell{65.2}{98.9} & \resultscell{61.5}{97.8} & \resultscell{89.6}{100} & \resultscell{72.7}{100} & \resultscell{71.0}{99.8} & \resultscell{11.94}{0.90} & \resultscell{75.97}{99.49} \\
+% LASTED* & \resultscell{82.1}{72.0} & \resultscell{73.7}{66.8} & \resultscell{72.7}{56.6} & \resultscell{73.0}{68.1} & \resultscell{84.0}{79.7} & \resultscell{82.7}{74.0} & \resultscell{91.3}{81.8} & \resultscell{85.4}{75.7} & \resultscell{57.5}{72.8} & \resultscell{75.7}{70.6} & \resultscell{74.6}{72.2} & \resultscell{60.2}{58.6} & \resultscell{9.95}{7.48} & \resultscell{76.06}{70.74} \\
+% BiLora* & \resultscell{79.6}{58.1} & \resultscell{79.4}{71.2} & \resultscell{80.0}{71.7} & \resultscell{80.5}{72.2} & \resultscell{70.2}{63.7} & \resultscell{74.7}{67.3} & \resultscell{76.8}{69.0} & \resultscell{74.8}{67.3} & \resultscell{74.1}{66.8} & \resultscell{74.7}{67.3} & \resultscell{79.9}{71.6} & \resultscell{79.7}{71.5} & \resultscell{3.30}{4.12} & \resultscell{77.02}{68.14} \\
+% AIDE* & \resultscell{87.6}{90.4} & \resultscell{49.2}{50.8} & \resultscell{49.8}{50.9} & \resultscell{83.4}{94.2} & \resultscell{81.4}{93.2} & \resultscell{85.4}{93.7} & \resultscell{93.2}{98.1} & \resultscell{95.6}{99.0} & \resultscell{94.6}{98.8} & \resultscell{61.7}{71.4} & \resultscell{80.0}{91.6} & \resultscell{76.5}{88.1} & \resultscell{16.23}{17.55} & \resultscell{78.18}{85.03} \\
+% AIDE & \resultscell{82.9}{85.3} & \resultscell{51.2}{53.3} & \resultscell{51.2}{53.2} & \resultscell{83.7}{93.9} & \resultscell{90.1}{96.9} & \resultscell{88.3}{96.0} & \resultscell{94.0}{98.7} & \resultscell{95.2}{99.1} & \resultscell{94.8}{99.0} & \resultscell{90.2}{96.8} & \resultscell{87.5}{96.2} & \resultscell{91.8}{97.7} & \resultscell{15.55}{17.02} & \resultscell{83.39}{88.83} \\
+% SSP* & \resultscell{97.2}{99.8} & \resultscell{56.8}{87.2} & \resultscell{57.3}{86.9} & \resultscell{97.8}{99.8} & \resultscell{97.8}{99.8} & \resultscell{96.6}{99.0} & \resultscell{96.6}{99.5} & \resultscell{99.4}{99.9} & \resultscell{99.1}{99.8} & \resultscell{93.7}{98.3} & \resultscell{94.1}{99.3} & \resultscell{86.6}{97.6} & \resultscell{15.51}{4.82} & \resultscell{89.40}{97.24} \\
+% NPR & \resultscell{99.4}{100} & \resultscell{88.6}{99.8} & \resultscell{87.3}{99.6} & \resultscell{94.2}{99.9} & \resultscell{92.8}{99.9} & \resultscell{84.3}{99.8} & \resultscell{91.3}{99.9} & \resultscell{83.1}{99.7} & \resultscell{97.6}{100} & \resultscell{87.7}{99.8} & \resultscell{95.5}{99.9} & \resultscell{74.6}{98.9} & \resultscell{6.97}{0.30} & \resultscell{89.70}{99.77} \\
+% LASTED & \resultscell{85.7}{75.9} & \resultscell{96.7}{93.8} & \resultscell{96.8}{93.6} & \resultscell{88.3}{79.2} & \resultscell{91.2}{89.2} & \resultscell{90.2}{87.9} & \resultscell{94.0}{89.7} & \resultscell{96.9}{96.7} & \resultscell{90.4}{84.6} & \resultscell{91.6}{84.5} & \resultscell{86.5}{78.3} & \resultscell{91.6}{86.8} & \resultscell{3.84}{6.50} & \resultscell{91.65}{86.68} \\
+% SSP & \resultscell{98.3}{99.9} & \resultscell{74.9}{92.5} & \resultscell{75.6}{92.7} & \resultscell{96.7}{99.8} & \resultscell{97.7}{99.8} & \resultscell{94.8}{99.0} & \resultscell{97.2}{99.8} & \resultscell{99.9}{100} & \resultscell{92.9}{98.8} & \resultscell{96.9}{99.3} & \resultscell{92.2}{99.2} & \resultscell{98.0}{99.8} & \resultscell{8.54}{2.72} & \resultscell{92.90}{98.38} \\
+% \rowcolor{blue!10}
+% \textbf{FusionDetect} & \resultscell{97.3}{99.7} & \resultscell{97.5}{99.8} & \resultscell{96.4}{99.8} & \resultscell{98.5}{99.9} & \resultscell{99.3}{100} & \resultscell{99.0}{100} & \resultscell{99.2}{99.2} & \resultscell{98.4}{99.9} & \resultscell{99.6}{100} & \resultscell{97.9}{99.9} & \resultscell{98.2}{99.9} & \resultscell{87.5}{98.3} & \resultscell{3.26}{0.51} & \resultscell{97.38}{99.69} \\
+% NPR* & \resultscell{99.8}{100} & \resultscell{99.8}{100} & \resultscell{99.6}{100} & \resultscell{99.9}{100} & \resultscell{99.8}{100} & \resultscell{99.9}{100} & \resultscell{99.8}{100} & \resultscell{99.9}{100} & \resultscell{99.9}{100} & \resultscell{99.8}{100} & \resultscell{99.8}{100} & \resultscell{98.2}{99.9} & \resultscell{0.47}{0.03} & \resultscell{99.68}{99.99} \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table*}
+

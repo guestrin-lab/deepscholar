@@ -1,0 +1,157 @@
+\section{Methodological Details} 
+
+% In this section, we provide the details of AP-MDM including the model architecture and the accompanied self-supervised training approach.
+
+\subsection{Model Architecture} \label{appendix:apmdm_architecture}
+
+
+As described in \Cref{sec:any_process}, AP-MDM extends standard MDM with three additional capabilities: $\remask$ (rewrite via remasking), $\inser$ (insert masks), and $\delete$ (remove redundant masks). In principle, these capabilities can be implemented using a shared encoder-only Transformer backbone with three additional linear heads, adding minimal computational overhead.
+
+\paragraph{Architecture}
+Following \Cref{eq:apmdm_implementation}, AP-MDM uses four prediction heads on top of a shared encoder-only Transformer backbone. Given the hidden representation $\mathbf{h}_{t,i} \in \mathbb{R}^d$ for position $i$, the heads output logits and probabilities:
+\begin{align}
+    p_\theta(y_{t,i} \mid \mathbf{x}_t) &= \text{softmax}(\mathbf{W}_U \mathbf{h}_{t,i} + \mathbf{b}_U), \quad \mathbf{W}_U \in \mathbb{R}^{|\Sigma| \times d} \quad \text{(unmask)} \\
+    \ctrl_{t,i}[1] &= \sigma(\mathbf{W}_R \mathbf{h}_{t,i} + b_R), \quad \mathbf{W}_R \in \mathbb{R}^{d \times 1} \quad \text{(remask)} \\
+    \ctrl_{t,i}[2] &= \sigma(\mathbf{W}_I \mathbf{h}_{t,i} + b_I), \quad \mathbf{W}_I \in \mathbb{R}^{d \times 1} \quad \text{(insert)} \\
+    \ctrl_{t,i}[3] &= \sigma(\mathbf{W}_D \mathbf{h}_{t,i} + b_D), \quad \mathbf{W}_D \in \mathbb{R}^{d \times 1} \quad \text{(delete)}
+\end{align}
+where the unmask head outputs a probability distribution $p_\theta(y_{t,i} \mid \mathbf{x}_t)$ over the vocabulary $\Sigma$ for predicting tokens at masked positions, while the three control signal heads output binary probabilities for the corresponding operations. During inference, tokens are obtained via $y_{t,i} = \argmax p_\theta(\cdot \mid \mathbf{x}_t)$ and control signals are obtained by thresholding. 
+
+
+\subsection{Self-Supervised Training} \label{appendix:training}
+
+In principle, one can design specialized loss functions corresponding to each operation, alongside the standard unmasking loss from MDM, by constructing self-supervised signals from the inherent structure of text data through augmentation strategies.
+
+\paragraph{Unmasking Loss} 
+The unmasking loss would follow standard MDM training as described in Appendix~\ref{appendix:mdm}. For each training sample $\mathbf{x}_T$, one can sample $t \sim \mathcal{U}(0,T)$ and apply the forward masking process with signal ratio $\alpha_t = t/T$ to create $\mathbf{x}_t$:
+\begin{align}
+x_{t,i} = \begin{cases}
+x_{T,i} & \text{with probability } \alpha_t \\
+\mask & \text{with probability } 1-\alpha_t
+\end{cases}
+\end{align}
+The model would learn to predict original tokens at masked positions with time weighting:
+\begin{align}
+\mathcal{L}_{\unmask} = \mathbb{E}_{t, \mathbf{x}_T, \mathbf{x}_t} \left[ \frac{1}{\sum_i m_i} \sum_{i=1}^{|\mathbf{x}_T|} m_i \cdot \left(-\frac{\log p_\theta(x_{T,i} \mid \mathbf{x}_t)}{t}\right) \right]
+\end{align}
+where $m_i = 1$ if position $i$ is valid (according to attention mask), 0 otherwise.
+
+\paragraph{Remasking Loss} 
+The remasking loss could train the model to identify incorrect tokens that should be remasked. For each sample $\mathbf{x}_T$, one can sample $t \sim \mathcal{U}(0,T)$ and create a corrupted sequence $\tilde{\mathbf{x}}_t$ using batch-internal shuffling (which effectively samples from the empirical token distribution rather than a biased uniform distribution):
+\begin{align}
+\tilde{x}_{t,i} = \begin{cases}
+x_{T,i} & \text{with probability } \alpha_t \\
+\text{shuffled token} & \text{with probability } 1-\alpha_t
+\end{cases}
+\end{align}
+The remasking labels are $\ctrl_{t,i}[1] = \mathbf{1}[x_{T,i} \neq \tilde{x}_{t,i}]$, and the loss uses binary cross-entropy:
+\begin{align}
+\mathcal{L}_{\remask} = \mathbb{E}_{t, \mathbf{x}_T, \tilde{\mathbf{x}}_t} \left[ \frac{1}{\sum_i m_i} \sum_{i=1}^{|\mathbf{x}_T|} m_i \cdot \text{BCE}(\text{logit}_{R,i}, \ctrl_{t,i}[1]) \right]
+\end{align}
+where $m_i$ indicates valid positions and BCE denotes binary cross-entropy with logits.
+
+\paragraph{Insert Loss} 
+The insert loss could teach the model to identify positions where additional content is needed. For each sample $\mathbf{x}_T$, one can sample deletion probability $\delta \sim \mathcal{U}(0,1)$ and generate deletion indicators for each position $i$. One would create the deflated sequence $\tilde{\mathbf{x}}$ by removing tokens at randomly selected positions. The insert labels would be $\ctrl_{t,j}[2] = 1$ for positions $j$ that remain in $\tilde{\mathbf{x}}$ where the next position was deleted, 0 otherwise:
+\begin{align}
+\mathcal{L}_{\inser} = \mathbb{E}_{\delta, \mathbf{x}_T, \tilde{\mathbf{x}}} \left[ \frac{1}{\sum_j m_j} \sum_{j=1}^{|\tilde{\mathbf{x}}|} m_j \cdot \text{BCE}(\text{logit}_{I,j}, \ctrl_{t,j}[2]) \right]
+\end{align}
+where $m_j$ indicates valid positions in the deflated sequence.
+
+\paragraph{Delete Loss} 
+The delete loss could train the model to distinguish between necessary and redundant mask tokens. One can use a two-step masking process: first apply standard MDM masking with $\alpha_t = t/T$ to create $\mathbf{x}_{\text{base}}$, then sample insertion probability $\gamma \sim \mathcal{U}(0,1)$ to insert additional $\mask$ tokens at randomly selected positions. The delete labels would distinguish mask origins:
+\begin{align}
+\ctrl_{t,i}[3] = \begin{cases}
+1 & \text{if } \hat{x}_{t,i} = \mask \text{ and inserted in step 2} \\
+0 & \text{otherwise}
+\end{cases}
+\end{align}
+The loss uses binary cross-entropy:
+\begin{align}
+\mathcal{L}_{\delete} = \mathbb{E}_{\gamma, \mathbf{x}_T, \hat{\mathbf{x}}_t} \left[ \frac{1}{\sum_k m_k} \sum_{k=1}^{|\hat{\mathbf{x}}_t|} m_k \cdot \text{BCE}(\text{logit}_{D,k}, \ctrl_{t,k}[3]) \right]
+\end{align}
+where $m_k$ indicates valid positions in the contracted sequence.
+
+\paragraph{Combined Training Objective}
+In principle, an AP-MDM training objective could balance all four capabilities:
+\begin{align}
+\mathcal{L}_{\text{AP-MDM}} = \mathcal{L}_{\unmask} + \lambda_r \mathcal{L}_{\remask} + \lambda_i \mathcal{L}_{\inser} + \lambda_d \mathcal{L}_{\delete}
+\end{align}
+where $\lambda_r, \lambda_i, \lambda_d > 0$ are hyperparameters controlling the relative importance of each operation with default value $1$.
+
+
+\subsection{Supervised Training} \label{appendix:training2}
+
+In addition to the self-supervised training approach described in \Cref{appendix:training}, AP-MDM can also be trained with explicit supervision when state-transition data is available. This applies to scenarios where we have access to the underlying generation process. It can also be combined with the self-supervised approach in \Cref{appendix:training} for hybrid training, e.g. self-supervised in pretraining and supervised in finetuning.
+
+\paragraph{Data Format}
+Each training sample consists of a state-transition tuple $(\mathbf{x}_k, \mathbf{y}^*, \ctrlvec^*)$ where:
+\begin{itemize}[leftmargin=15pt]
+    \item $\mathbf{x}_k \in \bar{\Sigma}^*$: current state (potentially containing $\mask$ tokens)
+    \item $\mathbf{y}^* \in \Sigma^{|\mathbf{x}_k|}$: target tokens for each position
+    \item $\ctrlvec^* = (\ctrl^*_1, \ldots, \ctrl^*_{|\mathbf{x}_k|})$ where $\ctrl^*_i \in \C = \{0,1\}^3$: ground-truth control signals
+\end{itemize}
+
+
+\begin{algorithm}[t]
+\caption{Any-Process Generation with $\unmask$, $\remask$, $\inser$, and $\delete$ Operations}
+\label{alg:apmdm_sampling}
+\begin{algorithmic}[1]
+\Require Trained model $f_\theta$, input prompt $\mathbf{x}$
+\Ensure Generated sequence $\mathbf{x}_{\text{final}}$
+\State $\mathbf{x}_0 \gets \mathbf{x}$ \Comment{Initialize with input prompt}
+\State $t \gets 0$
+\While{stopping criterion not met}
+    \State $(\mathbf{x}_t, \mathbf{y}_t, \ctrlvec_t) \gets f_\theta(\mathbf{x}_t)$ \Comment{Model forward pass}
+    \State $\mathbf{z}_t \gets []$ \Comment{Initialize temporary sequence}
+    \For{$i = 1$ to $|\mathbf{x}_t|$}
+        \If{$\ctrl_{t,i}[3] = 1$ and $x_{t,i} = \mask$} \Comment{$\delete$ operation}
+            \State \textbf{continue} \Comment{Skip this position}
+        \EndIf
+        \State \Comment{Determine token value: Remask $>$ Unmask $>$ Keep}
+        \If{$\ctrl_{t,i}[1] = 1$} \Comment{$\remask$ operation}
+            \State Append $\mask$ to $\mathbf{z}_t$
+        \ElsIf{$x_{t,i} = \mask$} \Comment{$\unmask$ operation}
+            \State Append $y_{t,i}$ to $\mathbf{z}_t$
+        \Else \Comment{Keep unchanged}
+            \State Append $x_{t,i}$ to $\mathbf{z}_t$
+        \EndIf
+        \State 
+        \If{$\ctrl_{t,i}[2] = 1$} \Comment{$\inser$ operation}
+            \State Append $\mask$ to $\mathbf{z}_t$
+        \EndIf
+    \EndFor
+    \State $\mathbf{x}_{t+1} \gets \mathbf{z}_t$ 
+    \State $t \gets t + 1$
+\EndWhile
+\State \Return $\mathbf{x}_t$
+\end{algorithmic}
+\end{algorithm}
+    
+
+\paragraph{Training Objective}
+Given the state-transition data, the model learns to predict both the target tokens and control signals. The training objective consists of four components:
+
+For positions where $x_{k,i} = \mask$ and $y^*_i \neq \mask$, predict the target token:
+\begin{align}
+\mathcal{L}_{\unmask}^{\text{sup}} = -\frac{1}{|\{i: x_{k,i} = \mask, y^*_i \neq \mask\}|} \sum_{i: x_{k,i} = \mask, y^*_i \neq \mask} \log p_\theta(y^*_i \mid \mathbf{x}_k)
+\end{align}
+
+For all valid positions, predict the control signals:
+\begin{align}
+\mathcal{L}_{\remask}^{\text{sup}} &= \frac{1}{\sum_i m_i} \sum_{i=1}^{|\mathbf{x}_k|} m_i \cdot \text{BCE}(\text{logit}_{R,i}, \ctrl^*_i[1]) \\
+\mathcal{L}_{\inser}^{\text{sup}} &= \frac{1}{\sum_i m_i} \sum_{i=1}^{|\mathbf{x}_k|} m_i \cdot \text{BCE}(\text{logit}_{I,i}, \ctrl^*_i[2]) \\
+\mathcal{L}_{\delete}^{\text{sup}} &= \frac{1}{\sum_i m_i} \sum_{i=1}^{|\mathbf{x}_k|} m_i \cdot \text{BCE}(\text{logit}_{D,i}, \ctrl^*_i[3])
+\end{align}
+where $m_i$ indicates valid positions and BCE denotes binary cross-entropy with logits.
+
+\textbf{Combined Objective:}
+\begin{align}
+\mathcal{L}_{\text{AP-MDM}}^{\text{sup}} = \mathcal{L}_{\unmask}^{\text{sup}} + \lambda_r \mathcal{L}_{\remask}^{\text{sup}} + \lambda_i \mathcal{L}_{\inser}^{\text{sup}} + \lambda_d \mathcal{L}_{\delete}^{\text{sup}}
+\end{align}
+
+\subsection{Inference-Time Algorithm} \label{appendix:algorithm}
+
+As described in \Cref{sec:any_process}, AP-MDM generation follows an iterative process formulated as $\mathbf{x}_{t+1} = g(f_\theta(\mathbf{x}_t))$. We provide the complete inference-time sampling algorithm that implements the transition function $g$ following \Cref{eq:apmdm_implementation}.
+
+The algorithm implements the transition function $g(\mathbf{x}_t, \mathbf{y}_t, \ctrlvec_t)$ as defined in \Cref{eq:apmdm_implementation}. Thresholds $\tau_r, \tau_i, \tau_d$ control when operations are applied (default value $0.5$ for all). The algorithm supports variable-length generation through dynamic insertion and deletion, and terminates when a stopping criterion is met (e.g., sequence convergence, generation of special tokens, or reaching a maximum iteration limit).
+

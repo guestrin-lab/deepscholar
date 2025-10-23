@@ -1,0 +1,129 @@
+\begin{table*}[hbt]
+\centering
+\caption{\textbf{Quantitative comparison in text-to-image generation} for FLUX.1-dev and FLUX.1-schnell(a distilled version). Best results are highlighted in \textbf{bold}, and second-best are \underline{underlined}.}
+\vspace{-3mm}
+  \resizebox{\textwidth}{!}{ % Make table width equal to text width
+    \begin{tabular}{l | c  c | c  c | c  c | c c c}
+        \toprule
+        \multirow{2}{*}{\textbf{Method}}
+        & \multicolumn{4}{c|}{\textbf{Acceleration}} 
+        & \multicolumn{2}{c|}{\textbf{Quality Metrics}} 
+        & \multicolumn{3}{c}{\textbf{Perceptual Metrics}}\rule{0pt}{2ex}\\
+        \cline{2-10}
+        & \textbf{Latency(s) \(\downarrow\)} 
+        & \textbf{Speed \(\uparrow\)} 
+        & \textbf{FLOPs(T) \(\downarrow\)}  
+        & \textbf{Speed \(\uparrow\)} 
+        & \textbf{ImageReward\(\uparrow\)} 
+        & \textbf{CLIP\(\uparrow\)} 
+        & \textbf{PSNR\(\uparrow\)} 
+        & \textbf{SSIM\(\uparrow\)}
+        & \textbf{LPIPS\(\downarrow\)}\rule{0pt}{2ex}\\
+        \midrule
+
+\textbf{[dev]: 50 steps}
+& 23.24 \textcolor{gray!70}{\scriptsize (+0.0\%)} & 1.00$\times$ & 3726.87 & 1.00$\times$ & 0.99 \textcolor{gray!70}{\scriptsize (+0.0\%)} & 32.64 \textcolor{gray!70}{\scriptsize (+0.0\%)} & $\infty$ & 1.00 & 0.00  \\
+
+\textbf{$60\%$ steps}
+& 14.12 \textcolor{gray!70}{\scriptsize (-39.2\%)} & 1.65$\times$ & 2236.12 & 1.67$\times$ & 0.97 \textcolor{gray!70}{\scriptsize (-2.0\%)} & 32.66 \textcolor{gray!70}{\scriptsize (+0.1\%)} & 30.31 & 0.78 & 0.25  \\
+
+\textbf{$50\%$ steps}
+& 11.82 \textcolor{gray!70}{\scriptsize (-49.1\%)} & 1.97$\times$ & 1863.44 & 2.00$\times$ & 0.97 \textcolor{gray!70}{\scriptsize (-2.0\%)} & 32.57 \textcolor{gray!70}{\scriptsize (-0.2\%)} & 29.56 & 0.73 & 0.31  \\
+
+
+\textbf{PAB}
+& 17.84 \textcolor{gray!70}{\scriptsize (-23.2\%)} & 1.30$\times$ & 3013.13 & 1.24$\times$ &0.95 \textcolor{gray!70}{\scriptsize (-4.0\%)} & 32.55 \textcolor{gray!70}{\scriptsize (-0.3\%)} & 28.84 & 0.67 & 0.40 \\
+%  s T  92 28.840 0.6735 0.3969
+% N = 3
+
+\textbf{DBCache}
+& 16.88 \textcolor{gray!70}{\scriptsize (-27.4\%)} & 1.38$\times$ & 2384.29 & 1.56$\times$ & 1.01 \textcolor{gray!70}{\scriptsize (+2.0\%)} & 32.53 \textcolor{gray!70}{\scriptsize (-0.3\%)} & 33.86 & 0.87 & 0.12 \\
+
+\midrule
+
+
+
+\textbf{FORA} ($\mathcal{N}$=3) 
+& \textbf{9.06} \textcolor{gray!70}{\scriptsize (-61.0\%)} & \textbf{2.57}$\times$ & \textbf{1267.89} & \textbf{2.94}$\times$ & 0.93 \textcolor{gray!70}{\scriptsize (-6.1\%)} & \textbf{32.89} \textcolor{gray!70}{\scriptsize (+0.8\%)} & 28.86 & 0.66 & 0.40 \\
+
+\textbf{TeaCache} ($l$=0.6) 
+& \underline{9.13} \textcolor{gray!70}{\scriptsize (-60.7\%)} & \underline{2.55}$\times$ & \underline{1342.20} & \underline{2.78}$\times$ & 0.91 \textcolor{gray!70}{\scriptsize (-8.1\%)} & 32.11 \textcolor{gray!70}{\scriptsize (-1.6\%)} & 29.03 & 0.68 & 0.40  \\
+
+\textbf{TaylorSeer} ($\mathcal{N}$=3, $O$=2)
+& 10.16 \textcolor{gray!70}{\scriptsize (-56.3\%)} & 2.29$\times$ & 1416.92 & 2.63$\times$ & \textbf{1.01} \textcolor{gray!70}{\scriptsize (+2.0\%)} & \underline{32.86} \textcolor{gray!70}{\scriptsize (+0.7\%)} & \underline{30.77} & \underline{0.78} & \underline{0.23}  \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa} ($\mathcal{N}$=3) 
+& 9.37 \textcolor[HTML]{0f98b0}{\scriptsize (-59.7\%)} & 2.48$\times$ & 1417.40 & 2.63$\times$ & \underline{1.00} \textcolor[HTML]{0f98b0}{\scriptsize (+1.0\%)} & 32.61 \textcolor[HTML]{0f98b0}{\scriptsize (-0.1\%)} & \textbf{33.03} & \textbf{0.86} & \textbf{0.13}  \\
+
+\midrule
+
+\textbf{FORA}($\mathcal{N}$=5) {\textcolor{red}{$^{\dagger}$}}
+& \underline{5.97} \textcolor{gray!70}{\scriptsize (-74.3\%)} & \underline{3.89}$\times$ & 820.80 & 4.54$\times$ & 0.82 \textcolor{gray!70}{\scriptsize (-17.2\%)} & 32.48 \textcolor{gray!70}{\scriptsize (-0.5\%)} & 28.44 & 0.60 & 0.50  \\ 
+
+\textbf{\texttt{ToCa}}($\mathcal{N}$=8, $\mathcal{R}$=75\%) 
+& 12.39 \textcolor{gray!70}{\scriptsize (-46.7\%)} & 1.88$\times$ & 829.86 & 4.49$\times$ & 0.95 \textcolor{gray!70}{\scriptsize (-4.0\%)} & 32.60 \textcolor{gray!70}{\scriptsize (-0.1\%)} & \underline{29.07} & 0.64 & 0.43   \\ 
+
+\textbf{\texttt{DuCa}}($\mathcal{N}$=8, $\mathcal{R}$=70\%) 
+& 9.40 \textcolor{gray!70}{\scriptsize (-59.6\%)} & 2.47$\times$ & 858.27 & 4.34$\times$ & 0.94 \textcolor{gray!70}{\scriptsize (-5.1\%)} & 32.58 \textcolor{gray!70}{\scriptsize (-0.2\%)} & 29.06 & 0.64 & 0.43   \\ 
+
+\textbf{TeaCache}($l$=1.0) {\textcolor{red}{$^{\dagger}$}}
+& 7.07 \textcolor{gray!70}{\scriptsize (-69.6\%)} & 3.29$\times$ & 820.55 & 4.54$\times$ & 0.84 \textcolor{gray!70}{\scriptsize (-15.2\%)} & 31.88 \textcolor{gray!70}{\scriptsize (-2.3\%)} & 28.61 & 0.64 & 0.48  \\
+
+\textbf{TaylorSeer}($\mathcal{N}$=6, $O$=2)
+& 6.73 \textcolor{gray!70}{\scriptsize (-71.0\%)} & 3.45$\times$ & \underline{746.28} & \textbf{4.99}$\times$ & \underline{1.00} \textcolor{gray!70}{\scriptsize (+1.0\%)} & \underline{32.91} \textcolor{gray!70}{\scriptsize (+0.8\%)} & 28.94 & \underline{0.66} & \underline{0.40}  \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa} ($\mathcal{N}$=7)
+& \textbf{5.19} \textcolor[HTML]{0f98b0}{\scriptsize (-77.7\%)} & \textbf{4.48}$\times$ & \textbf{746.03 } & \underline{4.99}$\times$ & \textbf{1.01} \textcolor[HTML]{0f98b0}{\scriptsize (+2.0\%)} & \textbf{32.98} \textcolor[HTML]{0f98b0}{\scriptsize (+1.0\%)} & \textbf{30.00} & \textbf{0.71} & \textbf{0.31} \\
+
+\midrule
+
+\textbf{FORA}($\mathcal{N}$=7) {\textcolor{red}{$^{\dagger}$}}
+& \underline{5.09} \textcolor{gray!70}{\scriptsize (-78.1\%)} & \underline{4.57}$\times$ & \textbf{597.25} & \textbf{6.24}$\times$ & 0.68 \textcolor{gray!70}{\scriptsize (-31.3\%)} & 31.90 \textcolor{gray!70}{\scriptsize (-2.3\%)} & 28.32 & 0.59 & 0.54  \\ 
+
+\textbf{\texttt{ToCa}}($\mathcal{N}$=12, $\mathcal{R}$=85\%) {\textcolor{red}{$^{\dagger}$}}
+& 9.82 \textcolor{gray!70}{\scriptsize (-57.7\%)} & 2.37$\times$ & 618.57 & 6.02$\times$ & 0.80 \textcolor{gray!70}{\scriptsize (-19.2\%)} & \underline{32.32} \textcolor{gray!70}{\scriptsize (-1.0\%)} & 28.70 & 0.60 & 0.52   \\ 
+
+\textbf{\texttt{DuCa}}($\mathcal{N}$=12, $\mathcal{R}$=80\%) {\textcolor{red}{$^{\dagger}$}}
+& 7.74 \textcolor{gray!70}{\scriptsize (-66.7\%)} & 3.00$\times$ & 646.97 & 5.76$\times$ & 0.77 \textcolor{gray!70}{\scriptsize (-22.2\%)} & 32.20 \textcolor{gray!70}{\scriptsize (-1.3\%)} & \underline{28.71} & \underline{0.60} & 0.53   \\ 
+
+\textbf{TeaCache}($l$=1.4) {\textcolor{red}{$^{\dagger}$}}
+& 6.14 \textcolor{gray!70}{\scriptsize (-73.6\%)} & 3.79$\times$ & 671.51 & 5.55$\times$ & 0.74 \textcolor{gray!70}{\scriptsize (-25.3\%)} & 31.78 \textcolor{gray!70}{\scriptsize (-2.6\%)} & 28.12 & 0.48 & 0.68  \\
+
+\textbf{TaylorSeer}($\mathcal{N}$=9, $O$=2) {\textcolor{red}{$^{\dagger}$}}
+& 5.85 \textcolor{gray!70}{\scriptsize (-74.8\%)} & 3.97$\times$ & \textbf{597.25} & \textbf{6.24}$\times$ & \underline{0.86} \textcolor{gray!70}{\scriptsize (-13.1\%)} & 32.04 \textcolor{gray!70}{\scriptsize (-1.8\%)} & 28.38 & 0.59 & \underline{0.51}  \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa} ($\mathcal{N}$=10)
+& \textbf{4.25} \textcolor[HTML]{0f98b0}{\scriptsize (-81.7\%)} & \textbf{5.47}$\times$ & \underline{597.47} & \underline{6.24}$\times$ & \textbf{0.97} \textcolor[HTML]{0f98b0}{\scriptsize (-2.0\%)} & \textbf{32.53} \textcolor[HTML]{0f98b0}{\scriptsize (-0.3\%)} & \textbf{28.77} & \textbf{0.62} & \textbf{0.43}  \\
+\midrule
+\textbf{[schnell]: 4 steps} 
+& 2.17\textcolor{gray!70}{\scriptsize (+0.0\%)} & 1.00$\times$ & 278.41 & 1.00$\times$ & 0.93\textcolor{gray!70}{\scriptsize (+0.0\%)} & 34.09\textcolor{gray!70}{\scriptsize (+0.0\%)} & $\infty$ & 1.00 & 0.00 \\
+
+\rowcolor{gray!20}
+\textbf{FreqCa ($\mathcal{N}$=3): 4 steps}
+& 1.29 \textcolor[HTML]{0f98b0}{\scriptsize (-40.6\%)} 
+& 1.68$\times$ 
+& 139.23 
+& 2.00$\times$ 
+& 0.95 \textcolor[HTML]{0f98b0}{\scriptsize (+2.2\%)} 
+& 34.47 \textcolor[HTML]{0f98b0}{\scriptsize (+1.1\%)} 
+& 30.30 
+& 0.81 
+& 0.16 \\
+\bottomrule
+\end{tabular}
+}
+
+\label{table:FLUX-Metrics}
+\raggedright
+{\scriptsize
+\begin{itemize}[leftmargin=10pt,topsep=0pt]
+\item\textcolor{red}{$\dagger$} Methods exhibit significant degradation in image quality. 
+\vspace{-1.5mm}
+\item\textcolor{gray!70}{Gray}: Baseline-relative degradation in quality and gains in latency. \textcolor[HTML]{0f98b0}{Blue}: \textbf{FreqCa} achieves minimal degradation with large latency gains.
+\end{itemize}
+}
+\vspace{-2mm}
+\end{table*}

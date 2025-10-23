@@ -1,0 +1,27 @@
+\begin{table}[h!]
+\centering
+\caption{Composition of the ImagiNet \cite{imaginet} evaluation set used. The test set contains $5000$ fake and $5000$ real images.}
+\label{tab:appendix_imaginet}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Category} & \textbf{Generator} & \textbf{Number} & \textbf{Resolution} & \textbf{Real Source} \\
+\midrule
+\multirow{4}{*}{Photos} & StyleGAN-XL \cite{styleganxl} & $388$ & $256 \times 256$ & ImageNet \cite{imagenet} \\
+ & ProGAN \cite{progan} & $424$ & $256 \times 256$ & LSUN \cite{lsun} \\
+ & SD v2.1 \cite{ldm} & $361$ & $768 \times 768$ & COCO \cite{coco} \\
+ & SDXL v1.0 \cite{sdxl} & $380$ & $1024 \times 1024$ & COCO \cite{coco} \\
+\midrule
+\multirow{4}{*}{Paintings} & StyleGAN 3 \cite{stylegan3} & $623$ & $1024 \times 1024$ & WikiArt \cite{wikiart} \\
+ & SD v2.1 \cite{ldm} & $131$ & $768 \times 768$ & WikiArt \cite{wikiart} \\
+ & SDXL v1.0 \cite{sdxl} & $129$ & $1024 \times 1024$ & WikiArt \cite{wikiart} \\
+ & Animagine XL \cite{} & $246$ & $1024 \times 1024$ & Danbooru \cite{danbooru} \\
+\midrule
+\multirow{3}{*}{Faces} & StyleGAN-XL \cite{styleganxl} & $509$ & $1024 \times 1024$ & FFHQ \cite{stylegan} \\
+ & SD v2.1 \cite{ldm} & $295$ & $768 \times 768$ & FFHQ \cite{stylegan} \\
+ & SDXL v1.0 \cite{sdxl} & $288$ & $1024 \times 1024$ & FFHQ \cite{stylegan} \\
+\midrule
+\multirow{2}{*}{Other} & Midjourney \cite{midjourney} & $626$ & \begin{tabular}{@{}c@{}}$1024 \times 1024$ \\ $1792 \times 1024$\end{tabular} & Photozilla \cite{photozilla} \\
+ & DALL·E 3 \cite{dalle3} & $600$ & \begin{tabular}{@{}c@{}}$1024 \times 1024$ \\ $1792 \times 1024$\end{tabular} & Photozilla \cite{photozilla} \\
+\bottomrule
+\end{tabular}
+\end{table}

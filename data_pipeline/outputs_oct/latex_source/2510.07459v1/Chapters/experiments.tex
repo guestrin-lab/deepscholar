@@ -1,0 +1,78 @@
+\section{Experiments}\label{sec:experiments}
+We evaluate MoGU on several multivariate time series forecasting benchmarks. We compare its performance to the standard MoE, which lacks uncertainty estimation, and to a single-expert model. Our evaluation varies the number of experts, prediction horizon length, and expert architecture. The complete experimental setup is detailed in Section \ref{sec:experimental_setup}.
+The results of our evaluation are presented in Section \ref{subsec:tsf_results}. MoGU achieves competitive performance, consistently outperforming both the standard MoE and the single-expert models. We further analyze the reported uncertainty by our method in Section \ref{subsec:unc_analysis}. We find that the uncertainty estimates reported by MoGU are informative, positively correlated with prediction error, and accurately reflect the error trend.
+Finally, in Section \ref{subsec:ablations}, we present an ablation study that explores alternative design choices for our gating mechanism, loss, uncertainty head architecture, and the resolution at which uncertainty is reported. The results further validate the advantage of our proposed novel uncertainty-based gating and demonstrate the robustness of our framework.
+\subsection{Experimental setup}
+\label{sec:experimental_setup}
+\textbf{Datasets.}
+We evaluate our method on eight widely used time series forecasting datasets~\citep{autoformer}: four Electricity Transformer Temperature (ETT) datasets (ETTh1, ETTh2, ETTm1, ETTm2)~\citep{informer}, as well as Electricity\footnote{
+https://archive.ics.uci.edu/ml/datasets/ElectricityLoadDiagrams20112014}, Weather\footnote{
+https://www.bgc-jena.mpg.de/wetter/}, Exchange~
+\citep{lai2018modeling}, and Illness (ILI)\footnote{
+https://gis.cdc.gov/grasp/fluview/fluportaldashboard.html}.
+%\jacob{do we need to add references to the datasets? YS: added}
+
+\textbf{Experimental Protocol.} Our experiments follow the standard protocol used in recent time series forecasting literature \citep{Yuqietal-2023-PatchTST,liu2023itransformer, wang2024deep}. For the ILI dataset, we use a forecast horizon length  $h \in \{24, 36, 48, 60\}$. For all other datasets, the forecast horizon length is selected from {96,192,336,720}. A look-back window of 96 is used for all experiments. We report performance using the Mean Absolute Error (MAE) and Mean Squared Error (MSE). We evaluate the quality of our uncertainty estimates by computing the Pearson and Spearman correlation with respect to the prediction error. Specifically, for each individual variable, we correlate the model's reported uncertainty values with the corresponding MAE across all time points. We then average these correlation coefficients to get an overall measure. 
+
+\textbf{Expert Architecture.} MoGU is a general MoE framework compatible with various expert architectures. We evaluate it using three state-of-the-art expert models: iTransformer \citep{liu2023itransformer}, PatchTST \citep{Yuqietal-2023-PatchTST}, and DLinear \citep{dlinear}. These models represent different architectural approaches, including Transformer and MLP-based designs. 
+
+{\bf Implementation and Training Details.}
+We implemented MoGU in PyTorch~\citep{paszke2019pytorch}. For the expert architecture, we extended the existing implementations of PatchTST, iTransformer, and DLinear available from the Time Series Library (TSLib)~\citep{wang2024deep}, to incorporate uncertainty estimation as detailed in Section \ref{subsec:tsf_mogu}. For training, we used a configuration similar to the one provided by TSLib. All models were trained for a maximum of 10 epochs with a patience of 3 epochs for early stopping. We used the Adam optimizer with a batch size of 8. The learning rate was set to $\lambda=0.001$ for the Weather and Electricity datasets and $\lambda=0.0001$ for all other datasets. All experiments were conducted on a single NVIDIA A100 80GB GPU.
+\input{Chapters/Tables/table_main_results}
+\subsection{Results}\label{sec:results}
+%main results
+%\jacob{ I didnt find a comparison between MoG (with softmax weights an MOGU - Table 5 in the ablations}
+%\jacob{In Table 1 we promise in the caption both MAE and MSE but we show only one measure - YS: fixed, only MSE is reported due to space limitations}
+%tables and figures - cont.
+\input{Chapters/Tables/table_unc_corr}
+        \begin{figure}[h!]
+        \centering
+        \begin{subfigure}[t]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{Chapters/Figures/patchtst_etth1_v0s0.png}
+            \subcaption{PatchTST/ETTh1}
+            
+            \label{fig:unc_graph_a}
+        \end{subfigure}
+        \hfill % Adds horizontal space between subfigures
+        \begin{subfigure}[t]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{Chapters/Figures/itransformer_ettm1_v0s2.png}
+            \subcaption{iTransformer/ETTm1}
+            
+            \label{fig:unc_graph_b}
+        \end{subfigure}
+        \caption{Example forecasts along with the ground truth, the MAE and uncertainty reported by MoGU with three experts. The forecasts for the Etth1 dataset (a) were generated using PatchTST as the expert architecture, while those for Ettm1 (b) were generated using iTransformer.}
+        \label{fig:unc_graph}
+    \end{figure}
+\input{Chapters/Tables/table_ablations}
+\subsubsection{Time Series Forecasting with MoGU}\label{subsec:tsf_results}
+Table \ref{tab:main_results_num_experts} compares MoGU's performance against single-expert and standard MoE configurations on the ETT datasets. Using iTransformer as the expert architecture and varying the number of experts from 2 to 5, MoGU consistently yields more accurate predictions than both single-expert and standard MoE settings.
+Tables \ref{tab:main_results} and \ref{tab:main_results_exchange} provide further comparisons between a three-expert MoE and MoGU. MoGU outperforms standard MoE in the majority of cases across different multivariate forecasting datasets and horizon lengths, utilizing iTransformer, PatchTST, and DLinear as expert architectures. 
+
+\subsubsection{Uncertainty Quantification for Time Series Forecasting with MoGU}\label{subsec:unc_analysis}
+To assess how well MoGU's reported uncertainty aligns with its actual prediction errors, we compute the Pearson (R) and Spearman ($\rho$) correlation coefficients between them. Table \ref{tab:unc_corr} presents these coefficients for the aleatoric, epistemic, and total uncertainties (as defined in Eq. \ref{eq:var-mogu}).
+
+We observe a statistically significant positive correlation between MoGU's uncertainty estimates and the Mean Absolute Error (MAE) of its predictions. Interestingly, the correlation with aleatoric uncertainty is typically higher than with epistemic uncertainty. Since aleatoric uncertainty represents the inherent randomness in the data itself, this correlation suggests that the model can use uncertainty estimates to identify data points where irreducible randomness makes accurate predictions difficult, thereby leading to higher errors.
+
+Fig. \ref{fig:unc_graph} illustrates the relationship between MoGU's prediction error and uncertainty estimates by showing the predicted and ground truth values alongside the MAE and reported uncertainty for representative examples. The uncertainty at each time point closely follows the prediction error. 
+We further show the Pearson correlation heatmaps in Fig. \ref{fig:heatmaps} in our Appendix. These heatmaps further visualize the relationship between the Mean Absolute Error (MAE) of MoGU's predictions and its reported uncertainties (aleatoric, epistemic, and total), when using MoGU with three iTransformer experts. The analysis is presented per variable for each of the ETT datasets, highlighting the extent to which different uncertainty components correlate with predictive error. While the correlation between uncertainty and MAE varies among variables, it remains consistently positive.
+
+\subsubsection{Ablations}\label{subsec:ablations}
+We conducted an ablation study to evaluate our key design choices. For all experiments, we used a configuration with three experts.
+
+\textbf{Gating Mechanism.} Table \ref{tab:ablations_gating} compares our MoGU to a standard input-based gating mechanism \citep{jacobs1991adaptive}, when employed by a deterministic MoE and with a MoG. The input-based method utilizes a separate neural module to predict weights by processing the input before a softmax layer. We evaluated the MoE, MoG and MoGU methods on four ETT datasets using iTransformer and PatchTST as the expert architectures. Our uncertainty-based gating consistently resulted in a lower prediction error.
+
+\textbf{Uncertainty Head Architecture.}
+We also evaluated the design of our uncertainty head, which is implemented as a shallow Multi-Layer Perceptron (MLP) with a single hidden fully connected layer. Table \ref{tab:ablations_head_arc} compares this to an alternative using only a single fully connected layer. The MLP alternative performed better in most cases, though the performance difference was relatively small.
+
+\textbf{Resolution of Uncertainty Estimation.}
+Table \ref{tab:ablations_time} in our Appendix explores an alternative where the expert estimates uncertainty at the variable level ('Time-Fixed'), rather than for each individual time point ('Time-Varying'). Predicting uncertainty at the higher resolution of a single time point yielded better results, demonstrating the advantage of our framework's ability to provide high-resolution uncertainty predictions. We note that our framework is flexible and supports both configurations.
+
+Additional ablations for our \textbf{Loss Function} are provided in the Appendix (Section~\ref{subsec:app_ablations}).
+
+
+
+
+
+

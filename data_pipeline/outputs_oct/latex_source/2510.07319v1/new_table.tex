@@ -1,0 +1,59 @@
+\begin{table*}[!t]
+	\centering
+	\small
+        \caption{\textbf{Quantitative results when taking visual prompts} derived from different methods to prompt SAM on the Refer-DAVIS$_{17}$ dataset.}
+        \vspace{2mm}
+	\resizebox{0.85\textwidth}{!}{
+		% \setlength\tabcolsep{8pt}
+		\renewcommand\arraystretch{1.0}
+		\begin{tabular}{l|c|ccc}
+			\toprule
+			\multirow{2}{*}{Method} & \multirow{2}{*}{Box mIoU} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+			 &  & \( \mathcal{J}\&\mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+			\midrule
+			(a) Reference Proposal (pretrained) & 71.2 & 65.2 & 62.3 & 68.0 \\
+			(b) Reference Proposal (finetuned) & 75.7 & 70.1 & 67.4 & 72.7 \\
+			(c) Candidate Track (highest conf.) & 72.7 & 68.9 & 66.0 & 71.7 \\
+			% (d) Candidate Track$^\star$ (highest mIoU) & 75.8 & 70.7 & 67.9 & 73.4 \\
+			  (d) Candidate Track (highest mIoU) & 81.8 & 76.2 & 73.0 & 79.5 \\
+			% (f) Candidate Track (merged)  & 82.1 & 77.4 & 74.2 & 80.6 \\
+        \midrule
+			    Ground-Truth Boxes & 100.0 & 83.6 & 80.1 & 87.2 \\
+			\bottomrule
+		\end{tabular}
+	}
+	% \vspace{-3mm}
+	
+	% \vspace{5mm}
+	\label{table:visual_prompt}
+\end{table*}
+
+% \begin{table*}[!t]
+% 	\centering
+% 	\small
+%         \caption{\textbf{Quantitative results when taking visual prompts} derived from different methods to prompt SAM on the Refer-DAVIS$_{17}$ dataset.}
+%         \vspace{2mm}
+% 	\resizebox{0.85\textwidth}{!}{
+% 		% \setlength\tabcolsep{8pt}
+% 		\renewcommand\arraystretch{1.0}
+% 		\begin{tabular}{l|ccc}
+% 			\toprule
+% 			\multirow{2}{*}{Method} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+% 			& \( \mathcal{J}\&\mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+% 			\midrule
+% 			Candidate Track Only & 68.9 & 66.0 & 71.7 \\
+%                 Tenet (Ours) & 71.0 & 68.2 & 73.8 \\
+% 			% (d) Candidate Track$^\star$ (highest mIoU) & 75.8 & 70.7 & 67.9 & 73.4 \\
+% 			  % (d) Candidate Track (highest mIoU) & 81.8 & 76.2 & 73.0 & 79.5 \\
+% 			% (f) Candidate Track (merged)  & 82.1 & 77.4 & 74.2 & 80.6 \\
+%         % \midrule
+% 			    % Ground-Truth Boxes & 100.0 & 83.6 & 80.1 & 87.2 \\
+% 			\bottomrule
+% 		\end{tabular}
+% 	}
+% 	% \vspace{-3mm}
+	
+% 	% \vspace{5mm}
+% 	\label{table:visual_prompt}
+% \end{table*}
+			

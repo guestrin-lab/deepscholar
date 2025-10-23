@@ -1,0 +1,41 @@
+\section{Architecture}
+
+% MMORE provides an end-to-end RAG platform: you can use the same tool for processing your database of documents, making an index out of it, and query the LLM of your choice with the relevant documents.
+\mmore{} provides an end-to-end platform, enabling users to process large document collections, build retrieval indices, and query LLMs with relevant multimodal content, all within a unified framework, as illustrated in Figure~\ref{fig:mmore_system_overview}.
+
+\subsection{Processing}
+
+At the core of \mmore{} lies a modular, scalable processing pipeline, designed for efficient, multimodal data extraction. Importantly, \mmore{} reuses open-source extraction tools such as \textit{Surya}~\cite{paruchuri2025surya} for PDF parsing, \textit{Whisper}~\cite{radford2023robust} for audio transcription, and standard Python libraries for office file formats, allowing us to focus on scalable orchestration and integration. A complete list of supported extractors is provided in Appendix~\ref{app:ingestion}. The design prioritizes three main strengths: \textbf{(i)} multimodal document processing, \textbf{(ii)} extensibility to new file types, and \textbf{(iii)} high-throughput distributed execution.\\
+\textbf{Multimodal Data Extraction.}
+\label{processing:multimodal}
+The processor module extracts heterogeneous content from documents and standardizes it into a unified JSON-based format, referred to as the \textit{MultimodalSample} (see Appendix \ref{app:data_format}). Each sample consists of plain text interleaved with modality placeholders (e.g. images) and a list of the extracted modalities, preserving their type and location. Embedded media are extracted and saved to disk, with placeholder tokens (e.g., \texttt{<attachment>}) inserted at the corresponding positions within the text. This design supports downstream tasks that require text with tightly linked visual elements, such as multimodal pre-training or RAG.\\
+\textbf{Extensibility.}
+\label{processing:extensibility}
+To facilitate extensibility, we designed a common processor interface that abstracts file-specific handling into modular components. Adding support for a new file type requires only implementing a lightweight subclass, promoting long-term maintainability and community-driven contributions. Each processor needs to define a class that takes a file path as input and outputs a \textit{MultimodalSample}, leveraging the standardized output format across the system. To date, \mmore{} supports more than 15 file types, including, but not limited to, PDFs, DOCX, PPTX, spreadsheets, media files, emails, and HTML pages.\\
+\textbf{Distributed Processing.}
+\label{processing:distribution}\mmore{} natively supports both intra-node and inter-node parallelization, exploiting all available CPU and GPU resources without requiring manual configuration from the user. The system is built on top of \textit{Dask}~\cite{dask}, enabling automatic workload balancing, fault tolerance, and seamless scaling across deployment settings, from standalone machines to large multi-node clusters. This design scales across use cases, from individual researchers to large organizations. To further support both ends of the spectrum, \mmore{} offers two processing modes: a fast mode for speed and a default mode for accuracy, allowing users to balance performance and fidelity as needed.
+
+% at the end 
+% To accommodate different computational needs, we provide both \textit{fast} and \textit{slow} processing modes, offering a trade-off between higher accuracy with slower processing and lower accuracy with faster processing. 
+
+\subsection{RAG}
+
+The RAG pipeline is composed of three independent components: \textbf{(i)} post-processing, \textbf{(ii)} indexing and retrieval, and \textbf{(iii)} an integrated RAG service. Each part is modular and can be run independently.
+
+% old version Those parts can be run independently, allowing users to perform only the operation they want. They also each have a configuration file associated with them, allowing the user to easily fine-grain the settings depending on what the user wants.
+
+\textbf{Post-processing.}
+\label{RAG:postproc}
+% old version Post-processing is meant to perform data processing on the extracted texts from documents. The infrastructure for post-processing is customizable; one can easily implement a new post-processor, and then the configuration for post-processing specifies which post-processors should be used and with which parameters. The post-processor is meant to produce a new JSONL file with the post-processed content.
+This stage filters the extracted text to improve quality for downstream tasks. \mmore{} exploits the existing \textit{datatrove} \cite{penedo2024datatrove}, a high-throughput filtering library, and includes native support for several post-processing components, including Named Entity Recognition, Chunking, and Tagging. \\
+% Additional post-processors can be integrated with minimal effort, and the entire pipeline is configured using lightweight YAML files. This stage produces a cleaned and optionally enriched JSONL dataset, ready for downstream indexing or training.
+% old versio no.2 The infrastructure is modular and extensible: MMORE natively supports the following post-processors: Named Entity Recognition, Chunker, Tagger\footnote{The Tagger enhances the metadata of indexed documents based on their content}, and Filter\footnote{The Filter filters out documents that are deemed useless, based on predefined criteria}. New post-processors can easily be implemented, and pipelines can be configured through lightweight YAML files. The post-processing stage produces a new JSONL file containing cleaned and optionally enhanced document samples.
+\textbf{Indexing and Retrieval.}
+\label{RAG:indexing_retrieval}
+% old version Indexing is a crucial component of the RAG pipeline, as the retrieval system has to deal with the data representation made by the indexer to retrieve the most relevant documents. We also made the indexing modular: MMORE currently supports two indexers, a regular RAG indexer based on dense and sparse embeddings computed for each document, and a GraphRAG. Users may define a new indexer.
+Indexing is crucial to RAG performance, as retrieval relies on how documents are represented. \mmore{} uses a hybrid indexing strategy, storing both sparse and dense embeddings for each document. Sparse representations support lexical matching and improve interpretability, while dense embeddings enable semantic search using neural similarity. This duality allows users to choose or combine retrieval embeddings depending on their downstream task. The retriever is accessible via our integrated RAG system or as a standalone API.\\
+\textbf{Integrated RAG system.}
+\label{RAG:ragsystem}
+The RAG system supports both API-based querying and offline batch processing. In batch mode, users provide a JSONL file containing retrieval queries; the system processes each entry and saves the results to a new JSONL file. Both modes allow customization of the model, prompt template, index source, and other parameters via configuration files or API options.
+
+% The RAG system supports both API-based queries and as a batch-mode service. When using the latter, the user provides a JSONL file with requests, and the RAG pipeline processes each input, saving the responses in a new JSONL file. Users can customize the LLM, prompt template, index source, and other parameters in the configuration file (or through the API).

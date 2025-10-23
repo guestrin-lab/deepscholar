@@ -1,0 +1,518 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,xu2023bridging,\cite{xu2023bridging},"Bridging Vision and Language Encoders: Parameter-Efficient Tuning for
+  Referring Image Segmentation",http://arxiv.org/abs/2307.11545v1,"Parameter Efficient Tuning (PET) has gained attention for reducing the number
+of parameters while maintaining performance and providing better hardware
+resource savings, but few studies investigate dense prediction tasks and
+interaction between modalities. In this paper, we do an investigation of
+efficient tuning problems on referring image segmentation. We propose a novel
+adapter called Bridger to facilitate cross-modal information exchange and
+inject task-specific information into the pre-trained model. We also design a
+lightweight decoder for image segmentation. Our approach achieves comparable or
+superior performance with only 1.61\% to 3.38\% backbone parameter updates,
+evaluated on challenging benchmarks. The code is available at
+\url{https://github.com/kkakkkka/ETRIS}.","Xu, Zunnan and Chen, Zhihong and Zhang, Yong and Song, Yibing and Wan, Xiang and Li, Guanbin",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,yang2022lavt,\cite{yang2022lavt},LAVT: Language-Aware Vision Transformer for Referring Image Segmentation,http://arxiv.org/abs/2112.02244v2,"Referring image segmentation is a fundamental vision-language task that aims
+to segment out an object referred to by a natural language expression from an
+image. One of the key challenges behind this task is leveraging the referring
+expression for highlighting relevant positions in the image. A paradigm for
+tackling this problem is to leverage a powerful vision-language (""cross-modal"")
+decoder to fuse features independently extracted from a vision encoder and a
+language encoder. Recent methods have made remarkable advancements in this
+paradigm by exploiting Transformers as cross-modal decoders, concurrent to the
+Transformer's overwhelming success in many other vision-language tasks.
+Adopting a different approach in this work, we show that significantly better
+cross-modal alignments can be achieved through the early fusion of linguistic
+and visual features in intermediate layers of a vision Transformer encoder
+network. By conducting cross-modal feature fusion in the visual feature
+encoding stage, we can leverage the well-proven correlation modeling power of a
+Transformer encoder for excavating helpful multi-modal context. This way,
+accurate segmentation results are readily harvested with a light-weight mask
+predictor. Without bells and whistles, our method surpasses the previous
+state-of-the-art methods on RefCOCO, RefCOCO+, and G-Ref by large margins.","Yang, Zhao and Wang, Jiaqi and Tang, Yansong and Chen, Kai and Zhao, Hengshuang and Torr, Philip HS",2022,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,yu2023zero,\cite{yu2023zero},"Zero-shot Referring Image Segmentation with Global-Local Context
+  Features",http://arxiv.org/abs/2303.17811v2,"Referring image segmentation (RIS) aims to find a segmentation mask given a
+referring expression grounded to a region of the input image. Collecting
+labelled datasets for this task, however, is notoriously costly and
+labor-intensive. To overcome this issue, we propose a simple yet effective
+zero-shot referring image segmentation method by leveraging the pre-trained
+cross-modal knowledge from CLIP. In order to obtain segmentation masks grounded
+to the input text, we propose a mask-guided visual encoder that captures global
+and local contextual information of an input image. By utilizing instance masks
+obtained from off-the-shelf mask proposal techniques, our method is able to
+segment fine-detailed Istance-level groundings. We also introduce a
+global-local text encoder where the global feature captures complex
+sentence-level semantics of the entire input expression while the local feature
+focuses on the target noun phrase extracted by a dependency parser. In our
+experiments, the proposed method outperforms several zero-shot baselines of the
+task and even the weakly supervised referring expression segmentation method
+with substantial margins. Our code is available at
+https://github.com/Seonghoon-Yu/Zero-shot-RIS.","Yu, Seonghoon and Seo, Paul Hongsuck and Son, Jeany",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,liu2023polyformer,\cite{liu2023polyformer},"PolyFormer: Referring Image Segmentation as Sequential Polygon
+  Generation",http://arxiv.org/abs/2302.07387v2,"In this work, instead of directly predicting the pixel-level segmentation
+masks, the problem of referring image segmentation is formulated as sequential
+polygon generation, and the predicted polygons can be later converted into
+segmentation masks. This is enabled by a new sequence-to-sequence framework,
+Polygon Transformer (PolyFormer), which takes a sequence of image patches and
+text query tokens as input, and outputs a sequence of polygon vertices
+autoregressively. For more accurate geometric localization, we propose a
+regression-based decoder, which predicts the precise floating-point coordinates
+directly, without any coordinate quantization error. In the experiments,
+PolyFormer outperforms the prior art by a clear margin, e.g., 5.40% and 4.52%
+absolute improvements on the challenging RefCOCO+ and RefCOCOg datasets. It
+also shows strong generalization ability when evaluated on the referring video
+segmentation task without fine-tuning, e.g., achieving competitive 61.5% J&F on
+the Ref-DAVIS17 dataset.","Liu, Jiang and Ding, Hui and Cai, Zhaowei and Zhang, Yuting and Satzoda, Ravi Kumar and Mahadevan, Vijay and Manmatha, R",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,wu2022language,\cite{wu2022language},Language as Queries for Referring Video Object Segmentation,http://arxiv.org/abs/2201.00487v2,"Referring video object segmentation (R-VOS) is an emerging cross-modal task
+that aims to segment the target object referred by a language expression in all
+video frames. In this work, we propose a simple and unified framework built
+upon Transformer, termed ReferFormer. It views the language as queries and
+directly attends to the most relevant regions in the video frames. Concretely,
+we introduce a small set of object queries conditioned on the language as the
+input to the Transformer. In this manner, all the queries are obligated to find
+the referred objects only. They are eventually transformed into dynamic kernels
+which capture the crucial object-level information, and play the role of
+convolution filters to generate the segmentation masks from feature maps. The
+object tracking is achieved naturally by linking the corresponding queries
+across frames. This mechanism greatly simplifies the pipeline and the
+end-to-end framework is significantly different from the previous methods.
+Extensive experiments on Ref-Youtube-VOS, Ref-DAVIS17, A2D-Sentences and
+JHMDB-Sentences show the effectiveness of ReferFormer. On Ref-Youtube-VOS,
+Refer-Former achieves 55.6J&F with a ResNet-50 backbone without bells and
+whistles, which exceeds the previous state-of-the-art performance by 8.4
+points. In addition, with the strong Swin-Large backbone, ReferFormer achieves
+the best J&F of 64.2 among all existing methods. Moreover, we show the
+impressive results of 55.0 mAP and 43.7 mAP on A2D-Sentences andJHMDB-Sentences
+respectively, which significantly outperforms the previous methods by a large
+margin. Code is publicly available at https://github.com/wjn922/ReferFormer.","Wu, Jiannan and Jiang, Yi and Sun, Peize and Yuan, Zehuan and Luo, Ping",2022,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,han2023html,\cite{han2023html},Html: Hybrid temporal-scale multimodal learning framework for referring video object segmentation,,,"Han, Mingfei and Wang, Yali and Li, Zhihui and Yao, Lina and Chang, Xiaojun and Qiao, Yu",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,wu2023onlinerefer,\cite{wu2023onlinerefer},"OnlineRefer: A Simple Online Baseline for Referring Video Object
+  Segmentation",http://arxiv.org/abs/2307.09356v1,"Referring video object segmentation (RVOS) aims at segmenting an object in a
+video following human instruction. Current state-of-the-art methods fall into
+an offline pattern, in which each clip independently interacts with text
+embedding for cross-modal understanding. They usually present that the offline
+pattern is necessary for RVOS, yet model limited temporal association within
+each clip. In this work, we break up the previous offline belief and propose a
+simple yet effective online model using explicit query propagation, named
+OnlineRefer. Specifically, our approach leverages target cues that gather
+semantic information and position prior to improve the accuracy and ease of
+referring predictions for the current frame. Furthermore, we generalize our
+online model into a semi-online framework to be compatible with video-based
+backbones. To show the effectiveness of our method, we evaluate it on four
+benchmarks, \ie, Refer-Youtube-VOS, Refer-DAVIS17, A2D-Sentences, and
+JHMDB-Sentences. Without bells and whistles, our OnlineRefer with a Swin-L
+backbone achieves 63.5 J&F and 64.8 J&F on Refer-Youtube-VOS and Refer-DAVIS17,
+outperforming all other offline methods.","Wu, Dongming and Wang, Tiancai and Zhang, Yuang and Zhang, Xiangyu and Shen, Jianbing",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,miao2023spectrum,\cite{miao2023spectrum},Spectrum-guided Multi-granularity Referring Video Object Segmentation,http://arxiv.org/abs/2307.13537v1,"Current referring video object segmentation (R-VOS) techniques extract
+conditional kernels from encoded (low-resolution) vision-language features to
+segment the decoded high-resolution features. We discovered that this causes
+significant feature drift, which the segmentation kernels struggle to perceive
+during the forward computation. This negatively affects the ability of
+segmentation kernels. To address the drift problem, we propose a
+Spectrum-guided Multi-granularity (SgMg) approach, which performs direct
+segmentation on the encoded features and employs visual details to further
+optimize the masks. In addition, we propose Spectrum-guided Cross-modal Fusion
+(SCF) to perform intra-frame global interactions in the spectral domain for
+effective multimodal representation. Finally, we extend SgMg to perform
+multi-object R-VOS, a new paradigm that enables simultaneous segmentation of
+multiple referred objects in a video. This not only makes R-VOS faster, but
+also more practical. Extensive experiments show that SgMg achieves
+state-of-the-art performance on four video benchmark datasets, outperforming
+the nearest competitor by 2.8% points on Ref-YouTube-VOS. Our extended SgMg
+enables multi-object R-VOS, runs about 3 times faster while maintaining
+satisfactory performance. Code is available at https://github.com/bo-miao/SgMg.","Miao, Bo and Bennamoun, Mohammed and Gao, Yongsheng and Mian, Ajmal",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,tang2023temporal,\cite{tang2023temporal},"Temporal Collection and Distribution for Referring Video Object
+  Segmentation",http://arxiv.org/abs/2309.03473v1,"Referring video object segmentation aims to segment a referent throughout a
+video sequence according to a natural language expression. It requires aligning
+the natural language expression with the objects' motions and their dynamic
+associations at the global video level but segmenting objects at the frame
+level. To achieve this goal, we propose to simultaneously maintain a global
+referent token and a sequence of object queries, where the former is
+responsible for capturing video-level referent according to the language
+expression, while the latter serves to better locate and segment objects with
+each frame. Furthermore, to explicitly capture object motions and
+spatial-temporal cross-modal reasoning over objects, we propose a novel
+temporal collection-distribution mechanism for interacting between the global
+referent token and object queries. Specifically, the temporal collection
+mechanism collects global information for the referent token from object
+queries to the temporal motions to the language expression. In turn, the
+temporal distribution first distributes the referent token to the referent
+sequence across all frames and then performs efficient cross-frame reasoning
+between the referent sequence and object queries in every frame. Experimental
+results show that our method outperforms state-of-the-art methods on all
+benchmarks consistently and significantly.","Tang, Jiajin and Zheng, Ge and Yang, Sibei",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,luo2024soc,\cite{luo2024soc},"SOC: Semantic-Assisted Object Cluster for Referring Video Object
+  Segmentation",http://arxiv.org/abs/2305.17011v1,"This paper studies referring video object segmentation (RVOS) by boosting
+video-level visual-linguistic alignment. Recent approaches model the RVOS task
+as a sequence prediction problem and perform multi-modal interaction as well as
+segmentation for each frame separately. However, the lack of a global view of
+video content leads to difficulties in effectively utilizing inter-frame
+relationships and understanding textual descriptions of object temporal
+variations. To address this issue, we propose Semantic-assisted Object Cluster
+(SOC), which aggregates video content and textual guidance for unified temporal
+modeling and cross-modal alignment. By associating a group of frame-level
+object embeddings with language tokens, SOC facilitates joint space learning
+across modalities and time steps. Moreover, we present multi-modal contrastive
+supervision to help construct well-aligned joint space at the video level. We
+conduct extensive experiments on popular RVOS benchmarks, and our method
+outperforms state-of-the-art competitors on all benchmarks by a remarkable
+margin. Besides, the emphasis on temporal coherence enhances the segmentation
+stability and adaptability of our method in processing text expressions with
+temporal variations. Code will be available.","Luo, Zhuoyan and Xiao, Yicheng and Liu, Yong and Li, Shuyan and Wang, Yitong and Tang, Yansong and Li, Xiu and Yang, Yujiu",2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,wu2023segment,\cite{wu2023segment},UniRef++: Segment Every Reference Object in Spatial and Temporal Spaces,http://arxiv.org/abs/2312.15715v1,"The reference-based object segmentation tasks, namely referring image
+segmentation (RIS), few-shot image segmentation (FSS), referring video object
+segmentation (RVOS), and video object segmentation (VOS), aim to segment a
+specific object by utilizing either language or annotated masks as references.
+Despite significant progress in each respective field, current methods are
+task-specifically designed and developed in different directions, which hinders
+the activation of multi-task capabilities for these tasks. In this work, we end
+the current fragmented situation and propose UniRef++ to unify the four
+reference-based object segmentation tasks with a single architecture. At the
+heart of our approach is the proposed UniFusion module which performs
+multiway-fusion for handling different tasks with respect to their specified
+references. And a unified Transformer architecture is then adopted for
+achieving instance-level segmentation. With the unified designs, UniRef++ can
+be jointly trained on a broad range of benchmarks and can flexibly complete
+multiple tasks at run-time by specifying the corresponding references. We
+evaluate our unified models on various benchmarks. Extensive experimental
+results indicate that our proposed UniRef++ achieves state-of-the-art
+performance on RIS and RVOS, and performs competitively on FSS and VOS with a
+parameter-shared network. Moreover, we showcase that the proposed UniFusion
+module could be easily incorporated into the current advanced foundation model
+SAM and obtain satisfactory results with parameter-efficient finetuning. Codes
+and models are available at \url{https://github.com/FoundationVision/UniRef}.","Wu, Jiannan and Jiang, Yi and Yan, Bin and Lu, Huchuan and Yuan, Zehuan and Luo, Ping",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,zhu2023tracking,\cite{zhu2023tracking},Tracking with Human-Intent Reasoning,http://arxiv.org/abs/2312.17448v1,"Advances in perception modeling have significantly improved the performance
+of object tracking. However, the current methods for specifying the target
+object in the initial frame are either by 1) using a box or mask template, or
+by 2) providing an explicit language description. These manners are cumbersome
+and do not allow the tracker to have self-reasoning ability. Therefore, this
+work proposes a new tracking task -- Instruction Tracking, which involves
+providing implicit tracking instructions that require the trackers to perform
+tracking automatically in video frames. To achieve this, we investigate the
+integration of knowledge and reasoning capabilities from a Large
+Vision-Language Model (LVLM) for object tracking. Specifically, we propose a
+tracker called TrackGPT, which is capable of performing complex reasoning-based
+tracking. TrackGPT first uses LVLM to understand tracking instructions and
+condense the cues of what target to track into referring embeddings. The
+perception component then generates the tracking results based on the
+embeddings. To evaluate the performance of TrackGPT, we construct an
+instruction tracking benchmark called InsTrack, which contains over one
+thousand instruction-video pairs for instruction tuning and evaluation.
+Experiments show that TrackGPT achieves competitive performance on referring
+video object segmentation benchmarks, such as getting a new state-of the-art
+performance of 66.5 $\mathcal{J}\&\mathcal{F}$ on Refer-DAVIS. It also
+demonstrates a superior performance of instruction tracking under new
+evaluation protocols. The code and models are available at
+\href{https://github.com/jiawen-zhu/TrackGPT}{https://github.com/jiawen-zhu/TrackGPT}.","Zhu, Jiawen and Cheng, Zhi-Qi and He, Jun-Yan and Li, Chenyang and Luo, Bin and Lu, Huchuan and Geng, Yifeng and Xie, Xuansong",2023,,,,arXiv preprint arXiv:2312.17448
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,lai2024lisa,\cite{lai2024lisa},LISA: Reasoning Segmentation via Large Language Model,http://arxiv.org/abs/2308.00692v3,"Although perception systems have made remarkable advancements in recent
+years, they still rely on explicit human instruction or pre-defined categories
+to identify the target objects before executing visual recognition tasks. Such
+systems cannot actively reason and comprehend implicit user intention. In this
+work, we propose a new segmentation task -- reasoning segmentation. The task is
+designed to output a segmentation mask given a complex and implicit query text.
+Furthermore, we establish a benchmark comprising over one thousand
+image-instruction-mask data samples, incorporating intricate reasoning and
+world knowledge for evaluation purposes. Finally, we present LISA: large
+Language Instructed Segmentation Assistant, which inherits the language
+generation capabilities of multimodal Large Language Models (LLMs) while also
+possessing the ability to produce segmentation masks. We expand the original
+vocabulary with a <SEG> token and propose the embedding-as-mask paradigm to
+unlock the segmentation capability. Remarkably, LISA can handle cases involving
+complex reasoning and world knowledge. Also, it demonstrates robust zero-shot
+capability when trained exclusively on reasoning-free datasets. In addition,
+fine-tuning the model with merely 239 reasoning segmentation data samples
+results in further performance enhancement. Both quantitative and qualitative
+experiments show our method effectively unlocks new reasoning segmentation
+capabilities for multimodal LLMs. Code, models, and data are available at
+https://github.com/dvlab-research/LISA.","Lai, Xin and Tian, Zhuotao and Chen, Yukang and Li, Yanwei and Yuan, Yuhui and Liu, Shu and Jia, Jiaya",2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,yan2024visa,\cite{yan2024visa},VISA: Reasoning Video Object Segmentation via Large Language Models,http://arxiv.org/abs/2407.11325v1,"Existing Video Object Segmentation (VOS) relies on explicit user
+instructions, such as categories, masks, or short phrases, restricting their
+ability to perform complex video segmentation requiring reasoning with world
+knowledge. In this paper, we introduce a new task, Reasoning Video Object
+Segmentation (ReasonVOS). This task aims to generate a sequence of segmentation
+masks in response to implicit text queries that require complex reasoning
+abilities based on world knowledge and video contexts, which is crucial for
+structured environment understanding and object-centric interactions, pivotal
+in the development of embodied AI. To tackle ReasonVOS, we introduce VISA
+(Video-based large language Instructed Segmentation Assistant), to leverage the
+world knowledge reasoning capabilities of multi-modal LLMs while possessing the
+ability to segment and track objects in videos with a mask decoder. Moreover,
+we establish a comprehensive benchmark consisting of 35,074 instruction-mask
+sequence pairs from 1,042 diverse videos, which incorporates complex world
+knowledge reasoning into segmentation tasks for instruction-tuning and
+evaluation purposes of ReasonVOS models. Experiments conducted on 8 datasets
+demonstrate the effectiveness of VISA in tackling complex reasoning
+segmentation and vanilla referring segmentation in both video and image
+domains. The code and dataset are available at
+https://github.com/cilinyan/VISA.","Yan, Cilin and Wang, Haochen and Yan, Shilin and Jiang, Xiaolong and Hu, Yao and Kang, Guoliang and Xie, Weidi and Gavves, Efstratios",2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,bai2024onetoken,\cite{bai2024onetoken},"One Token to Seg Them All: Language Instructed Reasoning Segmentation in
+  Videos",http://arxiv.org/abs/2409.19603v1,"We introduce VideoLISA, a video-based multimodal large language model
+designed to tackle the problem of language-instructed reasoning segmentation in
+videos. Leveraging the reasoning capabilities and world knowledge of large
+language models, and augmented by the Segment Anything Model, VideoLISA
+generates temporally consistent segmentation masks in videos based on language
+instructions. Existing image-based methods, such as LISA, struggle with video
+tasks due to the additional temporal dimension, which requires temporal dynamic
+understanding and consistent segmentation across frames. VideoLISA addresses
+these challenges by integrating a Sparse Dense Sampling strategy into the
+video-LLM, which balances temporal context and spatial detail within
+computational constraints. Additionally, we propose a One-Token-Seg-All
+approach using a specially designed <TRK> token, enabling the model to segment
+and track objects across multiple frames. Extensive evaluations on diverse
+benchmarks, including our newly introduced ReasonVOS benchmark, demonstrate
+VideoLISA's superior performance in video object segmentation tasks involving
+complex reasoning, temporal understanding, and object tracking. While optimized
+for videos, VideoLISA also shows promising generalization to image
+segmentation, revealing its potential as a unified foundation model for
+language-instructed object segmentation. Code and model will be available at:
+https://github.com/showlab/VideoLISA.","Bai, Zechen and He, Tong and Mei, Haiyang and Wang, Pichao and Gao, Ziteng and Chen, Joya and Liu, Lei and Zhang, Zheng and Shou, Mike Zheng",2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,kirillov2023segment,\cite{kirillov2023segment},Segment Anything,http://arxiv.org/abs/2304.02643v1,"We introduce the Segment Anything (SA) project: a new task, model, and
+dataset for image segmentation. Using our efficient model in a data collection
+loop, we built the largest segmentation dataset to date (by far), with over 1
+billion masks on 11M licensed and privacy respecting images. The model is
+designed and trained to be promptable, so it can transfer zero-shot to new
+image distributions and tasks. We evaluate its capabilities on numerous tasks
+and find that its zero-shot performance is impressive -- often competitive with
+or even superior to prior fully supervised results. We are releasing the
+Segment Anything Model (SAM) and corresponding dataset (SA-1B) of 1B masks and
+11M images at https://segment-anything.com to foster research into foundation
+models for computer vision.","Kirillov, Alexander and Mintun, Eric and Ravi, Nikhila and Mao, Hanzi and Rolland, Chloe and Gustafson, Laura and Xiao, Tete and Whitehead, Spencer and Berg, Alexander C and Lo, Wan-Yen and others",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,chen2024rsprompter,\cite{chen2024rsprompter},"RSPrompter: Learning to Prompt for Remote Sensing Instance Segmentation
+  based on Visual Foundation Model",http://arxiv.org/abs/2306.16269v2,"Leveraging the extensive training data from SA-1B, the Segment Anything Model
+(SAM) demonstrates remarkable generalization and zero-shot capabilities.
+However, as a category-agnostic instance segmentation method, SAM heavily
+relies on prior manual guidance, including points, boxes, and coarse-grained
+masks. Furthermore, its performance in remote sensing image segmentation tasks
+remains largely unexplored and unproven. In this paper, we aim to develop an
+automated instance segmentation approach for remote sensing images, based on
+the foundational SAM model and incorporating semantic category information.
+Drawing inspiration from prompt learning, we propose a method to learn the
+generation of appropriate prompts for SAM. This enables SAM to produce
+semantically discernible segmentation results for remote sensing images, a
+concept we have termed RSPrompter. We also propose several ongoing derivatives
+for instance segmentation tasks, drawing on recent advancements within the SAM
+community, and compare their performance with RSPrompter. Extensive
+experimental results, derived from the WHU building, NWPU VHR-10, and SSDD
+datasets, validate the effectiveness of our proposed method. The code for our
+method is publicly available at kychen.me/RSPrompter.","Chen, Keyan and Liu, Chenyang and Chen, Hao and Zhang, Haotian and Li, Wenyuan and Zou, Zhengxia and Shi, Zhenwei",2024,,,,TGRS
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,SAMRS,\cite{SAMRS},"SAMRS: Scaling-up Remote Sensing Segmentation Dataset with Segment
+  Anything Model",http://arxiv.org/abs/2305.02034v4,"The success of the Segment Anything Model (SAM) demonstrates the significance
+of data-centric machine learning. However, due to the difficulties and high
+costs associated with annotating Remote Sensing (RS) images, a large amount of
+valuable RS data remains unlabeled, particularly at the pixel level. In this
+study, we leverage SAM and existing RS object detection datasets to develop an
+efficient pipeline for generating a large-scale RS segmentation dataset, dubbed
+SAMRS. SAMRS totally possesses 105,090 images and 1,668,241 instances,
+surpassing existing high-resolution RS segmentation datasets in size by several
+orders of magnitude. It provides object category, location, and instance
+information that can be used for semantic segmentation, instance segmentation,
+and object detection, either individually or in combination. We also provide a
+comprehensive analysis of SAMRS from various aspects. Moreover, preliminary
+experiments highlight the importance of conducting segmentation pre-training
+with SAMRS to address task discrepancies and alleviate the limitations posed by
+limited training data during fine-tuning. The code and dataset will be
+available at https://github.com/ViTAE-Transformer/SAMRS.",Di Wang and Jing Zhang and Bo Du and Minqiang Xu and Lin Liu and Dacheng Tao and Liangpei Zhang,2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,MedSAM,\cite{MedSAM},Segment Anything in Medical Images,http://arxiv.org/abs/2304.12306v3,"Medical image segmentation is a critical component in clinical practice,
+facilitating accurate diagnosis, treatment planning, and disease monitoring.
+However, existing methods, often tailored to specific modalities or disease
+types, lack generalizability across the diverse spectrum of medical image
+segmentation tasks. Here we present MedSAM, a foundation model designed for
+bridging this gap by enabling universal medical image segmentation. The model
+is developed on a large-scale medical image dataset with 1,570,263 image-mask
+pairs, covering 10 imaging modalities and over 30 cancer types. We conduct a
+comprehensive evaluation on 86 internal validation tasks and 60 external
+validation tasks, demonstrating better accuracy and robustness than
+modality-wise specialist models. By delivering accurate and efficient
+segmentation across a wide spectrum of tasks, MedSAM holds significant
+potential to expedite the evolution of diagnostic tools and the personalization
+of treatment plans.","Ma, Jun and He, Yuting and Li, Feifei and Han, Lin and You, Chenyu and Wang, Bo",2024,,,,Nature Communications
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,chen2023sam,\cite{chen2023sam},"SAM Fails to Segment Anything? -- SAM-Adapter: Adapting SAM in
+  Underperformed Scenes: Camouflage, Shadow, Medical Image Segmentation, and
+  More",http://arxiv.org/abs/2304.09148v3,"The emergence of large models, also known as foundation models, has brought
+significant advancements to AI research. One such model is Segment Anything
+(SAM), which is designed for image segmentation tasks. However, as with other
+foundation models, our experimental findings suggest that SAM may fail or
+perform poorly in certain segmentation tasks, such as shadow detection and
+camouflaged object detection (concealed object detection). This study first
+paves the way for applying the large pre-trained image segmentation model SAM
+to these downstream tasks, even in situations where SAM performs poorly. Rather
+than fine-tuning the SAM network, we propose \textbf{SAM-Adapter}, which
+incorporates domain-specific information or visual prompts into the
+segmentation network by using simple yet effective adapters. By integrating
+task-specific knowledge with general knowledge learnt by the large model,
+SAM-Adapter can significantly elevate the performance of SAM in challenging
+tasks as shown in extensive experiments. We can even outperform task-specific
+network models and achieve state-of-the-art performance in the task we tested:
+camouflaged object detection, shadow detection. We also tested polyp
+segmentation (medical image segmentation) and achieves better results. We
+believe our work opens up opportunities for utilizing SAM in downstream tasks,
+with potential applications in various fields, including medical image
+processing, agriculture, remote sensing, and more.","Chen, Tianrun and Zhu, Lanyun and Ding, Chaotao and Cao, Runlong and Wang, Yan and Li, Zejian and Sun, Lingyun and Mao, Papa and Zang, Ying",2023,,,,arXiv preprint arXiv:2304.09148
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,wu2023medical,\cite{wu2023medical},Medical sam adapter: Adapting segment anything model for medical image segmentation,,,"Wu, Junde and Fu, Rao and Fang, Huihui and Liu, Yuanpei and Wang, Zhaowei and Xu, Yanwu and Jin, Yueming and Arbel, Tal",2023,,,,arXiv preprint arXiv:2304.12620
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,cheng2023sam,\cite{cheng2023sam},SAM-Med2D,http://arxiv.org/abs/2308.16184v1,"The Segment Anything Model (SAM) represents a state-of-the-art research
+advancement in natural image segmentation, achieving impressive results with
+input prompts such as points and bounding boxes. However, our evaluation and
+recent research indicate that directly applying the pretrained SAM to medical
+image segmentation does not yield satisfactory performance. This limitation
+primarily arises from significant domain gap between natural images and medical
+images. To bridge this gap, we introduce SAM-Med2D, the most comprehensive
+studies on applying SAM to medical 2D images. Specifically, we first collect
+and curate approximately 4.6M images and 19.7M masks from public and private
+datasets, constructing a large-scale medical image segmentation dataset
+encompassing various modalities and objects. Then, we comprehensively fine-tune
+SAM on this dataset and turn it into SAM-Med2D. Unlike previous methods that
+only adopt bounding box or point prompts as interactive segmentation approach,
+we adapt SAM to medical image segmentation through more comprehensive prompts
+involving bounding boxes, points, and masks. We additionally fine-tune the
+encoder and decoder of the original SAM to obtain a well-performed SAM-Med2D,
+leading to the most comprehensive fine-tuning strategies to date. Finally, we
+conducted a comprehensive evaluation and analysis to investigate the
+performance of SAM-Med2D in medical image segmentation across various
+modalities, anatomical structures, and organs. Concurrently, we validated the
+generalization capability of SAM-Med2D on 9 datasets from MICCAI 2023
+challenge. Overall, our approach demonstrated significantly superior
+performance and generalization capability compared to SAM.","Cheng, Junlong and Ye, Jin and Deng, Zhongying and Chen, Jianpin and Li, Tianbin and Wang, Haoyu and Su, Yanzhou and Huang, Ziyan and Chen, Jilong and Jiang, Lei and others",2023,,,,arXiv preprint arXiv:2308.16184
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,cheng2023segment,\cite{cheng2023segment},Segment and Track Anything,http://arxiv.org/abs/2305.06558v1,"This report presents a framework called Segment And Track Anything (SAMTrack)
+that allows users to precisely and effectively segment and track any object in
+a video. Additionally, SAM-Track employs multimodal interaction methods that
+enable users to select multiple objects in videos for tracking, corresponding
+to their specific requirements. These interaction methods comprise click,
+stroke, and text, each possessing unique benefits and capable of being employed
+in combination. As a result, SAM-Track can be used across an array of fields,
+ranging from drone technology, autonomous driving, medical imaging, augmented
+reality, to biological analysis. SAM-Track amalgamates Segment Anything Model
+(SAM), an interactive key-frame segmentation model, with our proposed AOT-based
+tracking model (DeAOT), which secured 1st place in four tracks of the VOT 2022
+challenge, to facilitate object tracking in video. In addition, SAM-Track
+incorporates Grounding-DINO, which enables the framework to support text-based
+interaction. We have demonstrated the remarkable capabilities of SAM-Track on
+DAVIS-2016 Val (92.0%), DAVIS-2017 Test (79.2%)and its practicability in
+diverse applications. The project page is available at:
+https://github.com/z-x-yang/Segment-and-Track-Anything.","Cheng, Yangming and Li, Liulei and Xu, Yuanyou and Li, Xiaodi and Yang, Zongxin and Wang, Wenguan and Yang, Yi",2023,,,,arXiv preprint arXiv:2305.06558
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,yang2023track,\cite{yang2023track},Track Anything: Segment Anything Meets Videos,http://arxiv.org/abs/2304.11968v2,"Recently, the Segment Anything Model (SAM) gains lots of attention rapidly
+due to its impressive segmentation performance on images. Regarding its strong
+ability on image segmentation and high interactivity with different prompts, we
+found that it performs poorly on consistent segmentation in videos. Therefore,
+in this report, we propose Track Anything Model (TAM), which achieves
+high-performance interactive tracking and segmentation in videos. To be
+detailed, given a video sequence, only with very little human participation,
+i.e., several clicks, people can track anything they are interested in, and get
+satisfactory results in one-pass inference. Without additional training, such
+an interactive design performs impressively on video object tracking and
+segmentation. All resources are available on
+{https://github.com/gaomingqi/Track-Anything}. We hope this work can facilitate
+related research.","Yang, Jinyu and Gao, Mingqi and Li, Zhe and Gao, Shang and Wang, Fangjing and Zheng, Feng",2023,,,,arXiv preprint arXiv:2304.11968
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,sam-pt,\cite{sam-pt},Segment Anything Meets Point Tracking,http://arxiv.org/abs/2307.01197v2,"The Segment Anything Model (SAM) has established itself as a powerful
+zero-shot image segmentation model, enabled by efficient point-centric
+annotation and prompt-based models. While click and brush interactions are both
+well explored in interactive image segmentation, the existing methods on videos
+focus on mask annotation and propagation. This paper presents SAM-PT, a novel
+method for point-centric interactive video segmentation, empowered by SAM and
+long-term point tracking. SAM-PT leverages robust and sparse point selection
+and propagation techniques for mask generation. Compared to traditional
+object-centric mask propagation strategies, we uniquely use point propagation
+to exploit local structure information agnostic to object semantics. We
+highlight the merits of point-based tracking through direct evaluation on the
+zero-shot open-world Unidentified Video Objects (UVO) benchmark. Our
+experiments on popular video object segmentation and multi-object segmentation
+tracking benchmarks, including DAVIS, YouTube-VOS, and BDD100K, suggest that a
+point-based segmentation tracker yields better zero-shot performance and
+efficient interactions. We release our code that integrates different point
+trackers and video segmentation benchmarks at https://github.com/SysCV/sam-pt.","Rajič, Frano and Ke, Lei and Tai, Yu-Wing and Tang, Chi-Keung and Danelljan, Martin and Yu, Fisher",2023,,,,arXiv:2307.01197
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,wang2023seggpt,\cite{wang2023seggpt},SegGPT: Towards Segmenting Everything in Context,,,"Wang, Xinlong and Zhang, Xiaosong and Cao, Yue and Wang, Wen and Shen, Chunhua and Huang, Tiejun",2023,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,zou2024segment,\cite{zou2024segment},Segment Everything Everywhere All at Once,http://arxiv.org/abs/2304.06718v4,"In this work, we present SEEM, a promptable and interactive model for
+segmenting everything everywhere all at once in an image, as shown in Fig.1. In
+SEEM, we propose a novel decoding mechanism that enables diverse prompting for
+all types of segmentation tasks, aiming at a universal segmentation interface
+that behaves like large language models (LLMs). More specifically, SEEM is
+designed with four desiderata: i) Versatility. We introduce a new visual prompt
+to unify different spatial queries including points, boxes, scribbles and
+masks, which can further generalize to a different referring image; ii)
+Compositionality. We learn a joint visual-semantic space between text and
+visual prompts, which facilitates the dynamic composition of two prompt types
+required for various segmentation tasks; iii) Interactivity. We further
+incorporate learnable memory prompts into the decoder to retain segmentation
+history through mask-guided cross-attention from decoder to image features; and
+iv) Semantic-awareness. We use a text encoder to encode text queries and mask
+labels into the same semantic space for open-vocabulary segmentation. We
+conduct a comprehensive empirical study to validate the effectiveness of SEEM
+across diverse segmentation tasks. Notably, our single SEEM model achieves
+competitive performance across interactive segmentation, generic segmentation,
+referring segmentation, and video object segmentation on 9 datasets with
+minimum 1/100 supervision. Furthermore, SEEM showcases a remarkable capacity
+for generalization to novel prompts or their combinations, rendering it a
+readily universal image segmentation interface.","Zou, Xueyan and Yang, Jianwei and Zhang, Hao and Li, Feng and Li, Linjie and Wang, Jianfeng and Wang, Lijuan and Gao, Jianfeng and Lee, Yong Jae",2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,yang2022decoupling,\cite{yang2022decoupling},"Decoupling Features in Hierarchical Propagation for Video Object
+  Segmentation",http://arxiv.org/abs/2210.09782v3,"This paper focuses on developing a more effective method of hierarchical
+propagation for semi-supervised Video Object Segmentation (VOS). Based on
+vision transformers, the recently-developed Associating Objects with
+Transformers (AOT) approach introduces hierarchical propagation into VOS and
+has shown promising results. The hierarchical propagation can gradually
+propagate information from past frames to the current frame and transfer the
+current frame feature from object-agnostic to object-specific. However, the
+increase of object-specific information will inevitably lead to the loss of
+object-agnostic visual information in deep propagation layers. To solve such a
+problem and further facilitate the learning of visual embeddings, this paper
+proposes a Decoupling Features in Hierarchical Propagation (DeAOT) approach.
+Firstly, DeAOT decouples the hierarchical propagation of object-agnostic and
+object-specific embeddings by handling them in two independent branches.
+Secondly, to compensate for the additional computation from dual-branch
+propagation, we propose an efficient module for constructing hierarchical
+propagation, i.e., Gated Propagation Module, which is carefully designed with
+single-head attention. Extensive experiments show that DeAOT significantly
+outperforms AOT in both accuracy and efficiency. On YouTube-VOS, DeAOT can
+achieve 86.0% at 22.4fps and 82.0% at 53.4fps. Without test-time augmentations,
+we achieve new state-of-the-art performance on four benchmarks, i.e.,
+YouTube-VOS (86.2%), DAVIS 2017 (86.2%), DAVIS 2016 (92.9%), and VOT 2020
+(0.622). Project page: https://github.com/z-x-yang/AOT.","Yang, Zongxin and Yang, Yi",2022,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,ravi2024sam,\cite{ravi2024sam},SAM 2: Segment Anything in Images and Videos,http://arxiv.org/abs/2408.00714v2,"We present Segment Anything Model 2 (SAM 2), a foundation model towards
+solving promptable visual segmentation in images and videos. We build a data
+engine, which improves model and data via user interaction, to collect the
+largest video segmentation dataset to date. Our model is a simple transformer
+architecture with streaming memory for real-time video processing. SAM 2
+trained on our data provides strong performance across a wide range of tasks.
+In video segmentation, we observe better accuracy, using 3x fewer interactions
+than prior approaches. In image segmentation, our model is more accurate and 6x
+faster than the Segment Anything Model (SAM). We believe that our data, model,
+and insights will serve as a significant milestone for video segmentation and
+related perception tasks. We are releasing our main model, dataset, as well as
+code for model training and our demo.","Ravi, Nikhila and Gabeur, Valentin and Hu, Yuan-Ting and Hu, Ronghang and Ryali, Chaitanya and Ma, Tengyu and Khedr, Haitham and R{\""a}dle, Roman and Rolland, Chloe and Gustafson, Laura and others",2024,,,,arXiv preprint arXiv:2408.00714
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,liu2024grounding,\cite{liu2024grounding},"Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set
+  Object Detection",http://arxiv.org/abs/2303.05499v5,"In this paper, we present an open-set object detector, called Grounding DINO,
+by marrying Transformer-based detector DINO with grounded pre-training, which
+can detect arbitrary objects with human inputs such as category names or
+referring expressions. The key solution of open-set object detection is
+introducing language to a closed-set detector for open-set concept
+generalization. To effectively fuse language and vision modalities, we
+conceptually divide a closed-set detector into three phases and propose a tight
+fusion solution, which includes a feature enhancer, a language-guided query
+selection, and a cross-modality decoder for cross-modality fusion. While
+previous works mainly evaluate open-set object detection on novel categories,
+we propose to also perform evaluations on referring expression comprehension
+for objects specified with attributes. Grounding DINO performs remarkably well
+on all three settings, including benchmarks on COCO, LVIS, ODinW, and
+RefCOCO/+/g. Grounding DINO achieves a $52.5$ AP on the COCO detection
+zero-shot transfer benchmark, i.e., without any training data from COCO. It
+sets a new record on the ODinW zero-shot benchmark with a mean $26.1$ AP. Code
+will be available at \url{https://github.com/IDEA-Research/GroundingDINO}.","Liu, Shilong and Zeng, Zhaoyang and Ren, Tianhe and Li, Feng and Zhang, Hao and Yang, Jie and Li, Chunyuan and Yang, Jianwei and Su, Hang and Zhu, Jun and others",2024,,,,
+Temporal Prompting Matters: Rethinking Referring Video Object Segmentation,http://arxiv.org/abs/2510.07319v1,li2023refsam,\cite{li2023refsam},"RefSAM: Efficiently Adapting Segmenting Anything Model for Referring
+  Video Object Segmentation",http://arxiv.org/abs/2307.00997v3,"The Segment Anything Model (SAM) has gained significant attention for its
+impressive performance in image segmentation. However, it lacks proficiency in
+referring video object segmentation (RVOS) due to the need for precise
+user-interactive prompts and a limited understanding of different modalities,
+such as language and vision. This paper presents the RefSAM model, which
+explores the potential of SAM for RVOS by incorporating multi-view information
+from diverse modalities and successive frames at different timestamps in an
+online manner. Our proposed approach adapts the original SAM model to enhance
+cross-modality learning by employing a lightweight Cross-Modal MLP that
+projects the text embedding of the referring expression into sparse and dense
+embeddings, serving as user-interactive prompts. Additionally, we have
+introduced the hierarchical dense attention module to fuse hierarchical visual
+semantic information with sparse embeddings to obtain fine-grained dense
+embeddings, and an implicit tracking module to generate a tracking token and
+provide historical information for the mask decoder. Furthermore, we employ a
+parameter-efficient tuning strategy to align and fuse the language and vision
+features effectively. Through comprehensive ablation studies, we demonstrate
+our model's practical and effective design choices. Extensive experiments
+conducted on Refer-Youtube-VOS, Ref-DAVIS17, and three referring image
+segmentation datasets validate the superiority and effectiveness of our RefSAM
+model over existing methods.","Li, Yonglin and Zhang, Jing and Teng, Xiao and Lan, Long",2023,,,,arXiv preprint arXiv:2307.00997

@@ -1,0 +1,133 @@
+\section{Experiments}
+\label{sec:exp}
+
+\subsection{Implementation Details}
+\label{sec:impl}
+
+We select Wan2.1~\citep{wan} as the base I2V model to apply IF-V2V. It can generate 480p videos with 14B parameters. We adopt the Euler Discrete Scheduler~\citep{sd3} to solve the ODE with $t_{max}=0.95$ and 25 sampling steps. Classifier-free guidance with scale $5.0$ is applied when predicting the target denoising vector. The rectification scale $\lambda$ in \sref{sec:vfr-sd} is set to $1.0$. The embedding scale $\beta$ and the blending factor $\alpha$ in \sref{sec:smpi} are selected as $0.025$ and $0.95$, respectively. The caching threshold $\delta$ in \sref{sec:dcache} is set to $0.5$. All other hyperparameters remain the same as Wan2.1~\citep{wan}. Experiments are conducted on NVIDIA RTX 4090 GPUs.
+
+\subsection{Qualitative Results}
+\label{sec:qualitative}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figs/vis.pdf}
+  % \vspace{-20pt}
+  \caption{Editing results of IF-V2V (\sref{sec:qualitative}). In each case, the first row presents the original video, and the other rows show the edited video with the first frame condition in the bottom-right corner. 
+  % The cases include attribute modification (a, c, e.1, and f.1), text insertion (b), object removal (d), and stylization (e.2 and f.2). Our method propagates the edited frame through the temporal dimension with satisfactory quality and consistency.
+  % \anyi{add more captions}
+  }
+  \label{fig:vis}
+\end{figure}
+
+We present various creative video editing results using IF-V2V in \cref{fig:teaser,fig:vis}, including attribute modification (teaser, a, c.1, and d.1), object addition (teaser), object removal (b), and stylization (c.2 and d.2). As observed, IF-V2V achieves satisfying visual quality and consistency on a wide variety of image-conditioned video editing tasks thanks to the graceful collaboration between state-of-the-art image editing approaches~\citep{gpt4oimg, stepedit} and I2V models~\citep{wan} empowered by our method. More results can be found in \sref{sec:vis_extra} and the supplementary video.
+
+\subsection{Comparisons to Prior Works}
+\label{sec:comparison}
+
+\subsubsection{Quantitative Comparisons}
+\label{sec:comparison_quantitative}
+
+To further demonstrate the superiority of IF-V2V over other methods, we quantitatively evaluate these approaches on 40 editing samples from the DAVIS~\citep{davis} dataset and in-the-wild videos with a maximum of 81 frames. We construct these samples by editing the first frame of the video with GPT-4o~\citep{gpt4oimg} and Step1X-Edit~\citep{stepedit}. We employ the following metrics to assess the editing quality: 1) \textit{Aesthetics Score (AS)}~\citep{laion5b}: this metric evaluates the per-frame visual quality of the generated video. 2) \textit{Temporal Consistency (TC)}: it assesses the smoothness of the edited video by calculating the average cosine similarity of CLIP~\citep{clip} visual embeddings between every 2 consecutive frames. 3) \textit{Edited Frame Consistency (EFC)}: it represents the consistency between the edited first frame and the generated video by the average cosine similarity of CLIP~\citep{clip} visual embeddings. 4) \textit{Human Preferences (HP)}: it stands for 13 volunteers' average rating on editing quality (5-point Likert Scale).
+
+\begin{table}
+  \centering
+  \caption{Quantitative results. \textbf{Bold} results are the best and \underline{underlined} results are the second best.}
+  \begin{subtable}{0.435\linewidth}
+      \caption{Comparisons with prior arts (\sref{sec:comparison_quantitative}). 
+      % Results in \textbf{bold} are the best.
+      \dag~Reference-based V2V without mask input.
+      % \anyi{Do we need to stress up this is training-based and our is training-free?}
+      }
+      \label{tab:quantitative}
+      \centering
+      \resizebox{1\linewidth}{!}{
+      \begin{tabular}{l|ccc|c}
+        \toprule
+        Method & AS & TC & EFC & HP \\
+        \midrule
+        Videoshop & 4.62 & 97.87 & 76.85 & 1.69 \\
+        AnyV2V & \underline{4.81} & 97.88 & \underline{81.47} & \underline{2.56} \\
+        VACE\textsuperscript{\dag} & 4.57 & \underline{97.94} & 75.65 & 1.64 \\
+        IF-V2V (Ours) & \textbf{4.88} & \textbf{98.71} & \textbf{92.79} & \textbf{4.50} \\
+        \bottomrule
+      \end{tabular}}
+  \end{subtable}
+  \hfill
+  \begin{subtable}{0.555\linewidth}
+      \caption{Component ablations of IF-V2V (\sref{sec:diagnostic_quantitative}).}
+      \label{tab:ablation}
+      \centering
+      \resizebox{1\linewidth}{!}{
+      \begin{tabular}{l|ccccc|c}
+        \toprule
+        Setting & AS & TC & EFC & OVC & AEC & Time \\
+        \midrule
+        I2V & 4.88 & 98.70 & 93.71 & 75.03 & 84.37 & 554.27 \\
+        I2V + Init & 4.89 & 98.30 & 88.34 & 78.74 & 83.54 & 553.52 \\
+        \midrule
+        \textit{w/o} VFR-SD & 4.87 & 98.29 & 91.23 & 75.27 & 83.25 & \textbf{553.58} \\
+        \textit{w/o} SMPI & 4.78 & 98.19 & 92.67 & 75.45 & 84.06 & 622.38 \\
+        \textit{w/o} D-Cache & \underline{4.87} & \underline{98.41} & \textbf{93.37} & \textbf{76.61} & \textbf{84.99} & 804.46 \\
+        IF-V2V & \textbf{4.88} & \textbf{98.71} & \underline{92.79} & \underline{76.44} & \underline{84.62} & \underline{616.60} \\
+        \bottomrule
+      \end{tabular}}
+    \end{subtable}
+\end{table}
+
+% TODO: add flowedit
+
+We compare IF-V2V with inversion-based methods, Videoshop~\citep{videoshop} and AnyV2V~\citep{kuanyv2v}, and a training-based method, VACE~\citep{vace}. For VACE, we compose the inputs as a reference-based V2V task without the mask input. As displayed in \cref{tab:quantitative}, IF-V2V consistently outperforms other approaches across all metrics, especially on EFC and HP. Compared to the inversion-based prior art AnyV2V~\citep{kuanyv2v}, our method achieves consistently better results without inversion and model-specific design. Training-based method VACE~\citep{vace} also falls behind our method when no editing mask is provided.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figs/vis_comp.pdf}
+  % \vspace{-20pt}
+  \caption{Qualitative comparisons with previous methods (\sref{sec:comparison_qualitative}). The edited first frame is in the bottom-right corner of the source video.}
+  \label{fig:comparison_qualitative}
+\end{figure}
+
+\subsubsection{Qualitative Comparisons}
+\label{sec:comparison_qualitative}
+We visualize the edited videos in \cref{fig:comparison_qualitative} to provide an intuitive comparison with other methods. The left side shows an object addition task, where Videoshop and VACE exhibit significant artifacts. Although AnyV2V adds the blue scarf and preserves the dog's motion, the hue gets less vivid, and the background becomes blurry. Our method achieves the best result in inserting the blue scarf while maintaining the other aspects of the video. On the right side, we expect the models to alter the input video's style according to the given first frame. All the methods fail in this task except IF-V2V, further validating its effectiveness.
+
+\subsection{Diagnostic Experiments}
+\label{sec:diagnostic}
+
+\subsubsection{Quantitative Ablations}
+\label{sec:diagnostic_quantitative}
+
+To provide a better understanding of IF-V2V's components, we conduct ablation studies on the same editing samples as \sref{sec:comparison_quantitative}. Besides the objective metrics in \sref{sec:comparison_quantitative}, we additionally adopt the following metrics: 1) \textit{Original Video Consistency (OVC)}: this metric measures the per-frame consistency between the edited video and the original video by the average cosine similarity of CLIP~\citep{clip} visual embeddings. 2) \textit{Average Editing Consistency (AEC)}: it is the mean value of EFC and OVC to assess the general editing consistency. 3) \textit{Time}: it is the average time taken per video for the editing process in seconds.
+
+We present the quantitative results in \cref{tab:ablation}. Two baseline methods are compared in the first two rows. I2V (\#1) represents the result for directly adopting an I2V model~\citep{wan}. Although it achieves high TC and EFC, a large portion of the generated videos are \textit{almost still}, which accounts for the high consistency scores. The OVC of \#1 is also low because there is no information from the source video during generation. I2V + Init (\#2) stands for using the I2V model~\citep{wan} with initial latents generated by the linear combination of Gaussian noise and source video latents. Despite enhanced OVC, EFC significantly drops because information from the source video becomes dominant, and the model fails to integrate information from the edited frame.
+
+\#3 demonstrates the results without VFR-SD. Despite the fastest inference time, EFC, OVC, and AEC are significantly behind those of IF-V2V (\#6), demonstrating the capability of VFR-SD to incorporate characteristics of the source video while temporally propagating the edited frame.
+
+\#4 shows the metrics without SMPI. Compared to IF-V2V (\#6), the drop of AS, TC, and OVC is relatively prominent. This validates SMPI's effect on better preserving the details in the original video to enhance the visual quality of the editing result.
+
+\#5 presents the results without the D-Cache mechanism. Despite slightly improved EFC, OVC, and AEC, the inference time increases significantly (\textbf{+30.5\%}) compared to IF-V2V (\#6), attesting to the acceleration effectiveness of D-Cache without notably compromising editing quality.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figs/vis_abl.pdf}
+  \caption{Case study for components (\sref{sec:diagnostic_case_study}).
+  % for IF-V2V's components 
+   % The source video shows a grey van driving up a hill along the road. 
+  We edit the first frame to be a white car with its \textbf{back towards the uphill direction}, expecting to generate a creative video in which the white car drives \textbf{backwards} up the hill. The edited first frame is in the bottom-right corner of the source video.}
+  \label{fig:case_study}
+\end{figure}
+
+\subsubsection{Case Study}
+\label{sec:diagnostic_case_study}
+
+We further demonstrate the functions of IF-V2V's components with a creative editing sample in \cref{fig:case_study}, which originally shows a grey van driving upwards a hill along the road. We edit the first frame to be a \textbf{white car} with its \textit{back towards the uphill direction}, with an expectation of generating a creative video in which the white car drives \textit{backwards} along the road up the hill.
+
+If we directly generate the video with the I2V model~\citep{wan} (\#2), it fails to follow the text prompt, resulting in the white car driving forward down the hill. Initializing the latents with the source video as \sref{sec:diagnostic_quantitative} (\#3) does let the white car drives up the hill, but the generated car has obvious artifacts with \textit{both sides being the back}. Meanwhile, this approach also suffers from inconsistent road shape and blurry output videos.
+
+Results in \#4 illustrates that without VFR-SD, the synthesized car also has two back ends. Meanwhile, there is a little corruption at the end of the road. The comparison between \#4 and \#6 displays that VFR-SD better preserves information from the source video, resulting in a more consistent and reasonable output. In \#5, the white car first moves backwards for a little distance, then drifts towards the front right. Without SMPI, the method fails to preserve the motion from the source video.
+
+Both \#6 and \#7 successfully propagate the edited first frame to the source video to generate a white car driving backwards up the hill. We can observe that IF-V2V with D-Cache mechanism offers an effective and user-friendly solution for creative editing with reasonable overhead.
+
+% leveraging the combination of any black-box image editing models and flow-based I2V models.
+
+

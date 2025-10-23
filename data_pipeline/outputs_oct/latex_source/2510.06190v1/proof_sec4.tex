@@ -1,0 +1,421 @@
+\section{Proof of \Cref{thm:main_apmdm}} \label{sec:main_apmdm_proof}
+
+\begin{theorem}[AP-MDM Simulation of PRAM, Formal] \label{thm:main_apmdm_formal}
+Let $\mathcal P = (I_0,\dots,I_\ell,\mathrm{addr})$ be a uniform PRAM program with a finite instruction set of size $\ell$, identical across processors and input size $n$. On an initial memory state specified by address–value pairs $(\mathbf x_{\mathrm{addr}}, \mathbf x_{\mathrm{val}})$ with $\mathbf x_{\mathrm{val}} \in \mathbb U^n$ and $\mathbf x_{\mathrm{addr}} \in \mathcal A^n$, suppose $\mathcal P$ runs in parallel time $T(n)$ using at most $P(n)$ processors and at most $S(n)$ shared-memory words of $\Theta(\log n)$ bits, and outputs $\mathrm{PRAM}_{\mathcal P}(\mathbf x_{\mathrm{addr}}, \mathbf x_{\mathrm{val}}) \in \mathbb U$ (see \Cref{appendix:pram}). Then there exists a bijection $\phi: \mathbb U \cup \mathcal A \rightarrow \Sigma$ and an AP-MDM which, on input
+\[
+\mathbf{x} = (z_0, z_1, \ldots, z_n) \in \Sigma^{n+1}, \quad z_0 = \phi(P(n)),\; z_i = \phi(\mathbf x_{\mathrm{val},i}) \text{ for } i=1,\ldots,n,
+\]
+padded to context length $\mathcal O(S(n))$ (addresses provided implicitly by positional encodings), produces $\phi\!\left(\mathrm{PRAM}_{\mathcal P}(\mathbf x_{\mathrm{addr}}, \mathbf x_{\mathrm{val}})\right)$ in $\mathcal O(T(n))$ decoding steps.
+\end{theorem}
+
+We first show that AP-MDM can simulate a weaker model called {Rewrite-MDM}, which is sufficient for the result. Then we construct an $\efasp$ program that simulates PRAM execution in a space-efficient manner.
+
+
+\textbf{Rewrite-MDM} follows the same framework as AP-MDM but with simplified control signals. For any token $y \in \Sigma$, define:
+\begin{align}
+\remask_{x_{t,i}, \ctrl_{t,i}}(y) = \begin{cases}
+y & \text{if } \ctrl_{t,i}[1] = 1 \\
+x_{t,i} & \text{if } \ctrl_{t,i}[1] = 0
+\end{cases}
+\end{align}
+where $\ctrl_{t,i}[1] \in \{0,1\}$ is a binary rewrite signal. In other words, when $\ctrl_{t,i}[1] = 1$, the model rewrites position $i$ with new content $y$; when $\ctrl_{t,i}[1] = 0$, it preserves the original content $x_{t,i}$ unchanged.
+
+We next show how each transition $\mathbf{z}_t \rightarrow \mathbf{z}_{t+1}$ in Rewrite-MDM can be simulated by exactly three steps of AP-MDM as defined in \Cref{sec:any_process}.
+
+\begin{lemma}[AP-MDM Simulation of Rewrite-MDM] \label{lemma:apmdm_simulates_rewrite}
+For any Rewrite-MDM transition $\mathbf{z}_t \rightarrow \mathbf{z}_{t+1}$ on sequence of length $n$, there exists a sequence of three AP-MDM steps that produces the identical result.
+\end{lemma}
+
+\begin{proof}
+Given a Rewrite-MDM transition where we want to selectively rewrite positions in sequence $\mathbf{z}_t = (z_{t,1}, z_{t,2}, \ldots, z_{t,n})$ according to rewrite signal $\mathbf{r}_t = (r_{t,1}, r_{t,2}, \ldots, r_{t,n})$, we simulate this using the following three AP-MDM steps: $\mathbf{z}_t \rightarrow \mathbf{u}^{(1)} \rightarrow \mathbf{u}^{(2)} \rightarrow \mathbf{u}^{(3)} = \mathbf{z}_{t+1}$.
+
+\textbf{Step 1 (Insert):} Starting from $\mathbf{z}_t$, apply $\inser$ operation at every position $i \in [n]$ to create an expanded sequence of length $2n$:
+\begin{align}
+\mathbf{u}^{(1)} = (g \circ f_\theta)(\mathbf{z}_t)
+\end{align}
+where $\ctrl^{(1)}_{i}[1] = 0$ (no remask), $\ctrl^{(1)}_{i}[2] = 1$ (insert), $\ctrl^{(1)}_{i}[3] = 0$ (no delete) for all $i \in [n]$.
+This yields $\mathbf{u}^{(1)} = (z_{t,1}, \mask, z_{t,2}, \mask, \ldots, z_{t,n}, \mask)$.
+
+\textbf{Step 2 (Unmask and Remask):} Apply AP-MDM's $(g \circ f_\theta)$ operation on $\mathbf{u}^{(1)}$ with control signals:
+\begin{align}
+\mathbf{u}^{(2)} = (g \circ f_\theta)(\mathbf{u}^{(1)})
+\end{align}
+where the control signals are set as follows:
+\begin{itemize}
+\item For even positions $2i$ (newly inserted masks): $\ctrl^{(2)}_{2i}[1] = 0$ (unmask), $\ctrl^{(2)}_{2i}[2] = 0$ (no insert), $\ctrl^{(2)}_{2i}[3] = 0$ (no delete)
+\item For odd positions $2i-1$ (original tokens): $\ctrl^{(2)}_{2i-1}[1] = r_{t,i}$ (remask), $\ctrl^{(2)}_{2i-1}[2] = 0$ (no insert), $\ctrl^{(2)}_{2i-1}[3] = 0$ (no delete)
+\end{itemize}
+which yield $\mathbf{u}^{(2)} = (\mask, z_{t+1,1}, \mask, z_{t+1,2}, \ldots, \mask, z_{t+1,n})$.
+
+\textbf{Step 3 (Delete):} Apply AP-MDM's $(g \circ f_\theta)$ operation again to $\delete$ all mask tokens at original positions:
+\begin{align}
+\mathbf{u}^{(3)} = (g \circ f_\theta)(\mathbf{u}^{(2)})
+\end{align}
+where for all positions $j$ in $\mathbf{u}^{(2)}$:
+\begin{itemize}
+\item For odd positions $2i-1$: $\ctrl^{(3)}_{2i-1}[1] = 0$ (no remask), $\ctrl^{(3)}_{2i-1}[2] = 0$ (no insert), $\ctrl^{(3)}_{2i-1}[3] = \mathds{1}[u^{(2)}_{2i-1} = \mask]$ (delete if mask)
+\item For even positions $2i$: $\ctrl^{(3)}_{2i}[1] = 0$ (no remask), $\ctrl^{(3)}_{2i}[2] = 0$ (no insert), $\ctrl^{(3)}_{2i}[3] = 0$ (no delete)
+\end{itemize}
+This removes all mask tokens at odd positions and recovers the original length $n$. By construction, $\mathbf{u}^{(3)} = \mathbf{z}_{t+1}$, completing the simulation.
+
+
+\textbf{State Tracking Mechanism}~~~ To enable the AP-MDM to autonomously determine which of the three simulation steps to execute, we augment sequences with special boundary tokens $\texttt{[BOS]}$ and $\texttt{[EOS]}$. The model identifies the current phase by examining the boundary token configuration:
+\begin{itemize}
+\item \textbf{Step 1 (Insert):} Normal state with $\texttt{[BOS]}$ at the beginning and $\texttt{[EOS]}$ at the end
+\item \textbf{Step 2 (Unmask and Remask):} $\texttt{[EOS]}$ is followed by a $\mask$ token, indicating expanded state
+\item \textbf{Step 3 (Delete):} $\texttt{[BOS]}$ is preceded by a $\mask$ token, signaling cleanup phase
+\end{itemize}
+During Step 2, the model leverages the first bit of positional encodings (e.g. $\bipe$ introduced in \Cref{appendix:fasp}) to distinguish between original positions (odd indices) and newly inserted positions (even indices), enabling it to correctly apply remasking operations to original positions based on the rewrite signal $\mathbf{r}_t$ while unmasking new positions to write content from $\mathbf{w}_t$.
+
+We omit the Transformer-based construction for the procedure described above for brevity, which can be done by a simple $\efasp$ program.
+\end{proof}
+
+
+We use the Rewrite-MDM variant established above to simulate PRAM algorithms with optimal space complexity. Here we use the $\efasp[\bipe; [\cdot]_+, \times]$ variant with binary positional encoding (\Cref{appendix:fasp}). The input that encodes the PRAM's initial memory state is a sequence $\mathbf{x} = (x_1, \ldots, x_{n+1}) \in \Sigma^{n+1}$ of discrete tokens from the vocabulary $\Sigma$:
+\begin{align}
+x_1 &\in \Sigma \quad \text{(processor count token)} \\
+x_{i+1} &\in \Sigma \quad \text{(data token)} \quad \text{for } i = 1, \ldots, n
+\end{align}
+
+Through token embedding $\te: \Sigma \to \mathbb{R}^w$, these discrete tokens are mapped to their semantic bit representations:
+\begin{align}
+\te(x_1) &\mapsto P(n) \in \{0,1\}^w \\
+\te(x_{i+1}) &\mapsto \text{val}_i \in \{0,1\}^w \quad \text{(data bits)}
+\end{align}
+for $i = 1, \ldots, n$. The actual input to the AP-MDM is the padded sequence $\mathbf{x}_0 = (x_{0,1}, x_{0,2}, \ldots, x_{0,S(n)}) \in \bar{\Sigma}^{S(n)}$ where $\bar{\Sigma} = \Sigma \cup \{\mask\}$:
+\begin{align}
+x_{0,j} &= x_j \quad \text{for } j = 1, \ldots, n+1 \\
+x_{0,j} &= \mask \quad \text{for } j = n+2, \ldots, S(n)
+\end{align}
+
+The crucial advantage of AP-MDM is that it can dynamically rewrite the content at any position using the $\remask$ operation, allowing the simulation to use space optimally as $\mathcal{O}(S(n))$ rather than the $\mathcal{O}(P(n) \times T(n))$ required by standard MDM.
+
+
+We next provide an overview of the construction:
+
+The key difference between how Rewrite-MDM and AO-MDM simulate PRAM is that Rewrite-MDM can directly rewrite the memory at any position and each computation does not necessarily has be kept in the context forever. This enables us to get rid of the address token. Now representation of a processor can be simplified to:
+\begin{align}
+\ldots \langle \texttt{PC}_1, \texttt{R}_{1,1}, \texttt{R}_{1,2}, \texttt{R}_{1,3} \rangle \; \langle \texttt{PC}_2, \texttt{R}_{2,1}, \texttt{R}_{2,2}, \texttt{R}_{2,3}  \rangle \; \ldots 
+\end{align}
+where we only use 3 registers (this is sufficient for the proof but can be extended to any $k \geq 2$).
+
+Additionally, we do not append processor representations to the end of input $\mathbf{x}$ as in AO-MDM, but instead will initialize them at the end of the entire sequence. The remaining part of the sequence is used as a shared memory where token embeddings are data and positional encodings are addresses, aligning more closely with PRAM.
+
+\paragraph{Intialization.} When the last position is a mask token, we initialize the processor state and computation log at the end of the sequence. Roles of each token are calculated similarly as the construction in AO-MDM (except it is static throughout the generation process).
+
+The execution of the program is similar to the construction in AO-MDM, except now the address is inherently associated with the positional encoding. The termination is also slightly different: the returned embedding has to contain an additional bit to indicate the rewrite operation. Also, the termination condition is no longer when all masked are unmasked but a flexibly defined one: in our case, when all processors are HALT.
+
+
+
+Using the operators defined above, we now construct an $\efasp$ program that simulates PRAM execution. The program implements the single-processor algorithm detailed in \Cref{appendix:pram}.
+
+
+
+{
+\captionsetup[lstlisting]{labelformat=empty} % Remove "Listing X:"
+\lstdefinestyle{customcode}{
+    basicstyle=\small\ttfamily,
+    mathescape=true,
+    commentstyle=\color{green!50!black},
+    language=python,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    frame=lines,
+    framesep=5pt,
+    tabsize=4,
+    columns=fullflexible,
+    breaklines=true,
+    keepspaces=false,
+    backgroundcolor=\color{white},
+    showstringspaces=false,
+    captionpos=b,
+    emphstyle=[1]\color{orange},
+    keywords={
+        if, elif, else, equal, max, min, if_then_else, 
+        not, and, or
+    },
+    emph={[1]get_token, get_move, get_symbol,seq_len},
+    emphstyle=[2]\color{red},
+    emph={[2]seq_sum,aha,rha,exact_match,seq_max,seq_min,rightmost_exact_match,seq_and,seq_or},
+    literate=%
+    {PE}{{{\color{orange}PE}}}{1}
+    {TE}{{{\color{orange}TE}}}{1}
+}
+\begin{lstlisting}[style=customcode]
+# ---------------------- Roles & Layout  ----------------------
+is_mask = (TE == embed([MASK]))
+pn      = rightmost_exact_match(1, is_first, TE)             # number of processors P(n)
+last_p  = rightmost_exact_match(1, is_last,  PE)             # last position index
+proc_b  = last_p - (pn << 2) + 1                             # processor region start
+in_proc = (PE >= proc_b) and (PE < proc_b + (pn << 2))       # in processor region
+in_mem  = (PE >= 2) and (PE < proc_b)                        # in memory region
+
+# ---------------------- Initialization  ----------------------
+last_is_mask = rightmost_exact_match(1, is_last, is_mask)
+if last_is_mask and in_proc:
+    inner = (PE - proc_b)[:2]                                # slot index 0..3
+    # initialize processor region to 0, and R=1 (require rewrite)
+    if   inner == 0: return (0, 1)                           # PC
+    elif inner == 1: return ((PE - proc_b) >> 2, 1)          # R1
+    elif inner == 2: return (0, 1)                           # R2
+    else:            return (0, 1)                           # R3
+# no rewrite for other positions in initialization step
+if last_is_mask and not in_proc:
+    return (TE, 0)
+
+# ========= Processor zone update (only if in_proc) =========
+if in_proc:
+    pid  = (PE - proc_b) >> 2
+    slot = (PE - proc_b)[:2]                                 # 0:PC 1:R1 2:R2 3:R3
+
+    # read previous round processor state (fixed slot)
+    pc_pos = proc_b + (pid << 2) + 0
+    r1_pos = proc_b + (pid << 2) + 1
+    r2_pos = proc_b + (pid << 2) + 2
+    r3_pos = proc_b + (pid << 2) + 3
+    PC = rightmost_exact_match(pc_pos, PE, TE)
+    R1 = rightmost_exact_match(r1_pos, PE, TE)
+    R2 = rightmost_exact_match(r2_pos, PE, TE)
+    R3 = rightmost_exact_match(r3_pos, PE, TE)
+
+    # processor already HALTed, do not update (R=0 for this slot)
+    if PC == HALT_CODE: return (0, 0)
+
+    # fetch and decode instruction
+    I_type, op_r, op_s, op_c, label_addr = get_instruction(PC)
+    Rs = (R1 if op_s == 1 else R2 if op_s == 2 else R3 if op_s == 3 else 0)
+    Rr = (R1 if op_r == 1 else R2 if op_r == 2 else R3 if op_r == 3 else 0)
+
+    # default
+    PCn, WR, WR_en = PC + 1, Rr, 0
+
+    # instruction semantics
+    if I_type == embed([LOAD]):  
+        # mem_get: address=PE, value=TE (only match in memory region)
+        hitp = rightmost_exact_match(Rs, (PE if in_mem else 0), (PE if in_mem else 0))
+        WR = rightmost_exact_match(hitp, PE, (TE if in_mem else 0))
+        WR_en = 1
+
+    elif I_type == embed([STORE]): WR_en = 0
+    elif I_type == embed([LOADI]): WR, WR_en = op_c, 1
+    elif I_type == embed([ADD]):   WR, WR_en = (Rr + Rs), 1
+    elif I_type == embed([SUB]):   WR, WR_en = (Rr - Rs), 1
+    elif I_type == embed([AND]):   WR, WR_en = (Rr & Rs), 1
+    elif I_type == embed([XOR]):   WR, WR_en = (Rr ^ Rs), 1
+    elif I_type == embed([SHL]):   WR, WR_en = (Rr << Rs)), 1
+    elif I_type == embed([SHR]):   WR, WR_en = (Rr >> Rs)), 1
+    elif I_type == embed([BRZ]) and (Rr == 0): PCn = label_addr
+    elif I_type == embed([JMP]):   PCn = label_addr
+    elif I_type == embed([HALT]):  PCn = HALT_CODE
+
+    # unified writeback
+    R1n = (WR if (WR_en and op_r == 1) else R1)
+    R2n = (WR if (WR_en and op_r == 2) else R2)
+    R3n = (WR if (WR_en and op_r == 3) else R3)
+
+    # return next state for this slot and require rewrite
+    if   slot == 0: return (PCn, 1)
+    elif slot == 1: return (R1n, 1)
+    elif slot == 2: return (R2n, 1)
+    else:           return (R3n, 1)
+
+# ========= Memory zone update (also for non MASK) =========
+if in_mem:
+    # for all PC slots, construct STORE stream (address, value) for this step
+    is_pc_glob = (((PE - proc_b)[:2]) == 0) and (PE >= proc_b) and (PE < proc_b + (pn << 2))
+    PCi  = (TE if is_pc_glob else 0)
+    It, rd, rs, cimm, L = get_instruction(PCi)
+
+    pid_i = ((PE - proc_b) >> 2)                        # only meaningful for PC slot
+    r1_i  = rightmost_exact_match(proc_b + (pid_i << 2) + 1, PE, TE)
+    r2_i  = rightmost_exact_match(proc_b + (pid_i << 2) + 2, PE, TE)
+    r3_i  = rightmost_exact_match(proc_b + (pid_i << 2) + 3, PE, TE)
+    Rs_i  = (r1_i if rs == 1 else r2_i if rs == 2 else r3_i if rs == 3 else 0)
+    Rr_i  = (r1_i if rd == 1 else r2_i if rd == 2 else r3_i if rd == 3 else 0)
+
+    STORE_KEYS = (Rs_i if (is_pc_glob and (It == embed([STORE]))) else 0)  # store address
+    STORE_VALS = (Rr_i if (is_pc_glob and (It == embed([STORE]))) else 0)  # store value
+
+    hit = rightmost_exact_match(PE, STORE_KEYS, 1, 0)
+    val = rightmost_exact_match(PE, STORE_KEYS, STORE_VALS, TE)
+
+    # all halt: do not rewrite; otherwise, if hit, rewrite this address (even if not MASK originally)
+    if hit == 1: return (val, 1)
+    else:        return (TE, 0)
+
+return (TE, 0)    
+\end{lstlisting}
+}
+
+
+\section{Proof of \Cref{thm:apmdm_simulation}} \label{appendix:proof_apmdm_simulation}
+
+\begin{definition}[Two-Sided Dyck-$k$]
+    Let $\Sigma_k=\{a_1^{\pm1},\dots,a_k^{\pm1}\}$. Define $u\Rightarrow v$ if $v$ is obtained from $u$ by deleting a factor $a_i a_i^{-1}$ or $a_i^{-1}a_i$ for some $i\in\{1,\dots,k\}$. Write $u\Rightarrow^* v$ iff there exist $m\ge 0$ and words $u=w_0,\dots,w_m=v$ with $w_j\Rightarrow w_{j+1}$ for all $j$. Then
+    \begin{equation}
+    \TDyck_k \;:=\; \{\, w\in\Sigma_k^* \;:\; w \Rightarrow^* \varepsilon \,\}.
+    \end{equation}
+    where $\varepsilon$ is the empty word.
+\end{definition}
+
+For the Two-Sided Dyck-$k$ language, we define the vocabulary as:
+\begin{equation}
+\Sigma = \{a_1^{+1}, a_1^{-1}, a_2^{+1}, a_2^{-1}, \ldots, a_k^{+1}, a_k^{-1}\} \cup \{\texttt{[BOS]}, \texttt{[EOS]}\}
+\end{equation}
+and the extended vocabulary $\bar{\Sigma} = \Sigma \cup \{\mask_1, \mask_2\}$, where $\{a_i^{\pm1}\}_{i=1}^k$ are the $2k$ bracket tokens, $\texttt{[BOS]}$ and $\texttt{[EOS]}$ are boundary tokens, and $\mask_1, \mask_2$ are two types of mask tokens used to handle an inherent limitation of vanilla masked diffusion when extended to the non-deterministic case (i.e. given two mask tokens, the model can not randomly generate $AA$ and $BB$ without also having probability to generate $AB$ and $BA$). Thus $|\Sigma| = 2k + 2$ and $|\bar{\Sigma}| = 2k + 4$.
+
+Following \citep{merrill2022saturated}:
+
+\begin{definition}[Hardmax]\label{def:hardmax}
+For any $x \in \mathbb{R}^n$, define the zero-temperature softmax (Hardmax) as
+\[
+\softmax_{0}(x) \;\triangleq\; \lim_{\tau \to 0^+} \softmax_{\tau}(x),
+\quad\text{where}\quad
+[\softmax_{0}(x)]_i =
+\begin{cases}
+\frac{1}{|\arg\max_j x_j|}, & i \in \arg\max_j x_j,\\
+0, & \text{otherwise.}
+\end{cases}
+\]
+\end{definition}
+    
+\begin{definition}[Stochastic AP-MDM] \label{def:stochastic_apmdm}
+A {stochastic AP-MDM} is defined as an AP-MDM with encoder-only Transformer backbone as in \Cref{appendix:encoder}, where instead of greedy decoding, we use sampling from Hardmax distributions. Formally, let $\Enc_\theta: \Sigma^* \to (\mathbb{R}^d)^*$ be the encoder Transformer (before the final projection layer) as defined in \Cref{def:encoder}. For each position $i$ in the input sequence, let $\mathbf{h}_i = [\Enc_\theta(\mathbf{x})]_i \in \mathbb{R}^d$ be the hidden state. Define logits $\ell(v\mid \mathbf{x},i)=\langle \mathbf{h}_i,\te(v)\rangle$ and the probability distribution over vocabulary $\Sigma$ as:
+\begin{equation}
+p_\theta(v \mid \mathbf{x}, i) = [\softmax_{0}(\ell(\cdot\mid \mathbf{x},i))]_v
+\end{equation}
+where $\softmax_0$ is the Hardmax function from \Cref{def:hardmax}. The stochastic AP-MDM samples tokens according to $v_i \sim \text{Categorical}(p_\theta(\cdot \mid \mathbf{x}, i))$. For the insert operation to support two types of mask tokens ($\mask_1$ and $\mask_2$), we use two separate classification heads $\proj_{I_1}$ and $\proj_{I_2}$ whose outputs are thresholded for inserting $\mask_1$ or $\mask_2$, with priority: $\mask_2$ takes precedence over $\mask_1$. We disable remask and delete operations for this construction.
+\end{definition}
+
+
+\begin{theorem}[Generating Two-Sided Dyck-$k$, Formal] \label{thm:apmdm_simulation_formal}
+For any $k\ge 2$, there exists a stochastic AP-MDM as in \Cref{def:stochastic_apmdm} with constant-depth Transformer backbone such that the support of the induced distribution of AP-MDM over strings $w$ is exactly equal to $\TDyck_k$, that is, 
+\begin{enumerate}
+\item (\emph{Coverage}) For every $w\in \TDyck_k$, $\Pr_\theta[w]>0$.
+\item (\emph{Support exactness}) For every $w\notin \TDyck_k$, $\Pr_\theta[w]=0$.
+\end{enumerate}
+Conversely, under the common hardness assumption that $\textsf{TC}^0\neq \textsf{NC}^1$, for any constant-depth ARM with polylogarithmic embedding dimension, there exists $N\in\mathbb{N}$ such that the support of the distribution generated ARM cannot be exactly equal to $\TDyck_k$.
+\end{theorem}
+
+\begin{proof}
+
+For the claim about ARM, we will prove by contradiction. First we note that every $w\in\Sigma_k^*$, there exists a $w'\in \TDyck_k$ such that $w$ is a prefix of $w'$. (The existence of such $w'$ is straightforward, for example, one can construct it by taking $w' = w w^{-1}$, where the inverse is performed by viewing $w$ as an element of the corresponding free group) Now we suppose ARM can indeed generate a distribution whose support is exactly equal to $\TDyck_k$. 
+% Then generating arbitrary-length matched bracket sequences requires the model to 
+This implies that the ARM must be able to determine at each generation step whether the current sequence can be terminated. Specifically, the model must assess whether the currently generated sequence satisfies the complete bracket matching condition. If the sequence is properly matched, the probability of outputting $\texttt{[EOS]}$ must be non-zero to enable termination. Therefore, the difficulty of generating matched brackets reduces to the problem of recognizing whether a given sequence forms valid matched brackets. For the two-sided Dyck-$k$ language, this recognition problem is DLOGTIME-uniform $\textsf{NC}^1$-hard~\citep{robinson1993parallel}, which exceeds the computational capacity of constant-depth Transformers which is in $\textsf{TC}^0$, under the hardness assumption that $\textsf{TC}^0\neq \textsf{NC}^1$. Thus we conclude ARM cannot generate a distribution over $\Sigma_k^*$ whose support is exactly equal to $\TDyck_k$.
+
+For the stochastic AP-MDM, we construct the following algorithm to generate all strings in the two-sided Dyck-$k$ language through the following algorithmic procedure, illustrated in \Cref{fig:dyck_example}:
+
+\textbf{Step 1 (Probabilistic Mask Insertion):} If the current sequence contains no mask tokens, then for any sequence position $j$ not containing an end-of-sequence token, the model inserts $\mask_1$ with constant probability $p \in (0,1)$ using the insert operation from \Cref{sec:any_process}. The insertion probability for $\mask_2$ is set to zero at this stage.
+
+\textbf{Step 2 (Uniform Token Selection):} At positions containing $\mask_1$, the model performs two operations: (i) it samples uniformly from the bracket token set $\{a_i^{\pm 1}\}_{i=1}^k$ to determine the content, and (ii) it inserts $\mask_2$ with probability 1. Due to the priority-based insertion mechanism defined in \Cref{def:stochastic_apmdm}, $\mask_2$ overrides $\mask_1$, making the original insertion probability irrelevant for subsequent processing.
+
+\textbf{Step 3 (Context-Aware Bracket Matching):} When processing $\mask_2$ tokens, the model identifies the nearest bracket token $a_j^{\pm 1}$ to the left of the current position and generates the corresponding matching bracket according to the two-sided Dyck-$k$ reduction rules.
+
+\textbf{Termination Condition:} The termination mechanism operates as follows: In Step 2, when the sequence contains $\mask_1$ tokens but no $\mask_2$ tokens, the model inserts $\mask_2$ at the final position with a fixed probability. Subsequently, in Step 3, when processing this final $\mask_2$ token, the model generates $\texttt{[EOS]}$ (given the binary positional encoding we considered in \Cref{appendix:pram}, the model is able to identify if the token should be decoded as $\texttt{[EOS]}$ or a matching bracket), signaling the end of the generation process.
+
+
+ The above algorithm admits an $\efasp$ program implementation (see \Cref{appendix:fasp}) with the following treatment of stochastic operations:
+
+For uniform sampling over the $2k$ bracket tokens, we exploit the fixed vocabulary size by assigning each bracket token $a_i^{\pm 1}$ to distinct dimensions in the $d$-dimensional embedding space. Specifically, when the $\efasp$ program needs to output a uniform distribution over a subset $S \subseteq \{a_i^{\pm 1}\}_{i=1}^k$, it returns a hidden state $\mathbf{h} \in \mathbb{R}^d$ where $\langle \mathbf{h}, \te(v) \rangle = c$ for all $v \in S$ (for some constant $c$) and $\langle \mathbf{h}, \te(v') \rangle < c$ for $v' \notin S$. The hardmax from \Cref{def:stochastic_apmdm}, ensures that the probability mass concentrates uniformly over $S$, achieving the desired uniform sampling behavior.
+
+It is easy to see that this generation procedure can produce any string in the two-sided Dyck-$k$ language, and since any token that would violate Dyck constraints always has strictly smaller logit and hence probability $0$ under Hardmax, the support of the distribution is exactly $\TDyck_k$.
+\end{proof}
+
+We note the introduction of two mask tokens is for the model to distinguish between different steps, but this is not necessary if we allow some random seeds in input which mitigates the limitation of MDM when extending to the non-deterministic case.
+
+
+
+
+\section{Proof of \Cref{thm:apmdm_simulation2}} \label{appendix:proof_apmdm_simulation2}
+
+
+\paragraph{Edit Triplet Encoding.}
+We encode each elementary edit as a triplet of tokens $\langle \texttt{op},\, \texttt{pos},\, \texttt{val} \rangle \in \Sigma_{\mathrm{op}} \times \Sigma_{\mathrm{pos}} \times \Sigma$, where
+\begin{equation}
+\Sigma_{\mathrm{op}}=\{\texttt{UNMASK},\texttt{INSERT},\texttt{DELETE},\texttt{REMASK}\}
+\end{equation}
+The position token set $\Sigma_{\mathrm{pos}}$ reuses the earlier address/position encoding in \Cref{def:addr_tok}: a position $i \in [S(n)]$ is encoded as $\texttt{pos}=\texttt{encode}(i)$ with inverse decoding $\texttt{dec\_pos}(\texttt{pos})=i$. 
+
+The semantics of the triplet follows the instantiation of AP-MDM considered in \Cref{sec:any_process}.
+
+\begin{definition}[Editing Sequence]\label{def:editing_sequence}
+Given an input sequence $\mathbf{x}\in \bar{\Sigma}^*$, an editing sequence is a finite sequence of triplets
+\begin{align}
+    T(\mathbf{x}) = \big(\langle \mathrm{op}_j,\, \mathrm{pos}_j,\, \mathrm{val}_j \rangle\big)_{j=1}^{m(\mathbf{x})},\quad\mathrm{op}_j\in\Sigma_{\mathrm{op}},\; \mathrm{pos}_j\in\Sigma_{\mathrm{pos}},\; \mathrm{val}_j\in\Sigma.
+\end{align}
+
+Its application to $\mathbf{x}$ is defined recursively by $\mathbf{x}^{(0)}=\mathbf{x}$ and
+\begin{equation}
+\mathbf{x}^{(j)} = \mathrm{Apply}\big(\langle \mathrm{op}_j,\mathrm{pos}_j,\mathrm{val}_j\rangle,\, \mathbf{x}^{(j-1)}\big),\quad j=1,\ldots,m(\mathbf{x}).
+\end{equation}
+We write
+\begin{equation}
+\mathrm{Apply\_Triplets}\big(T(\mathbf{x}),\, \mathbf{x}\big) := \mathbf{x}^{(m(\mathbf{x}))}.
+\end{equation}
+An editing sequence is valid iff every intermediate application is well-defined under the triplet semantics (e.g., $\texttt{UNMASK}$ applies only to masks).
+\end{definition}
+
+\begin{theorem}[Hardness of Simulating AP-MDM, Formal] \label{thm:apmdm_simulation2_formal}
+There exists an AP-MDM $F$ with a constant-depth encoder-only Transformer backbone such that no ARM or Masked-ARM $G$ (\Cref{def:masked_arm}) with a constant-depth decoder-only Transformer backbone can, on every input $\mathbf{x}$, produce an editing sequence $T_G(\mathbf{x})$ (\Cref{def:editing_sequence}) that realizes $F$'s generation process; i.e., under the assumption that constant-depth Transformers do not include $\textsf{TC}^0$,
+\[
+\forall G\;\exists\, \mathbf{x}\in\bar{\Sigma}^*:\; \mathrm{Apply\_Triplets}\big(T_G(\mathbf{x}),\, \mathbf{x}\big) 
+\;\neq\; 
+\mathrm{Apply\_Triplets}\big(T_F(\mathbf{x}),\, \mathbf{x}\big),
+\]
+or $T_G(\mathbf{x})$ is invalid.
+\end{theorem}
+
+The ARM in the above result can be replaced by the Masked-ARM with encoder architecture used in \Cref{thm:any_order} without affecting the result.
+
+\begin{proof}
+Fix $L\in\mathbb N$. Let $\mathbf u\in\Sigma^L$ be the base string, let $T$ be a valid editing sequence (\Cref{def:editing_sequence}), and let $q\in\Sigma_{\mathrm{pos}}$ be a query position token with index $i=\mathrm{dec\_pos}(q)$. Encode the input as
+\begin{equation}
+\mathbf x 
+= (\mathbf u,\; \texttt{[SEP]},\; \mathrm{flatten}(T),\; \texttt{[SEP]},\; q,\; \texttt{[SEP]}) 
+\in \Sigma^{L+3+3m(\mathbf u)}.
+\end{equation}
+Here
+\begin{equation}
+\mathrm{flatten}(T)=(\mathrm{op}_1,\mathrm{pos}_1,\mathrm{val}_1,\ldots,\mathrm{op}_{m},\mathrm{pos}_{m},\mathrm{val}_{m}).
+\end{equation}
+The task is to output the queried symbol after applying the editing history:
+\begin{equation}
+ y\;=\; \big[\mathrm{Apply\_Triplets}\big(T(\mathbf u),\, \mathbf u\big)\big]_i\;\in\;\Sigma.
+\end{equation}
+That is, the instance provides (i) a base string $\mathbf u$, (ii) an editing history $T$ as a sequence of triplets, and (iii) a query position token $q$. The model must simulate $T$ on $\mathbf u$ and return the symbol at the queried position $i$ in the resulting string. For AP-MDM, the simulation is intuitive and can be proven by simple $\efasp$ program which we skip in this proof.
+
+For ARM, due to the construction of the problem, the simulation process 
+is exactly copying the editing sequence part in the input, therefore 
+solving the problem is equivalent to directly answer the query, which we 
+show the equivalence to a $\mathsf{TC}^0$-hard task:
+
+\begin{definition}[{\sc Preserves}~\citep{allender2006grid}]
+    Let $A$ be an ordered list (1-indexed). The update alphabet is
+    \begin{equation}
+    \mathcal{U}=\{\texttt{insert}(i),\,\texttt{delete}(i)\mid i\in\mathbb{N}\}.
+    \end{equation}
+    For an initial list $A_0$ and an update sequence $s\in\mathcal{U}^*$, let $A_t$ be the list after applying the first $t$ updates of $s$.
+    For indices $i,j\in\mathbb{N}$, define
+    \begin{equation}
+    \mathrm{PRESERVES}(A_0,s,i,j)\iff
+    \text{the item at position }i\text{ in }A_0\text{ still exists after }s\text{ and is at position }j\text{ in }A_{|s|}.
+    \end{equation}
+    The decision problem {\sc Preserves} asks, given $(A_0,s,i,j)$, whether $\mathrm{PRESERVES}(A_0,s,i,j)$ holds.
+\end{definition}
+
+\begin{conjecture} \label{conj:preserves_hardness}
+The {\sc Preserves} problem is $\mathsf{NC}^1$-hard under DLOGTIME-uniform reductions.
+\end{conjecture}
+    
+
+We reduce \textsc{Preserves} to our Editing-Query task in one step. Given $(A_0,s,i,j)$ with $|A_0|=L$, let $\mathbf u\in\Sigma^L$ list the items of $A_0$ (unique token id per item); expand each $\texttt{insert}(p,v)$ as the triplet block $\big(\langle \texttt{INSERT},\mathrm{encode}(p),\mask\rangle,\langle \texttt{UNMASK},\mathrm{encode}(p'),v\rangle\big)$ and each $\texttt{delete}(p)$ as $\big(\langle \texttt{REMASK},\mathrm{encode}(p),\bullet\rangle,\langle \texttt{DELETE},\mathrm{encode}(p),\bullet\rangle\big)$, where $p'$ is the position of the newly inserted mask under our convention and $\bullet$ is ignored; let $T$ be the concatenation over $s$ and set $q=\mathrm{encode}(j)$. Then with
+\begin{equation}
+ y\;=\; \big[\mathrm{Apply\_Triplets}\big(T,\mathbf u\big)\big]_j,
+\end{equation}
+we have
+\begin{equation}
+\mathrm{PRESERVES}(A_0,s,i,j)\;\Longleftrightarrow\; y=\mathrm{id}(i).
+\end{equation}
+Thus any model that solves Editing-Query on all inputs also decides \textsc{Preserves}. By \Cref{conj:preserves_hardness}, \textsc{Preserves} is $\mathsf{NC}^1$-hard, which places it beyond the computational capacity of constant-depth Transformers that are contained in $\mathsf{TC}^0$. Under this conjecture, no constant-depth ARM or Masked-ARM can solve our Editing-Query task on all inputs. This completes the proof.
+
+\end{proof}

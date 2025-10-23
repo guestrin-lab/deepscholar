@@ -1,0 +1,85 @@
+\vspace{-2mm}
+\section{Background}
+\vspace{-2mm}
+
+\textbf{Vulnerability Localization.} Classical localization combines static and dynamic analyses with retrieval and graph methods. Static slicing selects statements that may affect a slicing criterion to form behavior-preserving slices for debugging and comprehension~\cite{10.5555/800078.802557}. Dynamic slicing refines this by deriving input-specific slices from execution-time dependence graphs, yielding higher precision near crashes or variables~\cite{agrawal1990dynamic}. Information-retrieval approaches treat bug reports as queries, ranking files/methods by textual and historical signals to surface likely locations~\cite{zhou2012should,6693093,10.1145/2597008.2597148}. Code Property Graphs unify classic program-analysis concepts in a joint representation, enabling scalable pattern searches that uncovered 18 previously unknown vulnerabilities~\cite{yamaguchi2014modeling}.
+
+\textbf{AI for Cybersecurity.} Recent agentic systems couple LLM planning with tool execution and feedback in runnable environments. Planner–Executor frameworks (e.g., D-CIPHER) generate detailed plans and dispatch executors, closing the loop with dynamic feedback and reporting state-of-the-art CTF results~\cite{udeshi2025d,shao2024nyu,yang2023intercode,zhang2024cybench}. CRAKEN adds knowledge-based execution via a security knowledge base and retrieval pipeline, improving performance on NYU CTF Bench over prior baselines~\cite{shao2025craken}. EnIGMA shows that interactive tool use helps discover and exploit vulnerabilities, outperforming purely text-only setups across multiple CTFs~\cite{abramovichenigma}. Pen-testing systems (PentestGPT, PentestAgent) coordinate specialized modules or multi-agent collaboration to automate vulnerability analysis and exploitation in realistic scenarios~\cite{deng2024pentestgpt,shen2025pentestagent}.
+
+\textbf{LLM Agentic Systems.} LLMs increasingly automate scientific workflows across chemistry, quantum, and biology~\cite{bran2023chemcrow,basit2025pennylang,jin2024prollm}. ChemCrow augments LLMs with 18 expert-designed tools to execute multi-step syntheses and discovery tasks end-to-end~\cite{bran2023chemcrow}; ChemGraph integrates graph neural networks and simulators to drive computational chemistry pipelines~\cite{pham2025chemgraph}; MDCrow orchestrates chain-of-thought with $>40$ tools for file handling, simulation setup, and analysis~\cite{campbell2025mdcrow}. In life sciences, ProtAgents uses multi-agent collaboration for protein discovery~\cite{ghafarollahi2024protagents}, while VibeGen introduces a dual-model design guided by normal-mode vibrations and assessed with a protein predictor~\cite{ni2025agentic}. Collectively, these systems reduce manual configuration and broaden access via natural-language interfaces.
+
+% \textbf{Vulnerability Localization.} Traditional vulnerability localization builds on several classical techniques. Static program slicing\cite{10.5555/800078.802557} is given a slicing standard, select all statements that may affect it to generate a behavior preserving slice useful for debugging and comprehension. Building on this idea, dynamic program slicing\cite{agrawal1990dynamic} derives input specific slices from actual executions via dynamic dependence graphs, offering higher precision around a crash or variable. Information retrieval based works treat bug report as a query and ranks files and methods based on textual and historical signals\cite{zhou2012should} \cite{6693093} \cite{10.1145/2597008.2597148}. Finally, Code Property Graphs\cite{yamaguchi2014modeling} that merges concepts of classic program analysis into a joint data structure, demonstrates its
+% efficacy by identifying 18 previously unknown vulnerabilities.
+
+% \textbf{AI for Cybersecurity.} Recent work builds cybersecurity aimed agentic systems which uses LLM for planning, tool calls and iterating with feedback in executable environments. Planner-Executor frameworks such as D-CIPHER \cite{udeshi2025d}, uses a planner agent to generate a detailed plan, with multiple executor to run command and other tools. It implement dynamic feedback loops and report state-of-the-art results on CTF benchmarks \cite{shao2024nyu, yang2023intercode, zhang2024cybench}. Based on this, knowledge-based execution paper CRAKEN \cite{shao2025craken} add a LLM agent with a security knowledge base, and retrieval pipeline to retrieve task related information, improving performance on NYU CTF Bench over prior baselines. Beyond planning and knowledge, tool integration is also an important factor. EnIGMA \cite{abramovichenigma} demonstrates that allowing agents to run interactive tools can assist in discovering and exploiting vulnerabilities, achieving stronger results across multiple CTF benchmarks and highlighting the value of executable environments rather than relying on static text alone. Meanwhile, penetration testing frameworks such as PentestGPT\cite{deng2024pentestgpt} coordinates with three self-interacting modules, each focusing on different sub-tasks of penetration testing, to solve the challenges. And newer systems PentestAgent\cite{shen2025pentestagent} uses multi-agent collaboration to automate vulnerability analysis and exploitation for real world pentesting scenarios. 
+
+
+% \textbf{LLM Agentic Systems.} LLM has been widely extended to a variety of fields such as chemistry, quantum and biology\cite{bran2023chemcrow, basit2025pennylang, jin2024prollm}. augments LLMs with 18 expert-designed tools, enabling autonomous multiple step syntheses and task completion across discovery workflows. ChemGraph\cite{pham2025chemgraph} uses graph neural network and simulation tools to automate computational chemistry workflows. And MDCrow\cite{campbell2025mdcrow} focues on automating workflows with chain of thought over 40 expert-designed tools for handling and processing files, setting up simulations, and analyzing the simulation outputs. These agentic systems not only reduce the need for manual configuration but also improve accessibility for non-experts through natural language interfaces.
+
+% Agentic systems also appear in life sciences. One work is ProtAgents\cite{ghafarollahi2024protagents}, a multi-agent system designed for protein discovery, where different agents handle distinct capabilities in a collaborative loop. Similarly, VibeGen\cite{ni2025agentic} introduces a dual-model architecture that designs proteins based on normal mode vibrations, with accuracy evaluates by a protein predictor. These frameworks leverage feedback loops to enhance the quality of results toward desired mechanical or structural properties.
+
+\begin{figure}[!t]
+    \centering
+    \vspace{-4mm}
+    \includegraphics[width=\linewidth]{diagrams/framework.pdf}
+    \vspace{-6mm}
+    \caption{\texttt{T2L-Agent} Framework overview.}
+    \label{fig:overview_flow}
+    \vspace{-5mm}
+\end{figure}
+
+\vspace{-2mm}
+\section{Related Work} 
+\vspace{-2mm}
+For vulnerability localization task, LLM also shows great potential. Early learning based vulnerability detection papers improve localization accuracy by training models to classify whether a unit is vulnerable. LLMAO\cite{yang2024large} fine-tunes LLMs on small, manually curated buggy programs, while BAP\cite{stein2025s} learns state-of-the-art vulnerability localization without any direct localization labels, outperforming traditional baseline over eight benchmarks. However, following analysis also found data issues in widely used datasets such as Big-Vul and Devign\cite{zhou2019devign}, making people doubt about performance numbers and highlighting the needs for a realistic evaluation settings\cite{croft2023data}.
+
+\begin{wrapfigure}{r}{0.25\textwidth}
+  \vspace{-11pt}
+  \begin{minipage}{\linewidth}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{@{}lcccc@{}}
+      \toprule
+      \textbf{Study} & \rotatebox{90}{\textbf{Line Lv.}} &
+      \rotatebox{90}{\textbf{Mult. Ag.}} &
+      \rotatebox{90}{\textbf{Runtime}} &
+      \rotatebox{90}{\textbf{Iterative}} \\
+      \midrule
+      LLMAO~\citeyear{yang2024large}            & \ftcheck   & \ftcross & \ftcross & \ftcross \\
+      BAP~\citeyear{stein2025s}                & \ftcheck   & \ftcross & \ftcross & \ftcross \\
+      GenLoc~\citeyear{asad2025leveraging}          & \ftcross       & \ftcross & \ftcheck & \ftcheck \\
+      AgentFL~\citeyear{qin2024agentfl}        & \ftcross   & \ftcheck & \ftcheck & \ftcheck \\
+      CoSIL~\citeyear{jiang2025cosil}            & \ftcross   & \ftcross & \ftcross & \ftcheck \\
+      AutoFL~\citeyear{kang2024quantitative}          & \ftcross     & \ftcheck & \ftcheck & \ftcheck \\
+      LineVul~\citeyear{9796256}        & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      LOVA~\citeyear{li2024attention}              & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      MatsVD~\citeyear{10.1145/3671016.3674807}          & \ftcross  & \ftcross & \ftcross & \ftcross \\
+      xLoc~\citeyear{10.1145/3660804}              & \ftcheck       & \ftcross & \ftcross & \ftcross \\
+      LLM4FL~\citeyear{rafi2024multi}          & \ftcross   & \ftcheck & \ftcheck & \ftcheck \\
+      MemFL~\citeyear{yeo2025improving}            & \ftcross & \ftcross & \ftcheck & \ftcheck \\
+      \textbf{T2L (ours)}     & \ftcheck  & \ftcheck & \ftcheck & \ftcheck \\
+      \bottomrule
+    \end{tabular}
+    \caption{Related Works}
+    \label{tab:related_work_comparison}
+  \end{minipage}
+  \vspace{-4mm}
+\end{wrapfigure}
+
+Many prior works frame vulnerability localization at the file or function level, but this coarse granularity often fails to provide actionable guidance for developers. GenLoc \cite{asad2025leveraging} identifies potentially vulnerable files from bug reports and iteratively analyzes them using code exploration tools. AgentFL \cite{qin2024agentfl} applies a multi-agent framework for function-level localization, modeling the task as a three-step pipeline with specialized agents and tools. CoSIL \cite{jiang2025cosil} narrows the function-level search space using module call graphs and iteratively traverses them for relevant context. Similarly, AutoFL \cite{kang2024quantitative} prompts LLMs to localize method-level vulnerabilities via function-call navigation, showing that multi-step reasoning helps overcome context length limits.
+
+To offer more precise guidance, recent studies have shifted toward line- or statement-level localization. LineVul \cite{9796256} uses a Transformer-based classifier for line-level prediction, while LOVA \cite{li2024attention} introduces a self-attention framework to score and highlight vulnerable lines. MatsVD \cite{10.1145/3671016.3674807} enhances statement-level localization using dependency-aware attention, and xLoc \cite{10.1145/3660804} learns multilingual, task-specific knowledge for bug detection and localization.
+
+Building on these efforts, LLM4FL \cite{rafi2024multi} proposes a multi-agent framework leveraging graph-based retrieval and navigation to reason about failure causes. MemFL \cite{yeo2025improving} introduces external memory to incorporate project-specific knowledge, improving localization in complex, repository-scale systems.
+
+Collectively, these works push localization from file to line level and increasingly adopt multi-agent strategies for subtask coordination. However, most still rely on limited runtime evidence, single-pass predictions, or benchmarks that lack realistic project settings. Our \texttt{T2L-Agent} addresses these limitations with a planner-executor framework that incorporates runtime signals, enables dynamic feedback loops, and achieves line-level localization in real-world repository environments.
+
+% Many papers typically frame the localization task at the file or function level, though this coarse-grained approach cannot offer enough guidance for developers. GenLoc\cite{asad2025leveraging} identifies potential vulnerability files given a bug report and uses code exploration tools to iteratively analyze the code base. AgentFL\cite{qin2024agentfl} incorporates with multi-agent system for automated function level vulnerability localization. It models the task as a three step process with different agents and tools to handle specific tasks. CoSIL\cite{jiang2025cosil} enhances function level vulnerability localization by reducing the search space through module call graphs, iteratively searches the function call graph to obtain relevant contexts. Similarly, AutoFL\cite{kang2024quantitative} localizes method-level vulnerabilities through prompting an LLM and use function calls to navigate a repository, showing that multiple step reasoning can overcome context length limits.
+
+% To better help the developers with localizing the vulnerability, the line or statement level literature emerged. LineVul\cite{9796256} uses a Transformer to help line level classification. LOVA\cite{li2024attention} proposes a novel framework with self-attention to score and highlight the vulnerable lines. More recent work MatsVD\cite{10.1145/3671016.3674807} improves statement level performance using dependency aware attention, and xLoc\cite{10.1145/3660804} learns task-specific knowledge for the task of multilingual bug detection/localization. 
+
+% Building on these approaches, LLM4FL\cite{rafi2024multi} proposes a multiple agent framework to do vulnerability localization via graph based retrieval and navigation of code to reason about failure causes. MemFL\cite{yeo2025improving}, incorporates project specific knowledge through external memory to improve repository-level localization on complex systems. 
+
+% These works explore vulnerability localization from file or method level to line level, with some incorporate multi-agent systems for specific subtasks. However, most approaches still rely on limited runtime evidence, evaluate on benchmarks lacking realistic settings, or perform single-round analysis. Our T2L Agent addresses these limitations by using a planner-executor framework that achieves line level localization with runtime evidence collection, enabling dynamic feedback loops and interactions between planner and executor agents for repository setting vulnerability localization.

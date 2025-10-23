@@ -1,0 +1,988 @@
+\clearpage
+\setcounter{page}{1}
+\maketitlesupplementary
+
+\renewcommand{\thesection}{\Roman{section}}
+\setcounter{section}{0}
+
+\label{sec:appendix}
+
+\section{VLM Prompts}
+\label{sec:vlm_prompts}
+We followed prompt engineering best practices for the zero-shot models and selected the one that performed best on a small validation set.
+The following prompt was used for the VLMs \texttt{Pixtral} and \texttt{Claude} to evaluate performance our dataset:
+\begin{framed}
+You are a highly skilled subject matter expert for inventory quality assurance and control. The presented image shows an item inside a tray. You have to determine whether the item is in pristine condition and can be sold as new and shipped to the customer as is, or whether it is damaged in any way and needs further attention before it can be shipped. Consider the following damage categories: crushed, tear, hole, deformed, ripped, deconstructed. Typical defects also include open boxes, or damaged and ripped packaging. Sometimes if the packaging is damaged, the item itself may become deconstructed and parts of the content may fall out. The container itself may be dirty which should not count as damage. However, if there is spillage that originated from a liquid item, then it must be called out as damage. Pay close attention to books and especially to corners of front or back pages. Moreover, items that a deconstructed, i.e. where the original packaging is damaged or fell off, should be flagged as damaged. In addition to the final decision specified by DAMAGED or UNDAMAGED, please also provide the severity score on a scale from 0 (pristine condition) to 10 (completely destroyed). Think step-by-step and provide the final response as json with keys "condition" and "severity".
+\end{framed}
+
+\section{CLIP Prompts}
+\label{sec:clip_prompts}
+
+For the \texttt{CLIP} model 0-shot baseline, we tested the following prompts on the validation set:
+
+\begin{itemize}
+    \item \texttt{Image of an item with some damage.} and \texttt{Image of an item with no damage.}
+    \item \texttt{Item without damage inside of a tray.} and \texttt{Item with damage inside of a tray.}
+    \item \texttt{Image of an undamaged item.} and \texttt{Image of a damaged item.}
+    \item \texttt{Image of an item without problems.} and \texttt{Image of an item with problems.}
+\end{itemize}
+
+The last prompt performed best on the validation set and was used for the test set evaluation.
+
+\section{Dataset Details}
+\label{sec:dataset_details}
+
+We provide additional details about our defect taxonomy underlying our dataset (Figure~\ref{fig:damage-types}) and experimental setup of our data collection station (Figure~\ref{fig:rigspecs}).
+
+\begin{figure}[bh!]
+    \centering
+         \includegraphics[width=0.45\textwidth]{adada-damage-taxonomy.drawio.png}
+    \caption{
+    Overview of the defect types used to annotate defective samples (bold font) and related and colloquial characterization of the defect types (in bubbles). The proximity of the bubbles and their overlap indicates which defect types are similar/related\label{fig:damage-types}.
+    }
+\end{figure}
+
+\begin{figure}[bh!]
+    \centering
+         \includegraphics[width=0.45\textwidth]{KAPUTT-rig-specs.drawio.png}
+    \caption{
+    Schematic illustration of the data collection station. An overhead camera captures images from the top. Items reside in ``trays``, common logistics containers.\label{fig:rigspecs}}
+\end{figure}
+
+\clearpage
+
+\begin{table*}[!ht]
+
+\section{Error Analysis}
+\label{sec:error_analysis}
+
+The following tables systematically evaluate failure modes of all baselines. Table~\ref{ref:failuremodestats} provides quantitative statistics, while Tables 5-7 showcase exemplary correct and wrong predictions. Tables 8-35 further analyze model performance per item material and per defect type. Finally, Figures 7 and 8 show Precision-Recall and ROC curves.
+
+\vspace{1cm}
+
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{r|cccccc|c|ccccc|c}
+ & \multicolumn{7}{c|}{\textbf{False Positives}} & \multicolumn{6}{c}{\textbf{False Negatives}} \\
+
+\textbf{Baseline} &
+   \rotatebox{90}{Adversarial} &
+   \rotatebox{90}{Pack. Type} &
+   \rotatebox{90}{Query Distr.} &
+   \rotatebox{90}{Reference Var.} &
+   \rotatebox{90}{Minuscule} &
+   \rotatebox{90}{Unclear} &
+   \rotatebox{90}{Total} &
+   \rotatebox{90}{Subtle} &
+   \rotatebox{90}{Conf. Wrong} &
+   \rotatebox{90}{Reference Var.} &
+   \rotatebox{90}{Missing Unit} &
+   \rotatebox{90}{Unclear} &
+   \rotatebox{90}{Total} \\ [2ex]
+\hline \hline
+\multicolumn{14}{c}{\textbf{No training, no references} (zero-shot, few-shot)}\\
+\hline
+\texttt{CLIP} & 1 & 0 & 0 & - & 5 & 44 & 50 & 4 & 41 & - & 0 & 5 & 50 \\
+\texttt{POMP} & 3 & 0 & 0 & - & 4 & 43 & 50 & 17 & 29 & - & 0 & 4 & 50 \\
+\texttt{WinCLIP-zero} & 0 & 32 & 8 & - & 0 & 10 & 50 & 37 & 10 & - & 2 & 1 & 50 \\
+\texttt{Claude-icl} & 8 & 18 & 13 & - & 0 & 11 & 50 & 42 & 8 & - & 0 & 0 & 50 \\
+\texttt{Pixtral-zero} & 4 & 20 & 11 & - & 0 & 15 & 50 & 39 & 11 & - & 0 & 0 & 50 \\
+\texttt{Pixtral-icl} & 7 & 11 & 5 & - & 0 & 27 & 50 & 38 & 12 & - & 0 & 0 & 50 \\
+\hline
+\multicolumn{14}{c}{\textbf{No training, \emph{with} references} (few-shot, non-parametric, in-context learning)} \\
+\hline
+\texttt{PatchCore50} & 1 & 0 & 0 & 42 & 1 & 6 & 50 & 40 & 1 & 0 & 0 & 9 & 50 \\
+\texttt{WinCLIP-few} & 2 & 20 & 9 & 9 & 0 & 10 & 50 & 44 & 5 & 0 & 0 & 1 & 50 \\
+\hline
+\multicolumn{14}{c}{\textbf{\emph{With} training, no references} (supervised/instruction fine-tuning)}\\
+\hline
+\texttt{ResNet50} & 8 & 16 & 11 & - & 13 & 2 & 50 & 33 & 17 & - & 0 & 0 & 50 \\
+\texttt{ViT-S} & 5 & 6 & 2 & - & 15 & 22 & 50 & 27 & 19 & - & 2 & 2 & 50 \\
+\texttt{Pixtral-ft} & 1 & 11 & 7 & - & 3 & 28 & 50 & 40 & 10 & - & 0 & 0 & 50 \\
+\texttt{AutoGluonMM} & 10 & 7 & 6 & - & 20 & 7 & 50 & 31 & 19 & - & 0 & 0 & 50 \\
+\hline
+\multicolumn{14}{c}{\textbf{\emph{With} training, \emph{with} references} (supervised with references, non-parametric with fine-tuning)}\\
+\hline
+\texttt{PatchCore50-ft} & 1 & 3 & 2 & 36 & 1 & 7 & 50 & 38 & 5 & 0 & 7 & 0 & 50 \\
+\texttt{AutoGluonMM-ref} & 3 & 9 & 3 & 16 & 4 & 15 & 50 & 21 & 20 & 3 & 0 & 6 & 50 \\
+\hline \hline
+\end{tabular}
+\caption{Error Analysis of Different Baseline Models. For each evaluated baseline model, we analyzed the top 50 (by classification score) false positives and false negatives. Upon visual examination, we classified them into 6 groups for the false positives and 5 groups for the false negatives. False positives were either \emph{adversarial examples} (\eg books with printed creases, oddly shaped), difficult \emph{packaging types} (\eg paper or plastic that wrinkles), \emph{query distractions} (\eg trash or tray scribbles), \emph{reference variations} (\eg confused or defective references), \emph{minuscule defects}, or \emph{unclear} reasons. False negatives were categorized into \emph{confidently wrong} decisions by the baseline model, \emph{missing units} (\eg when multi-packs are captured with missing units that can only be identified by a model using references), or \emph{minuscule}, \emph{reference variations}, and \emph{unclear} reasons, analogue to false positive cases. \label{ref:failuremodestats}}
+\end{table*}
+
+\newcommand{\largeimage}[1]{
+  \includegraphics[width=3cm,height=3cm]{#1}
+}
+
+\newcommand{\smallimage}[1]{
+  \includegraphics[width=1.4cm,height=1.4cm]{#1}
+}
+
+\newcommand{\imagecell}[3]{
+  \largeimage{#1}\par
+  \smallimage{#2}\hfill\smallimage{#3}
+
+}
+
+\newcommand{\imagecellfour}[4]{
+  \smallimage{#1}\hfill\smallimage{#2}\par
+  \smallimage{#3}\hfill\smallimage{#4}
+}
+
+\begin{table*}
+\centering
+\caption{Failure and success modes of \texttt{AutoGluonMM} - With reference images. The images are arranged as squares in groups of four. The top-left example image shows the query image and the other three are the corresponding reference gallery images.}
+\resizebox{0.95\textwidth}{!}{
+\begin{tabular}{l|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}}
+\toprule
+Model & TP & FP & TN & FN \\
+\midrule
+
+\multirow{1}{*}{\rotatebox{90}{\parbox{5.6cm}{\centering \texttt{AutoGluonMM}}}} &
+
+\imagecellfour{figures/failure-modes/autogluon_gallery/tp/TP_1.1.jpg}
+{figures/failure-modes/autogluon_gallery/tp/TP_1.2.jpg}
+{figures/failure-modes/autogluon_gallery/tp/TP_1.3.jpg}
+{figures/failure-modes/autogluon_gallery/tp/TP_1.4.jpg}
+\imagecellfour{figures/failure-modes/autogluon_gallery/tp/TP_2.1.jpg}
+{figures/failure-modes/autogluon_gallery/tp/TP_2.2.jpg}
+{figures/failure-modes/autogluon_gallery/tp/TP_2.3.jpg}
+{figures/failure-modes/autogluon_gallery/tp/TP_2.4.jpg}
+&
+\imagecellfour{figures/failure-modes/autogluon_gallery/fp/FP_1.1.jpg}
+{figures/failure-modes/autogluon_gallery/fp/FP_1.2.jpg}
+{figures/failure-modes/autogluon_gallery/fp/FP_1.3.jpg}
+{figures/failure-modes/autogluon_gallery/fp/FP_1.4.jpg}
+\imagecellfour{figures/failure-modes/autogluon_gallery/fp/FP_2.1.jpg}
+{figures/failure-modes/autogluon_gallery/fp/FP_2.2.jpg}
+{figures/failure-modes/autogluon_gallery/fp/FP_2.3.jpg}
+{figures/failure-modes/autogluon_gallery/fp/FP_2.4.jpg}
+&
+\imagecellfour{figures/failure-modes/autogluon_gallery/tn/TN_1.1.jpg}
+{figures/failure-modes/autogluon_gallery/tn/TN_1.2.jpg}
+{figures/failure-modes/autogluon_gallery/tn/TN_1.3.jpg}
+{figures/failure-modes/autogluon_gallery/tn/TN_1.4.jpg}
+\imagecellfour{figures/failure-modes/autogluon_gallery/tn/TN_2.1.jpg}
+{figures/failure-modes/autogluon_gallery/tn/TN_2.2.jpg}
+{figures/failure-modes/autogluon_gallery/tn/TN_2.3.jpg}
+{figures/failure-modes/autogluon_gallery/tn/TN_2.4.jpg}
+&
+\imagecellfour{figures/failure-modes/autogluon_gallery/fn/FN_1.1.jpg}
+{figures/failure-modes/autogluon_gallery/fn/FN_1.2.jpg}
+{figures/failure-modes/autogluon_gallery/fn/FN_1.3.jpg}
+{figures/failure-modes/autogluon_gallery/fn/FN_1.4.jpg}
+\imagecellfour{figures/failure-modes/autogluon_gallery/fn/FN_2.1.jpg}
+{figures/failure-modes/autogluon_gallery/fn/FN_2.2.jpg}
+{figures/failure-modes/autogluon_gallery/fn/FN_2.3.jpg}
+{figures/failure-modes/autogluon_gallery/fn/FN_2.4.jpg}
+\\
+\bottomrule
+\end{tabular}
+}
+\label{tab:failure_modes_autogluon}
+\end{table*}
+
+\begin{table*}
+\centering
+\caption{Failure and success modes of \texttt{PatchCore50-ft} and \texttt{WinCLIP} - The images are arranged as squares in groups of four. The top-left images shows the query image, the top-right image the query with overlaid activation map, and the two bottom images are two of the reference images.}
+\resizebox{0.95\textwidth}{!}{
+\begin{tabular}{l|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}}
+\toprule
+Model & TP & FP & TN & FN \\
+\midrule
+\multirow{1}{*}{\rotatebox{90}{\parbox{5.6cm}{\centering \texttt{PatchCore50-ft}}}} &
+
+\imagecellfour{figures/failure-modes/patchcore-ft/tp/tp_actuation_1.1.png}
+{figures/failure-modes/patchcore-ft/tp/tp_actuation_1.2.png}
+{figures/failure-modes/patchcore-ft/tp/tp_actuation_1.3.png}
+{figures/failure-modes/patchcore-ft/tp/tp_actuation_1.4.png}
+\imagecellfour{figures/failure-modes/patchcore-ft/tp/tp_deconstruction_1.1.png}
+{figures/failure-modes/patchcore-ft/tp/tp_deconstruction_1.2.png}
+{figures/failure-modes/patchcore-ft/tp/tp_deconstruction_1.3.png}
+{figures/failure-modes/patchcore-ft/tp/tp_deconstruction_1.4.png}
+&
+\imagecellfour{figures/failure-modes/patchcore-ft/fp/fp_1.1.png}
+{figures/failure-modes/patchcore-ft/fp/fp_1.2.png}
+{figures/failure-modes/patchcore-ft/fp/fp_1.3.png}
+{figures/failure-modes/patchcore-ft/fp/fp_1.4.png}
+\imagecellfour{figures/failure-modes/patchcore-ft/fp/fp_2.1.png}
+{figures/failure-modes/patchcore-ft/fp/fp_2.2.png}
+{figures/failure-modes/patchcore-ft/fp/fp_2.3.png}
+{figures/failure-modes/patchcore-ft/fp/fp_2.4.png}
+&
+\imagecellfour{figures/failure-modes/patchcore-ft/tn/tn_1.1.png}
+{figures/failure-modes/patchcore-ft/tn/tn_1.2.png}
+{figures/failure-modes/patchcore-ft/tn/tn_1.3.png}
+{figures/failure-modes/patchcore-ft/tn/tn_1.4.png}
+\imagecellfour{figures/failure-modes/patchcore-ft/tn/tn_3.1.png}
+{figures/failure-modes/patchcore-ft/tn/tn_3.2.png}
+{figures/failure-modes/patchcore-ft/tn/tn_3.3.png}
+{figures/failure-modes/patchcore-ft/tn/tn_3.4.png}
+&
+\imagecellfour{figures/failure-modes/patchcore-ft/fn/fn_1.1.png}
+{figures/failure-modes/patchcore-ft/fn/fn_1.2.png}
+{figures/failure-modes/patchcore-ft/fn/fn_1.3.png}
+{figures/failure-modes/patchcore-ft/fn/fn_1.4.png}
+\imagecellfour{figures/failure-modes/patchcore-ft/fn/fn_3.1.png}
+{figures/failure-modes/patchcore-ft/fn/fn_3.2.png}
+{figures/failure-modes/patchcore-ft/fn/fn_3.3.png}
+{figures/failure-modes/patchcore-ft/fn/fn_3.4.png}
+\\
+\midrule
+\multirow{1}{*}{\rotatebox{90}{\parbox{5.6cm}{\centering \texttt{WinCLIP}}}} &
+
+\imagecellfour{figures/failure-modes/winclip/tp/TP_1.1.jpg}
+{figures/failure-modes/winclip/tp/TP_1.2.jpg}
+{figures/failure-modes/winclip/tp/TP_1.3.jpg}
+{figures/failure-modes/winclip/tp/TP_1.4.jpg}
+\imagecellfour{figures/failure-modes/winclip/tp/TP_2.1.jpg}
+{figures/failure-modes/winclip/tp/TP_2.2.jpg}
+{figures/failure-modes/winclip/tp/TP_2.3.jpg}
+{figures/failure-modes/winclip/tp/TP_2.4.jpg}
+&
+\imagecellfour{figures/failure-modes/winclip/fp/FP_1.1.jpg}
+{figures/failure-modes/winclip/fp/FP_1.2.jpg}
+{figures/failure-modes/winclip/fp/FP_1.3.jpg}
+{figures/failure-modes/winclip/fp/FP_1.4.jpg}
+\imagecellfour{figures/failure-modes/winclip/fp/FP_2.1.jpg}
+{figures/failure-modes/winclip/fp/FP_2.2.jpg}
+{figures/failure-modes/winclip/fp/FP_2.3.jpg}
+{figures/failure-modes/winclip/fp/FP_2.4.jpg}
+&
+\imagecellfour{figures/failure-modes/winclip/tn/TN_1.1.jpg}
+{figures/failure-modes/winclip/tn/TN_1.2.jpg}
+{figures/failure-modes/winclip/tn/TN_1.3.jpg}
+{figures/failure-modes/winclip/tn/TN_1.4.jpg}
+\imagecellfour{figures/failure-modes/winclip/tn/TN_2.1.jpg}
+{figures/failure-modes/winclip/tn/TN_2.2.jpg}
+{figures/failure-modes/winclip/tn/TN_2.3.jpg}
+{figures/failure-modes/winclip/tn/TN_2.4.jpg}
+&
+\imagecellfour{figures/failure-modes/winclip/fn/FN_1.1.jpg}
+{figures/failure-modes/winclip/fn/FN_1.2.jpg}
+{figures/failure-modes/winclip/fn/FN_1.3.jpg}
+{figures/failure-modes/winclip/fn/FN_1.4.jpg}
+\imagecellfour{figures/failure-modes/winclip/fn/FN_2.1.jpg}
+{figures/failure-modes/winclip/fn/FN_2.2.jpg}
+{figures/failure-modes/winclip/fn/FN_2.3.jpg}
+{figures/failure-modes/winclip/fn/FN_2.4.jpg}
+\\
+\bottomrule
+\end{tabular}
+}
+\label{tab:failure_modes_with_training_with_references}
+\end{table*}
+
+\begin{table*}
+\centering
+\caption{Failure and success modes of \texttt{ResNet50}, \texttt{CLIP}, and \texttt{ViT-S} - Those models were trained and evaluated without reference images. Each image shows a different example.}
+\resizebox{0.95\textwidth}{!}{
+\begin{tabular}{c|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}}
+\toprule
+ & TP & FP & TN & FN \\
+\midrule
+\multirow{1}{*}{\rotatebox{90}{\parbox{1cm}{\centering \texttt{ResNet50}}}} &
+
+\imagecell{figures/failure-modes/resnet50/TP_BCN1_8.jpg}
+{figures/failure-modes/resnet50/TP_BCN1_5.jpg}
+{figures/failure-modes/resnet50/TP_BCN1_7.jpg}
+
+&
+\imagecell{figures/failure-modes/resnet50/FP_DUS4_3.jpg}
+{figures/failure-modes/resnet50/FP_HAM2_8.jpg}
+{figures/failure-modes/resnet50/FP_HAM2_7.jpg}
+
+&
+\imagecell{figures/failure-modes/resnet50/TN_HAM2_3.jpg}
+{figures/failure-modes/resnet50/TN_HAM2_2.jpg}
+{figures/failure-modes/resnet50/TN_BCN1_2.jpg}
+
+&
+\imagecell{figures/failure-modes/resnet50/FN_BCN1_3.jpg}
+{figures/failure-modes/resnet50/FN_BCN1_1.jpg}
+{figures/failure-modes/resnet50/FN_DUS4_4.jpg}
+
+\\
+\midrule
+
+\multirow{1}{*}{\rotatebox{90}{\parbox{1cm}{\centering \texttt{CLIP}}}} &
+
+\imagecellfour{figures/CLIP/TP/811a23c1-e93a-49f4-9952-824f1d728085.jpg}
+{figures/CLIP/TP/7732ce87-725d-4006-b29d-1e3aa586098e.jpg}
+{figures/CLIP/TP/99a1ff2f-28a1-431d-8235-a3f7991c045a.jpg}
+{figures/CLIP/TP/a7fc1567-822e-4f83-8ae8-86cce61b7a8d.jpg}
+&
+\imagecellfour{figures/CLIP/FP/8c97842a-5fad-4ae2-8912-884bef73af36.jpg}
+{figures/CLIP/FP/c173a5f1-22ea-4c7e-ba62-61e73a680175.jpg}
+{figures/CLIP/FP/53863978-c7ad-4636-8c11-881c5d0b3bd9.jpg}
+{figures/CLIP/FP/aababa3a-a376-4c8b-b630-7003ce39c674.jpg}
+&
+\imagecellfour{figures/CLIP/TN/aef53435-dc51-4b7c-bcea-5c727c64199c.jpg}
+{figures/CLIP/TN/deb5c430-619e-455f-9728-2922d495e60c.jpg}
+{figures/CLIP/TN/598cee90-30b9-4aa5-905a-715a115f4cd0.jpg}
+{figures/CLIP/TN/d15e41e7-081a-41aa-9a42-bff0a7d7fe3c.jpg}
+&
+\imagecellfour{figures/CLIP/FN/af6abf81-f787-4bf4-934d-79bfa8bf8d4a.jpg}
+{figures/CLIP/FN/aacac4c4-a8a9-42c5-9389-e1865a85abce.jpg}
+{figures/CLIP/FN/5aa639f6-41d0-4f26-8a31-afaa858a14d0.jpg}
+{figures/CLIP/FN/1b8578d7-e6c0-4cf6-baeb-7362b171fd63.jpg}
+\\
+\midrule
+\multirow{1}{*}{\rotatebox{90}{\parbox{1cm}{\centering \texttt{ViT-S}}}} &
+
+\imagecellfour{figures/failure-modes/vit/TP/2d14262e-853e-43d3-90b8-92d5c24f8f29.jpg}
+{figures/failure-modes/vit/TP/3a12ab32-c522-4838-ab77-fbcc120ba9b2.jpg}
+{figures/failure-modes/vit/TP/21fc0e5f-671c-4879-a643-ceab829849b4.jpg}
+{figures/failure-modes/vit/TP/b508e50e-35e3-44d3-8152-6a4091b019bc.jpg}
+&
+\imagecellfour{figures/failure-modes/vit/FP/b6f54082-3443-4381-bcdb-de21bcc954c9.jpg}
+{figures/failure-modes/vit/FP/aa7097b3-7ac9-40ce-b530-8142b67ff2e6.jpg}
+{figures/failure-modes/vit/FP/1964f4f6-d1b0-4b92-8db7-720a7e95fe6b.jpg}
+{figures/failure-modes/vit/FP/feb93041-80cf-481a-82bd-5e3d9ff7af8e.jpg}
+&
+\imagecellfour{figures/failure-modes/vit/TN/0966ec9d-55d3-41c4-8b85-b3472977f577.jpg}
+{figures/failure-modes/vit/TN/ac53fcb7-7de0-40c2-9615-cce8477f68ae.jpg}
+{figures/failure-modes/vit/TN/c188dd2e-3339-4159-99b5-77a513741603.jpg}
+{figures/failure-modes/vit/TN/e9c33b65-9b10-4d4b-a5a6-62780d5757c3.jpg}
+&
+\imagecellfour{figures/failure-modes/vit/FN/8ac6f519-fa33-49dc-acd2-86938805fad7.jpg}
+{figures/failure-modes/vit/FN/17f74d11-f947-47a6-9bc0-84fbea168c91.jpg}
+{figures/failure-modes/vit/FN/70b621c2-ced8-4559-8896-867a3f140476.jpg}
+{figures/failure-modes/vit/FN/99d704a6-e27a-4b31-a1b9-1f81f43e1a61.jpg}
+\\
+\bottomrule
+\end{tabular}
+}
+\label{tab:failure_modes_no_references}
+\end{table*}
+
+\clearpage
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{CLIP}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 38.36 & 50.00 & 63.27 & 0.00 & - \\
+\texttt{book paper} & 1664 & 671 & 46.85 & 18.81 & 57.02 & 11.92 & 1.79 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 30.80 & 23.08 & 52.69 & 0.00 & - \\
+\texttt{cardboard} & 3212 & 1261 & 41.84 & 12.77 & 53.43 & 0.79 & 1.11 \\
+\texttt{other} & 409 & 90 & 28.71 & 16.62 & 55.10 & 11.11 & 3.33 \\
+\texttt{paper} & 131 & 73 & \textbf{62.01} & \textbf{48.82} & 60.37 & \textbf{100.00} & 2.74 \\
+\texttt{plastic bubble wrap} & 187 & 36 & 35.59 & 20.39 & \textbf{70.37} & 36.11 & - \\
+\texttt{plastic hard} & 1032 & 148 & 17.27 & 14.35 & 53.98 & 0.00 & 1.35 \\
+\texttt{plastic loose bag} & 2419 & 684 & 29.94 & 19.52 & 52.66 & 0.15 & 1.32 \\
+\texttt{plastic tight wrap} & 850 & 195 & 29.05 & 21.55 & 59.73 & 0.51 & 1.03 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIs for \texttt{CLIP}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 15.22 & 9.28 & 57.96 & 0.21 & 1.55 \\
+\texttt{deformation} & 8646 & 1785 & \textbf{24.52} & 7.30 & \textbf{56.55} & \textbf{0.22} & 1.74 \\
+\texttt{actuation} & 8403 & 1542 & 21.43 & \textbf{11.83} & 55.72 & 0.00 & 1.75 \\
+\texttt{superficial} & 7585 & 724 & 11.25 & 2.29 & 56.08 & 0.00 & 1.38 \\
+\texttt{spillage} & 6943 & 82 & 1.33 & 0.92 & 52.15 & 0.00 & 2.44 \\
+\texttt{deconstruction} & 7888 & 1027 & 16.15 & 11.69 & 56.97 & 0.00 & 1.85 \\
+\\texttt{missing unit} & 6886 & 25 & 0.35 & 0.35 & 49.43 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{POMP}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 29.22 & 16.67 & 52.31 & 0.00 & - \\
+\texttt{book paper} & 1664 & 671 & 42.50 & 15.11 & 54.02 & 0.00 & 0.30 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 40.90 & 25.23 & 64.87 & 2.63 & 2.63 \\
+\texttt{cardboard} & 3212 & 1261 & 38.55 & 16.30 & 48.40 & 0.00 & 0.87 \\
+\texttt{other} & 409 & 90 & 24.89 & 17.41 & 52.19 & 0.00 & 2.22 \\
+\texttt{paper} & 131 & 73 & \textbf{56.09} & \textbf{46.61} & 49.71 & \textbf{100.00} & - \\
+\texttt{plastic bubble wrap} & 187 & 36 & 30.86 & 18.04 & \textbf{65.34} & 5.56 & \textbf{5.56} \\
+\texttt{plastic hard} & 1032 & 148 & 22.96 & 21.72 & 59.09 & 2.03 & 3.38 \\
+\texttt{plastic loose bag} & 2419 & 684 & 30.97 & 22.56 & 52.76 & 0.00 & 1.32 \\
+\texttt{plastic tight wrap} & 850 & 195 & 22.91 & 16.45 & 51.02 & 0.00 & 0.51 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIs for \texttt{POMP}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 13.10 & 8.72 & 51.11 & 0.00 & 1.14 \\
+\texttt{deformation} & 8646 & 1785 & \textbf{20.50} & 6.84 & 47.39 & 0.00 & 1.29 \\
+\texttt{actuation} & 8403 & 1542 & 19.89 & 11.79 & 52.37 & 0.00 & 1.10 \\
+\texttt{superficial} & 7585 & 724 & 8.26 & 1.47 & 42.67 & 0.00 & 1.11 \\
+\texttt{spillage} & 6943 & 82 & 3.04 & 2.85 & \textbf{65.33} & 0.00 & \textbf{3.66} \\
+\texttt{deconstruction} & 7888 & 1027 & 15.82 & \textbf{12.32} & 57.18 & 0.00 & 1.46 \\
+\texttt{missing unit} & 6886 & 25 & 0.54 & 0.54 & 57.76 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{WinCLIP-zero}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 51.57 & 33.33 & 65.77 & 60.00 & - \\
+\texttt{book paper} & 1664 & 671 & 42.26 & 14.91 & 53.46 & 0.00 & 0.89 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 36.84 & 23.23 & 57.61 & 5.26 & 2.63 \\
+\texttt{cardboard} & 3212 & 1261 & 42.02 & 15.74 & 51.22 & 5.79 & 2.22 \\
+\texttt{other} & 409 & 90 & 28.96 & 22.61 & 58.06 & 0.00 & 1.11 \\
+\texttt{paper} & 131 & 73 & \textbf{75.00} & \textbf{72.04} & 66.36 & \textbf{100.00} & \textbf{13.70} \\
+\texttt{plastic bubble wrap} & 187 & 36 & 39.00 & 25.27 & \textbf{72.46} & 16.67 & 8.33 \\
+\texttt{plastic hard} & 1032 & 148 & 23.12 & 19.58 & 60.02 & 0.00 & 2.70 \\
+\texttt{plastic loose bag} & 2419 & 684 & 31.13 & 20.46 & 54.61 & 1.32 & 1.61 \\
+\texttt{plastic tight wrap} & 850 & 195 & 23.87 & 17.21 & 47.32 & 2.05 & 2.05 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{WinCLIP-zero}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 15.87 & 11.44 & 55.90 & 0.10 & 2.17 \\
+\texttt{deformation} & 8646 & 1785 & 18.29 & 5.30 & 45.77 & 0.00 & 0.39 \\
+\texttt{actuation} & 8403 & 1542 & \textbf{22.36} & 13.46 & 56.72 & \textbf{0.07} & 1.88 \\
+\texttt{superficial} & 7585 & 724 & 8.49 & 1.21 & 45.85 & 0.00 & 0.14 \\
+\texttt{spillage} & 6943 & 82 & 2.12 & 1.76 & \textbf{64.97} & 0.00 & 1.22 \\
+\texttt{deconstruction} & 7888 & 1027 & 19.40 & \textbf{14.90} & 62.12 & 0.00 & \textbf{2.82} \\
+\texttt{missing unit} & 6886 & 25 & 0.85 & 0.85 & 49.95 & 0.00 & 4.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{Claude-icl}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 42.22 & \textbf{100.00} & 58.46 & 20.00 & \textbf{20.00} \\
+\texttt{book paper} & 1664 & 671 & 43.09 & 20.03 & 53.08 & 11.03 & 2.24 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 42.42 & 31.41 & 61.75 & 26.32 & 2.63 \\
+\texttt{cardboard} & 3212 & 1261 & 46.29 & 32.53 & 58.07 & 30.29 & 1.43 \\
+\texttt{other} & 409 & 90 & 27.92 & 21.71 & 56.08 & 5.56 & 3.33 \\
+\texttt{paper} & 131 & 73 & \textbf{69.51} & 65.91 & 66.37 & \textbf{100.00} & - \\
+\texttt{plastic bubble wrap} & 187 & 36 & 29.05 & 24.13 & 62.99 & 0.00 & - \\
+\texttt{plastic hard} & 1032 & 148 & 24.32 & 22.95 & \textbf{67.30} & 0.00 & 0.68 \\
+\texttt{plastic loose bag} & 2419 & 684 & 34.07 & 25.43 & 59.39 & 0.00 & 0.44 \\
+\texttt{plastic tight wrap} & 850 & 195 & 26.19 & 19.90 & 55.89 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{Claude-icl}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 19.41 & 16.41 & 62.79 & 0.00 & 0.52 \\
+\texttt{deformation} & 8646 & 1785 & 21.85 & 9.70 & 53.40 & 0.00 & 0.17 \\
+\texttt{actuation} & 8403 & 1542 & 23.95 & 18.46 & 59.63 & 0.00 & 0.39 \\
+\texttt{superficial} & 7585 & 724 & 10.68 & 3.21 & 55.26 & 0.00 & 0.28 \\
+\texttt{spillage} & 6943 & 82 & 6.57 & 6.90 & \textbf{77.89} & 0.00 & \textbf{3.66} \\
+\texttt{deconstruction} & 7888 & 1027 & \textbf{22.20} & \textbf{19.83} & 65.18 & 0.00 & 0.58 \\
+\texttt{missing unit} & 6886 & 25 & 0.50 & 0.50 & 57.94 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{Pixtral-zero}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 46.11 & 3.70 & \textbf{67.31} & 50.00 & \textbf{10.00} \\
+\texttt{book paper} & 1664 & 671 & 40.97 & 15.13 & 49.75 & 3.28 & 0.30 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 31.42 & 17.24 & 53.02 & 0.00 & - \\
+\texttt{cardboard} & 3212 & 1261 & 40.57 & 14.07 & 51.28 & 3.81 & 1.03 \\
+\texttt{other} & 409 & 90 & 22.89 & 16.38 & 50.36 & 0.00 & 1.11 \\
+\texttt{paper} & 131 & 73 & \textbf{60.88} & \textbf{52.79} & 52.83 & \textbf{100.00} & 8.22 \\
+\texttt{plastic bubble wrap} & 187 & 36 & 22.84 & 11.32 & 51.38 & 0.00 & 2.78 \\
+\texttt{plastic hard} & 1032 & 148 & 15.98 & 14.21 & 50.18 & 0.00 & 0.00 \\
+\texttt{plastic loose bag} & 2419 & 684 & 30.49 & 20.64 & 53.87 & 0.44 & 1.02 \\
+\texttt{plastic tight wrap} & 850 & 195 & 25.05 & 17.21 & 49.87 & 2.56 & 2.56 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{Pixtral-zero}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 13.77 & 8.51 & 52.43 & 0.00 & 1.55 \\
+\texttt{deformation} & 8646 & 1785 & \textbf{20.21} & 5.30 & 49.05 & 0.00 & 0.39 \\
+\texttt{actuation} & 8403 & 1542 & 19.46 & 10.80 & 52.12 & 0.00 & 0.78 \\
+\texttt{superficial} & 7585 & 724 & 9.49 & 1.39 & 50.03 & 0.00 & 0.14 \\
+\texttt{spillage} & 6943 & 82 & 4.01 & 3.38 & \textbf{66.58} & 0.00 & \textbf{3.66} \\
+\texttt{deconstruction} & 7888 & 1027 & 14.88 & \textbf{11.80} & 53.09 & 0.00 & 1.27 \\
+\texttt{missing unit} & 6886 & 25 & 0.35 & 0.35 & 42.24 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{Pixtral-icl}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 44.88 & 8.33 & \textbf{70.77} & 20.00 & - \\
+\texttt{book paper} & 1664 & 671 & 39.86 & 12.68 & 49.42 & 0.00 & 0.45 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 29.85 & 17.74 & 51.27 & 0.00 & - \\
+\texttt{cardboard} & 3212 & 1261 & 39.14 & 10.71 & 49.87 & 0.00 & 0.16 \\
+\texttt{other} & 409 & 90 & 19.31 & 13.33 & 43.85 & 0.00 & - \\
+\texttt{paper} & 131 & 73 & \textbf{58.52} & \textbf{50.67} & 54.97 & \textbf{100.00} & - \\
+\texttt{plastic bubble wrap} & 187 & 36 & 25.43 & 23.28 & 54.76 & 2.78 & \textbf{2.78} \\
+\texttt{plastic hard} & 1032 & 148 & 18.13 & 15.42 & 58.25 & 0.00 & 0.68 \\
+\texttt{plastic loose bag} & 2419 & 684 & 33.16 & 22.33 & 58.50 & 0.00 & 0.88 \\
+\texttt{plastic tight wrap} & 850 & 195 & 23.20 & 15.73 & 50.64 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{Pixtral-icl}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 13.60 & 7.96 & 54.87 & 0.00 & 0.52 \\
+\texttt{deformation} & 8646 & 1785 & 19.00 & 4.58 & 45.86 & 0.00 & 0.56 \\
+\texttt{actuation} & 8403 & 1542 & \textbf{20.05} & 11.06 & 54.62 & 0.00 & 0.91 \\
+\texttt{superficial} & 7585 & 724 & 9.06 & 1.02 & 47.62 & 0.00 & 0.55 \\
+\texttt{spillage} & 6943 & 82 & 1.59 & 1.39 & \textbf{59.30} & 0.00 & \textbf{1.22} \\
+\texttt{deconstruction} & 7888 & 1027 & 15.56 & \textbf{12.10} & 58.35 & 0.00 & 1.17 \\
+\texttt{missing unit} & 6886 & 25 & 0.47 & 0.47 & 56.67 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{PatchCore50}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 32.12 & 20.00 & 56.92 & 0.00 & - \\
+\texttt{book paper} & 1664 & 671 & \textbf{45.20} & 17.57 & 56.44 & 5.22 & 2.09 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 41.24 & \textbf{39.53} & 58.87 & 10.53 & \textbf{5.26} \\
+\texttt{cardboard} & 3212 & 1261 & 42.16 & 12.17 & 52.75 & 5.31 & 2.46 \\
+\texttt{other} & 409 & 90 & 30.50 & 22.62 & 60.91 & 3.33 & 3.33 \\
+\texttt{paper} & 131 & 73 & 53.02 & 43.31 & 46.95 & \textbf{100.00} & - \\
+\texttt{plastic bubble wrap} & 187 & 36 & 32.21 & 24.43 & \textbf{71.12} & 0.00 & 2.78 \\
+\texttt{plastic hard} & 1032 & 148 & 20.79 & 18.75 & 63.25 & 0.00 & 3.38 \\
+\texttt{plastic loose bag} & 2419 & 684 & 31.42 & 21.86 & 54.53 & 0.59 & 1.02 \\
+\texttt{plastic tight wrap} & 850 & 195 & 26.97 & 21.36 & 54.77 & 0.00 & 2.56 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{PatchCore50}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 14.45 & 8.55 & 56.60 & 0.00 & 1.66 \\
+\texttt{deformation} & 8646 & 1785 & \textbf{24.37} & 6.83 & 53.99 & \textbf{1.18} & \textbf{2.58} \\
+\texttt{actuation} & 8403 & 1542 & 20.70 & 12.00 & 55.57 & 0.00 & 1.17 \\
+\texttt{superficial} & 7585 & 724 & 12.80 & 1.90 & 52.06 & 1.52 & 4.28 \\
+\texttt{spillage} & 6943 & 82 & 1.75 & 1.31 & \textbf{60.44} & 0.00 & 2.44 \\
+\texttt{deconstruction} & 7888 & 1027 & 16.05 & \textbf{12.78} & 59.36 & 0.00 & 1.46 \\
+\texttt{missing unit} & 6886 & 25 & 0.50 & 0.50 & 59.88 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{WinCLIP-few}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 49.95 & 33.33 & 64.62 & 60.00 & - \\
+\texttt{book paper} & 1664 & 671 & 42.73 & 15.50 & 53.90 & 0.89 & 1.19 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 37.84 & 26.60 & 57.78 & 5.26 & 5.26 \\
+\texttt{cardboard} & 3212 & 1261 & 42.12 & 16.58 & 50.97 & 6.74 & 2.30 \\
+\texttt{other} & 409 & 90 & 29.01 & 22.66 & 58.62 & 0.00 & 2.22 \\
+\texttt{paper} & 131 & 73 & \textbf{73.74} & \textbf{70.17} & 66.01 & \textbf{100.00} & 5.48 \\
+\texttt{plastic bubble wrap} & 187 & 36 & 39.74 & 25.79 & \textbf{73.11} & 11.11 & \textbf{8.33} \\
+\texttt{plastic hard} & 1032 & 148 & 23.21 & 19.81 & 60.19 & 0.00 & 1.35 \\
+\texttt{plastic loose bag} & 2419 & 684 & 31.24 & 20.39 & 54.63 & 1.75 & 1.75 \\
+\texttt{plastic tight wrap} & 850 & 195 & 24.32 & 17.81 & 47.60 & 1.54 & 2.05 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{WinCLIP-few}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 15.96 & 11.35 & 55.94 & 0.00 & 2.69 \\
+\texttt{deformation} & 8646 & 1785 & 18.47 & 5.51 & 46.01 & 0.00 & 0.50 \\
+\texttt{actuation} & 8403 & 1542 & \textbf{22.48} & 13.56 & 56.87 & 0.00 & 2.08 \\
+\texttt{superficial} & 7585 & 724 & 8.55 & 1.25 & 45.81 & 0.00 & 0.69 \\
+\texttt{spillage} & 6943 & 82 & 2.18 & 1.80 & \textbf{65.47} & 0.00 & 1.22 \\
+\texttt{deconstruction} & 7888 & 1027 & 19.49 & \textbf{14.98} & 62.20 & 0.00 & \textbf{3.12} \\
+\texttt{missing unit} & 6886 & 25 & 0.80 & 0.80 & 49.99 & 0.00 & 4.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{ResNet50}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 73.32 & 25.00 & 79.62 & 60.00 & 50.00 \\
+\texttt{book paper} & 1664 & 671 & 82.36 & 72.92 & 86.16 & 95.53 & 24.59 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 82.54 & 82.69 & 85.99 & 81.58 & 44.74 \\
+\texttt{cardboard} & 3212 & 1261 & 81.11 & 73.70 & 84.66 & 92.94 & 27.44 \\
+\texttt{other} & 409 & 90 & 60.83 & 60.46 & 80.24 & 66.67 & 16.67 \\
+\texttt{paper} & 131 & 73 & 88.14 & 86.22 & 85.00 & \textbf{100.00} & 28.77 \\
+\texttt{plastic bubble wrap} & 187 & 36 & \textbf{92.21} & \textbf{86.03} & \textbf{97.15} & 97.22 & \textbf{66.67} \\
+\texttt{plastic hard} & 1032 & 148 & 76.58 & 79.37 & 90.78 & 79.05 & 47.97 \\
+\texttt{plastic loose bag} & 2419 & 684 & 83.28 & 79.69 & 91.55 & 93.42 & 33.63 \\
+\texttt{plastic tight wrap} & 850 & 195 & 76.01 & 78.50 & 87.23 & 81.54 & 37.44 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{ResNet50}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 64.99 & 65.24 & 88.54 & 68.84 & 32.82 \\
+\texttt{deformation} & 8646 & 1785 & 72.46 & 60.20 & 89.19 & \textbf{83.31} & 27.90 \\
+\texttt{actuation} & 8403 & 1542 & \textbf{75.88} & 73.04 & 90.74 & 83.27 & 35.80 \\
+\texttt{superficial} & 7585 & 724 & 52.97 & 36.00 & 87.88 & 54.14 & 24.59 \\
+\texttt{spillage} & 6943 & 82 & 18.79 & 16.49 & 82.02 & 6.10 & 29.27 \\
+\texttt{deconstruction} & 7888 & 1027 & 73.02 & \textbf{73.43} & \textbf{91.10} & 80.33 & \textbf{39.44} \\
+\texttt{missing unit} & 6886 & 25 & 15.40 & 15.40 & 87.07 & 8.00 & 32.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{ViT-S}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 88.52 & \textbf{100.00} & 94.23 & \textbf{100.00} & 50.00 \\
+\texttt{book paper} & 1664 & 671 & 90.68 & 92.63 & 92.35 & 99.40 & 49.03 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 92.54 & 94.40 & 94.94 & 94.74 & 65.79 \\
+\texttt{cardboard} & 3212 & 1261 & 90.22 & 94.33 & 91.87 & 98.57 & 55.91 \\
+\texttt{other} & 409 & 90 & 77.69 & 79.73 & 88.74 & 84.44 & 48.89 \\
+\texttt{paper} & 131 & 73 & 96.72 & 97.14 & 95.77 & \textbf{100.00} & 69.86 \\
+\texttt{plastic bubble wrap} & 187 & 36 & \textbf{97.22} & 98.44 & \textbf{99.23} & \textbf{100.00} & \textbf{80.56} \\
+\texttt{plastic hard} & 1032 & 148 & 92.88 & 94.31 & 97.62 & 95.95 & 79.05 \\
+\texttt{plastic loose bag} & 2419 & 684 & 92.51 & 92.41 & 96.29 & 97.52 & 65.64 \\
+\texttt{plastic tight wrap} & 850 & 195 & 86.01 & 90.05 & 93.16 & 91.80 & 57.44 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{ViT-S}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 83.17 & 88.80 & 95.11 & 86.65 & 64.49 \\
+\texttt{deformation} & 8646 & 1785 & 85.14 & 89.08 & 94.08 & 92.89 & 55.35 \\
+\texttt{actuation} & 8403 & 1542 & 89.18 & 92.78 & 96.01 & 93.52 & 68.81 \\
+\texttt{superficial} & 7585 & 724 & 70.61 & 75.96 & 93.63 & 73.07 & 46.55 \\
+\texttt{spillage} & 6943 & 82 & 44.74 & 45.77 & 89.86 & 48.78 & 52.44 \\
+\texttt{deconstruction} & 7888 & 1027 & \textbf{89.53} & \textbf{91.98} & \textbf{96.88} & \textbf{92.50} & \textbf{75.56} \\
+\texttt{missing unit} & 6886 & 25 & 59.23 & 59.23 & 89.78 & 60.00 & 68.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{Pixtral-ft}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 27.78 & 3.70 & 50.00 & 0.00 & - \\
+\texttt{book paper} & 1664 & 671 & 40.59 & 12.59 & 50.22 & 0.45 & 0.45 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 29.92 & 17.59 & 50.00 & 0.00 & - \\
+\texttt{cardboard} & 3212 & 1261 & \textbf{41.24} & 16.88 & \textbf{52.06} & 5.95 & 1.75 \\
+\texttt{other} & 409 & 90 & 22.01 & 15.61 & 49.37 & 0.00 & - \\
+\texttt{paper} & 131 & 73 & \textbf{55.73} & \textbf{41.41} & 49.14 & \textbf{100.00} & - \\
+\texttt{plastic bubble wrap} & 187 & 36 & 19.25 & 11.18 & 50.00 & 0.00 & - \\
+\texttt{plastic hard} & 1032 & 148 & 17.50 & 16.05 & 52.32 & 5.41 & \textbf{5.41} \\
+\texttt{plastic loose bag} & 2419 & 684 & 30.84 & 22.39 & 51.89 & 3.95 & 3.95 \\
+\texttt{plastic tight wrap} & 850 & 195 & 24.13 & 17.07 & 50.77 & 1.54 & 1.54 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{Pixtral-ft}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 14.35 & 9.84 & 51.86 & 2.69 & 4.45 \\
+\texttt{deformation} & 8646 & 1785 & \textbf{22.18} & 7.78 & 51.65 & 4.03 & 4.03 \\
+\texttt{actuation} & 8403 & 1542 & 20.71 & 13.79 & 51.78 & 4.28 & 4.28 \\
+\texttt{superficial} & 7585 & 724 & 10.18 & 1.52 & 51.22 & 0.00 & 3.18 \\
+\texttt{spillage} & 6943 & 82 & 1.36 & 1.04 & 51.46 & 0.00 & 3.66 \\
+\texttt{deconstruction} & 7888 & 1027 & 16.71 & \textbf{14.52} & \textbf{52.56} & \textbf{5.84} & \textbf{5.84} \\
+\texttt{missing unit} & 6886 & 25 & 0.36 & 0.36 & 49.63 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{AutoGlounMM}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 91.18 & \textbf{100.00} & 95.77 & \textbf{100.00} & 60.00 \\
+\texttt{book paper} & 1664 & 671 & 87.99 & 89.72 & 90.00 & 98.21 & 37.71 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 88.07 & 89.84 & 92.82 & 94.74 & 44.74 \\
+\texttt{cardboard} & 3212 & 1261 & 87.11 & 89.92 & 89.69 & 97.70 & 41.08 \\
+\texttt{other} & 409 & 90 & 73.62 & 73.75 & 87.85 & 84.44 & 31.11 \\
+\texttt{paper} & 131 & 73 & 94.08 & 96.07 & 91.73 & \textbf{100.00} & 45.21 \\
+\texttt{plastic bubble wrap} & 187 & 36 & 93.55 & 89.45 & \textbf{98.73} & \textbf{100.00} & \textbf{77.78} \\
+\texttt{plastic hard} & 1032 & 148 & 88.37 & 88.35 & 95.21 & 89.87 & 74.32 \\
+\texttt{plastic loose bag} & 2419 & 684 & 90.27 & 89.32 & 94.59 & 95.91 & 55.85 \\
+\texttt{plastic tight wrap} & 850 & 195 & 82.71 & 86.68 & 92.10 & 91.80 & 48.72 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{AutoGlounMM}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 76.85 & 81.41 & 92.75 & 79.81 & 50.83 \\
+\texttt{deformation} & 8646 & 1785 & 82.15 & 83.23 & 92.99 & \textbf{90.20} & 43.59 \\
+\texttt{actuation} & 8403 & 1542 & \textbf{85.41} & \textbf{87.45} & \textbf{94.55} & 91.38 & 55.97 \\
+\texttt{superficial} & 7585 & 724 & 65.02 & 64.72 & 92.38 & 69.89 & 32.46 \\
+\texttt{spillage} & 6943 & 82 & 41.72 & 43.75 & 86.44 & 39.02 & 46.34 \\
+\texttt{deconstruction} & 7888 & 1027 & 82.94 & 84.86 & 94.05 & 86.47 & \textbf{60.37} \\
+\texttt{missing unit} & 6886 & 25 & 37.16 & 37.16 & 84.94 & 36.00 & 48.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{PatchCore50-ft}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 38.53 & 50.00 & 63.46 & 0.00 & - \\
+\texttt{book paper} & 1664 & 671 & \textbf{52.97} & 21.87 & 63.45 & 51.12 & 3.58 \\
+\texttt{book plastic tight wrap} & 127 & 38 & 52.01 & \textbf{42.58} & 72.30 & 42.11 & \textbf{7.90} \\
+\texttt{cardboard} & 3212 & 1261 & 45.20 & 15.65 & 56.09 & 10.15 & 3.01 \\
+\texttt{other} & 409 & 90 & 31.54 & 23.47 & 60.43 & 6.67 & 4.44 \\
+\texttt{paper} & 131 & 73 & 59.69 & 51.09 & 50.87 & \textbf{100.00} & 2.74 \\
+\texttt{plastic bubble wrap} & 187 & 36 & 36.15 & 32.39 & \textbf{76.29} & 11.11 & 0.00 \\
+\texttt{plastic hard} & 1032 & 148 & 23.11 & 21.63 & 62.94 & 6.76 & 6.76 \\
+\texttt{plastic loose bag} & 2419 & 684 & 36.65 & 25.60 & 63.65 & 0.00 & 1.61 \\
+\texttt{plastic tight wrap} & 850 & 195 & 30.72 & 21.10 & 62.62 & 0.00 & 0.51 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{PatchCore50-ft}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 17.30 & 10.33 & 61.46 & 0.00 & 2.07 \\
+\texttt{deformation} & 8646 & 1785 & \textbf{27.28} & 8.27 & 59.16 & \textbf{0.56} & \textbf{2.30} \\
+\texttt{actuation} & 8403 & 1542 & 25.02 & 14.93 & 62.63 & 0.00 & 1.88 \\
+\texttt{superficial} & 7585 & 724 & 11.61 & 1.58 & 53.25 & 0.00 & 2.21 \\
+\texttt{spillage} & 6943 & 82 & 1.83 & 1.45 & 62.05 & 0.00 & 2.44 \\
+\texttt{deconstruction} & 7888 & 1027 & 19.16 & \textbf{15.30} & \textbf{66.08} & 0.00 & 1.36 \\
+\texttt{missing unit} & 6886 & 25 & 0.55 & 0.55 & 61.83 & 0.00 & 0.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Item Material KPIs for \texttt{AutoGluonMM-gal}}
+\begin{tabular}{rccccccc}
+\textbf{Material} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{book other} & 36 & 10 & 50.70 & 25.00 & 79.62 & 70.00 & - \\
+\texttt{book paper} & 1664 & 671 & 75.12 & 66.10 & 81.07 & 93.29 & 13.86 \\
+\texttt{book plastic tight wrap} & 127 & 38 & \textbf{85.85} & \textbf{81.44} & \textbf{92.58} & \textbf{97.37} & \textbf{26.32} \\
+\texttt{cardboard} & 3212 & 1261 & 70.14 & 58.16 & 79.10 & 92.07 & 13.64 \\
+\texttt{other} & 409 & 90 & 56.90 & 56.83 & 76.70 & 53.33 & 22.22 \\
+\texttt{paper} & 131 & 73 & 79.82 & 74.69 & 80.99 & \textbf{100.00} & 5.48 \\
+\texttt{plastic bubble wrap} & 187 & 36 & 49.04 & 36.65 & 85.67 & 75.00 & 2.78 \\
+\texttt{plastic hard} & 1032 & 148 & 64.01 & 64.40 & 86.34 & 66.22 & 29.73 \\
+\texttt{plastic loose bag} & 2419 & 684 & 73.77 & 68.66 & 88.06 & 91.96 & 14.77 \\
+\texttt{plastic tight wrap} & 850 & 195 & 65.69 & 63.66 & 84.37 & 71.28 & 16.41 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[!ht]
+\centering
+\caption{Damage Type KPIsfor \texttt{AutoGluonMM-gal}}
+\begin{tabular}{rccccccc}
+\textbf{Damage Type} & \textbf{Total} & \textbf{Defects} & \textbf{AP\textsubscript{any}} [\%] & \textbf{AP\textsubscript{major}} [\%] & \textbf{AUROC} & \textbf{R@50\%P} [\%] & \textbf{R@1\%FPR} [\%] \\ \hline \hline
+\texttt{penetration} & 7827 & 966 & 48.35 & 47.07 & 84.40 & 46.27 & 16.87 \\
+\texttt{deformation} & 8646 & 1785 & 58.47 & 43.24 & 85.04 & \textbf{71.99} & 12.21 \\
+\texttt{actuation} & 8403 & 1542 & \textbf{62.11} & \textbf{57.57} & \textbf{86.93} & 75.36 & 16.73 \\
+\texttt{superficial} & 7585 & 724 & 32.67 & 19.27 & 83.59 & 2.62 & 7.18 \\
+\texttt{spillage} & 6943 & 82 & 6.34 & 6.65 & 69.51 & 0.00 & 18.29 \\
+\texttt{deconstruction} & 7888 & 1027 & 57.13 & 56.43 & 86.50 & 65.92 & \textbf{19.96} \\
+\texttt{missing unit} & 6886 & 25 & 16.27 & 16.27 & 84.46 & 8.00 & 36.00 \\
+    \hline \hline
+\end{tabular}
+\end{table*}
+
+\section{Benchmark: Model Training Details}
+\label{sec:model_training_details}
+
+For the supervised methods we used validation set hyperparameter tuning. We employed standard augmentations (color, rotation, flip, zoom) for supervised baselines, and others already inherently apply similar concepts (WinCLIP’s windowed feature extraction). Unless stated otherwise, we used the default values for all methods. Finally, we addressed key
+issues, such as AD methods (PatchCore, WinCLIP) being
+distracted by the image background, by applying them to
+item crops rather than full tray crops.
+\vspace{-4mm}
+\paragraph{CLIP and POMP}
+For both the CLIP and POMP baselines we use the open-source implementation of POMP~\cite{ren2023prompt}. Thereby, we use the ViT-B/16 model, and $224 \times 224$ image input resolution. The evaluated prompts are listed in Section~\ref{sec:clip_prompts}. Example model predictions are shown in Table~\ref{tab:failure_modes_no_references}.
+\vspace{-4mm}
+\paragraph{WinCLIP}
+
+We use the open-source implementation of WinCLIP~\cite{jeong2023winclip}, based on a pre-trained openCLIP backbone (ViT-B/16 with $240\times240$ input resolution pretrained on LAION400M dataset).  We use the original positive and negative text prompts (22 templates combined with 11 normal/anomaly states), using the generic item type \texttt{object}, e.g.
+\vspace{-2mm}
+\begin{verbatim}
+a photo of an object with damage
+a photo of the object with damage
+for visual inspection
+\end{verbatim}
+\vspace{-2mm}
+Example model predictions are shown in Table \ref{tab:failure_modes_with_training_with_references}.
+
+\vspace{-4mm}
+\paragraph{Claude}
+For our experiments with Claude we use the AWS Bedrock API. The model version is Claude Sonnet v3.5 and we use the default sampling parameters: temperature $t=1$, nucleus sampling $top_p = 0.999$ and no $top_k$ sampling.
+\vspace{-4mm}
+\paragraph{Pixtral}
+We use the HuggingFace library to fine-tune the Pixtral-12B model for our purpose. We use a constant learning rate of $3^{-5}$ and an effective batch size of 32. We run distributed training for one epoch on the entire training set across 8 A100 GPUs. The training data is constructed from the available labels as follows:
+\vspace{-2mm}
+\begin{verbatim}
+This item is {condition}.
+```json
+{
+  "is_damaged_ge1": {true/false},
+  "is_damaged_ge2": {true/false},
+  "damage_intensity_median": {0, 1, 2},
+  "condition": "{condition}",
+  "severity": {severity}
+}
+```
+\end{verbatim}
+\vspace{-3mm}
+
+where \emph{condition} is set to \texttt{DAMAGED} or \texttt{UNDAMAGED}, according to the field
+\texttt{is\_damaged\_ge1}, and \emph{severity} is the damage intensity median multiplied by 5 to bring it to the range between 0 and 10. We then use the same prompt as before (see Section~\ref{sec:vlm_prompts}) and extract the value for \emph{severity} as our damage confidence prediction.
+
+\vspace{-4mm}
+\paragraph{PatchCore}
+We used the PatchCore implementation from the anomalib package \cite{akcay2022anomalib}. For each test image, a memory bank was built from up to 3 reference images (batch size = 1) with a coreset sampling ratio of 1.0 (no subsampling). Patch-level anomaly scores were computed using Euclidean distance to the max(1, |reference images|) nearest neighbors. We used ResNet50 with 1024×1024 inputs, ImageNet normalization, and features extracted from layers 2 and 3. The image-level anomaly threshold was computed using anomalib’s Adaptive F1 method on a validation split containing both normal and anomalous samples. For this step, the memory bank was constructed from 10 normal validation images with a 0.01 coreset ratio. The resulting thresholds (43.76 for PatchCore50, 3.69 for PatchCore50-ft) were fixed during testing via anomalib’s Manual Threshold setting. Example predictions are shown in Table~\ref{tab:failure_modes_with_training_with_references}.
+
+\vspace{-4mm}
+\paragraph{ResNet50}
+\label{app:resnet50-training_details}
+We fine-tune different ResNet backbones pre-training on ImageNet on a single V100 GPU using the \href{https://timm.fast.ai/}{timm} library. After hyperparameter tuning, we arrived at the following settings (final choices in \textbf{bold}):
+\begin{itemize}
+    \item Backbones: ResNet34, \textbf{ResNet50}, ResNet152
+    \item Pre-training weights: ImageNet
+    \item Input size: 1024x1024, RGB
+    \item Batch size 24 (ResNet152), \textbf{48} (\textbf{ResNet50}), 64 (ResNet34); Epochs: 20
+    \item Optimizer: SGD with initial learning rate 0.005, momentum 0.8, ReduceLROnPlateau learning rate scheduler, reduction factor (0.15), patience epochs (1), minimum learning rate (1e-5)
+    \item Dropout (dense layer for classification only, 0.5)
+    \item Data augmentation: flip (horizontal/vertical), rotation ($0 \ldots 180$), shift 10\%, zoom 10\%
+\end{itemize}
+Example model predictions are shown in Table~\ref{tab:failure_modes_no_references}.
+
+\vspace{-4mm}
+\paragraph{ViT-S}
+We fine-tuned a Vision Transformer with different pretraining weights on 8 V100 GPUs.
+After hyperparameter tuning, we arrived at the following settings:
+\begin{itemize}
+    \item Backbones: ViT-small (22.1M parameters)\cite{dosovitskiy2021imageworth16x16words}.
+    \item Pre-training weights: \textbf{DINOv2}~\cite{oquab2024dinov}
+    \item Input size: 1024x1024, RGB, Patch size: 14x14, RGB
+    \item Batch size 8, Epochs: 30
+    \item Optimizer: Adam with initial learning rate $5 \times 10^{-6}$ (not scaled by Batch size), momentum 0.9, weight decay (0.05), Cosine scheduler
+    \item Data augmentation: flip (horizontal/vertical) and AutoAgument set to \texttt{rand-m9-mstd0.5-inc1}
+\end{itemize}
+Example model predictions are shown in Table~\ref{tab:failure_modes_no_references}.
+\vspace{-4mm}
+\paragraph{AutoGluon}
+To train a classifier with reference images we employ AutoGluonMM, a freely available AutoML framework (\url{https://auto.gluon.ai}). Training is performed on a single V100 GPU using the default parameter settings. 20\% of the training set are used for validation. The resulting multi-modal fusion MLP model uses a ViT backbone and has 97.4M parameters. Example model predictions are shown in Table \ref{tab:failure_modes_autogluon}.
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{prc_no-training_no-references.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{prc_no-training_with-references.png}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{prc_with-training_no-references.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{prc_with-training_with-references.png}
+    \end{subfigure}
+
+    \caption{Precision-Recall curves for all four experiments. These curves illustrate the trade-off between precision and recall across different operating thresholds for each experimental configuration.}
+    \label{fig:pr_curves}
+\end{figure*}
+
+\begin{figure*}[p]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{roc_no-training_no-references.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{roc_no-training_with-references.png}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{roc_with-training_no-references.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{roc_with-training_with-references.png}
+    \end{subfigure}
+
+    \caption{Receiver Operating Characteristic (ROC) curves for all four experiments. These curves show the performance of the classification models by plotting the true positive rate against the false positive rate at various threshold settings.}
+    \label{fig:roc_curves}
+\end{figure*}

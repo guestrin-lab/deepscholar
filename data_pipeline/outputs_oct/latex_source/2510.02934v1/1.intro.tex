@@ -1,0 +1,47 @@
+\section{Introduction}
+
+%Problem context: correctness assessment for LLM-generated code is essential but challenging
+
+
+
+In recent years, Large Language Models (LLMs) have exhibited their remarkable capabilities in code generation~\cite{HumanEval, rambo, zhang2023repocoder, zheng2025towards} and are increasingly being integrated into the modern software development process~\cite{dai2025comprehensive, github_copilot, codegeex2}. Especially, Code LLMs, such as \deepseek~\cite{deepseek-coder} or \codellama~\cite{codellama}, are fine-tuned on extensive code corpora, enabling them to effectively leverage both natural language understanding and program synthesis abilities. These models have demonstrated strong performance on various code generation benchmarks~\cite{HumanEval, MBPP} and have shown promise in automating a wide range of software engineering (SE) tasks~\cite{zheng2025towards}.
+
+
+
+However, recent empirical studies reveal that code generation performance of LLMs often degrades in practical development scenarios~\cite{rambo, zhang2023repocoder, liu2023your, li-etal-2024-deveval}. Although LLMs are capable of generating plausible code, their outputs could be functionally incorrect or insecure~\cite{liu2023your, perry2023users, liu2024no}. 
+Perry~\etal~\cite{perry2023users} report that while AI assistants can significantly improve software development productivity, they can also result in more insecure code. Additionally, Tihanyi~\etal~\cite{tihanyi2025secure} employed SMT-based Context-Bounded Model Checker to validate LLM-generated code and found that over 62\% of the generated programs contain vulnerabilities. 
+
+
+
+As LLM-generated code is increasingly integrated into real-world applications, ensuring its correctness and reliability has become critical~\cite{msr2023-prem-llm-code-bugs,llm-code-bugs1,code-quality-chagpt,evaluating-chatgpt}. 
+%
+Low-quality code can lead to significant functional failures, security flaws, and increased technical debt. These risks demand effective and rigorous evaluation techniques to assess the quality and reliability of code produced by LLMs~\cite{survey_3, survey-icse24, expectation}.
+
+
+To address the challenge of assessing the correctness of LLM-generated code, recent studies have explored both \textit{black-box} and \textit{white-box} strategies. Black-box approaches~\cite{embedding_emse22,opt-pretrained-model,pretrained-survey} typically rely solely on the final generated outputs. For example, pre-trained models such as CodeBERT~\cite{codebert} and CodeT5~\cite{codet5} are employed to encode the semantics of the LLM-generated code, and a downstream classifier then predicts whether the code is correct. Meanwhile, white-box approaches~\cite{openia, internal-state-2, inner-working, probing, internal-state, inside} leverage the internal reasoning process of the LLM during generations, e.g., hidden states or attention activations, to detect correctness. These methods have demonstrated that internal representations of LLMs encode meaningful signals related to code correctness, enabling the white-box approaches to outperform the black-box ones~\cite{openia, internal-state-2, internal-state} across multiple benchmarks.
+%
+
+
+Despite their potential performance, these existing white-box approaches~\cite{openia, internal-state-2, internal-state} adopt a \textit{rigid representation selection strategy}, which restricts their generalizability and robustness. 
+%
+These approaches assume that correctness-related signals consistently reside in the same layers and token positions. However, in practice, the distribution of these signals is highly dependent on model architectures and tasks. 
+%
+As a result, relying on a \textit{fixed} selection of layer and token positions can lead to the omission of critical information and result in suboptimal performance. 
+%
+Moreover, since there is no one-size-fits-all strategy across LLMs, a hard-coded selection strategy is less adaptable to the diversity of the models, reducing its effectiveness in real-world scenarios.
+
+%our approach: idea and overview
+In this work, we introduce \tool, a novel \textit{model-agnostic white-box} framework for assessing the correctness of LLM-generated code. Our key insight is that not all hidden states contribute equally to correctness prediction, and the positions of important signals vary across LLM architectures. To effectively capture the most informative signals, \tool employs an attention-based mechanism to learn importance scores over all internal states. This process allows a probing classifier to focus on the most relevant features while down-weighting the irrelevant ones. The weighted representations are then aggregated and passed to a probing classifier to determine whether the generated code is correct. By \textit{dynamically selecting meaningful signals}, \tool improves its robustness and generalizability across diverse LLMs.
+
+%results
+To evaluate the performance of \tool, we conduct extensive experiments across multiple benchmarks and a set of six code LLMs. The experimental results demonstrate that \tool consistently outperforms  baseline approaches across all evaluation dimensions. In security assessment, \tool surpasses the state-of-the-art (SOTA) white-box method, \openia, by up to 18\% in accuracy. For compilability and functionality assessment, it exhibits exceptional robustness to increased code complexity, achieving performance gains of up to 19\% and 111\%, respectively. These findings highlight \tool’s capability to deliver accurate and reliable correctness assessment across varied tasks, models, and complexity levels.
+
+
+
+
+In brief, this paper makes the following contributions:
+\begin{itemize}
+  \item We formalize the task of code correctness assessment across multiple dimensions, including  \textit{compilability}, \textit{functionality}, and \textit{security}, providing a rigorous foundation for evaluating LLM-generated code.
+   \item We propose \tool, a novel model-agnostic framework that dynamically selects informative internal representations of LLMs during generations for assessing code correctness.
+    \item We conduct extensive experiment evaluations demonstrating the robustness and generalizability of \tool across diverse code LLMs and benchmarks.
+\end{itemize}

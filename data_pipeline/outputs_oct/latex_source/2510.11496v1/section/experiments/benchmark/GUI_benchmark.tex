@@ -1,0 +1,14 @@
+\subsection{GUI Tasks}
+\subsubsection{Benchmarks}
+In order to validate the capability of the AndesVL in terms of UI understanding, we conducted experiments on ScreenSpot~\cite{cheng2024seeclick}, ScreenSpot-V2~\cite{wu2024atlas}, ScreenSpot-Pro~\cite{li2025screenspot}, and our proposed AndesUI-Bench.
+
+\textbf{ScreenSpot}~\cite{cheng2024seeclick}: ScreenSpot is a realistic GUI grounding benchmark that encompasses mobile, desktop, and web environments. It contains over 600 screenshots and 1200 instructions from iOS, Android, macOS, Windows, and webpages. It specifically includes both text-based elements and a variety of widgets and icons.
+
+\textbf{ScreenSpot-V2}~\cite{wu2024atlas}: ScreenSpot-V2 is an enhanced version of the ScreenSpot benchmark that addresses annotation errors and ambiguities in the original dataset. Specifically, it corrects spelling errors, clarifies ambiguous instructions, removes overly similar questions, and fixes mislabeled ground-truth bounding boxes. These improvements ensure a more accurate and reliable evaluation for GUI grounding tasks.
+
+\textbf{ScreenSpot-Pro}~\cite{li2025screenspot}: ScreenSpot-Pro is a new benchmark designed to evaluate the grounding capabilities of MLLMs in high-resolution professional settings. It includes 1,581 unique instructions in high-resolution screenshots sourced from 23 applications across five industries (development, creative, CAD, scientific, and office) and three operating systems (Linux, macOS, and Windows). The benchmark highlights the challenges of high-resolution displays, smaller target sizes, and complex environments in professional applications.
+
+For the Screenspot, ScreenSpot-V2, and ScreenSpot-Pro datasets, the annotation format is bounding boxes. For each data instance, the model is required to output a specific coordinate; if the coordinate falls within the annotated bounding box, it is considered a correct prediction and contributes to the final accuracy. 
+%The prompt we used is: "You are a mobile UI understanding assistant. You will receive a question, and you should return the correct answer in the format [x,y]. Question: \{instruction\}. Answer:".
+
+\textbf{AndesUI-Bench}: The AndesUI-Bench was developed to evaluate the smartphone UI understanding capabilities of MLLMs. As mentioned in Appendix~\ref{app:andesui_dataset}, the AndesUI-Bench represents the test set of the AndesUI dataset. This dataset includes 9k referring entries, 7.6k grounding entries, 455 comprehensive description entries, and 1.2k complex question-answer entries.

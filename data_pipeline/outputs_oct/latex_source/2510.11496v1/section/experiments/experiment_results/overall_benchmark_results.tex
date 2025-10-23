@@ -1,0 +1,48 @@
+\subsubsection{Evaluation Results}
+
+\begin{table}
+    \small
+    \centering
+    \begin{tabular}{l|ccccccccc}
+        \hline
+         Model & MMMU & MathVista & AI2D & HallBench  & OCRBench & MMStar & MMVet & MMBv1.1 & Overall\\
+         \hline
+         AndesVL-4B  & \textbf{55.4} & \textbf{70.2}  & 80.6 & \textbf{50.3} & 80.1 & 60.7 & 56.4 & 75.7 & \textbf{66.2} \\
+         Qwen2.5-VL-3B ~\cite{bai2025qwen2_5}  & 51.2 & 60.9 & 81.4 & 46.6 & 82.6 & 56.3 & 60 & 76.8 & 64.5\\
+         InternVL2.5-4B ~\cite{chen2024expanding}  & 51.8 & 60.8 & 81.4 & 46.6 & 82 & 58.6 & 61.5 & 78.2 & 65.1 \\
+         Gemma3-4B ~\cite{gemmateam2025gemma3}  &  47.3 & 46.3 & 70.7 & 40.8 & 66 & 47.9 & 57.8 & 66.4 & 55.4\\
+         Phi-3.5-Vision ~\cite{abdin2024phi3}  & 44.6 & 43.3 & 77.8 & 40.5 & 59.9 & 47.5 & 43.2 & 67.4 & 53\\
+         MM1.5-3B ~\cite{zhang2024mm1_5}  & 37.1 & 44.4 & 65.7 & - & 65.7 & - & 41 & - & - \\
+         BlueLM-V-3B ~\cite{lu2024bluelm}  & 45.1 & 60.9 & \textbf{85.3} & 48 & \textbf{82.9} & \textbf{62.3} & \textbf{61.8} & \textbf{82.7} & 66.1\\
+         \hline
+         AndesVL-2B  & 47.2 & 54.9 & 75.6 & 45.4 & 79 & 50.6 & 43.8 & 71.9 & 58.5 \\
+         Qwen2-VL-2B ~\cite{wang2024qwen2vl}  & 42.2 & 48 & 74.7 & 42.4 & 79.7 & 47.5 & 51.5 & 42.2 & 57.3  \\
+         InternVL2.5-2B ~\cite{chen2024expanding}  & 43.2 & 51.1 & 74.9 &  42.6 & 80.2 & 53.7 & 62.6 & 70.9 & 59.9 \\
+         InternVL3-2B ~\cite{zhu2025internvl3}  & 48.6 & 57 & 78.7 & 42.5 & 83.5 & 60.7 & 64.6 & 78 & 64.2 \\
+         Ovis2-2B ~\cite{lu2024ovis}  & 45.6 & 64.1 & 82.7 & 50.2 & 87.3 & 56.7 & 58.3 & 76.9 & 65.2 \\
+         SAIL-VL-1.5-2B  ~\cite{dong2025scalable}  & 46.7 & 67.3 & 83.7 & 49.8 & 88.5 & 62.8 & 61.4 & 78.4 & 67.3 \\
+         MiniCPM-V-2B ~\cite{yao2024minicpm}  & 38.2 & 39.8 & 62.9 & 36.1 & 60.5 & 39.1 & 41 & 65.7 & 47.9 \\
+         \hline
+         AndesVL-1B  & 41.3 & 47.2  & 68 & 35.2 & 76.4 & 46.6 & 36.7 & 65.1 & 52.4\\
+         InternVL2.5-1B ~\cite{chen2024expanding}  & 47.1 & 60.9 & 69.3 & 39 & 78.5 & 50.1 & 47.6 & 66.5 & 
+         54.9 \\
+         InternVL3-1B ~\cite{zhu2025internvl3}  & 45.8 & 60.8 & 69.4 & 41.4 & 79 & 51.5 & 58.7 & 43.4 & 57.2 \\
+         Ovis2-1B ~\cite{lu2024ovis}  & 49 & 59.4 & 76.4 & 45.2 & 89 & 52.1 & 50 & 68.3 & 59.6 \\
+         MM1.5-1B ~\cite{zhang2024mm1_5}  & 35.8 & 37.2 & 59.3 & - & 60.5 & - &  37.4 & - &- \\
+         \hline
+    \end{tabular}
+    \caption{Performance of AndesVL and other MLLMs on OpenCompass academic benchmarks. The best results are in bold.}
+    \label{tab:benchmark_1}
+\end{table}
+
+Table \ref{tab:benchmark_1} illustrates the detailed evaluation results of different MLLMs on OpenCompass academic benchmarks. Some results are sourced from the benchmark papers and the OpenCompass leaderboard~\cite{opencompass2023}. 
+
+As indicated in the table, our proposed model, AndesVL, demonstrates significant improvements in various multimodal tasks when compared to prior models of similar parameter size. This enhancement highlights the effectiveness of our advanced training strategies and the quality of the training corpus utilized.
+
+AndesVL-4B achieves an overall score of 66.2 on the OpenCompass academic benchmarks, the highest among all evaluated models. This result underscores the model's proficiency in addressing a range of real-world tasks that require multimodal perception, understanding, and reasoning.
+
+Notably, our model attains an impressive score of 55.4 on the general multimodal benchmark, MMMU, surpassing all other leading models. This exceptional performance reflects AndesVL's capability in handling complex multimodal tasks effectively. 
+
+Furthermore, AndesVL-4B scores 70.2 on the MathVista benchmark, significantly advancing the state-of-the-art performance by nearly 10 points. This improvement illustrates the model's superior capabilities in multimodal mathematics and reasoning scenarios.
+
+

@@ -1,0 +1,112 @@
+\pdfminorversion=4
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  %
+
+\IEEEoverridecommandlockouts                              %
+
+\overrideIEEEmargins                                      %
+
+\pdfminorversion=4
+
+\usepackage[]{easy-todo} 
+\usepackage{graphicx}
+\usepackage{epsfig} %
+\usepackage{url}
+\usepackage[acronym]{glossaries}
+\usepackage[toc=false,abbreviations,symbols,nogroupskip,nonumberlist]{glossaries-extra}
+\usepackage{booktabs} %
+\usepackage{amsfonts} %
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac} %
+\usepackage{microtype} %
+\usepackage{doi}
+\usepackage[caption=false, font=footnotesize]{subfig}
+\usepackage[dvipsnames, table]{xcolor} %
+\usepackage{multirow}
+\usepackage{floatrow}
+\usepackage{blindtext}
+\usepackage{bm} %
+\usepackage{upgreek} %
+\usepackage{listings} %
+\usepackage{tikz}
+\usepackage{balance} %
+\usepackage{soul}
+\usetikzlibrary{patterns} %
+\usepackage{dblfloatfix}
+\usepackage{cite} 
+\usepackage{makecell}
+\usepackage[symbol*]{footmisc}
+\usepackage{wrapfig}
+\usepackage{mwe} %
+\usepackage{hyperref}
+\usepackage{cuted}
+\usepackage{capt-of}
+
+
+
+\DeclareMathOperator*{\avg}{avg}
+\floatsetup[table]{capposition=above}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={black},
+    citecolor={black},
+    urlcolor={blue}
+}
+
+\graphicspath{{images/}}
+
+
+\title{\LARGE \bf
+CrazyMARL: Decentralized Direct Motor Control Policies for Cooperative Aerial Transport of Cable-Suspended Payloads
+}
+
+
+\author{Viktor Lorentz$^{*}$, Khaled Wahba, Sayantan Auddy, Marc Toussaint and Wolfgang H{\"o}nig%
+\thanks{*Corresponding author: {\tt\small lorentz@campus.tu-berlin.de}}%
+\thanks{All authors are with Technical University of Berlin, Berlin, Germany.}%
+}
+
+\makeglossaries[abbreviations]
+\input{abbreviations.tex}
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{strip}
+  \centering
+  \vspace{-1cm}
+  \includegraphics[width=\textwidth]{crazymarl_schematic.pdf}
+  \captionof{figure}{Overview of our approach. (Left panel) Training in Mujoco with end-to-end JAX and domain randomization. \gls{ippo} with shared parameters maps each per agent observation $o_t^i=[\,e_t^P, v_t^P, \delta_t^i, \mathrm{vec}(R_t^i), v_t^i, \omega_t^i, a_{t-1}^i, \{\delta_t^j\}_{j\neq i}\,]$ to motor commands under a reward that combines tracking, stability, and safety. The local observation packs payload error and velocity, the quadrotors' relative position, orientation, and velocities, its last action, and for coordination, the relative positions of teammates. 
+  (Right panel) Sim-to-Real on the Crazyflie~2.1 robot, where the same decentralized policy runs on two quadrotors at $250\,\mathrm{Hz}$ and outputs direct \gls{pwm}. The sequences show autonomous takeoff and recovery scenarios of a cable-suspended payload under strong pushes and wind (shown with cyan-colored arrows) with an average speed of 3.5~m/s. Video frames progress from left to right.}
+  \label{fig:overview}    
+\end{strip}
+
+\input{abstract}
+\input{1-intro}
+
+
+\input{2-related-work}
+
+
+\input{4-quad-env}
+
+\input{5-evaluation}
+
+\input{7-conclusion}
+
+\input{8-appendix}
+
+
+\balance
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
+
+
+
+
+\end{document}

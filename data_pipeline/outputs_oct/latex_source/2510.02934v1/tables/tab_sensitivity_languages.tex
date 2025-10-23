@@ -1,0 +1,21 @@
+
+\begin{table}[!htp]\centering
+\caption{Correctness assessment performance in F1-score of the approaches across different programming languages}
+\label{tab:sensitivity_languages}
+\resizebox{\columnwidth}{!}{ % use this if the table is too large
+\begin{tabular}{l|rrrrr}\toprule
+Targeted language &CodeBERT &CodeT5+ &\openia &\tool \\\midrule
+CPP &0.65 &0.67 &0.82 &0.76 \\
+C Sharp &0.74 &0.75 &0.80 &0.85 \\
+Java &0.59 &0.64 &0.68 &0.76 \\
+JavaScript &0.66 &0.80 &0.86 &0.89 \\
+PHP &0.54 &0.65 &\cellcolor[HTML]{f8f9fa}0.71 &0.83 \\
+Python &0.37 &0.50 &0.67 &0.78 \\
+Shell Script &0.58 &0.58 &0.64 &0.67 \\
+TypeScript &0.72 &0.82 &0.88 &0.86 \\
+\midrule
+Average &0.61 &0.68 &0.76 &0.80 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

@@ -1,0 +1,50 @@
+\begin{table*}[t!]
+\centering
+\renewcommand{\arraystretch}{0.95}
+\setlength\tabcolsep{3.2pt}
+\newcommand{\MMLongBench}{\makecell{MMLong-Doc\\(Acc / F1)}}
+\newcommand{\MPD}{\makecell{MPDoc\\(val)}}
+\newcommand{\SlideVQA}{\makecell{SlideVQA-Mini\\(ANLS / EM / F1)}}
+\newcommand{\DocGenome}{\makecell{DocGenome\\(SP Acc / MP Acc)}}
+\newcommand{\MMNIAH}{\makecell{MM-NIAH\\(Short / Medium / Long / Overall)}}
+{\fontsize{8}{10}\selectfont 
+\begin{tabular}{l|ccccccc}
+Model Name                              & \MPD& \MMLongBench & \SlideVQA          & \DocGenome & \MMNIAH \\
+\hline
+InternVL2-1B~\cite{chen2024far}         & 64.7 & 7.8 / 9.1    & 28.8 / 22.4 / 26.3 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-1B                          & 71.2 &              &                    &            &         \\
+InternVL2-2B~\cite{chen2024far}         & 71.8 & 10.5 / 10.8  & 35.4 / 28.3 / 32.3 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-2B                          & 76.3 &              &                    &            &         \\
+\hline
+InternVL2-4B~\cite{chen2024far}         & 76.3 & 12.6 / 11.9  & 50.1 / 40.7 / 45.6 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-4B                          & 81.7 &              &                    &            &         \\
+\hline
+InternVL2-8B~\cite{chen2024far}         & 79.3 & 17.4 / 16.5  & 55.7 / 44.3 / 49.6 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-8B                          & 82.4 &              &                    &            &         \\
+\hline
+InternVL-Chat-V1.5~\cite{chen2024far}   & 77.7 & 12.7 / 12.5  & 51.3 / 41.1 / 46.8 &            &         \\
+InternVL2-26B~\cite{chen2024far}        & 80.2 & 16.3 / 15.3  & 56.3 / 45.3 / 50.9 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-26B                         & 85.1 &              &                    &            &         \\
+\hline
+InternVL2-40B~\cite{chen2024far}        & 77.2 & 17.7 / 16.7  & 56.9 / 46.0 / 51.5 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-38B                         & 87.0 &              &                    &            &         \\
+\hline
+InternVL2-Llama3-76B~\cite{chen2024far} & 80.1 & 21.1 / 20.0  & 61.1 / 50.9 / 56.2 &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-Llama3.1-76B                &      &              &                    &            &         \\
+\rowcolor{gray!15}
+InternVL2.5-Pro                         &      &              &                    &            &         \\
+
+\end{tabular}
+}
+\caption{\textbf{Comparison of multimodal long context performance.}
+We evaluate InternVL's long-context capabilities across 5 benchmarks, including MPDocVQA~\cite{tito2023hier}, MMDU~\cite{liu2024mmdu}, MMLongBench-Doc~\cite{ma2024mmlong}, DUDE~\cite{van2023document}, MM-NIAH~\cite{wang2024needle}, and DocGenome~\cite{xia2024docgenome}.
+}
+\label{tab:benchmark_long_context}
+\end{table*}

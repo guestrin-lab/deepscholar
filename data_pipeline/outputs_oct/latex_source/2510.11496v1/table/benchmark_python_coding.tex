@@ -1,0 +1,70 @@
+
+% \begin{table*}[!thb]
+% \centering
+
+% \resizebox{0.9\linewidth}{!}{
+% \tablestyle{10pt}{1.2}
+% \begin{tabular}{l|cccc}
+% \toprule
+% {Models} & {HumanEval} & {HumanEval-X} & {MBPP}  & {MBPP-CN}   \\
+% & {4-shot} & {5-shot} & {5-shot} & {0-shot} \\
+% \multicolumn{5}{c}{\greencolor{{  $\leq 7$B Models}}} \\
+% Llama2-7B   &  14.6  &  11.2  &  28.8  &  16.0  \\
+% Mistral-7B-v0.1   &  27.4  &  28.5  &  47.5  &  35.0  \\
+% Baichuan2-7B-Base   &  22.0  &  16.1  &  35.0  &  23.2  \\
+% Qwen-7B-Chat &  36.0  &  24.4  &  33.9  &  27.0 \\
+% ChatGLM3-6B-Base   &  45.1  &  38.3  &  {{68.9}}  &  {50.0}  \\
+% \midrule
+% InternLM2-7B   &  {56.1}  &  {39.6}  &  51.8  &  45.4  \\
+% InternLM2-7B-Base   &  31.1  &  28.8  &  54.1  &  40.6  \\
+% \multicolumn{5}{c}{\bluecolor{{ $13\sim 20$B Models}}} \\
+% Llama2-13B   &  18.9  &  17.2  &  38.9  &  25.2  \\
+% Mixtral-8x7B-v0.1   &  32.3  &  38.3  &  59.5  &  43.8  \\
+% Baichuan2-13B-Base   &  23.2  &  19.5  &  44.0  &  30.6  \\
+% Qwen-14B   &  30.5  &  31.0  &  52.9  &  41.0  \\
+% \midrule
+% InternLM2-20B   &  48.8  &  {{48.2}}  &  {63.0}  &  {{53.2}}  \\
+% InternLM2-20B-Base   &  32.3  &  31.5  &  59.9  &  44.4  \\
+% \bottomrule
+% \end{tabular}}
+% \caption{{Comparison of Base Models on Python Coding}. The model name in {bold} indicates the top performer, while an {underline} signifies the leading model within a similar parameter size group.}
+% \label{tab:chat_code_results}
+% \end{table*}
+
+\begin{table*}[!t]
+\centering
+
+\resizebox{0.9\linewidth}{!}{
+\tablestyle{10pt}{1.2}
+\begin{tabular}{l|c|cccc|c}
+
+\multirow{2}{*}{model name} & \multirow{2}{*}{\#param}   & {HumanEval} & {HumanEval-X} & {MBPP}  & {MBPP-CN}  & \multirow{2}{*}{avg.}  \\
+& & (4-shot) & (5-shot) & (5-shot) & (0-shot) \\
+% \multicolumn{6}{c}{\greencolor{{  $\leq 7$B Models}}} \\
+\hline
+Llama2-7B-Chat & 7B & 15.2  &  10.6  &  30.4  &  17.8 & 18.5\\
+Llama2-13B-Chat & 13B & 8.5  &  12.9  &  19.8  &  22.2  & 15.9 \\
+
+Mistral-7B-Instruct-v0.2  & 7.3B & 35.4  &  27.1  &  23.7  &  17.6 & 26.0 \\
+Mixtral-8x7B-Instruct-v0.1 & 46.7B & 32.3  &  38.3  &  59.5  &  43.8 & 43.5 \\
+
+Baichuan2-7B-Chat & 7B & 17.7  &  15.4  &  37.7  &  20.8 & 22.9  \\
+Baichuan2-13B-Chat & 13B & 19.5  &  18.3  &  40.9  &  27.8 & 26.6 \\
+
+Qwen-7B-Chat & 7B & 36.0  &  24.4  &  33.9  &  27.0 & 30.3 \\
+Qwen-14B-Chat & 14B & 41.5  &  29.9  &  29.2  &  27.6 & 32.1  \\
+
+ChatGLM3-6B & 6.2B & 53.1  &  17.6  &  {54.9}  &  38.2 & 41.0 \\
+\hline
+\rowcolor{gray!15}
+InternLM2-Chat-7B-SFT & 7B & {61.6}  &  {{43.9}}  &  47.5  &  44.4  & 49.4 \\
+\rowcolor{gray!15}
+InternLM2-Chat-7B & 7B & 59.2  &  41.7  &  52.5  &  {46.4}  & {50.0} \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B-SFT & 20B & 67.1  &  {42.0}  &  63.4  &  52.2 & 56.2  \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B & 20B &  {{67.7}}  &  39.8  &  {{65.8}}  &  {{54.0}} & {56.8} \\
+\end{tabular}}
+\caption{\textbf{Comparison of chat models on python coding}.}
+\label{tab:chat_code_results}
+\end{table*}

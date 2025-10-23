@@ -1,0 +1,53 @@
+\begin{algorithm}[t]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\SetKwFunction{getObligationsStates}{GET\_OBLIGATIONS\_STATES}
+\SetKwFunction{GetSnapshot}{GET\_SNAPSHOT}
+\SetKwFunction{GetMappings}{GET\_MAPPINGS}
+\caption{Evaluate States of Policy Rules at Time $t$}
+\label{algo:states}
+\Input{Policy $P$, Knowledge Base $K$, Time $t$}
+\Output{Object \texttt{states}}
+
+\SetKwProg{Fn}{Function}{:}{}
+\Fn{\getObligationsStates{$P$, K, t}}{
+
+$K_t \leftarrow$ \GetSnapshot{$K$, $t$} \;
+\texttt{states} $\leftarrow$ new \texttt{ObligationStates}() \;
+
+\ForEach{rule $r \in P$}{
+    $\omega \leftarrow$ \GetMappings{$r.condition$, $K_t$} \;
+    \If{$\omega \ne \emptyset$}{
+        \ForEach{binding $\mu \in \omega$}{
+            mappedRule $\leftarrow \mu(r)$ \;
+
+            \If{mappedRule.startTime $\leq t \leq$ mappedRule.deadline}{
+              \texttt{states.activeO} $\leftarrow$ \texttt{states.activeO} $\cup$ \{mappedRule\}
+              
+                \If{mappedRule.executionTime $=$ \texttt{null}}{
+                    \texttt{states.notSatisifedO} $\leftarrow$ \texttt{states.notSatisifedO} $\cup$ \{mappedRule\} \;
+                }
+              
+            }
+            \ElseIf{$t >$ mappedRule.deadline}{
+
+                \texttt{states.expiredO} $\leftarrow$ \texttt{states.expiredO} $\cup$ \{mappedRule\} \;
+                
+                \If{mappedRule.executionTime $=$ \texttt{null} \textbf{or} mappedRule.executionTime $>$ mappedRule.deadline}{
+                    \texttt{states.violatedO} $\leftarrow$ \texttt{states.violatedO} $\cup$ \{mappedRule\} \;
+                }
+         
+            }
+            \ElseIf{mappedRule.executionTime $\ne$ \texttt{null}}{
+                \If{mappedRule.startTime $\leq$ mappedRule.executionTime $\leq$ mappedRule.deadline}{
+                    \texttt{states.fulfilledO} $\leftarrow$ \texttt{states.fulfilledO} $\cup$ \{mappedRule\} \;
+                }
+            }
+        }
+    }
+}
+\Return{\texttt{states}} \;
+}
+\end{algorithm}

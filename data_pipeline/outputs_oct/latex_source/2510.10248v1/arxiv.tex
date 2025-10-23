@@ -1,0 +1,116 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+% zjx packages
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\tcbuselibrary{theorems,breakable,skins}
+\newtcbtheorem[]{myexample}{Example}%
+{
+  breakable,
+  enhanced,
+  colback=green!5,
+  colframe=green!35!black,
+  fonttitle=\bfseries,
+  % Adjust internal padding
+  top=2pt,         % Space between top frame and content
+  bottom=2pt,      % Space between bottom frame and content
+  % Adjust external margin
+  before skip=4pt, % Space before the box
+  after skip=4pt   % Space after the box
+}{th}
+
+
+\title{Reasoning-Enhanced Large Language Models for Molecular Property Prediction}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+
+\author{
+    Jiaxi Zhuang$^{1*}$, Yaorui Shi$^{1*}$, Jue Hou$^{1*}$, Yunong He$^1$, Mingwei Ye$^1$, Mingjun Xu$^1$, \\
+    \normalsize
+    \textbf{Yuming Su$^1$, Linfeng Zhang$^2$, Linfeng Zhang$^1$, Guolin Ke$^1$, Hengxing Cai$^{1\dagger}$} \\
+    $^1$DP Technology; \quad $^2$ Shanghai Jiao Tong University; \\ $^{*}$Equal contribution; \quad $^{\dagger}$Corresponding author.
+    %\\ \small{\texttt{\{zhuangjiaxi, caihengxing\}@dp.tech}}
+}
+
+% \author{
+%   Haitao Lin$^{1,3, \dag}$, \quad Guojiang Zhao$^{2, \dag}$, \quad Odin Zhang$^3$, \quad Yufei Huang$^1$, \\
+%   \textbf{  Lirong Wu$^1$, \quad Zicheng Liu$^1$, \quad Siyuan Li$^1$,\quad  Cheng Tan$^1$, \quad Zhifeng Gao$^2$, \quad Stan Z. Li$^{1, *}$}  \\
+%   $^1$ AI Lab, Research Center for Industries of the Future, Westlake University; \\
+%   $^2$ DP Technology; \quad $^3$ Zhejiang University; \quad $^\dag$ Equal Contribution; \quad $^{*}$ Corresponding Author. \\
+%   \texttt{linhaitao@westlake.edu.cn}
+% }
+
+
+% \author{Antiquus S.~Hippocampus, Natalia Cerebro \& Amelie P. Amygdale \thanks{ Use footnote for providing further information
+% about author (webpage, alternative address)---\emph{not} for acknowledging
+% funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+% }
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\newcommand{\todo}[1]{\textbf{\textcolor{red}{TODO: #1}}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\input{chaps/0_abstruct}
+\input{chaps/1_introduction}
+\input{chaps/2_background}
+\input{chaps/3_method}
+\input{chaps/4_experiments}
+\input{chaps/5_case}
+\input{chaps/6_conclusion}
+\input{chaps/7_ethics}
+
+
+\bibliography{arxiv}
+\bibliographystyle{iclr2026_conference}
+
+\newpage
+\input{chaps/8_appendix}
+
+\end{document}

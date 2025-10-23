@@ -1,0 +1,99 @@
+
+\newcommand\redcolor[1]{\cellcolor{gray!40!red!30}{#1}}
+\newcommand\bluecolor[1]{\cellcolor[HTML]{EAE2FE}{#1}}
+\newcommand\greencolor[1]{\cellcolor[HTML]{DFF5E5}{#1}}
+\newcommand\yellowcolor[1]{\cellcolor[HTML]{FEF1CE}{#1}}
+\newcommand\purplecolor[1]{\cellcolor[HTML]{A8B3E3}{#1}}
+
+% 对话模型
+% \begin{table*}[!t]
+% \centering
+% \resizebox{\linewidth}{!}{
+% \tablestyle{10pt}{1.2}
+% \begin{tabular}{l|c|ccccc|c}
+% \multirow{2}{*}{model name} & \multirow{2}{*}{\#param} & {MMLU} & {CMMLU} & {C-Eval} & {AGIEval} & {GAOKAO} &   \multirow{2}{*}{avg.} \\
+% & &{(5-shot)} & {(5-shot)} & {(5-shot)} & {(0-shot)} & {(0-shot)} &  \\
+% \hline
+% % \multicolumn{7}{c}{\purplecolor{{ API Models}}} \\
+% GPT-3.5 & -- & 69.1 & 53.9 & 52.5 & 39.9 & 51.1 & 53.30 \\
+% \hline
+% % \multicolumn{7}{c}{\greencolor{{  $\leq 7$B Models}}} \\
+% Llama2-7B-Chat & xxB &  48.2 & 30.7 & 34.9 & 28.5 & 19.8 &  24.4 \\
+% % Gemma-7B-IT &  &  &  &  &  \\
+% Mistral-7B-Instruct-v0.2 & xxB &  59.2 & 42.0 & 42.4 & 34.5 & 28.6 & 41.3 \\
+% Baichuan2-7B-Chat & xxB & 50.1 &  53.4 & 53.9 & 35.3 & 37.5 & 46.0 \\
+% ChatGLM3-6B & xxB & 58.0 & 57.8 & 59.1 & 44.2 & 56.3 & 55.1 \\
+% Qwen-7B-Chat & xxB & 57.1 & 57.9 & 59.8 & 39.7 & \underline{62.1} & 55.3 \\
+% % Qwen1.5-7B-Chat & 61.0 & \underline{68.0} & \underline{70.6} & 44.9 & \underline{69.9} \\
+% \hline
+% \rowcolor{gray!15}
+% InternLM2-Chat-7B-SFT & xxB & \underline{63.8} & \underline{63.2} & 
+% \underline{60.9} & \underline{49.0} & 57.3 & \underline{58.8} \\
+% \rowcolor{gray!15}
+% InternLM2-Chat-7B & xxB & 63.7 & 63.0 & 60.8 & 47.2 & 58.0 & 58.5 \\
+% \hline
+% % \multicolumn{7}{c}{\bluecolor{{ $13\sim 20$B Models}}} \\
+% Llama2-13B-Chat & xxB & 54.1 & 33.8 & 35.0 & 30.9 & 23.2 & 35.4 \\
+% Mixtral-8x7B-Instruct-v0.1 & xxB & \underline{\textbf{70.3}} & 50.6 & 54.0 & 41.7 & 42.6 & 51.8 \\
+% Baichuan2-13B-Chat & xxB & 56.6 & 54.8 & 56.3 & 40.0 & 45.8 & 50.7 \\
+% Qwen-14B-Chat & xxB & 66.7 &  \underline{\textbf{68.1}} & \underline{\textbf{71.5}} & 46.5 & \underline{\textbf{76.3}} & \textbf{\underline{65.8}} \\
+% % Qwen1.5-14B-Chat & 67.2 & \underline{\textbf{75.1}} & \underline{\textbf{76.0}} & 50.6 & \underline{\textbf{80.3}} \\
+% \hline
+% \rowcolor{gray!15}
+% InternLM2-Chat-20B-SFT & xxB & 66.5 & 65.3 & 63.7 & \underline{\textbf{51.2}} & 58.6 & 61.1\\
+% \rowcolor{gray!15}
+% InternLM2-Chat-20B & xxB & 66.5 & 65.1 & 63.0 & 50.3 & 58.3 & 60.6 \\
+% \end{tabular}}
+
+% \caption{\textbf{Comparison of chat models on comprehensive examination}. The model name in \textbf{bold} indicates the top performer, while an \underline{underline} signifies the leading model within a similar parameter size group.}
+% % \vspace{-2mm}
+% \label{tab:exam_chat_results}
+% \end{table*}
+
+
+\begin{table*}[!t]
+\centering
+\resizebox{\linewidth}{!}{
+\tablestyle{10pt}{1.2}
+\begin{tabular}{l|c|ccccc|c}
+\multirow{2}{*}{model name} & \multirow{2}{*}{\#param} & {MMLU} & {CMMLU} & {C-Eval} & {AGIEval} & {GAOKAO} &   \multirow{2}{*}{avg.} \\
+& &{(5-shot)} & {(5-shot)} & {(5-shot)} & {(0-shot)} & {(0-shot)} &  \\
+\hline
+% \multicolumn{7}{c}{\purplecolor{{ API Models}}} \\
+GPT-3.5 & -- & 69.1 & 53.9 & 52.5 & 39.9 & 51.1 & 53.3 \\
+\hline
+% \multicolumn{7}{c}{\greencolor{{  $\leq 7$B Models}}} \\
+Llama2-7B-Chat & 7B &  48.2 & 30.7 & 34.9 & 28.5 & 19.8 &  24.4 \\
+Llama2-13B-Chat & 13B & 54.1 & 33.8 & 35.0 & 30.9 & 23.2 & 35.4 \\
+
+% Gemma-7B-IT &  &  &  &  &  \\
+Mistral-7B-Instruct-v0.2 & 7.3B &  59.2 & 42.0 & 42.4 & 34.5 & 28.6 & 41.3 \\
+Mixtral-8x7B-Instruct-v0.1 & 46.7B & {{70.3}} & 50.6 & 54.0 & 41.7 & 42.6 & 51.8 \\
+Baichuan2-7B-Chat & 7B & 50.1 &  53.4 & 53.9 & 35.3 & 37.5 & 46.0 \\
+Baichuan2-13B-Chat & 13B & 56.6 & 54.8 & 56.3 & 40.0 & 45.8 & 50.7 \\
+
+Qwen-7B-Chat & 7B & 57.1 & 57.9 & 59.8 & 39.7 & {62.1} & 55.3 \\
+Qwen-14B-Chat & 14B & 66.7 &  {{68.1}} & {{71.5}} & 46.5 & {{76.3}} & {{65.8}} \\
+ChatGLM3-6B & 6.2B & 58.0 & 57.8 & 59.1 & 44.2 & 56.3 & 55.1 \\
+% Qwen1.5-7B-Chat & 61.0 & \underline{68.0} & \underline{70.6} & 44.9 & \underline{69.9} \\
+% \multicolumn{7}{c}{\bluecolor{{ $13\sim 20$B Models}}} \\
+% Qwen1.5-14B-Chat & 67.2 & \underline{\textbf{75.1}} & \underline{\textbf{76.0}} & 50.6 & \underline{\textbf{80.3}} \\
+\hline
+\rowcolor{gray!15}
+InternLM2-Chat-7B-SFT & 7B & {63.8} & {63.2} & 
+{60.9} & {49.0} & 57.3 & {58.8} \\
+\rowcolor{gray!15}
+InternLM2-Chat-7B & 7B & 63.7 & 63.0 & 60.8 & 47.2 & 58.0 & 58.5 \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B-SFT & 20B & 66.5 & 65.3 & 63.7 & {{51.2}} & 58.6 & 61.1\\
+\rowcolor{gray!15}
+InternLM2-Chat-20B & 20B & 66.5 & 65.1 & 63.0 & 50.3 & 58.3 & 60.6 \\
+\end{tabular}}
+\caption{\textbf{Comparison of chat models on comprehensive examination}. We evaluate model's comprehensive examination capability across 5 benchmarks, including MMLU~\cite{hendrycks2020measuring}, CMMLU~\cite{li2023cmmlu}, C-Eval~\cite{huang2023ceval}, AGIEval~\cite{zhong2023agieval} and GAOKAO-Bench~\cite{Zhang2023EvaluatingTP}.
+\textcolor{red}{TODO cy: param 保留一位的都是在源技术文档里明确找出的参数量，baichuan2和qwen即使原技术文档也还是整数}
+}
+% TODO cy: 保留一位的都是在源技术文档里明确找出的参数量，baichuan2和qwen即使原技术文档也还是整数
+
+% \vspace{-2mm}
+\label{tab:exam_chat_results}
+\end{table*}

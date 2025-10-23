@@ -1,0 +1,42 @@
+\subsubsection{Impact of Representation Sampling Strategies}
+\label{sec:impact_sampling}
+% \input{tables/tab_intrinsic_token_sampling}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/token_sampling.pdf}
+    \caption{Impact of token sampling on \tool's performance and memory usage, left axis: \textit{F1-Score}; right axis: \textit{Memory usage (GB)}}
+    \label{fig:token_sampling}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/layer_sampling.pdf}
+    \caption{Impact of layer sampling intervals $k$ on \tool's performance and memory usage, left axis: \textit{F1-Score}; right axis: \textit{Memory usage (GB)}}
+    \label{fig:layer_sampling}
+\end{figure}
+
+
+\textbf{Token sampling:}
+Figure~\ref{fig:token_sampling} shows the impact of different token sampling strategies on \tool's performance. Overall, \textit{the boundary-aware strategy offers the best balance, achieving the highest F1-Score with relatively low memory consumption.}
+While random token sampling results in the lowest memory usage (about 6.5 GB across GPU and CPU), it yields the weakest performance. This is expected because randomly selecting a single token may overlook important signals, leading to suboptimal predictions.
+
+
+In contrast, \tool with boundary-aware token sampling consumes 2.5 times more memory than random sampling, but achieves significantly better performance. Specifically, \tool reaches an F1-Score of 0.76, outperforming full token and random token sampling strategies by 9\% and 26\%, respectively. Moreover, compared to full token sampling, the boundary-aware strategy reduces memory usage by 18X and training time by over 100X.
+% 
+These results suggest that using all tokens introduces substantial computational overhead and even degrades performance due to the inclusion of noisy and irrelevant representations. Meanwhile, the boundary-aware strategy effectively reduces input size while preserving the most informative signals for correctness assessment.
+
+%
+%
+%
+
+
+\textbf{Layer Sampling:}
+Figure~\ref{fig:layer_sampling} shows how the layer sampling interval $k \in \{1, 2, 3, 4, 5\}$, i.e., how frequently layers are selected for extracting internal states, affects \tool's performance and memory usage.
+\textit{Across different sampling intervals, \tool's F1-Scores are relatively stable}, fluctuating between 0.76 and 0.79.  
+This stability can be explained by the fact that adjacent layers in transformer-based models tend to encode highly similar features,  with similarity increasing as layers get closer~\cite{jiang2024tracing}. As a result, densely sampling layers (small $k$) often captures redundant features without providing additional information for correctness prediction.
+
+
+
+Meanwhile, \textit{memory usage decreases steadily as $k$ increases,} since larger intervals result in fewer selected layers and a smaller set of extracted representations $\mathcal{H}^*$, thereby lowering memory consumption.
+For example, when $k = 1$, \tool requires about 60 GB of GPU and CPU, which is 4.7X more than when $k=5$. 
+These results highlight the importance of selecting a representative subset of layers rather than using all of them, which increases overhead without improving code correctness prediction performance.

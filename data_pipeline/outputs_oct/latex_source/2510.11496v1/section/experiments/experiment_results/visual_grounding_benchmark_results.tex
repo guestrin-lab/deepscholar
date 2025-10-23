@@ -1,0 +1,28 @@
+\subsubsection{Evaluation Results}
+\begin{table}
+    \centering
+    \begin{tabular}{l|ccc|ccc|cc|c}
+        \hline
+         Model &  \multicolumn{3}{c|}{RefCOCO} &\multicolumn{3}{c|}{RefCOCO+} &  \multicolumn{2}{c|}{RefCOCOg} & overall  \\
+         & val & test-A & test-B & val & test-A & test-B & val & test & \\
+         \hline
+         AndesVL-4B &  \textbf{90} & \textbf{92.5} & \textbf{86.2} & \textbf{82.8} & \textbf{88} & \textbf{77} & \textbf{87.4} & \textbf{86.5} & \textbf{86.3}\\
+         Qwen2.5-VL-3B ~\cite{bai2025qwen2_5} & 89.1 & 91.7 & 84 & 82.4 & 88 & 74.1 & 85.2 & 85.7 & 85 \\
+         InternVL2-4B ~\cite{chen2024expanding} &  84.4 & 91.2 & 83.9 & 81.2 & 87.2 & 73.8 & 84.6 & 84.6 & 84.4 \\
+         MM1.5-3B ~\cite{zhang2024mm1_5} & - & 92 & 86.1 & - & 87.7 & 75.9 & - & 86.4 & -\\
+         \hline
+         AndesVL-2B &   &  &  &  &  &   &  &  &  \\
+         Qwen2-VL-2B ~\cite{wang2024qwen2vl} & 87.6 &  90.6 & 82.3 & 79 & 84.9  & 71 & 81.2& 80.3 & 82.1 \\
+         InternVL2-2B ~\cite{chen2024expanding} & 82.3 & 88.2 & 75.9 &  73.5 & 82.8 & 63.3  & 77.6 & 78.3 & 77.7 \\
+         InternVL3-2B ~\cite{zhu2025internvl3} &  89.8 & 92.6 & 86.4 & 84 & 89.2 & 76.5  & 87.6 & 87.2 & 86.7 \\
+         \hline
+         AndesVL-1B &  &  &  &  &  &  & & & \\
+         InternVL3-1B ~\cite{zhu2025internvl3} & 85.8 & 90.1 & 81.7 & 76.6 & 84.1 & 69.2 & 82.8 & 82.6 & 81.6 \\
+         MM1.5-1B ~\cite{zhang2024mm1_5} & - & 89.3 & 81.9 & - & 83.7 & 69.3 &  - & 82.8 &-\\
+         \hline
+    \end{tabular}
+    \caption{Comparison of visual grounding performance. The best results are in bold.}
+    \label{tab:benchmark_grounding}
+\end{table}
+
+The detailed evaluation results on visual grounding benchmarks are presented in Table ~\ref{tab:benchmark_grounding}. Among existing advanced models, the proposed AndesVL-4B achieves the highest average score of 86.3. More specifically, AndesVL-4B demonstrates top performance in RefCOCO, RefCOCO+, and RefCOCO, among others, revealing its significant advantages over competing models in various visual grounding tasks. These results underscore the importance of our refined grounding corpus and model optimization strategies.

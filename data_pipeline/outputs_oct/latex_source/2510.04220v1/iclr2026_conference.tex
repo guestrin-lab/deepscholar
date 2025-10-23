@@ -1,0 +1,687 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{tikz}
+\usepackage{iclr2026_conference,times}
+
+\input{math_commands.tex}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{amsmath}
+
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{arydshln}
+\usepackage{makecell}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{booktabs}      % <== 解决横线消失问题
+\usepackage[table]{xcolor} % <== 如果你用了 \rowcolor
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{pifont}
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{colortbl}
+
+\usepackage{pifont} 
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{diagbox}
+\usepackage{subcaption}
+\usepackage[utf8]{inputenc}
+\usepackage{svg}
+\usepackage{comment}
+\newtheorem{assumption}{Assumption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{graphicx}    
+\usepackage{caption}     
+\usepackage{subcaption} 
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\usepackage{marvosym}
+\usepackage[table]{xcolor}
+\usepackage{algpseudocode}
+\algrenewcommand{\algorithmicreturn}{\textbf{return }}
+
+\pagestyle{plain}
+
+\title{MASC: Boosting Autoregressive Image \\Generation with a Manifold-Aligned \\Semantic Clustering}
+
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\footnotetext[2]{Corresponding author.} 
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+
+\author{
+\textbf{Lixuan He}$^{1,2}$\thanks{helx23@mails.tsinghua.edu.cn}\hspace{0.8em}
+\textbf{Shikang Zheng}$^{1}$\hspace{0.8em}
+\textbf{Linfeng Zhang}$^{1\dag}$\\[1.8pt]
+$^{1}$Shanghai Jiao Tong University\hspace{0.5em}
+$^{2}$ Tsinghua University
+}
+
+\newcommand{\alex}[1]{\textcolor{red}{(Alex:) #1}}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\definecolor{mintbg}{rgb}{.63,.79,.95}
+
+\newcommand{\hlb}[1]{\textbf{#1}}
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Autoregressive (AR) models have shown great promise in image generation, yet they face a fundamental inefficiency stemming from their core component: a vast, unstructured vocabulary of visual tokens. This conventional approach treats tokens as a flat vocabulary, disregarding the intrinsic structure of the token embedding space where proximity often correlates with semantic similarity. This oversight results in a highly complex prediction task, which hinders training efficiency and limits final generation quality. 
+To resolve this, we propose \textbf{M}anifold-\textbf{A}ligned \textbf{S}emantic \textbf{C}lustering (MASC), a principled framework that constructs a hierarchical semantic tree directly from the codebook's intrinsic structure. MASC employs a novel geometry-aware distance metric and a density-driven agglomerative construction to model the underlying manifold of the token embeddings. By transforming the flat, high-dimensional prediction task into a structured, hierarchical one, MASC introduces a beneficial inductive bias that significantly simplifies the learning problem for the AR model. MASC is designed as a plug-and-play module, and our extensive experiments validate its effectiveness: it accelerates training by up to 57\% and significantly improves generation quality, reducing the FID of LlamaGen-XL from 2.87 to 2.58. MASC elevates existing AR frameworks to be highly competitive with state-of-the-art methods, establishing that structuring the prediction space is as crucial as architectural innovation for scalable generative modeling.
+
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\vspace{-3mm}
+\begin{figure}[htp]
+  \centering
+  \includegraphics[trim=0 0 0 0, clip,width=1\linewidth]{fig/MASC_nature_human.jpg}
+\caption{MASC demonstrates strong capabilities in high-fidelity and diverse image generation.}
+  \label{fig:poster}
+  \vspace{-3mm}
+\end{figure}
+
+Autoregressive (AR) image generation~\citep{esser2021taming, sun2024autoregressive, tian2024visual, zhou2024transfusion, fan2024fluid, li2024autoregressive} has developed rapidly, demonstrating impressive scalability analogous to Large Language Models (LLMs)~\citep{brown2020language, touvron2023llama} and achieving a level of fidelity that rivals leading diffusion-based methods~\citep{peebles2023scalable, dhariwal2021diffusion, hatamizadeh2024diffit}. Among the various approaches, those utilizing discrete tokenizers have garnered significant attention not only for their structural alignment with the well-established LLM paradigm but also for their training efficiency and straightforward optimization. As illustrated in Figure~\ref{fig:MASC Overview}, the standard framework for these models consists of two distinct stages: an image tokenizer and an autoregressive causal Transformer. The tokenizer first converts a continuous image into a sequence of discrete integer indices via a learned codebook. Subsequently, the Transformer is trained on these index sequences to causally predict the next token.
+
+The elegance of this paradigm, however, conceals a fundamental drawback stemming from the quantization process: a critical loss of structural information. The AR model is trained on a flat vocabulary of discrete indices, which implicitly treats semantically similar tokens (e.g., different shades of blue sky) as unrelated entries in a vast categorical space. This process largely disregards the rich geometric relationships embedded within the codebook's high-dimensional vector space. These token embeddings are not randomly scattered; rather, they lie on or near a lower-dimensional semantic manifold~\citep{huh2023straightening, van2017neural}, where geometric proximity corresponds to semantic similarity. By ignoring this intrinsic structure, the AR model is forced to tackle a massive $N$-way classification problem (where $N$ can be 16,384 or more) at each step. Lacking any explicit prior about the relationships between tokens, the model must expend significant capacity and data to implicitly re-learn these structures from scratch, which imposes a tremendous learning burden, leading to sample inefficiency and slow convergence~\citep{ranzato2015sequence}.
+
+\begin{figure*}[!t]
+\centering
+  \includegraphics[trim=0 0 0 0, clip,width=1\linewidth]
+{fig/MASC_OVERVIEW.jpg} 
+\caption{Overview of the MASC-integrated autoregressive generation pipeline, and the bottom row showcases high-fidelity images generated by MASC. \textbf{Stage 1:} A standard image tokenizer is trained, yielding a finalized codebook of visual tokens. \textbf{MASC Preprocessing:} Our proposed MASC framework takes this codebook and constructs a hierarchical semantic tree, producing a mapping function ($\mathcal{M}$) from fine-grained tokens to coarse-grained semantic branches. \textbf{Stage 2:} The autoregressive Transformer is then trained on these simplified branch indices.}
+\label{fig:MASC Overview}
+\vspace{-5mm}
+\end{figure*}
+
+
+Recognizing this challenge, a recent line of work has sought to re-introduce this lost structural information by providing the AR model with a codebook prior~\citep{hu2025improving, guo2025improving}. The common approach is to use k-means clustering to group the token embeddings. However, this strategy is fundamentally limited because k-means is ill-suited to the intrinsic structure of the semantic manifold. Standard Euclidean distance, which k-means relies on, is a poor proxy for true semantic distance on a curved manifold. Cluster centroids, calculated as simple arithmetic means, can fall off the manifold entirely, making them poor representatives of their clusters~\citep{beyer1999nearest, huh2023straightening,tang2025exploitingdiscriminativecodebookprior}. Furthermore, the distribution of tokens on this manifold is highly non-uniform, reflecting the statistics of the visual world~\citep{van2017neural}. Standard k-means, being insensitive to density, often produces semantically incoherent clusters, yielding a noisy and counterproductive prior. This reveals that while identifying the problem of unstructured vocabularies is a step forward, solving it requires a more principled approach than naive clustering.
+
+In this work, we introduce \textbf{M}anifold-\textbf{A}ligned \textbf{S}emantic \textbf{C}lustering (MASC), a framework designed to construct a principled, structure-aware prior that serves as a powerful inductive bias for the AR model. MASC directly confronts the aforementioned challenges with two key innovations: 
+(1) a robust, manifold-aligned similarity metric that is centroid-free, and (2) a density-driven, agglomerative construction process that respects the non-uniform token distribution. The result is a hierarchical semantic tree that transforms the difficult, high-dimensional flat prediction problem into a simpler, structured one, as shown in Figure~\ref{fig:MASC Framework}. This unlocks significant gains in both training efficiency and generation quality. Our main contributions are summarized as follows:
+\begin{itemize}[leftmargin=10pt,topsep=0pt]
+    \item We identify and analyze the problem of structural information loss in discrete AR models, where treating tokens as a flat, unstructured vocabulary complicates the prediction task.
+    \item We propose \textbf{MASC}, a framework that constructs a structure-aware inductive bias by faithfully modeling the codebook's underlying manifold. Its manifold-aligned similarity metric and density-driven construction offer a principled alternative to naive, geometry-agnostic clustering methods like k-means.
+    \item We provide extensive empirical validation demonstrating that MASC is a versatile plug-and-play module that accelerates training by up to \textbf{57\%}, improves generation quality (e.g., reducing the FID of LlamaGen-XL from 2.87 to \textbf{2.58}), and offers a practical solution to a core challenge in the field.
+\end{itemize}
+
+
+
+\begin{figure*}[t!]
+\centering
+\includegraphics[width=\textwidth]{fig/MASC_Framework.jpg} 
+\caption{Conceptual illustration of MASC versus k-means. \textbf{Left:} Visual tokens reside on a semantic manifold where geodesic distance  is a better similarity measure than Euclidean distance (dashed line). \textbf{Right:} Geometry-agnostic k-means produces incoherent clusters, whereas MASC's manifold-aligned approach correctly captures the intrinsic data structure and preserves semantic integrity.}
+\label{fig:MASC Framework}
+\vspace{-2mm}
+\end{figure*}
+
+
+
+\section{Related Work}
+\label{sec:related_work}
+
+\textbf{Autoregressive Image Generation.}
+Inspired by Large Language Models (LLMs)~\citep{brown2020language, touvron2023llama}, the field of autoregressive (AR) image generation has rapidly matured. Its core paradigm uses a tokenizer~\citep{esser2021taming, yu2021vector} to convert images into discrete sequences for a Transformer model, an approach that has proven highly scalable and achieved quality competitive with leading diffusion models~\citep{dhariwal2021diffusion, peebles2023scalable}. A wave of architectural innovations has advanced the field, from adapting LLM designs~\citep{sun2024autoregressive} and exploring diverse prediction schemes~\citep{tian2024visual, zhou2024transfusion, han2024infinity, fan2024fluid}, to developing new decoding, refinement, and alignment strategies~\citep{zhang2025zipar, cheng2025tensorar, wu2025alitok}. Despite these significant advancements, a unifying challenge persists: discrete AR models perform prediction over a \textbf{large, flat, and unstructured vocabulary}. This focus on architecture has largely sidestepped the intrinsic inefficiency of the prediction task itself, which motivates our work to explicitly structure the prediction space.
+
+\textbf{Codebook Priors and Manipulation.}
+Recognizing the limitations of a flat vocabulary, pioneering methods have sought to extract a codebook prior to simplify the AR model's training. The predominant approach has been to apply k-means clustering to the token embeddings~\citep{hu2025improving, guo2025improving}. However, the reliance on a naive, geometry-agnostic algorithm like k-means is a fundamental limitation. The visual token space is better modeled as a non-uniform semantic manifold~\citep{van2017neural, huh2023straightening,tang2025exploitingdiscriminativecodebookprior}, where k-means' core assumptions about Euclidean space and meaningful centroids are violated. This mismatch often results in semantically incoherent clusters and a noisy prior~\citep{beyer1999nearest}. Other works on codebook manipulation focus on improving the tokenizer's representational quality~\citep{li2023resizing, zheng2023online} rather than providing a structural prior to ease the AR model's prediction task. This leaves a clear gap for a principled, manifold-aligned prior extraction framework.
+
+\textbf{Manifold Learning and Hierarchical Clustering.}
+Our approach is grounded in two established principles. First, Manifold learning posits that token embeddings lie on a low-dimensional manifold~\citep{tenenbaum2000global, belkin2003laplacian}, where standard Euclidean distance is an unreliable similarity metric, thus necessitating geometry-aware methods~\citep{beyer1999nearest, angiulli2018behavior, chen2024revisiting}. Second, hierarchical clustering~\citep{lukasova1979hierarchical, ward1963hierarchical} is naturally suited for the non-uniform density of such data. MASC operationalizes a synthesis of these principles, employing a geometry-aware metric within a density-driven, hierarchical algorithm. This marks a shift from heuristic clustering to a principled, manifold-aligned construction of the prediction space.
+
+\section{Methodology}
+\label{sec:methodology}
+
+\subsection{Preliminaries: The High-Dimensional Prediction Challenge}
+\label{sec:preliminaries}
+
+Discrete token-based autoregressive image generation frameworks~\citep{esser2021taming, sun2024autoregressive, tian2024visual} operate via a two-stage process. First, an image tokenizer maps a continuous image $x \in \mathbb{R}^{H \times W \times 3}$ into a sequence of discrete integer indices. An encoder $E$ produces a feature map, and each feature vector $z^{(i,j)}$ is quantized to its nearest token in a learnable codebook $\mathcal{Z} = \{v_1, \dots, v_N\} \subset \mathbb{R}^d$ via a nearest-neighbor lookup:
+\begin{equation}
+\label{eq:quantization}
+    q^{(i,j)} = \argmin_{k \in \{1, \dots, N\}} \| z^{(i,j)} - v_k \|_2,
+\end{equation}
+resulting in a grid of token indices $z^q \in \{1, \dots, N\}^{h \times w}$, which is flattened into a 1D sequence of length $L=h \times w$.
+
+In the second stage, an autoregressive model $\mathcal{G}$, typically a Transformer, is trained to maximize the likelihood of this token sequence, predicting the next token $z^q_t$ based on the preceding context $z^q_{<t}$:
+\begin{equation}
+\label{eq:likelihood}
+    p(z^q) = \prod_{t=1}^{L} p(z^q_t | z^q_{<t}; \mathcal{G}).
+\end{equation}
+This is practically realized by an output layer producing a probability distribution over all $N$ tokens. The core difficulty, which we term the high-dimensional prediction challenge, stems from this process. The model is forced to perform a massive $N$-way classification at every step, treating the vocabulary as a flat, unstructured set of categories. This quantization step discards the rich geometric structure of the codebook, where semantic relationships are encoded as distances. Without this structural information, the model must expend significant capacity learning the semantic landscape from scratch. A codebook prior, therefore, aims to re-introduce this latent structure, providing an inductive bias to make the prediction task more tractable and efficient.
+
+\subsection{MASC: Constructing a Structure-Aware Prior}
+\label{sec:MASC_construction}
+
+To resolve the high-dimensional prediction challenge, we introduce \textbf{M}anifold-\textbf{A}ligned \textbf{S}emantic \textbf{C}lustering (MASC), a framework designed to construct a structure-aware prior from the codebook. MASC builds a hierarchical semantic tree that models the intrinsic geometric and statistical properties of the token embeddings, providing a powerful and meaningful inductive bias for the AR model. The construction process is composed of two core components: a principled similarity metric and a density-driven clustering algorithm.
+
+\subsubsection{A Principled Distance for a Semantic Manifold}
+\label{sec:MASC_affinity}
+A principled prior must be built upon an accurate measure of semantic similarity. As previously discussed, the token embeddings $\{v_i\}$ lie on or near a complex semantic manifold embedded within a high-dimensional space. A naive approach like k-means, which relies on Euclidean distance to cluster centroids, is fundamentally flawed in this context for two primary reasons. First, the arithmetic mean used to compute a centroid is a point in the ambient Euclidean space, which may not lie on the manifold itself. Using such an "off-manifold" point as a representative for a group of "on-manifold" tokens is geometrically unsound and can lead to inaccurate cluster assignments~\citep{huh2023straightening}. Second, even if the centroid were valid, standard Euclidean distance is a poor proxy for true semantic similarity in a high-dimensional, curved space, which is more accurately described by the path length along the manifold's surface (i.e., the geodesic distance)~\citep{beyer1999nearest, tenenbaum2000global}.
+
+While computing the true geodesic distance is computationally intractable for an implicitly defined manifold, we can instead devise a practical metric that respects the manifold's properties. Instead of relying on a single, potentially invalid centroid, we employ a robust, \textbf{instance-based average distance} to measure the dissimilarity between two clusters, $C_s$ and $C_t$. This metric aggregates the pairwise Euclidean distances between all tokens across the two clusters:
+\begin{equation}
+\label{eq:pairwise_distance}
+\mathcal{D}(C_s, C_t) = \frac{1}{|C_s||C_t|} \sum_{v_i \in C_s} \sum_{v_j \in C_t} \|v_i - v_j\|_2.
+\end{equation}
+This metric is inherently manifold-aligned because it is centroid-free, relying exclusively on the locations of the actual tokens which are guaranteed to lie on the manifold. By averaging over all pairs, it provides a robust measure of inter-cluster separation that implicitly respects the local geometry and is less sensitive to outliers, serving as a sound basis for constructing a meaningful semantic hierarchy.
+
+\subsubsection{Density-Driven Hierarchical Construction}
+\label{sec:MASC_construction_step2}
+Equipped with our similarity metric $\mathcal{D}$, we construct the semantic tree using a bottom-up, agglomerative hierarchical strategy~\citep{lukasova1979hierarchical, ward1963hierarchical}. This choice is crucial as the algorithm is deterministic and inherently respects the non-uniform density distribution of tokens on the manifold. The construction process proceeds as follows:
+
+\textbf{Initialization}: The process begins with $N$ initial clusters, where each cluster $C_j^{(0)}$ contains a single token from the codebook: $C_j^{(0)} = \{v_j\}$ for $j \in \{1, \dots, N\}$. These form the leaf nodes of our tree.
+
+\textbf{Iterative Merging}: The algorithm then performs $N-1$ merging iterations. In each iteration $i$, it identifies the pair of distinct clusters $(C_s^*, C_t^*)$ from the current set of clusters $\mathbb{C}^{(i-1)}$ that are most similar to each other, and merges them to form a new parent cluster. The merging criterion is formally expressed as:
+\begin{equation}
+\label{eq:argmin_merge}
+    (C_s^*, C_t^*) = \argmin_{C_s, C_t \in \mathbb{C}^{(i-1)}, s \neq t} \mathcal{D}(C_s, C_t).
+\end{equation}
+The new set of clusters for the next iteration, $\mathbb{C}^{(i)}$, is then formed by replacing $C_s^*$ and $C_t^*$ with their union, $C_s^* \cup C_t^*$.
+
+\textbf{Termination}: This merging process is repeated until only one cluster remains—the root of the MASC tree, which encompasses all $N$ original tokens. The complete sequence of merges defines the entire binary tree structure.
+
+The critical insight is that this bottom-up construction is implicitly \textbf{density-driven}. High-density regions on the semantic manifold correspond to areas where many tokens with similar visual semantics are tightly packed. Consequently, the pairwise distances $\mathcal{D}$ between tokens or clusters within these regions will be small. Our algorithm, by always merging the closest pair according to Eq.~\ref{eq:argmin_merge}, naturally prioritizes forming connections within these dense, semantically coherent regions first. This property avoids the critical flaw of methods like k-means, which can carelessly partition dense regions, and guarantees that the most fundamental semantic similarities are faithfully captured in the hierarchy.
+
+
+
+\subsection{Integrating the MASC Prior with Autoregressive Models}
+\label{sec:MASC_integration}
+
+The MASC-generated tree provides a multi-level structural prior of the codebook. To integrate this prior into the autoregressive framework, we primarily use it to perform a principled form of \textbf{vocabulary reduction}. The full semantic tree is cut at a level that yields $k$ distinct branches, where $k \ll N$ is a hyperparameter. Each of these branches represents a semantically coherent cluster of fine-grained tokens. We then create a mapping $\mathcal{M}: \{1, \dots, N\} \to \{1, \dots, k\}$ that assigns each original token index to its corresponding coarse-grained cluster index.
+
+This mapping provides a powerful inductive bias by transforming the model's learning objective. During training, the ground-truth sequences of fine-grained indices $z^q$ are converted into sequences of coarse-grained cluster indices $z^b = \mathcal{M}(z^q)$. The autoregressive model $\mathcal{G}$ is then trained to predict the next cluster index, rather than the next token index:
+\begin{equation}
+\label{eq:coarse_likelihood}
+p(z^b) = \prod_{t=1}^{L} p(z^b_t | z^b_{<t}; \mathcal{G}).
+\end{equation}
+This fundamentally changes the prediction task from a flat $N$-way classification to a structured $k$-way classification. Since each target class now represents a semantically meaningful region of the original embedding space, the learning task is significantly simplified, allowing the model to learn the high-level structure of images more efficiently.
+
+During inference, the AR model generates a sequence of coarse cluster indices $z^b$, which must be decoded back into a sequence of specific tokens $z^q$ for the decoder to render an image. We explore two strategies for this decoding step:
+
+\textbf{Random Sampling (Default Strategy).} This default strategy leverages the high intra-cluster semantic consistency guaranteed by the MASC construction. For each predicted coarse index $z^b_t$, we randomly and uniformly sample a fine-grained token from the corresponding cluster $\{v_i | \mathcal{M}(i) = z^b_t \}$. Because all tokens within a MASC-generated cluster are semantically similar, any choice is a reasonable representative, leading to high-quality results with a simple and efficient decoding step.
+
+\textbf{Hierarchical Decoding (Extended Strategy).} For potentially higher fidelity, we explore a two-stage hierarchical decoding approach, inspired by coarse-to-fine pipelines~\citep{guo2025improving}. In this setup, a small, secondary refinement network, $\mathcal{G}_{\text{refine}}$, is trained. After the main model $\mathcal{G}$ predicts a coarse index $z^b_t$, $\mathcal{G}_{\text{refine}}$ takes the hidden state from $\mathcal{G}$ (as context) and $z^b_t$ as input. Its task is to then predict the final token by computing a probability distribution only over the tokens within the constrained subspace of the predicted cluster. This allows the model to first identify a semantically correct region and then make a more precise, fine-grained choice within it.
+ The complete MASC construction process, which serves as a one-time offline preprocessing step, is detailed in Algorithm~\ref{algo:MASC}.
+
+
+
+
+\section{Experiments}
+\label{sec:experiments}
+
+We conduct a comprehensive set of experiments to rigorously validate our central hypothesis: that by transforming the codebook's flat vocabulary into a structured, manifold-aligned representation tree, our MASC framework can effectively solve the high-entropy prediction bottleneck, leading to significant improvements in training efficiency and generation quality.
+
+\subsection{Experimental Setup}
+\label{sec:exp_setup}
+
+\textbf{Dataset.} All experiments are conducted on the \textbf{ImageNet-1K} benchmark~\citep{deng2009imagenet} for class-conditional generation, with images resized to $256 \times 256$ pixels following standard practice~\citep{sun2024autoregressive, tian2024visual}.
+
+\textbf{Evaluation Metrics.} To provide a holistic assessment, we employ three categories of metrics. For \textbf{Generation Quality}, we report FID~\citep{heusel2017gans}, IS~\citep{salimans2016}, Precision, and Recall~\citep{kynkaanniemi2019improved}. To quantify \textbf{Prediction Uncertainty}, we employ Shannon entropy, defined as $H(P_t) = - \sum_{i=1}^{V} P_t(i) \log_2 P_t(i)$, on the model's output distribution $P_t$. We report both the average entropy and a normalized version, $H_{\text{norm}} = H_{\text{actual}} / \log_2(V)$, for a vocabulary-size-agnostic comparison. Finally, we evaluate \textbf{Training Efficiency} via Training Acceleration, the percentage of epochs saved to reach the baseline's final FID.
+
+\textbf{Backbone Models and Baselines.} We use the \textbf{LlamaGen} (B, L, XL) family~\citep{sun2024autoregressive} for a controlled analysis. We compare three variants: the original \textbf{LlamaGen Baseline} with a flat vocabulary of $N=16,384$ tokens; a \textbf{+ k-means} baseline using a vocabulary of $k=8,192$ clusters from standard k-means; and our proposed \textbf{+ MASC} method, trained on a $k=8,192$ vocabulary derived from the MASC tree.
+
+\textbf{MASC Implementation Details.} MASC is constructed as a fast, one-time preprocessing step (Algorithm~\ref{algo:MASC}) with negligible computational cost. We set the number of clusters to $k=8,192$ to ensure that our +MASC models and the +k-means baselines have identical vocabulary sizes, facilitating a fair comparison of model parameters.
+
+\begin{table*}[!t]
+\centering
+\caption{Comprehensive performance analysis on ImageNet $256\times256$. We compare \textbf{LlamaGen Baseline}, a naive prior with \textbf{+ k-means}, and our \textbf{+ MASC} method across three model scales. MASC consistently improves efficiency, reduces the prediction task complexity (entropy), and yields superior generation quality.}
+\label{tab:main_results_reformatted}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c}{\textit{\textbf{Model Efficiency}}} & \multicolumn{1}{c}{\textit{\textbf{Prediction Uncertainty}}} & \multicolumn{3}{c}{\textit{\textbf{Generation Quality}}} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-5} \cmidrule(lr){6-8}
+& & \textbf{\# Params} & \textbf{Accel. (\%) $\uparrow$} & \textbf{Pred. / Norm. Entropy $\downarrow$} & \textbf{FID $\downarrow$} & \textbf{IS $\uparrow$} & \textbf{Precision / Recall $\uparrow$} \\
+\midrule
+
+% --- LlamaGen-B Block ---
+\multirow{3}{*}{\makecell[l]{LlamaGen-B \\ (111M)}} 
+& LlamaGen Baseline & 111M & - & 2.81 / 0.20 & 5.56 & 185.1 & 0.85 / 0.45 \\
+& + k-means & 94M & \textcolor{gray}{-5\%} & 2.72 / 0.21 & 5.72 & 186.6 & 0.83 / 0.44 \\
+\rowcolor[HTML]{E9E9FF}
+& \textbf{+ MASC (Ours)} & 94M & \textbf{+42\%} & \textbf{1.90 / 0.15} & \textbf{4.81} & \textbf{206.4} & \textbf{0.86 / 0.48} \\
+\midrule
+
+% --- LlamaGen-L Block ---
+\multirow{3}{*}{\makecell[l]{LlamaGen-L \\ (343M)}} 
+& LlamaGen Baseline & 343M & - & 2.65 / 0.19 & 3.38 & 246.3 & 0.83 / 0.51 \\
+& + k-means & 311M & \textcolor{gray}{-10\%} & 2.58 / 0.20 & 3.81 & 221.2 & 0.77 / 0.55 \\
+\rowcolor[HTML]{E9E9FF}
+& \textbf{+ MASC (Ours)} & 311M & \textbf{+55\%} & \textbf{1.82 / 0.14} & \textbf{2.92} & \textbf{259.2} & \textbf{0.85 / 0.57} \\
+\midrule
+
+% --- LlamaGen-XL Block ---
+\multirow{3}{*}{\makecell[l]{LlamaGen-XL \\ (775M)}} 
+& LlamaGen Baseline & 775M & - & 2.58 / 0.18 & 2.87 & 267.6 & 0.82 / 0.55 \\
+& + k-means & 719M & \textcolor{gray}{-8\%} & 2.51 / 0.19 & 3.09 & 244.3 & 0.76 / 0.56 \\
+\rowcolor[HTML]{E9E9FF}
+& \textbf{+ MASC (Ours)} & 719M & \textbf{+57\%} & \textbf{1.75 / 0.13} & \textbf{2.58} & \textbf{272.1} & \textbf{0.83 / 0.58} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+
+
+\subsection{Core Validation: MASC vs. Baselines on LlamaGen}
+\label{sec:main_results}
+
+The core results of our study, presented in Table~\ref{tab:main_results_reformatted}, demonstrate that MASC provides a more effective codebook prior than k-means, leading to measurable gains in task simplification, training efficiency, and final generation quality across all model scales.
+
+\textbf{Analysis of Prediction Uncertainty.} The entropy metrics in Table~\ref{tab:main_results_reformatted} provide direct evidence that MASC simplifies the learning problem. Unlike the k-means prior, which fails to reduce relative uncertainty, MASC enables significantly more confident predictions, substantially reducing the Normalized Prediction Entropy across all scales.
+
+\begin{figure*}[t!]
+\centering
+\includegraphics[width=\textwidth]{fig/dynamic.pdf} 
+\caption{Training dynamics of LlamaGen-L on ImageNet. The plots compare the FID (left, lower is better) and IS (right, higher is better) scores over training epochs for the Vanilla baseline, the + k-means variant, and our + MASC method. The MASC-enhanced model demonstrates a faster convergence rate, reaching the baseline's final performance in approximately half the training time, and ultimately converging to a much better result. This visualizes the training acceleration benefit of operating in a low-entropy prediction space.}
+\label{fig:convergence}
+\end{figure*}
+
+
+\textbf{Accelerated Convergence.} The simplified learning task naturally leads to a more efficient training process. As shown in Table~\ref{tab:main_results_reformatted} and visualized in Figure~\ref{fig:convergence}, MASC-enhanced models converge significantly faster by learning from a more structured prediction target, achieving training accelerations of up to \textbf{+57\%} on the LlamaGen-XL model. Conversely, the poorly structured prior from k-means impedes learning, resulting in negative acceleration.
+
+\begin{table*}[!t]
+\centering
+\caption{Performance of MASC-enhanced frameworks against the SOTA on class-conditional ImageNet. As a plug-and-play module, MASC elevates existing AR frameworks (IAR, CTF) to be highly competitive with top-tier generative models by replacing k-means with a  manifold-aligned prior. The final section demonstrates MASC's generalization to different tokenizers (GigaTok). }
+\label{tab:sota_comparison_expanded_merged}
+\small
+\renewcommand{\arraystretch}{1.1} % Slightly adjust row height for makecell
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l l c c c}
+\toprule
+\textbf{Paradigm} & \textbf{Method} & \textbf{\#Params} & \textbf{FID}$\downarrow$ & \textbf{IS}$\uparrow$ \\
+\midrule
+
+\multirow{2}{*}{GAN} 
+ & BigGAN \citep{brock2018large} & 112M & 6.95 & 224.5 \\ 
+ & GigaGAN~\citep{kang2023scaling} & 569M & 3.41 & 227.2 \\
+\midrule
+
+\multirow{2}{*}{Diffusion} 
+ & LDM-4~\citep{rombach2022high} & 400M &  3.56 & 249.3 \\
+ & DiT~\citep{peebles2023scalable} & 675M & 2.30 & 276.5 \\
+\midrule
+
+\multirow{17}{*}{\textbf{AR}} 
+ & VQGAN \citep{esser2021taming} & 1.4B & 15.78 & 74.3  \\
+ & VQGAN-re \citep{esser2021taming} & 1.4B & 5.20 & 280.3 \\
+ & ViT-VQGAN \citep{yu2021vector} & 1.7B & 4.17 & 175.1 \\ 
+\cmidrule{2-5}
+ & VAR-d16~\citep{tian2024visual} & 310M & 3.31 & 272.4 \\
+ & VAR-d20~\citep{tian2024visual} & 600M & 2.54 & 300.6 \\
+ & VAR-d24~\citep{tian2024visual} & 1.0B & 2.15 & 312.1 \\
+\cmidrule{2-5}
+ & Transfusion~\citep{zhou2024transfusion} & 700M & 2.45 & 288.5 \\
+ & Infinity~\citep{han2024infinity} & 2B & 2.39 & 291.0 \\
+ & RandAR-XL~\citep{pang2025randardecoder} & 775M & 2.27 & 309.21 \\
+\cmidrule{2-5}
+ & \makecell[l]{CTF-LlamaGen-L~\citep{guo2025improving} \\ \quad \textbf{+ MASC (Ours)}} & 653M & \makecell{2.97 \\ \cellcolor[HTML]{E9E9FF}\textbf{2.51}} & \makecell{291.5 \\ \cellcolor[HTML]{E9E9FF}\textbf{296.9}} \\
+ & \makecell[l]{IAR-B \citep{hu2025improving} \\ \quad \textbf{+ MASC (Ours)}} & 111M & \makecell{5.14 \\ \cellcolor[HTML]{E9E9FF}\textbf{4.96}} & \makecell{202.0 \\ \cellcolor[HTML]{E9E9FF}\textbf{214.3}} \\
+ & \makecell[l]{IAR-L \citep{hu2025improving} \\ \quad \textbf{+ MASC (Ours)}} & 343M & \makecell{3.18 \\ \cellcolor[HTML]{E9E9FF}\textbf{2.97}} & \makecell{234.8 \\ \cellcolor[HTML]{E9E9FF}\textbf{267.3}} \\
+ & \makecell[l]{IAR-XL \citep{hu2025improving} \\ \quad \textbf{+ MASC (Ours)}} & 775M & \makecell{2.52 \\ \cellcolor[HTML]{E9E9FF}\textbf{2.35}} & \makecell{248.1 \\ \cellcolor[HTML]{E9E9FF}\textbf{284.3}} \\
+\cmidrule(l{2pt}r{2pt}){2-5}
+ & \textit{Generalization on GigaTok-L}~\citep{xiong2025gigatok} &  &  &  \\
+ & \quad GigaTok-L (Vanilla) & 16k Vocab. & 3.39 & 263.7 \\
+ & \quad + k-means Compression & 4k Vocab. & 4.71 & 241.9 \\
+\rowcolor[HTML]{E9E9FF}
+ & \quad \textbf{+ MASC Compression} & 4k Vocab. & \textbf{3.86} & \textbf{256.4} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+
+\textbf{Enhanced Generation Performance.} The structured prediction space also translates to improved final generation quality. By easing the learning burden, MASC allows the model to better capture the data distribution. Consequently, MASC-enhanced models consistently and significantly outperform both the vanilla and k-means baselines across all key metrics. For instance, on the flagship LlamaGen-XL model, MASC improves the FID from 2.87 to \textbf{2.58}, while also boosting both IS and recall.
+
+\textbf{Analysis of Precision-Recall Dynamics.} An analysis of the precision-recall metrics reveals that MASC tends to improve Recall more substantially than Precision. We attribute this to the simplified task of predicting a coherent semantic branch rather than a single token; this reduces learning pressure and allows the model to better capture the full diversity of the training data (higher Recall).
+
+
+
+\subsection{Generality and Application Extensions}
+\label{sec:generality}
+
+We validate MASC's versatility and robustness beyond the primary LlamaGen setup. The results in Table~\ref{tab:sota_comparison_expanded_merged} confirm its effectiveness as a general-purpose, plug-and-play module.
+
+\textbf{Elevating Existing Frameworks to SOTA Competitiveness.} As a drop-in replacement for k-means, MASC significantly boosts other powerful frameworks like \textbf{IAR}~\citep{hu2025improving} and \textbf{CTF}~\citep{guo2025improving}. Simply substituting the prior improves the FID of CTF-LlamaGen-L from 2.97 to \textbf{2.51} and IAR-XL to \textbf{2.35}. These gains reposition the models to be highly competitive with top-tier generative methods, showing MASC can unlock the full potential of existing architectures.
+
+\textbf{Robustness Across Different Tokenizers.} We test MASC's generalization on a different tokenizer, \textbf{GigaTok-L}~\citep{xiong2025gigatok}, to ensure its effectiveness is not tied to a single codebook. When used for vocabulary reduction, MASC provides a more faithful coarse-graining than k-means, achieving a far superior FID of \textbf{3.86} compared to k-means' 4.71. This confirms MASC's principled, manifold-aligned approach is robust across different token distributions.
+
+\vspace{-5pt}
+\subsection{Ablation Study: Deconstructing MASC's Success}
+\label{sec:ablation_studies}
+To isolate the contributions of our two core innovations, we conduct an ablation study presented in Table~\ref{tab:ablation_components_merged}. The results reveal a clear performance hierarchy across all model scales: the density-driven construction alone (MASC w/ Centroid) consistently outperforms the stronger k-means++~\citep{arthur2007kmeanspp} baseline, while the full MASC framework, which adds our manifold-aligned metric, achieves another significant leap in performance. This confirms that both the density-driven (bottom-up) construction and the manifold-aligned similarity metric are critical, synergistic components, essential to addressing the geometric and density properties of the codebook.
+
+
+
+
+
+\begin{table*}[!thb]
+\centering
+\caption{Expanded ablation study of MASC's core components across all LlamaGen model scales. This table ablates the Clustering Strategy to dissect the contributions of our two key innovations: the \textbf{Manifold Distance} metric and the \textbf{Bottom-Up Construction}. The results consistently show that only the Full MASC framework achieves the best performance.}
+\label{tab:ablation_components_merged}
+\small
+\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{l l >{\raggedright\arraybackslash}p{4.5cm} c c}
+\toprule
+\textbf{Model} & \textbf{Clustering Strategy} & \makecell[l]{\textbf{Distance +} \textbf{Construction Metric}} & \textbf{FID}$\downarrow$ & \textbf{IS}$\uparrow$ \\
+\midrule
+
+\multirow{3}{*}{LlamaGen-B (111M)} 
+& k-means++ & Centroid + Iterative Partition & 5.41 & 187.9 \\
+& MASC w/ Centroid & Centroid + \textbf{Bottom-Up} & 5.17 & 196.2 \\
+\rowcolor{gray!20}
+& \textbf{Full MASC} & \textbf{Manifold} + \textbf{Bottom-Up} & \textbf{4.81} & \textbf{206.4} \\
+\midrule
+
+\multirow{3}{*}{LlamaGen-L (343M)}
+& k-means++ & Centroid + Iterative Partition & 3.85 & 223.7 \\
+& MASC w/ Centroid & Centroid + \textbf{Bottom-Up} & 3.68 & 246.5 \\
+\rowcolor{gray!20}
+& \textbf{Full MASC} & \textbf{Manifold} + \textbf{Bottom-Up} & \textbf{2.92} & \textbf{259.2} \\
+\midrule
+
+\multirow{3}{*}{LlamaGen-XL (775M)}
+& k-means++ & Centroid + Iterative Partition & 3.17 & 246.5 \\
+& MASC w/ Centroid & Centroid + \textbf{Bottom-Up} & 3.02 & 268.1 \\
+\rowcolor{gray!20}
+& \textbf{Full MASC} & \textbf{Manifold} + \textbf{Bottom-Up} & \textbf{2.58} & \textbf{272.1} \\
+\bottomrule
+\end{tabular}
+\vspace{-3pt}
+\end{table*}
+
+\vspace{-8pt}
+\section{Conclusion and Discussion}
+\label{sec:conclusion_discussion}
+
+In conclusion, we addressed the structural information loss in autoregressive image generation by challenging the flawed flat vocabulary assumption. We introduced \textbf{MASC}, a framework that constructs a principled semantic hierarchy from the codebook's intrinsic manifold structure, simplifying the high-dimensional prediction task. Our extensive experiments confirm that this approach significantly accelerates training and elevates existing AR frameworks to be highly competitive with state-of-the-art models. Our work establishes that structuring the prediction space is as crucial as architectural innovation, paving a scalable path for the next generation of efficient AR models.
+
+The proposed framework also opens several avenues for future research. Our work highlights a clear path toward more hierarchy-aware generative modeling. The default random sampling decoder, while effective, is only a first step. A crucial next direction is the development of learned, context-aware decoders that can make an informed selection within a predicted semantic branch, enabling a more principled coarse-to-fine generation process. This naturally leads to the need for novel AR architectures that can natively process and leverage the rich, unbalanced tree structure produced by MASC, rather than treating it as a vocabulary reduction tool~\citep{hu2025improving}. Furthermore, our static prior invites exploration into the joint optimization of the structural prior, or even dynamic priors that co-evolve during model training. Such an approach could fundamentally alter the scaling laws of AR models, potentially enabling more efficient training or the use of far more expressive codebooks. Finally, the success of this manifold-centric view on visual tokens raises a broader question: could similar principles be applied to other modalities? Investigating the latent manifold structure of discrete representations in video, audio, and even language modeling could prove to be a valuable paradigm for building more efficient and powerful generative models across domains.
+
+
+\newpage
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+
+
+
+\newpage
+
+
+\appendix
+
+
+\section*{Appendix}
+
+\section{Experimental Setup and Implementation Details}
+\label{app:implementation_details}
+
+This section provides the detailed experimental configurations required to reproduce the results presented in this paper, covering the hardware and software environment, training hyperparameters for the backbone models, parameter settings for our proposed MASC algorithm and other baselines, and specifics of the evaluation metrics.
+
+\subsection{Hardware and Software Environment}
+\label{app:environment}
+
+All models were trained and evaluated on a server cluster equipped with 8 NVIDIA H100 80GB GPUs. We use PyTorch \texttt{v2.1.0} as our primary deep learning framework, accelerated with CUDA \texttt{v12.1} and cuDNN \texttt{v8.9}. To ensure a consistent experimental environment, we used Python \texttt{v3.10}.
+
+\subsection{Backbone Model Training Hyperparameters}
+\label{app:backbone_hyperparams}
+
+For a fair comparison, all variants of LlamaGen~\citep{sun2024autoregressive} (Baseline, +k-means, and +MASC) followed the original paper's training configuration, adapted for different model scales. All models were trained for 300 epochs on the ImageNet-1K~\citep{deng2009imagenet} dataset. Detailed hyperparameters are provided in Table \ref{tab:training_hyperparams}.
+
+\begin{table*}[h!]
+\centering
+\caption{Detailed training hyperparameters for the LlamaGen (B, L, XL) backbone models. These settings were uniformly applied to the Baseline, +k-means, and +MASC methods to ensure a fair comparison.}
+\label{tab:training_hyperparams}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+\textbf{Hyperparameter} & \textbf{LlamaGen-B} & \textbf{LlamaGen-L} & \textbf{LlamaGen-XL} \\
+\midrule
+\multicolumn{4}{l}{\textit{\textbf{Model Architecture}}} \\
+\quad Parameter Count (Baseline) & 111M & 343M & 775M \\
+\quad Parameter Count (+k-means / +MASC) & 94M & 311M & 719M \\
+\midrule
+\multicolumn{4}{l}{\textit{\textbf{Optimizer}}} \\
+\quad Optimizer & AdamW & AdamW & AdamW \\
+\quad Betas ($\beta_1, \beta_2$) & (0.9, 0.95) & (0.9, 0.95) & (0.9, 0.95) \\
+\quad Epsilon ($\epsilon$) & $1 \times 10^{-8}$ & $1 \times 10^{-8}$ & $1 \times 10^{-8}$ \\
+\quad Weight Decay & 0.05 & 0.05 & 0.05 \\
+\midrule
+\multicolumn{4}{l}{\textit{\textbf{Learning Rate Schedule}}} \\
+\quad Peak Learning Rate & $1 \times 10^{-4}$ & $1 \times 10^{-4}$ & $2 \times 10^{-4}$ \\
+\quad LR Scheduler & Cosine Annealing & Cosine Annealing & Cosine Annealing \\
+\quad Final Learning Rate & $1 \times 10^{-5}$ & $1 \times 10^{-5}$ & $2 \times 10^{-5}$ \\
+\midrule
+\multicolumn{4}{l}{\textit{\textbf{Training Configuration}}} \\
+\quad Gradient Clipping & 1.0 & 1.0 & 1.0 \\
+\quad Mixed Precision & BF16 & BF16 & BF16 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\subsection{MASC and Baselines Hyperparameters}
+\label{app:clustering_hyperparams}
+
+This section details the parameter settings for the clustering algorithms used to construct the codebook prior. All methods operate on the codebook from the pre-trained VQ-VAE tokenizer of LlamaGen, which has a vocabulary size of $N=16,384$.
+
+\begin{itemize}[leftmargin=15pt]
+    \item \textbf{MASC (Ours)}: Our method is primarily controlled by the target number of clusters, $k$. In all comparative experiments, we set $k=8,192$ to maintain an identical number of model parameters as the k-means baseline. The MASC algorithm is deterministic as it involves no random initialization. The distance metric used is detailed in Equation (3) of the main paper.
+    \item \textbf{k-means}: We used the standard implementation from the \texttt{scikit-learn} library. The target number of clusters was set to $k=8,192$. For stability, we used a random initialization strategy (\texttt{init='random'}) and performed 10 independent runs, selecting the result with the lowest inertia. The maximum number of iterations (\texttt{max\_iter}) was set to 300, with a convergence tolerance (\texttt{tol}) of $1 \times 10^{-4}$.
+    \item \textbf{k-means++}: As a stronger baseline to k-means, we also set $k=8,192$. The only difference from the standard k-means setup is the use of the k-means++ seeding strategy~\citep{arthur2007kmeanspp} (\texttt{init='k-means++'}). All other parameters (max iterations, tolerance) remained the same.
+\end{itemize}
+
+\subsection{Evaluation Details}
+\label{app:evaluation_details}
+
+To ensure a rigorous and comparable evaluation, we followed the standard procedures below:
+\begin{itemize}[leftmargin=15pt]
+    \item \textbf{Generation Quality Metrics}: We generated 50,000 samples in total for evaluation: 50 images for each of the 1,000 classes in the ImageNet 1K validation set. Fréchet Inception Distance (FID), Inception Score (IS), Precision, and Recall were all calculated using the \texttt{torch-fidelity} library. The FID was computed against the widely-used pre-calculated Inception-V3 feature statistics from the full ImageNet training set.
+    \item \textbf{Prediction Uncertainty Metrics}: Prediction uncertainty is measured by the Shannon entropy of the model's output probability distribution $P_t$ at each generation step. For a vocabulary of size $V$ (where $V=16,384$ for the Baseline and $V=8,192$ for +k-means/+MASC), the entropy is calculated as:
+    \begin{equation}
+        H(P_t) = - \sum_{i=1}^{V} P_t(i) \log_2 P_t(i)
+    \end{equation}
+    The values we report are the average entropy across all generation steps ($t=1, \dots, 256$) for all images in the ImageNet validation set. The Normalized Entropy is calculated as $H_{\text{norm}} = H_{\text{actual}} / \log_2(V)$ to provide a fair comparison of task complexity, independent of vocabulary size.
+\end{itemize}
+
+\section{Algorithmic and Theoretical Analysis of MASC}
+\label{app:analysis}
+
+This section provides a deeper analysis of the MASC algorithm, focusing on its computational complexity and the principled motivation behind its core design choices, particularly the manifold-aligned distance metric.
+
+\subsection{Computational Complexity Analysis}
+\label{app:complexity}
+
+The MASC framework is designed as a one-time, offline preprocessing step. While its asymptotic complexity is higher than that of k-means, its deterministic nature and efficient implementation make it highly practical for typical codebook sizes. We analyze its complexity below.
+
+Let $N$ be the number of tokens in the codebook, $d$ be the embedding dimension, and $k$ be the target number of clusters.
+
+\begin{itemize}[leftmargin=15pt]
+    \item \textbf{Initialization (Distance Matrix Pre-computation)}: The first step of the algorithm is to compute the initial $N \times N$ pairwise Euclidean distance matrix $\mathbf{D}$. Calculating the distance between two $d$-dimensional vectors takes $O(d)$ time. Since there are $\binom{N}{2} = O(N^2)$ pairs, the total time complexity for this step is $\mathcal{O}(N^2d)$. This step also requires $\mathcal{O}(N^2)$ space to store the distance matrix.
+
+    \item \textbf{Iterative Merging Loop}: The algorithm performs $N-k$ merging iterations. In each iteration, the following operations are performed:
+    \begin{enumerate}[leftmargin=15pt, nosep]
+        \item \textit{Find Minimum Distance}: The algorithm must find the minimum value in the current distance matrix to identify the next pair of clusters to merge. A naive scan of the (upper-triangular part of the) matrix takes $\mathcal{O}(N^2)$ time.
+        \item \textit{Update Distance Matrix}: After merging clusters $C_{s^*}$ and $C_{t^*}$ into a new cluster represented by index $s^*$, we must update the distances from this new cluster to all other active clusters $C_u$. As shown in Algorithm 1, this update is performed efficiently in $\mathcal{O}(N)$ time by iterating through the remaining active clusters and applying the weighted average formula, rather than recomputing all pairwise distances from scratch.
+    \end{enumerate}
+    Since finding the minimum distance is the computational bottleneck in each of the $N-k$ iterations, the total time complexity for the merging loop is $\mathcal{O}((N-k)N^2)$, which simplifies to $\mathcal{O}(N^3)$.
+
+    \item \textbf{Total Complexity}: The overall time complexity of the optimized MASC algorithm is the sum of the initialization and merging steps: $\mathcal{O}(N^2d + N^3)$. Given that in practice $N$ is often significantly larger than $d$ (e.g., $N=16,384$, $d=32$), the $\mathcal{O}(N^3)$ term dominates. The space complexity is dominated by the storage of the distance matrix, resulting in $\mathcal{O}(N^2)$.
+\end{itemize}
+
+\textbf{Comparison with K-means}: The standard k-means algorithm has a time complexity of $\mathcal{O}(I \cdot k \cdot N \cdot d)$, where $I$ is the number of iterations. While this appears more favorable asymptotically, several practical considerations are important. First, k-means is a heuristic algorithm sensitive to initialization, often requiring multiple runs to find a reasonable solution. In contrast, MASC is deterministic and always yields the same optimal hierarchy for a given distance metric. Second, the cost of MASC is a one-time, upfront computational investment. For a typical codebook size of $N=16,384$, our optimized implementation runs in under a minute on a single modern GPU, a negligible cost when compared to the hundreds of GPU-hours required for training the main autoregressive model. This makes MASC a highly practical and efficient choice for constructing a high-quality, stable, and reproducible codebook prior. This finding is consistent with prior work on similar agglomerative clustering methods, which also report feasible runtimes for large codebooks.
+
+\subsection{Justification of the Manifold-Aligned Distance Metric}
+\label{app:metric_justification}
+
+The choice of the distance metric in Equation (3) is a cornerstone of MASC's design, intended to be a robust and principled proxy for semantic similarity on the codebook manifold. This instance-based average distance, also known in hierarchical clustering literature as the Unweighted Pair Group Method with Arithmetic Mean (UPGMA) or average-linkage, offers a crucial advantage over centroid-based methods and other common linkage criteria.
+
+As established in the main paper, centroid-based distances are ill-suited because centroids are often "off-manifold" and Euclidean distance is a poor approximation of the true geodesic distance on the manifold~\citep{beyer1999nearest, huh2023straightening}. Our metric is centroid-free by design. To further justify its selection, we compare it against two other common centroid-free linkage criteria used in hierarchical clustering:
+
+\begin{itemize}[leftmargin=15pt]
+    \item \textbf{Single-linkage (MIN)}: This metric defines the distance between two clusters as the minimum distance between any two points in the respective clusters, i.e., $\mathcal{D}(C_s, C_t) = \min_{v_i \in C_s, v_j \in C_t} \|v_i - v_j\|_2$. While computationally efficient, single-linkage is highly susceptible to the "chaining effect," where a few intermediate points can cause two otherwise distant clusters to be merged (see Figure \ref{fig:linkage_comparison}). This behavior is undesirable for our task, as it can lead to large, elongated, and semantically diverse clusters, failing to capture the compact semantic groups we aim to model.
+
+    \item \textbf{Complete-linkage (MAX)}: This metric uses the maximum distance between any two points in the clusters, i.e., $\mathcal{D}(C_s, C_t) = \max_{v_i \in C_s, v_j \in C_t} \|v_i - v_j\|_2$. It is the opposite of single-linkage and tends to produce very compact, roughly spherical clusters. However, it is highly sensitive to outliers and may fail to correctly group elongated or non-convex shapes that are nevertheless semantically coherent on the manifold.
+
+    \item \textbf{Average-linkage (MASC's choice)}: Our chosen metric calculates the average distance between all pairs of points across two clusters. It serves as a robust compromise between the extremes of single- and complete-linkage. By considering the entire distribution of points within both clusters, it is less sensitive to outliers than complete-linkage and less prone to the chaining effect than single-linkage. This formulation effectively measures the overall "closeness" of two clusters, making it well-suited to identifying semantically coherent groups, even if they form non-spherical shapes on the manifold. Its effectiveness in capturing discriminative priors for codebooks has been validated in related works.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+     \includegraphics[width=0.8\linewidth]{fig/appendix_MASC_Link.png} 
+    \caption{A conceptual illustration of linkage criteria. (a) Single-linkage may incorrectly merge two distinct semantic groups if they are connected by a bridge of a few close points. (b) Average-linkage, as used in MASC, considers the overall distribution of points and is more robust, correctly identifying distinct clusters.}
+    \label{fig:linkage_comparison}
+\end{figure}
+
+In summary, the choice of average-linkage is a deliberate design decision to create a clustering hierarchy that is robust, deterministic, and best reflects the underlying semantic structure of the codebook manifold by balancing compactness and shape-invariance.
+
+
+
+
+
+\begin{algorithm}[t!]
+\caption{Manifold-Aligned Semantic Clustering (MASC) Construction}
+\label{algo:MASC}
+\begin{algorithmic}[1]
+\Require Codebook embeddings $\mathcal{Z} = \{v_1, \dots, v_N\} \in \mathbb{R}^{N \times d}$, target number of clusters $k$.
+\Ensure A mapping $\mathcal{M}: \{1, \dots, N\} \to \{1, \dots, k\}$ from token indices to cluster indices.
+
+\State \Comment{\textit{Initialization}}
+\State Initialize $N$ active clusters, $C_j \leftarrow \{v_j\}$, and their sizes, $|C_j| \leftarrow 1$, for $j=1, \dots, N$.
+\State Pre-compute the full $N \times N$ pairwise Euclidean distance matrix $\mathbf{D}$, where $\mathbf{D}_{st} = \|v_s - v_t\|_2$.
+\State Set diagonal elements $\mathbf{D}_{ss} \leftarrow \infty$ to prevent self-merging.
+
+\State \Comment{\textit{Bottom-Up Hierarchical Construction}}
+\For{$i \leftarrow 1$ to $N-k$}
+    \State Find the pair of active clusters with the minimum distance: $(s^*, t^*) \leftarrow \argmin_{s,t} \mathbf{D}_{st}$.
+    
+    \State \Comment{Update distance matrix efficiently using a weighted average}
+    \For{each remaining active cluster $C_u$ where $u \neq s^*, t^*$}
+        \State $\mathbf{D}_{s^*, u} \leftarrow \frac{|C_{s^*}|\mathbf{D}_{s^*, u} + |C_{t^*}|\mathbf{D}_{t^*, u}}{|C_{s^*}| + |C_{t^*}|}$; \quad $\mathbf{D}_{u, s^*} \leftarrow \mathbf{D}_{s^*, u}$
+    \EndFor
+    
+    \State \Comment{Update cluster size and deactivate the merged cluster $C_{t^*}$}
+    \State $|C_{s^*}| \leftarrow |C_{s^*}| + |C_{t^*}|$.
+    \State Set row and column $t^*$ of $\mathbf{D}$ to $\infty$.
+    \State Keep track that all original tokens from cluster $C_{t^*}$ now belong to cluster $C_{s^*}$.
+\EndFor
+
+\State \Comment{\textit{Final Mapping Construction}}
+\State The remaining $k$ active clusters form the final coarse vocabulary.
+\State Assign a unique index from $\{1, \dots, k\}$ to each of the final $k$ active clusters.
+\State Construct the mapping $\mathcal{M}$ by assigning each original token $v_i$ to its final cluster index.
+\State \Return The mapping $\mathcal{M}$.
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\section{Extended Experimental Results and Analyses}
+\label{app:extended_results}
+
+This section expands upon the experimental results presented in the main paper. We provide detailed analyses, including qualitative visualizations of cluster coherence, ablation studies on key hyperparameters, and a deeper look into the effects of different decoding strategies. These results collectively offer a comprehensive validation of the MASC framework.
+
+
+
+
+\subsection{Ablation Study on the Number of Coarse Clusters (\textit{k})}
+\label{app:ablation_k}
+
+The number of coarse clusters, $k$, is a critical hyperparameter that balances the trade-off between simplifying the prediction space and preserving sufficient visual information. A small $k$ results in large, semantically broad clusters, leading to a loss of detail (high intra-cluster variance). A large $k$ approaches the original flat vocabulary, diminishing the benefits of clustering. We performed an ablation study on $k$ using the LlamaGen-L backbone. The results in Table \ref{tab:ablation_k} show that performance peaks around $k=8,192$. This configuration provides a significant reduction in vocabulary size while retaining enough granularity for high-fidelity image generation, justifying its use as our default setting.
+
+\begin{table}[h!]
+\centering
+\caption{Ablation study on the number of clusters ($k$) for MASC, evaluated on the LlamaGen-L model. Performance generally improves as $k$ increases, but the gains diminish while the model size and prediction complexity grow. We select $k=8,192$ as it offers the best balance of performance, efficiency, and task simplification.}
+\label{tab:ablation_k}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+\textbf{\textit{k}} & \textbf{\# Params} & \textbf{Norm. Entropy} $\downarrow$ & \textbf{FID} $\downarrow$ & \textbf{IS} $\uparrow$ & \textbf{Recall} $\uparrow$ \\
+\midrule
+2,048 & 298M & 0.11 & 4.15 & 231.4 & 0.52 \\
+4,096 & 305M & 0.12 & 3.37 & 250.1 & 0.55 \\
+\rowcolor{gray!20}
+\textbf{8,192} & \textbf{311M} & \textbf{0.14} & \textbf{2.92} & \textbf{259.2} & \textbf{0.57} \\
+12,288 & 327M & 0.16 & 2.90 & 261.5 & 0.57 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ablation Study on Inference Decoding Strategy}
+\label{app:ablation_decoding}
+
+As described in Section \ref{sec:MASC_integration}, we primarily use a simple and efficient Random Sampling strategy for decoding the generated coarse cluster indices into fine-grained tokens. We also proposed an extended Hierarchical Decoding strategy that employs a small refinement network. Here, we analyze the trade-offs between these two approaches. The refinement network is a single-layer Transformer decoder with 4 attention heads and an embedding dimension of 512, adding approximately 25M parameters.
+
+Table \ref{tab:ablation_decoding} shows that while the learned Hierarchical Decoding strategy provides a marginal improvement in generation quality (a 0.05 reduction in FID), it comes at the cost of additional parameters and a slight decrease in inference speed. The strong performance of the default Random Sampling strategy underscores the high semantic consistency of the clusters produced by MASC—any token within a cluster serves as a good representative. This makes Random Sampling an excellent default choice, offering a compelling balance of simplicity, efficiency, and high performance.
+
+\begin{table}[h!]
+\centering
+\caption{Comparison of decoding strategies for LlamaGen-L + MASC. Hierarchical Decoding offers a slight fidelity gain at the cost of increased model size and reduced inference speed.}
+\label{tab:ablation_decoding}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Decoding Strategy} & \textbf{Add. Params} & \textbf{Speed (img/s)} & \textbf{FID} $\downarrow$ & \textbf{IS} $\uparrow$ \\
+\midrule
+\rowcolor{gray!20}
+\textbf{Random Sampling (Default)} & \textbf{0M} & \textbf{8.71} & \textbf{2.92} & \textbf{259.2} \\
+Hierarchical Decoding & +25M & 8.25 & 2.87 & 260.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Detailed Results for Different Classifier-Free Guidance (CFG) Scales}
+\label{app:ablation_cfg}
+
+Classifier-Free Guidance (CFG) is a standard technique to trade off sample quality (fidelity) against diversity. We observe that FID is minimized at a moderate CFG scale (around 2.0-2.25), while IS generally increases with higher CFG scales, indicating better quality for individual samples but a potential drift from the true data distribution. Our choice of CFG=2.0 for the LlamaGen-L experiments in the main paper represents a balanced point between these two objectives.
+
+\newpage
+
+\section{Additional Generated Samples}
+\label{app:more_samples}
+
+To further showcase the generation capabilities of our MASC-enhanced model, Figure \ref{fig:additional_samples} presents a broader gallery of generated images. These samples were generated using the LlamaGen-XL + MASC model. The images span a wide range of ImageNet classes, including animals, objects, food, and scenes, demonstrating the model's ability to generate diverse, high-fidelity, and compositionally sound images.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\linewidth]{fig/addition.png} 
+    \caption{Additional samples generated by LlamaGen-XL + MASC.}
+    \label{fig:additional_samples}
+\end{figure}
+\clearpage
+
+\end{document}

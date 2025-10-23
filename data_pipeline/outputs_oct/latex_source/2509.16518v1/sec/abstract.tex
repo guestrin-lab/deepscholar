@@ -1,0 +1,14 @@
+Generating realistic videos with diffusion transformers demands significant computation, with attention layers becoming the central bottleneck.
+Even producing a short clip requires running a transformer over a very long sequence of embeddings, e.g., more than 30K embeddings for a 5-second video. These long sequence lengths thus incur significant compute latencies. Prior work aims to mitigate this bottleneck by exploiting sparsity in the attention layers to reduce the computation required. However, these works typically rely on block-sparse attention, which skips score computation only when all entries in a \emph{block} of attention scores (corresponding to $M$ queries and $M$ keys, with $M=64$ typically) are zero. This coarse-granular skipping of attention scores does not fully exploit sparsity in the attention map and leaves significant room for improvement.
+
+
+In this work, we propose \X, a sparse attention mechanism for long-context diffusion transformers that leverages sparsity at a fine granularity. 
+Unlike block-sparse attention, which skips entire $M \times M$ blocks, our approach skips computations at the granularity of $M \times 1$ \emph{slices} of the attention map. Each slice is produced as a result of query-key dot products between a block of query vectors and a \emph{single key}. To implement our proposed sparse attention mechanism, we construct a new highly efficient bulk-load operation called asynchronous-gather load. This load operation gathers a sparse set of relevant key-value vectors from memory and arranges them into packed tiles in the GPU's shared memory. In this manner, only a sparse set of keys relevant to those queries are loaded into shared memory when computing attention for a block of queries, in contrast to loading full blocks of key tokens in block-sparse attention. Our fine-grained sparse attention, applied to video diffusion models, achieves an average 1.55x (up to 1.65x) speedup for 5 second, 480p videos, and an average 1.41x (up to 1.49x) for 5 second, 720p videos on a single H100 GPU.
+
+\textbf{\textcolor{magenta}{Code:}} \url{https://github.com/sankeerth95/FG-Attn}
+
+% \begin{center}
+% \begingroup
+% \endgroup
+% \end{center}
+

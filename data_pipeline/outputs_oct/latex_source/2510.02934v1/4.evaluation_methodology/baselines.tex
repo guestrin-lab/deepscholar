@@ -1,0 +1,20 @@
+\subsection{Baselines}
+We compare the performance of \tool against SOTA \textit{white-box} and \textit{black-box} approaches. White-box approaches analyze the model's internal computations during code generation to determine the correctness of the generated output. In contrast, black-box approaches evaluate the code correctness based solely on the final generated output without considering the generation process.
+
+\begin{itemize}
+    \item \textit{White-box methods}~\cite{openia, inside, lookback}: These methods utilize internal signals such as attention maps, hidden activations, or internal representations as indicators of correctness. In this study, we evaluate the effectiveness of \tool by comparing it against a SOTA white-box method \openia~\cite{openia}, and an \oracle baseline.
+    \begin{itemize}
+        \item \openia~\cite{openia} determines if LLM-generated code is (in)correct by training a probing classifier using the internal states from the last generated token at the last layer of the models.
+
+        \item \oracle represents an upper-bound baseline constructed by exhaustively searching across all layers and token positions to identify the \textit{most optimal} internal representations of each model for each evaluation setting. Since the search space grows exponentially with the number of layers and tokens, such a full search is computationally prohibitive and infeasible in practice. In this research, we approximate this oracle by individually evaluating representations from four boundary tokens (\texttt{first token}, \texttt{last token}, \texttt{first code token}, \texttt{last code token}) across layers, providing a  manageable yet informative estimation of the optimal choice.
+    \end{itemize}
+    
+    
+    \item \textit{Black-box methods}~\cite{openia, embedding_emse22,opt-pretrained-model,pretrained-survey, internal-state-2}: We consider two representative black-box strategies:
+    \begin{itemize}
+        
+        \item \textit{Post-hoc classification-based methods}~\cite{embedding_emse22,opt-pretrained-model,pretrained-survey}: These methods predict correct code by considering the code semantics, typically captured using a pretrained model for code, e.g., CodeBERT~\cite{codebert}, CodeT5~\cite{codet5}, or CuBERT~\cite{cubert}. In this work, we employed two widely used models, including CodeBERT and CodeT5+, to encode the code semantics and train a classifier on the resulting embeddings to determine correctness.
+        
+        \item \textit{LLM-as-A-Judge (LLM-AJ)}~\cite{openia, internal-state-2}: These methods evaluate code correctness by utilizing the reasoning and generalization capabilities of LLMs. Following the prior work~\cite{openia, internal-state-2}, we adopt a zero-shot prompting strategy with two configurations: \inhouse, where the same model, that generates code, is used to assess its own output, and \external, where an external LLM (i.e., \gpt) serves as a verifier. The full prompt templates used in our experiments are available on our website~\cite{website}.
+    \end{itemize}
+\end{itemize}

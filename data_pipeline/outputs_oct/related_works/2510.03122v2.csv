@@ -1,0 +1,52 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.03122v2,http://arxiv.org/abs/2510.03122v2,2025-10-03 15:50:52+00:00,HAVIR: HierArchical Vision to Image Reconstruction using CLIP-Guided Versatile Diffusion,"The reconstruction of visual information from brain activity fosters
+interdisciplinary integration between neuroscience and computer vision.
+However, existing methods still face challenges in accurately recovering highly
+complex visual stimuli. This difficulty stems from the characteristics of
+natural scenes: low-level features exhibit heterogeneity, while high-level
+features show semantic entanglement due to contextual overlaps. Inspired by the
+hierarchical representation theory of the visual cortex, we propose the HAVIR
+model, which separates the visual cortex into two hierarchical regions and
+extracts distinct features from each. Specifically, the Structural Generator
+extracts structural information from spatial processing voxels and converts it
+into latent diffusion priors, while the Semantic Extractor converts semantic
+processing voxels into CLIP embeddings. These components are integrated via the
+Versatile Diffusion model to synthesize the final image. Experimental results
+demonstrate that HAVIR enhances both the structural and semantic quality of
+reconstructions, even in complex scenes, and outperforms existing models.","\subsection{Diffusion Models}
+Diffusion Models (DMs)\cite{3-7,mdb8,Mdb13,14-6,4-9,11-3-23} are probabilistic generative models that generate samples through iterative denoising of Gaussian noise. To address computational limitations in pixel space processing, Latent Diffusion Models (LDMs) were developed to operate in compressed latent spaces. The framework utilizes a pretrained autoencoder that compresses images into low dimensional latent representations, significantly reducing computational costs while maintaining generation fidelity.
+
+Expanding on LDM, the Versatile Diffusion (VD)\cite{mdb46} introduces a dual guidance mechanism that integrates CLIP features from images, text, or both, with a distinctive reverse process initialization strategy. VD is trained on datasets such as Laion2B-en\cite{uni31} and COYO-700M\cite{uni4}, and employs a pretrained ViT-L/14 CLIP backbone\cite{uni23-clip} for powerful multi-modal fusion. We chose VD for the final image reconstruction because it can integrate structural and semantic features during denoising.
+
+\subsection{Visual Reconstruction from fMRI}
+Decoding visual stimuli from brain activity remains a key challenge in computational neuroscience. Early approaches decoded visual stimuli from brain activity by extracting image features (e.g., multi-scale local bases \cite{11-3-08}, Gabor filters \cite{11-2}) and training linear mappings from fMRI signals to these features, demonstrating feasibility. However, fMRI’s low signal-to-noise ratio and limited datasets made natural scene reconstruction infeasible with linear methods.
+
+Deep neural networks (DNNs) later enabled modeling complex brain-visual relationships through feature learning \cite{11-8}. Diverse DNN frameworks improved reconstruction, including deep belief networks \cite{10-4}, VAEs \cite{10-5-effenet}, feedforward architectures \cite{10-6,10-7}, GANs \cite{10-8,4-9}, and hybrid VAE/GANs \cite{7-12}, but often lacked semantic fidelity. Integrating CLIP \cite{uni23-clip} addressed this, Lin et al. \cite{2-7} aligned fMRI patterns with CLIP’s latent space via contrastive-adversarial learning, leveraging StyleGAN2 for semantically enhanced generation.
+
+Recently, diffusion models has shown its ability to create high-resolution images with strong semantic consistency, leading to its successful use in various generative tasks\cite{3-27,3-28,3-29,3-7}. Takagi et al.\cite{9-1} was the first to map fMRI signals to diffusion latent space and CLIP text embeddings, generating images without training or fine-tuning deep networks, but the reconstructed images lacked sufficient semantic information and natural qualities. Later, MindEye\cite{12-4}, which optimized the semantic representations of fMRI features through contrastive learning, and MindDiffuser\cite{14-6}, which devised a two-stage diffusion process, addressed this issue. Furthermore, MindBridge\cite{13-5} introduces a cross-subject alignment strategy that enables the decoder to generalize across brain activity data from multiple individuals. 
+
+Despite these advancements, existing methods still have limited capability in reconstructing visual stimuli of highly complex scenes, struggling to accurately capture their low-level structural features and high-level semantic information. This limitation hinders the generation of images that simultaneously achieve structural fidelity and semantic accuracy. 
+\begin{figure*}[h] % [t]选项表示优先放置在页面顶部
+\centering % 图片居中
+% BMVC专用图片盒子（确保与文字基线对齐）
+\includegraphics[width=0.8\textwidth]{fig1.png}
+% 图片标题（BMVC要求使用英文标点）
+\caption{
+    Overall framework of HAVIR. Different data are used for training and testing.
+}
+% 标签（用于交叉引用）
+\label{fig:1}
+% BMVC建议在图表下方添加空行（调整间距）
+\end{figure*}","\subsection{Diffusion Models}
+Diffusion Models (DMs)\cite{3-7,mdb8,Mdb13,14-6,4-9,11-3-23} are probabilistic generative models that generate samples through iterative denoising of Gaussian noise. To address computational limitations in pixel space processing, Latent Diffusion Models (LDMs) were developed to operate in compressed latent spaces. The framework utilizes a pretrained autoencoder that compresses images into low dimensional latent representations, significantly reducing computational costs while maintaining generation fidelity.
+
+Expanding on LDM, the Versatile Diffusion (VD)\cite{mdb46} introduces a dual guidance mechanism that integrates CLIP features from images, text, or both, with a distinctive reverse process initialization strategy. VD is trained on datasets such as Laion2B-en\cite{uni31} and COYO-700M\cite{uni4}, and employs a pretrained ViT-L/14 CLIP backbone\cite{uni23-clip} for powerful multi-modal fusion. We chose VD for the final image reconstruction because it can integrate structural and semantic features during denoising.
+
+\subsection{Visual Reconstruction from fMRI}
+Decoding visual stimuli from brain activity remains a key challenge in computational neuroscience. Early approaches decoded visual stimuli from brain activity by extracting image features (e.g., multi-scale local bases \cite{11-3-08}, Gabor filters \cite{11-2}) and training linear mappings from fMRI signals to these features, demonstrating feasibility. However, fMRI’s low signal-to-noise ratio and limited datasets made natural scene reconstruction infeasible with linear methods.
+
+Deep neural networks (DNNs) later enabled modeling complex brain-visual relationships through feature learning \cite{11-8}. Diverse DNN frameworks improved reconstruction, including deep belief networks \cite{10-4}, VAEs \cite{10-5-effenet}, feedforward architectures \cite{10-6,10-7}, GANs \cite{10-8,4-9}, and hybrid VAE/GANs \cite{7-12}, but often lacked semantic fidelity. Integrating CLIP \cite{uni23-clip} addressed this, Lin et al. \cite{2-7} aligned fMRI patterns with CLIP’s latent space via contrastive-adversarial learning, leveraging StyleGAN2 for semantically enhanced generation.
+
+Recently, diffusion models has shown its ability to create high-resolution images with strong semantic consistency, leading to its successful use in various generative tasks\cite{3-27,3-28,3-29,3-7}. Takagi et al.\cite{9-1} was the first to map fMRI signals to diffusion latent space and CLIP text embeddings, generating images without training or fine-tuning deep networks, but the reconstructed images lacked sufficient semantic information and natural qualities. Later, MindEye\cite{12-4}, which optimized the semantic representations of fMRI features through contrastive learning, and MindDiffuser\cite{14-6}, which devised a two-stage diffusion process, addressed this issue. Furthermore, MindBridge\cite{13-5} introduces a cross-subject alignment strategy that enables the decoder to generalize across brain activity data from multiple individuals. 
+
+Despite these advancements, existing methods still have limited capability in reconstructing visual stimuli of highly complex scenes, struggling to accurately capture their low-level structural features and high-level semantic information. This limitation hinders the generation of images that simultaneously achieve structural fidelity and semantic accuracy.",N/A

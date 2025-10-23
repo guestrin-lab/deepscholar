@@ -1,0 +1,197 @@
+\documentclass[10pt, conference, letterpaper]{IEEEtran}
+% \usepackage{algorithmicx}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{hhline}
+\usepackage{amsmath,mathtools}
+\usepackage{amsfonts,amssymb}
+\usepackage{mathrsfs}
+\usepackage{gensymb} % for degree
+% \usepackage{caption}% http://ctan.org/pkg/caption
+\usepackage{graphicx} 
+\usepackage{multirow}
+\usepackage{enumitem,color}
+\usepackage{algpseudocode}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{dsfont} 
+\usepackage{caption}
+\usepackage{subfigure} 
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{left=0.7in,top=0.7in,right=0.7in,bottom=1in,}
+
+% for spacing details, see https://tex.stackexchange.com/questions/26521/how-to-change-the-spacing-between-figures-tables-and-text
+\setlength{\textfloatsep}{2pt}  % this sets the gap between float obj (table, alg, figure, etc.) and the text
+\setlength{\intextsep}{2pt}  % this sets the gap between float obj (table, alg, figure, etc.) and the text
+\setlength{\floatsep}{2pt}  % this sets the gap between float obj (table, alg, figure, etc.) and the text
+\setlength{\dbltextfloatsep}{2pt}  % this sets the gap between float obj (table, alg, figure, etc.) and the text
+\setlength{\dblfloatsep}{2pt}  % this sets the gap between float obj (table, alg, figure, etc.) and the text
+\setlength{\abovedisplayskip}{2pt} % this set the gap between equation and text
+\setlength{\belowdisplayskip}{2pt} % this set the gap between equation and text
+\setlength{\abovecaptionskip}{2pt} % Chosen fairly arbitrarily
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+\usepackage{titlesec}
+\titlespacing*{\section}{1pt}{0.5ex}{0.5ex}
+\titlespacing*{\subsection}{1pt}{0.5ex}{0.5ex}
+\titlespacing*{\subsubsection}{1pt}{0.5ex}{0.5ex}
+\titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{}
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{\huge Automatic Network Planning with Digital Radio Twin\vspace{-0.1in}}
+
+
+
+\author{
+\IEEEauthorblockN{
+Xiaomeng Li\IEEEauthorrefmark{1}, 
+Yuru Zhang\IEEEauthorrefmark{1}, 
+Qiang Liu\IEEEauthorrefmark{1}, 
+Mehmet Can Vuran\IEEEauthorrefmark{1}, \\
+Nathan Huynh\IEEEauthorrefmark{1},
+Li Zhao\IEEEauthorrefmark{1}, 
+Mizan Rahman\IEEEauthorrefmark{2}, 
+Eren Erman Ozguven\IEEEauthorrefmark{3} \\
+\IEEEauthorrefmark{1} University of Nebraska-Lincoln,
+\IEEEauthorrefmark{2} University of Alabama,
+\IEEEauthorrefmark{3} Florida State University
+\vspace{-0.2in}
+}
+}
+
+
+
+\maketitle
+
+\begin{abstract}
+Network planning seeks to determine base station parameters that maximize coverage and capacity in cellular networks. However, achieving optimal planning remains challenging due to the diversity of deployment scenarios and the significant simulation-to-reality discrepancy.
+In this paper, we propose \emph{AutoPlan}, a new automatic network planning framework by leveraging digital radio twin (DRT) techniques.
+We derive the DRT by finetuning the parameters of building materials to reduce the sim-to-real discrepancy based on crowdsource real-world user data.
+Leveraging the DRT, we design a Bayesian optimization based algorithm to optimize the deployment parameters of base stations efficiently.
+Using the field measurement from Husker-Net, we extensively evaluate \emph{AutoPlan} under various deployment scenarios, in terms of both coverage and capacity.
+The evaluation results show that \emph{AutoPlan} flexibly adapts to different scenarios and achieves performance comparable to exhaustive search, while requiring less than 2\% of its computation time.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Network Planning, Digital Radio Twin, Bayesian Optimization
+\end{IEEEkeywords}
+
+% TODO: usage of DRT future 
+
+% reference: AutoBS
+
+\section{Introduction}
+\label{sec:introduction}
+Network planning constitutes a fundamental stage in the design of cellular networks, wherein critical base station (BS) parameters (e.g.,  geographic placement, antenna orientation, transmission power, and tilt) are optimized to ensure desired network coverage and performance.
+With the densification of cellular networks~\cite{andreev2019future}, network planning has become increasingly intricate, requiring the joint optimization of heterogeneous base stations under site-specific propagation effects induced by irregular 3D terrain, complex building geometries, and diverse material compositions.
+Conventional cellular network planning relies on a combination of field measurements (e.g., drive tests) and model-based simulations (e.g., calibrated radio propagation models), which is laborious and time-consuming. 
+
+Digital radio twin (DRT)~\cite{khan2022digital} emerges as a promising technique to facilitate network planning.
+DRT aims to replicate the real-world radio propagation in the scene, with the attributes of fidelity (imitating as closely as possible), tractability (querying as cheaply as possible), and synchronicity (tracking as timely as possible)~\cite{almasan2022network}.
+By leveraging a DRT, network operators can perform trial-and-error evaluations to optimize base station parameters and assess coverage, capacity, and interference trade-offs, prior to costly field implementation.
+
+However, it is challenging to derive a DRT with all the essential attributes.
+On the one hand, existing simulators (e.g., Sionna RayTracing~\cite{hoydis2023sionna} and Wireless InSite) suffer from non-trivial simulation-to-reality (sim-to-real) discrepancy~\cite{manalastas2024simulators}, necessitating extensive calibration to improve fidelity.
+On the other hand, the synchronicity attribute is difficult to achieve, as it is not cost-efficient to conduct periodic field measurements for simulator calibration.
+Note that, given the complex computation (e.g., raytracing and radio effects), we can only obtain the network performance (e.g., coverage and capacity) after querying the DRT. 
+Hence, it is difficult to derive the optimal base station parameters, under high-dimensional combination spaces, even if the DRT can be queried in seconds.
+
+
+
+In this paper, we propose \emph{AutoPlan}, a new automatic network planing framework by leveraging digital radio twin techniques.
+On the one hand, we derive the DRT with the following steps. 
+First, we crowdsource abundant real-world data from mobile users under existing deployed base stations (e.g., prior deployments or those of other network operators). 
+Second, with the online data, we continuously calibrate the parameters (particularly, the material of buildings) of the existing simulator (i.e., Sionna RT), to reduce the sim-to-real discrepancy.
+Third, we accelerate the query of the calibrated simulator with GPU parallel computing to improve its tractability.
+On the other hand, we design a network planning algorithm to derive the optimal base station parameters (particularly, location and power).
+Specifically, we leverage Bayesian optimization to tackle the non-negligible querying costs of the DRT by creating a Gaussian process as the surrogate model and adopting expected improvement (EI) as the acquisition function.
+Using the field measurement from Husker-Net (a private 5G network at the University of Nebraska-Lincoln), we extensively evaluate \emph{AutoPlan} under different deployment scenarios, in terms of both coverage, capacity, and efficiency.
+
+
+Overall, we summarize the contribution of this paper as:
+\begin{itemize}
+    \item The DRT with the attribute of fidelity, tractability, and synchronicity, based on the simulator of Sionna RayTracing; 
+    \item An automatic network planning algorithm, based on Bayesian optimization, to derive optimal base station parameters, assisted by the derived DRT;  
+    \item An extensive campus-scale evaluation, showing comparable network performance with state-of-the-art works.
+\end{itemize}
+
+
+
+
+% The rapid evolution of fifth-generation (5G) and emerging sixth-generation (6G) cellular networks demands accurate and efficient methodologies for base station (BS) deployment planning.
+% Traditionally, planning has relied on field measurements. 
+% However, exhaustively testing all feasible configurations is prohibitively time-consuming and cost-intensive, especially in large rural regions. 
+% Recently, the concept of digital radio twins (DRTs) has emerged as a promising paradigm for bridging the gap between simulated and real-world environments~\cite{hoydis2023sionna}. 
+% DRTs combine high-fidelity 3D scene models with physics-based radio propagation. 
+% In some engines, they also support differentiable propagation, enabling reproducible performance evaluation and system optimization.
+
+% Despite this promise, building a precise DRT is challenging because of uncertainty in material parameters and environmental dynamics. In practice, obtaining accurate parameters for all objects is rarely feasible, leading to discrepancies between simulation and measurements~\cite{manalastas2024simulators}. These inaccuracies limit the reliability of deployment strategies that are solely based on uncalibrated simulations. Furthermore, BS deployment is inherently a black-box optimization problem: key performance metrics such as coverage and capacity are only available after running full simulations, rendering the mapping from deployment configurations to metrics non-differentiable and analytically intractable.
+
+% To address these challenges, we propose \emph{AutoPlan}, a new network deployment framework, that automatically determines the deployment parameters of base stations. Specifically, we use Sionna RT~\cite{hoydis2023sionna}, a differentiable ray-tracing engine, to construct a realistic simulation of the target region. First, we calibrate DRT parameters with field measurements to reduce the sim-to-real gap. Then, we apply Bayesian optimization to iteratively select BS locations, evaluating coverage and capacity via Sionna RT simulations. This joint calibration and optimization pipeline enables robust, data-driven planning that improves reliability and efficiency over heuristic or purely simulation-driven methods.
+
+% Overall, we summarize the contribution of this paper as:
+% \begin{itemize}
+%     \item An automatically calibrated DRT framework based on Sionna RT, integrating data-driven parameter calibrating with physics-based ray tracing; 
+%     \item A Bayesian optimization based formulation for efficiently identifying optimal BS deployment locations;  
+%     \item A campus-scale validation, demonstrating improved coverage and comparable capacity over heuristics and exhaustive search, with substantially lower computational cost.  
+% \end{itemize}
+% ultra dense network deployment
+% simuations based planning, suffer sim-to-real gap; while it is costly and human laborious to do field testing 
+
+% our idea: use crowdsourcing data from existing networks (e.g., other operators) to build a digital radio twin, and then optimize the planning deicvision over the digital radio twin
+
+% specifically, how we actully achieve this idea
+% summary of paper contributions
+
+\input{twinning}
+
+\input{planning}
+
+\input{algorithm}
+
+
+\input{evaluation}
+
+
+\section{Related Work}
+
+Traditional approaches to BS deployment include both manual measurement and optimization-based methods. Early efforts often relied on drive testing or site surveys to evaluate signal quality at predefined locations~\cite{molisch2022wireless}, which are labor-intensive, time-consuming, and inflexible in adapting to changing user demands. To overcome these limitations, optimisation-based methods were introduced to automate the process using mathematical formulations or heuristics. 
+Chiaraviglio et al.~\cite{chiaraviglio20215g} formulated BS planning as a mixed-integer linear program under service and EMF constraints, and proposed a heuristic solution named PLATEA. While effective in balancing coverage and EMF compliance, the method relies on static environmental models and sensitive parameters, limiting its adaptability in dynamic scenarios. Similarly, Philip et al.\cite{philip2023cellular} applied meta-heuristic algorithms such as particle swarm optimization (PSO) and genetic algorithms (GA) for BS placement. Although PSO achieved better coverage and efficiency than GA, both approaches depend on simplified propagation models and static user distributions, making them less suitable for realistic and data-driven deployments.
+
+%……%6
+In contrast, AI/ML based methods aim to enhance scalability and adaptability by replacing manual engineering and handcrafted models with data-driven learning. 
+AutoBS~\cite{lee2025autobs} employs reinforcement learning to select BS locations, enabling fast inference during deployment. However, it requires large-scale pretraining on labeled environment performance pairs, which is both computationally expensive and time-consuming to collect. 
+OSSN~\cite{zheng2024transformer}, a Transformer-based framework, unifies radio map estimation and site selection to reduce reliance on exhaustive candidate evaluations. While it improves planning efficiency, its performance remains limited by the availability of training data and a lack of real-world validation. 
+Similarly, Dai and Zhang~\cite{dai2020propagation} take a hybrid approach by integrating machine learning with heuristic optimization, using a dataset of over $0.76$ million measurements to predict signal strength without explicit propagation modeling. 
+% However, it comes at the cost of high data requirements and significant computational overhead.
+
+However, existing AI/ML-based methods require extensive labelled datasets and incur substantial data collection and training costs. 
+More importantly, they tend to overlook the sim-to-real discrepancy introduced by inaccurate or incomplete modelling of physical environments, which hinders generalization in real-world deployments.
+
+
+
+
+\section{Conclusion}
+In this paper, we propose a new automatic network planning framework (\emph{AutoPlan}) by leveraging digital radio twin techniques.
+We derive the DRT by fintuning the parameters of building materials to reduce the sim-to-real discrepancy based on crowdsource real-world user data.
+Leveraging the DRT, we design a Bayesian optimization based algorithm to efficiently search for optimal base station parameters.
+Using the field measurement from Husker-Net, we extensively evaluate \emph{AutoPlan} under various deployment scenarios, in terms of coverage, capacity, and efficiency.
+
+
+
+% \section*{Acknowledgement}
+% This work is supported by the US National Science Foundation under Grant No. 2333164, and No. 2428427. \textcolor{red}{XXX USDoT project info here}
+
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{ref/reference, ref/qiang, ref/ref}
+
+\end{document}
+

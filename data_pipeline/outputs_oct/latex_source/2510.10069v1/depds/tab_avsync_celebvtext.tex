@@ -1,0 +1,30 @@
+% ===== CelebV-Text =====
+\begin{table}
+  \centering
+  \caption{Audio--visual stream synchronization on \textbf{CelebV-Text}. Higher is better for Acc/R-precision; lower is better for Offset.}
+  \label{tab:sync_celebvtext}
+  \setlength{\tabcolsep}{5pt}
+  \small
+  \begin{adjustbox}{max width=\linewidth,center}
+  \begin{tabular}{@{} l cc cc cc ccc @{}}
+    \toprule
+    \multicolumn{1}{l}{Smooth window} &
+      \multicolumn{2}{c}{K=1} &
+      \multicolumn{2}{c}{K=5} &
+      \multicolumn{2}{c}{K=15} &
+      \multicolumn{3}{c}{R-precision (32)} \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-10}
+    Method &
+      Acc $\uparrow$ (\%) & Offset $\downarrow$ &
+      Acc $\uparrow$ (\%) & Offset $\downarrow$ &
+      Acc $\uparrow$ (\%) & Offset $\downarrow$ &
+      Top1 $\uparrow$ & Top2 $\uparrow$ & Top3 $\uparrow$ \\
+    \midrule
+    SyncNet                       & 18.80 & 6.10 & 22.73 & 5.40 & 28.85 & 4.56 &  8.89 & 15.03 & 20.54 \\
+    VocaLiST\;--\;LRS2           & 22.05 & 5.87 & 25.96 & 5.39 & 32.27 & 4.64 & 11.08 & 17.66 & 23.04 \\
+    StableSyncNet                 & 34.42 & 3.93 & 35.51 & 3.88 & 37.58 & 3.76 & 27.02 & 37.25 & 43.35 \\
+    \textbf{Ours}                 & \textbf{34.95} & 5.10 & \textbf{46.46} & \textbf{4.44} & \textbf{60.60} & \textbf{3.51} & \textbf{25.80} & \textbf{39.02} & \textbf{47.99} \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+\end{table}

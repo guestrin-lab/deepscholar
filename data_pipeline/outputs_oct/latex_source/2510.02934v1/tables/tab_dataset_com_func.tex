@@ -1,0 +1,36 @@
+
+\begin{table}[!htp]\centering
+\caption{The number of correct (\ncor) and incorrect (\ninc) solutions in \textit{Compilability} and \textit{Functionality} across benchmarks}\label{tab:dataset_com_func}
+\resizebox{\columnwidth}{!}{ % use this if the table is too large
+\begin{tabular}{l|l|l|r|r|rr}\toprule
+Criteria & Code LLM & &\textit{HumanEval} &\textit{MBPP} &\textit{DevEval} \\\midrule
+\multirow{12}{*}{Compilability} &\deepseek-1.3B &\ncor &1,464 &4,272 &5,952 \\
+& &\ninc &176 &494 &11,377 \\\cmidrule{2-6}
+&\deepseek-6.7B &\ncor &1,577 &4,635 &8,191 \\
+& &\ninc &63 &147 &9,139 \\\cmidrule{2-6}
+&\codellama-7B &\ncor &1,479 &3,804 &7,254 \\
+& &\ninc &161 &824 &10,076 \\\cmidrule{2-6}
+&\codellama-13B &\ncor &1,385 &4,128 &5,440 \\
+& &\ninc &255 &792 &8,480 \\\cmidrule{2-6}
+&\codegemma-7B &\ncor &1,315 &4,086 &5,049 \\
+& &\ninc &325 &864 &8,870 \\\cmidrule{2-6}
+&\magiccoder-7B &\ncor &1,572 &4,745 &7,432 \\
+& &\ninc &66 &142 &9,898 \\\midrule
+
+
+\multirow{12}{*}{Functionality} &\deepseek-1.3B &\ncor &872 &2,065 &2,092 \\
+& &\ninc &768 &2,701 &15,237 \\\cmidrule{2-6}
+&\deepseek-6.7B &\ncor &1,294 &3,033 &4,321 \\
+& &\ninc &346 &1,749 &13,009 \\\cmidrule{2-6}
+&\codellama-7B &\ncor &644 &1,942 &3,467 \\
+& &\ninc &996 &2,686 &13,863 \\\cmidrule{2-6}
+&\codellama-13B &\ncor &666 &2,065 &2,849 \\
+& &\ninc &974 &2,855 &14,481 \\\cmidrule{2-6}
+&\codegemma-7B &\ncor &718 &2,141 &1,876 \\
+& &\ninc &922 &2,809 &12,043 \\\cmidrule{2-6}
+&\magiccoder-7B &\ncor &1,198 &3,135 &4,113 \\
+& &\ninc &440 &1,752 &13,217 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
