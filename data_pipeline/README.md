@@ -12,6 +12,7 @@ This pipeline automates the complete workflow from paper discovery to insight ex
 5. **Recovering missing citation metadata** using external APIs
 6. **Identifying important citations** using LLM-based filtering
 7. **Generating informational nuggets** from related works sections
+8. **Quality filtering papers** based on related works completeness and citation counts
 
 ## 🚀 Complete Workflow
 
@@ -94,6 +95,44 @@ python -m data_pipeline.generate_nuggets_from_reports \
 - Calculates comprehensive metrics for each paper
 - Outputs structured JSON and CSV files with detailed nugget analysis
 
+### Step 5: Quality Filtering (`filter_quality_papers.py`)
+
+Filters papers based on related works quality and citation count to ensure high-quality datasets for downstream tasks.
+
+```bash
+# Single folder - standard quality
+python filter_quality_papers.py --input-folder outputs/20251015_143311/
+
+# All folders in outputs/
+./batch_filter_papers.sh
+
+# Custom thresholds
+python filter_quality_papers.py \
+    --input-folder outputs/20251015_143311/ \
+    --min-citations 10 \
+    --min-rw-length 500 \
+    --max-rw-length 8000
+```
+
+**What it does:**
+- Filters papers with no related works section
+- Removes papers with very short related works (< 200 chars default)
+- Removes papers with excessively long related works (> 10000 chars default)
+- Filters papers with fewer than 5 citations (default)
+
+**Quality Presets:**
+
+| Goal | min_citations | min_rw_length | max_rw_length |
+|------|--------------|---------------|---------------|
+| **Strict** | 15 | 800 | 8000 |
+| **Standard** | 5 | 200 | 10000 |
+| **Lenient** | 3 | 100 | 15000 |
+| **Surveys** | 20 | 1000 | 20000 |
+
+**Outputs:**
+- `paper_content_filtered.csv` - Filtered paper data
+- `papers_filtered.csv` - Filtered paper metadata
+
 ## 📊 Output Files
 
 ### Core Pipeline Outputs (Step 1)
@@ -106,13 +145,15 @@ python -m data_pipeline.generate_nuggets_from_reports \
 | `citation_stats_*.csv` | Aggregated citation statistics | `total_citations`, `resolution_rate`, `arxiv_citation_rate` |
 | `papers_with_related_works_*.csv` | **Main output**: Combined paper and related works data | All paper metadata + related works content |
 
-### Enhanced Outputs (Steps 2-4)
+### Enhanced Outputs (Steps 2-5)
 
 | File | Description |
 |------|-------------|
 | `recovered_citations.csv` | Citations with enhanced metadata from external APIs |
 | `important_citations.csv` | LLM-filtered list of important citations only |
 | `gt_nuggets_outputs/` | Directory containing nugget analysis for each paper (JSON + CSV) |
+| `paper_content_filtered.csv` | Quality-filtered papers meeting all criteria |
+| `papers_filtered.csv` | Filtered paper metadata matching quality standards |
 
 ## ⚙️ Configuration Options
 
@@ -152,6 +193,14 @@ python -m data_pipeline.generate_nuggets_from_reports \
 - `--model`: LLM model (e.g., gpt-4.1)
 - `--log_level`: Logging verbosity (0=warning, 1=info, 2=debug)
 
+**Quality Filtering:**
+- `--input-folder`: Path to folder containing `paper_content.csv` (required)
+- `--min-citations`: Minimum number of citations required (default: 5)
+- `--min-rw-length`: Minimum related works length in characters (default: 200)
+- `--max-rw-length`: Maximum related works length in characters (default: 10000)
+- `--citations-folder`: Path to citations folder (default: ../citations/)
+- `--output-suffix`: Suffix for output filenames (default: _filtered)
+
 ## 📋 Example Workflows
 
 ### Complete End-to-End Pipeline
@@ -176,6 +225,9 @@ python -m data_pipeline.get_important_citations \
 python -m data_pipeline.generate_nuggets_from_reports \
     --output_dir nugget_analysis \
     --model gpt-4.1
+
+# Step 5: Filter for quality papers
+python filter_quality_papers.py --input-folder outputs/20240101_120000/
 ```
 
 ### Quick Testing
@@ -211,6 +263,8 @@ python -m data_pipeline.main --paper-id 2502.07374 --min-hindex 0
 ### Quality Control
 - **Author filtering**: H-index-based quality filtering using Semantic Scholar
 - **Content validation**: Minimum citation requirements and section length checks
+- **Post-processing filtering**: Removes papers with incomplete/inadequate related works sections
+- **Citation quality**: Ensures papers have sufficient extracted citations (configurable threshold)
 - **Error handling**: Graceful failures with detailed logging
 - **Rate limiting**: Configurable delays to respect API limits
 
