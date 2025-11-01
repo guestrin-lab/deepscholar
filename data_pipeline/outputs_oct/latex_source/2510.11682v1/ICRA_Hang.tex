@@ -1,0 +1,174 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+%In case you encounter the following error:
+%Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
+%Error 1000 An error occurred while parsing a contents stream. Unable to analyze the PDF file.
+%This is a known problem with pdfLaTeX conversion filter. The file cannot be opened with acrobat reader
+%Please use one of the alternatives below to circumvent this error by uncommenting one or the other
+%\pdfobjcompresslevel=0
+%\pdfminorversion=4
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+
+\newcommand{\tkk}[1]{[{\textbf{\textcolor{blue}{Yufeng: #1}}}]}
+\newcommand{\tsl}[1]{[{\textbf{\textcolor{blue}{Sangli: #1}}}]}
+\newcommand{\lzy}[1]{[{\textbf{\textcolor{blue}{Zhongyu: #1}}}]}
+\newcommand{\junfeng}[1]{[{\textbf{\textcolor{green}{Junfeng: #1}}}]}
+\newcommand{\hang}[1]{[{\textbf{\textcolor{red}{Hang: #1}}}]}
+\newcommand{\gym}[1]{[{\textbf{\textcolor{blue}{GYM: #1}}}]}
+
+\usepackage{times}
+
+\usepackage{caption}
+\captionsetup{size=footnotesize,
+    %justification=centering, %% not needed
+    skip=5pt, position = bottom}
+% numbers option provides compact numerical references in the text. 
+% \usepackage[numbers]{natbib}
+% \usepackage{cite}
+\usepackage{multicol}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+% \usepackage[dvipsnames]{xcolor}
+\usepackage{float}
+\usepackage{mathrsfs} %
+\usepackage{caption}
+\usepackage{tabularray} 
+\usepackage{tabularx} % for 'tabularx' env. and 'X' col. type
+\usepackage{ragged2e} % for \RaggedRight macro
+\usepackage{cuted}
+\usepackage{array}      % 
+\usepackage{multirow}   % 
+\usepackage[utf8]{inputenc}
+\usepackage{svg} 
+\usepackage{algpseudocode}  
+% \usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{amsfonts}
+\usepackage{dsfont}
+\usepackage{balance}
+\usepackage{stfloats}
+\hypersetup{hidelinks} 
+\usepackage{balance}
+\usepackage[
+    style=ieee,
+    natbib=true,
+    citestyle=numeric-comp,
+    doi=false,
+    isbn=false,
+    url=false]{biblatex} 
+\renewcommand{\bibfont}{\footnotesize} %
+
+\makeatletter
+\@ifundefined{labelindent}{}{%
+  \let\labelindent\relax
+}
+\makeatother
+\usepackage{enumitem}
+
+\addbibresource{references.bib}
+
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+
+\usepackage{cleveref}
+
+\definecolor{BrickRed}{rgb}{.72,0,0}
+\newcommand{\mgj}[1]{[{\textbf{\textcolor{BrickRed}{maani: #1}}}]}
+
+% \definecolor{mydarkblue}{rgb}{0,0.08,0.45}
+% \hypersetup{
+% 	colorlinks=true,
+% 	linkcolor=blue,
+% 	urlcolor=magenta,
+% 	citecolor=mydarkblue,
+% }
+
+\title{\LARGE \bf
+Ego-Vision World Model for Humanoid Contact Planning
+}
+
+\IEEEaftertitletext{\vspace{-2.0\baselineskip}} 
+
+\author{
+    Hang Liu\textsuperscript{2}, 
+    Yuman Gao$^{1}$, 
+    Sangli Teng\textsuperscript{1},
+    Yufeng Chi\textsuperscript{1}, \\
+    Yakun Sophia Shao\textsuperscript{1}, 
+    Zhongyu Li\textsuperscript{3}, 
+    Maani Ghaffari\textsuperscript{2}, and
+    Koushil Sreenath\textsuperscript{1} \\
+    % \textsuperscript{1}University of California, Berkeley \quad
+    % \textsuperscript{2}University of Michigan\quad
+    % \textsuperscript{3}The Chinese University of Hong Kong\\
+    % Page: 
+    % \href{https://66lau.github.io/ego-vc}{\texttt{\textcolor{magenta}{https://66lau.github.io/ego-vc/}}}
+    \thanks{$^{1}$University of California, Berkeley}
+    \thanks{$^{2}$University of Michigan, Ann Arbor}
+    \thanks{$^{3}$The Chinese University of Hong Kong}
+}
+
+
+
+\begin{document}
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{sec/0_abs}
+\input{sec/1_intro}
+\input{sec/2_rela}
+% \input{sec/3_pre}
+\input{sec/4_method}
+\input{sec/5_exp}
+% \input{sec/6_lim}
+\input{sec/7_conclu}
+\input{sec/8_appendix}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \bibliographystyle{IEEEtran}
+% \bibliographystyle{unsrtnat}% {plainnat}
+% \bibliography{references}
+
+% {\small
+% \balance
+% \bibliographystyle{unsrtnat}% {plainnat}
+% % \bibliography{references}
+% }
+\balance
+\printbibliography
+
+\end{document}

@@ -1,0 +1,49 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.08003v1,http://arxiv.org/abs/2510.08003v1,2025-10-09 09:41:45+00:00,CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,"Composed Image Retrieval (CIR), which aims to find a target image from a
+reference image and a modification text, presents the core challenge of
+performing unified reasoning across visual and semantic modalities. While
+current approaches based on Vision-Language Models (VLMs, e.g., CLIP) and more
+recent Multimodal Large Language Models (MLLMs, e.g., Qwen-VL) have shown
+progress, they predominantly function as ``black boxes."" This inherent opacity
+not only prevents users from understanding the retrieval rationale but also
+restricts the models' ability to follow complex, fine-grained instructions. To
+overcome these limitations, we introduce CIR-CoT, the first end-to-end
+retrieval-oriented MLLM designed to integrate explicit Chain-of-Thought (CoT)
+reasoning. By compelling the model to first generate an interpretable reasoning
+chain, CIR-CoT enhances its ability to capture crucial cross-modal
+interactions, leading to more accurate retrieval while making its decision
+process transparent. Since existing datasets like FashionIQ and CIRR lack the
+necessary reasoning data, a key contribution of our work is the creation of
+structured CoT annotations using a three-stage process involving a caption,
+reasoning, and conclusion. Our model is then fine-tuned to produce this
+structured output before encoding its final retrieval intent into a dedicated
+embedding. Comprehensive experiments show that CIR-CoT achieves highly
+competitive performance on in-domain datasets (FashionIQ, CIRR) and
+demonstrates remarkable generalization on the out-of-domain CIRCO dataset,
+establishing a new path toward more effective and trustworthy retrieval
+systems.","\label{sec:related}
+\subsection{Composed Image Retrieval}
+
+Recent advances in Vision–Language Models (VLMs)~\cite{jia2021scaling,Li2023BLIP2BL} have laid a strong foundation for compositional image retrieval. Building on these models, most contemporary CIR approaches develop various adaptation strategies to tailor them to the retrieval task. Specifically, some methods~\cite{Levy2023DataRA,Liu2023CandidateSR,Anwaar2020CompositionalLO,Chen_2020_CVPR} adopt an early-fusion strategy, where the text and image features are first extracted separately using unimodal encoders and then fused to form a joint query representation, which is subsequently matched against candidate features. The main limitation of such early-fusion approaches lies in their inability to accurately align fine-grained visual details with user intent during feature fusion. To address this issue, another line of work~\cite{bai2023sentence,gal2022image,saito2023pic2word,Tang2023ContextI2WMI} transforms the reference image into a word embedding via textual inversion, concatenates it with the query text to form an enhanced textual feature, and then performs text-to-image retrieval. Despite their effectiveness, the reliance on text encoders limits these methods’ ability to faithfully interpret and retrieve images according to complex user intent. Consequently, a recent work, CIR-LVLM~\cite{sun2025leveraging}, attempts to finetune MLLMs to better capture user intent by directly encoding multimodal inputs and retrieving the target image accordingly. Leveraging the strong comprehension ability of MLLMs, this approach achieves promising results. Unlike prior work, CIR-CoT fully exploits MLLMs by (i) generating explicit, human-readable reasoning that makes retrieval transparent rather than black-box, and (ii) encoding the reasoned user intent as a retrieval representation, yielding stronger performance.
+
+
+
+
+\subsection{Multimodal Large Language Models}
+Large Language Models (LLMs)~\cite{chiang2023vicuna,touvron2023llama,zheng2023judging,team2023internlm,openai2023gpt,meta2024introducing,bi2024deepseek,yang2024qwen2} have recently achieved remarkable progress, attracting broad research interest due to their strong reasoning and generation abilities. Building on this success, researchers have extended LLMs to handle visual inputs, which has driven rapid advances in Multimodal Large Language Models (MLLMs)~\cite{liu2023visual,bai2023qwen,zhu2023minigpt,lu2024deepseek,liu2024oryx,li2024mini}. Recent studies have shown that MLLMs excel in diverse vision tasks. Notably, some approaches~\cite{Lai2023LISARS, Lin2025HRSegHV} employ MLLMs for segmentation, marking a departure from the conventional VQA paradigm. However, MLLMs tend to exhibit hallucinations when performing complex tasks and often underutilize visual information.
+%CoT
+To address these challenges, some approaches~\cite{Qiao2024PrismAF,Cesista2024MultimodalSG,Chu2023NavigateTE} leverage Chain-of-Thought (CoT) prompting, which decomposes a question into a series of reasoning steps and constructs a chain to guide the model in generating solutions to complex problems. This process significantly enhances the reasoning capabilities of MLLMs. Although direct CoT approaches are effective, later methods~\cite{Xu2024LLaVACoTLV} demonstrated that the proposed structured CoT significantly outperforms direct CoT, further enhancing the reasoning capabilities of MLLMs. 
+%
+Building on the developments mentioned above, CIR-CoT is the first approach to apply the structured CoT reasoning capabilities of MLLMs to the CIR task. Its goal is to stimulate fine-grained reasoning in MLLMs over different user inputs and to infer user intent, thereby improving retrieval performance.","\subsection{Composed Image Retrieval}
+
+Recent advances in Vision–Language Models (VLMs)~\cite{jia2021scaling,Li2023BLIP2BL} have laid a strong foundation for compositional image retrieval. Building on these models, most contemporary CIR approaches develop various adaptation strategies to tailor them to the retrieval task. Specifically, some methods~\cite{Levy2023DataRA,Liu2023CandidateSR,Anwaar2020CompositionalLO,Chen_2020_CVPR} adopt an early-fusion strategy, where the text and image features are first extracted separately using unimodal encoders and then fused to form a joint query representation, which is subsequently matched against candidate features. The main limitation of such early-fusion approaches lies in their inability to accurately align fine-grained visual details with user intent during feature fusion. To address this issue, another line of work~\cite{bai2023sentence,gal2022image,saito2023pic2word,Tang2023ContextI2WMI} transforms the reference image into a word embedding via textual inversion, concatenates it with the query text to form an enhanced textual feature, and then performs text-to-image retrieval. Despite their effectiveness, the reliance on text encoders limits these methods’ ability to faithfully interpret and retrieve images according to complex user intent. Consequently, a recent work, CIR-LVLM~\cite{sun2025leveraging}, attempts to finetune MLLMs to better capture user intent by directly encoding multimodal inputs and retrieving the target image accordingly. Leveraging the strong comprehension ability of MLLMs, this approach achieves promising results. Unlike prior work, CIR-CoT fully exploits MLLMs by (i) generating explicit, human-readable reasoning that makes retrieval transparent rather than black-box, and (ii) encoding the reasoned user intent as a retrieval representation, yielding stronger performance.
+
+
+
+
+\subsection{Multimodal Large Language Models}
+Large Language Models (LLMs)~\cite{chiang2023vicuna,touvron2023llama,zheng2023judging,team2023internlm,openai2023gpt,meta2024introducing,bi2024deepseek,yang2024qwen2} have recently achieved remarkable progress, attracting broad research interest due to their strong reasoning and generation abilities. Building on this success, researchers have extended LLMs to handle visual inputs, which has driven rapid advances in Multimodal Large Language Models (MLLMs)~\cite{liu2023visual,bai2023qwen,zhu2023minigpt,lu2024deepseek,liu2024oryx,li2024mini}. Recent studies have shown that MLLMs excel in diverse vision tasks. Notably, some approaches~\cite{Lai2023LISARS, Lin2025HRSegHV} employ MLLMs for segmentation, marking a departure from the conventional VQA paradigm. However, MLLMs tend to exhibit hallucinations when performing complex tasks and often underutilize visual information.
+
+To address these challenges, some approaches~\cite{Qiao2024PrismAF,Cesista2024MultimodalSG,Chu2023NavigateTE} leverage Chain-of-Thought (CoT) prompting, which decomposes a question into a series of reasoning steps and constructs a chain to guide the model in generating solutions to complex problems. This process significantly enhances the reasoning capabilities of MLLMs. Although direct CoT approaches are effective, later methods~\cite{Xu2024LLaVACoTLV} demonstrated that the proposed structured CoT significantly outperforms direct CoT, further enhancing the reasoning capabilities of MLLMs. 
+
+Building on the developments mentioned above, CIR-CoT is the first approach to apply the structured CoT reasoning capabilities of MLLMs to the CIR task. Its goal is to stimulate fine-grained reasoning in MLLMs over different user inputs and to infer user intent, thereby improving retrieval performance.",N/A

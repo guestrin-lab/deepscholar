@@ -1,0 +1,12 @@
+\section*{Ethics Statement}
+
+In developing MPPReasoner, we prioritized ethical considerations to ensure responsible use of our models and methodologies. Our research does not involve human subjects, and all molecular data are obtained from publicly available, copyright-compliant datasets (MoleculeNet and TDC) with appropriate research licensing. We employed rigorous quality filtering processes during data curation to minimize biased or misleading chemical information.
+We acknowledge that biases inherent in molecular property datasets, including overrepresentation of certain chemical scaffolds, may propagate into model outputs. While MPPReasoner is designed for beneficial applications in drug discovery and materials science, we encourage responsible use within established scientific and regulatory frameworks. Our work is conducted with commitment to research integrity, ensuring contributions remain beneficial to the scientific community while addressing ethical responsibilities of developing AI technologies for chemical applications.
+
+
+
+
+\section*{Reproducibility Statement}
+We have made comprehensive efforts to ensure the reproducibility of MPPReasoner and our experimental findings. Our two-stage training methodology is detailed in Section~\ref{sec3:method}, including the SFT process and the novel RLPGR framework with specific reward components. Complete implementation details, hyperparameter configurations, and training procedures are provided in Appendix~\ref{appc:setting}. The experimental setup, including dataset descriptions, baseline model configurations, and evaluation protocols, is thoroughly documented in Section~\ref{sec4.1:setup} and Appendix~\ref{appc:setting}.
+All datasets used in our experiments are publicly available: the ID datasets are from MoleculeNet, and the OOD datasets are from TDC. The reasoning trajectory construction process using expert knowledge and multiple teacher models is described in Section~\ref{sec3.2.1:stage1}, with specific prompting strategies detailed in Appendix~\ref{appa:prompt}. Our reasoning quality evaluation methodology, including the LLM-as-a-Judge framework and human expert validation procedures, is documented in Section~\ref{sec4.4:quality}. We provide the complete source code for model training, evaluation, and reasoning quality assessment at \url{https://anonymous.4open.science/r/MPPReasoner-12687}.
+

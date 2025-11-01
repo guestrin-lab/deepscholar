@@ -1,0 +1,93 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.05903v1,http://arxiv.org/abs/2510.05903v1,2025-10-07 13:13:18+00:00,Kaputt: A Large-Scale Dataset for Visual Defect Detection,"We present a novel large-scale dataset for defect detection in a logistics
+setting. Recent work on industrial anomaly detection has primarily focused on
+manufacturing scenarios with highly controlled poses and a limited number of
+object categories. Existing benchmarks like MVTec-AD [6] and VisA [33] have
+reached saturation, with state-of-the-art methods achieving up to 99.9% AUROC
+scores. In contrast to manufacturing, anomaly detection in retail logistics
+faces new challenges, particularly in the diversity and variability of object
+pose and appearance. Leading anomaly detection methods fall short when applied
+to this new setting. To bridge this gap, we introduce a new benchmark that
+overcomes the current limitations of existing datasets. With over 230,000
+images (and more than 29,000 defective instances), it is 40 times larger than
+MVTec-AD and contains more than 48,000 distinct objects. To validate the
+difficulty of the problem, we conduct an extensive evaluation of multiple
+state-of-the-art anomaly detection methods, demonstrating that they do not
+surpass 56.96% AUROC on our dataset. Further qualitative analysis confirms that
+existing methods struggle to leverage normal samples under heavy pose and
+appearance variation. With our large-scale dataset, we set a new benchmark and
+encourage future research towards solving this challenging problem in retail
+logistics anomaly detection. The dataset is available for download under
+https://www.kaputt-dataset.com.","\label{sec:related-work}
+
+\begin{table*}[th!]
+\begin{center}
+\small
+\caption{Overview of representative defect and anomaly detection datasets. Our dataset provides a unique new challenge to the defect detection field due to the amount of defective samples and intra-class variance within the dataset.}
+\begin{tabular}{lp{2.5cm}p{2.5cm}p{2cm}p{3cm}p{2.3cm}}
+\toprule
+\textbf{Dataset} & \textbf{Labeled Samples}:\newline Total (Anomalous) & \textbf{Item}\newline \textbf{Categories} & \textbf{Unlabeled}\newline\textbf{Samples} & \textbf{Defect}\newline\textbf{Labels} & \textbf{Pose/Viewpoint}\newline\textbf{Variance} \\
+\midrule
+ARMBench \cite{mitash2023armbench} & 100,000+ (6,786) & N/A & - & Classes & \textbf{yes} \\
+Kolektor \cite{Tabernik2019JIM} & 399 (52) & - & - & Classes & no \\%https://www.vicos.si/resources/kolektorsdd/
+BTAD \cite{mishra21-vt-adl} & 2830 (1799) & 3 & - & Classes  & no \\
+
+MVTec-AD \cite{bergmann_mvtec_2021} & 5,354 (1,258) & 15 & - & Classes & no \\
+VisA \cite{zou2022spot} & 10,821 (1,200) & 12 & - & Classes, Segmentations  & no \\
+\midrule
+\textbf{Ours} & 100,267 \textbf{(29,316)} & \textbf{48,376} & 138,154 & Classes  & \textbf{yes} \\
+\bottomrule
+\end{tabular}
+\label{tbl:datasets}
+\end{center}
+\end{table*}
+
+\textbf{Defect detection applications}. Defect detection is an important and widely studied field due to its many commercial applications, including detecting defective parts in industrial manufacturing \cite{bergmann_mvtec_2021}, inspecting civil infrastructure such as bridges \cite{rubio_multi-class_2019,shi_improvement_2021}, vehicle damage \cite{zhang_vehicle-damage-detection_2020}, and medical applications \cite{kong_multi-task_2021}.  However, our use case differs from the standard industrial manufacturing applications, mainly in terms of item variation and defect variability.  While industrial applications typically focus on a single, known item or part, we are concerned with the much more open-ended problem of detecting defects for the millions of constantly changing items handled in retailers like Amazon, which may also exhibit significant intra-class variation (\eg packaging variations and random poses).  Thus, our work differs from much of the literature, in terms of data requirements and methods.
+
+\myparagraph{Datasets}. The variety of defect detection applications has led to the development of a number of bespoke datasets in this domain \cite{han2022adbench, akcay2022anomalib}. Most relevant to our application is ARMBench~\citep{mitash2023armbench}. While targeting a similar domain and comparable in total size, ARMBench only contains one quarter of the defective samples our dataset offers, and features only two (open and deconstruction) compared to seven defect types. Strongly related are datasets targeting manufacturing defects, such as MVTec-AD\cite{bergmann_mvtec_2021} and VisA~\cite{zou2022spot}. These contain images of items with a wide variety of defects such as dents, contaminations, and structural changes. At this point however, the performance on these datasets is close to being saturated, with state-of-the-art methods achieving well over 99\% AUROC~\citep{yao2024gladbetterreconstructionglobal}. Our dataset offers one order of magnitude more data both in terms of annotations and anomalous instances, enabling researchers to leverage the dataset for developing and benchmarking various types of approaches. At the same time, significant pose variation render the dataset significantly more challenging than related ones. Table~\ref{tbl:datasets} presents a comprehensive comparison to existing defect detection datasets.
+
+\myparagraph{Models}.
+The defect detection problem has been approached in different ways, using \emph{supervised}, \emph{unsupervised}, and \emph{anomaly-detection} methods. The most straightforward approach is supervised learning, which aims to learn distinctive defect patterns given samples of both non-defective \emph{and} defective instances. For these approaches, the supervision signal takes the form of an image label \cite{rubio_multi-class_2019,shi_improvement_2021,zhang_vehicle-damage-detection_2020}, a segmentation mask, or both \cite{kong_multi-task_2021}, casting the machine learning problem as classification, segmentation or multi-task learning, respectively. A key limitation of these approaches is that they require access to a large dataset of \emph{defective} items for training, which are typically rare and difficult to collect.
+
+This limitation motivates the use of alternative approaches that can leverage non-defective, ``normal'' samples more effectively by identifying defective instances as deviations from the expected normal appearance. While the exact distinction between the underlying paradigms is blurry, these approaches are usually categorized as \emph{unsupervised} learning, \emph{anomaly} detection, or \emph{outlier} detection. This includes methods that classify outliers directly given some representational space (\eg using one-class SVMs~\citep{ruff2018deep,yi2020patch}) or those that threshold a per-pixel or per-image patch reconstruction error~\citep{bergmann2018improving}. Similarly, deep generative approaches have been used to compute outlier statistics both on image reconstructions as well as in the learnt latent representation via Generative Adversarial Networks~\citep{akcay2019ganomaly,schlegl2019f}, diffusion models~\citep{yao2024gladbetterreconstructionglobal}, or pre-trained Vision Transformers~\citep{jeong2023winclip}. Exemplar-based methods compute outliers directly by constructing a more targeted reference dataset on the fly, via a nearest-neighbour approach~\citep{roth2022towards} and then computing image/patch-level feature distances relative to this set.
+
+Such approaches are well suited to industrial applications, where examples of anomaly-free items in an identical, nominal pose are plentiful. However, they are prone to false positives predictions by flagging non-defect-related image variations as anomalous. As our experiments demonstrate, this makes current approaches impractical for real-world retail logistics applications where we are faced with significant intra-class variation, \eg due to differing poses or packaging.
+More recently, \citet{jiang2025mmad} investigated whether this limitation could be addressed by leveraging the inherent visual understanding capabilities of Multimodal Large Language Models (MLLMs). Their findings, however, demonstrate that current MLLMs' performance falls short of industrial requirements: while excelling at \emph{object} analysis and description tasks, these models lack robust \emph{anomaly} detection capabilities. Our experiments using both commercial and open-source MLLMs~\citep{claude-model-card, agrawal2024pixtral12b} corroborate these findings.","\begin{table*}[th!]
+\begin{center}
+\small
+\caption{Overview of representative defect and anomaly detection datasets. Our dataset provides a unique new challenge to the defect detection field due to the amount of defective samples and intra-class variance within the dataset.}
+\begin{tabular}{lp{2.5cm}p{2.5cm}p{2cm}p{3cm}p{2.3cm}}
+\toprule
+\textbf{Dataset} & \textbf{Labeled Samples}:\newline Total (Anomalous) & \textbf{Item}\newline \textbf{Categories} & \textbf{Unlabeled}\newline\textbf{Samples} & \textbf{Defect}\newline\textbf{Labels} & \textbf{Pose/Viewpoint}\newline\textbf{Variance} \\
+\midrule
+ARMBench \cite{mitash2023armbench} & 100,000+ (6,786) & N/A & - & Classes & \textbf{yes} \\
+Kolektor \cite{Tabernik2019JIM} & 399 (52) & - & - & Classes & no \\
+BTAD \cite{mishra21-vt-adl} & 2830 (1799) & 3 & - & Classes  & no \\
+
+MVTec-AD \cite{bergmann_mvtec_2021} & 5,354 (1,258) & 15 & - & Classes & no \\
+VisA \cite{zou2022spot} & 10,821 (1,200) & 12 & - & Classes, Segmentations  & no \\
+\midrule
+\textbf{Ours} & 100,267 \textbf{(29,316)} & \textbf{48,376} & 138,154 & Classes  & \textbf{yes} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table*}
+
+\textbf{Defect detection applications}. Defect detection is an important and widely studied field due to its many commercial applications, including detecting defective parts in industrial manufacturing \cite{bergmann_mvtec_2021}, inspecting civil infrastructure such as bridges \cite{rubio_multi-class_2019,shi_improvement_2021}, vehicle damage \cite{zhang_vehicle-damage-detection_2020}, and medical applications \cite{kong_multi-task_2021}.  However, our use case differs from the standard industrial manufacturing applications, mainly in terms of item variation and defect variability.  While industrial applications typically focus on a single, known item or part, we are concerned with the much more open-ended problem of detecting defects for the millions of constantly changing items handled in retailers like Amazon, which may also exhibit significant intra-class variation (\eg packaging variations and random poses).  Thus, our work differs from much of the literature, in terms of data requirements and methods.
+
+\myparagraph{Datasets}. The variety of defect detection applications has led to the development of a number of bespoke datasets in this domain \cite{han2022adbench, akcay2022anomalib}. Most relevant to our application is ARMBench~\citep{mitash2023armbench}. While targeting a similar domain and comparable in total size, ARMBench only contains one quarter of the defective samples our dataset offers, and features only two (open and deconstruction) compared to seven defect types. Strongly related are datasets targeting manufacturing defects, such as MVTec-AD\cite{bergmann_mvtec_2021} and VisA~\cite{zou2022spot}. These contain images of items with a wide variety of defects such as dents, contaminations, and structural changes. At this point however, the performance on these datasets is close to being saturated, with state-of-the-art methods achieving well over 99\
+
+\myparagraph{Models}.
+The defect detection problem has been approached in different ways, using \emph{supervised}, \emph{unsupervised}, and \emph{anomaly-detection} methods. The most straightforward approach is supervised learning, which aims to learn distinctive defect patterns given samples of both non-defective \emph{and} defective instances. For these approaches, the supervision signal takes the form of an image label \cite{rubio_multi-class_2019,shi_improvement_2021,zhang_vehicle-damage-detection_2020}, a segmentation mask, or both \cite{kong_multi-task_2021}, casting the machine learning problem as classification, segmentation or multi-task learning, respectively. A key limitation of these approaches is that they require access to a large dataset of \emph{defective} items for training, which are typically rare and difficult to collect.
+
+This limitation motivates the use of alternative approaches that can leverage non-defective, ``normal'' samples more effectively by identifying defective instances as deviations from the expected normal appearance. While the exact distinction between the underlying paradigms is blurry, these approaches are usually categorized as \emph{unsupervised} learning, \emph{anomaly} detection, or \emph{outlier} detection. This includes methods that classify outliers directly given some representational space (\eg using one-class SVMs~\citep{ruff2018deep,yi2020patch}) or those that threshold a per-pixel or per-image patch reconstruction error~\citep{bergmann2018improving}. Similarly, deep generative approaches have been used to compute outlier statistics both on image reconstructions as well as in the learnt latent representation via Generative Adversarial Networks~\citep{akcay2019ganomaly,schlegl2019f}, diffusion models~\citep{yao2024gladbetterreconstructionglobal}, or pre-trained Vision Transformers~\citep{jeong2023winclip}. Exemplar-based methods compute outliers directly by constructing a more targeted reference dataset on the fly, via a nearest-neighbour approach~\citep{roth2022towards} and then computing image/patch-level feature distances relative to this set.
+
+Such approaches are well suited to industrial applications, where examples of anomaly-free items in an identical, nominal pose are plentiful. However, they are prone to false positives predictions by flagging non-defect-related image variations as anomalous. As our experiments demonstrate, this makes current approaches impractical for real-world retail logistics applications where we are faced with significant intra-class variation, \eg due to differing poses or packaging.
+More recently, \citet{jiang2025mmad} investigated whether this limitation could be addressed by leveraging the inherent visual understanding capabilities of Multimodal Large Language Models (MLLMs). Their findings, however, demonstrate that current MLLMs' performance falls short of industrial requirements: while excelling at \emph{object} analysis and description tasks, these models lack robust \emph{anomaly} detection capabilities. Our experiments using both commercial and open-source MLLMs~\citep{claude-model-card, agrawal2024pixtral12b} corroborate these findings.","Defect detection applications. Defect detection is an im-
+portant and widely studied field due to its many commercial
+applications, including detecting defective parts in indus-
+trial manufacturing [6], inspecting civil infrastructure such
+as bridges [24, 27], vehicle damage [32], and medical appli-
+cations [15]. However, our use case differs from the stan-
+dard industrial manufacturing applications, mainly in terms
+Table"

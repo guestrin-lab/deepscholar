@@ -1,0 +1,393 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,raibert1986legged,\cite{raibert1986legged},Legged robots that balance,,,"Raibert, Marc H",1986,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,stewart1996implicit,\cite{stewart1996implicit},An implicit time-stepping scheme for rigid body dynamics with inelastic collisions and coulomb friction,,,"Stewart, David E and Trinkle, Jeffrey C",1996,,,,International Journal for Numerical Methods in Engineering
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,anitescu2006optimization,\cite{anitescu2006optimization},Optimization-based simulation of nonsmooth rigid multibody dynamics,,,"Anitescu, Mihai",2006,,,,Mathematical Programming
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,sleiman2021unified,\cite{sleiman2021unified},"A Unified MPC Framework for Whole-Body Dynamic Locomotion and
+  Manipulation",http://arxiv.org/abs/2103.00946v1,"In this paper, we propose a whole-body planning framework that unifies
+dynamic locomotion and manipulation tasks by formulating a single multi-contact
+optimal control problem. We model the hybrid nature of a generic multi-limbed
+mobile manipulator as a switched system, and introduce a set of constraints
+that can encode any pre-defined gait sequence or manipulation schedule in the
+formulation. Since the system is designed to actively manipulate its
+environment, the equations of motion are composed by augmenting the robot's
+centroidal dynamics with the manipulated-object dynamics. This allows us to
+describe any high-level task in the same cost/constraint function. The
+resulting planning framework could be solved on the robot's onboard computer in
+real-time within a model predictive control scheme. This is demonstrated in a
+set of real hardware experiments done in free-motion, such as base or
+end-effector pose tracking, and while pushing/pulling a heavy resistive door.
+Robustness against model mismatches and external disturbances is also verified
+during these test cases.","Sleiman, Jean-Pierre and Farshidian, Farbod and Minniti, Maria Vittoria and Hutter, Marco",2021,,,,IEEE Robotics and Automation Letters
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,winkler2018gait,\cite{winkler2018gait},Gait and trajectory optimization for legged systems through phase-based end-effector parameterization,,,"Winkler, Alexander W and Bellicoso, C Dario and Hutter, Marco and Buchli, Jonas",2018,,,,IEEE Robotics and Automation Letters
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,westervelt2003hybrid,\cite{westervelt2003hybrid},Hybrid zero dynamics of planar biped walkers,,,"Westervelt, Eric R and Grizzle, Jessy W and Koditschek, Daniel E",2003,,,,IEEE transactions on automatic control
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,sreenath2011compliant,\cite{sreenath2011compliant},"A compliant hybrid zero dynamics controller for stable, efficient and fast bipedal walking on MABEL",,,"Sreenath, Koushil and Park, Hae-Won and Poulakakis, Ioannis",2011,,,,The International Journal of Robotics Research
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,xue2024full,\cite{xue2024full},"Full-Order Sampling-Based MPC for Torque-Level Locomotion Control via
+  Diffusion-Style Annealing",http://arxiv.org/abs/2409.15610v1,"Due to high dimensionality and non-convexity, real-time optimal control using
+full-order dynamics models for legged robots is challenging. Therefore,
+Nonlinear Model Predictive Control (NMPC) approaches are often limited to
+reduced-order models. Sampling-based MPC has shown potential in nonconvex even
+discontinuous problems, but often yields suboptimal solutions with high
+variance, which limits its applications in high-dimensional locomotion. This
+work introduces DIAL-MPC (Diffusion-Inspired Annealing for Legged MPC), a
+sampling-based MPC framework with a novel diffusion-style annealing process.
+Such an annealing process is supported by the theoretical landscape analysis of
+Model Predictive Path Integral Control (MPPI) and the connection between MPPI
+and single-step diffusion. Algorithmically, DIAL-MPC iteratively refines
+solutions online and achieves both global coverage and local convergence. In
+quadrupedal torque-level control tasks, DIAL-MPC reduces the tracking error of
+standard MPPI by $13.4$ times and outperforms reinforcement learning (RL)
+policies by $50\%$ in challenging climbing tasks without any training. In
+particular, DIAL-MPC enables precise real-world quadrupedal jumping with
+payload. To the best of our knowledge, DIAL-MPC is the first training-free
+method that optimizes over full-order quadruped dynamics in real-time.","Xue, Haoru and Pan, Chaoyi and Yi, Zeji and Qu, Guannan and Shi, Guanya",2024,,,,arXiv preprint arXiv:2409.15610
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,gong2019feedback,\cite{gong2019feedback},"Feedback Control of a Cassie Bipedal Robot: Walking, Standing, and
+  Riding a Segway",http://arxiv.org/abs/1809.07279v1,"The Cassie bipedal robot designed by Agility Robotics is providing academics
+a common platform for sharing and comparing algorithms for locomotion,
+perception, and navigation. This paper focuses on feedback control for standing
+and walking using the methods of virtual constraints and gait libraries. The
+designed controller was implemented six weeks after the robot arrived at the
+University of Michigan and allowed it to stand in place as well as walk over
+sidewalks, grass, snow, sand, and burning brush. The controller for standing
+also enables the robot to ride a Segway. A model of the Cassie robot has been
+placed on GitHub and the controller will also be made open source if the paper
+is accepted.","Gong, Yukai and Hartley, Ross and Da, Xingye and Hereid, Ayonga and Harib, Omar and Huang, Jiunn-Kai and Grizzle, Jessy",2019,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,li2025reinforcement,\cite{li2025reinforcement},"Reinforcement Learning for Versatile, Dynamic, and Robust Bipedal
+  Locomotion Control",http://arxiv.org/abs/2401.16889v2,"This paper presents a comprehensive study on using deep reinforcement
+learning (RL) to create dynamic locomotion controllers for bipedal robots.
+Going beyond focusing on a single locomotion skill, we develop a general
+control solution that can be used for a range of dynamic bipedal skills, from
+periodic walking and running to aperiodic jumping and standing. Our RL-based
+controller incorporates a novel dual-history architecture, utilizing both a
+long-term and short-term input/output (I/O) history of the robot. This control
+architecture, when trained through the proposed end-to-end RL approach,
+consistently outperforms other methods across a diverse range of skills in both
+simulation and the real world. The study also delves into the adaptivity and
+robustness introduced by the proposed RL system in developing locomotion
+controllers. We demonstrate that the proposed architecture can adapt to both
+time-invariant dynamics shifts and time-variant changes, such as contact
+events, by effectively using the robot's I/O history. Additionally, we identify
+task randomization as another key source of robustness, fostering better task
+generalization and compliance to disturbances. The resulting control policies
+can be successfully deployed on Cassie, a torque-controlled human-sized bipedal
+robot. This work pushes the limits of agility for bipedal robots through
+extensive real-world experiments. We demonstrate a diverse range of locomotion
+skills, including: robust standing, versatile walking, fast running with a
+demonstration of a 400-meter dash, and a diverse set of jumping skills, such as
+standing long jumps and high jumps.","Li, Zhongyu and Peng, Xue Bin and Abbeel, Pieter and Levine, Sergey and Berseth, Glen and Sreenath, Koushil",2025,,,,The International Journal of Robotics Research
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,cheng2024extreme,\cite{cheng2024extreme},Extreme Parkour with Legged Robots,http://arxiv.org/abs/2309.14341v1,"Humans can perform parkour by traversing obstacles in a highly dynamic
+fashion requiring precise eye-muscle coordination and movement. Getting robots
+to do the same task requires overcoming similar challenges. Classically, this
+is done by independently engineering perception, actuation, and control systems
+to very low tolerances. This restricts them to tightly controlled settings such
+as a predetermined obstacle course in labs. In contrast, humans are able to
+learn parkour through practice without significantly changing their underlying
+biology. In this paper, we take a similar approach to developing robot parkour
+on a small low-cost robot with imprecise actuation and a single front-facing
+depth camera for perception which is low-frequency, jittery, and prone to
+artifacts. We show how a single neural net policy operating directly from a
+camera image, trained in simulation with large-scale RL, can overcome imprecise
+sensing and actuation to output highly precise control behavior end-to-end. We
+show our robot can perform a high jump on obstacles 2x its height, long jump
+across gaps 2x its length, do a handstand and run across tilted ramps, and
+generalize to novel obstacle courses with different physical properties.
+Parkour videos at https://extreme-parkour.github.io/","Cheng, Xuxin and Shi, Kexin and Agarwal, Ananye and Pathak, Deepak",2024,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,jenelten2024dtc,\cite{jenelten2024dtc},DTC: Deep Tracking Control,http://arxiv.org/abs/2309.15462v2,"Legged locomotion is a complex control problem that requires both accuracy
+and robustness to cope with real-world challenges. Legged systems have
+traditionally been controlled using trajectory optimization with inverse
+dynamics. Such hierarchical model-based methods are appealing due to intuitive
+cost function tuning, accurate planning, generalization, and most importantly,
+the insightful understanding gained from more than one decade of extensive
+research. However, model mismatch and violation of assumptions are common
+sources of faulty operation. Simulation-based reinforcement learning, on the
+other hand, results in locomotion policies with unprecedented robustness and
+recovery skills. Yet, all learning algorithms struggle with sparse rewards
+emerging from environments where valid footholds are rare, such as gaps or
+stepping stones. In this work, we propose a hybrid control architecture that
+combines the advantages of both worlds to simultaneously achieve greater
+robustness, foot-placement accuracy, and terrain generalization. Our approach
+utilizes a model-based planner to roll out a reference motion during training.
+A deep neural network policy is trained in simulation, aiming to track the
+optimized footholds. We evaluate the accuracy of our locomotion pipeline on
+sparse terrains, where pure data-driven methods are prone to fail. Furthermore,
+we demonstrate superior robustness in the presence of slippery or deformable
+ground when compared to model-based counterparts. Finally, we show that our
+proposed tracking controller generalizes across different trajectory
+optimization methods not seen during training. In conclusion, our work unites
+the predictive capabilities and optimality guarantees of online planning with
+the inherent robustness attributed to offline learning.","Jenelten, Fabian and He, Junzhe and Farshidian, Farbod and Hutter, Marco",2024,,,,Science Robotics
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,liu2025discrete,\cite{liu2025discrete},"Discrete-Time Hybrid Automata Learning: Legged Locomotion Meets
+  Skateboarding",http://arxiv.org/abs/2503.01842v2,"Hybrid dynamical systems, which include continuous flow and discrete mode
+switching, can model robotics tasks like legged robot locomotion. Model-based
+methods usually depend on predefined gaits, while model-free approaches lack
+explicit mode-switching knowledge. Current methods identify discrete modes via
+segmentation before regressing continuous flow, but learning high-dimensional
+complex rigid body dynamics without trajectory labels or segmentation is a
+challenging open problem. This paper introduces Discrete-time Hybrid Automata
+Learning (DHAL), a framework to identify and execute mode-switching without
+trajectory segmentation or event function learning. Besides, we embedded it in
+reinforcement learning pipeline and incorporates a beta policy distribution and
+a multi-critic architecture to model contact-guided motions, exemplified by a
+challenging quadrupedal robot skateboard task. We validate our method through
+sufficient real-world tests, demonstrating robust performance and mode
+identification consistent with human intuition in hybrid dynamical systems.","Liu, Hang and Teng, Sangli and Liu, Ben and Zhang, Wei and Ghaffari, Maani",2025,,,,arXiv preprint arXiv:2503.01842
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,margolis2024rapid,\cite{margolis2024rapid},Rapid Locomotion via Reinforcement Learning,http://arxiv.org/abs/2205.02824v1,"Agile maneuvers such as sprinting and high-speed turning in the wild are
+challenging for legged robots. We present an end-to-end learned controller that
+achieves record agility for the MIT Mini Cheetah, sustaining speeds up to 3.9
+m/s. This system runs and turns fast on natural terrains like grass, ice, and
+gravel and responds robustly to disturbances. Our controller is a neural
+network trained in simulation via reinforcement learning and transferred to the
+real world. The two key components are (i) an adaptive curriculum on velocity
+commands and (ii) an online system identification strategy for sim-to-real
+transfer leveraged from prior work. Videos of the robot's behaviors are
+available at: https://agility.csail.mit.edu/","Margolis, Gabriel B and Yang, Ge and Paigwar, Kartik and Chen, Tao and Agrawal, Pulkit",2024,,,,The International Journal of Robotics Research
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,margolis2023walk,\cite{margolis2023walk},"Walk These Ways: Tuning Robot Control for Generalization with
+  Multiplicity of Behavior",http://arxiv.org/abs/2212.03238v1,"Learned locomotion policies can rapidly adapt to diverse environments similar
+to those experienced during training but lack a mechanism for fast tuning when
+they fail in an out-of-distribution test environment. This necessitates a slow
+and iterative cycle of reward and environment redesign to achieve good
+performance on a new task. As an alternative, we propose learning a single
+policy that encodes a structured family of locomotion strategies that solve
+training tasks in different ways, resulting in Multiplicity of Behavior (MoB).
+Different strategies generalize differently and can be chosen in real-time for
+new tasks or environments, bypassing the need for time-consuming retraining. We
+release a fast, robust open-source MoB locomotion controller, Walk These Ways,
+that can execute diverse gaits with variable footswing, posture, and speed,
+unlocking diverse downstream tasks: crouching, hopping, high-speed running,
+stair traversal, bracing against shoves, rhythmic dance, and more. Video and
+code release: https://gmargo11.github.io/walk-these-ways/","Margolis, Gabriel B and Agrawal, Pulkit",2023,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,roth2025learned,\cite{roth2025learned},"Learned Perceptive Forward Dynamics Model for Safe and Platform-aware
+  Robotic Navigation",http://arxiv.org/abs/2504.19322v2,"Ensuring safe navigation in complex environments requires accurate real-time
+traversability assessment and understanding of environmental interactions
+relative to the robot`s capabilities. Traditional methods, which assume
+simplified dynamics, often require designing and tuning cost functions to
+safely guide paths or actions toward the goal. This process is tedious,
+environment-dependent, and not generalizable. To overcome these issues, we
+propose a novel learned perceptive Forward Dynamics Model (FDM) that predicts
+the robot`s future state conditioned on the surrounding geometry and history of
+proprioceptive measurements, proposing a more scalable, safer, and
+heuristic-free solution. The FDM is trained on multiple years of simulated
+navigation experience, including high-risk maneuvers, and real-world
+interactions to incorporate the full system dynamics beyond rigid body
+simulation. We integrate our perceptive FDM into a zero-shot Model Predictive
+Path Integral (MPPI) planning framework, leveraging the learned mapping between
+actions, future states, and failure probability. This allows for optimizing a
+simplified cost function, eliminating the need for extensive cost-tuning to
+ensure safety. On the legged robot ANYmal, the proposed perceptive FDM improves
+the position estimation by on average 41% over competitive baselines, which
+translates into a 27% higher navigation success rate in rough simulation
+environments. Moreover, we demonstrate effective sim-to-real transfer and
+showcase the benefit of training on synthetic and real data. Code and models
+are made publicly available under https://github.com/leggedrobotics/fdm.","Roth, Pascal and Frey, Jonas and Cadena, Cesar and Hutter, Marco",2025,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,NVIDIA_Isaac_Sim,\cite{NVIDIA_Isaac_Sim},{Isaac Sim},,,{NVIDIA},,,https://github.com/isaac-sim/IsaacSim,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,zhang2024wococo,\cite{zhang2024wococo},WoCoCo: Learning Whole-Body Humanoid Control with Sequential Contacts,http://arxiv.org/abs/2406.06005v2,"Humanoid activities involving sequential contacts are crucial for complex
+robotic interactions and operations in the real world and are traditionally
+solved by model-based motion planning, which is time-consuming and often relies
+on simplified dynamics models. Although model-free reinforcement learning (RL)
+has become a powerful tool for versatile and robust whole-body humanoid
+control, it still requires tedious task-specific tuning and state machine
+design and suffers from long-horizon exploration issues in tasks involving
+contact sequences. In this work, we propose WoCoCo (Whole-Body Control with
+Sequential Contacts), a unified framework to learn whole-body humanoid control
+with sequential contacts by naturally decomposing the tasks into separate
+contact stages. Such decomposition facilitates simple and general policy
+learning pipelines through task-agnostic reward and sim-to-real designs,
+requiring only one or two task-related terms to be specified for each task. We
+demonstrated that end-to-end RL-based controllers trained with WoCoCo enable
+four challenging whole-body humanoid tasks involving diverse contact sequences
+in the real world without any motion priors: 1) versatile parkour jumping, 2)
+box loco-manipulation, 3) dynamic clap-and-tap dancing, and 4) cliffside
+climbing. We further show that WoCoCo is a general framework beyond humanoid by
+applying it in 22-DoF dinosaur robot loco-manipulation tasks.","Zhang, Chong and Xiao, Wenli and He, Tairan and Shi, Guanya",2024,,,,arXiv preprint arXiv:2406.06005
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,schulman2017proximal,\cite{schulman2017proximal},Proximal Policy Optimization Algorithms,http://arxiv.org/abs/1707.06347v2,"We propose a new family of policy gradient methods for reinforcement
+learning, which alternate between sampling data through interaction with the
+environment, and optimizing a ""surrogate"" objective function using stochastic
+gradient ascent. Whereas standard policy gradient methods perform one gradient
+update per data sample, we propose a novel objective function that enables
+multiple epochs of minibatch updates. The new methods, which we call proximal
+policy optimization (PPO), have some of the benefits of trust region policy
+optimization (TRPO), but they are much simpler to implement, more general, and
+have better sample complexity (empirically). Our experiments test PPO on a
+collection of benchmark tasks, including simulated robotic locomotion and Atari
+game playing, and we show that PPO outperforms other online policy gradient
+methods, and overall strikes a favorable balance between sample complexity,
+simplicity, and wall-time.","Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg",2017,,,,arXiv preprint arXiv:1707.06347
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,ha2018recurrent,\cite{ha2018recurrent},Recurrent World Models Facilitate Policy Evolution,http://arxiv.org/abs/1809.01999v1,"A generative recurrent neural network is quickly trained in an unsupervised
+manner to model popular reinforcement learning environments through compressed
+spatio-temporal representations. The world model's extracted features are fed
+into compact and simple policies trained by evolution, achieving state of the
+art results in various environments. We also train our agent entirely inside of
+an environment generated by its own internal world model, and transfer this
+policy back into the actual environment. Interactive version of paper at
+https://worldmodels.github.io","Ha, David and Schmidhuber, J{\""u}rgen",2018,,,,Advances in neural information processing systems
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,hansen2022temporal,\cite{hansen2022temporal},Temporal Difference Learning for Model Predictive Control,http://arxiv.org/abs/2203.04955v2,"Data-driven model predictive control has two key advantages over model-free
+methods: a potential for improved sample efficiency through model learning, and
+better performance as computational budget for planning increases. However, it
+is both costly to plan over long horizons and challenging to obtain an accurate
+model of the environment. In this work, we combine the strengths of model-free
+and model-based methods. We use a learned task-oriented latent dynamics model
+for local trajectory optimization over a short horizon, and use a learned
+terminal value function to estimate long-term return, both of which are learned
+jointly by temporal difference learning. Our method, TD-MPC, achieves superior
+sample efficiency and asymptotic performance over prior work on both state and
+image-based continuous control tasks from DMControl and Meta-World. Code and
+video results are available at https://nicklashansen.github.io/td-mpc.","Hansen, Nicklas and Wang, Xiaolong and Su, Hao",2022,,,,arXiv preprint arXiv:2203.04955
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,hafner2019learning,\cite{hafner2019learning},Learning Latent Dynamics for Planning from Pixels,http://arxiv.org/abs/1811.04551v5,"Planning has been very successful for control tasks with known environment
+dynamics. To leverage planning in unknown environments, the agent needs to
+learn the dynamics from interactions with the world. However, learning dynamics
+models that are accurate enough for planning has been a long-standing
+challenge, especially in image-based domains. We propose the Deep Planning
+Network (PlaNet), a purely model-based agent that learns the environment
+dynamics from images and chooses actions through fast online planning in latent
+space. To achieve high performance, the dynamics model must accurately predict
+the rewards ahead for multiple time steps. We approach this using a latent
+dynamics model with both deterministic and stochastic transition components.
+Moreover, we propose a multi-step variational inference objective that we name
+latent overshooting. Using only pixel observations, our agent solves continuous
+control tasks with contact dynamics, partial observability, and sparse rewards,
+which exceed the difficulty of tasks that were previously solved by planning
+with learned models. PlaNet uses substantially fewer episodes and reaches final
+performance close to and sometimes higher than strong model-free algorithms.","Hafner, Danijar and Lillicrap, Timothy and Fischer, Ian and Villegas, Ruben and Ha, David and Lee, Honglak and Davidson, James",2019,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,assran2025v,\cite{assran2025v},"V-jepa 2: Self-supervised video models enable understanding, prediction and planning",,,"Assran, Mido and Bardes, Adrien and Fan, David and Garrido, Quentin and Howes, Russell and Muckley, Matthew and Rizvi, Ammar and Roberts, Claire and Sinha, Koustuv and Zholus, Artem and others",2025,,,,arXiv preprint arXiv:2506.09985
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,bruce2024genie,\cite{bruce2024genie},Genie: Generative Interactive Environments,http://arxiv.org/abs/2402.15391v1,"We introduce Genie, the first generative interactive environment trained in
+an unsupervised manner from unlabelled Internet videos. The model can be
+prompted to generate an endless variety of action-controllable virtual worlds
+described through text, synthetic images, photographs, and even sketches. At
+11B parameters, Genie can be considered a foundation world model. It is
+comprised of a spatiotemporal video tokenizer, an autoregressive dynamics
+model, and a simple and scalable latent action model. Genie enables users to
+act in the generated environments on a frame-by-frame basis despite training
+without any ground-truth action labels or other domain-specific requirements
+typically found in the world model literature. Further the resulting learned
+latent action space facilitates training agents to imitate behaviors from
+unseen videos, opening the path for training generalist agents of the future.","Bruce, Jake and Dennis, Michael D and Edwards, Ashley and Parker-Holder, Jack and Shi, Yuge and Hughes, Edward and Lai, Matthew and Mavalankar, Aditi and Steigerwald, Richie and Apps, Chris and others",2024,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,o2022neural,\cite{o2022neural},Neural-Fly Enables Rapid Learning for Agile Flight in Strong Winds,http://arxiv.org/abs/2205.06908v2,"Executing safe and precise flight maneuvers in dynamic high-speed winds is
+important for the ongoing commoditization of uninhabited aerial vehicles
+(UAVs). However, because the relationship between various wind conditions and
+its effect on aircraft maneuverability is not well understood, it is
+challenging to design effective robot controllers using traditional control
+design methods. We present Neural-Fly, a learning-based approach that allows
+rapid online adaptation by incorporating pretrained representations through
+deep learning. Neural-Fly builds on two key observations that aerodynamics in
+different wind conditions share a common representation and that the
+wind-specific part lies in a low-dimensional space. To that end, Neural-Fly
+uses a proposed learning algorithm, domain adversarially invariant
+meta-learning (DAIML), to learn the shared representation, only using 12
+minutes of flight data. With the learned representation as a basis, Neural-Fly
+then uses a composite adaptation law to update a set of linear coefficients for
+mixing the basis elements. When evaluated under challenging wind conditions
+generated with the Caltech Real Weather Wind Tunnel, with wind speeds up to
+43.6 kilometers/hour (12.1 meters/second), Neural-Fly achieves precise flight
+control with substantially smaller tracking error than state-of-the-art
+nonlinear and adaptive controllers. In addition to strong empirical
+performance, the exponential stability of Neural-Fly results in robustness
+guarantees. Last, our control design extrapolates to unseen wind conditions, is
+shown to be effective for outdoor flights with only onboard sensors, and can
+transfer across drones with minimal performance degradation.","O’Connell, Michael and Shi, Guanya and Shi, Xichen and Azizzadenesheli, Kamyar and Anandkumar, Anima and Yue, Yisong and Chung, Soon-Jo",2022,,,,Science Robotics
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,zhang2024adaptigraph,\cite{zhang2024adaptigraph},"AdaptiGraph: Material-Adaptive Graph-Based Neural Dynamics for Robotic
+  Manipulation",http://arxiv.org/abs/2407.07889v1,"Predictive models are a crucial component of many robotic systems. Yet,
+constructing accurate predictive models for a variety of deformable objects,
+especially those with unknown physical properties, remains a significant
+challenge. This paper introduces AdaptiGraph, a learning-based dynamics
+modeling approach that enables robots to predict, adapt to, and control a wide
+array of challenging deformable materials with unknown physical properties.
+AdaptiGraph leverages the highly flexible graph-based neural dynamics (GBND)
+framework, which represents material bits as particles and employs a graph
+neural network (GNN) to predict particle motion. Its key innovation is a
+unified physical property-conditioned GBND model capable of predicting the
+motions of diverse materials with varying physical properties without
+retraining. Upon encountering new materials during online deployment,
+AdaptiGraph utilizes a physical property optimization process for a few-shot
+adaptation of the model, enhancing its fit to the observed interaction data.
+The adapted models can precisely simulate the dynamics and predict the motion
+of various deformable materials, such as ropes, granular media, rigid boxes,
+and cloth, while adapting to different physical properties, including
+stiffness, granular size, and center of pressure. On prediction and
+manipulation tasks involving a diverse set of real-world deformable objects,
+our method exhibits superior prediction accuracy and task proficiency over
+non-material-conditioned and non-adaptive models. The project page is available
+at https://robopil.github.io/adaptigraph/ .","Zhang, Kaifeng and Li, Baoyu and Hauser, Kris and Li, Yunzhu",2024,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,li2025offline,\cite{li2025offline},"Offline Robotic World Model: Learning Robotic Policies without a Physics
+  Simulator",http://arxiv.org/abs/2504.16680v1,"Reinforcement Learning (RL) has demonstrated impressive capabilities in
+robotic control but remains challenging due to high sample complexity, safety
+concerns, and the sim-to-real gap. While offline RL eliminates the need for
+risky real-world exploration by learning from pre-collected data, it suffers
+from distributional shift, limiting policy generalization. Model-Based RL
+(MBRL) addresses this by leveraging predictive models for synthetic rollouts,
+yet existing approaches often lack robust uncertainty estimation, leading to
+compounding errors in offline settings. We introduce Offline Robotic World
+Model (RWM-O), a model-based approach that explicitly estimates epistemic
+uncertainty to improve policy learning without reliance on a physics simulator.
+By integrating these uncertainty estimates into policy optimization, our
+approach penalizes unreliable transitions, reducing overfitting to model errors
+and enhancing stability. Experimental results show that RWM-O improves
+generalization and safety, enabling policy learning purely from real-world data
+and advancing scalable, data-efficient RL for robotics.","Li, Chenhao and Krause, Andreas and Hutter, Marco",2025,,,,arXiv preprint arXiv:2504.16680
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,li2025robotic,\cite{li2025robotic},"Robotic World Model: A Neural Network Simulator for Robust Policy
+  Optimization in Robotics",http://arxiv.org/abs/2501.10100v3,"Learning robust and generalizable world models is crucial for enabling
+efficient and scalable robotic control in real-world environments. In this
+work, we introduce a novel framework for learning world models that accurately
+capture complex, partially observable, and stochastic dynamics. The proposed
+method employs a dual-autoregressive mechanism and self-supervised training to
+achieve reliable long-horizon predictions without relying on domain-specific
+inductive biases, ensuring adaptability across diverse robotic tasks. We
+further propose a policy optimization framework that leverages world models for
+efficient training in imagined environments and seamless deployment in
+real-world systems. This work advances model-based reinforcement learning by
+addressing the challenges of long-horizon prediction, error accumulation, and
+sim-to-real transfer. By providing a scalable and robust framework, the
+introduced methods pave the way for adaptive and efficient robotic systems in
+real-world applications.","Li, Chenhao and Krause, Andreas and Hutter, Marco",2025,,,,arXiv preprint arXiv:2501.10100
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,williams2017information,\cite{williams2017information},Information theoretic MPC for model-based reinforcement learning,,,"Williams, Grady and Wagener, Nolan and Goldfain, Brian and Drews, Paul and Rehg, James M and Boots, Byron and Theodorou, Evangelos A",2017,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,pan2024model,\cite{pan2024model},Model-Based Diffusion for Trajectory Optimization,http://arxiv.org/abs/2407.01573v1,"Recent advances in diffusion models have demonstrated their strong
+capabilities in generating high-fidelity samples from complex distributions
+through an iterative refinement process. Despite the empirical success of
+diffusion models in motion planning and control, the model-free nature of these
+methods does not leverage readily available model information and limits their
+generalization to new scenarios beyond the training data (e.g., new robots with
+different dynamics). In this work, we introduce Model-Based Diffusion (MBD), an
+optimization approach using the diffusion process to solve trajectory
+optimization (TO) problems without data. The key idea is to explicitly compute
+the score function by leveraging the model information in TO problems, which is
+why we refer to our approach as model-based diffusion. Moreover, although MBD
+does not require external data, it can be naturally integrated with data of
+diverse qualities to steer the diffusion process. We also reveal that MBD has
+interesting connections to sampling-based optimization. Empirical evaluations
+show that MBD outperforms state-of-the-art reinforcement learning and
+sampling-based TO methods in challenging contact-rich tasks. Additionally,
+MBD's ability to integrate with data enhances its versatility and practical
+applicability, even with imperfect and infeasible data (e.g., partial-state
+demonstrations for high-dimensional humanoids), beyond the scope of standard
+diffusion models.","Pan, Chaoyi and Yi, Zeji and Shi, Guanya and Qu, Guannan",2024,,,,Advances in Neural Information Processing Systems
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,margolislearning,\cite{margolislearning},Learning to Jump from Pixels,http://arxiv.org/abs/2110.15344v1,"Today's robotic quadruped systems can robustly walk over a diverse range of
+rough but continuous terrains, where the terrain elevation varies gradually.
+Locomotion on discontinuous terrains, such as those with gaps or obstacles,
+presents a complementary set of challenges. In discontinuous settings, it
+becomes necessary to plan ahead using visual inputs and to execute agile
+behaviors beyond robust walking, such as jumps. Such dynamic motion results in
+significant motion of onboard sensors, which introduces a new set of challenges
+for real-time visual processing. The requirement for agility and terrain
+awareness in this setting reinforces the need for robust control. We present
+Depth-based Impulse Control (DIC), a method for synthesizing highly agile
+visually-guided locomotion behaviors. DIC affords the flexibility of model-free
+learning but regularizes behavior through explicit model-based optimization of
+ground reaction forces. We evaluate the proposed method both in simulation and
+in the real world.","Margolis, Gabriel B and Chen, Tao and Paigwar, Kartik and Fu, Xiang and Kim, Donghyun and bae Kim, Sang and Agrawal, Pulkit",,,,,
+Ego-Vision World Model for Humanoid Contact Planning,http://arxiv.org/abs/2510.11682v1,xiao2024anycar,\cite{xiao2024anycar},"AnyCar to Anywhere: Learning Universal Dynamics Model for Agile and
+  Adaptive Mobility",http://arxiv.org/abs/2409.15783v1,"Recent works in the robot learning community have successfully introduced
+generalist models capable of controlling various robot embodiments across a
+wide range of tasks, such as navigation and locomotion. However, achieving
+agile control, which pushes the limits of robotic performance, still relies on
+specialist models that require extensive parameter tuning. To leverage
+generalist-model adaptability and flexibility while achieving specialist-level
+agility, we propose AnyCar, a transformer-based generalist dynamics model
+designed for agile control of various wheeled robots. To collect training data,
+we unify multiple simulators and leverage different physics backends to
+simulate vehicles with diverse sizes, scales, and physical properties across
+various terrains. With robust training and real-world fine-tuning, our model
+enables precise adaptation to different vehicles, even in the wild and under
+large state estimation errors. In real-world experiments, AnyCar shows both
+few-shot and zero-shot generalization across a wide range of vehicles and
+environments, where our model, combined with a sampling-based MPC, outperforms
+specialist models by up to 54%. These results represent a key step toward
+building a foundation model for agile wheeled robot control. We will also
+open-source our framework to support further research.","Xiao, Wenli and Xue, Haoru and Tao, Tony and Kalaria, Dvij and Dolan, John M and Shi, Guanya",2024,,,,arXiv preprint arXiv:2409.15783

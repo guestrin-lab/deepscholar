@@ -1,0 +1,107 @@
+\linespread{1.1}
+\begin{table*}[h]
+\small
+%\caption{Multivariate forecasting results when using a single expert (standard forecasting setup) and when using MoE  and MoG  with Uncertainty-based gating (MoGU, ours), when varying on the number of experts. We use iTransformer as the expert architecture and report the MSE for each configuration, when forecasting a horizon of 96 time points. The best MAE and MSE results for each dataset are shown in bold.}	
+\caption{Multivariate forecasting results when using a single expert (standard forecasting setup) and when using MoE  and MoG  with Uncertainty-based gating (MoGU, ours), when varying on the number of experts. The best MAE and MSE results for for a 96-time point horizon are shown in bold for each dataset.}
+\label{tab:main_results_num_experts}
+	\centering
+		\begin{tabular}{cc|c|c|cccc|cccc}
+    \cline{2-12}
+    & \multicolumn{2}{c|}{Configuration}& Single& \multicolumn{4}{c|}{MoE}& \multicolumn{4}{c}{MoGU (ours)} \\
+     & \multicolumn{2}{c|}{}& Expert & \multicolumn{4}{c|}{}& \multicolumn{4}{c}{} \\
+    \cline{2-12}
+    & \multicolumn{2}{c|}{Num. Experts}&1&2&3&4&5&2&3&4&5\\
+    \cline{2-12} 
+     & \multicolumn{2}{c|}{ETTh1} & 0.398 & 0.391 & 0.393 & 0.398 & 0.392 & 0.385 & 0.380 & 0.382 & \textbf{0.381} \\
+ & \multicolumn{2}{c|}{ETTh2} & 0.295 & 0.307 & 0.299 & 0.305 & 0.311 & 0.284 & \textbf{0.283} & 0.286 & 0.286 \\
+ & \multicolumn{2}{c|}{ETTm1}& 0.341 & 0.349 & 0.332 & 0.347 & 0.339 & 0.320 & 0.320 & 0.314 & \textbf{0.312} \\
+ & \multicolumn{2}{c|}{ETTm2} & 0.188 & 0.186 & 0.179 & 0.180 & 0.177 & 0.179 & 0.179 & 0.176 & \textbf{0.175} \\
+ \cline{2-12} 
+\end{tabular}
+\end{table*}
+\linespread{1.00}
+\linespread{1.1}
+\begin{table*}[h!]
+\small
+\caption{Multivariate long-term forecasting results with MoE and MoGU (ours), with iTransformer and PatchTST as the expert architectures. We report the MAE and MSE for each configuration, using prediction lengths $L\in \{24, 36, 48, 60\}$ for the ILI dataset and $L\in \{96, 192, 336, 720\}$ for the others. The best MSE results for each configuration are shown in bold.}
+	\label{tab:main_results}
+	\centering
+		\begin{tabular}{cc|c||cc|cc||cc|cc}
+    \cline{2-11}
+    & \multicolumn{2}{c||}{Expert}& \multicolumn{4}{c||}{iTransformer} & \multicolumn{4}{c}{PatchTST}\\
+    \cline{2-11}
+    & \multicolumn{2}{c||}{Mixture Type}& \multicolumn{2}{c|}{MoE} & \multicolumn{2}{c||}{MoGU (ours)} & \multicolumn{2}{c|}{MoE} & \multicolumn{2}{c}{MoGU (ours)}\\
+    \cline{2-11}
+    & \multicolumn{2}{c||}{Metric}& MAE & MSE & MAE & MSE & MAE & MSE & MAE & MSE\\
+    \cline{2-11}   
+&\multirow{4}*{\rotatebox{90}{ETTh1}} & 96 & 0.410 & 0.393 & \textbf{0.400} & \textbf{0.380} & \textbf{0.406} & \textbf{0.386} & 0.415 & 0.409 \\
+&\multicolumn{1}{c|}{} & 192 & 0.432 & 0.437 & \textbf{0.431} & \textbf{0.436} & 0.448 & 0.459 & \textbf{0.443} & \textbf{0.453} \\
+&\multicolumn{1}{c|}{} & 336 & 0.472 & 0.504 & \textbf{0.454} &\textbf{ 0.479} & 0.465 & 0.485 &\textbf{ 0.459} & \textbf{0.484} \\
+&\multicolumn{1}{c|}{} & 720 & \textbf{0.489} & \textbf{0.500} & 0.491 & 0.501 & 0.494 & 0.510 & \textbf{0.483} & \textbf{0.485} \\
+\cline{2-11}
+&\multirow{4}*{\rotatebox{90}{ETTh2}} & 96 & 0.348 & 0.299 & \textbf{0.336} & \textbf{0.283} & 0.347 & 0.298 & \textbf{0.331} & \textbf{0.277} \\
+&\multicolumn{1}{c|}{} & 192 & 0.396 & 0.377 & \textbf{0.387} &\textbf{ 0.361} & 0.400 & 0.375 & \textbf{0.386} & \textbf{0.357} \\
+&\multicolumn{1}{c|}{} & 336 & 0.427 & \textbf{0.413} & \textbf{0.425} & 0.415 & 0.440 & 0.422 &\textbf{ 0.423} & \textbf{0.406} \\
+&\multicolumn{1}{c|}{} & 720 & 0.447 & 0.435 & \textbf{0.442 }&\textbf{ 0.421 }& 0.460 & 0.443 & \textbf{0.447} &\textbf{ 0.426} \\
+\cline{2-11}
+&\multirow{4}*{\rotatebox{90}{ETTm1}} & 96 & 0.367 & 0.332 & \textbf{0.356} & \textbf{0.320} & 0.371 & 0.337 & \textbf{0.362} & \textbf{0.326} \\
+&\multicolumn{1}{c|}{} & 192 & 0.396 & 0.382 & \textbf{0.379} & \textbf{0.363} & 0.398 & \textbf{0.380} & \textbf{0.393} & 0.389 \\
+&\multicolumn{1}{c|}{} & 336 & 0.411 & 0.407 & \textbf{0.404} & \textbf{0.400} & \textbf{0.407} & \textbf{0.400} & \textbf{0.407} & \textbf{0.400} \\
+&\multicolumn{1}{c|}{} & 720 & 0.460 & 0.500 & \textbf{0.438} & \textbf{0.466} & 0.448 & 0.465 & \textbf{0.442 }& \textbf{0.460 }\\
+\cline{2-11}
+&\multirow{4}*{\rotatebox{90}{ETTm2}} & 96 & 0.261 &\textbf{ 0.179} & \textbf{0.260} & \textbf{0.179} & 0.264 & 0.177 & \textbf{0.259} & \textbf{0.175} \\
+&\multicolumn{1}{c|}{} & 192 & 0.306 & 0.246 & \textbf{0.302} &\textbf{ 0.245} & 0.308 & 0.247 & \textbf{0.303} & \textbf{0.242} \\
+&\multicolumn{1}{c|}{} & 336 & 0.345 & 0.307 &\textbf{ 0.339} & \textbf{0.301} &\textbf{ 0.346} & \textbf{0.304} & \textbf{0.346} & 0.307 \\
+&\multicolumn{1}{c|}{} & 720 & 0.401 & 0.403 & \textbf{0.395} &\textbf{ 0.397} & 0.405 & 0.408 & \textbf{0.403 }& \textbf{0.405} \\
+\cline{2-11}
+&\multirow{4}*{\rotatebox{90}{ILI}} & 24 & 0.864 & 1.786 & \textbf{0.827} & \textbf{1.756} & 0.866 & 1.871 & \textbf{0.822} & \textbf{1.848} \\
+&\multicolumn{1}{c|}{} & 36 & 0.882 & 1.746 & \textbf{0.825} & \textbf{1.629} & 0.875 & 1.875 & \textbf{0.835} & \textbf{1.801} \\
+&\multicolumn{1}{c|}{} & 48 & 0.948 & 1.912 & \textbf{0.843 }& \textbf{1.634} & 0.878 & \textbf{1.798} & \textbf{0.844} & 1.818 \\
+&\multicolumn{1}{c|}{} & 60 & 0.979 & 1.986 & \textbf{0.881} & \textbf{1.692} & 0.904 & 1.864 & \textbf{0.864} & \textbf{1.831 }\\
+\cline{2-11}
+&\multirow{4}*{\rotatebox{90}{Weather}} & 96 & 0.253 & 0.208 & \textbf{0.249} & \textbf{0.207} & 0.237 & 0.196 & \textbf{0.230} & \textbf{0.188} \\
+&\multicolumn{1}{c|}{} & 192 &\textbf{ 0.283} & \textbf{0.246} & \textbf{0.283} & 0.251 & 0.268 & 0.235 & \textbf{0.265} & \textbf{0.232} \\
+&\multicolumn{1}{c|}{} & 336 & \textbf{0.315} & \textbf{0.296} & 0.317 & 0.300 & 0.308 & 0.291 & \textbf{0.303} & \textbf{0.287} \\
+&\multicolumn{1}{c|}{} & 720 & \textbf{0.361} & \textbf{0.369} & \textbf{0.361} & 0.371 & 0.353 & 0.363 & \textbf{0.351} & \textbf{0.361} \\
+\cline{2-11}
+&\multirow{4}*{\rotatebox{90}{Electricity}} & 96 & \textbf{0.235} & \textbf{0.144} & 0.238 & 0.148 & \textbf{0.248} & \textbf{0.161 }& 0.257 & 0.169 \\
+&\multicolumn{1}{c|}{} & 192 & 0.254 &\textbf{ 0.162} & \textbf{0.251} & 0.163 &\textbf{ 0.258} &\textbf{ 0.170} & 0.263 & 0.179 \\
+&\multicolumn{1}{c|}{} & 336 & \textbf{0.269 }& \textbf{0.175} & \textbf{0.269} & 0.179 & \textbf{0.276} & \textbf{0.188} & 0.286 & 0.200 \\
+&\multicolumn{1}{c|}{} & 720 & \textbf{0.297} & \textbf{0.204} & 0.302 & 0.216 & \textbf{0.314} &\textbf{ 0.231 }& 0.319 & 0.242 \\
+\cline{2-11}
+& \multicolumn{2}{c||}{Num. Wins }  & 4 & 9 &\textbf{ 21 }&\textbf{ 18} & 5 & 8 & \textbf{21} & \textbf{19} \\
+\cline{2-11}
+\end{tabular}
+\linespread{1.00}
+\linespread{1.1}
+\end{table*}
+\vspace{-0.3in}
+\linespread{1.1}
+\begin{table*}[h!]
+\small
+\caption{Multivariate forecasting results for MoE and MoGU (ours), using DLinear, iTransformer, and PatchTST as expert architectures. The best MAE and MSE results for each configuration are shown in bold for a 96-time point horizon.}
+\label{tab:main_results_exchange}
+    \small
+	\centering
+       \scalebox{0.8}{ 
+		\begin{tabular}{cc||cc|cc||cc|cc||cc|cc}
+    \cline{2-14}
+    \multicolumn{2}{c||}{Expert}& \multicolumn{4}{c||}{DLinear} & \multicolumn{4}{c||}{iTransformer} & \multicolumn{4}{c}{PatchTST} \\
+    \cline{2-14}
+    \multicolumn{2}{c||}{Mixture Type}& \multicolumn{2}{c|}{MoE} & \multicolumn{2}{c||}{MoGU (ours)}& \multicolumn{2}{c|}{MoE} & \multicolumn{2}{c||}{MoGU (ours)}& \multicolumn{2}{c|}{MoE} & \multicolumn{2}{c}{MoGU (ours)} \\
+    \cline{2-14}
+    \multicolumn{2}{c||}{Metric}& MAE & MSE & MAE & MSE & MAE & MSE & MAE & MSE & MAE & MSE & MAE & MSE \\
+    \cline{2-14}
+\multicolumn{2}{c||}{Exchange} & 0.213 & 0.086 & \textbf{0.209} & \textbf{0.080}  & 0.225 & 0.010 & \textbf{0.208} & \textbf{0.089} & \textbf{0.201} & 0.086 & {0.202} & \textbf{0.084}  \\            \cline{2-14}
+\multicolumn{2}{c||}{ETTh1} & \textbf{0.400} & \textbf{0.382} & \textbf{0.400} & \textbf{0.382} & 0.410 & 0.393 & \textbf{0.400} & \textbf{0.380} & \textbf{0.406} & \textbf{0.386} & 0.415 & 0.409 \\
+\cline{2-14}
+\multicolumn{2}{c||}{ETTh2} & 0.373 & 0.320 & \textbf{0.366} & \textbf{0.308} & 0.348 & 0.299 & \textbf{0.336} & \textbf{0.283} & 0.347 & 0.298 & \textbf{0.331} & \textbf{0.277} \\
+\cline{2-14}
+\multicolumn{2}{c||}{ETTm1} & \textbf{0.360} & \textbf{0.322} & 0.363 & 0.338 & 0.367 & 0.332 & \textbf{0.356} & \textbf{0.320} & 0.371 & 0.337 & \textbf{0.362} & \textbf{0.326} \\
+\cline{2-14}
+\multicolumn{2}{c||}{ETTm2} & 0.285 & 0.189 &\textbf{0.271} & \textbf{0.183} & 0.261 &\textbf{ 0.179} & \textbf{0.260} & \textbf{0.179} & 0.264 & 0.177 & \textbf{0.259} & \textbf{0.175} \\
+\cline{2-14}
+\end{tabular}
+    }
+\end{table*}
+\linespread{1.00}

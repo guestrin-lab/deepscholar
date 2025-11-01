@@ -1,0 +1,98 @@
+% \newcommand{\CLASSINPUTtoptextmargin}{0.7in}
+\documentclass[10pt,conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{titlesec}
+% \usepackage{showframe}
+
+\usepackage[caption=false,font=footnotesize]{subfig}
+% \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\setlength{\columnsep}{0.2in}
+\begin{document}
+
+\title{Bridging the Gap Between Simulated and Real Network Data Using Transfer Learning
+\thanks{This paper was submitted to IEEE ICC 2026.}
+}
+
+\author{Anonymous Authors}
+\author{\IEEEauthorblockN{Carlos Güemes-Palau,
+Miquel Ferriol-Galmés,
+Jordi Paillisse Vilanova, 
+Albert López-Brescó,}
+\IEEEauthorblockN{Pere Barlet-Ros and
+Albert Cabellos-Aparicio}
+\IEEEauthorblockA{
+% \textit{Barcelona Neural Networking Center} \\
+\textit{Barcelona Neural Networking Center, Universitat Politècnica de Catalunya}\\
+Barcelona, Spain\\
+\{carlos.guemes, miquel.ferriol, jordi.paillisse, albert.lopez, pere.barlet, alberto.cabellos\}@upc.edu }
+}
+\maketitle
+
+\begin{abstract}
+Machine Learning (ML)-based network models provide fast and accurate predictions for complex network behaviors but require substantial training data. Collecting such data from real networks is often costly and limited, especially for critical scenarios like failures. As a result, researchers commonly rely on simulated data, which reduces accuracy when models are deployed in real environments.
+% To address this, 
+We propose a hybrid approach leveraging transfer learning to combine simulated and real-world data. Using RouteNet-Fermi, we show that fine-tuning a pre-trained model with a small real dataset significantly improves performance. Our experiments with OMNeT++ and a custom testbed reduce the Mean Absolute Percentage Error (MAPE) in packet delay prediction by up to 88\%. With just 10 real scenarios, MAPE drops by 37\%, and with 50 scenarios, by 48\%.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Network Modeling, Network Performance Modeling, Network Simulation, Transfer Learning
+\end{IEEEkeywords}
+
+% ---------- MAIN BODY ----------
+\setlength{\textfloatsep}{7pt}
+\titlespacing*{\section}{0pt}{*1}{*0.95}  % {left}{before-sep}{after-sep}
+\titlespacing*{\subsection}{0pt}{*1}{*0.95}
+
+
+\section{Introduction}
+\label{sec:introduction}
+\input{sections/introduction}
+
+\section{Background}
+\label{sec:background}
+\input{sections/background_v2}
+
+\section{Problem statement}
+\label{sec:problem_statement}
+\input{sections/problem_statement}
+
+%\section{Testbed}
+%\label{sec:testbed}
+%\input{sections/testbed}
+
+\section{Methodology and experimental design}
+\label{sec:methodology_and_experimental_design}
+\input{sections/methodology}
+
+\section{Evaluation}
+\label{sec:evaluation}
+\input{sections/evaluation}
+
+\section{Related work}
+\label{sec:related_work}
+\input{sections/related_work}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{sections/conclusion}
+
+% ---------- MAIN BODY END ----------
+
+\section*{Acknowledgments}
+This publication is part of the I+D+i project titled BLOSSOMS, grant PID2024-158530OB-I00, funded by MICIU/AEI/10.13039/501100011033/ and by ERDF/EU. This work is also partially funded by the Catalan Institution for Research and Advanced Studies (ICREA).
+Carlos Güemes is funded by the AGAUR-FI ajuts (Grant Ref. 2023 F-1 00083) Joan Oró of the Secretariat of Universities and Research of the Department of Research and Universities of the Generalitat of Catalonia and the European Social Plus Fund.
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+\end{document}

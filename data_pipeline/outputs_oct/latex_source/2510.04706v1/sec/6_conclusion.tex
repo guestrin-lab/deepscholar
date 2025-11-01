@@ -1,0 +1,10 @@
+\vspace{-0.3cm}
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this work, we extend a foundation face model, Arc2Face, to enable explicit and accurate expression control in the context of ID-consistent face generation. Our \textbf{Expression Adapter} maps expression parameters from a 3DMM into the latent space of CLIP embeddings, aligning with Stable Diffusion’s conditioning interface, while its dual attention mechanism enables disentangled expression control without compromising identity fidelity. Given blendshape parameters extracted from a target image via 3D reconstruction, our model faithfully reproduces the same expression to any source identity, with superior accuracy and visual quality than prior methods. We place particular emphasis on curating expression-rich training data to provide a robust model that goes beyond simple emotions, enabling complex expressive transitions that lie between canonical emotional states. We further enable image-based expression editing through a \textbf{Reference Adapter} that conditions the generation on multi-scale features from the reference image via an adapted self-attention mechanism. Our open-source model can provide a versatile tool for controllable synthetic data generation, benefiting downstream tasks such as Facial Expression Recognition (FER), while bridging the gap between general-purpose image generation and human-centric synthesis for AI-driven storytelling.
+\\
+{\sloppy
+\textbf{Acknowledgements.} S. Zafeiriou and part of the research was funded by the EPSRC Project GNOMON (EP/X011364/1) and Turing AI Fellowship (EP/Z534699/1).
+\par
+}

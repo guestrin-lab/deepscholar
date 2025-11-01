@@ -1,0 +1,58 @@
+\begin{table*}[t!]
+\caption{Ablation and sensitivity analysis of \texttt{FusionDetect}. (a) Ablation on core components. (b) Sensitivity to different backbone and classifier architectures.}
+\label{tab:analysis_group}
+\centering
+% --- Left Table: Component Ablation ---
+\begin{subtable}{0.45\textwidth}
+    \centering
+    \caption{Component Ablation Study.}
+    \label{tab:ablation_study}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{ccc|c}
+        \toprule
+        \textbf{CLIP} & \textbf{DINOv2} & \textbf{FeatUp} & \textbf{Acc / AP (\%)} \\
+        \midrule
+        \cmark & \xmark & \cmark & 62.83 / 70.47 \\
+        \xmark & \cmark & \cmark & 60.69 / 68.38 \\
+        \cmark & \cmark & \cmark & 66.18 / 72.49 \\
+        \midrule
+        \cmark & \xmark & \xmark & 77.81 / 85.77 \\
+        \xmark & \cmark & \xmark & 75.42 / 86.11 \\
+        \rowcolor{blue!10}
+        \cmark & \cmark & \xmark & \textbf{80.92 / 92.86} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{subtable}
+\hfill % Creates space between the tables
+% --- Right Table: Sensitivity Analysis ---
+\begin{subtable}{0.53\textwidth}
+    \centering
+    \caption{Sensitivity Analysis.}
+    \label{tab:sensitivity_analysis}
+    \resizebox{\linewidth}{!}{%
+    % Make sure you have \usepackage[table]{xcolor} in your preamble
+    \begin{tabular}{p{2.5cm} l c}
+        \toprule
+        \textbf{Variable} & \textbf{Variants} & \textbf{Acc / AP (\%)} \\
+        \midrule
+        \multirow{4}{*}{\begin{tabular}{@{}l@{}}CLIP \\ \textit{(DINO: ViT-L14)} \\ \textit{(Classifier: 4 layer)}\end{tabular}} & - & 78.81 / 86.77 \\
+        & ViT-H14 quickgelu & 79.37 / 90.48 \\
+        & ViT-L14 quickgelu & 80.14 / 91.36 \\
+        & \cellcolor{blue!10}\textbf{ViT-L14} & \cellcolor{blue!10}\textbf{80.92 / 92.86} \\
+        \midrule
+        \multirow{4}{*}{\begin{tabular}{@{}l@{}}DINOv2 \\ \textit{(CLIP: ViT-L14)} \\ \textit{(Classifier: 4 layer)}\end{tabular}} & - & 75.98 / 84.15 \\
+        & ViT-S14 & 79.21 / 90.17 \\
+        & ViT-B14 & 79.51 / 91.12 \\
+        & \cellcolor{blue!10}\textbf{ViT-L14} & \cellcolor{blue!10}\textbf{80.92 / 92.86} \\
+        \midrule
+        \multirow{5}{*}{\begin{tabular}{@{}l@{}}Classifier \\ \textit{(CLIP: ViT-L14)} \\ \textit{(DINO: ViT-L14)}\end{tabular}} & 1 layer & 80.26 / 89.55 \\
+        & 2 layers & 80.33 / 89.47 \\
+        & 3 layers & \textbf{81.14} / 92.58 \\
+        & \cellcolor{blue!10}\textbf{4 layers} & \cellcolor{blue!10}80.92 / \textbf{92.86} \\
+        & 5 layers & 80.75 / 92.92 \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{subtable}
+\end{table*}

@@ -1,0 +1,23 @@
+% Table: Ablation study for LogSTOP design choices
+% Shows accuracy drop (\textcolor{red}{\downarrow X\%}) for each ablation
+\begin{table}[t]
+    \centering
+    \caption{Performance of LogSTOP on query matching and ranked retrieval drops as components (aggregation method, smoothing, threshold) are ablated. Results are shown on QMTP-video (with YOLOv8) and TP2VR-objects (with GroundingDINO). STL robustness is described in Appendix~\ref{appendix:semantics}.}
+    \vspace{0.1in}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{l|l|lll}
+        \toprule
+        \rowcolor{gray!20}
+        \textbf{Ablation} & \textbf{QMTP-video} & \multicolumn{3}{c}{\textbf{TP2VR-objects}} \\
+        \midrule
+         & \textit{Balanced Accuracy} & \textit{mAP} & \textit{R@r} & \textit{MnR} \\
+        \midrule
+        \textit{LogSTOP} & 0.79 {\textcolor{gray}{$(\downarrow 0\%)$}}  & 0.64 {\textcolor{gray}{$(\downarrow 0\%)$}} & 0.59 {\textcolor{gray}{$(\downarrow 0\%)$}} & 2.0 {\textcolor{gray}{$(\downarrow 0)$}} \\
+        \textit{Replace LogSTOP with STL Robustness} & 0.77 {\textcolor{red}{$(\downarrow 2\%)$}} & 0.52 {\textcolor{red}{$(\downarrow 12\%)$}} & 0.45 {\textcolor{red}{$(\downarrow 14\%)$}} & 3.8 {\textcolor{red}{$(\uparrow 1.8)$}}  \\
+        \textit{LogSTOP without local smoothing}  & 0.77 {\textcolor{red}{$(\downarrow 2\%)$}} & 0.59 {\textcolor{red}{$(\downarrow 5\%)$}} & 0.55 {\textcolor{red}{$(\downarrow 4\%)$}} & 1.8 {\textcolor[rgb]{0,0.5,0}{$(\downarrow 0.2)$}} \\
+        \textit{LogSTOP with ($\log 0.5$) threshold} &  0.76 {\textcolor{red}{$(\downarrow 3\%)$}} & - & - & - \\
+        \bottomrule
+    \end{tabular}
+    }
+    \label{tab:logstop_ablation}
+\end{table}

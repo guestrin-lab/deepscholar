@@ -1,0 +1,109 @@
+
+\input{depds/fig_dubbing}
+
+\section{Experiments}
+
+\paragraph{Implementation details.}
+\textit{Backbones.} The visual encoder follows the Sapiens-0.3B configuration and is initialized from its pretrained weights; the decoder adopts the ViTMAE-B design with a cross-attention sublayer in every block to attend to the identity/ambient/vocal prompt tokens. The audio branch uses a pretrained wav2vec~2.0 base encoder kept frozen during pretraining. 
+\textit{Pretraining.} SyncLipMAE is trained on 128 GPUs with a per-GPU batch size of 48 (global $=128{\times}48$) for 400k steps (~15 days). 
+\textit{Video dubbing fine-tuning.} We initialize from WanVACE-1.3B, freeze Wan backbone blocks, and optimize only VACE blocks (~0.7B trainable params). Training uses 128 GPUs, batch size 1 per GPU, for ~30k steps (~3 days). Each sample contains $17{+}1{+}1$ frames: 17 target frames, one history frame (for temporal continuity), and one identity frame (appearance prior).
+
+
+\paragraph{Pretraining data.}
+We pretrain \name on a mixture of talking-face corpora: Hallo3~\cite{hallo3}, CelebV-HQ~\cite{celebvhq}, CelebV-Text~\cite{celebvtext}, MEAD~\cite{mead}, VFHQ~\cite{vfhq}, HDTF~\cite{hdtf} and RAVDESS~\cite{ravdness}.
+Unless specified, audio is mono 16\,kHz and videos are 25\,fps. We adopt the official train–val–test split when available; otherwise, we randomly sample 100 instances each for validation and testing, and use the remainder for training.
+
+% ======================= 1) LIP SYNCHRONISATION =======================
+\paragraph{Audio--visual stream synchronization.}
+We evaluate alignment under two complementary protocols that require no additional training: (i) \emph{temporal lag detection} by sliding the offset between the audio token sequence $A=\{a_t\}_{t=1}^{T}$ and the visual token sequence $V=\{v_t\}_{t=1}^{T}$, and (ii) \emph{audio$\to$video token matching} reported as R-precision@$k$.
+
+\textit{Temporal lag detection.}
+For a candidate lag $\tau\!\in\!\mathcal{T}$ (positive: video lags audio), define the average distance
+\[
+D(\tau)=\frac{1}{T_\tau}\sum_{t=1}^{T_\tau} d\!\big(a_t,\,v_{t+\tau}\big),
+\]
+with $T_\tau$ chosen so indices are valid and $d(\cdot,\cdot)$ a feature distance (e.g., cosine or $\ell_2$). The estimated lag is
+\[
+\hat{\tau}=\arg\min_{\tau\in\mathcal{T}} D(\tau).
+\]
+Given ground-truth lag $\tau^\star$, we report
+\[
+\mathrm{Offset}=\tfrac{1}{N}\sum_{s=1}^N|\hat{\tau}^{(s)}-\tau^{(s)}|\quad\text{and}\quad
+\mathrm{Acc}_{\pm K}=\tfrac{1}{N}\sum_{s=1}^N \mathbf{1}\!\big(|\hat{\tau}^{(s)}-\tau^{(s)}|\le K\big).
+\]
+
+\textit{Audio$\to$Video token matching (R-precision@$k$).}
+We additionally report this retrieval-style metric because in segments with speaker silence or very small mouth motion the lag-based signal (Offset/Acc) can become weak or ambiguous, whereas a ranked retrieval test still probes cross-pair discriminability among distractors.
+Within a minibatch of size $B$, let $\{(a_i,v_i)\}_{i=1}^B$ be audio/visual token pairs and let $\mathcal{P}_i$ be the candidate pool consisting of the true $v_i$ plus non-matching video tokens (pool size fixed by the batch or a pre-defined sampler). Rank $\mathcal{P}_i$ by distance to $a_i$ and denote the rank of $v_i$ by $\mathrm{rank}_i(v_i)$ (1 is best). The retrieval metric is
+\[
+\mathrm{R\text{-}precision@}k \;=\; \frac{1}{B}\sum_{i=1}^B \mathbf{1}\big(\mathrm{rank}_i(v_i)\le k\big),
+\]
+reported for small $k$ (e.g., $k\!=\!1,2,3$) and fixed pool size (e.g., 32).
+
+
+\textit{Results.}
+~\tabref{tab:sync_hallo3} and ~\tabref{tab:sync_vfhq} summarise results on Hallo3 and VFHQ. 
+Across both datasets, \name consistently improves temporal alignment (higher $\mathrm{Acc}_{\pm K}$, lower \emph{Offset}) and cross-modal retrieval (higher R-precision@k). 
+Notably, these gains are achieved with single-frame visual conditioning ($n{=}1$), whereas baselines rely on wider temporal windows ($n{=}5$ or $16$), indicating stronger per-frame audio–visual correspondence and reduced dependence on temporal aggregation.
+
+
+% ======================= 2) FACIAL UNDERSTANDING =======================
+\paragraph{Facial understanding (emotion \& actions).}
+We evaluate on \textbf{CelebV-HQ}~\cite{celebvhq} using the \textit{emotion} and \textit{action} attribute sets, reporting video-level Accuracy and AUC (higher is better). 
+Emotion is treated as a \textit{single-label}, 8-way classification task, whereas action is a \textit{multi-label} problem over 35 categories (one-vs-rest scoring aggregated at the video level). 
+To match common practice, clip-based baselines (e.g., VideoMAE/MARLIN) adopt the \(a{\times}b\) protocol—uniformly sample \(a\) clips of \(b\) frames and average their predictions following ~\cite{videomae}; frame-averaging models use \(n\) uniformly sampled frames and average per-frame predictions~\cite{scsampler}.
+All methods use a single linear classifier on frozen features.
+Let \(\{\mathbf{x}_i\}_{i=1}^{m}\) be the sampled clips (or frames), \(f(\cdot)\) the frozen encoder, and \(W\) the linear head; the video-level logits are
+\[
+\bar{\ell}(V)=\frac{1}{m}\sum_{i=1}^{m} W\,f(\mathbf{x}_i),\qquad 
+\hat{y}(V)=\arg\max_k \mathrm{softmax}_k\!\big(\bar{\ell}(V)\big),
+\]
+with Accuracy/AUC computed from \(\hat{y}(V)\) at the video level.
+
+\textit{Results.}
+\tabref{tab:celebvhq_emotion_action} summarises CelebV-HQ emotion and action. 
+On emotion, \name clearly surpasses the best baseline with 16 frames and improves further at 80 frames, indicating benefits from longer temporal context. 
+On action—where baselines are already strong—\name provides consistent but modest gains, with a slight boost when using 80 frames. 
+Overall, \name delivers substantial improvements on emotion and steady gains on action.
+
+
+
+\paragraph{Visual Speech Recognition (VSR)}
+We evaluate \name\ on HDTF, VFHQ, and Hallo3, predicting text from silent videos. 
+Following standard practice, accuracy is measured by Word Error Rate (WER), computed from word-level substitutions (\(S\)), deletions (\(D\)), and insertions (\(I\)) against the reference of length \(N\):
+\[
+\mathrm{WER}=\frac{S+D+I}{N}.
+\]
+
+\textit{Results.}
+\tabref{tab:avsr} reports WER on VFHQ, Hallo3, and HDTF. The visual-only head built on \name’s tokens achieves the best WER on all three sets: \(7.37\) on VFHQ, \(5.99\) on Hallo3, and \(5.78\) on HDTF, improving over Auto-AVSR by absolute \(0.76\), \(0.24\), and \(0.13\) respectively, and substantially outperforming AV-HuBERT on each set. These gains indicate that \name’s pretraining yields visual motion features that transfer effectively to sentence-level lip reading under the standard hybrid CTC/attention recipe. 
+
+
+% ======================= 4) LIP-SYNC GENERATION =======================
+\paragraph{Video dubbing.}
+We evaluate \emph{video dubbing}—re-synchronising the mouth region of a source video to a target speech while preserving identity, pose, and expressions—using a WanVACE-based model that supports both audio- and video-driven conditioning via a lightweight vocal-cue injection (details in~\secref{subsec:dubbing}). We report the metrics in~\tabref{tab:dubbing}. 
+\textbf{$\mathrm{Sync}_{\mathrm{conf}}$} (identical to LSE-C) is computed with the \emph{stable SyncNet} evaluator from LatentSync~\cite{latentsync}, replacing the commonly used vanilla SyncNet whose scores are less reliable in our experiments~\cite{wav2lip}. Following SyncNet~\cite{syncnet}, for each short sliding window we form an audio–video distance curve over temporal offsets $\Delta\!\in\![-L,L]$:
+\[
+d_t(\Delta)\;=\;\big\|\,\phi_a\!\big(a_{t:t+w-1}\big)\;-\;\phi_v\!\big(v_{t+\Delta:\,t+\Delta+w-1}\big)\,\big\|_2,
+\]
+and define the per-window confidence as the \emph{median–minimum gap} on this curve,
+\[
+\mathrm{Conf}_t\;=\;\mathrm{median}_{\Delta}\, d_t(\Delta)\;-\;\min_{\Delta}\, d_t(\Delta),
+\qquad
+\mathrm{Sync}_{\mathrm{conf}}\;=\;\frac{1}{T}\sum_{t=1}^{T}\mathrm{Conf}_t,
+\]
+where larger values indicate a clearer minimum at the correct offset (stronger A/V synchrony)~\cite{syncnet,wav2lip}. 
+\textbf{FID} measures per-frame perceptual quality via the Fréchet distance between Inception features of real vs.\ generated frames (lower is better)~\cite{fid}; 
+\textbf{FVD} extends this to spatiotemporal video features to capture visual quality and temporal coherence jointly (lower is better)~\cite{fvd}.
+
+
+\paragraph{Results.}
+Qualitatively (Fig.~\ref{fig:dubbing}), \name preserves identity and fine lip details (e.g., teeth, beard) and is more robust to occlusions than LatentSync/MuseTalk. 
+Quantitatively (Tab.~\ref{tab:dubbing}), consistent with these observations, the audio-driven variant (\textbf{A-\name}) attains the best overall scores on synchrony ($\mathrm{Sync}_{\mathrm{conf}}$) and perceptual quality (FID/FVD) on both VFHQ and Hallo3. 
+The video-driven variant (\textbf{V-\name}) closely matches the audio-driven performance and surpasses prior methods, indicating that the shared token space indeed aligns modalities and enables no-difference audio- or video-driven control within a single model.
+
+
+
+\paragraph{Ablation Studies.} We perform ablations on the key components of \name, examining: (i) whether to enable Two-Bypass Face-Aware Masking; (ii) the strategy for adapting audio features; and (iii) the inclusion of cross-attention in the decoder. Detailed results are provided in the Appendix.
+
+ 

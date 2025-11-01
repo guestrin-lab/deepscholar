@@ -1,0 +1,952 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{arxiv,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{subfigure}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage{algorithmic} 
+\usepackage{algorithm} 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{siunitx}
+\usepackage[capitalize,noabbrev]{cleveref}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage{makecell}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\setlength{\textfloatsep}{10pt}
+\setlength{\floatsep}{9pt}
+
+% \input{math_commands}
+
+\title{BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+% \author{Jie Hao, Rui Yu, Wei Zhang, Huixia Wang, Jie Xu, Mingrui Liu}
+
+\author{
+	\textbf{Jie Hao}\textsuperscript{\dag}\quad
+	\textbf{Rui Yu}\textsuperscript{\dag}\quad
+	\textbf{Wei Zhang}\textsuperscript{\S}\quad
+	\textbf{Huixia Wang}\textsuperscript{\ddag}\quad
+	\textbf{Jie Xu}\textsuperscript{\dag}\quad
+	\textbf{Mingrui Liu}\textsuperscript{\dag}\thanks{Correspondence Author: \texttt{mingruil@gmu.edu}}
+	\\[4pt]
+	{\dag} George Mason University
+	\quad
+	{\S} IBM T.~J.~Watson Research Center
+	\quad
+	{\ddag} Rice University
+	\\
+	\texttt{\{jhao6, mingruil\}@gmu.edu}
+}
+
+
+% \author{Jie Hao, Natalia Cerebro \& Amelie P. Amygdale \thanks{ Use footnote for providing further information
+% about author (webpage, alternative address)---\emph{not} for acknowledging
+% funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+% }
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\vspace*{-0.3in}
+\begin{abstract}
+\vspace*{-0.05in}
+
+Effective data selection is essential for pretraining large language models (LLMs), enhancing efficiency and improving generalization to downstream tasks. However, existing approaches often require leveraging external pretrained models, making it difficult to disentangle the effects of data selection from those of the external pretrained models. In addition, they often overlook the long-term impact of selected data if the model is trained to convergence, primarily due to the prohibitive cost of full-scale LLM pretraining. In this paper, we introduce BLISS (\textbf{B}ileve\textbf{L} \textbf{I}nfluence \textbf{S}coring method for data \textbf{S}election): a lightweight data selection method that operates entirely \emph{from scratch}, without relying on any external pretrained oracle models, while explicitly accounting for the long-term impact of selected data. BLISS leverages a small proxy model as a surrogate for the LLM and employs a score model to estimate the long-term influence of training samples if the proxy model is trained to convergence. We formulate data selection as a bilevel optimization problem, where the upper-level objective optimizes the score model to assign importance weights to training samples, ensuring that minimizing the lower-level objective (i.e., training the proxy model over the weighted training loss until convergence) leads to best validation performance. Once optimized, the trained score model predicts influence scores for the dataset, enabling efficient selection of high-quality samples for LLM pretraining. 
+We validate BLISS by pretraining 410M/1B/2.8B Pythia and LLaMA-0.5B models on selected subsets of the C4 dataset. Notably, under the 1B model setting, BLISS achieves $1.7\times$ speedup in reaching the same performance as the state-of-the-art method, demonstrating superior performance across multiple downstream tasks. 
+\end{abstract}
+
+\vspace*{-0.2in}
+
+\section{Introduction}
+\vspace*{-0.05in}
+
+The successful large-scale language model pretraining crucially relies on the careful choice of pretraining data~\citep{brown2020language,raffel2020exploring,du2022glam,elazar2023s}. Recent studies have shown that effective data selection (a.k.a., data curation) methods can enhance pretraining efficiency~\citep{xie2023doremi} and improve generalization~\citep{engstrom2024dsdm,wettig2024qurating}. There are various types of data selection approaches for language model pretraining, including language filtering~\citep{laurenccon2022bigscience,wenzek2019ccnet},  data deduplication~\citep{lee2021deduplicating,abbas2023semdedup}, heuristic approaches~\citep{rae2021scaling,penedo2023refinedweb}, data quality data filtering~\citep{brown2020language,gao2020pile,chowdhery2023palm,xie2023data,wettig2024qurating}, data mixing~\citep{xie2023doremi,albalak2023efficient,xia2023sheared}, and data influence function based methods~\citep{park2023trak,engstrom2024dsdm,yu2024mates}. Despite the rich literature of data selection methods in large language model (LLM) pretraining (e.g., a survey paper in~\citet{albalak2024survey}), it is still unclear what properties are needed for the training data curation to guarantee good performance: it remains an important real-world challenge~\citep{li2024datacomp}. 
+
+
+Existing approaches of data selection methods suffer from two major limitations. First, they often require leveraging pretrained models~\citep{brown2020language,xie2023data,wettig2024qurating} for data-quality filtering, making it difficult to separate the effects of data selection from those of the external pretrained models. For example, the QuRating method~\citep{wettig2024qurating} assigns quality ratings to training samples based on responses from a pretrained LLM (e.g., GPT-3.5) before training a QuRater model. This reliance raises uncertainty about the role of the external LLM in the training process and whether its feedback is truly optimal. Moreover, the cost of invoking these external pretrained models is prohibitively expensive during data selection process for large-scale pretraining. Second, they typically do not consider the long-term impact of selected data if the model is trained to convergence. For example, the data influence function based approach~\citep{yu2024mates} evaluates the impact of individual training samples based on a single training step with the current model, which does not capture the cumulative effects of data selection over the course of full model training. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/illustration.pdf}
+    \caption{The pipeline of data selection and pretraining procedure. There are four main steps in one round training, 1) Warm up LLM using randomly selected training data (e.g. 10k step); 2) Bilevel optimization for score and proxy model, 3) Predict the data influence, and select Top-20\% training data based on their score ranking; 4) Retrain the LLM using the selected data (e.g., 10k steps); 5) Evaluate on the downstream task. Repeating the above steps can achieve multiple-round training.}
+    \label{fig:illustration}
+    % \vspace{-0.2in}
+\end{figure}
+
+In this paper, we introduce a new data selection method, to address the two major limitations of existing approaches. Our method, namely BLISS (\textbf{B}ileve\textbf{L} \textbf{I}nfluence \textbf{S}coring method for data \textbf{S}election), is a lightweight data selection method that operates entirely \emph{from scratch}, without relying on any external pretrained models, while explicitly accounting for the long-term impact of selected data. The core innovation of our approach lies in \emph{the integration of two lightweight models within a novel bilevel optimization framework} for data selection. Our method bypasses traditional data-quality filtering and explicitly considers the long-term impact of selected data throughout training. In particular, BLISS leverages a small proxy model as a surrogate for the LLM and employs a score model to estimate the long-term influence of training samples if the proxy model is trained to convergence. Our bilevel optimization problem has upper-level and lower-level objectives: the upper-level objective optimizes the score model to assign importance weights to training samples, ensuring that minimizing the lower-level objective (i.e., training the proxy model over the weighted training loss until convergence) leads to best validation performance. Once the bilevel optimization is solved, the trained score model predicts influence scores for the entire dataset, enabling the selection of high-score samples for LLM pretraining. The pipeline of our proposed procedure is illustrated in Figure~\ref{fig:illustration}. The main contributions of our paper are summarized as the following:
+
+\vspace*{-0.05in}
+\begin{itemize}
+\item We propose a principled approach to data selection for language model pretraining. Our method, BLISS, leverages a novel bilevel optimization framework that employs a proxy model and a score model to explicitly account for the long-term impact of selected data. Unlike existing methods, BLISS operates from scratch without relying on any pretrained oracle models for data-quality filtering, obviating any biases or risks that may arise from such dependence\footnote{Many commercial large-scale pretrained models strictly prohibit users from generating data or using them to facilitate the training of other models, as doing so may result in severe legal consequences~\citep{openai2024terms, google2024geminiterms}. Our approach is entirely free from such legal concerns. We rely solely on algorithmic advancements applied to a model trained from scratch, without any dependence on third-party pretrained large-scale models.}. 
+
+\item We validate our method by pretraining 410M/1B Pythia and LLaMA-0.5B models on selected subsets of C4 dataset. Experimental results on 1B setting demonstrate a $1.7\times$ speedup in reaching the same performance as the state-of-the-art method such as MATES~\citep{yu2024mates}. Furthermore, we scale up our experiments to a 2.8B model pretraining used by the data selected in the 1B experiment, and we demonstrate that our method consistently outperforms MATES at every round of data selection, achieving $1.4\%$ performance improvement over MATES~\citep{yu2024mates}.
+
+
+%our method achieves higher accuracy across 3 rounds when pretraining a larger model (2.8B) with data selected by 1B setting, validating that BLISS has better data consistency.
+
+% demonstrate that our proposed method improves other data selection baselines across different downstream tasks. 
+\item Through extensive ablation studies, we demonstrate the effectiveness of each component in our bilevel optimization framework, further substantiating the robustness and efficiency of our approach.
+
+\end{itemize}
+
+\vspace*{-0.19in}
+
+\section{Related Work}
+\vspace*{-0.05in}
+
+\textbf{Data Selection for Language Model Training.} Early approaches to data selection primarily relied on rule-based methods as language filters for training data, employing utility functions tailored to specific datasets~\citep{conneau2019cross,raffel2020exploring,rae2021scaling,penedo2023refinedweb}. Another key category is data deduplication~\citep{lee2021deduplicating,sorscher2022beyond,penedo2023refinedweb,abbas2023semdedup,tirumala2023d4}, which eliminates redundant samples to optimize training efficiency and enhance performance on downstream tasks. A class of methods exist for performing data-quality filtering, which can select data similar to high-quality corpus of data points~\citep{brown2020language,du2022glam,gao2020pile,xie2023data}, with small perplexity~\citep{chowdhery2023palm,wenzek2019ccnet}. More recent methods leverage external pretrained LLMs to evaluate the pretraining data quality~\citep{wettig2024qurating,maini2024rephrasing}. In addition, a similar variant of data selection is domain reweighting for data mixtures~\citep{oren2019distributionally,sagawa2019distributionally,xie2023doremi,fan2023doge,albalak2023efficient,chen2024skill}, which re-scale the contribution of each domain to enhance generalization. Another recently emerged line of research leverages the tool of influence functions~\citep{hampel1974influence,cook1977detection,ling1984residuals,koh2017understanding} to evaluate the impact of individual training samples on a fixed LLM~\citep{park2023trak,engstrom2024dsdm,yu2024mates}. In contrast to these works, our work explicitly considers the long-term impact of selected data if the model is not simply fixed but trained to convergence. In addition, our method can train the model from scratch and does not need any extra information from any external pretrained models, making it a scalable and effective solution.
+
+\vspace*{-0.05in}
+\textbf{Bilevel Optimization and Data Selection.} Bilevel optimization provides a powerful framework for modeling optimization problems with a nested structure~\citep{bracken1973mathematical,dempe2002foundations}. Recent research has focused on developing efficient bilevel optimization algorithms with strong theoretical guarantees~\citep{ghadimi2018approximation,hong2023two,ji2021bilevel,kwon2023fully,dagreou2022framework,chen2023bilevel1,grazzi2022bilevel,hao2024bilevel,gong2024a}. This approach has been widely applied in various machine learning tasks, including meta-learning~\citep{finn2017model}, hyperparameter optimization~\citep{franceschi2018bilevel}, and natural language processing~\citep{somayajula2023bi,grangier2023bilevel}. For the application of data selection, bilevel optimization has been utilized for continual learning~\citep{borsos2020coresets,zhou2022probabilistic,hao2023bilevel1} and data reweighting in LLM fine-tuning~\citep{pan2024scalebio,shen2024seal}. Our work is most closely related to SEAL \citep{shen2024seal}, which focuses on selecting high-quality and safe data to fine-tune a pretrained LLM, with the goal of aligning the model with safety and ethical guidelines. However, our approach differs from SEAL in two key aspects:
+(1) Problem setting. While SEAL operates in a fine-tuning context, our objective is to select data for \textbf{pretraining} an LLM \textbf{from scratch}, aiming to improve downstream performance \textbf{without relying on any external pretrained models}.
+(2) Model update mechanism. SEAL utilizes the LoRA technique~\citep{hu2021lora} to update both the data selector and the LLM during fine-tuning. However, this approach is not directly applicable to our setting due to the following reasons. First, LoRA is only suitable for fine-tuning tasks but insufficient for full model pretraining. Second, their algorithm always updates the original large models directly, which is computationally expensive if all parameters are updated. In contrast, we propose a more efficient framework that introduces lightweight models (a score model and a proxy model) to guide data selection, while allowing full parameter updates within these smaller networks.
+To the best of our knowledge, our proposed bilevel influence scoring method is the first to leverage bilevel optimization techniques for data selection in LLM pretraining. %Notably, our method is computationally efficient and does not require any external pretrained models. %, making it a scalable and effective solution.
+
+
+\vspace*{-0.1in}
+
+\section{Preliminaries and Notations} 
+\vspace*{-0.08in}
+
+
+Suppose that we have a large-scale training dataset $\mathcal{D}_{tr} = \{\xi_{i} \mid 0\leq i\leq N-1\}$ and a downstream task $\mathcal{D}_{ds}$. The goal is to select a subset of training set, namely $\mathcal{D}_s=\{\xi_j \mid 0\leq j \leq Q-1, Q\leq N\}$, to  pretrain a large language model with a specific training budget (e.g., limited FLOPs), such that the model can achieve high performance on the downstream task $\mathcal{D}_{ds}$. Generally, the downstream data is inaccessible during pretraining. Instead, we can use a validation data $\mathcal{D}_{val}=\{\zeta_i\mid 0\leq i\leq M-1\}$ to estimate the model's performance on $\mathcal{D}_{ds}$, because these two datasets often have similar data distributions or share common domain knowledge. A small subset of training data $\tilde{\mathcal{D}}_{tr} \subset \mathcal{D}_{tr}$ is uniformly sampled from $\mathcal{D}_{tr}$. 
+
+
+
+
+In bilevel optimization, $f(\cdot)$ and $g(\cdot)$ denote the upper-level and lower-level functions, respectively. Machine learning often requires solving stochastic optimization problems $f(\cdot)=\mathbb{E}_{\xi\sim \mathcal{D}_f}[F(\cdot; \xi)]$ and  $g(\cdot)=\mathbb{E}_{\zeta\sim \mathcal{D}_g}[G(\cdot; \zeta)]$, where $\mathcal{D}_f$ and $\mathcal{D}_g$ are the underlying unknown data distribution for $f$ and $g$, respectively. Noisy observations of $f$ and $g$ can be collected by sampling from $\mathcal{D}_f$ and $\mathcal{D}_g$. 
+
+
+% \vspace*{-0.1in}
+
+\section{Methods} 
+\vspace*{-0.05in}
+
+\subsection{Bilevel Influence Scoring Framework} \label{sec:bliss_frame}
+The goal of data selection is to optimize the performance of the LLM on downstream tasks by training it using an optimal subset of training data. However, directly searching for the optimal subset of training samples faces prohibitive costs due to the combinatorial nature of the problem and the high computational cost of estimating the performance of the LLM for every potential subset being evaluated.
+
+
+To address the aforementioned computational challenge, our bilevel influence scoring framework uses a lightweight score model $\theta_s$ to predict the influence of every sample on the model's performance for the downstream task. The optimized score model is then used to infer the influence score of training samples, enabling the selection of the subset with the highest influence, thus streamlining the process to search for the optimal training data. Instead of directly estimating the performance of LLM (parameterized by $\theta_{tr}$) which is computationally expensive, our framework introduces a lightweight proxy model $\theta_{p}$ to approximate the behavior of the LLM. Note that the score model and the proxy model are both small models: they share a similar architecture and number of parameters. To ensure the data preferences of the proxy model align with those of the LLM, we apply knowledge distillation by minimizing the Kullback-Leibler (KL) divergence between the output logits of the proxy model and the LLM. We formulate the bilevel optimization for data selection as follows:  
+\begin{equation}\label{eq:obj}
+\begin{aligned}
+            \min_{ \theta_{s}} \Phi(\theta_s) &\coloneqq f(\theta_p^*(\theta_s))\coloneqq\mathbb{E}_{\zeta\sim \mathcal{D}_{\text{val}}}F\left( \theta_p^*( \theta_s); \zeta\right),  \\
+            \text{s.t. }\quad \theta_p^*(\theta_s) &\in \argmin_{\theta_p} g(\theta_p,\theta_s)\coloneqq \mathbb{E}_{\xi\sim \mathcal{D}_{tr}}G(\theta_p,\theta_s; \xi) 
+            % \\&= \sum_{i=0}^{N-1}P_i\mathcal{L}(\theta_p; \xi_i) + \gamma D_{KL}\left(\ell(\theta_p; \xi_i) \| \ell(\theta_{tr}; \xi_i)\right) + \lambda \|\theta_p\|^2,  
+\end{aligned}
+\vspace*{-0.15in}
+\end{equation}
+% \vspace{-0.19in}
+\noindent where $\mathbb{E}_{\xi\sim \mathcal{D}_{tr}}G(\theta_p,\theta_s; \xi) =\sum_{i=0}^{N-1}P_i\mathcal{L}(\theta_p; \xi_i) + \gamma D_{KL}\left(\ell(\theta_p; \xi_i) \| \ell(\theta_{tr}; \xi_i)\right) + \lambda \|\theta_p\|^2$ and 
+$P_i = \frac{e^{h(\theta_s; \xi_i)}}{\sum_{j=1}^{ N} e^{h(\theta_s; \xi_j)}}$ represents the importance weight of sample $i$, and $h(\cdot): \mathbb{R}^{d_x}\rightarrow (0, 1) $ is a function that maps a sample from $\mathbb{R}^{d_x}$ to an influence score in the range $(0, 1)$. 
+%\textcolor{red}{how to implement $h$? more details are needed. $P_i$ is softmax reparameterization.}
+$\mathcal{L}(\cdot)$ and $F(\cdot)$ denote the loss functions for next token prediction, with a common choice being cross-entropy. The model’s output logits are represented by $\ell(\cdot)$. The KL divergence is defined as $D_{KL}(X \| Y) = \sum_i X_i \log(\frac{X_i}{Y_i})$. $\gamma$ and $\lambda$ are the regularization coefficients for the KL divergence and the weight decay terms, respectively. 
+% The rationale for the KL divergence term is to make sure the logit provided by the proxy model $\theta_{p}$ for each sample is not far away from that provided by the vanilla large model $\theta_{tr}$. 
+
+BLISS evaluates the long-term influence of training samples if the proxy model is trained to its convergence state $\theta_{p}^*(\theta_s)$.  Specifically, the lower-level trains the proxy model on the weighted training loss until convergence. This is notably different from other methods such as MATES~\citep{yu2024mates}, which trains a single step on the selected data from the current model state before evaluating sample influence. Consequently, MATES overlooks the long-term influence of training samples and may not fully capture the importance of data for downstream tasks. It is also worth noting that the bilevel data selection framework, described in formula (\ref{eq:obj}), does not rely on any external pretrained models which are typically trained on large-scale natural language corpora. This independence makes BLISS a more self-contained approach to data selection, which also obviates any biases or risks associated with external pretrained models that may involve proprietary or sensitive data.
+\vspace*{-0.05in}
+
+
+\subsection{Algorithm for Updating the Proxy Model and Score Model} \label{sec:algorithm}
+
+\vspace*{-0.05in}
+
+
+Now we design efficient algorithms for solving the bilevel problem (\ref{eq:obj}). The lower-level problem aims to optimize the proxy model $\theta_p$ on the weighted training samples with the influence predicted by the score model. Note that we freeze the LLM ($\theta_{tr}$) through the process of solving the bilevel optimization problem, as the LLM is used to infer the output logits. Therefore, we perform the following update for the lower-level objective on a mini-batch of size $\mathcal{B}$:
+%\vspace*{-0.1in}
+\begin{equation}
+    \begin{aligned}
+        \theta_p^{t+1} 
+        &= \theta_p^{t} - \eta_1 \nabla_{ \theta_p} \sum_{i=1}^{\mathcal{B}}G(\theta_p^{t}, \theta_s^{t};\xi_i) \\
+        &= \theta_p^{t} - \eta_1\sum_{i=1}^{\mathcal{B}} \Bigg( P_i \nabla_{\theta_p} \mathcal{L}(\theta_p^t; \xi_i)  + \gamma \sum_j \nabla_{\theta_p} \ell_{j}(\theta_p^t; \xi_i) 
+        \log \frac{\ell_j(\theta_p^t; \xi_i)}{\ell_j(\theta_{tr}^t; \xi_i)} 
+        + 2\lambda \theta_{p}^t \Bigg),
+    \end{aligned}
+    %\vspace*{-0.04in}
+\end{equation}
+%\vspace*{-0.15in}
+
+where $\ell_j(\cdot)$ denotes the $j$-th logit of the output. Note that the exact computation of $P_i$ depends on all $N$ samples, which is computationally infeasible. Therefore, we approximate $P_i$ by replacing the full summation in the denominator with a partial summation over a smaller subset. This approximation is implemented in a distributed manner, significantly reducing the computational overhead. More details can be found in Appendix~\ref{sec:distributedsoftmax}.
+For the upper-level update, we take the derivative of $\Phi(\theta_s)$ with respect to $\theta_s$ by chain rule, which is known as the hypergradient:
+\begin{equation}
+\label{eq:stochastichyper}
+    \begin{aligned}
+        \nabla_{\theta_s}\Phi(\theta_s)= -\nabla_{\theta_s\theta_p}^2g(\theta_p^*(\theta_s), \theta_s)\underbrace{[\nabla_{\theta_p}^2g(\theta_p^*(\theta_s), \theta_s)]^{-1}\nabla_{\theta_p}f(\theta_p^*(\theta_s))}_{z}, 
+    \end{aligned}
+   %\vspace*{-0.03in}
+\end{equation}
+% \vspace*{-0.01in}
+where $z$ is the solution of the quadratic function $\min_z \frac{1}{2} z^T 
+\nabla_{\theta_p}^2g(\theta_p^*(\theta_s), \theta_s) z - z^T\nabla_{\theta_p} f(\theta_p^*(\theta_s)) $. It can be solved by running a few steps of gradient descent in practice:
+\begin{equation}\label{eq:z_update}
+    z_{k+1}^t = z_k^t - \eta_2 \big( \nabla_{\theta_p}^2g(\theta_p^t, \theta_s^t) z_k^t - \nabla_{\theta_p} f(\theta_p^t)  \big),
+    %\vspace*{-0.05in}
+\end{equation}
+where $k$ is the number of gradient updates for updating $z$ at a fixed iteration $t$ of updating $\theta_s$. We run 3 steps of gradient descent to solve $z$ in our experiments. Note that Equation (\ref{eq:z_update}) computes the Hessian-Vector-Product (HVP) term $\nabla_{\theta_p}^2g(\theta_p^t, \theta_s^t) z_k^t$ and thus avoids the computationally prohibitive operation of taking the inverse of the Hessian. The dimension of $z$ is the same as that of the parameters of the lightweight proxy model. Therefore, the computation of HVP within the PyTorch framework is quite similar to that of gradient. In our implementation, we use the stochastic variants of~\Cref{eq:stochastichyper} and~\Cref{eq:z_update} for updating the score model. In particular, the approximation of hypergradient at iteration $t$ on the mini-batch $\mathcal{B}$ is
+\vspace*{-0.05in}
+\begin{equation}
+    \begin{aligned}
+     &\nabla_{\theta_s}\widehat{\Phi}(\theta_s^t)=- \sum_{i=1}^\mathcal{B} P_i \nabla_{\theta_s} h(\theta_s^t; \xi_i)\nabla_{\theta_p}\mathcal{L}(\theta_p^t; \xi_i)z^t +\sum_{i=1}^\mathcal{B} P_i \sum_{j=1}^\mathcal{B}  P_j \nabla_{\theta_s} h(\theta_s^t; \xi_j)\nabla_{\theta_p} \mathcal{L}(\theta_p^t; \xi_i)z^t.
+    \end{aligned} \label{ditributed_softmax}
+    \vspace*{-0.08in}
+\end{equation}
+% \vspace*{-0.05in}
+Then the update for the upper-level variable ($\theta_s$) is  
+\begin{equation}
+    \theta_s^{t+1} = \theta_{s}^t - \eta_3 \nabla_{\theta_s}\widehat{\Phi}(\theta_s^t).
+\end{equation}
+% \vspace*{-0.05in}
+When the score model converges over $T$ steps, reaching $\theta_s^T$, it is then used to estimate the influence scores of the entire training dataset in the current round by:$ S_i = h(\theta_s^T, \xi_i), \, \forall \xi_i \in \mathcal{D}_{tr}.$
+Then the influence scores are collected: $\{S_i\mid 0\leq i\leq |D_{tr}| \}$, and the top-ranked samples with the highest influence scores are selected to construct $\mathcal{D}_s$, which is used to pretraining the LLM ($\theta_{tr}$).
+
+The detailed implementation of the algorithm is presented in  Algorithm \ref{alg:alg1}. The pretraining process is conducted over $R$ rounds. In each round, the algorithm performs data selection followed by LLM retraining. The training dataset is partitioned into $R$ shards. The data selection in round $r$ is conducted on $\mathcal{D}_{tr}^r$. The LLM resumes training from the previous round’s checkpoint and updates to $\theta_{tr}^{r}$ at the end of the $r$-th round. Similarly, the score model also continues learning throughout the process, reaching  $\theta_{s}^r$ at the $r$-th round. It is worth noting that the proxy model ($\theta_{p}^r$) is reinitialized with the warm-up model at the beginning of each round. This prevents the model from overfitting to the previous round’s training data and ensures it can better capture the evolving behavior of the LLM. 
+% The details about the warm-up model is presented in Section~\ref{sec:warm-up}.
+
+
+\begin{algorithm}[!t]
+    \caption{\texttt{BLISS} }\label{alg:alg1} %: Bilevel Influence Scoring Method for Data Selection
+    \begin{algorithmic}[1]
+        \STATE \textbf{Input:} $ \eta_1, \eta_2, \eta_3,  R, T, K, Q, \mathcal{D}_{tr},  \tilde{\mathcal{D}}_{tr}, \mathcal{D}_{val}$ 
+        \STATE \textbf{Initialize:} Warm up $\theta_p^{0, 0}, \theta_{s}^{0, 0}, \theta_{tr}^{0, 0}$ using randomly selected training data.
+        \FOR {$r = 0, \dots, R-1$ }  
+            \STATE $\theta_p^{0, r} = \theta_p^{0, 0}$ \hfill \# reset proxy/score parameters for the new round 
+            \STATE $\theta_s^{0, r} = \theta_s^{T, r-1}$ if $r>1$ else  $\theta_s^{0, 0}$
+            \STATE $\theta_{tr}^{0, r} = \theta_{tr}^{Q, r-1}$ if $r>1$ else $\theta_{tr}^{0, 0}$ 
+        \FOR{$t=0, \dots, T-1$} 
+            \STATE Sample $\xi_t^r, \tilde{\xi}_t^r, \pi_t^r \leftarrow \tilde{\mathcal{D}}_{tr}^r$, and sample $\zeta_t \leftarrow \mathcal{D}_{val}$
+            % \STATE $u_{t+1}^r=$ \texttt{SNAG} ($\theta, \theta_s, u_t^r, \tilde{\alpha}, T_0$), \hfill \# compute the summation of scores.
+            % \STATE Update the estimator of moving-average gradient by eq (\ref{eq:moving_avg_grad}) 
+            \STATE (single/double loops) $\theta_p^{t+1, r} = \theta_p^{t, r}  - \eta_1\nabla_{ \theta_p} G(\theta_p^{t, r}, \theta_s^{t, r}; \xi_t^r)$ 
+            % \STATE $z^{t+1, r} = \texttt{GDLS}(K, z^{t, r}, \nabla_{\theta_p} G(\theta_p^{t, r}, \theta_{s}^{t, r}; \tilde{\xi}_t^r), \nabla_{\theta_p}F(\theta_p^{t, r}, \theta_{s}^{t, r}; \zeta_t^r))$
+            \STATE  $\begin{aligned}[t]
+                z^{t+1, r} = \texttt{GDLS}&(\eta_2, K, \nabla_{\theta_p} G(\theta_p^{t, r}, \theta_{s}^{t, r}; \tilde{\xi}_t^r), \nabla_{\theta_p}F(\theta_p^{t, r}, \theta_{s}^{t, r}; \zeta_t))
+                \end{aligned}$
+            \STATE $\theta_{s}^{t+1, r} =  \theta_{s}^{t, r} - \eta_3\nabla_{\theta_s\theta_p}^2G(\theta_p^{t+1, r}, \theta_s^{t, r}; \pi_t^r )z^{t+1, r}$ 
+            % \STATE $\alpha^{t+1, r} = \alpha^{t, r} - \eta m^{t+1, r}$ \hfill \# UL update\\
+        \ENDFOR
+        \STATE Infer the influence score $\{S_i^r\mid 0 \leq i \leq |\mathcal{D}_{tr}^r|-1 \}$ on $\mathcal{D}_{tr}^r$ using $\theta_s^{T, r}$
+        \STATE Sort $\{S_i^r\}$ in descending order and select the $20\%$ data with the highest influence scores from $\mathcal{D}_{tr}^r$ to form the selected data $\mathcal{D}_{s}$
+         \FOR{$\tau=0, \dots, Q-1$} 
+            \STATE  Sample $\xi_{\tau}$ from $\mathcal{D}_s$.
+            \STATE $\theta_{tr}^{\tau+1, r} =\theta_{tr}^{\tau, r} - \eta_4  \nabla_{ \theta_{tr}} \ell( \theta_{tr}^{\tau, r}; \xi_{\tau})$  \# pretrain the LLM
+         \ENDFOR
+        \ENDFOR
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!t]
+    \caption{\texttt{GDLS: Gradient Descent for the Linear System Solution}} \label{alg:alg2}
+    \begin{algorithmic}[1]
+        \STATE \textbf{Input:} $ \eta, K, \nabla_{\theta_p}g(\theta_p), a$
+         \STATE \textbf{Initialize:} $z_0$
+        \FOR{$k=0, \dots, K-1$} 
+        \STATE $z_k =z_{k-1}$ if $k>1$ else $z_0$ 
+        \STATE $z_{k+1} = z_k - \eta \big( \nabla_{\theta_p}^2g(\theta_p) z_k - a\big)$
+        \ENDFOR
+    \STATE Return $z_K$
+
+    \end{algorithmic}
+\vspace{-0.05in}    
+\end{algorithm}
+\vspace*{-0.05in}
+
+\subsection{Warm Up Models} \label{sec:warm-up}
+\vspace*{-0.05in}
+
+
+The key distinction between our algorithm and other data selection methods \citep{brown2020language,xie2023data,wettig2024qurating} is that it operates independently of external pretrained models, avoiding biases from data selection influenced by such models. However, without leveraging pretrained knowledge, the proxy model, score model, and LLM tend to perform poorly in the initial phase due to random parameter initialization. To mitigate this issue, we incorporate a model warm-up step before data selection, similar to other data selection approaches \citep{yu2024mates, xia2024less}, using randomly selected samples. The lightweight proxy and score models share token embedding layers and transformer blocks but differ in their final layers: the proxy model handles token generation, while the score model outputs influence scores for individual samples. Consequently, only the proxy model and the LLM require warm-up, while the score model can be initialized with the weights from proxy model directly.
+% \vspace*{-0.1in}
+
+% \subsection{Discussion}
+% \vspace*{-0.05in}
+
+
+% Our work is most closely related to SEAL \cite{shen2024seal}, which focuses on selecting high-quality and safe data to fine-tune a pretrained LLM, with the goal of aligning the model with safety and ethical guidelines. However, our approach differs from SEAL in two key aspects:
+% (1) Problem setting. While SEAL operates in a fine-tuning context, our objective is to select data for \textbf{pretraining} an LLM \textbf{from scratch}, aiming to improve downstream performance \textbf{without relying on any external pretrained models}.
+% (2) Model update mechanism. SEAL utilizes the LoRA technique~\cite{hu2021lora} to update both the data selector and the LLM during fine-tuning. However, this approach is not directly applicable to our setting due to the following reasons. First, LoRA is only suitable for fine-tuning tasks but insufficient for full model pretraining. Second, their algorithm always updates the original large models directly, which is computationally expensive if all parameters are updated. In contrast, we propose a more efficient framework that introduces lightweight models (a score model and a proxy model) to guide data selection, while allowing full parameter updates within these smaller networks.
+
+
+\vspace*{-0.1in}
+
+\section{Experiments}\label{sec:exp}%(2 pages)
+\vspace*{-0.05in}
+
+In this section, we validate the proposed bilevel influence scoring framework for pretraining data selection. Without relying on external pretrained models, we apply the bilevel optimization algorithm to train a lightweight proxy model ($\theta_p$) and a score model ($\theta_s$)) for data selection. We then pretrain a target LLM ($\theta_{tr}$), specifically Pythia-410M/1B, from scratch on a selected subset of the large-scale C4 dataset \citep{raffel2020exploring}, which is designed for LLM pretraining.
+
+To assess the effectiveness of our approach, we evaluate the pretrained LLM on multiple downstream tasks and compare its performance against several baseline methods, including Random selection, DSIR \citep{xie2023data}, SemDeDup \citep{abbas2023semdedup}, DsDm \citep{engstrom2024dsdm}, LESS \citep{xia2024less}, QuRating \citep{wettig2024qurating}, and MATES \citep{yu2024mates}. We furthermore scale up our experiment to 2.8B model pretraining and achieve $1.4\%$ performance improvement over the state-of-the-art method.  
+
+
+% Additionally, we conduct extensive ablation studies to analyze key components of our method. Specifically, we examine the effectiveness of bilevel optimization (Section \ref{sec:bilevel_opt}), KL divergence loss (Section \ref{sec:kl_div}), the impact of softmax reparameterization on the score model’s outputs (Appendix \ref{sec:softmax_score}), the size of proxy model (Appendix \ref{sec:model_size}), the initialization for the score model (Appendix \ref{sec:init_method}), and the influence of different validation datasets ($\mathcal{D}_{val}$) on performance (Appendix \ref{sec:val_data}).
+
+\vspace*{-0.1in}
+
+\subsection{Dataset Settings}
+\vspace*{-0.05in}
+
+Following the approach of DsDm \citep{engstrom2024dsdm}, we perform data selection and pretraining using tokenized data. The procedure of BLISS is implemented for 5 rounds (i.e., $R=5$),with the C4 dataset partitioned into five equal shards, denoted as $\{\mathcal{D}_{tr}^r \mid 0\leq r \leq4\}$. Each training round operates on a distinct data shard without replacement. In every round, we first uniformly sample a small proportion ($0.1\%$) from $\mathcal{D}_{tr}^r$ as the bilevel training set $\tilde{\mathcal{D}}_{tr}^r$ for updating the proxy model. We use LAMBADA \citep{paperno2016lambada} as validation data for updating the score model. Other datasets, including ARC-E \citep{clark2018think}, SQUAD \citep{rajpurkar2016squad}, and PIQA \citep{bisk2020piqa}, are  evaluated in the ablation study (\Cref{sec:val_data}). 
+
+To evaluate the performance of data selection algorithms, we run the pretraining model across 9 downstream tasks, including SciQ \citep{welbl2017crowdsourcing}, ARC-E \citep{clark2018think}, ARC-C \citep{clark2018think}, LogiaQA \citep{liu2020logiqa}, OBQA \citep{mihaylov2018can}, BoolQ \citep{clark2019boolq}, HellaSwag \citep{zellers2019hellaswag}, PIQA \citep{bisk2020piqa}, and WinoGrande \citep{sakaguchi2021winogrande}. These tasks cover a diverse range of reasoning and comprehension challenges, including question answering, logical inference, commonsense reasoning, and coreference resolution. Thus it requires models to demonstrate various capabilities, such as retrieving and applying scientific knowledge, understanding causal relationships, resolving ambiguities in natural language, and making informed choices among distractors. A good data selection algorithm is expected to select the "important" data that boost model performance across these downstream tasks.
+
+\vspace*{-0.05in}
+\subsection{Model Settings}
+\vspace*{-0.05in}
+
+The target pretraining model, Pythia-410M/1B/2.8B, consists of 410 million, 1 billion or 2.5 billion trainable parameters. Both the proxy model and score model are based on Pythia-31M (for Pythia-410M) or Pythia-160M (for Pythia-1B), but they serve different purposes: the proxy model acts as a surrogate for the LLM and is trained for next-token prediction, while the score model functions as a regression model that maps individual samples to corresponding influence scores. Details of model settings are deferred to Appendix \ref{sec:model_setting}. 
+% To transform the proxy model into the score model, we modify its architecture by replacing the final \texttt{Linear} layer with an \texttt{AdaptiveAvgPool} layer, followed by a \texttt{Linear} layer and a \texttt{Sigmoid} activation. Specifically, given the output from the preceding transformer blocks with dimension $[\texttt{Batch}, \texttt{token\_size}, \texttt{Emb\_size}]$, the \texttt{AdaptiveAvgPool} layer computes the average embedding feature across tokens. The \texttt{Linear} layer then maps the pooled token representations to a single-dimensional output, which is subsequently passed through a \texttt{Sigmoid} activation to produce an influence score within the range $(0,1)$. In contrast, the proxy model’s final \texttt{Linear} layer maps features from previous layers to the vocabulary dimension for token prediction. 
+Notably, all models are trained from scratch using Gaussian initialization for model parameters. Additional experimental details, including hyperparameter choices, learning rate schedules, and distributed training strategies, are provided in Appendix \ref{sec:exp_setting}.
+
+\vspace*{-0.05in}
+\subsection{Bilevel Optimization for Proxy Model and Score Model}
+\vspace*{-0.05in}
+%In Pythia-410M setting, we update the proxy model $\theta_p$ by a ``single step" (line 9 in Algorithm \ref{alg:alg1}) in each iteration. When extended to a large model like Pythia-1B, we switch to ``multiple steps" to update the proxy model for an optimal lower-level solution. 
+
+
+In the Pythia-410M setting, the proxy model $\theta_p$
+is updated with a ``single-step" optimization per iteration (line 9 in Algorithm \ref{alg:alg1}). However, when scaling up to larger models like Pythia-1B, we adopt a ``multi-steps" update strategy for the proxy model to achieve a better lower-level solution.
+To demonstrate the effectiveness of bilevel optimization in training the proxy model and score model, we visulize the evolution of the lower-level training loss and upper-level validation loss during round 2 (Figure \ref{fig:bilevel_training_r1} in Appendix \ref{loss_fig}) and round 5 (Figure \ref{fig:bilevel_training_r5} in Appendix \ref{loss_fig}). Since the first round uses randomly selected data to warm up the LLM, our data selection algorithm is employed from the second round onward.
+
+
+ Within each round, both losses exhibit a two-phase trend: they initially decrease rapidly before experiencing a slight increase. This behavior arises due to the composition of the lower-level objective function, which includes three terms: the weighted cross-entropy loss, the KL divergence loss, and a regularization term. In the first phase, the weighted cross-entropy loss dominates, decreasing as the proxy model is optimized. In the second phase, the KL divergence term becomes more influential. Since the LLM has not yet been trained on the current dataset $\mathcal{D}_{tr}^{r}$ (it only performs inference in bilevel training), its predictions may be suboptimal. The KL divergence term encourages the proxy model to mimic the behavior of this "imperfect" LLM, leading to a slight performance degradation. However, this ensures that the proxy model's data preference aligns with that of the LLM, improving the relevance of the selected training data and ultimately boosting the LLM’s downstream task performance. An ablation study on the effect of KL divergence loss is presented in Section \ref{sec:kl_div}.
+
+From round 2 to round 5, the score model is continuously optimized, leading to more accurate sample weight assignments. This, in turn, enhances the proxy model’s performance on the weighted training samples, further improving the quality of data selection.
+
+\begin{table*}[!t]
+    \centering
+    \vspace{-0.1in}
+      \setlength{\tabcolsep}{1pt}
+    
+    \caption{Comparison of methods on zero-shot evaluation over multiple downstream datasets (410M/1B model, 25B tokens data). Best results are marked bold. The accuracy with standard error is reported based on the lm-evaluation-harness \citep{gao2021framework} implementation.}
+    \vspace{-0.05in}
+    \resizebox{0.9\textwidth}{!}{
+    \begin{tabular}{lcccccccccc}
+        \toprule
+        \textbf{Methods} (\#FLOPs $\times 10^{19}$) & \textbf{SciQ} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{LogiQA} & \textbf{OBQA} & \textbf{BoolQ} & \textbf{HellaSwag} & \textbf{PIQA} & \textbf{WinoGrande} & \textbf{Average} \\
+        \midrule
+        \multicolumn{11}{l}{\textbf{410M Setting:} 410M model, 25B tokens} \\
+        \midrule
+         Random  (6.35) & 64.1 \scriptsize{(1.5)} & 40.2 \scriptsize{(1.0)} & \textbf{25.6} \scriptsize{(1.3)} & 24.7 \scriptsize{(1.7)} & 29.4 \scriptsize{(2.0)} & 58.9 \scriptsize{(0.9)} & 39.7 \scriptsize{(0.5)} & 67.1 \scriptsize{(1.1)} & 50.6 \scriptsize{(1.4)} & 44.5 \scriptsize{(1.3)} \\
+        MATES  (8.11) & 65.7 \scriptsize{(1.5)} & 41.5 \scriptsize{(1.0)} & 25.0 \scriptsize{(1.3)} & 26.1 \scriptsize{(1.7)} & \textbf{30.8} \scriptsize{(2.1)} & \textbf{60.6} \scriptsize{(0.9)} & 41.0 \scriptsize{(0.5)} & 67.8 \scriptsize{(1.1)} & 51.8 \scriptsize{(1.4)} & 45.7 \scriptsize{(1.4)} \\
+        BLISS (8.08)   & \textbf{68.1} \scriptsize{(1.5)} & \textbf{42.2} \scriptsize{(1.0)} & 25.1 \scriptsize{(1.3)} & \textbf{27.3} \scriptsize{(1.7)} & 29.6 \scriptsize{(2.0)} & 59.3 \scriptsize{(0.9)} & \textbf{41.2} \scriptsize{(0.5)} & \textbf{68.2} \scriptsize{(1.1)} & \textbf{52.0} \scriptsize{(1.4)} & \textbf{45.9} \scriptsize{(1.4)}\\
+        \bottomrule
+        \multicolumn{11}{l}{\textbf{1B Setting:} 1B model, 25B tokens} \\
+        \midrule
+        Random {(17.67)} & 65.8\scriptsize{(1.5)} & 43.7\scriptsize{(1.0)} & 25.6\scriptsize{(1.3)} & 27.5\scriptsize{(1.8)} & 31.8\scriptsize{(2.1)} & 60.2\scriptsize{(0.9)} & 43.8\scriptsize{(0.5)} & 68.9\scriptsize{(1.1)} & 50.7\scriptsize{(1.4)} & 46.4\scriptsize{(1.4)} \\
+        MATES {(19.97)} & 67.3\scriptsize{(1.5)} & 44.9\scriptsize{(1.0)} & \textbf{25.9}\scriptsize{(1.3)} & \textbf{28.7}\scriptsize{(1.8)} & 32.2\scriptsize{(2.1)} & \textbf{60.9}\scriptsize{(0.9)} & 45.3\scriptsize{(0.5)} & 69.5\scriptsize{(1.1)} & 52.4\scriptsize{(1.4)} & 47.5\scriptsize{(1.4)} \\
+        BLISS {(8.08)}   & \textbf{69.4}\scriptsize{(1.5)} & \textbf{45.7}\scriptsize{(1.0)} & 24.8\scriptsize{(1.3)} & {25.8}\scriptsize{(1.7)} & \textbf{33.2}\scriptsize{(2.1)} & 59.8\scriptsize{(0.9)} & \textbf{47.8}\scriptsize{(0.5)} & \textbf{71.6}\scriptsize{(1.1)} & \textbf{52.9}\scriptsize{(1.4)} & \textbf{47.9}\scriptsize{(1.3)}\\
+        \bottomrule
+    \end{tabular}}\label{tbl:bliss_vs_mates}
+\end{table*}
+
+% \vspace{-0.05in}
+\vspace*{-0.05in}
+
+\subsection{Evaluation Results on the Downstream Tasks}
+
+The LLM is continuously trained for 10,000 steps on the selected data in each round. After completing five rounds of training, we evaluate the zero-shot performance of Pythia-410M/1B on various downstream tasks and report the average accuracy along with the standard error for each dataset(see Table \ref{tbl:bliss_vs_mates}. Our algorithm consistently outperforms MATES and random selection methods across multiple tasks.  For example on 410M setting, BLISS, compared with MATES, improves $2.4\%$ on SciQ, $0.7\%$ on ARC-E, $0.8\%$ on LogiQA, $0.2\%$ on HellaSwag, $0.4\%$ on PIQA, $0.2\%$ on WinoGrande, and $0.2\%$ on average accuracy (see Table~\ref{tab:mates_results}). Additionally, Figure \ref{fig:acc_step} presents the evaluation results in relation to pretraining FLOPs and training steps. BLISS consistently outperforms other baseline methods throughout the entire five-round pretraining process (with 10k steps per round). In particular, our method on 1B setting achieves a $1.7\times$ speedup in reaching the same performance as MATES, further validating the effectiveness of our data selection approach.
+
+
+% \begin{table}[!t]
+% \vspace{-0.3em}
+%     \centering
+%       \setlength{\tabcolsep}{4pt}
+%     \caption{Average accuracies of 3 rounds (15B tokens data) by pretraining 2.8B model with data selected from the 1B model experiment.}
+%     \vspace*{-0.05in}
+%     \resizebox{0.31\textwidth}{!}{
+%     \begin{tabular}{lcccccccccc}
+%     \toprule
+% \textbf{Methods} & \textbf{round 1} & \textbf{round 2} & \textbf{round 3}  \\
+%   \midrule
+% MATES &45.9 \scriptsize{(1.3)}	&47.4\scriptsize{(1.3)}	&47.6\scriptsize{(1.3)}	
+%  \\
+% BLISS &45.2\scriptsize{(1.3)}	&\textbf{47.6}\scriptsize{(1.3)}	&\textbf{49.0}\scriptsize{(1.3)}		\\
+%   \bottomrule
+% \end{tabular}\label{tbl:consistency}}
+% % \vspace{-2em}
+% \end{table}
+
+\begin{table}[!t]
+% \vspace{-0.1em}
+\centering
+\setlength{\tabcolsep}{4pt}
+% \vspace*{-0.05in}
+
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\captionof{table}{Average evaluation accuracy (15B tokens data) by pretraining 2.8B model with data selected from the 1B model experiment.}
+\label{tbl:consistency}
+% \vspace{-0.1in}
+\resizebox{0.98\linewidth}{!}{
+\setlength{\tabcolsep}{15pt}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Methods} & \textbf{Round 1 (Random)} & \textbf{Round 2} & \textbf{Round 3} \\
+\midrule
+MATES & 45.9 {\scriptsize(1.3)} & 47.4 {\scriptsize(1.3)} & 47.6 {\scriptsize(1.3)} \\
+BLISS & 45.2 {\scriptsize(1.3)} & \textbf{47.6} {\scriptsize(1.3)} & \textbf{49.0} {\scriptsize(1.3)} \\
+\bottomrule
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\captionof{table}{Average evaluation accuracy of 3 rounds by pretraining Llama-0.5B model. Llama-134M is deployed as the proxy model in BLISS.}
+\label{tbl:llama}
+% \vspace{-0.1in}
+\resizebox{0.98\linewidth}{!}{
+\setlength{\tabcolsep}{15pt}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Methods} & \textbf{Round 1 (Random)} & \textbf{Round 2} & \textbf{Round 3} \\
+\midrule
+MATES & 43.12 {\scriptsize(1.27)} & 44.53 {\scriptsize(1.27)} & 45.01 {\scriptsize(1.27)} \\
+BLISS & 43.12 {\scriptsize(1.27)} & \textbf{44.57} {\scriptsize(1.27)} & \textbf{45.65} {\scriptsize(1.27)} \\
+\bottomrule
+\end{tabular}}
+\end{minipage}
+% \vspace{-0.05in}
+\end{table}
+
+
+
+% \begin{table}[!t]
+% \vspace{-1.3em}
+%     \centering
+%       \setlength{\tabcolsep}{1pt}
+%     \caption{Average accuracies of 3 rounds (20B tokens data) by pretraining 2.8B model with data selected from the 1B model experiment.}
+%     \resizebox{0.37\textwidth}{!}{
+%     \begin{tabular}{lcccccccccc}
+%     \toprule
+% \textbf{Methods} & \textbf{round 1} & \textbf{round 2} & \textbf{round 3} & \textbf{round 4} \\
+%   \midrule
+% MATES &45.9 \scriptsize{(1.3)}	&47.4\scriptsize{(1.3)}	&47.6\scriptsize{(1.3)}	&48.9\scriptsize{(1.3)}
+%  \\
+% BLISS &45.2\scriptsize{(1.3)}	&4\textbf{47.6}\scriptsize{(1.3)}	&\textbf{49.0}\scriptsize{(1.3)}	&\textbf{49.3}\scriptsize{(1.3)}	\\
+%   \bottomrule
+% \end{tabular}\label{tbl:consistency}}
+% % \vspace{-2em}
+% \end{table}
+
+
+\vspace{-0.1in}
+\paragraph{Scaling Up to 2.8B Model Pretraining using the Data Selected by 160M/1B Experiment.} To further validate the selected data is of good quality regardless of model size, we pretrain a larger model of 2.8B parameters with data selected from the 1B model experiment with 160M proxy and score models. We run MATES and BLISS for 3 rounds (15B tokens). As shown in Table~\ref{tbl:consistency}, BLISS consistently outperforms MATES across all data selection rounds, achieving $1.4\%$ accuracy improvement over MATES in round 3.
+
+\vspace{-0.1in}
+\paragraph{Generalize model architecture to LLaMA family.} We also explore LLaMA architecture models to validate the generalization of our method. Specifically, we use LLaMA-0.5B as the target pretraining model, and LLaMA-134M as the proxy model and score model. In each round, we first minimize the difference between the proxy model and the target model by training the proxy model toward a lower KL divergence. Then we periodically reset the proxy model to the initial state, in addition to resetting it at the beginning of each round. Table \ref{tbl:llama} presents the evaluation results compared with MATES, where BLISS exhibits strong data selection performance. At the round $3$, our algorithm improves over MATES by $0.6\%$. 
+More details are presented in Appendix \ref{sec:llama}. 
+
+
+\vspace{-0.1in}
+\subsection{Computational Cost} \label{sec:cost}
+\vspace{-0.05in}
+We follows the FLOPs estimation method in \citet{li2024datacomp} and report the total GPU FLOPs, including the pretraining, model warm-up, and data selection.  Our main observation is: \textbf{without relying on any external pretrained models as required in MATES, BLISS achieves higher average downstream performance while consuming fewer FLOPs}. A detailed comparison of total FLOPs consumption is provided in Table \ref{tab:flops_comparison}.
+
+
+With the same pretraining budget for LLM and an equivalent number of training tokens, BLISS is more efficient in data selection than MATES. The higher computational cost of MATES is due to its reliance on oracle data influence estimation, which involves computing the loss change after performing a one-step gradient descent update on an individual training sample. This process is highly time-consuming, because it requires per-sample gradient and cannot increase the batch size per GPU.
+In contrast, BLISS formulates data selection as a bilevel optimization problem, enabling the lightweight score model and proxy model to be trained to convergence within relatively few steps (3,000 per round). While BLISS introduces additional training steps for warming up the proxy and score models from scratch, this cost is negligible compared to the overall pretraining FLOPs.
+
+\begin{table}[!t]
+    \centering
+    % \vspace{-0.02in}
+    \renewcommand{\arraystretch}{1.2}  % Increase row height
+    % \setlength{\tabcolsep}{1pt}       % Adjust column spacing
+        \caption{Total FLOPs for pretraining 410M/1B model with 25B tokens.}
+        \vspace{-0.1in}
+    \resizebox{0.9\textwidth}{!}{
+     \renewcommand{\arraystretch}{1.0}
+    \begin{tabular}{lcc|lcc}
+        % \toprule
+        \Xhline{1.2pt}
+        \textbf{Model} & \textbf{\#FLOPs $\times 10^{19}$} & \textbf{Ratio} &\textbf{Model} & \textbf{\#FLOPs $\times 10^{19}$} & \textbf{Ratio} \\
+        \hline
+        \multicolumn{3}{l|}{\textbf{MATES:} 410M model, 25B tokens}  & \multicolumn{3}{r}{\textbf{BLISS:} 410M model, 25B tokens}\\
+        \hline
+        Model pretraining             & 6.35  & 78.3\%          & Model pretraining  & 6.35  & 79.28\%\\
+        Oracle data influence collection & 0.29  & 3.58\%      & Warm up the proxy/score model  & 0.07 & 0.87\% \\
+        Data influence model training  & 0.01  & 0.1\%          & Bilevel optimization & 0.13  & 1.62\%\\
+        Data influence model inference & 1.46  & 18.0\%         & Data influence model inference & 1.53  & 19.10\% \\
+        \textbf{Total}     & 8.11  & 100.00\%                   & \textbf{Total}         & \textbf{8.08}  & 100.00\% \\
+        \hline
+        \multicolumn{3}{l|}{\textbf{MATES:} 1B model, 25B tokens}  & \multicolumn{3}{r}{\textbf{BLISS:} 1B model, 25B tokens} \\
+        \hline
+        Model pretraining             & 17.67  & 88.5\%         & Model pretraining   & 17.67  & 90.48\%\\
+        Oracle data influence collection  & 0.83 & 4.1\%        & Warm up the proxy/score model & 0.07   & 0.36\%\\
+        Data influence model training          & 0.01  & 0.1\%  & Bilevel optimization   & 0.261  & 1.34\%\\
+        Data influence model inference & 1.46  & 7.3\%          & Data influence model inference & 1.53  & 7.83\% \\
+        \textbf{Total} & 19.97  & 100.00\%    & \textbf{Total}  & \textbf{19.53}   & 100.00\% \\
+        \Xhline{1.2pt}
+    \end{tabular}}
+    \label{tab:flops_comparison}
+    \vspace{-0.1in}
+\end{table}
+\vspace{-0.1in}
+
+
+% \begin{table}[!h]
+%     \centering
+%     \renewcommand{\arraystretch}{1.2}  % Increase row height
+%     % \setlength{\tabcolsep}{1pt}       % Adjust column spacing
+%         \caption{Total FLOPs for pretraining 410M/1B target model with 25B tokens.}
+%     \resizebox{0.4\textwidth}{!}{
+%      \renewcommand{\arraystretch}{1.0}
+%     \begin{tabular}{lcc}
+%         \toprule
+%         \textbf{Process} & \textbf{\#FLOPs $\times 10^{19}$} & \textbf{Ratio} \\
+%         \midrule
+%         \multicolumn{3}{l}{\textbf{BLISS:} 410M model, 25B tokens} \\
+%         \midrule
+%         Model pretraining             & 6.35  & 79.28\% \\
+%         Warm up the proxy/score model  & 0.07 & 0.87\%\\
+%         Bilevel optimization          & 0.13  & 1.62\% \\
+%         Data influence model inference & 1.53  & 19.10\% \\
+%         \textbf{Total}                 & 8.08  & 100.00\% \\
+%         \midrule
+%         \multicolumn{3}{l}{\textbf{BLISS:} 1B model, 25B tokens} \\
+%         \midrule
+%         Model pretraining             & 17.67  & 90.48\% \\
+%         Warm up the proxy/score model & 0.07   & 0.36\% \\
+%         Bilevel optimization   & 0.261  & 1.34\% \\
+%         Data influence model inference & 1.53  & 7.83\% \\
+%         \textbf{Total}                 & 19.53   & 100.00\% \\
+%         \midrule
+%         \bottomrule
+%     \end{tabular}}
+%     \label{tab:flops_comparison}
+% \end{table}
+
+\begin{figure}[!t]
+    \centering
+    \subfigure[Pretrain 410M model]{\includegraphics[width=0.23\linewidth]{figures/acc_flops_410m.pdf}
+    \includegraphics[width=0.23\linewidth]{figures/acc_steps_410m.pdf}}
+    \subfigure[Pretrain 1B model]{\includegraphics[width=0.23\linewidth]{figures/acc_flops_1b.pdf}
+    \includegraphics[width=0.23\linewidth]{figures/acc_steps_1b.pdf}}
+    \vspace{-0.1in}
+    \caption{The downstream performance of Pythia-410M/1B model w.r.t. pretraining FLOPs and steps, where the first point denotes the performance of a warm-up model trained on random data.}
+    \label{fig:acc_step}
+\end{figure}
+
+% \vspace*{-0.05in}
+\begin{table*}[!h]
+    \centering
+      \setlength{\tabcolsep}{1pt}
+    \caption{Comparison of BLISS with different settings(without softmax and single level updata) over multiuple downstream datasets (410M model, 10B tokens) with 20k-step training. }
+    \vspace*{-0.09in}
+    %The accuracy with standard error is reported based on the lm-evaluation-harness \cite{gao2021framework} implementation.}
+    \resizebox{0.9\textwidth}{!}{
+    \begin{tabular}{lcccccccccc}
+    \toprule
+\textbf{Methods} & \textbf{SciQ} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{LogiQA} & \textbf{OBQA} & \textbf{BoolQ} & \textbf{HellaSwag} & \textbf{PIQA} & \textbf{WinoGrande} & \textbf{Average} \\
+  \midrule
+Without softmax &63.5\scriptsize{(1.5)}	&41.0\scriptsize{(1.0)}	&22.4\scriptsize{(1.2)}	&25.7\scriptsize{(1.7)}	&30.0\scriptsize{(2.1)}	&52.8\scriptsize{(0.9)}	&38.8\scriptsize{(0.5)}	&67.4\scriptsize{(1.1)}	&51.0\scriptsize{(1.4)}	&43.6\scriptsize{(1.3)}
+ \\
+Single Level &64.4\scriptsize{(1.5)}	&42.3\scriptsize{(1.0)}	&22.2\scriptsize{(1.2)}	&24.1\scriptsize{(1.7)}	&30.6\scriptsize{(2.1)}	&55.0\scriptsize{(0.9)}	&39.7\scriptsize{(0.5)}	&67.1\scriptsize{(1.1)}	&52.1\scriptsize{(1.4)}	&44.2\scriptsize{(1.3)}\\
+
+\multicolumn{1}{l}{BLISS} &65.5\scriptsize{(1.5)}	&40.8\scriptsize{(1.0)}	&23.4\scriptsize{(1.2)}	&27.2\scriptsize{(1.7)}	&29.8\scriptsize{(2.0)}	&58.9\scriptsize{(0.9)}	&36.0\scriptsize{(0.5)}	&67.6\scriptsize{(1.1)}	&53.4\scriptsize{(1.4)}	&44.7\scriptsize{(1.3)}
+
+\\
+  \bottomrule
+\end{tabular}\label{tbl:single_level}}
+% \vspace{-0.05in}
+\end{table*}
+
+
+% \vspace*{-0.05in}
+
+\section{Ablation Studies}
+\vspace*{-0.05in}
+
+To inspect the effectiveness of key techniques used in our proposed algorithm, we conduct ablation studies on the effect of bilevel optimization (Section \ref{sec:bilevel_opt}), KL divergence loss (Section \ref{sec:kl_div}), the impact of softmax reparameterization on the score model’s outputs (Appendix \ref{sec:softmax_score}), the size of proxy model (Appendix \ref{sec:model_size}), the initialization for the score model (Appendix \ref{sec:init_method}), and the influence of different validation datasets ($\mathcal{D}_{val}$) on performance (Appendix \ref{sec:val_data}).
+
+% we conduct ablation studies on the effect of KL divergence, softmax reparametrization, bilevel update, and different types of validation datasets. In this section, we pretrain a Pythia-410m model with 20k steps (2 rounds) due to resource constraints. 
+\vspace*{-0.05in}
+\subsection{Single-level versus Bilevel Optimization} \label{sec:bilevel_opt}
+\vspace{-0.05in}
+In bilevel algorithm, the hyper-gradient is essential for the update of upper level parameters. To verify the effectiveness of bilevel update for the upper-level parameters, we compare bilevel update with a single update, which update $\theta_s$ and $\theta_p$ together using both training and validation data for the lower-level objective. Specifically, the upper and lower levels are reduced to a single level problem: the upper-level and lower-level parameters are updated simultaneously on validation dataset and training dataset respectively. With the same number of training steps as bilevel training, the average accuracy of single level update degrades $0.5\%$ as shown in Table \ref{tbl:single_level}.
+
+\vspace*{-0.05in}
+\subsection{KL Divergence Aligns the Proxy Model with the LLM} \label{sec:kl_div}
+\vspace{-0.05in}
+Our objective is to select training data that maximizes the LLM's performance on downstream tasks. To achieve this, the proxy model must effectively represent the LLM, which we enforce by applying KL divergence loss to align their output logits. 
+As shown in Figure \ref{fig:training_without_kl2} (Appendix \ref{sec:mode_ablation}), incorporating KL divergence leads to improved performance across most downstream tasks, with a 9.3\% accuracy boost on LogiQA and a 1.4\% increase in average accuracy. Interestingly, while removing KL divergence results in a lower validation loss (as seen in Figure \ref{fig:training_without_kl1} compared to Figure \ref{fig:bilevel_training_r1} in Appendix \ref{loss_fig}), it does not translate to better downstream performance. These findings highlight the importance of bridging the gap between the proxy model and the LLM to ensure effective data selection, demonstrating that a closer alignment between the two models leads to better overall performance. 
+
+
+\vspace*{-0.15in}
+
+\section{Conclusion}
+\vspace*{-0.05in}
+
+In this paper, we present BLISS, a lightweight bilevel influence scoring method for data selection in language model pretraining. BLISS utilizes a proxy model, a score model, and a novel bilevel optimization framework to capture the long-term influence of data without relying on external pretrained models. Experimental results demonstrate its effectiveness in selecting data for pretraining Pythia and LLaMA models. However, current data selection methods primarily focus on language models. In future work, we plan to extend our approach to visual or multimodal models.
+
+% \section*{Reproducibility Statement}
+% We will release the code with training/evaluation scripts, configurations, seeds, and environment files soon. All base models are publicly available: Pythia (under EleutherAI Apache-2.0 license) and LLaMA (under Meta Llama 2 Community License Agreement). Datasets C4 is accessible on HuggingFace under the licenses stated on their corresponding Hugging Face dataset cards (loganengstrom/dsdm-candidate-c4). We include download scripts, preprocessing/splits, and references to their dataset cards. These materials sufficiently support the reproduction of our results.
+
+
+
+\bibliography{conference}
+\bibliographystyle{conference}
+
+
+\newpage
+\appendix
+
+\section{Details of Model Settings} \label{sec:model_setting}
+
+The proxy model and score model serve different purposes: the proxy model acts as a surrogate for the LLM and is trained for next-token prediction, while the score model functions as a regression model that maps individual samples to their corresponding influence scores. To transform the proxy model into the score model, we modify its architecture by replacing the final \texttt{Linear} layer with an \texttt{AdaptiveAvgPool} layer, followed by a \texttt{Linear} layer and a \texttt{Sigmoid} activation. Specifically, given the output from the preceding transformer blocks with dimension $[\texttt{Batch}, \texttt{token\_size}, \texttt{Emb\_size}]$, the \texttt{AdaptiveAvgPool} layer computes the average embedding feature across tokens. The \texttt{Linear} layer then maps the pooled token representations to a single-dimensional output, which is subsequently passed through a \texttt{Sigmoid} activation to produce an influence score within the range $(0,1)$. In contrast, the proxy model’s final \texttt{Linear} layer maps features from previous layers to the vocabulary dimension for token prediction. 
+
+\section{Implementation Details in LLaMA Experiment}\label{sec:llama}
+
+\paragraph{Model Setup}
+In LLaMA setting, the target model is LLaMA-0.5B, and the proxy/score model is LLaMA-134M. They are warmed up under the same process as Pythia setting.
+
+\paragraph{Training Details of Proxy/Score Model}
+There is a little difference in how we deal with the proxy model in LLaMA setting compared to Pythia setting. In addition to resetting the proxy model (LLaMA-134M) at the beginning of each round, we reset it to the initial state every 50 steps of the update of the score model. We distill the target model into the proxy model by minimizing the KL divergence for 240 steps. Then the checkpoint of the proxy model is saved as ``initial" state. Since periodic resetting the proxy model ensures a close alignment between two models, we remove the KL divergence regulation term in the lower level loss function. To achieve a better lower-level solution, the proxy model executes 4 lower-level updates, each computed on a batch of 64 samples. After the score model is trained for 50 optimization steps, we reset the proxy model to the initial state.
+
+\section{More Ablation Studies}\label{sec:mode_ablation}
+
+In this section, we provide more ablation studies to verify the effectiveness of each component in our algorithm design. 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/acc_kl.pdf}
+    \caption{The performance comparison of bilevel optimization with/without KL divergence. The number on the bar indicate the accuracy improvement compared to the method without KL divergence.}
+    \label{fig:training_without_kl2}
+\end{figure}
+
+
+
+% To inspect the effectiveness of key techniques used in our proposed algorithm, we conduct ablation studies on the effect of KL divergence, softmax reparametrization, bilevel update, and different types of validation datasets. In this section, we pretrain a Pythia-410m model with 20k steps (2 rounds) due to resource constraints. 
+% Then we evaluate the performance after training with additional learning rate decay with 200 steps.
+
+% \subsection{KL Divergence Aligns the Proxy Model with the LLM} \label{sec:kl_div}
+
+
+% Our objective is to select training data that maximizes the LLM's performance on downstream tasks. To achieve this, the proxy model must effectively represent the LLM, which we enforce by applying KL divergence loss to align their output logits. The results of our ablation study confirm the effectiveness of this approach.
+
+% As shown in Figure \ref{fig:training_without_kl2}, incorporating KL divergence leads to improved performance across most downstream tasks, with a 9.3\% accuracy boost on LogiQA and a 1.4\% increase in average accuracy. Interestingly, while removing KL divergence results in a lower validation loss (as seen in Figure \ref{fig:training_without_kl1} compared to Figure \ref{fig:bilevel_training_r1} in Appendix \ref{loss_fig}), it does not translate to better downstream performance. These findings highlight the importance of bridging the gap between the proxy model and the LLM to ensure effective data selection, demonstrating that a closer alignment between the two models leads to better overall performance. 
+
+% \begin{figure}[!t]
+%     \centering
+%     % \setlength{\tabcolsep}{1pt}
+%     % \resizebox{0.95\textwidth}{!}{
+%     \includesvg[width=0.8\linewidth]{figures/fig_val.svg} %}
+%     \caption{Comparison of BLISS trained with different validation datasets (410M model, 10B tokens). We compare our method with different validation datasets with random selection  on 1 downstream task in each subplot.}
+%     \label{fig:val}
+% \end{figure}
+
+\subsection{Softmax Reparametrization for Score Model's Output} \label{sec:softmax_score}
+
+In our experiment, we apply a softmax function on all batch samples' score across GPUs to obtain the importance weights $P_i$. Note that the raw output of the score model is already within the range $(0,1)$, but we add another softmax function on top of it. We want to demonstrate the effectiveness of this softmax reparameterization. Intuitively, the main benefit is that it naturally amplifies important samples while downweighting less useful ones, improving the overall data selection process.
+
+To assess the impact of the softmax reparameterization, we conduct an ablation experiment comparing two approaches: (i) naive weighting,  where the raw outputs of the score model are used directly as sample weights; (ii) softmax weighting, where  the softmax-transformed outputs of the score model determine the sample weights. The results, shown in Table \ref{tbl:single_level}, indicate that softmax weighting consistently outperforms naive weighting, leading to a 1.1\% improvement in average downstream accuracy. This demonstrates that softmax effectively enhances data selection by better distinguishing important samples.
+
+
+% \subsection{Single-level vs. Bilevel Optimization} \label{sec:bilevel_opt}
+
+
+
+% In bilevel algorithm, the hyper-gradient is essential for the update of upper level parameters. To verify the effectiveness of bilevel update of upper parameters, we compare bilevel update with simultaneous update, which update $\theta_s$ and $\theta_p$ together using both training and validation data for the lower-level objective. Specifically, the upper and lower levels are reduced to a single level problem: the upper-level and lower-level parameters are updated simultaneously on validation dataset and training dataset respectively. With the same number of training steps as bilevel training, the average accuracy of single level update degrades $0.5\%$ as shown in Table \ref{tbl:nosoftmax}.
+
+
+\subsection{The Size of Proxy Model} \label{sec:model_size}
+
+We conduct experiments using two different sizes of proxy/score models (31M and 160M) for a 410M LLM. We observe that the KL divergence between the proxy and the LLM remains low for both sizes-0.15 for the 160M model and 0.10 for the 31M model. The corresponding learning curves are shown in Figure~\ref{fig:proxy_model_size}, which presents the results from round 2. The performance comparison of two sizes of proxy model is summarized in Table \ref{tab:proxy_model_size}. These findings suggest that even a small proxy model (31M) is sufficient to serve as an effective surrogate for the 410M LLM.
+
+% We did experiments with two different sizes of proxy/score model (31M and 160M) for 410M LLM, and we found that the KL divergence for both sizes of the model are both small (0.15 for 160M model and 0.1 for 31M model). The learning curves are presented in Figure \ref{fig:proxy_model_size}, which is the result of round 2. Therefore, a small proxy model is sufficient to be the surrogate of the 410M LLM.
+% which is similar to other proxy model-based data selection methods such as DsDm~\cite{engstrom2024dsdm}, DeReMi~\cite{xie2023doremi}, and MATES~\cite{yu2024mates}. For instance, DoReMi uses a 280M proxy model for a target LLM with 8B parameters, and MATES employs a 160M proxy model for a target LLM with 410M parameters. 
+
+\begin{figure*}[!h]
+    \centering
+        \subfigure[Training loss vs. steps]{\includegraphics[width=0.23\linewidth]{figures/train_loss_r1.png}}
+        \subfigure[KL divergence]{\includegraphics[width=0.23\linewidth]{figures/kl_div.png}}
+        \subfigure[Training loss vs. steps]{\includegraphics[width=0.23\linewidth]{figures/160m-tr-loss.png}}
+        \subfigure[KL divergence]{\includegraphics[width=0.23\linewidth]{figures/160m-kl.png}}
+    \caption{The evolution of the lower-level training loss and KL divergence for different proxy model size. Subfigures (a), (b): Proxy model size 31M, target LLM size 410M. Subfigures (c), (d): Proxy model size 160M, target LLM size 410M. }
+    \label{fig:proxy_model_size}
+\end{figure*}
+
+
+\begin{table*}[!t]
+    \centering
+      \setlength{\tabcolsep}{1pt}
+    \caption{Comparison of BLISS with different size of proxy/score model and  on zero-shot evaluation over multiuple downstream datasets (410M model, 10B tokens) with 20k-step training.}
+    \resizebox{1\textwidth}{!}{
+    \begin{tabular}{lcccccccccc}
+    \toprule
+\textbf{Method} & \textbf{SciQ} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{LogiQA} & \textbf{OBQA} & \textbf{BoolQ} & \textbf{HellaSwag} & \textbf{PIQA} & \textbf{WinoGrande} & \textbf{Average} \\
+  \midrule
+\multicolumn{1}{l}{BLISS (Pythia-31M)} &65.5\scriptsize{(1.5)}	&40.8\scriptsize{(1.0)}	&23.4\scriptsize{(1.2)}	&27.2\scriptsize{(1.7)}	&29.8\scriptsize{(2.0)}	&58.9\scriptsize{(0.9)}	&36.0\scriptsize{(0.5)}	&67.6\scriptsize{(1.1)}	&53.4\scriptsize{(1.4)}	&44.7\scriptsize{(1.3)}\\
+\multicolumn{1}{l}{BLISS (Pythia-160M)} &63.8\scriptsize{(1.5)}	&40.8\scriptsize{(1.0)}	&23.4\scriptsize{(1.2)}	&27.5\scriptsize{(1.8)}	&29.8\scriptsize{(2.0)}	&51.3\scriptsize{(0.9)}	&38.3\scriptsize{(0.5)}	&67.6\scriptsize{(1.1)}	&50.4\scriptsize{(1.4)}	&44.1\scriptsize{(1.3)}
+ \\
+% \multicolumn{1}{l}{BLISS (Pythia-31M without sigmoid)} &62.6\scriptsize{(1.5)}	&41.0\scriptsize{(1.0)}	&24.0\scriptsize{(1.2)}	&26.4\scriptsize{(1.7)}	&30.4\scriptsize{(2.1)}	&53.4\scriptsize{(0.9)}	&39.5\scriptsize{(0.5)}	&68.3\scriptsize{(1.1)}	&52.2\scriptsize{(1.4)}	&44.2\scriptsize{(1.3)}\\
+  \bottomrule
+\end{tabular}\label{tab:proxy_model_size}}
+\end{table*}
+
+
+\subsection{Initialization Method for the Score model} \label{sec:init_method}
+
+In Algorithm \ref{alg:alg1}, we initialize the score model in each new round using the parameters from the last round. This design is motivated by the role of the score model: it learns data representations and ranks the importance of training samples. As training progresses, the model’s ability of feature learning improves, making it beneficial to retain learned representations across rounds.
+
+To validate this, we conduct ablation studies comparing two cases:  
+\begin{enumerate}
+    \item \textbf{Original BLISS (BLISS-org)}: the score model in each round is initialized with the parameters from the last round.
+    \item \textbf{Modified Initialization (BLISS$^\dag$)}: the score model in each round is reset to its initial parameters from round 1.
+\end{enumerate}
+
+We then use the trained score models from two cases to select training data and pretrain the target LLM for 15B tokens, respectively. The resulting LLMs are evaluated on multiple downstream datasets. As shown in Table \ref{tab:init_score_model}, BLISS$^\dag$ achieves an average performance that is $0.4\%$ lower than BLISS-org, demonstrating that continuous initialization leads to better data ranking and improved downstream performance.
+
+\begin{table*}[!h]
+    \centering
+      \setlength{\tabcolsep}{1pt}
+    \caption{Comparison of methods on zero-shot evaluation over multiple downstream datasets (410M model, 15B tokens). BLISS-org denotes the original algorithm, and BLISS$^\dag$ is a variant which uses different initialization method for the score model.}
+    \resizebox{1\textwidth}{!}{
+    \begin{tabular}{lcccccccccc}
+        \toprule
+        \textbf{Methods} (\#FLOPs $\times 10^{19}$) & \textbf{SciQ} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{LogiQA} & \textbf{OBQA} & \textbf{BoolQ} & \textbf{HellaSwag} & \textbf{PIQA} & \textbf{WinoGrande} & \textbf{Average} \\
+        \midrule
+        BLISS-org & 67.7 \scriptsize{(1.5)}	&41.7 \scriptsize{(1.0)}	&23.6 \scriptsize{(1.2)}	& 25.8\scriptsize{(1.7)}	& 28.4\scriptsize{(2.0)}	&56.0 \scriptsize{(0.8)}	&39.7 \scriptsize{(0.5)}	&68.7 \scriptsize{(1.1)}	&53.2 \scriptsize{(1.4)}	&44.9 \scriptsize{(1.3)} \\
+        \hline
+        BLISS$^\dag$   & 65.2 \scriptsize{(1.5)} & 41.6 \scriptsize{(1.0)} & 23.4 \scriptsize{(1.2)} & 27.1 \scriptsize{(1.7)} & 29.8 \scriptsize{(2.0)} & 57.5 \scriptsize{(0.8)} & 34.9 \scriptsize{(0.5)} & 67.7 \scriptsize{(1.1)} & 53.5 \scriptsize{(1.4)} & 44.5 \scriptsize{(1.3)}\\
+        \bottomrule
+    \end{tabular}}\label{tab:init_score_model}
+\end{table*}
+
+\subsection{Validation Datasets} \label{sec:val_data}
+
+\begin{figure}[!t]
+    \centering
+    % \setlength{\tabcolsep}{1pt}
+    % \resizebox{0.95\textwidth}{!}{
+    \includegraphics[width=0.8\linewidth]{figures/fig_val.pdf} %}
+    \caption{Comparison of BLISS trained with different validation datasets (410M model, 10B tokens). We compare our method with different validation datasets with random selection  on 1 downstream task in each subplot.}
+    \label{fig:val}
+\end{figure}
+
+The upper-level optimization aims to minimize the proxy model’s loss on the validation dataset, meaning different validation datasets influence data selection. We use different validation set, including SQUAD, ARC-E, LAMBADA, and PIQA, to conduct the bilevel data training, then compare the corresponding downstream performance.
+
+As shown in Figure \ref{fig:val}, our algorithm outperforms random selection on most downstream tasks, except BoolQ, regardless of the validation dataset. Notably, LAMBADA yields the highest average accuracy, improving 1.15\% over random selection, likely due to its broad domain coverage.
+
+We also notice that our averaged performance is greatly affected by the accuracy of BoolQ task across all validation datasets. This indicates that it is hard to learn when the answer is too short like yes or no. 
+
+\section{Additional results}
+Since we use the same experimental settings as MATES\citep{yu2024mates}, including pretraining model, data and training steps, we evaluate MATES on the downstream tasks with their checkpoint model (\url{https://huggingface.co/yuzc19/pythia-410m-mates/blob/main/iter-200800-ckpt.pth}) of 50k  steps. For other baselines, we quote Table 1 from MATES\citep{yu2024mates} for convenience of look-up for the performance of more algorithms. 
+
+\begin{table*}[h]
+\centering
+\setlength{\tabcolsep}{1pt}
+\caption{ Results of Different Methods under the 410M/1B Setting. Subscripts denote standard deviations. Best scores are in bold.}
+\resizebox{0.99\textwidth}{!}{
+\begin{tabular}{l|cccccccccc}
+\toprule
+\textbf{Methods}$_{(\text{\#FLOPs} \ast 1e{19})}$ & \textbf{SciQ} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{LogiQA} & \textbf{OBQA} & \textbf{BoolQ} & \textbf{HellaSwag} & \textbf{PIQA} & \textbf{WinoGrande} & \textbf{Average} \\
+\midrule
+\multicolumn{11}{l}{\textbf{410M Setting:} 410M model, 25B tokens} \\
+\midrule
+Random\scriptsize{(6.35)} & 64.1\scriptsize{(1.5)} & 40.2\scriptsize{(1.0)} & \textbf{25.6}\scriptsize{(1.3)} & 24.7\scriptsize{(1.7)} & 29.4\scriptsize{(2.0)} & 58.9\scriptsize{(0.9)} & 39.7\scriptsize{(0.5)} & 67.1\scriptsize{(1.1)} & 50.6\scriptsize{(1.4)} & 44.5\scriptsize{(1.3)} \\
+DSIR\scriptsize{(6.35)} & 63.1\scriptsize{(1.5)} & 39.9\scriptsize{(1.0)} & 23.8\scriptsize{(1.2)} & 27.0\scriptsize{(1.7)} & 28.4\scriptsize{(2.0)} & 58.3\scriptsize{(0.9)} & 39.6\scriptsize{(0.5)} & 66.8\scriptsize{(1.1)} & 51.5\scriptsize{(1.4)} & 44.3\scriptsize{(1.3)} \\
+LESS\scriptsize{(246.35)} & 64.6\scriptsize{(1.5)} & 42.3\scriptsize{(1.0)} & 23.1\scriptsize{(1.2)} & 25.2\scriptsize{(1.7)} & 30.4\scriptsize{(2.1)} & 55.6\scriptsize{(0.9)} & \textbf{41.9}\scriptsize{(0.5)} & 67.2\scriptsize{(1.1)} & 51.0\scriptsize{(1.4)} & 44.6\scriptsize{(1.4)} \\
+SemDeDup\scriptsize{(7.81)} & 63.5\scriptsize{(1.5)} & \textbf{42.4}\scriptsize{(1.0)} & 24.4\scriptsize{(1.3)} & \textbf{27.6}\scriptsize{(1.7)} & 30.0\scriptsize{(2.1)} & 58.2\scriptsize{(0.9)} & 40.8\scriptsize{(0.5)} & 67.8\scriptsize{(1.1)} & 52.3\scriptsize{(1.4)} & 45.2\scriptsize{(1.3)} \\
+DsDm\scriptsize{(10.72)} & {65.4}\scriptsize{(1.5)} & 41.7\scriptsize{(1.0)} & 24.7\scriptsize{(1.3)} & 27.5\scriptsize{(1.8)} & 29.0\scriptsize{(2.1)} & 57.5\scriptsize{(0.9)} & 40.3\scriptsize{(0.5)} & 67.1\scriptsize{(1.1)} & 50.1\scriptsize{(1.4)} & 44.9\scriptsize{(1.4)} \\
+QuRating\scriptsize{(26.35)} & 64.8\scriptsize{(1.5)} & 42.0\scriptsize{(1.0)} & 25.4\scriptsize{(1.3)} & 25.3\scriptsize{(1.7)} & 30.2\scriptsize{(2.1)} & 58.9\scriptsize{(0.9)} & 40.7\scriptsize{(0.5)} & 67.5\scriptsize{(1.1)} & 52.1\scriptsize{(1.4)} & 45.2\scriptsize{(1.4)} \\
+MATES\scriptsize{(8.11)} & 65.7\scriptsize{(1.5)} & 41.5\scriptsize{(1.0)} & 25.0\scriptsize{(1.3)} & 26.1\scriptsize{(1.7)} & \textbf{30.8}\scriptsize{(2.1)} & \textbf{60.6}\scriptsize{(0.9)} & 41.0\scriptsize{(0.5)} & 67.8\scriptsize{(1.1)} & 51.8\scriptsize{(1.4)} & 45.7\scriptsize{(1.4)} \\
+BLISS\scriptsize{(8.08)}   & \textbf{68.1}\scriptsize{(1.5)} & {42.2}\scriptsize{(1.0)} & 25.1\scriptsize{(1.3)} & {27.3}\scriptsize{(1.7)} & 29.6\scriptsize{(2.0)} & 59.3\scriptsize{(0.9)} & {41.2}\scriptsize{(0.5)} & \textbf{68.2}\scriptsize{(1.1)} & \textbf{52.0}\scriptsize{(1.4)} & \textbf{45.9}\scriptsize{(1.4)}\\
+\midrule
+\multicolumn{11}{l}{\textbf{1B Setting:} 1B model, 25B tokens} \\
+\midrule
+Random\scriptsize{(17.67)} & 65.8\scriptsize{(1.5)} & 43.7\scriptsize{(1.0)} & 25.6\scriptsize{(1.3)} & 27.5\scriptsize{(1.8)} & 31.8\scriptsize{(2.1)} & 60.2\scriptsize{(0.9)} & 43.8\scriptsize{(0.5)} & 68.9\scriptsize{(1.1)} & 50.7\scriptsize{(1.4)} & 46.4\scriptsize{(1.4)} \\
+DSIR\scriptsize{(17.67)} & 65.8\scriptsize{(1.5)} & 42.6\scriptsize{(1.0)} & 24.7\scriptsize{(1.3)} & \textbf{28.7}\scriptsize{(1.8)} & 29.2\scriptsize{(2.0)} & 59.7\scriptsize{(0.9)} & 44.2\scriptsize{(0.5)} & 68.3\scriptsize{(1.1)} & \textbf{53.2}\scriptsize{(1.4)} & 46.3\scriptsize{(1.4)} \\
+SemDeDup\scriptsize{(19.13)} & 66.8\scriptsize{(1.5)} & 45.5\scriptsize{(1.0)} & 25.3\scriptsize{(1.3)} & 27.6\scriptsize{(1.8)} & 30.6\scriptsize{(2.1)} & 60.2\scriptsize{(0.9)} & 45.3\scriptsize{(0.5)} & 69.7\scriptsize{(1.1)} & 52.5\scriptsize{(1.4)} & 47.1\scriptsize{(1.4)} \\
+DsDm\scriptsize{(22.04)} & {68.2}\scriptsize{(1.5)} & 45.0\scriptsize{(1.0)} & \textbf{26.5}\scriptsize{(1.3)} & 26.6\scriptsize{(1.7)} & 29.4\scriptsize{(2.0)} & 59.0\scriptsize{(0.9)} & 44.8\scriptsize{(0.5)} & 68.9\scriptsize{(1.1)} & 51.9\scriptsize{(1.4)} & 46.7\scriptsize{(1.3)} \\
+QuRating\scriptsize{(37.67)} & 67.1\scriptsize{(1.5)} & 45.5\scriptsize{(1.0)} & 25.6\scriptsize{(1.3)} & 26.9\scriptsize{(1.7)} & 29.8\scriptsize{(2.0)} & 60.3\scriptsize{(0.9)} & 45.2\scriptsize{(0.5)} & 70.2\scriptsize{(1.1)} & 51.6\scriptsize{(1.4)} & 46.9\scriptsize{(1.3)} \\
+MATES\scriptsize{(19.97)} & 67.3\scriptsize{(1.5)} & 44.9\scriptsize{(1.0)} & 25.9\scriptsize{(1.3)} & \textbf{28.7}\scriptsize{(1.8)} & 32.2\scriptsize{(2.1)} & \textbf{60.9}\scriptsize{(0.9)} & 45.3\scriptsize{(0.5)} & 69.5\scriptsize{(1.1)} & 52.4\scriptsize{(1.4)} & 47.5\scriptsize{(1.4)} \\
+BLISS\scriptsize{(8.08)}   & \textbf{69.4}\scriptsize{(1.5)} & \textbf{45.7}\scriptsize{(1.0)} & 24.8\scriptsize{(1.3)} & {25.8}\scriptsize{(1.7)} & \textbf{33.2}\scriptsize{(2.1)} & 59.8\scriptsize{(0.9)} & \textbf{47.8}\scriptsize{(0.5)} & \textbf{71.6}\scriptsize{(1.1)} & 52.9\scriptsize{(1.4)} & \textbf{47.9}\scriptsize{(1.3)}\\
+\bottomrule
+\end{tabular}}
+\label{tab:mates_results}
+\end{table*}
+
+% \begin{table*}[!h]
+%     \centering
+%       \setlength{\tabcolsep}{1pt}
+%     \caption{Comparison of methods on zero-shot evaluation over multiuple downstream datasets (1B model, 25B tokens with 20k training steps). Best results are marked bold. The accuracy with standard error is reported based on the lm-evaluation-harness \cite{gao2021framework} implementation.}
+%     \resizebox{0.99\textwidth}{!}{
+%     \begin{tabular}{lcccccccccc}
+%         \toprule
+%         \textbf{Methods} (\#FLOPs $\times 10^{19}$) & \textbf{SciQ} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{LogiQA} & \textbf{OBQA} & \textbf{BoolQ} & \textbf{HellaSwag} & \textbf{PIQA} & \textbf{WinoGrande} & \textbf{Average} \\ 
+%         \midrule
+%         \multicolumn{11}{l}{\textbf{1B Setting:} 1B model, 25B tokens} \\
+%         \midrule
+%         Random  (6.35) & 64.1 \scriptsize{(1.5)} & 40.2 \scriptsize{(1.0)} & \textbf{25.6} \scriptsize{(1.3)} & 24.7 \scriptsize{(1.7)} & 29.4 \scriptsize{(2.0)} & 58.9 \scriptsize{(0.9)} & 39.7 \scriptsize{(0.5)} & 67.1 \scriptsize{(1.1)} & 50.6 \scriptsize{(1.4)} & 44.5 \scriptsize{(1.3)} \\
+%         BLISS-1B (19.95) &63.3\scriptsize{(1.5)}	&{43.4}\scriptsize{(1.0)}	&{25.7}\scriptsize{(1.3)}	&27.8\scriptsize{(1.8)}	&29.8\scriptsize{(2.0)}	&57.1\scriptsize{(0.9)}	&41.5\scriptsize{(0.5)}	&69.3\scriptsize{(1.1)}	&51\scriptsize{(1.4)}	&45.4\scriptsize{(1.3)}\\
+%         \bottomrule
+%     \end{tabular}}
+% \end{table*}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-0.2in}
+\section{Experimental Hyperparameters} \label{sec:exp_setting}
+
+\begin{table*}[!h]
+    \centering
+      \setlength{\tabcolsep}{1pt}
+    \caption{Experimental settings}
+    \resizebox{0.95\textwidth}{!}{
+\begin{tabular}{ll} 
+\toprule
+Hyperparameters                 & Values      \\
+\midrule
+\textit{Pretrain}                        &             \\
+Data set                        & C4          \\
+Tokens                          & 25B         \\
+Model                           & Pythia-410M/1B/2.8B, LLaMA-0.5B \\
+batch size                      & 512        \\
+Sequence length                 & 1024        \\
+Max learning rate               & 1e-3        \\
+\midrule
+\textit{bilevel optimization}            &             \\
+Proxy/Score model               & Pythia-31M (for 410M LLM),  Pythia-160M (for 1B LLM), LLaMA-134M (for LLaMA-0.5B LLM)\\
+$\gamma$                        & 1e-2        \\
+$\lambda$                       & 1e-6        \\
+batch size                      & 16(Pythia-410M, LLaMA-0.5B)/32(Pythia 1B)          \\
+Proxy/Score model learning rate($\eta_1 /\eta_2$) & 1e-5     \\
+GDLS learning rate($\eta$)          & 1e-2        \\
+GDLS steps(\textit{K})                       & 3           \\
+Score model steps               & 3k(Pythia-410M/1B)/1k(LLaMA-0.5B)          \\
+Proxy model steps               & 3k(Pythia-410M/1B)/1k(LLaMA-0.5B)      \\
+Initialization of score/proxy model & Randomly initialized\\
+\bottomrule
+\end{tabular}}
+\label{hyperparam}
+
+\end{table*}
+
+Table \ref{hyperparam} shows the hyperparameter settings in our experiments. We use cosine learning rate scheduler in bilevel optimization, WSD\citep{yu2024mates} learning rate scheduler for pretraining and constant learning rate for GDLS. We use double loop to update the proxy model when employing 1B LLM, i.e., 5 steps for the lower level update. The experiments run on 8 A6000 GPUs with Distributed Data Parallel (DDP) strategy.
+% \section{Learning Rate Schedule}
+%\vspace{-0.1in}
+\section{Evolution of training and validation loss} \label{loss_fig}
+In Figure \ref{fig:bilevel_training_r1}, \ref{fig:bilevel_training_r5}, the training loss and validation loss correspond to the lower-level and upper-level objective functions in Equation (\ref{eq:obj}), respectively.
+\begin{figure*}[!t]
+ \begin{minipage}{0.48\linewidth}
+    \centering
+    \subfigure[Training loss vs. steps]{\includegraphics[width=0.48\linewidth]{figures/train_loss_r1.png}}
+    \subfigure[Validation loss vs. steps]{\includegraphics[width=0.48\linewidth]{figures/val_loss_r1.png}}
+    \caption{The evolution of the lower-level training loss and upper-level validation loss in round 2.}
+    \label{fig:bilevel_training_r1}
+    \end{minipage} \quad \quad
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \subfigure[Training loss vs. steps]{\includegraphics[width=0.46\linewidth]{figures/train_loss_r4.png}} \
+    \subfigure[Training loss vs. steps]{\includegraphics[width=0.46\linewidth]{figures/val_loss_r4.png}}
+    \caption{The evolution of Lower-level training loss and upper-level validation loss in round 5.}
+    \label{fig:bilevel_training_r5}
+    \end{minipage}
+\end{figure*}
+
+\begin{figure*}[!t]
+% \begin{minipage}{0.48\linewidth}
+    \centering
+    \subfigure[Training loss vs. steps]{\includegraphics[width=0.25\linewidth]{figures/train_loss_without_kl.png}} \quad \quad
+    \subfigure[Validation loss vs. steps]{\includegraphics[width=0.25\linewidth]{figures/val_loss_without_kl.png}}
+    \caption{The visualization of  lower-level training loss and the upper-level validation loss in round 2 bilevel optimization without KL divergence.}
+    \label{fig:training_without_kl1}
+    % \end{minipage}\quad \quad
+% \begin{minipage}{0.4\linewidth}
+%     \centering
+%     \includesvg[scale=0.4]{figures/fig-1B.svg}
+%     \caption{BLISS vs random, Pythia-410M and 1B models evaluated after 20k steps}
+    % \label{fig:1B}
+% \end{minipage}
+\end{figure*}
+
+%\vspace{-0.2in}
+
+% \section{Generalize to 1B Model}
+
+
+% To assess the generality of our data selection algorithm, we extend it to a larger model, Pythia-1B. Following the experimental setup for Pythia-410M, we use the same 31M-scale proxy and score models for bilevel training. However, to accommodate the larger model, we increase the lower-level update steps (proxy model optimization) from 1 to 5 (line 9 in Algorithm \ref{alg:alg1}) and increase the batch size to 32, while keeping other hyperparameters (e.g., lower-/upper-level learning rates and bilevel training steps) unchanged. Further details on hyperparameter settings can be found in Appendix \ref{sec:exp_setting}. We report the evaluation results on downstream tasks after 20k steps of pretraining in Figure \textcolor{red}{\ref{fig:1B}}. 
+
+\newpage
+\section{Distributed Softmax to Compute Influence Score}\label{sec:dist_softmax)}
+
+\label{sec:distributedsoftmax}
+In bilevel optimization, the importance weight $P_i$ is computed based on a mini batch that is distributed across different GPUs. However, back propagation through different GPUs is not implemented by Pytorch. Thus we deploy "distributed softmax" in practice. In detail, our implementation requires 3 times of communication among GPUs.  
+\begin{equation}
+    P_i = \frac{e^{h(\theta_s; \xi_i)}}{\sum_{j=1}^{ B} e^{h(\theta_s; \xi_j)}} \label{softmax_Pi}
+\end{equation}
+
+As equation (\ref{softmax_Pi}) shows, the denominator of $P_i$ is the summation of every sample's exponential score. Therefore, in the first communication, each GPU gets the scores from others and calculates the denominator locally. A second communication is required to compute the term $\sum_{j=1}^\mathcal{B}  P_j \nabla_{\theta_s} h(\theta_s^t; \xi_j)$ in equation (\ref{ditributed_softmax}). In detail, we need to gather gradients of $h$ and $\mathcal{L}$' of every sample across all GPUs. After computing  hyper-gradients of every sample, they are accumulated to update upper-level variables. With efficient communication API provided by Fabric \url{https://lightning.ai/docs/fabric/stable/}, the time consumed in bilevel optimization of each round is within 1.5 hours.
+
+% \section{The Use of Large Language Models (LLMs)}
+% LLMs are not involved in our research methodology. Their use is limited to polish the writing.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

@@ -1,0 +1,86 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.09903v1,http://arxiv.org/abs/2510.09903v1,2025-10-10 22:27:13+00:00,An uncertainty-aware framework for data-efficient multi-view animal pose estimation,"Multi-view pose estimation is essential for quantifying animal behavior in
+scientific research, yet current methods struggle to achieve accurate tracking
+with limited labeled data and suffer from poor uncertainty estimates. We
+address these challenges with a comprehensive framework combining novel
+training and post-processing techniques, and a model distillation procedure
+that leverages the strengths of these techniques to produce a more efficient
+and effective pose estimator. Our multi-view transformer (MVT) utilizes
+pretrained backbones and enables simultaneous processing of information across
+all views, while a novel patch masking scheme learns robust cross-view
+correspondences without camera calibration. For calibrated setups, we
+incorporate geometric consistency through 3D augmentation and a triangulation
+loss. We extend the existing Ensemble Kalman Smoother (EKS) post-processor to
+the nonlinear case and enhance uncertainty quantification via a variance
+inflation technique. Finally, to leverage the scaling properties of the MVT, we
+design a distillation procedure that exploits improved EKS predictions and
+uncertainty estimates to generate high-quality pseudo-labels, thereby reducing
+dependence on manual labels. Our framework components consistently outperform
+existing methods across three diverse animal species (flies, mice, chickadees),
+with each component contributing complementary benefits. The result is a
+practical, uncertainty-aware system for reliable pose estimation that enables
+downstream behavioral analyses under real-world data constraints.","% \subsection{Multi-view pose estimation}
+
+\paragraph{Multi-view pose estimation.} Multi-view pose estimation has advanced from a two-stage process (independent 2D detection + triangulation) to sophisticated cross-view fusion techniques~\citep{neupane2024survey}, which can be classified into calibrated approaches (which require known camera parameters) and uncalibrated approaches.
+Early calibrated approaches relied on CNNs to extract heatmaps from different views, then fused information across views using epipolar geometry~\citep{qiu2019cross, zhang2021adafuse, dunn2021geometric}.
+Epipolar transformers~\citep{he2020epipolar} enabled 2D detectors to leverage 3D-aware features through attention mechanisms along epipolar lines.
+This approach discards information not along the epipolar line from the reference view, which TransFusion~\citep{ma2021transfusion} addressed by introducing the ``epipolar field'' concept that incorporates information from the entire reference view while maintaining knowledge of epipolar constraints.
+MVGFormer~\citep{liao2024multiple} takes a set of initialized queries that encode 3D poses and iteratively refines them using ``appearance'' and ``geometry'' modules.
+% The recent MVGFormer~\citep{liao2024multiple} implements an iterative approach that takes as an input a set of initialized queries that encode 3D poses and iteratively refines them using 2 modules: (1) an ``appearance model'' projects a query onto the images to get a set of sampling points and estimate a more accurate 2D poses from the sampled features; (2) the ``geometry module'' then takes the 2D poses in all views and predicts a refined 3D pose in using triangulation, which is used to update query.
+Our 3D augmenations and loss, in contrast, are simple to implement and do not require specialized modules, allowing their use with any architecture.
+
+Modern transformer-based approaches exploit the attention mechanism to enable learning implicit cross-view relationships without explicit geometric constraints.
+The MTF-Transformer~\citep{shuai2022adaptive} pioneered calibration-free multi-view fusion by extracting features from individual views, then fusing features with a transformer head that adjusts pose features using confidence scores to reduce the effect of unreliable 2D detections.
+MHVformer~\citep{zhou2023efficient} extends this paradigm with hierarchical multi-view fusion, demonstrating that learned attention mechanisms can effectively replace hand-crafted geometric constraints.
+Our multi-view transformer and patch masking approaches are further examples of calibration-free techniques, and like the 3D augmentations and losses, are agnostic to the architecture of the backbone network (as long as it processes sequences of patch embeddings), making them flexible additions to any pose estimation pipeline.
+
+\paragraph{Pose estimation post-processing.}
+Post-processing of pose estimation outputs comes in two main categories: single-view (2D) methods and multi-view (3D) methods. Single-view approaches are typically simpler, and include median filters~\citep{mathis2018deeplabcut, syeda2024facemap} and autoencoders~\citep{karashchuk2021anipose}. Multi-view methods offer distinct advantages by leveraging information across camera
+views, for example with hierarchical Bayesian models~\citep{zhang2021animal} or probabilistic physics-based models~\citep{biderman2021inverse}. Among general multi-view approaches, Anipose~\citep{karashchuk2021anipose} provides techniques for improving 3D pose estimation through both single-view filters and a triangulation module that integrates temporal and spatial regularization across the whole skeleton. 
+% Its temporal regularization penalizes differences in 3D positions between adjacent frames (similar to the Kalman smoother approach), while spatial regularization penalizes deviations from precomputed limb lengths (and requires camera calibration). 
+Similarly, GIMBAL~\citep{zhang2021animal} implements a Bayesian model with spatiotemporal constraints over the entire skeleton, using a switching linear dynamical system for temporal smoothness and a hierarchical von Mises-Fisher distribution for spatial constraints on limb lengths and articulation angles. 
+The linear Ensemble Kalman Smoother (EKS)~\citep{biderman2024lightning} offers a calibration-free approach that implements spatiotemporal constraints over single keypoints and further improves performance using ensembles of networks. Our variance-inflated nonlinear EKS is a calibration-based extension that is more accurate in datasets with large lens distortions and provides improved uncertainty estimates, which are critical for scientific applications.
+
+% \subsection{Distillation}
+\paragraph{Distillation.}
+% There has been growing interest in distillation techniques specifically tailored for pose estimation tasks. 
+Traditional distillation approaches tailored for pose estimation have focused on compressing large teacher networks into smaller student models while maintaining performance~\citep{li2021online, yang2023effective}. More recently, pseudo-labeling strategies have emerged as a powerful learning paradigm, where confident predictions on unlabeled data are used to expand the training set~\citep{huang2023semi, li2023scarcenet}, with SelfPose3d a notable example that incorporates geometric consistency in pseudo-label generation~\citep{srivastav2024selfpose3d}. 
+% These approaches are particularly valuable in animal pose estimation contexts where labeled data is scarce, as they enable models to leverage the abundance of unlabeled video data typically available in behavioral experiments. 
+Our work extends this line of research by introducing a novel distillation framework that transfers the knowledge from an ensemble of models processed through multi-view \eks into a single efficient network.
+
+% The combination of ensemble predictions with pseudo-labeling presents unique advantages: ensemble methods provide more reliable pseudo-labels through uncertainty quantification and consensus mechanisms, while the diversity of ensemble members helps prevent the confirmation bias that can plague single-model self-training approaches. Our work extends this line of research by introducing a novel distillation framework that transfers the knowledge from an ensemble of models processed through EKS into a single efficient network, effectively combining the accuracy benefits of ensembling with the deployment advantages of a single model.","\paragraph{Multi-view pose estimation.} Multi-view pose estimation has advanced from a two-stage process (independent 2D detection + triangulation) to sophisticated cross-view fusion techniques~\citep{neupane2024survey}, which can be classified into calibrated approaches (which require known camera parameters) and uncalibrated approaches.
+Early calibrated approaches relied on CNNs to extract heatmaps from different views, then fused information across views using epipolar geometry~\citep{qiu2019cross, zhang2021adafuse, dunn2021geometric}.
+Epipolar transformers~\citep{he2020epipolar} enabled 2D detectors to leverage 3D-aware features through attention mechanisms along epipolar lines.
+This approach discards information not along the epipolar line from the reference view, which TransFusion~\citep{ma2021transfusion} addressed by introducing the ``epipolar field'' concept that incorporates information from the entire reference view while maintaining knowledge of epipolar constraints.
+MVGFormer~\citep{liao2024multiple} takes a set of initialized queries that encode 3D poses and iteratively refines them using ``appearance'' and ``geometry'' modules.
+
+Our 3D augmenations and loss, in contrast, are simple to implement and do not require specialized modules, allowing their use with any architecture.
+
+Modern transformer-based approaches exploit the attention mechanism to enable learning implicit cross-view relationships without explicit geometric constraints.
+The MTF-Transformer~\citep{shuai2022adaptive} pioneered calibration-free multi-view fusion by extracting features from individual views, then fusing features with a transformer head that adjusts pose features using confidence scores to reduce the effect of unreliable 2D detections.
+MHVformer~\citep{zhou2023efficient} extends this paradigm with hierarchical multi-view fusion, demonstrating that learned attention mechanisms can effectively replace hand-crafted geometric constraints.
+Our multi-view transformer and patch masking approaches are further examples of calibration-free techniques, and like the 3D augmentations and losses, are agnostic to the architecture of the backbone network (as long as it processes sequences of patch embeddings), making them flexible additions to any pose estimation pipeline.
+
+\paragraph{Pose estimation post-processing.}
+Post-processing of pose estimation outputs comes in two main categories: single-view (2D) methods and multi-view (3D) methods. Single-view approaches are typically simpler, and include median filters~\citep{mathis2018deeplabcut, syeda2024facemap} and autoencoders~\citep{karashchuk2021anipose}. Multi-view methods offer distinct advantages by leveraging information across camera
+views, for example with hierarchical Bayesian models~\citep{zhang2021animal} or probabilistic physics-based models~\citep{biderman2021inverse}. Among general multi-view approaches, Anipose~\citep{karashchuk2021anipose} provides techniques for improving 3D pose estimation through both single-view filters and a triangulation module that integrates temporal and spatial regularization across the whole skeleton. 
+
+Similarly, GIMBAL~\citep{zhang2021animal} implements a Bayesian model with spatiotemporal constraints over the entire skeleton, using a switching linear dynamical system for temporal smoothness and a hierarchical von Mises-Fisher distribution for spatial constraints on limb lengths and articulation angles. 
+The linear Ensemble Kalman Smoother (EKS)~\citep{biderman2024lightning} offers a calibration-free approach that implements spatiotemporal constraints over single keypoints and further improves performance using ensembles of networks. Our variance-inflated nonlinear EKS is a calibration-based extension that is more accurate in datasets with large lens distortions and provides improved uncertainty estimates, which are critical for scientific applications.
+
+
+\paragraph{Distillation.}
+
+Traditional distillation approaches tailored for pose estimation have focused on compressing large teacher networks into smaller student models while maintaining performance~\citep{li2021online, yang2023effective}. More recently, pseudo-labeling strategies have emerged as a powerful learning paradigm, where confident predictions on unlabeled data are used to expand the training set~\citep{huang2023semi, li2023scarcenet}, with SelfPose3d a notable example that incorporates geometric consistency in pseudo-label generation~\citep{srivastav2024selfpose3d}. 
+
+Our work extends this line of research by introducing a novel distillation framework that transfers the knowledge from an ensemble of models processed through multi-view \eks into a single efficient network.","spoke architectural elements. While these architectures may provide good performance with enough
+training data, they do not allow us to easily exploit general pretrained backbones that are useful when
+training models with a small number of labels. Furthermore, algorithmic simplicity is desirable for
+our application domain, where users are often experimental labs with little experience maintaining
+and debugging exotic architectures. Here we propose a simple strategy that allows the model to take
+advantage of multiple views and is also compatible with generic VIT backbones: rather than pro-
+cess pixel patches from each view independently, we process all patches simultaneously, allowing
+the standard self-attention mechanism to pool information within and across views.
+The standard image VIT (Dosovitskiy et al., 2020) data pipeline (Fig. 1,top) starts with a 2D image
+x∈RH×W×C(whereH,W,Care height, width, channels) and splits it into 2D patches, each
+with shape(P×P×C), where the patch sizePis typically"

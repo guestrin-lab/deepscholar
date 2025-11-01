@@ -1,0 +1,21 @@
+
+\section{Related Work}
+
+
+\paragraph{Audio--visual synchronisation and correspondence.}
+A long line of work formulates A/V learning as correspondence or temporal alignment. ~\cite{l3net} learns generic audio–visual correspondence from unlabelled video, while ~\cite{avts} casts synchronisation as in-time vs.\ out-of-time discrimination within the same clip. For faces, ~\cite{syncnet} introduces a two-stream embedding for lip–audio alignment and lag estimation; recent transformers such as ~\cite{vocalist} improve robustness across speech/singing with longer-range context. 
+
+\paragraph{Masked modelling and contrastive learning at scale.}
+Contrastive pretraining aligns paired modalities at scale (e.g., CLIP ~\cite{clip}), while masked autoencoders (MAE~\cite{mae}/VideoMAE~\cite{videomae}) show that reconstructing heavily masked inputs yields strong visual/video representations. These paradigms are complementary and now standard building blocks for multimodal pretraining. 
+
+
+\paragraph{Facial video representation pretraining.} Closer to our setting, MARLIN~\cite{marlin} applies masked autoencoding to facial videos, using facial-region-guided masking to learn a universal face encoder transferable to expression recognition, deepfake detection, etc. Subsequent variants adapt MAE-style pretraining to dynamic facial expression recognition under limited labels~\cite{mae_dfer}. While these works focus on reconstruction-only objectives within the facial domain, we couple MAE with audio–visual contrast to align speech-driven dynamics, and structure the representation to separate identity and motion factors.
+
+
+\paragraph{Visual speech recognition and audio--visual ASR.}
+From early end-to-end lipreading (LipNet) to large-scale self-supervised A/V pretraining (AV-HuBERT) and automated VSR/AVSR recipe design (Auto-AVSR~\cite{autoavsr}), results consistently show that robust visual streams improve recognition and benefit from pretraining on unlabelled A/V data.
+
+\paragraph{Talking-face generation and lip-sync synthesis.}
+Audio-driven talking-head synthesis has progressed from GAN-based pipelines with explicit sync critics (e.g., Wav2Lip~\cite{wav2lip}) to diffusion in latent/image space (e.g., LatentSync~\cite{latentsync}) and efficient diffusion heads (MuseTalk~\cite{musetalk}). In parallel, foundation video generators and unified conditional DiT~\cite{dit} frameworks (WAN~\cite{wan}; VACE~\cite{vace}) provide scalable backbones and conditioning interfaces (Video Condition Unit, context adapters) for editing or T2V, which our dubbing setup leverages.
+
+\input{depds/tab_avsync_hallo3}

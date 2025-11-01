@@ -1,0 +1,122 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.11496v1,http://arxiv.org/abs/2510.11496v1,2025-10-13 15:04:38+00:00,AndesVL Technical Report: An Efficient Mobile-side Multimodal Large Language Model,"In recent years, while cloud-based MLLMs such as QwenVL, InternVL, GPT-4o,
+Gemini, and Claude Sonnet have demonstrated outstanding performance with
+enormous model sizes reaching hundreds of billions of parameters, they
+significantly surpass the limitations in memory, power consumption, and
+computing capacity of edge devices such as mobile phones. This paper introduces
+AndesVL, a suite of mobile-side MLLMs with 0.6B to 4B parameters based on
+Qwen3's LLM and various visual encoders. We comprehensively outline the model
+architectures, training pipeline, and training data of AndesVL, which achieves
+first-tier performance across a wide range of open-source benchmarks, including
+fields such as text-rich image understanding, reasoning and math, multi-image
+comprehension, general VQA, hallucination mitigation, multilingual
+understanding, and GUI-related tasks when compared with state-of-the-art models
+of a similar scale. Furthermore, we introduce a 1+N LoR","\label{sec:related_works}
+
+\subsection{Mobile-side MLLMs}
+\label{sec:mobile-side_mllms}
+
+% vivo bleulm-v-3B; meituan mobilevlm, mobilevlm v2; xiaomi mobilevlm; apple ferret-ui
+
+Recent years have witnessed a proliferation of remarkable advances in MLLMs. Numerous remarkable MLLMs~\cite{bai2023qwenvl, wang2024qwen2vl, bai2025qwen2, chen2023internvl, chen2024internvl_1_5, chen2024expanding, zhu2025internvl3, wang2025internvl3, chatgpt4o, team2023gemini, reid2024gemini1_5, gemini2_0, gemini2_0pro, geminipro2.5, claude3series2024} have been introduced, primarily driven by the pursuit of exploring the upper bounds of model performance through scaling laws. This endeavor has resulted in models with astronomically large parameter counts, reaching hundreds of billions or even trillions. Nonetheless, this emphasis on large-scale models has left the development of mobile-side MLLMs relatively underexplored.
+
+Among the efforts towards more mobile-friendly MLLMs, the Qwen series has made notable progress. Qwen2-VL~\cite{wang2024qwen2vl} and Qwen2.5-VL~\cite{bai2025qwen2} introduced model sizes of 2B and 3B, respectively, which are particularly suited for deployment on mobile devices. These model sizes effectively balance performance and the computational limitations of mobile hardware. Similarly, the InternVL series~\cite{chen2024expanding, zhu2025internvl3, wang2025internvl3} presented a range of model sizes---1B, 2B, and 4B---designed to fulfill various operational needs on mobile platforms.
+
+In 2023, Meituan emerged as a pioneer in the mobile MLLM domain with the introduction of MobileVLM~\cite{chu2023mobilevlm}. Built upon MobileLLaMA in a LLaVA-like~\cite{liu2023llava} architecture, MobileVLM came in 1.7B and 3B model sizes. It achieved SOTA results in some benchmarks for models of similar sizes at that time. Meituan offered significant insights into the processing speeds on mobile and IoT platforms, reporting rates of 12.21 and 21.54 tokens per second, respectively. In 2024, the release of MobileVLM V2~\cite{chu2024mobilevlm} further advanced the field by exploring the data scaling law, improving training strategies, and optimizing the modality alignment design. These developments contributed to a comprehensive enhancement in the performance of the MobileVLM framework.
+
+In 2024, the Apple MM series~\cite{mckinzie2024mm1, zhang2024mm1_5} demonstrated that even relatively compact models, specifically those with 1B and 3B parameters, could achieve impressive performance through meticulous data curation and optimized training strategies. The Ferret UI series~\cite{you2024ferret, li2024ferret} marked a significant step forward, as it was the first series extensively dedicated to improving the capabilities of screen UI understanding. It extended the capabilities of MLLMs to tasks such as referring and grounding on mobile UI screens and answering questions related to screen operations. However, Apple did not reveal the performance metrics for these models when deployed on mobile platforms.
+
+Xiaomi's MobileVLM~\cite{wu2024mobilevlm} also made important contributions by leveraging carefully constructed UI understanding and APP operation trajectory data. This enabled the model to expand its capabilities from understanding within a single UI (intra-UI) to understanding and operating across multiple UIs (inter-UI). Nevertheless, Xiaomi's 9.8B MobileVLM model was not successfully deployed on mobile devices.
+
+Finally, vivo's BlueLM-V-3B~\cite{lu2024bluelm} and BlueLM-2.5-3B~\cite{xiong2025bluelm} achieved mobile-side deployment of an MLLM through systematic optimizations in algorithms and hardware deployment. Specifically, BlueLM-V-3B achieved a running memory of 2.2G and a token throughput speed of 24.4 tokens/s on MediaTek Dimensity 9300 NPUs. This not only showcases its effectiveness but also provides practical performance metrics for mobile-side MLLMs.
+
+Despite these efforts, there remains a gap in comprehensively documenting training processes, deployment solutions, and benchmark results for general and mobile-specific tasks of mobile-side MLLMs. Our work aims to fill this void by presenting the AndesVL suite, which offers a comprehensive approach to mobile-side MLLMs, including detailed training, deployment, and benchmarking aspects.","\subsection{Mobile-side MLLMs}
+
+
+
+Recent years have witnessed a proliferation of remarkable advances in MLLMs. Numerous remarkable MLLMs~\cite{bai2023qwenvl, wang2024qwen2vl, bai2025qwen2, chen2023internvl, chen2024internvl_1_5, chen2024expanding, zhu2025internvl3, wang2025internvl3, chatgpt4o, team2023gemini, reid2024gemini1_5, gemini2_0, gemini2_0pro, geminipro2.5, claude3series2024} have been introduced, primarily driven by the pursuit of exploring the upper bounds of model performance through scaling laws. This endeavor has resulted in models with astronomically large parameter counts, reaching hundreds of billions or even trillions. Nonetheless, this emphasis on large-scale models has left the development of mobile-side MLLMs relatively underexplored.
+
+Among the efforts towards more mobile-friendly MLLMs, the Qwen series has made notable progress. Qwen2-VL~\cite{wang2024qwen2vl} and Qwen2.5-VL~\cite{bai2025qwen2} introduced model sizes of 2B and 3B, respectively, which are particularly suited for deployment on mobile devices. These model sizes effectively balance performance and the computational limitations of mobile hardware. Similarly, the InternVL series~\cite{chen2024expanding, zhu2025internvl3, wang2025internvl3} presented a range of model sizes---1B, 2B, and 4B---designed to fulfill various operational needs on mobile platforms.
+
+In 2023, Meituan emerged as a pioneer in the mobile MLLM domain with the introduction of MobileVLM~\cite{chu2023mobilevlm}. Built upon MobileLLaMA in a LLaVA-like~\cite{liu2023llava} architecture, MobileVLM came in 1.7B and 3B model sizes. It achieved SOTA results in some benchmarks for models of similar sizes at that time. Meituan offered significant insights into the processing speeds on mobile and IoT platforms, reporting rates of 12.21 and 21.54 tokens per second, respectively. In 2024, the release of MobileVLM V2~\cite{chu2024mobilevlm} further advanced the field by exploring the data scaling law, improving training strategies, and optimizing the modality alignment design. These developments contributed to a comprehensive enhancement in the performance of the MobileVLM framework.
+
+In 2024, the Apple MM series~\cite{mckinzie2024mm1, zhang2024mm1_5} demonstrated that even relatively compact models, specifically those with 1B and 3B parameters, could achieve impressive performance through meticulous data curation and optimized training strategies. The Ferret UI series~\cite{you2024ferret, li2024ferret} marked a significant step forward, as it was the first series extensively dedicated to improving the capabilities of screen UI understanding. It extended the capabilities of MLLMs to tasks such as referring and grounding on mobile UI screens and answering questions related to screen operations. However, Apple did not reveal the performance metrics for these models when deployed on mobile platforms.
+
+Xiaomi's MobileVLM~\cite{wu2024mobilevlm} also made important contributions by leveraging carefully constructed UI understanding and APP operation trajectory data. This enabled the model to expand its capabilities from understanding within a single UI (intra-UI) to understanding and operating across multiple UIs (inter-UI). Nevertheless, Xiaomi's 9.8B MobileVLM model was not successfully deployed on mobile devices.
+
+Finally, vivo's BlueLM-V-3B~\cite{lu2024bluelm} and BlueLM-2.5-3B~\cite{xiong2025bluelm} achieved mobile-side deployment of an MLLM through systematic optimizations in algorithms and hardware deployment. Specifically, BlueLM-V-3B achieved a running memory of 2.2G and a token throughput speed of 24.4 tokens/s on MediaTek Dimensity 9300 NPUs. This not only showcases its effectiveness but also provides practical performance metrics for mobile-side MLLMs.
+
+Despite these efforts, there remains a gap in comprehensively documenting training processes, deployment solutions, and benchmark results for general and mobile-specific tasks of mobile-side MLLMs. Our work aims to fill this void by presenting the AndesVL suite, which offers a comprehensive approach to mobile-side MLLMs, including detailed training, deployment, and benchmarking aspects.","2.1 Mobile-side MLLMs
+Recent years have witnessed a proliferation of remarkable advances in MLLMs. Numerous remarkable
+MLLMs [ 14,227,15,30,29,28,274,229,177,210,189,44,43,219,8] have been introduced, primarily driven
+by the pursuit of exploring the upper bounds of model performance through scaling laws. This endeavor has
+resulted in models with astronomically large parameter counts, reaching hundreds of billions or even trillions.
+Nonetheless, this emphasis on large-scale models has left the development of mobile-side MLLMs relatively
+underexplored.
+Among the efforts towards more mobile-friendly MLLMs, the Qwen series has made notable progress. Qwen2-
+VL [227] and Qwen2.5-VL [ 15] introduced model sizes of 2B and 3B, respectively, which are particularly suited
+for deployment on mobile devices. These model sizes effectively balance performance and the computational
+3
+limitations of mobile hardware. Similarly, the InternVL series [ 28,274,229] presented a range of model
+sizes—1B, 2B, and 4B—designed to fulfill various operational needs on mobile platforms.
+In 2023, Meituan emerged as a pioneer in the mobile MLLM domain with the introduction of MobileVLM [ 36].
+Built upon MobileLLaMA in a LLaV A-like [ 129] architecture, MobileVLM came in 1.7B and 3B model sizes. It
+achieved SOTA results in some benchmarks for models of similar sizes at that time. Meituan offered significant
+insights into the processing speeds on mobile and IoT platforms, reporting rates of 12.21 and 21.54 tokens per
+second, respectively. In 2024, the release of MobileVLM V2 [ 37] further advanced the field by exploring the data
+scaling law, improving training strategies, and optimizing the modality alignment design. These developments
+contributed to a comprehensive enhancement in the performance of the MobileVLM framework.
+In 2024, the Apple MM series [ 154,258] demonstrated that even relatively compact models, specifically those
+with 1B and 3B parameters, could achieve impressive performance through meticulous data curation and
+optimized training strategies. The Ferret UI series [ 249,123] marked a significant step forward, as it was the first
+series extensively dedicated to improving the capabilities of screen UI understanding. It extended the capabilities
+of MLLMs to tasks such as referring and grounding on mobile UI screens and answering questions related to
+screen operations. However, Apple did not reveal the performance metrics for these models when deployed on
+mobile platforms.
+Xiaomi’s MobileVLM [ 233] also made important contributions by leveraging carefully constructed UI under-
+standing and APP operation trajectory data. This enabled the model to expand its capabilities from understanding
+within a single UI (intra-UI) to understanding and operating across multiple UIs (inter-UI). Nevertheless, Xi-
+aomi’s 9.8B MobileVLM model was not successfully deployed on mobile devices.
+Finally, vivo’s BlueLM-V-3B [ 146] and BlueLM-2.5-3B [ 238] achieved mobile-side deployment of an MLLM
+through systematic optimizations in algorithms and hardware deployment. Specifically, BlueLM-V-3B achieved
+a running memory of 2.2G and a token throughput speed of 24.4 tokens/s on MediaTek Dimensity 9300 NPUs.
+This not only showcases its effectiveness but also provides practical performance metrics for mobile-side
+MLLMs.
+Despite these efforts, there remains a gap in comprehensively documenting training processes, deployment
+solutions, and benchmark results for general and mobile-specific tasks of mobile-side MLLMs. Our work aims
+to fill this void by presenting the AndesVL suite, which offers a comprehensive approach to mobile-side MLLMs,
+including detailed training, deployment, and benchmarking aspects.
+2.2 Mobile-Side Deployment of MLLM
+The deployment of MLLMs on mobile devices presents unique challenges, including limited computational
+resources, diverse hardware architectures, and stringent energy constraints. To address these issues, various
+solutions [ 156,61,212,82,86,114,42,10] have been proposed that take advantage of CPUs, GPUs, and NPUs.
+CPU-based DeploymentIn 2020, Alibaba developed the Mobile Neural Network (MNN) [ 86], an inference
+engine tailored for mobile applications. It introduces a “pre-inference” mechanism for runtime optimization,
+thorough kernel optimizations for optimal computation performance, and a back-end abstraction module that
+enables hybrid scheduling while maintaining a lightweight engine footprint on mobile CPUs.
+In 2023, Georgi Gerganov [ 61] introduced llama.cpp, a lightweight, dependency-free C/C++ implementation
+designed for efficient LLM inference across diverse hardware platforms, including mobile CPUs. It includes
+support for several quantization levels (ranging from 1.5-bit to 8-bit), enabling reduced memory consumption
+and accelerated inference.
+GPU-based DeploymentIn 2024, a machine learning compiler and high-performance deployment engine
+for LLMs, MLC LLM [ 212], was developed, aiming to enable native deployment across various platforms,
+including mobile GPUs. It compiles models into optimized binaries compatible with platforms such as iOS,
+Android, and web browsers.
+In addition, Li et al. [ 114] proposed Transformer-Lite, which focuses on the high-efficiency deployment of LLM
+on mobile phone GPUs. It introduced four optimization techniques: a symbolic expression-based approach for
+dynamic shape model inference, operator optimizations with execution priority settings, an FP4 quantization
+method termed M0E4 to reduce dequantization overhead, and a sub-tensor-based technique to eliminate the
+need for copying key-value (KV) cache after inference. These optimizations enable significant speedups in both
+prefill and decoding phases compared to existing CPU-based and GPU-based inference engines.
+4
+Figure 2: The overall architecture of AndesVL mainly includes a visual encoder, an MLP projector, and an
+LLM.
+NPU-based DeploymentGemini Nano [ 42], developed by Google, is designed for on-device use cases,
+running within Android’s AICore system service to leverage device hardware for low-latency inference. It is
+accessible through the AI Edge SDK, which allows developers to customize the inference and prompts. Gemini
+Nano models, such as Nano-1 (1.8B parameters) and Nano-2 (3.25B parameters), are distilled from larger
+Gemini models and optimized for edge devices such as smartphones.
+Finally, Apple’s On-Device Deployment utilizes the Core ML framework to optimize and deploy large language
+models on Apple silicon [ 10]. Techniques such as grouped-query attention (GQA) mechanisms, mixed 2-bit
+and 4-bit quantization, and efficient memory management strategies enable the deployment of models like
+Llama-3.1-8B-Instruct on devices such as the iPhone"

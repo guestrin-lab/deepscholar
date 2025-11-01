@@ -1,0 +1,123 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{xurl}   
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{makecell} 
+\usepackage{subcaption} 
+\usepackage{array}
+\usepackage{siunitx}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{threeparttable}
+\usepackage{adjustbox}
+
+\newcommand{\dup}[1]{\textcolor{green!60!black}{\small$\uparrow$\,#1}}
+\newcommand{\ddown}[1]{\textcolor{red!70!black}{\small$\downarrow$\,#1}}
+\newcommand{\dsame}[1]{\textcolor{gray}{#1}}
+\newcommand{\dna}{\textcolor{gray}{---}}
+
+\usepackage[dvipsnames,table]{xcolor}
+
+\usepackage{graphicx}     
+\usepackage{subcaption} 
+
+
+
+
+\usepackage{tcolorbox}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+
+\usepackage{booktabs,longtable}
+
+\setlist[itemize]{leftmargin=10pt}
+
+
+\title{From Trace to Line: LLM Agent for Real-World OSS Vulnerability Localization}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+% \author{Haoran Xi, Minghao Shao \thanks{Authors contributed equally to this research.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+% }
+
+\author{
+  \begin{tabular}{c}
+    Haoran Xi$^{1}$\thanks{Authors contributed equally to this research.}, Minghao Shao$^{1,2}$\footnotemark[1]\\ Brendan Dolan-Gavitt$^{3}$, Muhammad Shafique$^{2}$, Ramesh Karri$^{1}$
+  \end{tabular} \\
+  \\
+  \begin{tabular}{c}
+    $^{1}$NYU Tandon School of Engineering, $^{2}$NYU Abu Dhabi, $^{3}$XBOW\\
+  \end{tabular}
+}
+
+
+\iclrfinalcopy
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author nam\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\input{sections/0-abstract}
+\input{sections/1-introduction}
+\input{sections/2-background}
+\input{sections/3-methods}
+\input{sections/4-experiments}
+\input{sections/5-evaluation}
+\input{sections/6-conclusion}
+
+\newpage
+\section*{Ethics Statement}
+
+This work builds upon the ARVO dataset for vulnerability analysis. Our T2L-ARVO benchmark is constructed using its full-version data, and we have properly cited the original ARVO project to acknowledge its contribution and comply with copyright and attribution standards. No additional data collection, user studies, or ethically sensitive procedures involved in the construction or evaluation of T2L-Agent. All experiments were conducted on Linux servers with only open source dependencies, and our system does not involve any privacy-sensitive data, bias-sensitive decision-making, or potentially harmful applications. We also note that large language models were used solely for light editing and polishing of manuscript, with no involvement in system design, code generation, or experimental results. Their use was limited to improving readability and presentation clarity.
+
+\section*{Reproducibility Statement}
+
+To ensure reproducibility, we will publicly release the full T2L-Agent framework upon publish of this paper, including all module codebase, evaluation scripts, and benchmark data used in this paper. Our implementation does not rely on any proprietary components. Detailed descriptions of our methodology are provided in the main text (Sections~\ref{sec:t2lagent}, \ref{sec:benchmarks}) and supported by step-by-step examples in the appendix. All experimental configurations, including model versions, prompting strategies, and budget constraints, will be documented and made available upon publication to enable full replication of our results.
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\input{sections/appendix}
+
+
+\end{document}

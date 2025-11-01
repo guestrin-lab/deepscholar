@@ -1,0 +1,43 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.11188v1,http://arxiv.org/abs/2510.11188v1,2025-10-13 09:21:45+00:00,Protein as a Second Language for LLMs,"Deciphering the function of unseen protein sequences is a fundamental
+challenge with broad scientific impact, yet most existing methods depend on
+task-specific adapters or large-scale supervised fine-tuning. We introduce the
+""Protein-as-Second-Language"" framework, which reformulates amino-acid sequences
+as sentences in a novel symbolic language that large language models can
+interpret through contextual exemplars. Our approach adaptively constructs
+sequence-question-answer triples that reveal functional cues in a zero-shot
+setting, without any further training. To support this process, we curate a
+bilingual corpus of 79,926 protein-QA instances spanning attribute prediction,
+descriptive understanding, and extended reasoning. Empirically, our method
+delivers consistent gains across diverse open-source LLMs and GPT-4, achieving
+up to 17.2% ROUGE-L improvement (average +7%) and even surpassing fine-tuned
+protein-specific language models. These results highlight that generic LLMs,
+when guided with protein-as-language cues, can outperform domain-specialized
+models, offering a scalable pathway for protein understanding in foundation
+models.","\subsection{Language Models in Protein}
+
+
+Protein representation learning with protein language models (PLMs) extends the Transformer to amino-acid strings, producing dense embeddings for property prediction~\cite{hayes2025simulating,brandes2022proteinbert,elnaggar2021prottrans,ProtGO,cao2021tale, chen2024xtrimopglm,chen2024unifying} or generative design~\cite{madani2023large, nijkamp2023progen2, lv2024prollama, ferruz2022protgpt2}. 
+% protein representation learning
+% 
+Because these models are trained exclusively on amino acid sequences, their outputs remain latent vectors that external classifiers must translate into human-readable function.
+% 
+To obviate this indirection, protein–language alignment modeling has emerged, which jointly connects sequences with textual descriptions via (i) contrastive objectives mapping proteins and sentences into a shared space~\cite{protst, wu2024proteinclip}, (ii) bioknowledge-augmented pre-training on curated protein–text corpora~\cite{ferruz2022protgpt2, taylor2022galactica, lv2024prollama, BioT5, zhuo2024protllm, liu2024evollama}, or (iii) multi-modal LLMs that graft protein encoders onto frozen language backbones~\cite{liu-etal-2024-prott3, abdine2024prot2text, wang2024protchatgpt, chen2024unifying, ma2025prottex, xiang2024fapm}.
+% 
+While effective, these approaches entail costly retraining or gradient updates and risk catastrophic forgetting when scaled to larger LLMs~\cite{kirkpatrick2017overcoming,wu2025rethinking}, prompting a shift toward parameter-efficient adaptation.
+
+\subsection{Protein QA Datesets}
+Datasets that couple proteins with natural-language annotations have become the empirical bedrock for developing protein–text hybrid systems. At present, two complementary families of corpora dominate the landscape. The first centers on protein captioning: given an amino-acid sequence alone, the objective is to generate a concise textual description. Representative instances include the richly annotated Swiss-Prot collection~\cite{bairoch2000swiss}, the ProteinKG resource~\cite{zhang2022ontoprotein} and ProtDescribe~\cite{xu2023protst}. The second family targets protein question answering: here, both a sequence and a natural-language query are supplied, and the model is required to synthesize an answer grounded in the provided protein. Curated examples span Mol-Instructions~\cite{fang2023mol}, UniProtQA~\cite{luo2024biomedgpt}, ProteinLMBench~\cite{shen2024fine}, VenusX~\cite{tan2025venusxunlockingfinegrainedfunctional} and Protein2Text-QA~\cite{Protein2Text2025}.","\subsection{Language Models in Protein}
+
+
+Protein representation learning with protein language models (PLMs) extends the Transformer to amino-acid strings, producing dense embeddings for property prediction~\cite{hayes2025simulating,brandes2022proteinbert,elnaggar2021prottrans,ProtGO,cao2021tale, chen2024xtrimopglm,chen2024unifying} or generative design~\cite{madani2023large, nijkamp2023progen2, lv2024prollama, ferruz2022protgpt2}. 
+
+
+Because these models are trained exclusively on amino acid sequences, their outputs remain latent vectors that external classifiers must translate into human-readable function.
+
+To obviate this indirection, protein–language alignment modeling has emerged, which jointly connects sequences with textual descriptions via (i) contrastive objectives mapping proteins and sentences into a shared space~\cite{protst, wu2024proteinclip}, (ii) bioknowledge-augmented pre-training on curated protein–text corpora~\cite{ferruz2022protgpt2, taylor2022galactica, lv2024prollama, BioT5, zhuo2024protllm, liu2024evollama}, or (iii) multi-modal LLMs that graft protein encoders onto frozen language backbones~\cite{liu-etal-2024-prott3, abdine2024prot2text, wang2024protchatgpt, chen2024unifying, ma2025prottex, xiang2024fapm}.
+
+While effective, these approaches entail costly retraining or gradient updates and risk catastrophic forgetting when scaled to larger LLMs~\cite{kirkpatrick2017overcoming,wu2025rethinking}, prompting a shift toward parameter-efficient adaptation.
+
+\subsection{Protein QA Datesets}
+Datasets that couple proteins with natural-language annotations have become the empirical bedrock for developing protein–text hybrid systems. At present, two complementary families of corpora dominate the landscape. The first centers on protein captioning: given an amino-acid sequence alone, the objective is to generate a concise textual description. Representative instances include the richly annotated Swiss-Prot collection~\cite{bairoch2000swiss}, the ProteinKG resource~\cite{zhang2022ontoprotein} and ProtDescribe~\cite{xu2023protst}. The second family targets protein question answering: here, both a sequence and a natural-language query are supplied, and the model is required to synthesize an answer grounded in the provided protein. Curated examples span Mol-Instructions~\cite{fang2023mol}, UniProtQA~\cite{luo2024biomedgpt}, ProteinLMBench~\cite{shen2024fine}, VenusX~\cite{tan2025venusxunlockingfinegrainedfunctional} and Protein2Text-QA~\cite{Protein2Text2025}.",N/A

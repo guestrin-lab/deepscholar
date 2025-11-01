@@ -1,0 +1,271 @@
+\vspace{-2mm}
+\section{Methods}
+\vspace{-2mm}
+% \textcolor{blue}{Minghao: I also re-wrote the whole methods section, need to double check with some technical details. Haoran should take a look}
+\subsection{T2L Framework}
+\label{sec:t2lagent}
+
+% Our T2L Agent is a planner-executor framework inspired by DCIPHER, along with multiple round of analysis based on runtime evidence like sanitizer report, and refine from coarse vulnerability localization in code chunks into precise suspicious lines. The planner-executor multi-agent system follows a hierarchical framework. The planner agent is in charge of the vulnerability localization process, while delegates analysis and refinement tasks to multiple executors. The executors' responsibility is to actually locate the vulnerability in line level and compare with the true diff to provide feedback to the planner agent.
+
+\texttt{T2L-Agent} uses a hierarchical planner–executor architecture \cite{udeshi2025d} that breaks vulnerability localization into evidence collection, hypothesis generation, and iterative refinement. Unlike single-pass static analyzers, it follows a human-like workflow: gather runtime signals, correlate them with code structure, and progressively shrink the search space.
+
+\begin{wrapfigure}{r}{0.35\textwidth}
+    \vspace{-6mm}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/ATA.pdf}
+    \vspace{-6mm}
+    \caption{ATA Components}
+    \label{fig:placeholder}
+    \vspace{-5mm}
+\end{wrapfigure}
+
+\textbf{Evidence Tracing} T2L Planner coordinates repository analysis and runtime evidence capture in a single, structured pipeline. First, code-structure analysis partitions the codebase into function-aligned, semantically coherent units that preserve syntactic relationships while fitting LLM context windows; known patch locations are also indexed to establish evaluation baselines. Next, runtime evidence becomes the cornerstone: Sanitizer records memory-violation patterns, allocation traces, and stack frames, while interactive debugging (GDB/LLDB) provides symbolic context via backtraces and variable-state snapshots at crash points. This dual-layer design yields comprehensive, observable crash logs rather than speculative static signals. The integrated workflow is a key T2L innovation; we detail it in Sec.~\ref{sec:ata}.
+
+\textbf{Two-stage Refinement} T2L Executor Agent refines candidates iteratively. It bootstraps broad candidate regions from crash logs, using LLM code comprehension to connect symptoms to likely causes, and emits ranked candidate lists with confidence level and rationale. Subsequent passes run targeted source inspections, checking for patterns such as missing bounds checks, uninitialized variables, and improper memory management, then produce new or improved candidates from the inspected code and validate against ground-truth patches.
+
+\textbf{Feedback Control} Each cycle outputs a brief task summary with success indicators and confidence. The Planner adapts the next step—continue refining or stop, preventing premature termination and avoiding over-analysis. The loop improves precision while controlling compute cost.
+
+% \textbf{Planner agent} The planner agent is responsible for orchestrate the pipeline. It calls repository chunking tool \texttt{Chunk\_case} to parse code sources in the whole repository with tree-sitter to segment the repository into indexed chunks. Indexing tools \texttt{Diff\_index} to load diff and mark chunks touched by the diff, enabling chunk-level filtering. Also gather runtime evidence collection using \texttt{Run\_san} and \texttt{Run\_gdb}, generate a consolidated crash log that includes the sanitized crash output and backtrace, then delegate reasoning and evaluation to the executor by calling \texttt{Delegate}. Following each executor, it returns metrics and determines whether further refinement is necessary.
+
+% \textbf{Executor agent} Each executor agent has similar workflow. Begins with the saved crash log contains the runtime evidence gathered in planner agent, call \texttt{Llm\_analyze} to generate suspicious code chunks or lines. Then LLM will selectively use \texttt{View\_source} to preview a source file with line numbers. and \texttt{Grep\_source} to search code by regex under a root directory. And maybe continue to refine the code chunks into smaller chunks or lines by looking into the code slices we located before and find a more precise code slice. Eventually, \texttt{Compare\_llm\_metrics} to compare with the diff of this case.
+
+% \textbf{Planner-Executor System} The entire process is managed by a Planner-Executor System, which coordinates execution workflow, tracks cost, enforces round limits, and maintains global state across agents. It also logs structured output for post-analysis and benchmarking. This enables reproducibility and interpretability when evaluating performance on datasets such as ARVO, which contain full project builds, patches, and crash-triggering inputs.
+
+\subsection{Agentic Trace Analyzer (ATA)}
+\label{sec:ata}
+
+The Agentic Trace Analyzer bridges static code analysis and runtime behavior—long a blind spot in vulnerability-detection pipelines. Most systems analyze code in isolation and miss the symptom-to-cause chain. We close this gap with an end-to-end, multi-source evidence pipeline: targets run in Docker for reproducible, consistent environments; Tree-sitter partitions repositories into semantically meaningful chunks that preserve structure for precise slice extraction; executions are instrumented with   analysis toolkit such as Sanitizers, Debuggers and Static Analyzers to capture stack traces, memory-violation reports, register states, and control-flow cues. Details of the ATA tool list that T2L originally supports are provided in ~\ref{app:toolkit}.
+
+% \begin{wrapfigure}{r}{0.575\textwidth}
+%     \label{alg:agentic_trace}
+%     \vspace{-6mm}
+%     \scriptsize
+%   \begin{tcolorbox}[title=\textbf{Algorithm 1:} Agentic Trace Analyzer Process, colframe=black, colback=white, boxrule=0.5pt]
+%     \begin{algorithmic}[1]
+%     \REQUIRE{$repo$: target repository, $crash$: crash signature, $max_{iter}$: max iterations}
+%     \ENSURE{$L$: localized vulnerable lines or \texttt{None}}
+%     \STATE $chunks \gets \text{TreeSitter}(repo)$ // semantic parsing
+%     \STATE $docker \gets \text{SetupContainer}(repo)$
+%     \STATE $traces \gets \text{InstrumentExecution}(docker, crash)$ // sanitizers + debuggers
+%     \STATE $G \gets \text{BuildEvidenceGraph}(traces, chunks)$
+%     \STATE $candidates \gets \text{InitialRanking}(G, crash)$
+%     \STATE $iter \gets 0$
+%     \WHILE{$iter < max_{iter}$ \textbf{and} $candidates \neq \emptyset$}
+%         \STATE $slice \gets \text{ExtractCodeSlice}(candidates[0])$
+%         \STATE $score \gets \text{MultiModalCorrelation}(slice, traces, G)$
+%         \IF{$score > \theta_{confidence}$}
+%             \STATE $L \gets \text{RefineLocation}(slice, traces)$
+%             \IF{\text{ValidateEvidence}(L, traces)}
+%                 \RETURN $L$
+%             \ENDIF
+%         \ENDIF
+%         \STATE $candidates \gets \text{AttentionRanking}(candidates, G, traces)$
+%         \STATE $G \gets \text{UpdateEvidenceGraph}(G, score, slice)$
+%         \STATE $iter \gets iter + 1$
+%     \ENDWHILE
+%     \RETURN \texttt{None}
+%     \end{algorithmic}
+%   \end{tcolorbox}
+%   \vspace{-6mm}
+% \end{wrapfigure}
+
+We apply a hierarchical refinement: start from coarse crash signatures and narrow to concrete code locations. A dynamic evidence graph correlates runtime observations with static features for cross-validation, while we score and sort candidates by how well they match across multiple signals—syntax, semantics, and execution traces (syntactic patterns, semantic embeddings, execution-trace alignment). Mirroring how engineers debug—alternating reading with running—the analyzer in \texttt{T2L-Agent} seeds initial candidates through static–dynamic correlation, then iteratively refines them against real source slices in feedback loops. The introduction of ATA brings fewer single-shot failures, improved compute efficiency, and behavior-anchored decisions that enable precise, line-level localization even in large, tightly coupled codebases. We disable the ATA and allow LLM to localize vulnerabilities, an example is shown in Figure~\ref{fig:arvo-3features} (c). Without ATA, LLM could not successfully localize vulnerabilities compared to (a) and (b) with ATA enabled.
+
+\subsection{Fine-grained detection}
+
+\textbf{Divergence Tracing.} Recognizing that complex vulnerabilities often involves multiple files and functions, \texttt{T2L-Agent} also uses divergence tracing to explore multiple hypotheses in parallel from the same crash signature. This feature is inspired by how modern LLM interfaces offer multiple response variations for users, using the LLM's variability to ensure comprehensive coverage of potential vulnerability locations. Rather than committing to a single chain of thought, it expands several in parallel and returns a ranked list of candidate sites across the search space. This surfaces correct localizations that were not top ranked initially and is especially helpful for bugs that span multiple modules. From Figure~\ref{fig:arvo-3features} (b), we can observe that the divergence tracing generates more localization candidates and matched more vulnerable lines in this round.
+
+\textbf{Detection Refinement.} The detection refinement process begins based on crash logs and initial localization candidate regions at the first step. Rather than exhaustively examining all potentially relevant code, the agent selects source code slices based on crash signatures, stack trace information, and vulnerability patterns. On a second pass, it rereads those slices to find missed patterns by checking syntactic cues, semantic links such as data and control flow, and alignment with runtime evidence. The refinement process operates iteratively to help the agent correct early mistakes and discover vulnerabilities that are not immediately obvious from crash logs alone, particularly for complex vulnerabilities involving memory corruption where the crash point may be far away from the actual vulnerability. As Figure~\ref{fig:arvo-3features} (a) shows, based on the source code LLM interested, the refinement process successfully locates new lines that were not found during first step with only the runtime evidence.
+
+\iffalse
+We propose an iterative refinement loop that proposes new candidate locations from code it already examined. On a second pass, it rereads those slices to find missed patterns by checking syntactic cues, semantic links such as data and control flow, and alignment with runtime evidence. This helps the agent correct early mistakes and uncover bugs that are not obvious from crash logs. 
+\fi
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/20112_fine_figure_anno.png}
+    \caption{Detection Refinement}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/20112_diver_figure_anno.png}
+    \caption{Divergence Tracing}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/20112_ata_figure_anno.png}
+    \caption{Agentic Trace Analyzer}
+  \end{subfigure}\hfill
+  \caption{Partial \texttt{T2L-Agent} logs to show the how the three proposed technique on \texttt{T2L-Agent} work and help the task: Detection Refinement, Divergence Tracing and Agentic Trace Analyzer.}
+  \label{fig:arvo-3features}
+\end{figure}
+
+
+% To better assist the precise localization at line level, we develop a module called Agentic Trace Analyzer, which provides system instrumentation, trace driven context extraction, and code chunking. This module works as the backend toolset for the Planner-Executor framework, helping automated llm analysis and refinement in repository settings. 
+
+% T2L agents have access to the following tools:
+
+% \begin{itemize}
+%   \item \textbf{Run\_SAN} – Executes the sanitizer and captures crash traces in sanitizer report.
+%   \item \textbf{Run\_GDB} – Extracts symbolic backtraces using GDB.
+%   \item \textbf{Chunk\_Case} – Parses the repository into AST chunks using Tree-Sitter.
+%   \item \textbf{Diff\_Index} – Indexes code changes based on unified diffs.
+%   \item \textbf{Mark\_Diff} – Annotates AST chunks intersecting the diffs.
+%   \item \textbf{Delegate} – Allows the Planner to assign reasoning tasks to the Executor.
+%   \item \textbf{FinishTask} – Enables the Executor to report metrics and terminate a task.
+%   \item \textbf{LLM\_Analyze} – Interprets crash logs or refined source code snippets to generate vulnerability localizations.
+%   \item \textbf{Compare\_LLM\_Metrics} – Evaluates localization performance against diff based ground truth.
+%   \item \textbf{View\_Source} – Preview source code around a specific line range from a file for focused inspection.
+%   \item \textbf{Grep\_Source} – Searches the repository for function names or patterns to locate relevant source code.
+
+% \end{itemize}
+
+% These tool set design allows T2L to perform iterative, multiple round vulnerability localization with runtime evidence, even in complex repository settings.
+
+
+% \subsection{New Version}
+
+% The overall workflow of the Agent Trace Analyzer can be divided into five parts: 
+
+% \textbf{Environment and Reproducible Experiment}
+
+% Container orchestration: We use \texttt{start\_arvo\_container} to launch the vulnerable image, and \texttt{stop\_container} handles tear down the container to ensure the experiments are repeatable.
+
+% Unified execution interface: The \texttt{container\_exec} provides a single interface for running container commands, \texttt{read\_source} and \texttt{grep\_source} works for reading and searching the source code.
+
+% Executable discovery: \texttt{discover\_binary\_path} finds ELF candidates in different folders and selects the binary that matches the target.
+
+
+% \textbf{Source Code Chunking and Diff Extraction}
+
+% Code chunking: We walk through source code using \texttt{chunk\_case\_c\_cpp\_from\_container}, and uses Tree-sitter to extract class, function and method level chunks.
+
+% Extract changes from a diff: We use \texttt{extract\_modified\_lines} to get the changed line numbers from the diff and mark chunks touched by these lines for later comparison with LLM generated candidates.
+
+
+% \textbf{Gather Runtime Evidence}
+
+% Sanitizer driven dynamic traces: \texttt{run\_asan\_and\_capture\_output} uses the in container arvo entrypoint to capture Sanitizer report, and return the path of the executable binary path for the next GDB step.
+
+% GDB interaction script: \texttt{gdb\_script} uses pexpect to drive docker exec into an interactive GDB session, to run some command like "break main" to gather reproducible stack traces and breakpoint contexts.
+
+
+% \textbf{Evidence Driven Localization Candidates}
+
+% From crash report to candidates: Crash report which contains sanitizer report and gdb result are feed into \texttt{analyze\_asan\_output} to generate the most possible candidates for this crash report. The decision is based on LLM's judgment which contains the confidence of selecting this location from "very unlikely" to "very likely". 
+
+% Refine with source code: After we have the source code snippet, we will pass to \texttt{refine\_candidates\_with\_slices} to further refine the candidates based on more static code knowledge and updates the corresponding confidence.
+
+
+% \textbf{Evaluation}
+
+% Evaluation: From \texttt{compare\_patch\_with\_llm}, we have two metrics: detection rate and localization rate. For the detection, we define it as the LLM generated vulnerability localization is in the same chunk as the diff. While the localization is only at line level, if the LLM generated vulnerability localization is exactly the same line as diff, we mark this line as localized. 
+
+
+\vspace{-3mm}
+\subsection{T2L-ARVO Benchmark}
+\label{sec:benchmarks}
+
+The ARVO dataset contains over 4{,}900 reproducible vulnerabilities across 250{+} C/C{++} projects but lacks the structure needed to evaluate \emph{agentic} for vulnerability localization. We introduce \texttt{T2L-ARVO}, a 50-case benchmark with comprehensive crash-type coverage and graded difficulty for LLM agent evaluation. ARVO's human-oriented, reproducible builds require adaptation for agentic assessment; we therefore apply a dual validation layer—manual expert checks plus LLM-assisted verification—to ensure selected cases are both faithfully reproducible and appropriately challenging for automated agents. This yields a benchmark with realistic, graded difficulty and broad crash-type coverage, enabling rigorous, end-to-end evaluation of planner–executor systems for trace-to-line vulnerability localization—well beyond single-project or single-crash-type studies.
+
+
+% \begin{wrapfigure}{r}{0.45\textwidth}
+%   \vspace{-15pt}
+%   \begin{minipage}{\linewidth}
+%     \centering
+%     \small
+%     \caption{Failures.}
+%     \begin{tabular}{@{}lr@{}}
+%       \toprule
+%       \textbf{Type} & \textbf{Pert. \%} \\
+%       \midrule
+%       Rounds  & 36.7\%          \\
+%       Giveup         & 36.7\%          \\
+%       Cost   & 26.5\%          \\
+%       \bottomrule
+%     \end{tabular}
+%     \label{tab:failure_reasons}
+%   \end{minipage}
+%   \vspace{-3mm}
+% \end{wrapfigure}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-15pt}
+  \begin{minipage}{\linewidth}
+    \centering
+    \scriptsize
+    \caption{Crash types in \texttt{T2L-ARVO} Bench.}
+    \begin{tabular}{@{}lccp{0.4\textwidth}@{}}
+      \toprule
+      \textbf{Crash Family} & \textbf{Brief Description} \\
+      \midrule
+      Buffer Overflow  & Violations of memory bounds (heap/stack)          \\
+      Uninitialized Access  & Reads from undefined or indeterminate state        \\
+      Memory Lifecycle      & Use-after-free / double-free / lifetime bugs          \\
+      Type Safety      & Bad casts, invalid args, contract violations          \\
+      System Runtime   & Environment and runtime interaction faults          \\
+      \bottomrule
+    \end{tabular}
+    \label{tab:t2larvo_composition}
+  \end{minipage}
+  \vspace{-3mm}
+\end{wrapfigure}
+
+\textbf{ARVO Analysis} We analyzed \(4{,}993\) ARVO instances and grouped them by underlying failure mechanism: \emph{Buffer Overflows} \(49.9\%\) \((n=2{,}490)\), \emph{Uninitialized Access \& Unknown States} \(35.4\%\) \((n=1{,}768)\), \emph{Memory Lifecycle Errors} \(11.5\%\) \((n=573)\), \emph{Type Safety \& Parameter Validation} \(2.9\%\) \((n=147)\), and \emph{System \& Runtime Errors} \(0.3\%\) \((n=15)\).
+
+Each family subsumes concrete subtypes (e.g., \texttt{heap-buffer-overflow}, \texttt{use-of-uninitialized-value}, \texttt{heap-use-after-free}, \texttt{bad-cast}). \texttt{T2L-ARVO} deliberately mirrors this distribution to avoid bias toward any single failure mode.
+
+% The ARVO dataset, encompassing over 5000 reproducible vulnerabilities across more than 250 C/C++ projects, poses challenges for assessing agentic systems due to its vast scale and lack of stratified difficulty levels. To address these limitations, we introduce \textbf{T2L-ARVO}, a curated subset of 50 vulnerabilities with systematic difficulty stratification for LLM-based vulnerability localization agents.
+
+% \textbf{Assessment and Verification.} We developed an automated analysis framework that evaluates vulnerability patches using seven quantitative metrics extracted from diff files: files changed, hunks modified, lines added/deleted, architectural spread, average directory depth, file renames, and structural reorganizations. For semantic analysis, we employ GPT-4o-mini to generate difficulty profiles through iterative content digestion, focusing on comprehension and verification challenges including cross-module coupling, interface modifications, and concurrency considerations.
+
+\textbf{Verification Process} We combine automated screening with expert review to ensure both realism and balance. Quantitatively, we score candidates using diff-based structural metrics (files changed, architectural spread, directory depth) and semantic factors (cross-module coupling, interface changes, concurrency touchpoints). We then apply dual validation: (i) manual expert assessment to confirm reproducibility and representativeness, and (ii) LLM-assisted checks to gauge agent-facing difficulty. Known patch locations are indexed to establish clear localization baselines and to support precise, line-level scoring.
+
+% Our assessment rule uses pairwise comparisons processed through a Bradley-Terry ranking algorithm to produce normalized difficulty scores. Based on these scores, we employed expert manual selection to identify 50 representative vulnerabilities, considering vulnerability types, project domains, and patch characteristics to ensure both difficulty stratification and sample diversity. This expert curation step, performed after automated scoring, maintains balanced coverage across complexity levels while preserving representativeness for comprehensive agentic system evaluation.
+
+\textbf{T2L-ARVO Composition.} The final benchmark comprises 50 vulnerabilities, evenly sampled across five crash families (10 each) for broad yet controlled difficulty. Each family includes representative subtypes (e.g., \texttt{heap-buffer-overflow}, \texttt{use-of-uninitialized-value}, \texttt{heap-use-after-free}, \texttt{bad-cast}), covering single-file defects and cross-module interactions to prevent overflow bias and exercise diverse failure modes observed in real repositories.
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{diagrams/categories_bar.png}
+%     \caption{Distribution among five crash types}
+%     \label{fig:placeholder}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{diagrams/Buffer_Overflow_Vulnerabilities_subtypes_bar.png}
+%     \caption{Distribution for Buffer Overflow Vulnerabilities subtypes}
+%     \label{fig:placeholder}
+% \end{figure}
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{diagrams/Uninitialized_Access_&_Unknown_States_subtypes_bar.png}
+%     \caption{Distribution for Uninitialized Access and Unknown States subtypes}
+%     \label{fig:placeholder}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{diagrams/Memory_Lifecycle_Errors_subtypes_bar.png}
+%     \caption{Distribution for Memory Lifecycle Errors subtypes}
+%     \label{fig:placeholder}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{diagrams/Type_Safety_&_Parameter_Validation_subtypes_bar.png}
+%     \caption{Distribution for Type Safety and Parameter Validation subtypes}
+%     \label{fig:placeholder}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{diagrams/System_&_Runtime_Errors_subtypes_bar.png}
+%     \caption{Distribution for System and Runtime Errors subtypes}
+%     \label{fig:placeholder}
+% \end{figure}

@@ -1,0 +1,69 @@
+\section{RL Training with Minimal Formulation}
+% Having established our method for generating high-quality kinematic reference motions, we now use RL to bridge the gap between kinematics and dynamics. We train a low-level policy to translate these reference trajectories into dynamic, physically-realizable actions, enabling zero-shot deployment from simulation to real-world hardware.
+
+% Reward engineering is a central challenge in RL for humanoid robots. To mitigate artifacts like foot sliding and penetration present in flawed reference motions, prior works~\cite{ze2025twist, he2025asap, li2025reinforcement} often introduce a suite of ad-hoc regularizers (e.g., foot flight and contact time) to mitigate artifacts in retargeted references such as foot sliding and penetration. Tuning these complex reward terms is notoriously tedious and time-consuming.
+
+% In contrast, OmniRetarget yields artifact-free references, allowing us to adopt the minimal RL formulation from BeyondMimic~\cite{liao2025beyondmimic} for motion tracking. This enables us to achieve faithful tracking of dynamic scene interactions and zero-shot sim-to-real transfer without hyperparameter tuning. For brevity, we describe only our modifications to BeyondMimic and refer to the original work for details.
+Having established our method for generating high-quality kinematic references, we use RL to bridge the gap to dynamics by training a low-level policy that converts these trajectories into physically realizable actions, enabling zero-shot transfer from simulation to hardware.
+
+Reward engineering is often the main difficulty in humanoid RL: prior works~\cite{ze2025twist, he2025asap, li2025reinforcement} rely on many ad-hoc regularizers (e.g., foot flight and contact time) to compensate for artifacts in noisy references, but tuning these terms is tedious and fragile. In contrast, BeyondMimic~\cite{liao2025beyondmimic} shows that when references are clean~\cite{unitree_lafan1_retargeting_dataset}, a minimal reward is already sufficient for high-quality tracking.
+Since OmniRetarget produces such artifact-free, interaction-preserving references, we can follow this minimal formulation directly, achieving faithful tracking of dynamic interactions and zero-shot sim-to-real transfer \emph{without any hyperparameter tuning}. 
+
+% For brevity, we refer to BeyondMimic for details.
+\textbf{Observations.} 
+% \guanya{bullet points}
+% \guanya{can we define policy input more rigorously? $\pi(\cdots)$}
+% To test the hypothesis that our high-quality reference motions can serve as a sufficient prior for complex tasks, we intentionally design a minimal, proprioceptive observation space for our RL policy. We exclude all explicit scene and object information, forcing the agent to be blind rely on the learned motor patterns from the reference trajectory. Moreover, for highly agile sequences involving flight phases or significant terrain changes—where global state estimation is often unreliable—we also omit the robot's root linear position and velocity. 
+To show that high-quality reference motions provide a sufficient prior for complex tasks, we design a \emph{minimal proprioceptive} observation space, as listed below, where the agent is blind to explicit scene and object information and must follow the reference trajectory precisely. 
+
+\begin{itemize}
+    \item \emph{Reference Motion: } Reference Joint Position/Velocity, Reference Pelvis Position/Orientation Error;
+    \item \emph{Proprioception: } Pelvis Linear/Angular Velocity, Joint Position/Velocity;
+    \item \emph{Previous Action: } Policy action from last timestep. 
+\end{itemize}
+
+For agile motions where state estimation is unreliable, we mask out the pelvis linear position error and velocity.
+
+\textbf{Rewards.} 
+% \guanya{bullet point} 
+To show the benefits of high-quality reference and avoid reward tuning, we use only five reward terms: 
+\begin{itemize}
+    \item \emph{Body Tracking: } DeepMimic-style tracking term for body position, orientation, linear and angular velocity;
+    \item \emph{Object Tracking (where applicable): } DeepMimic-style tracking term for object position and orientation;
+    \item \emph{Action Rate: } Penalize rapid changes in action;
+    \item \emph{Soft Joint Limit: } Penalize robot joint limit violation;
+    \item \emph{Self-Collision: } Binary penalty on each body if its self-collision force exceeds $1$ N.
+\end{itemize}
+We use the same weights and hyperparameters from~\cite{liao2025beyondmimic} out of the box without tuning. For object tracking, we use the same hyperparameters as body tracking terms. 
+% Following ~\cite{liao2025beyondmimic}, we use four terms: whole-body DeepMimic-style tracking, action smoothing, self-collision, and soft joint limits. Using the default hyperparameters without tuning, these suffice for high-quality tracking of scene interactions. For object loco-manipulation, we add object-pose tracking, $r_\text{obj} = e^{- \|q_\text{obj} - q_\text{obj}^*\| / \omega}$, where $q_\text{obj}^*$ is the desired object pose from the reference motion, and $\omega$ is the same standard deviation as in ~\cite{liao2025beyondmimic}. The weight for object-pose tracking is the same as other tracking terms. \guanya{previous work will add extra XXX}
+
+
+\textbf{Termination.} 
+We terminate training episodes with large body tracking deviations~\cite{liao2025beyondmimic}. For object loco-manipulation, episodes terminate when the object deviates more than $1.0\text{m}$ and $45$° from the reference trajectory. We only apply this criterion after the policy achieves reasonable body tracking.
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{figures/results_all_v2_compressed.pdf}
+	\caption{Additional hardware results showing diverse, agile and human-like behaviors. }
+	\label{fig:results_capacity}
+    % \vspace*{-0.3cm}
+\end{figure*}
+
+
+\textbf{Domain Randomization.}
+To improve generalization across object properties for a single reference motion, we randomize the object's physical parameters: mass (0.1–2 kg), center of mass (±0.08 m), inertia (50–150\%), and shape (±10\%). 
+For the robot specifically, in contrast to the many terms in prior works (e.g., random force injection (RFI), motor PD, action delay), we only apply four terms: 
+\begin{itemize}
+    \item \emph{Torso COM Position}: $\pm 0.025$ m in $x$, $\pm 0.05$ m in $y$, $\pm 0.075$ m in $z$;
+    \item \emph{Joint default position}: $\pm 0.01$ rad;
+    \item \emph{Random push}: $0.3$ m/s, $0.78$ rad/s for $(1\text{--}3)$ s;
+    \item \emph{Observation noise}: $\pm 0.05$ for orientation in Rot6D, $\pm 0.5$ m/s and $\pm 0.2$ rad/s for linear and angular velocity, $\pm 0.01$ rad and $\pm 0.5$ rad/s for joint position and velocity. 
+\end{itemize}
+%We randomize ground friction for both robot and object in $[0.1, 0.6]$.
+% Combined with the spatial and shape augmentations in Sec.~\ref{sec:aug}, this covers a broad range of object geometries and initial conditions.
+
+\textbf{Policy Training.}
+We group similar motions for faster training. All box-moving motions share a single multi-task policy, while platform climbing uses one policy per reference.
+
+
+

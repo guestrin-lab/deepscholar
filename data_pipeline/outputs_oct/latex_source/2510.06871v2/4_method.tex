@@ -1,0 +1,271 @@
+
+
+
+\section{\method{}} \label{sec:metd}
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_main.pdf}
+    \vspace{-1.2em}
+    \caption{
+    Overview of \textbf{\method{}}, a safety-aligned RL framework. 
+    \textit{QI-Safe-10K} is curated with QI-Box filtering for balanced quality and instability. 
+    \textit{Safety-Aware Rollout} corrects unsafe outputs before scoring. 
+    \textit{Reward Modeling} aggregates weighted sub-criteria with penalties, and \textit{Safety-Aware Optimization} integrates safe and corrected trajectories to reinforce consistent safe reasoning.}
+     \vspace{-0.6em}
+    \label{fig:rescue_vlm}
+\end{figure}
+
+
+
+
+
+We present \textbf{\method{}}, a safety-aligned RL framework for multimodal reasoning. 
+It starts with \textit{QI-Safe-10K}, a dataset curated by filtering responses on quality and instability to retain safety-critical cases. 
+Building on this, a \textit{Safety-Aware Rollout} ensures unsafe outputs undergo reflection and correction before evaluation. 
+\textit{Safety-Aware Reward Modeling} transforms graded responses into structured reward signals with penalty rules, 
+and finally, \textit{Safety-Aware Optimization} with GRPO integrates these signals to reinforce safe, consistent reasoning while mitigating unsafe behaviors.
+
+ 
+\subsection{QI-Safe-10K}\label{sec:qi-safe10k}
+For each sample $i$ with input $(x_T^{(i)}, x_I^{(i)})$, we run model $m\in\mathcal{M}$ for $K_m$ trials, 
+obtaining responses $\{y_{i,m,k}\}_{k=1}^{K_m}$. 
+Each response $y_{i,m,k}$ is then evaluated by a GRM~\cite{safe-algin-G-RLHF-V}, 
+which produces reasoning and answer scores 
+$r_{i,m,k}, a_{i,m,k} \in [1,10]$. 
+The per-model averages are
+\begin{equation}
+\begin{gathered}
+\bar r_{i,m}=\tfrac{1}{K_m}\sum_{k=1}^{K_m} r_{i,m,k}, \quad
+\bar a_{i,m}=\tfrac{1}{K_m}\sum_{k=1}^{K_m} a_{i,m,k}.
+\end{gathered}
+\end{equation}
+To capture variability, we define instabilities at two levels. 
+The \emph{intra-model instability} measures trial-level deviation within each model, 
+while the \emph{inter-model instability} reflects deviation across models. 
+Formally, let $\sigma_m(\cdot)$ denote the standard deviation over trials of model $m$, 
+and $\sigma(\cdot)$ denote the standard deviation across $\mathcal{M}$ models. 
+The aggregated measures are
+{\small
+\begin{equation}
+\mathrm{std}_i^{\rm intra}=\tfrac{1}{|\mathcal{M}|}\sum_{m\in\mathcal{M}}
+\big[\alpha\,\sigma_m(r_{i,m,k})+(1-\alpha)\,\sigma_m(a_{i,m,k})\big], \ \ 
+\mathrm{std}_i^{\rm inter}=\alpha\,\sigma(\bar r_{i,m})+(1-\alpha)\,\sigma(\bar a_{i,m}),
+\end{equation}
+}
+and the overall instability score is
+\begin{equation}
+\begin{gathered}
+U_i=\beta\,\mathrm{std}_i^{\rm intra}+(1-\beta)\,\mathrm{std}_i^{\rm inter}.
+\end{gathered}
+\end{equation}
+
+Here $\alpha\in[0,1]$ controls the trade-off between reasoning and answer scores, 
+and $\beta\in[0,1]$ balances intra- versus inter-model variability. 
+Unless otherwise specified, we set $\alpha=\beta=0.4$ as default.
+The quality score is defined as the average of reasoning and answer means across models:
+{\small
+\begin{equation}
+\begin{gathered}
+Q_i=\tfrac{1}{2}\Bigg(\tfrac{1}{|\mathcal{M}|}\sum_{m\in\mathcal{M}} \bar r_{i,m}
++ \tfrac{1}{|\mathcal{M}|}\sum_{m\in\mathcal{M}} \bar a_{i,m}\Bigg).
+\end{gathered}
+\end{equation}
+}
+Using the pair $(Q_i,U_i)$, we construct the \emph{QI-Box} selection rule. 
+We first restrict samples to a quality band $Q_{\min}\le Q_i \le Q_{\max}$. 
+Within this band, the QI-Box is defined by quantile thresholds
+\begin{equation}
+\begin{gathered}
+Q_i \in [q_\ell,\,q_h], \quad
+U_i \in [u_\ell,\,u_h],
+\end{gathered}
+\end{equation}
+where $(q_\ell,u_\ell)$ denote fixed lower bounds, and $(q_h,u_h)$ are adaptively chosen upper bounds. 
+The resulting subset is
+\begin{equation}
+\begin{gathered}
+\mathcal{S}(q_h,u_h) = \big\{ i \;\big|\; q_\ell \le Q_i \le q_h, \;
+u_\ell \le U_i \le u_h \big\}.
+\end{gathered}
+\end{equation}
+We determine $(q_h,u_h)$ via binary search so that the subset size 
+$N=|\mathcal{S}(q_h,u_h)|$ satisfies $N_{\ell} \le N \le N_{h}$. 
+If an exact match is impossible due to quantile discreteness, we shrink along ranks 
+and, if still oversized, uniformly downsample to the target midpoint. 
+This procedure produces a controlled collection of samples with moderate quality yet elevated instability, 
+where $(N_{\ell},N_{h})$ are preset lower and upper bounds, forming the \ourdata dataset.
+
+
+\subsection{Safety-Aware Rollout}\label{sec:sar}
+Given the curated dataset $\mathcal{S}(q_h,u_h)$ with 
+$N=|\mathcal{S}(q_h,u_h)|$ samples, our goal is to obtain diverse responses, 
+filter them by safety, and ensure that unsafe generations are systematically 
+reflected upon and corrected before final scoring. The procedure consists of 
+three stages.  
+\vspace{-0.9em}
+\paragraph{Rollout sampling.}
+For each input $(x_T^{(i)}, x_I^{(i)})$, $i=1,\dots,N$, 
+we generate $K$ candidate responses using the multimodal policy 
+$\pi_{\theta}$ under the default thinking prompt $\mathcal{P}_{\mathrm{think}}$:
+\begin{equation}
+\{y_{i,k}\}_{k=1}^K 
+= \pi_{\theta}\big(\mathcal{P}_{\mathrm{think}},\, (x_T^{(i)}, x_I^{(i)}),\, K\big).
+\end{equation}
+This step ensures that each sample is associated with diverse outputs 
+under the same input context.   
+\vspace{-0.9em}
+\paragraph{Safety evaluation and scoring.}
+Each response $y_{i,k}$ is then examined by the GRM’s safety module. 
+We introduce a binary indicator:
+\begin{equation}
+g_{i,k} = \mathbbm{1}\!\left[
+\, \text{``SAFE''} \in \pi_{\mathrm{GRM}}^{(\mathrm{safe})}\big((x_T^{(i)}, x_I^{(i)}),\, y_{i,k}\big) 
+\;\wedge\; r_{i,k} > 3 \right].
+\end{equation}
+If $g_{i,k}=1$, the GRM assigns reasoning and answer quality scores:
+\begin{equation}
+r_{i,k}, a_{i,k} = \pi_{\mathrm{GRM}}\big((x_T^{(i)}, x_I^{(i)}), y_{i,k}\big),
+\end{equation}
+with $r_{i,k},a_{i,k}\in[1,10]$, following the protocol in \cref{sec:qi-safe10k}, 
+and then linearly normalized to $[0,1]$.
+\vspace{-0.9em}
+\paragraph{Reflection and self-correction.}
+If $g_{i,k}=0$, the response enters a reflection stage, where the model, guided by $\mathcal{P}_{\mathrm{ref}}$, produces an explanation $\tilde{c}_{i,k}$ of why $y_{i,k}$ was unsafe:
+\begin{equation}\label{eq:reflection}
+\tilde{c}_{i,k} = \pi_{\theta}\big(\mathcal{P}_{\mathrm{ref}},\, (x_T^{(i)}, x_I^{(i)}),\, y_{i,k}\big).
+\end{equation}
+This reflection serves as an explicit self-analysis context. 
+It is then fed back into the model with the default prompt $\mathcal{P}_{\mathrm{think}}$ 
+to produce a corrected response:
+\begin{equation}\label{eq:self_correction}
+\tilde{y}_{i,k} = \pi_{\theta}\big(\mathcal{P}_{\mathrm{think}},\, (x_T^{(i)}, x_I^{(i)}),\, y_{i,k},\, \tilde{c}_{i,k}\big).
+\end{equation}
+Finally, the corrected output $\tilde{y}_{i,k}$ is re-evaluated by the GRM 
+to obtain scores $\tilde{r}_{i,k}, \tilde{a}_{i,k}\in[1,10]$.  
+
+Overall, this pipeline ensures that all responses are either safely scored 
+or undergo reflection-guided correction before scoring, providing a 
+consistent foundation for alignment.
+
+
+
+\subsection{Safety-Aware Reward Modeling}\label{sec:sarm}
+As described in \cref{sec:sar}, each candidate response that passes the safety gate 
+is scored by the GRM on reasoning and answer quality. We now explain how these scores 
+are refined into reward signals.
+
+For each safe response (indicated by $g_{i,k}=1$), the GRM evaluates several 
+sub-dimensions, including logical coherence, evidence use, image grounding, factual 
+accuracy, and safety awareness. Each sub-score $s_j$ is weighted by $w_j$ and 
+normalized to yield a weighted sum:
+{\small
+\begin{equation}
+w_j' = \frac{w_j}{\sum_j w_j}, \qquad
+S_{\text{raw}} = \sum_j w_j' \cdot s_j.
+\end{equation}
+}
+The aggregated score is then rounded and clamped to $[1,10]$:
+\begin{equation}
+r_{i,k}\ \text{or}\ a_{i,k} \;\;\leftarrow\;\;
+\min\!\big(10,\,\max(1,\,\operatorname{round}(S_{\text{raw}}))\big).
+\end{equation}
+
+To ensure robustness, penalty rules are applied: missing or vague grounding reduces 
+$2$–$4$ points, hallucinations cap both scores at $4$, and contradictions limit 
+reasoning to $3$ and answers to $4$.  
+In this way, rollout evaluations are converted into structured, penalty-aware scores, 
+which serve as final reward signals for downstream optimization.
+
+
+\subsection{Safety-Aware Optimization}\label{sec:sao}
+Building on the pipeline in \cref{sec:sar,sec:sarm}, we optimize the policy so that
+(1) \emph{safe} rollouts rewarded, and
+(2) \emph{unsafe} rollouts undergo reflection and self-correction before learning.
+\vspace{-0.9em}
+
+\paragraph{Case split (safe vs.\ corrected).}
+For each input $(x_T^{(i)},x_I^{(i)})$ and rollout index $k$, let $g_{i,k}$ denote the binary
+safety label predicted by the GRM. The trajectory is defined as
+\begin{equation}
+\tau_{i,k} =
+\begin{cases}
+[\,y_{i,k}\,], & g_{i,k}=1 \quad \text{(safe)}, \\[0.25em]
+[\,\tilde{c}_{i,k},\,\tilde{y}_{i,k}\,], & g_{i,k}=0 \quad \text{(unsafe $\to$ reflect $\to$ correct)}.
+\end{cases}
+\end{equation}
+
+The associated reward scores are
+{\small
+\begin{equation}
+(r^\star_{i,k},\,a^\star_{i,k},\,f^\star_{i,k}) =
+\begin{cases}
+(r_{i,k},\,a_{i,k},\,f_{i,k}), & g_{i,k}=1, \\[0.25em]
+(\tilde{r}_{i,k},\,\tilde{a}_{i,k},\,\tilde{f}_{i,k}), & g_{i,k}=0,
+\end{cases}
+\end{equation}
+}
+where $f_{i,k}$ (or $\tilde{f}_{i,k}$) is a \emph{format score} verifying the presence of both
+\texttt{<think>...</think>} and \texttt{<answer>...</answer>} tags.
+We aggregate the reward signals and normalize within each group of $G$ rollouts to obtain the advantage:
+{\small
+\begin{equation}
+\hat{A}_{i,k} \;=\; 
+\frac{R_{i,k} - \mu_i}{\sigma_i}, 
+\quad 
+R_{i,k} = r^\star_{i,k} + a^\star_{i,k} + \lambda_f f^\star_{i,k}, \;\;
+\mu_i = \tfrac{1}{G}\sum_{j=1}^G R_{i,j}, \;\;
+\sigma_i = \sqrt{\tfrac{1}{G}\sum_{j=1}^G (R_{i,j} - \mu_i)^2},
+\end{equation}
+}
+where $\lambda_f \geq 0$ is the weight assigned to the format score.
+\vspace{-0.9em}
+\paragraph{Trajectory likelihoods.}
+Given the case split above, the likelihood of each trajectory under policy $\pi$
+naturally factors through its stage-specific prompts. For safe rollouts
+($g_{i,k}=1$), the policy directly produces an answer sequence, while for corrected
+rollouts ($g_{i,k}=0$) it first generates a reflection and then a corrected answer:
+{\small
+\begin{equation}
+\pi(\tau_{i,k}\mid x_T^{(i)},x_I^{(i)}) =
+\begin{cases}
+\pi\!\left(y_{i,k}\,\middle|\,\mathcal{P}_{\mathrm{think}},(x_T^{(i)},x_I^{(i)})\right), & g_{i,k}=1, \\[0.35em]
+\pi\!\left(\tilde{c}_{i,k}\,\middle|\,\mathcal{P}_{\mathrm{ref}},(x_T^{(i)},x_I^{(i)}),y_{i,k}\right)\;
+\pi\!\left(\tilde{y}_{i,k}\,\middle|\,\mathcal{P}_{\mathrm{think}},(x_T^{(i)},x_I^{(i)}),y_{i,k},\tilde{c}_{i,k}\right), & g_{i,k}=0.
+\end{cases}
+\end{equation}
+}
+\vspace{-1.5em}
+\paragraph{Objective.}
+To optimize the policy, we adopt Grouped Relative Policy Optimization (GRPO) over
+trajectories $\tau_{i,k}$ sampled from the reference policy $\pi_{\mathrm{old}}$.
+The objective is defined as
+{\small
+\begin{equation}\label{eq:saro_objective}
+\begin{aligned}
+J_{\mathrm{GRPO}}(\theta)
+= \mathbb{E}_{(x_I,x_T)\sim D,\;\tau_{i,k}\sim \pi_{\mathrm{old}}}
+\Bigg[\frac{1}{K}\sum_{k=1}^{K}
+\min\!\Big(
+\rho_{i,k}(\theta)\,\hat{A}_{i,k},\;
+\operatorname{clip}\!\big(\rho_{i,k}(\theta),\,1-\epsilon,\,1+\epsilon\big)\,\hat{A}_{i,k}
+\Big)\Bigg].
+\end{aligned}
+\end{equation}
+}
+Here $\pi_{\theta}$ denotes the current policy and $D$ is the training distribution.  
+The importance weight is given by  
+\(
+\rho_{i,k}(\theta)=\frac{\pi_{\theta}(\tau_{i,k}\mid x_I^{(i)},x_T^{(i)})}
+{\pi_{\mathrm{old}}(\tau_{i,k}\mid x_I^{(i)},x_T^{(i)})}.
+\)  
+The clipping threshold $\epsilon>0$ limits the deviation of the importance weight
+$\rho_{i,k}(\theta)$ from $1$, thereby preventing unstable updates when the new
+policy diverges too far from the reference policy.
+This design ensures that \emph{safe} rollouts are rewarded directly, while \emph{unsafe}
+rollouts only contribute after reflection and correction, consistent with the
+Safety-Aware Rollout process.
+
+

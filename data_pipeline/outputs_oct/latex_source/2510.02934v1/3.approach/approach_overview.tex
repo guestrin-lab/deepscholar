@@ -1,0 +1,10 @@
+\subsection{Approach Overview}
+This paper proposes \tool, a novel approach for assessing the correctness of LLM-generated code by dynamically identifying the most informative signals from LLMs' internal states during code generation.
+%
+%
+%
+Our key idea is that instead of manually engineering a ``one-size-fits-all'' heuristic, we design a model-agnostic approach that learns to select the most relevant internal representations for code correctness assessment. 
+%
+By leveraging a data-driven attention-based mechanism, \tool is able to adapt to the idiosyncrasies of different LLMs, enabling robust and generalizable evaluation across models.
+%
+As shown in Figure~\ref{fig:approach_overview}, \tool comprises three key components: \textit{Internal Representation Extractor}, which gathers hidden states from multiple layers and token positions; \textit{Informative Representation Selector}, which prioritizes the most relevant representations based on the attention mechanism; and \textit{Code Correctness Predictor}, which employs a probing classifier to determine whether the generated code is correct based on the dynamically selected features.

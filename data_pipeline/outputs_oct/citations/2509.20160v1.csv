@@ -1,0 +1,110 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,paise22,\cite{paise22},Don't Miss the Train: A Case for Systems Research into Training on the Edge,,,"{Prashanthi S.K} and Khochare, Aakash and Kesanapalli, Sai Anuroop and Bhope, Rahul and Simmhan, Yogesh",2022,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,tx2_training,\cite{tx2_training},"Performance Analysis and Characterization of Training Deep Learning
+  Models on Mobile Devices",http://arxiv.org/abs/1906.04278v2,"Training deep learning models on mobile devices recently becomes possible,
+because of increasing computation power on mobile hardware and the advantages
+of enabling high user experiences. Most of the existing work on machine
+learning at mobile devices is focused on the inference of deep learning models
+(particularly convolutional neural network and recurrent neural network), but
+not training. The performance characterization of training deep learning models
+on mobile devices is largely unexplored, although understanding the performance
+characterization is critical for designing and implementing deep learning
+models on mobile devices.
+  In this paper, we perform a variety of experiments on a representative mobile
+device (the NVIDIA TX2) to study the performance of training deep learning
+models. We introduce a benchmark suite and tools to study performance of
+training deep learning models on mobile devices, from the perspectives of
+memory consumption, hardware utilization, and power consumption. The tools can
+correlate performance results with fine-grained operations in deep learning
+models, providing capabilities to capture performance variance and problems at
+a fine granularity. We reveal interesting performance problems and
+opportunities, including under-utilization of heterogeneous hardware, large
+energy consumption of the memory, and high predictability of workload
+characterization. Based on the performance analysis, we suggest interesting
+research directions.","Liu, Jie and Liu, Jiawen and Du, Wan and Li, Dong",2019,,,10.1109/ICPADS47876.2019.00077,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,beutel2020flower,\cite{beutel2020flower},Flower: A Friendly Federated Learning Research Framework,http://arxiv.org/abs/2007.14390v5,"Federated Learning (FL) has emerged as a promising technique for edge devices
+to collaboratively learn a shared prediction model, while keeping their
+training data on the device, thereby decoupling the ability to do machine
+learning from the need to store the data in the cloud. However, FL is difficult
+to implement realistically, both in terms of scale and systems heterogeneity.
+Although there are a number of research frameworks available to simulate FL
+algorithms, they do not support the study of scalable FL workloads on
+heterogeneous edge devices.
+  In this paper, we present Flower -- a comprehensive FL framework that
+distinguishes itself from existing platforms by offering new facilities to
+execute large-scale FL experiments and consider richly heterogeneous FL device
+scenarios. Our experiments show Flower can perform FL experiments up to 15M in
+client size using only a pair of high-end GPUs. Researchers can then seamlessly
+migrate experiments to real devices to examine other parts of the design space.
+We believe Flower provides the community with a critical new tool for FL study
+and development.","Beutel, Daniel J. and Topal, Taner and Mathur, Akhil and Qiu, Xinchi and Fernandez-Marques, Javier and Gao, Yan and Sani, Lorenzo and Li, Kwing Hei and Parcollet, Titouan and de Gusmão, Pedro Porto Buarque and Lane, Nicholas D.",2020,,,,arXiv preprint arXiv:2007.14390
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,baller2021deepedgebench,\cite{baller2021deepedgebench},DeepEdgeBench: Benchmarking Deep Neural Networks on Edge Devices,http://arxiv.org/abs/2108.09457v1,"EdgeAI (Edge computing based Artificial Intelligence) has been most actively
+researched for the last few years to handle variety of massively distributed AI
+applications to meet up the strict latency requirements. Meanwhile, many
+companies have released edge devices with smaller form factors (low power
+consumption and limited resources) like the popular Raspberry Pi and Nvidia's
+Jetson Nano for acting as compute nodes at the edge computing environments.
+Although the edge devices are limited in terms of computing power and hardware
+resources, they are powered by accelerators to enhance their performance
+behavior. Therefore, it is interesting to see how AI-based Deep Neural Networks
+perform on such devices with limited resources.
+  In this work, we present and compare the performance in terms of inference
+time and power consumption of the four Systems on a Chip (SoCs): Asus Tinker
+Edge R, Raspberry Pi 4, Google Coral Dev Board, Nvidia Jetson Nano, and one
+microcontroller: Arduino Nano 33 BLE, on different deep learning models and
+frameworks. We also provide a method for measuring power consumption, inference
+time and accuracy for the devices, which can be easily extended to other
+devices. Our results showcase that, for Tensorflow based quantized model, the
+Google Coral Dev Board delivers the best performance, both for inference time
+and power consumption. For a low fraction of inference computation time, i.e.
+less than 29.3% of the time for MobileNetV2, the Jetson Nano performs faster
+than the other devices.",S. Baller and A. Jindal and M. Chadha and M. Gerndt,2021,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,tk1_europar,\cite{tk1_europar},NVIDIA Jetson Platform Characterization,,,"Halawa, Hassan
+and Abdelhafez, Hazem A.
+and Boktor, Andrew
+and Ripeanu, Matei",2017,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,MLSYS2020_02522a2b,\cite{MLSYS2020_02522a2b},MLPerf Training Benchmark,http://arxiv.org/abs/1910.01500v3,"Machine learning (ML) needs industry-standard performance benchmarks to
+support design and competitive evaluation of the many emerging software and
+hardware solutions for ML. But ML training presents three unique benchmarking
+challenges absent from other domains: optimizations that improve training
+throughput can increase the time to solution, training is stochastic and time
+to solution exhibits high variance, and software and hardware systems are so
+diverse that fair benchmarking with the same binary, code, and even
+hyperparameters is difficult. We therefore present MLPerf, an ML benchmark that
+overcomes these challenges. Our analysis quantitatively evaluates MLPerf's
+efficacy at driving performance and scalability improvements across two rounds
+of results from multiple vendors.","Mattson, Peter and Cheng, Christine and Diamos, Gregory and Coleman, Cody and Micikevicius, Paulius and Patterson, David and Tang, Hanlin and Wei, Gu-Yeon and Bailis, Peter and Bittorf, Victor and Brooks, David and Chen, Dehao and Dutta, Debo and Gupta, Udit and Hazelwood, Kim and Hock, Andy and Huang, Xinyuan and Kang, Daniel and Kanter, David and Kumar, Naveen and Liao, Jeffery and Narayanan, Deepak and Oguntebi, Tayo and Pekhimenko, Gennady and Pentecost, Lillian and Janapa Reddi, Vijay and Robie, Taylor and St John, Tom and Wu, Carole-Jean and Xu, Lingjie and Young, Cliff and Zaharia, Matei",2020,,https://proceedings.mlsys.org/paper/2020/file/02522a2b2726fb0a03bb19f2d8d9524d-Paper.pdf,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,edge_config,\cite{edge_config},Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano,,,"Holly, Stephan and Wendt, Alexander and Lechner, Martin",2020,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,frqswitching,\cite{frqswitching},Studying the Impact of {CPU} and Memory Controller Frequencies on Power Consumption of the {Jetson} {TX1},,,"Abdelhafez, Hazem A. and Ripeanu, Matei",2019,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,snowflakes,\cite{snowflakes},Snowflakes at the Edge: A Study of Variability among {NVIDIA} {Jetson} {AGX} {Xavier} Boards,,,"Abdelhafez, Hazem A. and Halawa, Hassan and Pattabiraman, Karthik and Ripeanu, Matei",2021,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,mohan2021analyzing,\cite{mohan2021analyzing},Analyzing and Mitigating Data Stalls in DNN Training,http://arxiv.org/abs/2007.06775v3,"Training Deep Neural Networks (DNNs) is resource-intensive and
+time-consuming. While prior research has explored many different ways of
+reducing DNN training time, the impact of input data pipeline, i.e., fetching
+raw data items from storage and performing data pre-processing in memory, has
+been relatively unexplored. This paper makes the following contributions: (1)
+We present the first comprehensive analysis of how the input data pipeline
+affects the training time of widely-used computer vision and audio Deep Neural
+Networks (DNNs), that typically involve complex data preprocessing. We analyze
+nine different models across three tasks and four datasets while varying
+factors such as the amount of memory, number of CPU threads, storage device,
+GPU generation etc on servers that are a part of a large production cluster at
+Microsoft. We find that in many cases, DNN training time is dominated by data
+stall time: time spent waiting for data to be fetched and preprocessed. (2) We
+build a tool, DS-Analyzer to precisely measure data stalls using a differential
+technique, and perform predictive what-if analysis on data stalls. (3) Finally,
+based on the insights from our analysis, we design and implement three simple
+but effective techniques in a data-loading library, CoorDL, to mitigate data
+stalls. Our experiments on a range of DNN tasks, models, datasets, and hardware
+configs show that when PyTorch uses CoorDL instead of the state-of-the-art DALI
+data loading library, DNN training time is reduced significantly (by as much as
+5x on a single server).","Mohan, Jayashree and Phanishayee, Amar and Raniwala, Ashish and Chidambaram, Vijay",2021,,,,Proc. VLDB Endow.
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,kumar2020quiver,\cite{kumar2020quiver},Quiver: An informed storage cache for deep learning,,,Abhishek Vijaya Kumar and Muthian Sivathanu,2020,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,google-sysml,\cite{google-sysml},Towards Federated Learning at Scale: System Design,http://arxiv.org/abs/1902.01046v2,"Federated Learning is a distributed machine learning approach which enables
+model training on a large corpus of decentralized data. We have built a
+scalable production system for Federated Learning in the domain of mobile
+devices, based on TensorFlow. In this paper, we describe the resulting
+high-level design, sketch some of the challenges and their solutions, and touch
+upon the open problems and future directions.","Bonawitz, Keith and Eichner, Hubert and Grieskamp, Wolfgang and Huba, Dzmitry and Ingerman, Alex and Ivanov, Vladimir and Kiddon, Chlo\'{e} and Kone\v{c}n\'{y}, Jakub and Mazzocchi, Stefano and McMahan, Brendan and Van Overveldt, Timon and Petrou, David and Ramage, Daniel and Roselander, Jason",2019,,https://proceedings.mlsys.org/paper/2019/file/bd686fd640be98efaae0091fa301e613-Paper.pdf,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,powermodes_nano,\cite{powermodes_nano},Power modes for Nano,,,Nvidia,2021,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,powermodes_nxagx,\cite{powermodes_nxagx},Power modes for NX and AGX,,,Nvidia,2021,,,,
+Characterizing the Performance of Accelerated Jetson Edge Devices for Training Deep Learning Models,http://arxiv.org/abs/2509.20160v1,powermodes_orin,\cite{powermodes_orin},Technical Brief: Nvidia Jetson AGX Orin,,,Nvidia,2021,,,,

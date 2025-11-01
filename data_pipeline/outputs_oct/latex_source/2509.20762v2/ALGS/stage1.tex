@@ -1,0 +1,17 @@
+\begin{algorithm}[t]
+    \caption{\ours: Stage 1}\label{algo:stage1}
+    \SetKwInput{KwInput}{Input}
+    \SetKwInput{KwOutput}{Output}
+    \KwInput{\textbf{(1)} $V$ and $E$: topology;
+    \textbf{(2)} $E'$ and $A(e), \forall e \in E'$: known group anchors;
+    \textbf{(3)} $X$: topological feature matrix;
+    \textbf{(4)} $n^{(1)}_{ep}$: number of optimization epochs
+    }
+    \KwOutput{$s^{(1)}_{v;e}, \forall v \in e \in E$: learned topology-based scores}
+    \For{$i_{ep} = 1, 2, \ldots, n^{(1)}_{ep}$}{
+        $s^{(1)}_{v;e} = \operatorname{MLP}(X; \theta)$ \Comment*[f]{MLP forward pass} \\ 
+        $\mathcal{L}^{(1)} = -\sum_{e \in E'} \log \frac{\exp(s^{(1)}_{A(e);e})}{\sum_{u \in e} \exp(s^{(1)}_{u;e})}$  \Comment*[f]{Eq.~\eqref{eq:loss_stage_1}} \\
+        Update $\theta$ w.r.t. $\frac{\partial \mathcal{L}^{(1)}}{\partial \theta}$ \Comment*[f]{Gradient descent} \\
+    }       
+ \Return $s^{(1)}_{v;e} = \operatorname{MLP}(X; \theta)$ \Comment*[f]{Trained scores}
+\end{algorithm}

@@ -1,0 +1,208 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,deo2017learning,\cite{deo2017learning},Learning and predicting on-road pedestrian behavior around vehicles,,,"Deo, Nachiket and Trivedi, Mohan M",2017,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,xu2019temporal,\cite{xu2019temporal},Temporal Recurrent Networks for Online Action Detection,http://arxiv.org/abs/1811.07391v2,"Most work on temporal action detection is formulated as an offline problem,
+in which the start and end times of actions are determined after the entire
+video is fully observed. However, important real-time applications including
+surveillance and driver assistance systems require identifying actions as soon
+as each video frame arrives, based only on current and historical observations.
+In this paper, we propose a novel framework, Temporal Recurrent Network (TRN),
+to model greater temporal context of a video frame by simultaneously performing
+online action detection and anticipation of the immediate future. At each
+moment in time, our approach makes use of both accumulated historical evidence
+and predicted future information to better recognize the action that is
+currently occurring, and integrates both of these into a unified end-to-end
+architecture. We evaluate our approach on two popular online action detection
+datasets, HDD and TVSeries, as well as another widely used dataset, THUMOS'14.
+The results show that TRN significantly outperforms the state-of-the-art.","Xu, Mingze and Gao, Mingfei and Chen, Yi-Ting and Davis, Larry S and Crandall, David J",2019,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,eun2020learning,\cite{eun2020learning},Learning to Discriminate Information for Online Action Detection,http://arxiv.org/abs/1912.04461v3,"From a streaming video, online action detection aims to identify actions in
+the present. For this task, previous methods use recurrent networks to model
+the temporal sequence of current action frames. However, these methods overlook
+the fact that an input image sequence includes background and irrelevant
+actions as well as the action of interest. For online action detection, in this
+paper, we propose a novel recurrent unit to explicitly discriminate the
+information relevant to an ongoing action from others. Our unit, named
+Information Discrimination Unit (IDU), decides whether to accumulate input
+information based on its relevance to the current action. This enables our
+recurrent network with IDU to learn a more discriminative representation for
+identifying ongoing actions. In experiments on two benchmark datasets, TVSeries
+and THUMOS-14, the proposed method outperforms state-of-the-art methods by a
+significant margin. Moreover, we demonstrate the effectiveness of our recurrent
+unit by conducting comprehensive ablation studies.","Eun, Hyunjun and Moon, Jinyoung and Park, Jongyoul and Jung, Chanho and Kim, Changick",2020,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,cho2014learning,\cite{cho2014learning},"Learning Phrase Representations using RNN Encoder-Decoder for
+  Statistical Machine Translation",http://arxiv.org/abs/1406.1078v3,"In this paper, we propose a novel neural network model called RNN
+Encoder-Decoder that consists of two recurrent neural networks (RNN). One RNN
+encodes a sequence of symbols into a fixed-length vector representation, and
+the other decodes the representation into another sequence of symbols. The
+encoder and decoder of the proposed model are jointly trained to maximize the
+conditional probability of a target sequence given a source sequence. The
+performance of a statistical machine translation system is empirically found to
+improve by using the conditional probabilities of phrase pairs computed by the
+RNN Encoder-Decoder as an additional feature in the existing log-linear model.
+Qualitatively, we show that the proposed model learns a semantically and
+syntactically meaningful representation of linguistic phrases.","Cho, Kyunghyun and Van Merri{\""e}nboer, Bart and Gulcehre, Caglar and Bahdanau, Dzmitry and Bougares, Fethi and Schwenk, Holger and Bengio, Yoshua",2014,,,,arXiv preprint arXiv:1406.1078
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,zhao2022progressive,\cite{zhao2022progressive},Progressive privileged knowledge distillation for online action detection,,,"Zhao, Peisen and Xie, Lingxi and Wang, Jiajie and Zhang, Ya and Tian, Qi",2022,,,,Pattern Recognition
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,vaswani2017attention,\cite{vaswani2017attention},Attention Is All You Need,http://arxiv.org/abs/1706.03762v7,"The dominant sequence transduction models are based on complex recurrent or
+convolutional neural networks in an encoder-decoder configuration. The best
+performing models also connect the encoder and decoder through an attention
+mechanism. We propose a new simple network architecture, the Transformer, based
+solely on attention mechanisms, dispensing with recurrence and convolutions
+entirely. Experiments on two machine translation tasks show these models to be
+superior in quality while being more parallelizable and requiring significantly
+less time to train. Our model achieves 28.4 BLEU on the WMT 2014
+English-to-German translation task, improving over the existing best results,
+including ensembles by over 2 BLEU. On the WMT 2014 English-to-French
+translation task, our model establishes a new single-model state-of-the-art
+BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction
+of the training costs of the best models from the literature. We show that the
+Transformer generalizes well to other tasks by applying it successfully to
+English constituency parsing both with large and limited training data.","Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia",2017,,,,Advances in neural information processing systems
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,wang2021oadtr,\cite{wang2021oadtr},OadTR: Online Action Detection with Transformers,http://arxiv.org/abs/2106.11149v1,"Most recent approaches for online action detection tend to apply Recurrent
+Neural Network (RNN) to capture long-range temporal structure. However, RNN
+suffers from non-parallelism and gradient vanishing, hence it is hard to be
+optimized. In this paper, we propose a new encoder-decoder framework based on
+Transformers, named OadTR, to tackle these problems. The encoder attached with
+a task token aims to capture the relationships and global interactions between
+historical observations. The decoder extracts auxiliary information by
+aggregating anticipated future clip representations. Therefore, OadTR can
+recognize current actions by encoding historical information and predicting
+future context simultaneously. We extensively evaluate the proposed OadTR on
+three challenging datasets: HDD, TVSeries, and THUMOS14. The experimental
+results show that OadTR achieves higher training and inference speeds than
+current RNN based approaches, and significantly outperforms the
+state-of-the-art methods in terms of both mAP and mcAP. Code is available at
+https://github.com/wangxiang1230/OadTR.","Wang, Xiang and Zhang, Shiwei and Qing, Zhiwu and Shao, Yuanjie and Zuo, Zhengrong and Gao, Changxin and Sang, Nong",2021,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,xu2021long,\cite{xu2021long},Long Short-Term Transformer for Online Action Detection,http://arxiv.org/abs/2107.03377v3,"We present Long Short-term TRansformer (LSTR), a temporal modeling algorithm
+for online action detection, which employs a long- and short-term memory
+mechanism to model prolonged sequence data. It consists of an LSTR encoder that
+dynamically leverages coarse-scale historical information from an extended
+temporal window (e.g., 2048 frames spanning of up to 8 minutes), together with
+an LSTR decoder that focuses on a short time window (e.g., 32 frames spanning 8
+seconds) to model the fine-scale characteristics of the data. Compared to prior
+work, LSTR provides an effective and efficient method to model long videos with
+fewer heuristics, which is validated by extensive empirical analysis. LSTR
+achieves state-of-the-art performance on three standard online action detection
+benchmarks, THUMOS'14, TVSeries, and HACS Segment. Code has been made available
+at: https://xumingze0308.github.io/projects/lstr","Xu, Mingze and Xiong, Yuanjun and Chen, Hao and Li, Xinyu and Xia, Wei and Tu, Zhuowen and Soatto, Stefano",2021,,,,Advances in Neural Information Processing Systems
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,yang2022colar,\cite{yang2022colar},"Colar: Effective and Efficient Online Action Detection by Consulting
+  Exemplars",http://arxiv.org/abs/2203.01057v2,"Online action detection has attracted increasing research interests in recent
+years. Current works model historical dependencies and anticipate the future to
+perceive the action evolution within a video segment and improve the detection
+accuracy. However, the existing paradigm ignores category-level modeling and
+does not pay sufficient attention to efficiency. Considering a category, its
+representative frames exhibit various characteristics. Thus, the category-level
+modeling can provide complimentary guidance to the temporal dependencies
+modeling. This paper develops an effective exemplar-consultation mechanism that
+first measures the similarity between a frame and exemplary frames, and then
+aggregates exemplary features based on the similarity weights. This is also an
+efficient mechanism, as both similarity measurement and feature aggregation
+require limited computations. Based on the exemplar-consultation mechanism, the
+long-term dependencies can be captured by regarding historical frames as
+exemplars, while the category-level modeling can be achieved by regarding
+representative frames from a category as exemplars. Due to the complementarity
+from the category-level modeling, our method employs a lightweight architecture
+but achieves new high performance on three benchmarks. In addition, using a
+spatio-temporal network to tackle video frames, our method makes a good
+trade-off between effectiveness and efficiency. Code is available at
+https://github.com/VividLe/Online-Action-Detection.","Yang, Le and Han, Junwei and Zhang, Dingwen",2022,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,chen2022gatehub,\cite{chen2022gatehub},"GateHUB: Gated History Unit with Background Suppression for Online
+  Action Detection",http://arxiv.org/abs/2206.04668v1,"Online action detection is the task of predicting the action as soon as it
+happens in a streaming video. A major challenge is that the model does not have
+access to the future and has to solely rely on the history, i.e., the frames
+observed so far, to make predictions. It is therefore important to accentuate
+parts of the history that are more informative to the prediction of the current
+frame. We present GateHUB, Gated History Unit with Background Suppression, that
+comprises a novel position-guided gated cross-attention mechanism to enhance or
+suppress parts of the history as per how informative they are for current frame
+prediction. GateHUB further proposes Future-augmented History (FaH) to make
+history features more informative by using subsequently observed frames when
+available. In a single unified framework, GateHUB integrates the transformer's
+ability of long-range temporal modeling and the recurrent model's capacity to
+selectively encode relevant information. GateHUB also introduces a background
+suppression objective to further mitigate false positive background frames that
+closely resemble the action frames. Extensive validation on three benchmark
+datasets, THUMOS, TVSeries, and HDD, demonstrates that GateHUB significantly
+outperforms all existing methods and is also more efficient than the existing
+best work. Furthermore, a flow-free version of GateHUB is able to achieve
+higher or close accuracy at 2.8x higher frame rate compared to all existing
+methods that require both RGB and optical flow information for prediction.","Chen, Junwen and Mittal, Gaurav and Yu, Ye and Kong, Yu and Chen, Mei",2022,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,furnari2020rolling,\cite{furnari2020rolling},Rolling-Unrolling LSTMs for Action Anticipation from First-Person Video,http://arxiv.org/abs/2005.02190v2,"In this paper, we tackle the problem of egocentric action anticipation, i.e.,
+predicting what actions the camera wearer will perform in the near future and
+which objects they will interact with. Specifically, we contribute
+Rolling-Unrolling LSTM, a learning architecture to anticipate actions from
+egocentric videos. The method is based on three components: 1) an architecture
+comprised of two LSTMs to model the sub-tasks of summarizing the past and
+inferring the future, 2) a Sequence Completion Pre-Training technique which
+encourages the LSTMs to focus on the different sub-tasks, and 3) a Modality
+ATTention (MATT) mechanism to efficiently fuse multi-modal predictions
+performed by processing RGB frames, optical flow fields and object-based
+features. The proposed approach is validated on EPIC-Kitchens, EGTEA Gaze+ and
+ActivityNet. The experiments show that the proposed architecture is
+state-of-the-art in the domain of egocentric videos, achieving top performances
+in the 2019 EPIC-Kitchens egocentric action anticipation challenge. The
+approach also achieves competitive performance on ActivityNet with respect to
+methods not based on unsupervised pre-training and generalizes to the tasks of
+early action recognition and action recognition. To encourage research on this
+challenging topic, we made our code, trained models, and pre-extracted features
+available at our web page: http://iplab.dmi.unict.it/rulstm.","Furnari, Antonino and Farinella, Giovanni Maria",2020,,,,IEEE transactions on pattern analysis and machine intelligence
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,qi2021self,\cite{qi2021self},Self-Regulated Learning for Egocentric Video Activity Anticipation,http://arxiv.org/abs/2111.11631v1,"Future activity anticipation is a challenging problem in egocentric vision.
+As a standard future activity anticipation paradigm, recursive sequence
+prediction suffers from the accumulation of errors. To address this problem, we
+propose a simple and effective Self-Regulated Learning framework, which aims to
+regulate the intermediate representation consecutively to produce
+representation that (a) emphasizes the novel information in the frame of the
+current time-stamp in contrast to previously observed content, and (b) reflects
+its correlation with previously observed frames. The former is achieved by
+minimizing a contrastive loss, and the latter can be achieved by a dynamic
+reweighing mechanism to attend to informative frames in the observed content
+with a similarity comparison between feature of the current frame and observed
+frames. The learned final video representation can be further enhanced by
+multi-task learning which performs joint feature learning on the target
+activity labels and the automatically detected action and object class tokens.
+SRL sharply outperforms existing state-of-the-art in most cases on two
+egocentric video datasets and two third-person video datasets. Its
+effectiveness is also verified by the experimental fact that the action and
+object concepts that support the activity semantics can be accurately
+identified.","Qi, Zhaobo and Wang, Shuhui and Su, Chi and Su, Li and Huang, Qingming and Tian, Qi",2021,,,,IEEE transactions on pattern analysis and machine intelligence
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,liu2022hybrid,\cite{liu2022hybrid},A hybrid egocentric activity anticipation framework via memory-augmented recurrent and one-shot representation forecasting,,,"Liu, Tianshan and Lam, Kin-Man",2022,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,girdhar2021anticipative,\cite{girdhar2021anticipative},Anticipative Video Transformer,http://arxiv.org/abs/2106.02036v2,"We propose Anticipative Video Transformer (AVT), an end-to-end
+attention-based video modeling architecture that attends to the previously
+observed video in order to anticipate future actions. We train the model
+jointly to predict the next action in a video sequence, while also learning
+frame feature encoders that are predictive of successive future frames'
+features. Compared to existing temporal aggregation strategies, AVT has the
+advantage of both maintaining the sequential progression of observed actions
+while still capturing long-range dependencies--both critical for the
+anticipation task. Through extensive experiments, we show that AVT obtains the
+best reported performance on four popular action anticipation benchmarks:
+EpicKitchens-55, EpicKitchens-100, EGTEA Gaze+, and 50-Salads; and it wins
+first place in the EpicKitchens-100 CVPR'21 challenge.","Girdhar, Rohit and Grauman, Kristen",2021,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,osman2021slowfast,\cite{osman2021slowfast},"SlowFast Rolling-Unrolling LSTMs for Action Anticipation in Egocentric
+  Videos",http://arxiv.org/abs/2109.00829v1,"Action anticipation in egocentric videos is a difficult task due to the
+inherently multi-modal nature of human actions. Additionally, some actions
+happen faster or slower than others depending on the actor or surrounding
+context which could vary each time and lead to different predictions. Based on
+this idea, we build upon RULSTM architecture, which is specifically designed
+for anticipating human actions, and propose a novel attention-based technique
+to evaluate, simultaneously, slow and fast features extracted from three
+different modalities, namely RGB, optical flow, and extracted objects. Two
+branches process information at different time scales, i.e., frame-rates, and
+several fusion schemes are considered to improve prediction accuracy. We
+perform extensive experiments on EpicKitchens-55 and EGTEA Gaze+ datasets, and
+demonstrate that our technique systematically improves the results of RULSTM
+architecture for Top-5 accuracy metric at different anticipation times.","Osman, Nada and Camporese, Guglielmo and Coscia, Pasquale and Ballan, Lamberto",2021,,,,
+Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,http://arxiv.org/abs/2510.10682v1,roy2024interaction,\cite{roy2024interaction},Interaction Region Visual Transformer for Egocentric Action Anticipation,http://arxiv.org/abs/2211.14154v7,"Human-object interaction is one of the most important visual cues and we
+propose a novel way to represent human-object interactions for egocentric
+action anticipation. We propose a novel transformer variant to model
+interactions by computing the change in the appearance of objects and human
+hands due to the execution of the actions and use those changes to refine the
+video representation. Specifically, we model interactions between hands and
+objects using Spatial Cross-Attention (SCA) and further infuse contextual
+information using Trajectory Cross-Attention to obtain environment-refined
+interaction tokens. Using these tokens, we construct an interaction-centric
+video representation for action anticipation. We term our model InAViT which
+achieves state-of-the-art action anticipation performance on large-scale
+egocentric datasets EPICKTICHENS100 (EK100) and EGTEA Gaze+. InAViT outperforms
+other visual transformer-based methods including object-centric video
+representation. On the EK100 evaluation server, InAViT is the top-performing
+method on the public leaderboard (at the time of submission) where it
+outperforms the second-best model by 3.3% on mean-top5 recall.","Roy, Debaditya and Rajendiran, Ramanathan and Fernando, Basura",2024,,,,

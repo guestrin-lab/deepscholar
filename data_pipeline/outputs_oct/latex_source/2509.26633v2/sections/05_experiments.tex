@@ -1,0 +1,135 @@
+\section{Experimental Results}
+In this section, we present a comprehensive experimental validation of \OmniRetarget. We first demonstrate the breadth of complex behaviors enabled by our approach, including natural object manipulation and terrain interaction. We then provide a quantitative benchmark against state-of-the-art baselines, evaluating performance across kinematic quality metrics and downstream policy performance.
+\subsection{Whole-Body Scene-Object-Interaction} 
+\paragraph{Agile Loco-Manipulation}
+\OmniRetarget enables RL policies to learn agile, whole-body motions for complex scene interactions and loco-manipulation in simulation, culminating in successful zero-shot sim-to-real transfer to hardware. Shown in Fig.~\ref{fig:results_capacity}, policies trained on our data reproduce a diverse range of expressive behaviors on a Unitree G1 humanoid, including natural box-carrying motions retargeted from the OMOMO dataset, dynamically climbing a $0.9$m-high platform ($70$\% of the robot's height), and crawling over slopes, showing clean and accurate contact sequences. 
+
+To showcase the full capabilities of our framework, we present a long-horizon, dynamic sequence inspired by the Boston Dynamics Atlas tool-use demo \cite{BostonDynamics2023Atlas}. Visualized in Fig.~\ref{fig:flagship_demo}, our retargeted data enables the robot to carry a $4.6$ kg chair to a platform, use it as a stepstone to climb up, and then leap off, performing a parkour-style roll to absorb the landing impact. This 30-second, complex, multi-stage task highlights \OmniRetarget's ability to produce precise and versatile reference motions, pushing the boundaries of what is possible for humanoids learning agile, human-like behaviors.
+
+
+We additionally showcase a high-dynamic wall-flip motion\footnote{The motion is acquired from \url{https://actorcore.reallusion.com/3d-motion?asset=parkour-tic-tac-backflip}
+. An IMU capable of measuring angular rates above $15$ rad/s is required for this motion.} in Fig.~\ref{fig:wallflip}. The robot completes the full flip in approximately $0.5$ second, reaching a peak angular velocity of $15$ rad/s.
+Unlike the human foot, which can flex at the arch to maintain contact and generate friction, the robot foot is rigid. As a result, it must align more closely to the wall to achieve sufficient contact area and friction.
+To account for this physical difference and give RL more freedom to learn this skill, we relaxed the termination condition during RL training by increasing the end-effector position error threshold to $0.5$ meter (compared to $0.25$ meter used in other motions) and removed the foot joint orientation tracking term from the reward function. All other components of the tracking objective remain consistent with other motions.
+The trained policy is robust and achieves a $5/5$ success rate in our real-world experiments.
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{figures/wallflip_v32_compressed.pdf}
+	\caption{Hardware results showing a high-dynamic wall-flip motion. The robot reaches a maximum linear velocity of $3.5$ m/s and a peak angular velocity of $15$ rad/s. }
+	\label{fig:wallflip}
+    % \vspace*{-0.3cm}
+\end{figure*}
+% \paragraph{Cross-Embodiment Data Generation}
+
+\paragraph{Sim-to-real with Augmented Data} 
+We show that the augmented motions from our pipeline can be used for training and deployment effectively. As shown in Fig.~\ref{fig:aug}, the interaction mesh formulation allows \OmniRetarget to generalize a single nominal motion into box-picking across shapes and positions, as well as platform climbing at different heights. Notably, these augmented motions transfer to hardware without reward tuning, effectively expanding the repertoire of scenes and behaviors we can achieve in real.
+
+In comparison, relying solely on domain randomization--which perturbs object shapes and poses only during training--performs poorly under our RL formulation, as the policies struggle to explore far beyond the nominal reference. Policies trained on our augmented data instead yield reliable success (see video for comparison). Admittedly, additional reward engineering could help, but it contradicts our minimal design goal. Quantitatively, training and evaluating on the full augmented dataset achieves a $79.1\%$ success rate, comparable to $82.2\%$ when evaluating on nominal motions only, showing that kinematics augmentation substantially enlarges coverage without significant performance degradation.
+
+% We will open-source this data to support the community in developing natural, diverse interaction skills for humanoid robots.
+
+\begin{table*}[tb]
+\centering 
+\begin{tabular}{lcccccc} 
+\toprule 
+& \multicolumn{2}{c}{\textbf{Penetration}} & \multicolumn{2}{c}{\textbf{Foot Skating}} & \textbf{Contact Preservation} &
+\textbf{Downstream RL Policy}\\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-6} \cmidrule(lr){7-7} 
+\textbf{Method} & Duration $\downarrow$ & Max Depth (cm) $\downarrow$ & Duration $\downarrow$ & Max Vel. (cm/s) $\downarrow$ & Duration $\uparrow$ & Success Rate $\uparrow$\\ 
+\midrule
+\multicolumn{6}{l}{\textit{Robot-Object Interaction (Retargeting from the OMOMO Dataset)}} \\
+\midrule 
+PHC~\cite{Luo2023PerpetualHC} & 0.68 $\pm$ 0.21 & 5.11 $\pm$ 3.09 & 0.05 $\pm$ 0.05 & 1.40 $\pm$ 0.80 & 0.96 $\pm$ 0.09 & 71.28\% $\pm$ 22.55\%\\ 
+GMR~\cite{ze2025twist} & 0.83 $\pm$ 0.14 & 8.50 $\pm$ 3.94 & 0.02 $\pm$ 0.01 & 1.46 $\pm$ 0.45 & \textbf{0.99 $\pm$ 0.04} & 50.83 \% $\pm$ 23.89\% \\  
+VideoMimic~\cite{videomimic} & 0.60 $\pm$ 0.27 & 7.48 $\pm$ 4.95 & 0.12 $\pm$ 0.07 & 1.50 $\pm$ 0.70 & 0.77 $\pm$ 0.25 & 3.85\% $\pm$ 8.41\%\\ 
+\OmniRetarget & \textbf{0.00 $\pm$ 0.01} & \textbf{1.34 $\pm$ 0.34} & \textbf{0} & \textbf{0} & 0.96 $\pm$ 0.09 & \textbf{82.20\% $\pm$ 9.74\%}\\
+\midrule
+\multicolumn{6}{l}{\textit{Robot-Terrain Interaction (Retargeting from the In-House MoCap Dataset)}} \\
+\midrule
+PHC & 0.66 $\pm$ 0.36 & 7.74 $\pm$ 4.53 & 0.15 $\pm$ 0.04 & 2.03 $\pm$ 1.83 & 0.45 $\pm$ 0.28 & 52.63\% $\pm$ 49.93\% \\ 
+GMR & 0.91 $\pm$ 0.16 & 5.72 $\pm$ 3.84 & 0.04 $\pm$ 0.05 & 1.75 $\pm$ 3.01 & 0.67 $\pm$ 0.26 & 78.94\% $\pm$ 40.77\% \\ 
+VideoMimic & 0.83 $\pm$ 0.11 & 5.97 $\pm$ 3.58 & 0.14 $\pm$ 0.05 & 1.85 $\pm$ 1.38  & 0.47 $\pm$ 0.25 & 51.75\% $\pm$ 49.23\% \\ 
+\OmniRetarget & \textbf{0.01 $\pm$ 0.02} & \textbf{1.37 $\pm$ 0.18} & \textbf{0} & \textbf{0} & \textbf{0.72 $\pm$ 0.19} & \textbf{94.73\% $\pm$ 22.33\%}\\ 
+\midrule
+\multicolumn{6}{l}{\textit{Robot-Only (Retargeting from the LAFAN1 Dataset)}} \\
+\midrule
+Unitree~\cite{unitree_lafan1_retargeting_dataset} & 0.09 $\pm$ 0.13 & 3.22 $\pm$ 2.64 & 0.06 $\pm$ 0.03 & 1.46 $\pm$ 0.01 & N/A & \textbf{100\%} \\
+\OmniRetarget & \textbf{0.00 $\pm$ 0.00} & \textbf{1.07 $\pm$ 0.00} & \textbf{0} & \textbf{0} & N/A & \textbf{100\%} \\
+\bottomrule 
+\end{tabular}
+\caption{\label{tab:kinematic_quality} Quantitative comparison of kinematic retargeting quality and downstream RL performances.}
+\vspace{-0.4cm}
+\end{table*}
+
+
+\subsection{Benchmark Against Prior Retargeting Pipelines}
+\begin{figure}
+\centering
+\includegraphics[width=0.48\textwidth]{figures/baseline-comparison-crop.pdf}
+	\caption{\label{fig:artifact}Artifacts resulting from the retargeting baselines. 
+    % \lujie{Highlight penetration with red circles. Make box transparent to show depth of penetration and robot configuration behind the box.}
+    }
+	\label{fig:baseline_artifacts}
+    \vspace*{-0.4cm}
+\end{figure}
+
+We compare \OmniRetarget against several widely-used open-source retargeting baselines\footnote{Baseline performance may depend on their hyperparameters. We initialized from the default settings in their public codes, and further improved to ensure consistent performance across different tasks.}: PHC~\cite{Luo2023PerpetualHC}, GMR~\cite{ze2025twist} and VideoMimic~\cite{videomimic}. The generated dataset including 2.78 hours of box carrying in OMOMO, 1 hour of in-house MoCap and 4.6 hours of LAFAN1 will be open-sourced. 
+%, which uses the PyRoki~\cite{kim2025pyroki} library. 
+\paragraph{Kinematics Quality} We evaluate the kinematic quality of retargeted motions on a Unitree G1 with three criteria:
+\begin{enumerate}
+    \item \textbf{Penetration}: Measured by the time duration (normalized by the trajectory length) and maximum depth of intersections between the robot, objects, and terrain.
+    \item \textbf{Foot Skating}: Quantified by the time duration (normalized by the total desired foot sticking length) and maximum skating velocity of a stance foot.
+    \item \textbf{Contact Preservation}: Quantified by the time duration (normalized by the desired contact length). For \textit{robot-object} tasks, we measure hand-object contact. For \textit{robot-terrain} tasks, we measure contact between the robot's hands, toes, and heels with the terrain surface.
+\end{enumerate}
+As illustrated in Tab.~\ref{tab:kinematic_quality}, \OmniRetarget significantly outperforms all baselines across most kinematic metrics. While \OmniRetarget occasionally incurs minor penetration due to the linearization of constraints \eqref{eq:non-penetration_cstr} in the sequential SOCP solver, the violations are minimal and can be efficiently fixed by RL. 
+% and do not significantly affect the RL training. 
+GMR achieves the highest contact preservation score for robot-object interaction tasks; however, this outcome largely reflects its keypoint-matching objective. In practice, scaling human hand keypoints to the robot’s size often drives the robot’s hands inside the object, leading to substantial penetration errors (Fig. \ref{fig:baseline_artifacts}b). Overall, all baselines exhibit significant penetration and foot skating (Fig. \ref{fig:baseline_artifacts}), degrading the downstream RL performance, as discussed next.
+
+For a direct comparison on pure locomotion, we retarget motions from the LAFAN1 MoCap dataset \cite{harvey2020robust} and benchmark them against the publicly available Unitree LAFAN1 retargeted dataset \cite{unitree_lafan1_retargeting_dataset}. This serves as a strong baseline, as it is widely considered a high-quality data source for RL-based locomotion training~\cite{liao2025beyondmimic}. Table~\ref{tab:kinematic_quality} shows that \OmniRetarget's motions exhibit fewer physical artifacts, achieving better satisfaction of hard constraints.
+% PHC exhibits the most violations foot skating and a lot of penetration. GMR improves by using a better optimizer (Mink) but still suffers from penetration issues. VideoMimic reduces penetration by including it in constraints but has large contact preservation errors due to treating penetration separately from interaction dynamics. In contrast, \OmniRetarget achieves minimal constraint violations and the highest contact preservation, demonstrating the advantage of the interaction mesh formulation that preserves interaction dynamics rather than merely matching keypoints.
+
+
+
+\paragraph{Downstream RL Performance}
+\label{sec:downstream-rl}
+A central observation from prior works~\cite{liao2025beyondmimic, zhang2025hub} is that the quality of retargeted motions strongly influences the performance of downstream RL. To verify this, we select 39 challenging motions for \OmniRetarget and baselines, and train RL policies using identical hyperparameters from~\cite{liao2025beyondmimic} without manual tuning. We evaluate the policies in simulation, and success is measured by training termination criteria.
+
+Shown in Tab.~\ref{tab:kinematic_quality}, retargeting quality directly impacts RL success rates. \OmniRetarget consistently achieves the highest performance across tasks, exceeding baselines by over 10\% with lower variance, which indicates more stable learning across different motions. PHC performs better than GMR in object manipulation, likely due to lower penetration with sufficient contact preservation, but worse in terrain interaction, where its contact preservation drops by nearly 50\%. Specifically for terrain interaction, we see that contact preservation is directly proportional to the success rate. These results suggest that both contact preservation and penetration reduction are critical for generalizing RL policies across diverse tasks, and \OmniRetarget shows strength in both.
+
+VideoMimic shows the weakest interaction preservation among all baselines (Fig.~\ref{fig:artifact}c), likely due to its collision avoidance soft cost conflicting with the keypoint matching cost. 
+% For example, a hand can satisfy a proximity target to a keypoint while being on the wrong side of an object. 
+This is compounded by its coarse collision model originally designed for heightmaps, which is ill-suited for precise loco-manipulation. Consequently, while its terrain-interaction results are comparable to PHC, its performance on object manipulation is poor. Although this could be partially attributed to the tuning of its soft penalties, \OmniRetarget demonstrates that a hard-constraint formulation avoids such sensitivities altogether. 
+% In contrast, VideoMimic shows the weakest interaction preservation among the methods (Fig.~\ref{fig:artifact}c). This underscores the need to preserve interactions explicitly: while other baselines maintain a coarse structure, VideoMimic often pushes the motion too far from the object, especially since keypoint matching (proximity to a keypoint) does not ensure the correct spatial relationship (e.g., a hand meant for the side of a box may end up behind it). In addition, it only adopts a coarse collision model originally designed for heightmaps. These factors result in poor performance for object manipulation, though its terrain-interaction results are comparable to PHC. To be fair, some of this may be due to limited tuning of its soft penalties. Nonetheless, \OmniRetarget avoids such sensitivity by not relying on soft constraints.
+
+% \paragraph{Kinematics Augmentation v.s. Domain Randomization}
+
+% \begin{figure}
+% \centering
+% \includegraphics[width=0.48\textwidth]{figures/aug-dr-crop.pdf}
+% 	\caption{\label{fig:augdr} Comparison of object shape and initial pose augmentation in kinematics stage vs. training-only randomization.
+%     }
+% 	\label{fig:terrain_aug}
+%     \vspace*{-0.6cm}
+% \end{figure}
+% \begin{table}
+% \centering 
+% \begin{tabular}{lccc} 
+% \toprule 
+% & \multicolumn{3}{c}{\textbf{Success Rate}} \\ 
+% \cmidrule(lr){2-4}
+% \textbf{Method} & Object Picking & Terrain Climbing & Crawling \\ 
+% \midrule 
+% PHC &   &    &    \\ 
+% GMR &    &    &  \\ 
+% VideoMimic &    &    &    \\ 
+% \OmniRetarget & \textbf{  } & \textbf{  } & \textbf{} \\
+% \bottomrule 
+% \end{tabular}
+% \caption{\label{tab:rl_success_rate} Success rate of downstream RL policies for robot-object and robot-terrain interactions.}
+% \end{table}
+
+% \paragraph{Sim-to-real Evaluation}
+% To avoid damaging the hardware, we select the best baseline, GMR, to retarget a challenging wall-climbing motion for comparison with \OmniRetarget. Shown in Fig.~\ref{}, although GMR’s policy learns successfully in simulation, it exhibits unnatural knee shaking to compensate for inaccurate retargeting, resulting in less robust behavior that fails on real hardware.
+
+

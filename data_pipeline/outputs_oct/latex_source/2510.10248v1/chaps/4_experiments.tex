@@ -1,0 +1,190 @@
+
+\section{Experiments}
+
+To comprehensively evaluate our approach, we investigate the following Research Questions (RQs):
+
+\textbf{RQ1:} Does MPPReasoner achieve superior performance compared to existing molecular property prediction methods on both ID and OOD datasets?
+
+\textbf{RQ2:} What are the individual contributions of the two-stage training strategy and the RLPGR reward components to the overall performance and reasoning quality?
+
+\textbf{RQ3:} Can our model generate high-quality reasoning paths that provide chemically meaningful insights comparable to expert-level analysis?
+
+
+
+\subsection{Experimental Setup}
+\label{sec4.1:setup}
+
+\paragraph{Datasets.} 
+We evaluate MPPReasoner on 8 diverse molecular property prediction datasets to assess both ID and OOD performance. The datasets are categorized as follows:
+\begin{itemize}[leftmargin=*]
+\item \textit{ID Datasets:} We utilize four benchmark datasets from MoleculeNet~\citep{moleculenet}, which is widely used to predict whether the given molecule has specific properties: BACE (1,513), BBBP (2,039), SIDER (1,427), HIV (41,127).
+
+\item \textit{OOD Datasets:} We employ four datasets from the Therapeutic Data Commons (TDC)~\citep{tdc1,tdc2} to evaluate cross-task generalization capabilities: Bioavailability (128), CYP2C9\_V (2,418), CYP2D6\_V (2,626), AMES (1,456).
+\end{itemize}
+
+The ID/OOD categorization is based on whether the training set includes samples from the corresponding dataset. For training, we randomly sample 4,000 instances from the ID datasets to ensure balanced representation across different molecular properties. Test sets follow standard benchmarking protocols established in prior literature to maintain fair comparison with baseline methods.
+
+\paragraph{Baseline.}
+We compare MPPReasoner against two categories of approaches:
+\begin{itemize}[leftmargin=*]
+\item \textit{Task-specific Specialist Models:} These models are designed for molecular property prediction: Graphormer-p~\citep{graphformer}, Uni-Mol~\citep{unimol}, GIMLET~\citep{gimlet}, MolecularGPT~\citep{moleculargpt}, Mol-LLM~\citep{mol-llm}, InstructMol-GS~\citep{instructmol}, BioT5-Plus~\citep{biot5-plus}, MolXPT~\citep{molxpt}.
+
+\item \textit{LLM-based Generalist Models:} These include reasoning models: o3-mini~\citep{o3mini}, DeepSeek-V3.1~\citep{deepseekr1}, large-scale models: GPT-4o~\citep{gpt4o}, Qwen2.5-VL-72B-Instruct~\citep{qwen25vl}, and baseline models: Qwen2.5-VL-7B-Instruct~\citep{qwen25vl} applied to molecular property prediction.
+\end{itemize}
+
+Implementation details and hyper-parameters settings are provided in Appendix~\ref{appc:setting}.
+
+
+
+
+\begin{table}
+\setlength{\tabcolsep}{4pt}
+\caption{Performance comparison of task-specific specialist models and LLM-based generalist models on ID and OOD benchmarks. Best performance is in \textbf{bold}. }
+\label{tab:mol_results}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc|cccc|cc}
+\toprule
+\multicolumn{1}{c}{\multirow{2.5}{*}{\textbf{Model}}} 
+& \multicolumn{4}{c|}{\textbf{ID Performance}} 
+& \multicolumn{4}{c|}{\textbf{OOD Performance}} 
+& \multicolumn{2}{c}{\textbf{Average}} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-9} \cmidrule(lr){10-11}
+& BACE & BBBP & SIDER & HIV 
+& Bioavail. & C2C9\_V & C2D6\_V & AMES
+& ID & OOD \\
+\midrule
+\rowcolor{gray!20}
+\multicolumn{11}{c}{\textit{\# Task-specific specialist models}} \\
+Graphormer-p   & 0.8575 & 0.7163 & --     & 0.7788 
+               & -- & -- & -- & --   
+               & 0.7842 & -- \\
+Uni-Mol        & 0.8570 & 0.7290 & 0.6590 & \textbf{0.8080} 
+               & -- & -- & -- & --   
+               & 0.7633 & -- \\
+% SCAGE          & 0.8540 & 0.7340 & 0.6600 & -- 
+               % & -- & -- & -- & --   
+               % & 0.7493 & -- \\
+GIMLET         & 0.6957 & 0.5939 & --     & 0.6624 
+               & -- & -- & -- & --   
+               & 0.6507 & -- \\
+MolecularGPT   & 0.7331 & 0.6822 & --     & 0.6382 
+               & -- & -- & -- & --   
+               & 0.6845 & -- \\
+Mol-LLM        & 0.8080 & \textbf{0.8430} & \underline{0.7610} & 0.7650 
+               & -- & -- & -- & --   
+               & 0.7943 & -- \\
+InstructMol-GS & 0.8210 & 0.7240 & --     & 0.6890 
+               & -- & -- & -- & --   
+               & 0.7447 & -- \\
+BioT5-Plus     & 0.8620 & 0.7650 & 0.5201 & 0.7630 
+               & 0.5243 & 0.4971 & 0.5321 & 0.4466 
+               & 0.7275 & 0.5000 \\
+MolXPT         & \underline{0.8840} & \underline{0.8000} & 0.7170 & 0.7810 
+               & 0.4749 & 0.5904 & 0.5291 & 0.6073 
+               & \underline{0.7955} & 0.5504 \\
+\midrule
+\rowcolor{gray!20}
+\multicolumn{11}{c}{\textit{\# LLM-based generalist models}} \\
+o3-mini        & 0.7891 & 0.5972 & 0.5626 & 0.6039 
+               & 0.6246 & \underline{0.7729} & \underline{0.7643} & \underline{0.8361} 
+               & 0.6382 & \underline{0.7495} \\
+DeepSeek-V3.1-Think  & 0.7017 & 0.6048 & 0.5637 & 0.5938 
+               & \underline{0.6572} & 0.7633 & 0.7484 & 0.8218 
+               & 0.6160 & 0.7477 \\
+GPT-4o         & 0.6070 & 0.6731 & 0.6347 & 0.5698 
+               & 0.5826 & 0.5508 & 0.5902 & 0.6141 
+               & 0.6212 & 0.5844 \\
+Qwen2.5-VL-72B-Instruct & 0.7764 & 0.5791 & 0.5880 & 0.7325 
+               & 0.6388 & 0.7624 & 0.7222 & 0.8156 
+               & 0.6690 & 0.7348 \\ 
+Qwen2.5-VL-7B-Instruct  & 0.6910 & 0.6175 & 0.5823 & 0.5125 
+               & 0.5232 & 0.7333 & 0.6999 & 0.7667 
+               & 0.6008 & 0.6808 \\
+\rowcolor{gray!15}
+\textbf{MPPReasoner (Ours)} & \textbf{0.9090} & 0.7436 & \textbf{0.8280} & \underline{0.7932} & \textbf{0.6728} & \textbf{0.8480} & \textbf{0.7950} & \textbf{0.8750} & \textbf{0.8190} & \textbf{0.7977} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Main Results (RQ1)}
+
+Table~\ref{tab:mol_results} presents the comprehensive performance comparison of MPPReasoner against state-of-the-art baselines across all 8 datasets.
+On ID datasets, MPPReasoner demonstrates competitive performance with specialized models while maintaining the advantage of using a smaller 7B parameter architecture. MPPReasoner achieves the best performance on challenging tasks like BACE and SIDER, indicating successful capture of complex molecular property relationships such as enzyme inhibition and side effect prediction. While some specialized models like Mol-LLM excel on specific tasks such as BBBP, these models achieve high ID performance at the expense of cross-task adaptability, completely lacking OOD evaluation capability. This specialization-generalization trade-off limits their practical utility in real-world scenarios requiring diverse molecular property assessment.
+
+The most significant advantage emerges in OOD scenarios, where MPPReasoner substantially outperforms all baseline categories by 6.43\% over the best reasoning model. This consistent superiority across diverse molecular property types highlights how domain-specific chemical reasoning outperforms both general reasoning capabilities and raw parameter scaling approaches. The performance gap becomes even more pronounced when considering that MPPReasoner operates with significantly fewer parameters than competing large-scale models.
+
+The results reveal fundamental differences between model categories and their limitations. Task-specific specialist models excel in familiar scenarios but completely lack cross-task generalization capabilities, while generalist models show consistent cross-task performance but suffer from insufficient domain expertise. MPPReasoner uniquely bridges this gap by embedding domain-specific reasoning rather than relying on general reasoning patterns or parameter scaling alone. The transformative impact becomes evident when comparing MPPReasoner to its base model, showing dramatic improvements of 36.36\% on ID tasks and 17.17\% on OOD tasks. This demonstrates that structured chemical reasoning fundamentally enhances molecular understanding beyond conventional approaches, enabling both specialist-level accuracy and generalist-level adaptability through systematic integration of chemical principles.
+
+
+
+
+
+
+
+\subsection{Ablation Studies (RQ2)}
+
+
+\begin{table}
+\setlength{\tabcolsep}{4pt}
+\caption{Ablation study on training stages and RLPGR reward. }
+\label{tab:ablation_study}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc|cccc|cc}
+\toprule
+\multicolumn{1}{c}{\multirow{2.5}{*}{\textbf{Setting}}} & \multicolumn{4}{c|}{\textbf{ID Performance}} & \multicolumn{4}{c|}{\textbf{OOD Performance}} & \multicolumn{2}{c}{\textbf{Average}} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-9} \cmidrule(lr){10-11}
+& BACE & BBBP & SIDER & HIV 
+& Bioavail. & C2C9\_V & C2D6\_V & AMES
+& ID & OOD \\
+\midrule
+Base (Qwen2.5-VL-7b-Instruct) & 0.6910 & 0.6175 & 0.5823 & 0.5125 & 0.5232 & 0.7333 & 0.6999 & 0.7667 & 0.6008 & 0.6808 \\
+\midrule
+SFT Only & 0.8558 & 0.6824 & 0.6752 & 0.7186 & 0.6625 & 0.7799 & 0.7348 & 0.8415 & 0.7330 & 0.7547 \\
+RL Only (RLPGR) & 0.8142 & 0.5733 & 0.7428 & 0.5552 & 0.6632 & 0.7491 & 0.6732 & 0.7300 & 0.6714 & 0.7039 \\
+\midrule
+SFT + $R_{\text{foundation}}$ & 0.8836 & 0.6794 & 0.8089 & 0.7556 & 0.6358 & 0.8364 & 0.7862 & 0.8536 & 0.7819 & 0.7780 \\
+SFT + $R_{\text{foundation}}$ + $R_{\text{reasoning}}$ & 0.8877 & 0.7104 & 0.7981 & 0.7560 & \textbf{0.6771} & 0.8140 & 0.7795 & 0.8388 & 0.7881 & 0.7774 \\
+\rowcolor{gray!15}
+\textbf{MPPReasoner (Ours)} & \textbf{0.9090} & \textbf{0.7459} & \textbf{0.8280} & \textbf{0.7932} & 0.6728 & \textbf{0.8480} & \textbf{0.7950} & \textbf{0.8750} & \textbf{0.8190} & \textbf{0.7977} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+To understand the individual contributions of our two-stage training strategy and the hierarchical reward components in RLPGR, we conduct comprehensive ablation studies. Table~\ref{tab:ablation_study} presents the systematic analysis of each component's impact on both ID and OOD performance.
+The results demonstrate that both SFT and RL stages contribute significantly to overall performance, with distinct advantages for different aspects. SFT alone provides substantial improvements over the base model, achieving 22.01\% and 10.85\% gains on ID and OOD tasks respectively, indicating that SFT with high-quality reasoning trajectories successfully instills foundational chemical reasoning capabilities. RL alone also shows meaningful improvements of 11.74\% and 3.39\%, demonstrating that principle-guided rewards can enhance reasoning quality independently. However, the combination of SFT + RL yields the strongest performance with 36.36\% and 17.17\% improvements, revealing important synergistic effects between two training stages that exceed their individual contributions.
+
+The progressive addition of RLPGR reward components shows clear incremental benefits, validating our hierarchical design. Foundation rewards provide substantial improvements of 6.67\% on ID and 3.09\% on OOD over SFT alone, establishing enhanced task completion capabilities beyond basic instruction following. The Reasoning layer contributes additional 0.84\% ID gains while maintaining similar OOD performance, indicating that logical consistency and comparative analysis refine reasoning quality without compromising generalization. Most importantly, the Chemistry layer delivers the largest incremental improvements of 3.92\% on ID and 2.61\% on OOD, confirming that domain-specific chemical principle verification is crucial for molecular property prediction tasks.
+
+
+
+
+\subsection{Reasoning Quality Evaluation (RQ3)}
+\label{sec4.4:quality}
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/score_dist.png}
+        % \caption{}
+        \caption{Human-AI evaluation consistency}
+        \label{fig:score_distribution}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/score.pdf}
+        % \caption{}
+        \caption{Model reasoning quality scores}
+        \label{fig:model_performance}
+    \end{subfigure}
+    \vspace{-1em}
+    \caption{Reasoning quality evaluation results. (a) Strong consistency between automated and human assessments with $\rho$ = 0.82. (b) MPPReasoner achieves the highest reasoning quality score.}
+    \label{fig:reasoning_evaluation}
+\end{figure}
+
+To assess whether MPPReasoner generates high-quality reasoning paths that provide chemically meaningful insights, we conduct systematic evaluation using automated assessment validated against human expert judgment. We employ a LLM-as-a-Judge~\citep{llmasjudge} framework using GPT-4o to evaluate three dimensions~\citep{sophiavlr1}: \textbf{logical soundness, accuracy \& insight, and conciseness}, each scored on a 0-10 scale with detailed rubrics. To establish reliability, we validate GPT-4o scores against human expert assessments on 60 reasoning samples from three baseline models. Figure~\ref{fig:reasoning_evaluation}(a) shows remarkable consistency between automated and human evaluations, with similar distributions and central tendencies with spearman correlation coefficient reaches $\rho$ = 0.82.
+
+Figure~\ref{fig:reasoning_evaluation}(b) presents the comparative reasoning quality assessment across different model categories, showing average scores across the three evaluation dimensions. MPPReasoner achieves the highest score of 7.730, substantially outperforming advanced reasoning models including DeepSeek-V3.1-Think at 6.723 and o3-mini at 6.235, as well as large-scale models like Qwen2.5-VL-72B at 6.458 and GPT-4o at 6.089. Despite using a smaller 7B architecture, MPPReasoner demonstrates 15.0\% improvement over the best baseline, highlighting how domain-specific chemical reasoning surpasses both general reasoning capabilities and parameter scaling approaches. The superior reasoning quality translates to practical benefits: MPPReasoner consistently identifies relevant functional groups, applies appropriate chemical principles, and provides mechanistic explanations that enable chemists to understand both what properties a molecule has and why these properties emerge from specific structural features. Detailed dimensional scores are provided in Appendix~\ref{appb:quality}.

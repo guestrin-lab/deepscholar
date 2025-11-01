@@ -1,0 +1,238 @@
+\section{Experiments}
+
+\subsection{Dataset and Evaluation Metric}
+
+% We evaluate the performance of CIR-CoT on three widely-used CIR benchmarks: Fashion-IQ~\cite{wu2021fashion}, CIRR~\cite{liu2021image}, and CIRCO~\cite{baldrati2023zero}. The Fashion-IQ dataset consists of 30,134 triplets constructed from 77,684 web-crawled fashion images. It focuses on the fashion domain and is organized into three product categories: Dress, Shirt, and Toptee. The CIRR dataset provides a more general setting, containing 36,554 triplets derived from 21,552 real-world images originally sourced from the NLVR2~\cite{suhr2018corpus} corpus. In addition to standard triplets, CIRR also offers a fine-grained subset, where each query is associated with a candidate pool of six visually similar images, making retrieval particularly challenging. The CIRCO dataset is constructed from the COCO 2017 unlabeled set~\cite{lin2014microsoft}, with 1,020 queries and the full 120K COCO images used as the index pool. Compared to CIRR’s 2K test images, CIRCO introduces a significantly larger number of distractors. Moreover, it alleviates the false negative issue present in CIRR by providing multiple annotated ground-truth matches for each query.
+We evaluate CIR-CoT on three widely used CIR benchmarks: Fashion-IQ~\cite{wu2021fashion}, CIRR~\cite{liu2021image}, and CIRCO~\cite{baldrati2023zero}.  
+Fashion-IQ focuses on the fashion domain with triplets drawn from web-crawled product images.  
+CIRR provides a more general real-world setting and further includes a fine-grained subset with visually similar candidates, making retrieval particularly challenging.  
+CIRCO is constructed from COCO images, offering large-scale distractors and multiple annotated ground-truth matches to alleviate the false negative issue in CIRR.  
+For performance evaluation, we adopt Recall@K as the evaluation metric. Specifically, for CIRR, we report Recall@1, 5, 10, and 50 to measure global retrieval accuracy, as well as Recall$_\text{subset}$@1, 2, and 3 to capture fine-grained discrimination within visually similar candidates. For Fashion-IQ, we follow the standard protocol and provide Recall@10 and Recall@50 results across the three fashion categories. For CIRCO, we use mean average precision at rank $k$ (mAP@k) to account for multiple valid ground-truth targets in the retrieval set.
+
+\subsection{Implementation Details}
+
+CIR-CoT is built upon Qwen2.5-VL-7B as the backbone, with LoRA applied for efficient parameter-efficient fine-tuning. All experiments are conducted on 8 NVIDIA A800 GPUs. In the first stage of pretraining, the model is optimized on the NLI dataset using only the $\mathcal{L}_{\text{InfoNCE}}$ objective, in order to encourage the backbone to develop retrieval-oriented representations. This stage is trained for 2 epochs with a batch size of 768 and a learning rate of $3\times10^{-4}$. In the second stage of finetuning, the model is trained on our CoT-annotated extensions of Fashion-IQ and CIRR (Sec.~\ref{method_one}). For CIRR, we train the model for up to 3 epochs with a global batch size of 320 and a learning rate of $2\times10^{-4}$. For Fashion-IQ, we adopt the same maximum number of epochs 3 with a global batch size of 288 and a learning rate of $3\times10^{-4}$. Both $\lambda_{txt}$ and $\lambda_{\text{Info}}$ are set to 1.0.
+\begin{figure*}
+\vspace{-0.5em}
+
+  \centering
+  \includegraphics[width=2\columnwidth]{Fig/CIR-CoT_fig4.pdf}
+  \vspace{-1em}
+  \caption{Qualitative Results on CIRR dataset.}
+  \label{fig:visual}
+% \vspace{-1.2em}
+  
+\end{figure*}
+\subsection{Results on CIRR}
+% Table~\ref{tab:cirr} reports the performance comparison on the CIRR test set. 
+% CIR-CoT clearly outperforms all competing methods across most evaluation metrics. 
+% For instance, CIR-CoT achieves an R@1 of 54.87, surpassing recent strong baselines such as CCIN~\cite{tian2025ccin} (53.41) and QuRe~\cite{kwak2025qure} (52.22). 
+% On R@5, our method improves upon the previous best CCIN (84.05) by +1.16 points, reaching 85.21. 
+% A similar trend is observed on R@10, where CIR-CoT achieves 92.31 compared to 91.17 from CCIN. 
+% Moreover, CIR-CoT attains the highest overall average score of 82.42, which is +0.41 higher than the strongest prior method TME~\cite{kwak2025qure} (82.01).  
+% On the fine-grained subset evaluation, CIR-CoT delivers competitive results, obtaining the best R$_{subset}$@2 (93.06) and R$_{subset}$@3 (97.30).   
+% These results confirm that the introduction of structured chain-of-thought reasoning enables CIR-CoT to capture user intent more precisely, thereby boosting both coarse- and fine-grained retrieval performance.
+
+Table~\ref{tab:cirr} reports the performance comparison on the CIRR test set. 
+CIR-CoT clearly outperforms all competing methods across most evaluation metrics. 
+For instance, CIR-CoT (Full) achieves an R@1 of 55.06, surpassing recent strong baselines such as CCIN~\cite{tian2025ccin} (53.41) and QuRe~\cite{kwak2025qure} (52.22). 
+On R@5, our method improves upon the previous best CCIN (84.05) by +1.42 points, reaching 85.47. 
+A similar trend is observed on R@10, where CIR-CoT attains 92.60 compared to 91.17 from CCIN. 
+Moreover, CIR-CoT achieves the highest overall average score of 82.49, which is +0.48 higher than the strongest prior method TME~\cite{li2025learning} (82.01).  
+On the fine-grained subset evaluation, CIR-CoT delivers competitive results, obtaining the best R$_{subset}$@2 (92.92) and R$_{subset}$@3 (97.37).  We also report a variant, \textbf{\emph{CIR-CoT (Fast)}}, which considers efficiency. Since generating long reasoning chains inevitably slows down retrieval, we train a lighter version by retaining only the conclusion part of the CoT annotations. This reduces the number of tokens generated at inference time, resulting in faster retrieval while maintaining competitive performance (e.g., 54.31 R@1). More detailed efficiency analyses are provided in the supplementary material. 
+
+
+
+
+\begin{table*}[]
+  \centering
+  \setlength{\tabcolsep}{12pt}
+  \vspace{-10pt}
+      \caption{Performance comparison on the CIRR test set. The “Avg.” metric is computed as $(\text{R@5} + \text{R}_{subset}@1)/2$. }
+        \vspace{-10pt}
+    \small
+    \begin{tabular}{lcccc ccc c}
+    \toprule
+    \multicolumn{1}{c}{\multirow{2}{*}{Method}} & \multicolumn{4}{c}{R@$k$}      & \multicolumn{3}{c}{R$_{subset}$@$k$} & \multirow{2}{*}{Avg.} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-8} & k=1   & k=5   & k=10  & k=50  & k=1   & k=2   & k=3   &  \\
+\midrule
+    TG-CIR~\cite{wen2023target}~\textcolor{gray}{(ACM MM'23)} & 45.25  & 78.29  & 87.16  & 97.30  & 72.84  & 89.25  & 95.13  & 75.57  \\
+    LIMN~\cite{wen2023self}~\textcolor{gray}{(TPAMI'24)} &43.64  & 75.37  & 85.42  & 97.04  & 69.01  & 86.22  & 94.19  & 72.19 \\
+    SADN~\cite{wang2024semantic}~\textcolor{gray}{(ACM MM'24)} &44.27& 78.10& 87.71 &97.89& 72.71 &89.33& 95.38& 75.41\\
+    DQU-CIR~\cite{wen2024simple}~\textcolor{gray}{(SIGIR'24)}& 46.22 &	78.17 &	87.64 &	97.81 	&70.92 &	87.69 &	94.68 &	74.55  \\
+    CaLa~\cite{jiang2024cala}~\textcolor{gray}{(SIGIR'24)} &49.11 &	81.21 &	89.59 &	98.00 &	76.27 	&91.04 &	96.46 &	78.74  \\
+
+    CoVR-2~\cite{ventura2024covr}~\textcolor{gray}{(TPAMI'24)} &50.43 &81.08& 88.89& 98.05& 76.75& 90.34& 95.78 & 79.28\\
+    SPRC~\cite{bai2023sentence}~\textcolor{gray}{(ICLR'24)}& 51.96 &	82.12 &	89.74 &	97.69 &	\underline{80.65} &	92.31 &	96.60 	& 81.39  \\
+    ENCODER~\cite{li2025encoder}~\textcolor{gray}{(AAAI'25)}& 46.10& 77.98& 87.16 &97.64& 76.92& 90.41& 95.95 &77.45\\
+    CIR-LVLM~\cite{sun2025leveraging}~\textcolor{gray}{(AAAI'25)}& 53.64& 83.76 &  90.60  &97.93& 79.12& 92.33& 96.67 &81.44\\
+    CCIN~\cite{tian2025ccin}~\textcolor{gray}{(CVPR'25)}& 53.41& 84.05 &  91.17  &98.00& - & - & - & - \\
+    TME~\cite{li2025learning}~\textcolor{gray}{(CVPR'25)}& 53.42& 82.99 &90.24 &98.15 &\textbf{81.04} &92.58 &96.94 &82.01 \\
+    QuRe~\cite{kwak2025qure}~\textcolor{gray}{(ICML'25)}& 52.22& 82.53 &  90.31  &98.17& 78.51 & 91.28 & 96.48 & 80.52 \\
+    \rowcolor{gray!10}
+    \multicolumn{1}{l}{\textbf{CIR-CoT (Fast)}}  & \underline{54.31} &	\underline{85.04} &	\underline{92.15} &	\underline{98.45} &	79.35 &	\underline{92.46} 	&\underline{97.30} & \underline{82.19}  \\
+    \rowcolor[rgb]{ .851,  .851,  .851}
+    \multicolumn{1}{l}{\textbf{CIR-CoT (Full)}}  & \textbf{55.06} &	\textbf{85.47} &	\textbf{92.60} &	\textbf{98.53} &	79.52 &	\textbf{92.92} 	&\textbf{97.37} & \textbf{82.49}  \\
+\bottomrule
+    \end{tabular}
+\vspace{-1.2em}
+\label{tab:cirr}
+\end{table*}
+
+\subsection{Results on Fashion-IQ}  
+Table~\ref{tab:fiq} reports the results on the Fashion-IQ benchmark. CIR-CoT achieves the best overall performance, with average scores of 56.29 R@10 and 76.42 R@50, surpassing all prior methods. In particular, our model outperforms strong recent approaches such as CIR-LVLM, CCIN, and TME, showing consistent gains across all three categories. Notably, CIR-CoT delivers the highest R@10 in Dresses and Tops\&Tees, highlighting its effectiveness in handling fine-grained compositional queries in the fashion domain. Although CIR-CoT consistently achieves the best overall results on Fashion-IQ, the margin over recent strong baselines such as CIR-LVLM and TME is smaller compared to the clear advantage observed on CIRR. This is mainly because Fashion-IQ contains domain-specific fashion items with limited visual diversity and relatively simple textual modifications. As a result, the benefit of our CoT-enhanced reasoning and semantic compression is less pronounced compared to the more complex and diverse scenarios in CIRR, where fine-grained reasoning plays a larger role. 
+
+
+
+
+
+\subsection{Results on CIRCO} 
+Table~\ref{tab:circo} reports the zero-shot evaluation results on the CIRCO dataset. 
+In this setting, supervised methods are first trained on the CIRR dataset and then directly tested on CIRCO test set, which serves as a benchmark to assess cross-domain adaptability. 
+In contrast, unsupervised approaches do not require additional training and can be directly evaluated on CIRCO.
+
+Among the supervised group, CIR-CoT achieves a significant performance gain. 
+For instance, it reaches an mAP@5 of 33.54, outperforming the previous best supervised method SPRC~\cite{bai2023sentence} (22.86) by +10.68 points. 
+This advantage is consistent across other cutoffs, with CIR-CoT obtaining 37.29 mAP@50 compared to 26.55 for SPRC. 
+Even when compared with the strongest unsupervised method OSrCIR~\cite{Tang2024OR}, which achieves 36.59 mAP@50, CIR-CoT still surpasses it by +0.70 while showing a much larger improvement at lower ranks.  
+%
+These results demonstrate that CIR-CoT, by incorporating structured chain-of-thought reasoning, not only excels in in-domain retrieval but also generalizes across domains, achieving state-of-the-art zero-shot performance on CIRCO.
+\begin{table*}[]
+  \centering
+  \setlength{\tabcolsep}{11pt}
+  \vspace{-10pt}
+\caption{Performance comparison on Fashion-IQ validation set in terms of R@$k$ (\%).}
+  \vspace{-10pt}
+  % \tabcolsep=9pt
+    \small
+    \begin{tabular}{lcccccccc}
+    \toprule
+    \multicolumn{1}{c}{\multirow{2}{*}{Method}} & \multicolumn{2}{c}{Dresses} & \multicolumn{2}{c}{Shirts} & \multicolumn{2}{c}{Tops\&Tees} & \multicolumn{2}{c}{Avg} \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+    & R@10 & R@50 & R@10 & R@50 & R@10 & R@50 & R@10 & R@50 \\
+    \midrule
+    % ARTEMIS~\cite{delmas2022artemis}~\textcolor{gray}{(ICLR'22)} & 27.16 & 52.40 & 21.78 & 43.64 & 29.20 & 54.83 & 26.05 & 50.29 \\
+    MGUR~\cite{Chen2022ComposedIR}~\textcolor{gray}{(ICLR'24)}& 32.61 & 61.34 & 33.23 & 62.55 & 41.40 & 72.51 & 35.75 & 65.47 \\
+    FashionSAP~\cite{Han2023FashionSAPSA}~\textcolor{gray}{(CVPR'23)} & 33.71 & 60.43 & 41.91 & 70.93 & 33.17 & 61.33 & 36.26 & 64.23 \\
+    FAME-ViL~\cite{Han2023FAMEViLMV}~\textcolor{gray}{(CVPR'23)} & 42.19 & 67.38 & 47.64 & 68.79 & 50.69 & 73.07 & 46.84 & 69.75 \\
+    SyncMask~\cite{Song2024SyncMaskSA}~\textcolor{gray}{(CVPR'24)}& 33.76 & 61.23 & 35.82 & 62.12 & 44.82 & 72.06 & 38.13 & 65.14 \\
+    SADN~\cite{wang2024semantic}~\textcolor{gray}{(ACM MM'24)} &40.01 & 65.10 & 43.67 & 66.05 & 48.04 & 70.93 & 43.91 & 67.36 \\
+    CaLa~\cite{jiang2024cala}~\textcolor{gray}{(SIGIR'24)} &42.38& 66.08& 46.76& 68.16 &50.93& 73.42 &46.69 & 69.22 \\
+    CoVR-2~\cite{ventura2024covr}~\textcolor{gray}{(TPAMI'24)} &46.53& 69.60 &51.23 &70.64& 52.14 &73.27& 49.96 &71.17\\
+    SPRC~\cite{bai2023sentence}~\textcolor{gray}{(ICLR'24)}& 49.18 & 72.43 & 55.64 & 73.89 & 59.35 & 78.58 & 54.72 & 74.97 \\
+    FashionERN~\cite{chen2024fashionern}~\textcolor{gray}{(AAAI'24)} & 50.32 & 71.29 & 50.15 & 70.36 & 56.40 & 77.21 & 52.29 & 72.95 \\
+    CIR-LVLM~\cite{sun2025leveraging}~\textcolor{gray}{(AAAI'25)}&\underline{50.42} &\underline{73.60} &\textbf{58.59} &\textbf{75.86} &\underline{59.61} &\textbf{78.99} &\underline{56.21} &\underline{76.14}\\
+    CCIN~\cite{tian2025ccin}~\textcolor{gray}{(CVPR'25)}&49.38 &72.58 &55.93 &74.14 &57.93 &77.56 &54.41 &74.76 \\
+    TME~\cite{li2025learning}~\textcolor{gray}{(CVPR'25)}& 49.73 & 71.69 &56.43 &74.44 &59.31 &78.94 &55.15 &75.02 \\
+    QuRe~\cite{kwak2025qure}~\textcolor{gray}{(ICML'25)} &46.80 &69.81 &53.53 &72.87 &57.47 &77.77 &52.60 &73.48\\
+    \rowcolor[rgb]{ .851, .851, .851}
+    \multicolumn{1}{l}{\textbf{CIR-CoT(Ours)}} & \textbf{50.82} & \textbf{74.57} & \underline{57.26} & \underline{75.76} & \textbf{60.79} & \underline{78.94} & \textbf{56.29} & \textbf{76.42} \\
+    \bottomrule
+    \end{tabular}
+  \label{tab:fiq}
+  \vspace{-1em} 
+\end{table*}
+
+\begin{table}[]
+\caption{Zero-shot CIR performance on the CIRCO~\cite{Baldrati2023ZeroShotCI} test set.}
+\label{tab:circo}
+\centering
+\vspace{-10pt}
+\resizebox{1.0\linewidth}{!}{
+\begin{tabular}{cc cccc}
+\toprule
+\multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Supervised}} & \multicolumn{4}{c}{\textbf{mAP@k}} \\
+\cmidrule(lr){3-6}
+ & & \textbf{k=5} & \textbf{k=10} & \textbf{k=25} & \textbf{k=50} \\
+\midrule
+CompoDiff~\cite{Gu2023CompoDiffVC}~\textcolor{gray}{(TMLR'24)} & \textcolor{red}{\XSolidBrush} & 15.30 & 17.70 & 19.50 & 21.00 \\
+LinCIR~\cite{Gu2023LanguageonlyET}~\textcolor{gray}{(CVPR'24)} & \textcolor{red}{\XSolidBrush} & 19.71 & 21.01 & 23.13 & 24.18 \\
+CIReVL~\cite{Karthik2023VisionbyLanguageFT}~\textcolor{gray}{(ICLR'24)} & \textcolor{red}{\XSolidBrush} &27.12 &28.01 &30.35 &31.39 \\
+PrediCIR~\cite{Tang2025MissingTI}~\textcolor{gray}{(CVPR'25)} & \textcolor{red}{\XSolidBrush} & 23.70 & 24.60 & 25.40 & 26.00 \\
+OSrCIR~\cite{Tang2024OR}~\textcolor{gray}{(CVPR'25)} & \textcolor{red}{\XSolidBrush} &30.47 &31.14 &35.03 &36.59 \\
+\midrule
+Q-Former~\cite{Li2023BLIP2BL} & \textcolor{teal}{\Checkmark} & 17.50 & 19.20 & 21.00 & 22.30 \\
+SPRC~\cite{bai2023sentence}~\textcolor{gray}{(ICLR'24)} & \textcolor{teal}{\Checkmark} &22.86 &23.63 &25.56 &26.55 \\
+\rowcolor[rgb]{ .851, .851, .851}
+\textbf{CIR-CoT(Ours)} & \textcolor{teal}{\Checkmark} &\textbf{33.54} &\textbf{34.11} &\textbf{36.29} &\textbf{37.29} \\
+\bottomrule
+\end{tabular}
+}
+\vspace{-1em}
+\end{table}
+
+\subsection{Ablation Study}
+
+% \noindent\textbf{Study on the core components.} 
+% We investigate the contribution of three key components in CIR-CoT: (1) stage-1 pretraining on the NLI dataset, (2) incorporating CoT-augmented data, and (3) training the vision projector (V.P.).
+% As shown in Table~\ref{tab:ab_core}, the \emph{Base Model} directly fine-tuned from Qwen2.5-VL achieves an R@1 of 52.68. Adding CoT-augmented data on top of the base model (\emph{Base+CoT}) yields a slight improvement of +0.24 at R@1 and +1.27 at R@10, showing that CoT supervision provides more informative guidance for retrieval. Incorporating stage-1 pretraining (\emph{Base+Stage 1}) further boosts performance to 53.02 R@1 (+0.34) and 84.06 R@5 (+1.07), confirming that textual embedding compression learned from NLI benefits cross-modal alignment.
+% We then examine the role of the vision projector. With a frozen projector (\emph{CIR-CoT (frozen V.P.)}), the model achieves 54.02 R@1, showing that combining Stage 1 pretraining and CoT data already brings substantial gains even without training the projector. Finally, training the vision projector jointly with CoT supervision (\emph{CIR-CoT (Full)}) leads to the best performance. Compared to the base model, this represents improvements of +2.19, +2.22, and +2.10 at R@1, R@5, and R@10, respectively, highlighting the complementary benefits of stage-1 pretraining, CoT data, and projector training.
+
+\noindent\textbf{Study on the core components.}  
+We analyze three components of CIR-CoT: stage-1 pretraining, CoT-augmented data, and training the vision projector (V.P.). As shown in Table~\ref{tab:ab_core}, directly fine-tuning from Qwen2.5-VL gives 52.68 R@1. Adding CoT data or stage-1 pretraining individually brings modest gains (+0.24 and +0.34 R@1). With both, even a frozen projector achieves 54.21 R@1, already outperforming previous settings. Jointly training the projector (\emph{CIR-CoT (Full)}) further improves performance, yielding +2.38, +2.48, and +2.39 gains at R@1, R@5, and R@10 over the baseline, confirming the complementary benefits of all components.
+
+
+
+
+\noindent\textbf{Study on the loss weighting coefficients.}  
+Table~\ref{tab:ab_lambda} investigates the influence of the weighting coefficient $\lambda_{txt}$ for the text generation loss while keeping $\lambda_{\text{Info}}$ fixed at $1.0$. We observe that setting $\lambda_{txt}=1.0$ yields the best overall performance, reaching 55.06 R@1 and 85.47 R@5. When $\lambda_{txt}$ is too small (e.g., $0.5$ or $0.7$), the model underperforms due to insufficient supervision from the text generation objective. Conversely, increasing $\lambda_{txt}$ beyond $1.0$ (e.g., $1.5$ or $2.0$) also degrades performance, because the model overemphasizes text generation at the expense of retrieval alignment. These results highlight that a balanced weighting between the text generation loss and the InfoNCE loss is crucial for optimizing retrieval effectiveness.
+
+\begin{table}[]
+\centering
+\caption{Ablation Study of Components on the CIRR Dataset. The V.P. stands for Vision Projector.}
+\label{tab:ab_core}
+\vspace{-1em}
+\resizebox{1.0\linewidth}{!}{
+\begin{tabular}{cc c cccc}
+\toprule
+\multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{Stage 1} & \multirow{2}{*}{CoT data} & \multicolumn{4}{c}{R@K} \\
+\cmidrule(lr){4-7}
+& & & \textbf{K=1} & \textbf{K=5} & \textbf{K=10} & \textbf{K=50} \\
+\midrule
+Baseline & \textcolor{red}{\XSolidBrush} & \textcolor{red}{\XSolidBrush} & 52.68 & 82.99 & 90.21 & 97.45 \\
+Base + CoT & \textcolor{red}{\XSolidBrush} & \textcolor{teal}{\Checkmark} & 52.92 & 83.13 & 91.48 & 98.43 \\
+Base + Stage 1 & \textcolor{teal}{\Checkmark} & \textcolor{red}{\XSolidBrush} & 53.02 & 84.06 & 91.99 & 98.42 \\
+\midrule
+CIR-CoT (frozen V.P.) & \textcolor{teal}{\Checkmark} & \textcolor{teal}{\Checkmark} &54.21 &85.06 &92.14 &98.44\\
+\rowcolor{gray!18}
+\textbf{CIR-CoT (Full)} & \textcolor{teal}{\Checkmark} & \textcolor{teal}{\Checkmark} & \textbf{55.06} & \textbf{85.47} & \textbf{92.60} & \textbf{98.53} \\
+\bottomrule
+\end{tabular}}
+\vspace{-1.0em}
+\end{table}
+
+\begin{table}[]
+\centering
+\setlength{\tabcolsep}{10pt}
+\caption{Ablation Study on Loss Weighting Coefficients.}
+\label{tab:ab_lambda}
+\vspace{-1em}
+\small
+\begin{tabular}{cc cccc}
+\toprule
+\multirow{2}{*}{\textbf{$\lambda_{txt}$}} & \multirow{2}{*}{$\lambda_{\text{Info}}$} & \multicolumn{4}{c}{\textbf{R@K}} \\
+\cmidrule(lr){3-6}
+& & \textbf{K=1} & \textbf{K=5} & \textbf{K=10} & \textbf{K=50} \\
+\midrule
+0.5 & 1.0 & 53.14 & 83.78 & 91.56 & 98.28 \\
+0.7 & 1.0 & 54.23 & 84.57 & 92.19 & 98.36 \\
+\rowcolor{gray!18}
+\textbf{1.0} & \textbf{1.0} & \textbf{55.06} & \textbf{85.47} & \textbf{92.60} & \textbf{98.53} \\
+1.5 & 1.0 & 53.45 & 83.98 & 91.18 & 98.43 \\
+2.0 & 1.0 & 53.02 & 84.05 & 91.25 & 98.24 \\
+\bottomrule
+\end{tabular}
+% \vspace{-1.2em}
+\vspace{-1em}
+\end{table}
+
+
+
+
+\subsection{Qualitative Results}  
+Fig.~\ref{fig:visual} presents qualitative comparisons on the CIRR dataset.  
+Unlike traditional retrieval models that directly match queries with images, our CIR-CoT explicitly performs step-by-step reasoning to interpret the user’s modification instruction and generate an intermediate description of the target image.  
+This reasoning process enables the model to focus on the required changes, such as inserting a tent interior with a black pole or modifying the pose and accessories of humans in underwater scenes, while preserving irrelevant details.  
+As a result, CIR-CoT produces more faithful and semantically aligned retrieval outcomes, which baseline methods like SPRC fail to capture. 
+More detailed qualitative analyses and additional examples are provided in the supplementary material.  
+

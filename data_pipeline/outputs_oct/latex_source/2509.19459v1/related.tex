@@ -1,0 +1,62 @@
+\section{Related Work}
+
+There is work on checking/testing PM programs to find bugs. In
+particular, XFDetector~\cite{xfdetector} uses a finite state machine
+to track the consistency and persistency of persistent
+data. PMTest~\cite{pmtest} lets developers annotate a program with
+checking rules to infer the persistency status of writes and ordering
+constraints between writes. Pmemcheck~\cite{pmemcheck} checks how many
+stores were not made persistent and detects memory overwrites using
+binary rewriting. Yat~\cite{yat} model checks
+PM programs. 
+Agamotto~\cite{agamotto} finds bugs in PM programs by
+using symbolic execution. An algorithm by Huang et al.~\cite{pminvariant} infers invariants from PM programs that are then used to check for bugs.
+Although these tools are able to find many bugs, none of these tools
+can assure the absence of flush/fence bugs like \tool can.  POG~\cite{pog} and
+Pierogi~\cite{pierogi} provide logics that can be used to manually
+reason about program behaviors.
+
+A line of work~\cite{nv-htm,crafty-pldi20,persistent-htm-giles-2017,dudetm} uses (software or hardware) transactions to provide
+(failure and thread) atomicity. NVL-C provides language and compiler
+support for the use of transactions to access non-volatile
+memory~\cite{nvlc}.  While NVL-C can provide crash consistency, it
+does so by incurring the overheads of using transactions to provide
+crash consistency.  Another line of
+work~\cite{atlas-follow-up,atlas,nvthreads,justdo-logging,ido}
+advocates use of locks or synchronization-free
+regions~\cite{persistency-sfr}.  Memento~\cite{memento} provides
+detectable checkpointing---it extends standard checkpoint with support
+to allow the system to be able to detect the status of in flight
+operations when the crash occurred.  These approaches typically incur
+large overheads to support the necessary logging.
+
+StaticPersist~\cite{staticpersist} is a static analysis to
+determine which objects must be allocated in PM.  The
+idea is to use annotations to declare a set of durable roots, and the
+analysis determines which objects are reachable from the 
+roots. AutoPersist~\cite{autopersist} is a Java extension to support
+NVM.  Developers specify durable roots and when an
+object becomes reachable from a durable root, AutoPersist moves it to
+PM.  Both
+StaticPersist and AutoPersist provide a higher-level API for
+programming PM, while \tool targets a
+lower-level model by automatically inserting flush and
+fence operations.
+
+Hippocrates~\cite{hippocrates-asplos21} and
+PMBugAssist~\cite{pmbugassist} insert flushes
+and fences to repair PM bugs.  Hippocrates chooses the placement of
+flushes and fences using a reduction procedure, whereas PMBugAssist
+uses a SMT solver. They both focus on
+repairing specific PM bugs given as program input and rely on other PM
+bug detection tools to produce bug traces, which is different from our
+task of exhaustively detecting potential PM bugs and fixing them at
+the same time.
+
+Our work is related to a line of work on static fence
+insertion for concurrent programs to ensure sequential consistency~\cite{musketeer2017, lee2000relaxed, fang2003automatic}. The static approach to fence insertion has so far not been applied to PM programs, a
+gap which we bridge. In terms of techniques, previous work such as musketeer~\cite{musketeer2017} and pensieve~\cite{fang2003automatic} focused on variants of delay set analysis~\cite{delayset} combined with flow-insensitive escape analysis to minimise fence insertions, whereas we make use of a flow-sensitive escape analysis to avoid redundant fence insertions. 
+
+FliT~\cite{flit} presents a technique that uses counters to
+eliminate flush operations on atomic loads, which we applied in \tool
+to further reduce the overhead it introduces.

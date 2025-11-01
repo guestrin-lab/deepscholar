@@ -1,0 +1,382 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,zheng2024brainib,\cite{zheng2024brainib},"BrainIB: Interpretable Brain Network-based Psychiatric Diagnosis with
+  Graph Information Bottleneck",http://arxiv.org/abs/2205.03612v4,"Developing a new diagnostic models based on the underlying biological
+mechanisms rather than subjective symptoms for psychiatric disorders is an
+emerging consensus. Recently, machine learning-based classifiers using
+functional connectivity (FC) for psychiatric disorders and healthy controls are
+developed to identify brain markers. However, existing machine learning-based
+diagnostic models are prone to over-fitting (due to insufficient training
+samples) and perform poorly in new test environment. Furthermore, it is
+difficult to obtain explainable and reliable brain biomarkers elucidating the
+underlying diagnostic decisions. These issues hinder their possible clinical
+applications. In this work, we propose BrainIB, a new graph neural network
+(GNN) framework to analyze functional magnetic resonance images (fMRI), by
+leveraging the famed Information Bottleneck (IB) principle. BrainIB is able to
+identify the most informative edges in the brain (i.e., subgraph) and
+generalizes well to unseen data. We evaluate the performance of BrainIB against
+3 baselines and 7 state-of-the-art brain network classification methods on
+three psychiatric datasets and observe that our BrainIB always achieves the
+highest diagnosis accuracy. It also discovers the subgraph biomarkers which are
+consistent to clinical and neuroimaging findings. The source code and
+implementation details of BrainIB are freely available at GitHub repository
+(https://github.com/SJYuCNEL/brain-and-Information-Bottleneck/).","Zheng, Kaizhong and Yu, Shujian and Li, Baojuan and Jenssen, Robert and Chen, Badong",2024,,,,IEEE Trans. Neural. Netw. Learn. Syst.
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,wang2023prose,\cite{wang2023prose},PROSE: Graph Structure Learning via Progressive Strategy,,,"Wang, Huizhao and Fu, Yao and Yu, Tao and Hu, Linghui and Jiang, Weihao and Pu, Shiliang",2023,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,smith2011network,\cite{smith2011network},Network modelling methods for FMRI,,,"Smith, Stephen M and Miller, Karla L and Salimi-Khorshidi, Gholamreza and Webster, Matthew and Beckmann, Christian F and Nichols, Thomas E and Ramsey, Joseph D and Woolrich, Mark W",2011,,,,Neuroimage
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,wang2023bayesian,\cite{wang2023bayesian},A Bayesian Graph Neural Network for EEG Classification—A Win-Win on Performance and Interpretability,,,"Wang, Jing and Ning, Xiaojun and Shi, Wangjun and Lin, Youfang",2023,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,power2010development,\cite{power2010development},The development of human functional brain networks,,,"Power, Jonathan D and Fair, Damien A and Schlaggar, Bradley L and Petersen, Steven E",2010,,,,Neuron
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,castaldo2023multi,\cite{castaldo2023multi},Multi-modal and multi-model interrogation of large-scale functional brain networks,,,"Castaldo, Francesca and Dos Santos, Francisco P{\'a}scoa and Timms, Ryan C and Cabral, Joana and Vohryzek, Jakub and Deco, Gustavo and Woolrich, Mark and Friston, Karl and Verschure, Paul and Litvak, Vladimir",2023,,,,NeuroImage
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,qiao2018data,\cite{qiao2018data},Data-driven graph construction and graph learning: A review,,,"Qiao, Lishan and Zhang, Limei and Chen, Songcan and Shen, Dinggang",2018,,,,Neurocomputing
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,kan2022fbnetgen,\cite{kan2022fbnetgen},"FBNETGEN: Task-aware GNN-based fMRI Analysis via Functional Brain
+  Network Generation",http://arxiv.org/abs/2205.12465v2,"Functional magnetic resonance imaging (fMRI) is one of the most common
+imaging modalities to investigate brain functions. Recent studies in
+neuroscience stress the great potential of functional brain networks
+constructed from fMRI data for clinical predictions. Traditional functional
+brain networks, however, are noisy and unaware of downstream prediction tasks,
+while also incompatible with the deep graph neural network (GNN) models. In
+order to fully unleash the power of GNNs in network-based fMRI analysis, we
+develop FBNETGEN, a task-aware and interpretable fMRI analysis framework via
+deep brain network generation. In particular, we formulate (1) prominent region
+of interest (ROI) features extraction, (2) brain networks generation, and (3)
+clinical predictions with GNNs, in an end-to-end trainable model under the
+guidance of particular prediction tasks. Along with the process, the key novel
+component is the graph generator which learns to transform raw time-series
+features into task-oriented brain networks. Our learnable graphs also provide
+unique interpretations by highlighting prediction-related brain regions.
+Comprehensive experiments on two datasets, i.e., the recently released and
+currently largest publicly available fMRI dataset Adolescent Brain Cognitive
+Development (ABCD), and the widely-used fMRI dataset PNC, prove the superior
+effectiveness and interpretability of FBNETGEN. The implementation is available
+at https://github.com/Wayfear/FBNETGEN.","Kan, Xuan and Cui, Hejie and Lukemire, Joshua and Guo, Ying and Yang, Carl",2022,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,wegner2024nonparametric,\cite{wegner2024nonparametric},Nonparametric inference of higher order interaction patterns in networks,http://arxiv.org/abs/2403.15635v2,"We propose a method for obtaining parsimonious decompositions of networks
+into higher order interactions which can take the form of arbitrary motifs.The
+method is based on a class of analytically solvable generative models, where
+vertices are connected via explicit copies of motifs, which in combination with
+non-parametric priors allow us to infer higher order interactions from dyadic
+graph data without any prior knowledge on the types or frequencies of such
+interactions. Crucially, we also consider 'degree--corrected' models that
+correctly reflect the degree distribution of the network and consequently prove
+to be a better fit for many real world--networks compared to non-degree
+corrected models. We test the presented approach on simulated data for which we
+recover the set of underlying higher order interactions to a high degree of
+accuracy. For empirical networks the method identifies concise sets of atomic
+subgraphs from within thousands of candidates that cover a large fraction of
+edges and include higher order interactions of known structural and functional
+significance. The method not only produces an explicit higher order
+representation of the network but also a fit of the network to analytically
+tractable models opening new avenues for the systematic study of higher order
+network structures.","Wegner, Anatol E and Olhede, Sofia C",2024,,,,Communications Physics
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,zang2024stepwise,\cite{zang2024stepwise},Stepwise reconstruction of higher-order networks from dynamics,,,"Zang, Yingbang and Fan, Ziye and Wang, Zixi and Zheng, Yi and Ding, Li and Wu, Xiaoqun",2024,,,,Chaos: An Interdisciplinary Journal of Nonlinear Science
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,tabar2024revealing,\cite{tabar2024revealing},Revealing higher-order interactions in high-dimensional complex systems: A data-driven approach,,,"Tabar, M Reza Rahimi and Nikakhtar, Farnik and Parkavousi, Laya and Akhshi, Amin and Feudel, Ulrike and Lehnertz, Klaus",2024,,,,Physical Review X
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,young2021hypergraph,\cite{young2021hypergraph},Hypergraph reconstruction from network data,http://arxiv.org/abs/2008.04948v4,"Networks can describe the structure of a wide variety of complex systems by
+specifying which pairs of entities in the system are connected. While such
+pairwise representations are flexible, they are not necessarily appropriate
+when the fundamental interactions involve more than two entities at the same
+time. Pairwise representations nonetheless remain ubiquitous, because
+higher-order interactions are often not recorded explicitly in network data.
+Here, we introduce a Bayesian approach to reconstruct latent higher-order
+interactions from ordinary pairwise network data. Our method is based on the
+principle of parsimony and only includes higher-order structures when there is
+sufficient statistical evidence for them. We demonstrate its applicability to a
+wide range of datasets, both synthetic and empirical.","Young, Jean-Gabriel and Petri, Giovanni and Peixoto, Tiago P",2021,,,,Communications Physics
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,contisciani2022inference,\cite{contisciani2022inference},Inference of hyperedges and overlapping communities in hypergraphs,http://arxiv.org/abs/2204.05646v2,"Hypergraphs, encoding structured interactions among any number of system
+units, have recently proven a successful tool to describe many real-world
+biological and social networks. Here we propose a framework based on
+statistical inference to characterize the structural organization of
+hypergraphs. The method allows to infer missing hyperedges of any size in a
+principled way, and to jointly detect overlapping communities in presence of
+higher-order interactions. Furthermore, our model has an efficient numerical
+implementation, and it runs faster than dyadic algorithms on pairwise records
+projected from higher-order data. We apply our method to a variety of
+real-world systems, showing strong performance in hyperedge prediction tasks,
+detecting communities well aligned with the information carried by
+interactions, and robustness against addition of noisy hyperedges. Our approach
+illustrates the fundamental advantages of a hypergraph probabilistic model when
+modeling relational systems with higher-order interactions.","Contisciani, Martina and Battiston, Federico and De Bacco, Caterina",2022,,,,Nature communications
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,wang2022full,\cite{wang2022full},Full reconstruction of simplicial complexes from binary contagion and Ising data,,,"Wang, Huan and Ma, Chuang and Chen, Han-Shuang and Lai, Ying-Cheng and Zhang, Hai-Feng",2022,,,,Nature communications
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,malizia2024reconstructing,\cite{malizia2024reconstructing},Reconstructing higher-order interactions in coupled dynamical systems,http://arxiv.org/abs/2305.06609v1,"Higher-order interactions play a key role for the stability and function of a
+complex system. However, how to identify them is still an open problem. Here,
+we propose a method to fully reconstruct the structural connectivity of a
+system of coupled dynamical units, identifying both pairwise and higher-order
+interactions from the system time evolution. Our method works for any dynamics,
+and allows the reconstruction of both hypergraphs and simplicial complexes,
+either undirected or directed, unweighted or weighted. With two concrete
+applications, we show how the method can help understanding the ecosystemic
+complexity of bacterial systems, or the microscopic mechanisms of interaction
+underlying coupled chaotic oscillators.","Malizia, Federico and Corso, Alessandra and Gambuzza, Lucia Valentina and Russo, Giovanni and Latora, Vito and Frasca, Mattia",2024,,,,Nature Communications
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,delabays2025hypergraph,\cite{delabays2025hypergraph},Hypergraph reconstruction from dynamics,http://arxiv.org/abs/2402.00078v3,"A plethora of methods have been developed in the past two decades to infer
+the underlying network structure of an interconnected system from its
+collective dynamics. However, methods capable of inferring nonpairwise
+interactions are only starting to appear. Here, we develop an inference
+algorithm based on sparse identification of nonlinear dynamics (SINDy) to
+reconstruct hypergraphs and simplicial complexes from time-series data. Our
+model-free method does not require information about node dynamics or coupling
+functions, making it applicable to complex systems that do not have a reliable
+mathematical description. We first benchmark the new method on synthetic data
+generated from Kuramoto and Lorenz dynamics. We then use it to infer the
+effective connectivity in the brain from resting-state EEG data, which reveals
+significant contributions from non-pairwise interactions in shaping the
+macroscopic brain dynamics.","Delabays, Robin and De Pasquale, Giulia and D{\""o}rfler, Florian and Zhang, Yuanzhao",2025,,,,Nature Communications
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,qiu2024learning,\cite{qiu2024learning},Learning High-Order Relationships of Brain Regions,http://arxiv.org/abs/2312.02203v3,"Discovering reliable and informative relationships among brain regions from
+functional magnetic resonance imaging (fMRI) signals is essential in phenotypic
+predictions. Most of the current methods fail to accurately characterize those
+interactions because they only focus on pairwise connections and overlook the
+high-order relationships of brain regions. We propose that these high-order
+relationships should be maximally informative and minimally redundant (MIMR).
+However, identifying such high-order relationships is challenging and
+under-explored due to the exponential search space and the absence of a
+tractable objective. In response to this gap, we propose a novel method named
+HYBRID which aims to extract MIMR high-order relationships from fMRI data.
+HYBRID employs a CONSTRUCTOR to identify hyperedge structures, and a WEIGHTER
+to compute a weight for each hyperedge, which avoids searching in exponential
+space. HYBRID achieves the MIMR objective through an innovative information
+bottleneck framework named multi-head drop-bottleneck with theoretical
+guarantees. Our comprehensive experiments demonstrate the effectiveness of our
+model. Our model outperforms the state-of-the-art predictive model by an
+average of 11.2%, regarding the quality of hyperedges measured by CPM, a
+standard protocol for studying brain connections.",Weikang Qiu and Huangrui Chu and Selena Wang and Haolan Zuo and Xiaoxiao Li and Yize Zhao and Rex Ying,2024,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,ghalmane2020extracting,\cite{ghalmane2020extracting},Extracting Backbones in Weighted Modular Complex Networks,http://arxiv.org/abs/2008.03383v1,"Network science provides effective tools to model and analyze complex
+systems. However, the increasing size of real-world networks becomes a major
+hurdle in order to understand their structure and topological features.
+Therefore, mapping the original network into a smaller one while preserving its
+information is an important issue. Extracting the so-called backbone of a
+network is a very challenging problem that is generally handled either by
+coarse-graining or filter-based methods. Coarse-graining methods reduce the
+network size by grouping similar nodes, while filter-based methods prune the
+network by discarding nodes or edges based on a statistical property. In this
+paper, we propose and investigate two filter-based methods exploiting the
+overlapping community structure in order to extract the backbone in weighted
+networks. Indeed, highly connected nodes (hubs) and overlapping nodes are at
+the heart of the network. In the first method, called ""overlapping nodes ego
+backbone"", the backbone is formed simply from the set of overlapping nodes and
+their neighbors. In the second method, called ""overlapping nodes and hubs
+backbone"", the backbone is formed from the set of overlapping nodes and the
+hubs. For both methods, the links with the lowest weights are removed from the
+network as long as a backbone with a single connected component is preserved.
+Experiments have been performed on real-world weighted networks originating
+from various domains (social, co-appearance, collaboration, biological, and
+technological) and different sizes. Results show that both backbone extraction
+methods are quite similar. Furthermore, comparison with the most influential
+alternative filtering method demonstrates the greater ability of the proposed
+backbones extraction methods to uncover the most relevant parts of the network.","Ghalmane, Zakariya and Cherifi, Chantal and Cherifi, Hocine and El Hassouni, Mohammed",2020,,,,Sci. Rep.
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,li2023interpretable,\cite{li2023interpretable},"Interpretable Sparsification of Brain Graphs: Better Practices and
+  Effective Designs for Graph Neural Networks",http://arxiv.org/abs/2306.14375v1,"Brain graphs, which model the structural and functional relationships between
+brain regions, are crucial in neuroscientific and clinical applications
+involving graph classification. However, dense brain graphs pose computational
+challenges including high runtime and memory usage and limited
+interpretability. In this paper, we investigate effective designs in Graph
+Neural Networks (GNNs) to sparsify brain graphs by eliminating noisy edges.
+While prior works remove noisy edges based on explainability or task-irrelevant
+properties, their effectiveness in enhancing performance with sparsified graphs
+is not guaranteed. Moreover, existing approaches often overlook collective edge
+removal across multiple graphs.
+  To address these issues, we introduce an iterative framework to analyze
+different sparsification models. Our findings are as follows: (i) methods
+prioritizing interpretability may not be suitable for graph sparsification as
+they can degrade GNNs' performance in graph classification tasks; (ii)
+simultaneously learning edge selection with GNN training is more beneficial
+than post-training; (iii) a shared edge selection across graphs outperforms
+separate selection for each graph; and (iv) task-relevant gradient information
+aids in edge selection. Based on these insights, we propose a new model,
+Interpretable Graph Sparsification (IGS), which enhances graph classification
+performance by up to 5.1% with 55.0% fewer edges. The retained edges identified
+by IGS provide neuroscientific interpretations and are supported by
+well-established literature.","Li, Gaotang and Duda, Marlena and Zhang, Xiang and Koutra, Danai and Yan, Yujun",2023,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,qu2025integrated,\cite{qu2025integrated},"Integrated Brain Connectivity Analysis with fMRI, DTI, and sMRI Powered
+  by Interpretable Graph Neural Networks",http://arxiv.org/abs/2408.14254v2,"Multimodal neuroimaging modeling has becomes a widely used approach but
+confronts considerable challenges due to heterogeneity, which encompasses
+variability in data types, scales, and formats across modalities. This
+variability necessitates the deployment of advanced computational methods to
+integrate and interpret these diverse datasets within a cohesive analytical
+framework. In our research, we amalgamate functional magnetic resonance
+imaging, diffusion tensor imaging, and structural MRI into a cohesive
+framework. This integration capitalizes on the unique strengths of each
+modality and their inherent interconnections, aiming for a comprehensive
+understanding of the brain's connectivity and anatomical characteristics.
+Utilizing the Glasser atlas for parcellation, we integrate imaging derived
+features from various modalities: functional connectivity from fMRI, structural
+connectivity from DTI, and anatomical features from sMRI within consistent
+regions. Our approach incorporates a masking strategy to differentially weight
+neural connections, thereby facilitating a holistic amalgamation of multimodal
+imaging data. This technique enhances interpretability at connectivity level,
+transcending traditional analyses centered on singular regional attributes. The
+model is applied to the Human Connectome Project's Development study to
+elucidate the associations between multimodal imaging and cognitive functions
+throughout youth. The analysis demonstrates improved predictive accuracy and
+uncovers crucial anatomical features and essential neural connections,
+deepening our understanding of brain structure and function.","Qu, Gang and Zhou, Ziyu and Calhoun, Vince D and Zhang, Aiying and Wang, Yu-Ping",2025,,,,Medical Image Analysis
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,zheng2024ci,\cite{zheng2024ci},Ci-gnn: A granger causality-inspired graph neural network for interpretable brain network-based psychiatric diagnosis,,,"Zheng, Kaizhong and Yu, Shujian and Chen, Badong",2024,,,,Neural. Netw.
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,luo2024knowledge,\cite{luo2024knowledge},Knowledge distillation guided interpretable brain subgraph neural networks for brain disorder exploration,,,"Luo, Xuexiong and Wu, Jia and Yang, Jian and Chen, Hongyang and Li, Zhao and Peng, Hao and Zhou, Chuan",2024,,,,IEEE Transactions on Neural Networks and Learning Systems
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,gao2024comprehensive,\cite{gao2024comprehensive},Comprehensive exploration of multi-modal and multi-branch imaging markers for autism diagnosis and interpretation: insights from an advanced deep learning model,,,"Gao, Jingjing and Xu, Yuhang and Li, Yanling and Lu, Fengmei and Wang, Zhengning",2024,,,,Cerebral Cortex
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,qu2023interpretable,\cite{qu2023interpretable},Interpretable cognitive ability prediction: A comprehensive gated graph transformer framework for analyzing functional brain networks,,,"Qu, Gang and Orlichenko, Anton and Wang, Junqi and Zhang, Gemeng and Xiao, Li and Zhang, Kun and Wilson, Tony W and Stephen, Julia M and Calhoun, Vince D and Wang, Yu-Ping",2023,,,,IEEE Transactions on Medical Imaging
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,xu2024contrastive,\cite{xu2024contrastive},"Contrastive Graph Pooling for Explainable Classification of Brain
+  Networks",http://arxiv.org/abs/2307.11133v3,"Functional magnetic resonance imaging (fMRI) is a commonly used technique to
+measure neural activation. Its application has been particularly important in
+identifying underlying neurodegenerative conditions such as Parkinson's,
+Alzheimer's, and Autism. Recent analysis of fMRI data models the brain as a
+graph and extracts features by graph neural networks (GNNs). However, the
+unique characteristics of fMRI data require a special design of GNN. Tailoring
+GNN to generate effective and domain-explainable features remains challenging.
+In this paper, we propose a contrastive dual-attention block and a
+differentiable graph pooling method called ContrastPool to better utilize GNN
+for brain networks, meeting fMRI-specific requirements. We apply our method to
+5 resting-state fMRI brain network datasets of 3 diseases and demonstrate its
+superiority over state-of-the-art baselines. Our case study confirms that the
+patterns extracted by our method match the domain knowledge in neuroscience
+literature, and disclose direct and interesting insights. Our contributions
+underscore the potential of ContrastPool for advancing the understanding of
+brain networks and neurodegenerative conditions. The source code is available
+at https://github.com/AngusMonroe/ContrastPool.","Xu, Jiaxing and Bian, Qingtian and Li, Xinhang and Zhang, Aihu and Ke, Yiping and Qiao, Miao and Zhang, Wei and Sim, Wei Khang Jeremy and Guly{\'a}s, Bal{\'a}zs",2024,,,,IEEE Trans. Med. Imaging.
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,hu2021gat,\cite{hu2021gat},GAT-LI: a graph attention network based learning and interpreting method for functional brain network classification,,,"Hu, Jinlong and Cao, Lijie and Li, Tenghui and Dong, Shoubin and Li, Ping",2021,,,,BMC bioinformatics
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,kim2021learning,\cite{kim2021learning},"Learning Dynamic Graph Representation of Brain Connectome with
+  Spatio-Temporal Attention",http://arxiv.org/abs/2105.13495v2,"Functional connectivity (FC) between regions of the brain can be assessed by
+the degree of temporal correlation measured with functional neuroimaging
+modalities. Based on the fact that these connectivities build a network,
+graph-based approaches for analyzing the brain connectome have provided
+insights into the functions of the human brain. The development of graph neural
+networks (GNNs) capable of learning representation from graph structured data
+has led to increased interest in learning the graph representation of the brain
+connectome. Although recent attempts to apply GNN to the FC network have shown
+promising results, there is still a common limitation that they usually do not
+incorporate the dynamic characteristics of the FC network which fluctuates over
+time. In addition, a few studies that have attempted to use dynamic FC as an
+input for the GNN reported a reduction in performance compared to static FC
+methods, and did not provide temporal explainability. Here, we propose STAGIN,
+a method for learning dynamic graph representation of the brain connectome with
+spatio-temporal attention. Specifically, a temporal sequence of brain graphs is
+input to the STAGIN to obtain the dynamic graph representation, while novel
+READOUT functions and the Transformer encoder provide spatial and temporal
+explainability with attention, respectively. Experiments on the HCP-Rest and
+the HCP-Task datasets demonstrate exceptional performance of our proposed
+method. Analysis of the spatio-temporal attention also provide concurrent
+interpretation with the neuroscientific knowledge, which further validates our
+method. Code is available at https://github.com/egyptdj/stagin","Kim, Byung-Hoon and Ye, Jong Chul and Kim, Jae-Jin",2021,,,,Advances in Neural Information Processing Systems
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,ijcai2019p669,\cite{ijcai2019p669},Adversarial Examples for Graph Data: Deep Insights into Attack and Defense,,,"Wu, Huijun and Wang, Chen and Tyshetskiy, Yuriy and Docherty, Andrew and Lu, Kai and Zhu, Liming",2019,7,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,yuan2025dg,\cite{yuan2025dg},DG-Mamba: Robust and Efficient Dynamic Graph Structure Learning with Selective State Space Models,,,"Yuan, Haonan and Sun, Qingyun and Wang, Zhaonan and Fu, Xingcheng and Ji, Cheng and Wang, Yongjian and Jin, Bo and Li, Jianxin",2025,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,ijcai2022reg,\cite{ijcai2022reg},"Regularized Graph Structure Learning with Semantic Knowledge for
+  Multi-variates Time-Series Forecasting",http://arxiv.org/abs/2210.06126v1,"Multivariate time-series forecasting is a critical task for many
+applications, and graph time-series network is widely studied due to its
+capability to capture the spatial-temporal correlation simultaneously. However,
+most existing works focus more on learning with the explicit prior graph
+structure, while ignoring potential information from the implicit graph
+structure, yielding incomplete structure modeling. Some recent works attempt to
+learn the intrinsic or implicit graph structure directly while lacking a way to
+combine explicit prior structure with implicit structure together. In this
+paper, we propose Regularized Graph Structure Learning (RGSL) model to
+incorporate both explicit prior structure and implicit structure together, and
+learn the forecasting deep networks along with the graph structure. RGSL
+consists of two innovative modules. First, we derive an implicit dense
+similarity matrix through node embedding, and learn the sparse graph structure
+using the Regularized Graph Generation (RGG) based on the Gumbel Softmax trick.
+Second, we propose a Laplacian Matrix Mixed-up Module (LM3) to fuse the
+explicit graph and implicit graph together. We conduct experiments on three
+real-word datasets. Results show that the proposed RGSL model outperforms
+existing graph forecasting algorithms with a notable margin, while learning
+meaningful graph structure simultaneously. Our code and models are made
+publicly available at https://github.com/alipay/RGSL.git.","Yu, Hongyuan and Li, Ting and Yu, Weichen and Li, Jianguo and Huang, Yan and Wang, Liang and Liu, Alex",2022,7,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,wu2022nodeformer,\cite{wu2022nodeformer},"NodeFormer: A Scalable Graph Structure Learning Transformer for Node
+  Classification",http://arxiv.org/abs/2306.08385v1,"Graph neural networks have been extensively studied for learning with
+inter-connected data. Despite this, recent evidence has revealed GNNs'
+deficiencies related to over-squashing, heterophily, handling long-range
+dependencies, edge incompleteness and particularly, the absence of graphs
+altogether. While a plausible solution is to learn new adaptive topology for
+message passing, issues concerning quadratic complexity hinder simultaneous
+guarantees for scalability and precision in large networks. In this paper, we
+introduce a novel all-pair message passing scheme for efficiently propagating
+node signals between arbitrary nodes, as an important building block for a
+pioneering Transformer-style network for node classification on large graphs,
+dubbed as \textsc{NodeFormer}. Specifically, the efficient computation is
+enabled by a kernerlized Gumbel-Softmax operator that reduces the algorithmic
+complexity to linearity w.r.t. node numbers for learning latent graph
+structures from large, potentially fully-connected graphs in a differentiable
+manner. We also provide accompanying theory as justification for our design.
+Extensive experiments demonstrate the promising efficacy of the method in
+various tasks including node classification on graphs (with up to 2M nodes) and
+graph-enhanced applications (e.g., image classification) where input graphs are
+missing.",Qitian Wu and Wentao Zhao and Zenan Li and David Wipf and Junchi Yan,2022,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,ghiasi2025enhancing,\cite{ghiasi2025enhancing},Enhancing graph structure learning through multiple features and graphs fusion,,,"Ghiasi, Razieh and Bosaghzadeh, Alireza and Amirkhani, Hossein",2025,,,,Computers and Electrical Engineering
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,zheng2024mulan,\cite{zheng2024mulan},MULAN: multi-modal causal structure learning and root cause analysis for microservice systems,,,"Zheng, Lecheng and Chen, Zhengzhang and He, Jingrui and Chen, Haifeng",2024,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,ng2024structure,\cite{ng2024structure},Structure learning with continuous optimization: A sober look and beyond,,,"Ng, Ignavier and Huang, Biwei and Zhang, Kun",2024,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,qiu2024refining,\cite{qiu2024refining},"Refining Latent Homophilic Structures over Heterophilic Graphs for
+  Robust Graph Convolution Networks",http://arxiv.org/abs/2312.16418v1,"Graph convolution networks (GCNs) are extensively utilized in various graph
+tasks to mine knowledge from spatial data. Our study marks the pioneering
+attempt to quantitatively investigate the GCN robustness over omnipresent
+heterophilic graphs for node classification. We uncover that the predominant
+vulnerability is caused by the structural out-of-distribution (OOD) issue. This
+finding motivates us to present a novel method that aims to harden GCNs by
+automatically learning Latent Homophilic Structures over heterophilic graphs.
+We term such a methodology as LHS. To elaborate, our initial step involves
+learning a latent structure by employing a novel self-expressive technique
+based on multi-node interactions. Subsequently, the structure is refined using
+a pairwisely constrained dual-view contrastive learning approach. We
+iteratively perform the above procedure, enabling a GCN model to aggregate
+information in a homophilic way on heterophilic graphs. Armed with such an
+adaptable structure, we can properly mitigate the structural OOD threats over
+heterophilic graphs. Experiments on various benchmarks show the effectiveness
+of the proposed LHS approach for robust GCNs.","Qiu, Chenyang and Nan, Guoshun and Xiong, Tianyu and Deng, Wendi and Wang, Di and Teng, Zhiyang and Sun, Lijuan and Cui, Qimei and Tao, Xiaofeng",2024,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,xie2025robust,\cite{xie2025robust},Robust Graph Structure Learning under Heterophily,http://arxiv.org/abs/2403.03659v1,"Graph is a fundamental mathematical structure in characterizing relations
+between different objects and has been widely used on various learning tasks.
+Most methods implicitly assume a given graph to be accurate and complete.
+However, real data is inevitably noisy and sparse, which will lead to inferior
+results. Despite the remarkable success of recent graph representation learning
+methods, they inherently presume that the graph is homophilic, and largely
+overlook heterophily, where most connected nodes are from different classes. In
+this regard, we propose a novel robust graph structure learning method to
+achieve a high-quality graph from heterophilic data for downstream tasks. We
+first apply a high-pass filter to make each node more distinctive from its
+neighbors by encoding structure information into the node features. Then, we
+learn a robust graph with an adaptive norm characterizing different levels of
+noise. Afterwards, we propose a novel regularizer to further refine the graph
+structure. Clustering and semi-supervised classification experiments on
+heterophilic graphs verify the effectiveness of our method.","Xie, Xuanting and Chen, Wenyu and Kang, Zhao",2025,,,,Neural Networks
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,li2024gslb,\cite{li2024gslb},GSLB: The Graph Structure Learning Benchmark,http://arxiv.org/abs/2310.05174v1,"Graph Structure Learning (GSL) has recently garnered considerable attention
+due to its ability to optimize both the parameters of Graph Neural Networks
+(GNNs) and the computation graph structure simultaneously. Despite the
+proliferation of GSL methods developed in recent years, there is no standard
+experimental setting or fair comparison for performance evaluation, which
+creates a great obstacle to understanding the progress in this field. To fill
+this gap, we systematically analyze the performance of GSL in different
+scenarios and develop a comprehensive Graph Structure Learning Benchmark (GSLB)
+curated from 20 diverse graph datasets and 16 distinct GSL algorithms.
+Specifically, GSLB systematically investigates the characteristics of GSL in
+terms of three dimensions: effectiveness, robustness, and complexity. We
+comprehensively evaluate state-of-the-art GSL algorithms in node- and
+graph-level tasks, and analyze their performance in robust learning and model
+complexity. Further, to facilitate reproducible research, we have developed an
+easy-to-use library for training, evaluating, and visualizing different GSL
+methods. Empirical results of our extensive experiments demonstrate the ability
+of GSL and reveal its potential benefits on various downstream tasks, offering
+insights and opportunities for future research. The code of GSLB is available
+at: https://github.com/GSL-Benchmark/GSLB.","Li, Zhixun and Sun, Xin and Luo, Yifan and Zhu, Yanqiao and Chen, Dingshuo and Luo, Yingtao and Zhou, Xiangxin and Liu, Qiang and Wu, Shu and Wang, Liang and others",2024,,,,Adv. Neural Inf. Process. Syst.
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,sun2022graph,\cite{sun2022graph},Graph structure learning with variational information bottleneck,,,"Sun, Qingyun and Li, Jianxin and Peng, Hao and Wu, Jia and Fu, Xingcheng and Ji, Cheng and Philip, S Yu",2022,,,,
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,zhang2019hierarchical,\cite{zhang2019hierarchical},Hierarchical Multi-View Graph Pooling With Structure Learning,,,"Zhen Zhang and
+                  Jiajun Bu and
+                  Martin Ester and
+                  Jianfeng Zhang and
+                  Zhao Li and
+                  Chengwei Yao and
+                  Huifen Dai and
+                  Zhi Yu and
+                  Can Wang",2023,,,,Comput. Biol. Med.
+Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints,http://arxiv.org/abs/2510.09175v1,zong2024new,\cite{zong2024new},"A New Brain Network Construction Paradigm for Brain Disorder via
+  Diffusion-based Graph Contrastive Learning",http://arxiv.org/abs/2407.18329v1,"Brain network analysis plays an increasingly important role in studying brain
+function and the exploring of disease mechanisms. However, existing brain
+network construction tools have some limitations, including dependency on
+empirical users, weak consistency in repeated experiments and time-consuming
+processes. In this work, a diffusion-based brain network pipeline, DGCL is
+designed for end-to-end construction of brain networks. Initially, the brain
+region-aware module (BRAM) precisely determines the spatial locations of brain
+regions by the diffusion process, avoiding subjective parameter selection.
+Subsequently, DGCL employs graph contrastive learning to optimize brain
+connections by eliminating individual differences in redundant connections
+unrelated to diseases, thereby enhancing the consistency of brain networks
+within the same group. Finally, the node-graph contrastive loss and
+classification loss jointly constrain the learning process of the model to
+obtain the reconstructed brain network, which is then used to analyze important
+brain connections. Validation on two datasets, ADNI and ABIDE, demonstrates
+that DGCL surpasses traditional methods and other deep learning models in
+predicting disease development stages. Significantly, the proposed model
+improves the efficiency and generalization of brain network construction. In
+summary, the proposed DGCL can be served as a universal brain network
+construction scheme, which can effectively identify important brain connections
+through generative paradigms and has the potential to provide disease
+interpretability support for neuroscience research.","Zong, Yongcheng and Zuo, Qiankun and Ng, Michael Kwok-Po and Lei, Baiying and Wang, Shuqiang",2024,,,,IEEE Trans. Pattern. Anal. Mach. Intell.

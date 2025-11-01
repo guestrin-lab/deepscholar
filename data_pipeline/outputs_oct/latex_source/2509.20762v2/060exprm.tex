@@ -1,0 +1,105 @@
+\section{Experiments}\label{sec:experiments}
+
+In this section, we present the experimental results to validate the empirical superiority of the proposed method \ours.
+We evaluate \ours by answering the following questions:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Q1.} Does \ours accurately predict group anchors?
+    \item \textbf{Q2.} How efficient is \ours compared to baselines?
+    \item \textbf{Q3.} Does each algorithmic design of \ours make a meaningful contribution to the performance?
+    \item \textbf{Q4.} Is \ours useful in downstream applications?
+\end{itemize}
+
+\subsection{Experimental Settings}\label{sec:exp_settings}
+
+\smallsection{Data processing.}
+For each dataset, we split the hyperedges into three categories (training, validation, and test) based on unique hyperedges in $E^*$, to ensure that the same group of nodes does not appear in two different categories.
+We focus on the scenarios with limited training data (i.e., known group anchors), which is common in the real world with label scarcity~\citep{zhu2022introduction,zhu2005semi,yang2022semi}.
+The ratios of unique hyperedges for training, validation, and test are 7.5\%, 2.5\%, and 90\%, respectively.
+We obtain five random splits for each dataset, and the reported results are averaged over the five splits. 
+See \cref{sec:observations} for the basic information of the thirteen real-world datasets.
+
+\smallsection{\ours.}
+We use a two-layer MLP with hidden dimension 64 in Stage 1.
+We fine-tune the learning rates in both stages and the loss term coefficient and global aggregation weight in Stage 2 (see \cref{sec:method:stage2}).
+We use Adam~\citep{kingma2014adam} as the optimizer in both stages.
+
+
+\smallsection{Baseline methods.}
+To the best of our knowledge, we are the first to consider the problem of group anchor identification, so no immediate baselines exist.
+As mentioned in \cref{sec:rel_wk}, group anchor identification can be seen as a special case of edge-dependent node classification (ENC), and we adapt existing methods for ENC with proper modification as baseline methods:
+\textbf{(1)} \textbf{WHATsNet}~\citep{choe2023classification},
+\textbf{(2\&3)} \textbf{CoNHD-U} and \textbf{CoNHD-I}, two variants of CoNHD~\citep{zheng2024co},
+and \textbf{(4-9)} 
+\textbf{HNHN}~\citep{dong2020hnhn}, 
+\textbf{HGNN}~\citep{feng2019hypergraph}, 
+\textbf{HCHA}~\citep{bai2021hypergraph}, 
+\textbf{HAT}~\citep{hwang2021hyfer}, 
+\textbf{UniGCN}~\citep{huang2021unignn}, and 
+\textbf{HNN}~\citep{aponte2022hypergraph}, 
+six baselines used by~\citet{choe2023classification}.
+We train the baseline methods on the original ENC problem, and follow the original papers~\citep{choe2023classification,zheng2024co} for their settings (e.g., hyperparameter tuning).
+For all baseline methods, additional label information is provided (e.g., the first and last authors of each paper are both provided).
+Each baseline predicts a label distribution for each node-hyperedge pair, and we pick the node with the highest score of the label corresponding to group anchors in each hyperedge.
+See Appendix~\ref{appx:exp_settings} for more details on experimental settings.
+
+\subsection{Q1. Accuracy (Tables~\ref{tab:single_node_res} and \ref{tab:res_multi_main})}\label{sec:experiments:acc}
+We evaluate the accuracy of group anchor identification of \ours and the baselines on thirteen real-world datasets.
+The accuracy is the proportion of hyperedges where the predicted group anchor is correct.
+For each method and each setting, we report the average accuracy over five random splits (see \cref{sec:exp_settings}) with the standard deviation.
+As shown in \cref{tab:single_node_res}, \ours achieves higher accuracy than all the baselines in most cases.
+
+Overall, WHATsNet~\citep{choe2023classification} is the strongest baseline method, performing comparably with \ours on several datasets, especially \texttt{emEU}, \texttt{soME}, and \texttt{soRE}.
+In our understanding, compared to \ours, the baseline methods are heavily parameterized (to be discussed in detail below in \cref{sec:experiments:efficiency}; see also the complexities of \ours in \cref{sec:method:complexity}), which makes the training of such methods difficult and prone to overfitting~\citep{ying2019overview} in our experiments with (1) label scarcity~\citep{karystinos2000overfitting}, i.e., only 7.5\% hyperedges contain known anchors, and (2) imbalanced labels~\citep{li2020analyzing}, i.e., a single anchor is in each hyperedge.
+\revisekdd{The performance of \ours is relatively weak on \texttt{emEU}, possibly because our observations on \texttt{emEU} are also weaker (see Tables~\ref{tab:degree_perf} to \ref{tab:scalar_acc}).}
+
+\smallsection{Additional features.}
+As discussed in Sections~\ref{sec:prelim} and \ref{sec:problem_state}, attributes can be incorporated into our method \ours if they are given.
+We conduct additional experiments using additional node features from the metadata of the \texttt{coAA} dataset for each node (author): the number of publications, the number of citations, the h-index, and the p-index.
+With such additional features, the accuracy of \ours is further improved, increasing from 49.7\% to 50.8\% for first authors, and from 50.6\% to 51.8\% for last authors.
+
+\input{TABS/res_multi_main}
+
+\smallsection{Multiple anchors.}
+As discussed in Sections~\ref{sec:intro} and \ref{sec:problem_state}, the scenario with a single anchor in each group is common.
+To the best of our knowledge, no real-world datasets with multiple anchors are available, so we consider
+co-authorship datasets and set both the first and second authors as anchors (motivated by ``equal contribution'').
+As shown in Table~\ref{tab:res_multi_main}, \ours still outperforms the baseline methods.
+\input{FIGTEX/training_time}
+
+\revisekddcolor
+\smallsection{Additional results.}
+\ours also outperforms the baseline methods with different training ratios (see Appendix~\ref{appx:diff_training_ratios}) and w.r.t. other evaluation metrics (see Appendix~\ref{appx:diff_eval_metrics}).
+The performance of \ours is robust to random seeds (see Appendix~\ref{appx:random_seeds}) and hyperparameters (see Appendix~\ref{appx:hyperparam_sens}).
+When trained and tested on different datasets in the same domain, it is possible for \ours to transfer knowledge on the correlations between topological features and group anchors learned by the MLP in Stage 1 (see Appendix~\ref{appx:experiments:acc}).
+\color{black}
+
+\subsection{Q2. Training Time and Parameters (Figure~\ref{fig:training_time})}\label{sec:experiments:efficiency}
+We measure the training time and the number of learnable parameters on each dataset, for \ours and the baselines.
+As shown in \cref{fig:training_time}, \ours is more efficient than the baselines, using significantly less training
+time and significantly fewer learnable parameters.
+On average, \ours uses 10.2$\times$ less training time than the fastest baseline and uses 43.6$\times$ fewer learnable parameters than the most lightweight baseline, empirically validating the low complexities of \ours (see \cref{sec:method:complexity}).
+
+\input{TABS/ablation}
+
+\input{TABS/hyperedge_prediction}
+
+\subsection{Q3. Ablation Studies (Table~\ref{tab:ablation_study})}
+We evaluate the performance of different variants of \ours with different algorithmic components absent.
+Specifically, we consider the following four variants:
+\textbf{(1) Stage 1 only}, predicting the node with the highest learned strengths $s^{(1)}_{v;e}$ in each hyperedge,
+\textbf{(2) Stage 2 only}, without fitting to the strengths learned in Stage 1 (i.e., the loss term coefficient $\alpha^{(2)} = 0$),
+\textbf{(3) without global aggregation} (GA; see \cref{sec:method:stage2}) in Stage 2, and
+\textbf{(4) without local features} (LF; see \cref{sec:method:stage1}) in Stage 1.
+As shown in \cref{tab:ablation_study}, the performance of the original \ours is overall higher than the variants, validating that each algorithmic component in \ours positively contributes to the performance.
+Specifically, the synergy between the two stages is clearly demonstrated.
+
+\subsection{Q4. Downstream Application (Table~\ref{tab:downstream})}\label{sec:experiments:downstream}
+We consider the downstream application of group-interaction prediction (see \cref{sec:intro}).
+We use VilLain~\citep{lee2024villain}, a method that can obtain hyperedge embeddings without input node/hyperedge features.
+For each hyperedge, we follow the original settings in~\citep{lee2024villain} to generate a fake hyperedge of the same size by randomly sampling nodes.
+We use \ours to obtain learned anchor strengths $s^{(2)}_v$'s and compare the performance of VilLain with its original embeddings and with additional information from anchor strengths.
+In each dataset, we take 10$\%$ hyperedges from the original test hyperedges out for the test of group-interaction prediction.
+VilLain originally learns 128-dimensional hyperedge embeddings, and we generate 11 additional dimensions using anchor strengths.
+As shown in \cref{tab:downstream}, with the additional dimensions derived from anchor strengths learned by \ours, VilLain achieves better accuracy in distinguishing realistic and fake group interactions.
+We conjecture that there are specific patterns or distributions of anchor strengths in real-world group interactions that are distinct from random ones, which are well captured by \ours.
+See Appendix~\ref{appx:downstream} for more details on the downstream-application experiments.

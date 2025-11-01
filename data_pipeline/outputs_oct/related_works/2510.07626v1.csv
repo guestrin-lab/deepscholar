@@ -1,0 +1,120 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.07626v1,http://arxiv.org/abs/2510.07626v1,2025-10-08 23:47:05+00:00,LLM Unlearning Under the Microscope: A Full-Stack View on Methods and Metrics,"Machine unlearning for large language models (LLMs) aims to remove undesired
+data, knowledge, and behaviors (e.g., for safety, privacy, or copyright) while
+preserving useful model capabilities. Despite rapid progress over the past two
+years, research in LLM unlearning remains fragmented, with limited clarity on
+what constitutes effective unlearning and how it should be rigorously
+evaluated. In this work, we present a principled taxonomy of twelve recent
+stateful unlearning methods, grouped into three methodological families:
+divergence-driven optimization, representation misalignment, and
+rejection-based targeted unlearning. Building on this taxonomy, we revisit the
+evaluation of unlearning effectiveness (UE), utility retention (UT), and
+robustness (Rob), focusing on the WMDP benchmark. Our analysis shows that
+current evaluations, dominated by multiple-choice question (MCQ) accuracy,
+offer only a narrow perspective, often overstating success while overlooking
+the model's actual generation behavior. To address this gap, we introduce open
+question-answering (Open-QA) metrics that better capture generative performance
+and reveal the inherent UE-UT tradeoff across method families. Furthermore, we
+demonstrate that robustness requires finer-grained analysis: for example,
+vulnerabilities differ substantially between in-domain relearning and
+out-of-domain fine-tuning, even though both fall under model-level attacks.
+Through this study, we hope to deliver a full-stack revisit of LLM unlearning
+and actionable guidance for designing and evaluating future methods.","\SL{[LLM unlearning: optimization-driven,.]}
+ % 目标是介绍 LLM unlearning 的三种 类别 算法 {\MRep} {\MDiv} {\MRej}
+ %  但是每一个类别下 不止我们选择的算法，还有额外的 算法 (如果介绍了 那么是否要说明理由，为什么我们选择 文中的几种算法？)
+ % 并且这里需要介绍出 有无 robustness design [我们的paper不需要强调 robustness design?]
+
+\textbf{Machine unlearning in LLMs.} Recent studies on machine unlearning in large language models (LLMs) have shown encouraging progress in alleviating risks~\citep{liu2024rethinking, maini2024tofu, liu2024large, yao2023large} such as copyright infringement~\citep{eldan2023whos}, privacy leakage~\citep{hu2024jogging,wu2023depn}, and harmful content generation~\citep{li2024wmdp, lu2022quark}. Current approaches to unlearning, aiming to avoid the prohibitive cost of full retraining, can be broadly divided into three families. The first family builds on objectives that drive the unlearned model’s predictions away from those of the original or a reference model, a strategy denoted as {\MDiv}~\citep{zhang2024negative, fan2024simplicity}. Complementary to this, {\MRep} refers to methods that intervene the representation space by projecting the latent embeddings of unlearned targets toward random or orthogonal directions, thereby preventing the model from correctly answering queries related to the corresponding content~\citep{zou2024improving, li2024wmdp, sheshadri2024latent}. Finally, \MRej guides the model to align its outputs with a predefined library of refusal statements whenever prompts tied to the unlearned content are encountered~\citep{rafailov2024direct, yuan2024closer, singh2025unlearning, gandikota2024erasing}. Together, these approaches demonstrate the versatility of current LLM unlearning research in balancing the dual objectives of reliable forgetting and utility preservation.
+
+
+\SL{[Unlearning benchmarking studies: datasets/tasks/evaluations/robust benchmark]}
+\textbf{LLM Unlearning benchmarking.} Furthermore, with the rapid emergence of various LLM unlearning methods, a series of recent benchmarking efforts have also been proposed, providing structured frameworks for evaluating the effectiveness of unlearning algorithms~\citep{li2024wmdp, maini2024tofu, jin2024rwku, shi2024muse, eldan2023whos}. Based on whether the original model needs to be fine-tuned on the forget corpus before unlearning, existing benchmarks can be roughly categorized into two groups. The first group requires fine-tuning the model on a domain-specific forget corpus to ensure the presence of unlearning targets.
+
+The ""Who is Harry Potter"" (WHP) benchmark~\citep{eldan2023whos} first fine-tunes models on the Harry Potter series to ensure the presence of domain-specific knowledge. It then defines 300 prompts from this universe as the forget set. The unlearning effectiveness is evaluated by inspecting the model’s completion probabilities on the forget prompts, whereas general utility is assessed using standard benchmarks such as Winogrande~\citep{sakaguchi2021winogrande} and Hellaswag~\citep{zellers2019hellaswag} to measure language understanding capabilities. Similarly, the TOFU benchmark (Task of Fictitious Unlearning)~\citep{maini2024tofu} is designed to unlearn with a dataset of 200 diverse synthetic author profiles based on question-answer pairs format, which enables precise control over the knowledge source to be unlearned. A designated subset of profiles constitutes the forget set, while the remaining profiles serve as the retain set. Evaluation spans multiple distributions—the forget set, the retain set, real authors, and world-fact questions—and quantifies unlearning by comparing model outputs to ground-truth answers using ROUGE-based score. The MUSE benchmark~\citep{shi2024muse} further extends this paradigm by providing separate corpora: a Harry Potter books dataset paired with FanWiki~\cite{} content (retain set), and a BBC News dataset randomly split into disjoint forget and retain sets. Evaluations include QA-based tests of verbatim and knowledge memorization, as well as a proposed privacy leakage metric for over-unlearning detection. 
+
+However, all benchmarks in this category face a critical limitation: once the model is fine-tuned on a narrow domain, it tends to lose general capabilities such as mathematical reasoning and logical generation, making it difficult to assess the broader utility trade-offs of unlearning methods~\citep{jin2024rwku}.
+
+The second group of benchmarks does not require fine-tuning, thereby aligning more closely with real-world unlearning scenarios. A representative example is the Weapons of Mass Destruction Proxy Benchmark (WMDP)~\citep{li2024wmdp}, which constructs a forget corpus by collecting a large set of articles related to biosecurity, cybersecurity, and chemical security. The unlearning effect is then evaluated on 3,668 multiple-choice questions derived from these domains, serving as proxies for hazardous knowledge. In addition, model utility is assessed through general-purpose benchmarks such as MMLU~\citep{} and MT-Bench~\citep{zheng2023judging}. Another example is RWKU (Real-World Knowledge Unlearning)~\cite{jin2024rwku}, which focuses on concept-level unlearning rather than domain-specific corpora. RWKU targets knowledge about 200 real-world famous people, and evaluates models via knowledge memorization on the forget set, while assessing retain performance across general ability, reasoning, truthfulness, factuality, and fluency. 
+
+Finally, some existing safety-related benchmarks can also be leveraged in the unlearning context, such as PKU-SafeRLHF \citep{}, LKF for factual consistency \citep{lkf}, and Circuit Breaker for toxic content removal \citep{}. However, these benchmarks primarily focus on safe alignment rather than unlearning itself, and thus provide limited insights into the unique characteristics of unlearning algorithms.
+
+% Why we select WMDP as our main benchmark? 
+% What are the diff between the current robust benchmark and our work? 
+% CV unlearning benchmark / VLLM unlearning benchmark
+
+
+\SL{[Adversarial robustness of unlearning: Attack and defense.]}
+
+Most importantly, the robustness of unlearning has become a central concern, as prior work has repeatedly shown that unlearned models remain highly vulnerable to attacks. More recent research has provided empirical evidence highlighting the severity of this issue. For example, \citep{lynch2024eight} demonstrated that standardized evaluation protocols often overlook residual knowledge persisting in unlearned models, while Łucki et al. (2024) \citep{lucki2024adversarial} showed that fine-tuning on as few as ten unrelated examples can already restore most of the forgotten information. In the same vein, Hu et al. (2024) \citep{hu2024jogging} introduced relearning attacks, where a small amount of unlearning-related data suffices to recover forgotten content via fine-tuning. Beyond these strategies, other attack vectors have also been explored. The Logit Lens method \citep{} probes each layer’s residual stream by projecting activations onto the vocabulary and tracking A/B/C/D logits in multiple-choice tasks; pruning has been applied to reverse the effects of unlearning \citep{}; and a more systematic study \citep{} classified unlearning attacks into three categories: input-space attacks (adversarial prompt optimization), latent-space attacks (embedding and activation perturbations), and weight-space attacks (fine-tuning with full parameters, LoRA adapters, or pruning). Collectively, these works highlight that current unlearning algorithms are fragile under diverse attacks. However, most of these evaluations remain constrained by the WMDP benchmark, which emphasizes multiple-choice settings and thus risks introducing bias by relying on a single evaluation metric.
+
+As attack methods against unlearning continue to evolve, several works have introduced robust unlearning designs. For example, \citep{} apply meta-learning–based adversarial training to resist tampering attacks, while \citep{TAR} leverage sharpness-aware minimization (SAM) to promote local flatness and improve resistance to relearning. Inspired by invariant risk minimization, \citep{} propose invariant LLM unlearning (ILU), a regularization framework that enforces invariance for robustness. Distillation-based approaches such as UNDO \citep{} enhance robustness by distilling an unlearned model into a partially noised copy of itself. More recently, OBLIVIATE \citep{} introduces a structured loss combining masking, distillation, and world-fact preservation to robustly remove targeted data while maintaining utility.
+
+% Overall these methods 都被 constraint 在使用的 benchmark 中，只依赖于 benchmark 提供的相较单一的 评估指标，导致了设计的 robust 方法具有一定的局限性
+
+% Attack ? 把之前的所有attck 方法都写出来？ 我们后面有提到 为什么选哪几个attack 方法吗？ 
+% defense? 指的 专门的具有robust design 的 unlearning 方法？
+
+% Do we still need this part? 
+
+
+%","\SL{[LLM unlearning: optimization-driven,.]}
+ 
+ 
+ 
+
+\textbf{Machine unlearning in LLMs.} Recent studies on machine unlearning in large language models (LLMs) have shown encouraging progress in alleviating risks~\citep{liu2024rethinking, maini2024tofu, liu2024large, yao2023large} such as copyright infringement~\citep{eldan2023whos}, privacy leakage~\citep{hu2024jogging,wu2023depn}, and harmful content generation~\citep{li2024wmdp, lu2022quark}. Current approaches to unlearning, aiming to avoid the prohibitive cost of full retraining, can be broadly divided into three families. The first family builds on objectives that drive the unlearned model’s predictions away from those of the original or a reference model, a strategy denoted as {\MDiv}~\citep{zhang2024negative, fan2024simplicity}. Complementary to this, {\MRep} refers to methods that intervene the representation space by projecting the latent embeddings of unlearned targets toward random or orthogonal directions, thereby preventing the model from correctly answering queries related to the corresponding content~\citep{zou2024improving, li2024wmdp, sheshadri2024latent}. Finally, \MRej guides the model to align its outputs with a predefined library of refusal statements whenever prompts tied to the unlearned content are encountered~\citep{rafailov2024direct, yuan2024closer, singh2025unlearning, gandikota2024erasing}. Together, these approaches demonstrate the versatility of current LLM unlearning research in balancing the dual objectives of reliable forgetting and utility preservation.
+
+
+\SL{[Unlearning benchmarking studies: datasets/tasks/evaluations/robust benchmark]}
+\textbf{LLM Unlearning benchmarking.} Furthermore, with the rapid emergence of various LLM unlearning methods, a series of recent benchmarking efforts have also been proposed, providing structured frameworks for evaluating the effectiveness of unlearning algorithms~\citep{li2024wmdp, maini2024tofu, jin2024rwku, shi2024muse, eldan2023whos}. Based on whether the original model needs to be fine-tuned on the forget corpus before unlearning, existing benchmarks can be roughly categorized into two groups. The first group requires fine-tuning the model on a domain-specific forget corpus to ensure the presence of unlearning targets.
+
+The ""Who is Harry Potter"" (WHP) benchmark~\citep{eldan2023whos} first fine-tunes models on the Harry Potter series to ensure the presence of domain-specific knowledge. It then defines 300 prompts from this universe as the forget set. The unlearning effectiveness is evaluated by inspecting the model’s completion probabilities on the forget prompts, whereas general utility is assessed using standard benchmarks such as Winogrande~\citep{sakaguchi2021winogrande} and Hellaswag~\citep{zellers2019hellaswag} to measure language understanding capabilities. Similarly, the TOFU benchmark (Task of Fictitious Unlearning)~\citep{maini2024tofu} is designed to unlearn with a dataset of 200 diverse synthetic author profiles based on question-answer pairs format, which enables precise control over the knowledge source to be unlearned. A designated subset of profiles constitutes the forget set, while the remaining profiles serve as the retain set. Evaluation spans multiple distributions—the forget set, the retain set, real authors, and world-fact questions—and quantifies unlearning by comparing model outputs to ground-truth answers using ROUGE-based score. The MUSE benchmark~\citep{shi2024muse} further extends this paradigm by providing separate corpora: a Harry Potter books dataset paired with FanWiki~\cite{} content (retain set), and a BBC News dataset randomly split into disjoint forget and retain sets. Evaluations include QA-based tests of verbatim and knowledge memorization, as well as a proposed privacy leakage metric for over-unlearning detection. 
+
+However, all benchmarks in this category face a critical limitation: once the model is fine-tuned on a narrow domain, it tends to lose general capabilities such as mathematical reasoning and logical generation, making it difficult to assess the broader utility trade-offs of unlearning methods~\citep{jin2024rwku}.
+
+The second group of benchmarks does not require fine-tuning, thereby aligning more closely with real-world unlearning scenarios. A representative example is the Weapons of Mass Destruction Proxy Benchmark (WMDP)~\citep{li2024wmdp}, which constructs a forget corpus by collecting a large set of articles related to biosecurity, cybersecurity, and chemical security. The unlearning effect is then evaluated on 3,668 multiple-choice questions derived from these domains, serving as proxies for hazardous knowledge. In addition, model utility is assessed through general-purpose benchmarks such as MMLU~\citep{} and MT-Bench~\citep{zheng2023judging}. Another example is RWKU (Real-World Knowledge Unlearning)~\cite{jin2024rwku}, which focuses on concept-level unlearning rather than domain-specific corpora. RWKU targets knowledge about 200 real-world famous people, and evaluates models via knowledge memorization on the forget set, while assessing retain performance across general ability, reasoning, truthfulness, factuality, and fluency. 
+
+Finally, some existing safety-related benchmarks can also be leveraged in the unlearning context, such as PKU-SafeRLHF \citep{}, LKF for factual consistency \citep{lkf}, and Circuit Breaker for toxic content removal \citep{}. However, these benchmarks primarily focus on safe alignment rather than unlearning itself, and thus provide limited insights into the unique characteristics of unlearning algorithms.
+
+
+
+
+
+
+\SL{[Adversarial robustness of unlearning: Attack and defense.]}
+
+Most importantly, the robustness of unlearning has become a central concern, as prior work has repeatedly shown that unlearned models remain highly vulnerable to attacks. More recent research has provided empirical evidence highlighting the severity of this issue. For example, \citep{lynch2024eight} demonstrated that standardized evaluation protocols often overlook residual knowledge persisting in unlearned models, while Łucki et al. (2024) \citep{lucki2024adversarial} showed that fine-tuning on as few as ten unrelated examples can already restore most of the forgotten information. In the same vein, Hu et al. (2024) \citep{hu2024jogging} introduced relearning attacks, where a small amount of unlearning-related data suffices to recover forgotten content via fine-tuning. Beyond these strategies, other attack vectors have also been explored. The Logit Lens method \citep{} probes each layer’s residual stream by projecting activations onto the vocabulary and tracking A/B/C/D logits in multiple-choice tasks; pruning has been applied to reverse the effects of unlearning \citep{}; and a more systematic study \citep{} classified unlearning attacks into three categories: input-space attacks (adversarial prompt optimization), latent-space attacks (embedding and activation perturbations), and weight-space attacks (fine-tuning with full parameters, LoRA adapters, or pruning). Collectively, these works highlight that current unlearning algorithms are fragile under diverse attacks. However, most of these evaluations remain constrained by the WMDP benchmark, which emphasizes multiple-choice settings and thus risks introducing bias by relying on a single evaluation metric.
+
+As attack methods against unlearning continue to evolve, several works have introduced robust unlearning designs. For example, \citep{} apply meta-learning–based adversarial training to resist tampering attacks, while \citep{TAR} leverage sharpness-aware minimization (SAM) to promote local flatness and improve resistance to relearning. Inspired by invariant risk minimization, \citep{} propose invariant LLM unlearning (ILU), a regularization framework that enforces invariance for robustness. Distillation-based approaches such as UNDO \citep{} enhance robustness by distilling an unlearned model into a partially noised copy of itself. More recently, OBLIVIATE \citep{} introduces a structured loss combining masking, distillation, and world-fact preservation to robustly remove targeted data while maintaining utility.","LLM unlearning and benchmarking studies.Recent work on LLM unlearning (Liu et al., 2024b; Maini et al., 2024;
+Liu et al., 2024a; Yao et al., 2023) has made progress in mitigating risks such as copyright infringement (Eldan &
+Russinovich, 2023), privacy leakage (Hu et al., 2024; Wu et al., 2023), and harmful content generation (Li et al., 2024;
+Lu et al., 2022). For detailed introductions to the diverse families of unlearning methods, we refer readers to Sec. 3.
+Given the growing interest in LLM unlearning, several benchmarks have been proposed to systematically evaluate its
+effectiveness (Li et al., 2024; Maini et al., 2024; Jin et al., 2024; Shi et al., 2024; Eldan & Russinovich, 2023). These
+benchmarks can be grouped into two categories based on whether models are fine-tuned on the forget corpus. The first
+2
+category fine-tunes models on domain-specific corpora to introduce unlearning targets. WHP (Eldan & Russinovich,
+2023) uses the Harry Potter series, TOFU (Maini et al., 2024) constructs synthetic author profiles, and MUSE (Shi et al.,
+2024) provides Harry Potter and news corpora with privacy-leakage evaluation. A drawback is that domain-specific
+fine-tuning can degrade general abilities such as reasoning, complicating fair utility assessment (Jin et al., 2024).
+The second category avoids fine-tuning, aligning more closely with real-world use cases. WMDP (Li et al., 2024)
+constructs forget corpora in biology, chemistry, and cybersecurity, and evaluates unlearning via multiple-choice QA
+proxies for hazardous knowledge, alongside utility on MMLU (Hendrycks et al., 2020) and MT-Bench (Zheng et al.,
+2023). RWKU (Jin et al., 2024) focuses on real-world entities, evaluating memorization on the forget set and reasoning,
+truthfulness, factuality, and fluency on retain tests.
+Adversarial robustness of LLM unlearning.Robustness has emerged as a central challenge for unlearning, as
+unlearned models remain vulnerable to diverse attacks (Łucki et al., 2024; Che et al., 2025; Hu et al., 2024). Parameter-
+level attacks can restore forgotten content through light fine-tuning (Łucki et al., 2024; Hu et al., 2024; Qi et al.,
+2023; Halawi et al., 2024; Lermen et al., 2023; Huang et al., 2024), pruning (Jain et al., 2023; Wei et al., 2024;
+Lee et al., 2018), or quantization (Zhang et al., 2024b), which may re-expose knowledge by compressing weights.
+Representation-level attacks perturb embeddings or hidden activations to revive residual traces (Schwinn et al., 2024;
+Sheshadri et al., 2024), while input-level attacks exploit adversarial prompting or query optimization (Chao et al., 2025;
+Shin et al., 2020), ranging from gradient-guided search (Zou et al., 2023) to perplexity-based strategies (Sadasivan
+et al., 2024). In response, several defenses have been proposed. Adversarial training strengthens robustness against such
+attacks (Sheshadri et al., 2024), and meta-learning strategies further enhance defense (Tamirisa et al., 2024; Sondej
+et al., 2025). Sharpness-aware minimization encourages flat minima to reduce susceptibility to relearning (Fan et al.,
+2025). Invariance-based regularization introduces robustness through invariant risk principles (Wang et al., 2025b),
+while distillation-based methods transfer knowledge into partially noised student models (Lee et al., 2025). Although
+robustness benchmarks are emerging (Che et al., 2025; Hu et al., 2025), they remain limited: Che et al. (2025) evaluates
+only with MCQ accuracy, and Hu et al. (2025) considers only in-domain relearning, leaving comprehensive assessment
+open."

@@ -1,0 +1,37 @@
+
+
+\vspace{0.5cm}
+\section{Design}
+
+To test the impact of a robotic object's height, we designed a modular robot that allows us to modify its height without changing other parameters, such as color, shape, and materials (see Figure \ref{fig:robotfigure}). Since our focus was on the specific case of a non-humanoid robotic object, we designed a robotic service table that would be assimilated within the lab context. The robotic platform consisted of several attachable modules that afforded extensive flexibility in assembly, similar to interlocking LEGO bricks, thereby enabling a range of configurations. The modules can be stacked on top of each other, allowing the robot to reach various heights while keeping all other aspects constant. The system was composed of three types of primary modules: (1) a mobile base module integrating the driving chassis, electronics, and batteries; (2) intermediary spacer modules that facilitated height variation; and (3) a top module designed to carry office equipment.
+
+
+
+\subsection{Design principles}
+During development, a multidisciplinary team—including a designer, an HRI researcher, an industrial designer, software developers, and a cognitive psychologist, established a set of design guidelines grounded in our research hypothesis. The core design principles were as follows:
+\subsubsection{Flexibility} The platform must allow a rapid and seamless transition between different height configurations.
+\subsubsection{Neutrality} The design aimed for a neutral, industry-standard appearance that minimized extraneous associations and could be related to a lab context.
+\subsubsection{Affordability and Replicability} The system was designed to be cost-effective and reproducible, facilitating widespread adoption and further advancements within the HRI research community. Future enhancements and integration of additional modules should be straightforward.
+
+The initial design phase employed full-scale, low-fidelity cardboard mock-ups (see Figure \ref{fig:Design1}) to establish dimensionality and ergonomics. These prototypes were tested in a pilot study to ensure comfortable interaction and that critical elements, such as equipment accessibility, remained within easy reach while the participant was sitting, whether the platform was configured in its taller or shorter states.
+
+ \begin{figure}[b]
+     \centering
+\includegraphics[width=0.9\linewidth]{Figures/MORPHY_RoMan_Design.png}
+     \caption{The design process.}
+     \label{fig:Design1}
+ \end{figure}
+
+\subsection{Advanced design phase}
+In the subsequent phase, we refined the design with detailed attention to the chassis, enclosure, and modular components (see Figure \ref{fig:Design1}). A cubic form factor was selected over alternative geometries due to its alignment with the standard shape and dimensions of desks, offering superior functional clarity and optimal space utilization \cite{kim2019assembly}. Additionally, rounded corners were incorporated to evoke a more approachable and safer aesthetic compared to sharp edges \cite{bar2006humans, bar2007visual}. Designing the chassis to accommodate all electronic components, support the robot's weight, and achieve the required stability involved an intensive iteration process, that resulted in over four fully functional mid-fidelity prototypes. The process began with a combination of 3D-printed and laser-cut parts, transitioning to a 3D-printed design to enhance rigidity and minimize the required tools for manufacturing. 
+
+The mobile module used two freewheel-mounted motorized wheel configurations, a common indoor robotic design that facilitated maneuverability and in-place turning. Each spacer module was designed with a central aperture along the platform’s core, providing the flexibility for future integration of additional electronics and features. To ensure secure stacking, all modules utilized a uniform magnetic connector system, achieving a robust assembly. The top module was developed through several iterative refinements, culminating in a design that supported convenient access.
+
+\subsection{Future directions}
+We envisioned the continued evolution of this platform as an open-source resource, with the integration of additional compatible modules and functionalities to further support HRI research in the field of mobile robotic platforms.
+
+\subsection{Technical implementation}\label{sec:Technical implementation}
+The robot's hardware consisted of an ESP32 micro-controller, two DC motors with wheels for mobility, and two Makita batteries (18V, 5Ah) providing the power supply through an adapter. The motor control was managed through an H-bridge motor driver, enabling both forward and reverse motion, with speed adjustments controlled via the controller’s triggers. The BluePad32 library was utilized to handle communication between the ESP32 micro-controller and the PS4 controller itself. Development and integration were carried out using PlatformIO, a cross platform tool for embedded development. In order to develop a versatile platform that could be easily controlled remotely and adapted to different tasks through a modular structure, we utilized the ESP32 micro-controller as the central control unit. The robot is operated using a Sony PlayStation 4 controller, providing an intuitive and responsive interface for real-time control that allows the robot to move seamlessly using a Wizard of Oz (WoZ) technique \cite{mutlu2012conversational, riek2012wizard}.  
+
+
+

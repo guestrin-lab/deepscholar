@@ -1,0 +1,142 @@
+\section{Multi-Faceted Robustness Assessments for Unlearning: Needed and Complementary}
+\label{sec:eval_Rob}
+
+\begin{tcolorbox}[enhanced,attach boxed title to top center={yshift=-3mm,yshifttext=-1mm},
+  colback=white,colframe=green!35!black,colbacktitle=green!5!white,
+  title={\parbox{0.75\linewidth}{\centering Summary insights into robustness evaluations of unlearning methods}}, 
+  coltitle=black, boxrule=0.8pt, 
+  boxed title style={size=small,colframe=blue!45!black} ]
+
+\textbf{(1)} In-domain relearning serves as a \textit{worst-case robustness evaluation}, as it most severely reduces unlearning effectiveness.  
+
+\textbf{(2)} Robustness of in-domain relearning and out-of-domain fine-tuning are opposite: {\MDiv} methods are generally more robust under in-domain relearning, whereas {\MRep} methods exhibit stronger robustness under out-of-domain fine-tuning. 
+
+\textbf{(3)} Quantization disproportionately impacts {\MRep}, and jailbreak attack robustness closely resembles that of in-domain relearning.  
+
+\textbf{(4)} Robust design substantially improves robustness: NPO+SAM, NPO+IRM, and TAR significantly strengthen the resilience of both NPO and RMU.  
+
+\end{tcolorbox}
+
+
+Robustness evaluation of unlearning methods can be organized by the level at which adversarial attacks are applied \citep{che2025model}. 
+We distinguish between \textit{model-level attacks}, including in-domain relearning \citep{hu2024jogging,fan2025towards}, out-of-domain fine-tuning \citep{wang2025invariance}, and quantization, and \textit{input-level attacks}, such as jailbreaking \citep{lucki2024adversarial}. 
+In what follows, we analyze the robustness of existing unlearning methods across these attack categories.
+
+\paragraph{In-domain relearning vs. out-of-domain fine-tuning.}
+
+% \begin{wrapfigure}{r}{0.4\textwidth}
+%     \centering
+%     \vspace{-4mm}
+%     \includegraphics[width=0.38\textwidth]{figs/heatmap_ft.pdf}
+%     \caption{WMDP evaluation accuracy of twelve unlearning methods on WMDP Bio with Llama-3 8B Instruct before and after in-domain relearning and out-of-domain fine-tuning (GSM8K, SST2, and MNLI). * denotes the presence of a robust design in the corresponding method.}
+%     \label{fig:heatmap_ft}
+% \end{wrapfigure}
+
+In-domain relearning refers to fine-tuning the unlearned model directly on a subset of the forget set $\Df$, which can substantially reduce unlearning effectiveness. 
+By contrast, out-of-domain fine-tuning adapts the unlearned model to downstream datasets unrelated to the unlearning benchmark, such as GSM8K, SST2, or MNLI. 
+In \textbf{Fig.~\ref{fig:robust_wmdp}(a)}, we present the WMDP evaluation accuracy of twelve unlearning methods before and after exposure to both in-domain and out-of-domain fine-tuning. 
+Lower accuracy (lighter color) indicates stronger robustness, and methods incorporating explicit robust design are marked with an asterisk for clarity.
+
+For methods without robust design, {\MRep} methods tend to exhibit much stronger robustness against out-of-domain fine-tuning compared to {\MDiv} methods. 
+In contrast, for in-domain relearning attacks, {\MDiv} methods generally outperform {\MRep} methods. 
+Adding robustness-oriented designs, such as NPO+SAM, NPO+IRM, and TAR, significantly improves robustness against both in-domain relearning and out-of-domain fine-tuning. However, RMU+LAT does not yield consistent robustness gains compared to RMU. 
+It is also worth noting that in-domain relearning often proves to be the stronger attack, causing larger drops in unlearning effectiveness. From this perspective, in-domain relearning can be regarded as a worst-case fine-tuning scenario, but it does not fully capture the robustness properties of models when subjected to out-of-domain fine-tuning.
+
+
+% \begin{wrapfigure}{r}{0.5\linewidth}  % r=右侧放置，宽度 0.5 行宽
+%   \vspace*{-2mm}
+%   \centering
+%   \includegraphics[width=0.4\textwidth]{figs/2d_ue_ut_legend.pdf}\\[-1mm]
+
+%   \begin{tabular}{cc}
+%     \includegraphics[width=0.23\textwidth]{figs/2d_mmlu_gsm8k_quan.pdf} &
+%     \includegraphics[width=0.23\textwidth]{figs/2d_acc_es_quan.pdf} \\
+%     \small{(a) UE vs. relearning epoch \#} &  
+%     \small{(b) UE vs. relearning data \#}\\
+%   \end{tabular}
+
+%   \vspace{-3mm}
+%   \caption{\small{Comparison of unlearning effectiveness (UE) under different relearning settings.}}
+%   \label{fig:relearn_wmdp_method}
+%   \vspace*{-5mm}
+% \end{wrapfigure}
+
+\begin{figure}[htb]
+%\vspace*{-2mm}
+\center
+\hspace*{50mm}
+\includegraphics[width=0.6\linewidth]{figs/2d_ue_ut_legend.pdf}\\
+% \vspace{-1mm}
+\begin{tabular}{ccc}
+% \hspace*{-3mm}
+% \hspace*{-6mm}
+\includegraphics[width=0.32\textwidth,height=!]{figs/heatmap_ft.pdf}
+&
+\includegraphics[width=0.30\textwidth,height=!]{figs/2d_acc_es_quan.pdf} 
+&
+% \hspace*{-6mm}
+\includegraphics[width=0.29\textwidth,height=!]{figs/2d_mmlu_gsm8k_quan.pdf}
+\vspace*{-1mm}
+\\
+\hspace*{3mm}{\small (a) $\mathrm{UT}_\text{MCQ}$ and $\mathrm{UT}_\text{Open-QA}$} &
+% \hspace*{-3mm}
+{\small (b) $\mathrm{UE}_\text{MCQ}$ vs. $\mathrm{UE}_\text{Open-QA}$} & 
+% \hspace*{-3mm}
+{\small (c) $\mathrm{UE}_\text{Avg}$ vs. $\mathrm{UT}_\text{Avg}$} \\
+\end{tabular}
+\vspace{-4mm}
+\caption{\small{    
+(a) WMDP evaluation accuracy of twelve unlearning methods on WMDP Bio with Llama-3 8B Instruct before and after in-domain relearning and out-of-domain fine-tuning (GSM8K, SST2, and MNLI). * denotes the presence of a robust design in the corresponding method. (b) The results of $\mathrm{UE}_\text{MCQ}$ (Accuracy) and $\mathrm{UE}_\text{Open-QA}$ (ES) for 12 unlearning methods, reported both before quantization and after 4-bit quantization. Solid lines connect results of the same method, while the black dashed line indicates performance after quantization. (c) The results of $\mathrm{UT}_\text{MCQ}$ (MMLU) and $\mathrm{UT}_\text{Open-QA}$ (GSM8K) for 12 unlearning methods, reported both before quantization and after 4-bit quantization.
+}
+}
+\label{fig:robust_wmdp}
+% \vspace*{-5mm}
+\end{figure}
+
+
+
+\paragraph{Quantization.} 
+Quantization reduces the storage and computational costs of large language models by mapping high-precision parameters into a discrete range without modifying the model architecture \citep{hong2025stablequant,zheng2025empirical}. 
+\citet{zhang2024catastrophic} were the first to investigate the effect of quantization on unlearned models in the context of the MUSE benchmark, showing that quantization can be regarded as a form of model-level attack. By lowering numerical precision, quantization may potentially cause an unlearned model to recover parts of the knowledge that was intended to be forgotten.
+
+We further evaluate the robustness of unlearned models under 4-bit quantization, using four metrics: $\mathrm{UE}_\text{MCQ}$ (accuracy), $\mathrm{UE}_\text{Open-QA}$ (entailment score), $\mathrm{UT}_\text{MCQ}$ (MMLU), and $\mathrm{UT}_\text{Open-QA}$ (GSM8K). As shown in \textbf{Fig.~\ref{fig:robust_wmdp}(b) and (c)}, quantization generally improves unlearning effectiveness (lower UE values) but degrades utility. The impact is more pronounced for {\MRep} methods than for {\MDiv} methods. Notably, methods such as RR are not robust to quantization, as their UE values actually increase after quantization.
+
+
+% 1. On the WMDP benchmark, quantization has little impact on evaluation outcomes, as all unlearning methods remain robust regardless of whether performance is measured using MCQ or Open-QA tasks. 2. In contrast, on the MUSE benchmark, quantization is effective against only a subset of methods, such as NPO and GradDiff. 3. To further explain this phenomenon, we analyze the overlap in the distribution of the top-50 tokens, which highlights how quantization shifts prediction distributions in a way that selectively affects certain approaches.
+
+
+\paragraph{Input-level attacks and interactions between model-level and input-level robustness.} 
+In addition to model-level perturbations, unlearned models are also vulnerable to input-level attacks that manipulate prompts in order to bypass unlearning. Among these, \textit{jailbreaking attacks} \citep{lucki2024adversarial, lynch2024eight, patil2023can} have received particular attention, since carefully crafted adversarial prompts can recover sensitive information that was intended to be forgotten at inference time.
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \centering
+    \vspace{-4mm}
+    \includegraphics[width=0.38\textwidth]{figs/heatmap_robustness.pdf}
+    \caption{WMDP evaluation accuracy of twelve unlearning methods on WMDP Bio with Llama-3 8B Instruct before and after in-domain relearning (IDR), out-of-domain fine-tuning (ODF on GSM8K), quantization (Quan), and input-level jailbreaking attacks (Jail). An asterisk (*) denotes the presence of a robust design.}
+    \label{fig:heatmap_ft}
+\end{wrapfigure}
+
+As illustrated in \textbf{Fig.~\ref{fig:heatmap_ft}}, {\MDiv} methods without robust design (GradDiff, NPO, SimNPO) generally demonstrate stronger robustness against jailbreaking attacks compared with {\MRep} methods without robust design (RMU, RR). This may be attributed to the degraded generative capacity of {\MDiv} methods, which inadvertently hinders their ability to reveal sensitive knowledge. In contrast, {\MRej} methods such as ELM show the weakest robustness, indicating that rejection can often be bypassed by adversarial prompts. When robust design is incorporated, most methods (except RMU+LAT) exhibit significantly enhanced resilience against jailbreaking attacks.
+
+What's more, we jointly present robustness across multiple attack types: model-level in-domain relearning (IDR), out-of-domain fine-tuning (ODF), quantization (Quan), and input-level jailbreaking attacks (Jail) in \textbf{Fig.~\ref{fig:heatmap_ft}}. The results suggest that the robustness patterns of jailbreaking attacks are more closely aligned with those of in-domain relearning, rather than out-of-domain fine-tuning. Specifically, {\MDiv} methods without robust design outperform {\MRep} methods in both jailbreaking and in-domain relearning settings, whereas the trend is reversed for out-of-domain fine-tuning. This highlights an important interaction: robustness to input-level attacks may share underlying characteristics with robustness to model-level in-domain relearning, but differs substantially from robustness to out-of-domain fine-tuning.
+
+
+
+
+% \paragraph{Interactions between model-level and input-level attacks.} 
+% Model-level and input-level attacks are complementary in how they probe vulnerabilities of unlearned models. 
+% To visualize their relationship, use heatmaps comparing the outcomes of model-level attacks with those of input-level attacks.
+
+% Quantization
+% 1. Quantization 量化通过将高精度参数映射到一个离散范围来减少 LLM 的存储和计算需求，而不改变模型结构
+% 2. Quantization 在 WMDP 数据集上，无论使用 MCQ 还是 Open-QA 的 evaluation 都不能起作用，所有 unlearning method 对于 quantization 都是鲁棒的.
+% 3. Quantization 对于 MUSE 而言，只对部分 method 有效（如 NPO，Grad Diff）
+% 4. 使用 top50 token 分布的 distribution 的 overlap 进行解释
+
+% Input-level attack:
+% 1. Jailbreaking attack 
+% 2. In-context learning
+
+% Tadeoff of robustnedd and UE
+
+% The relationship between model-level and inpu-level attack: heatmap

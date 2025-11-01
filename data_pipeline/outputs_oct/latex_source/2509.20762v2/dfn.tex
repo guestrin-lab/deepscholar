@@ -1,0 +1,126 @@
+\usepackage{makecell}
+
+\usepackage{bm}
+\newcommand\bolden[1]{{\boldmath\bfseries#1}}
+
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+\normalem
+\renewcommand{\ULdepth}{1.8pt}
+\contourlength{0.8pt}
+
+\newcommand{\myuline}[1]{%
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
+
+\newcommand{\smallsection}[1]{\vspace{0.5mm}{\noindent {\bolden{\myuline{#1}}}}}
+
+\usepackage{xspace}
+
+\def\mydefbb#1{\expandafter\def\csname bb#1\endcsname{\ensuremath{\mathbb{#1}}}}
+\def\mydefallbb#1{\ifx#1\mydefallbb\else\mydefbb#1\expandafter\mydefallbb\fi}
+\mydefallbb ABCDEFGHIJKLMNOPQRSTUVWXYZ\mydefallbb
+
+\def\mydefcal#1{\expandafter\def\csname cal#1\endcsname{\ensuremath{\mathcal{#1}}}}
+\def\mydefallcal#1{\ifx#1\mydefallcal\else\mydefcal#1\expandafter\mydefallcal\fi}
+\mydefallcal ABCDEFGHIJKLMNOPQRSTUVWXYZ\mydefallcal
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\setbr}[1]{\{#1\}}
+\newcommand{\mtsetbr}[1]{\left\{\mkern-6mu\left\{#1\right\}\mkern-6mu\right\}}
+
+
+\newcommand{\ours}{\textsc{AnchorRadar}\xspace}
+\newcommand{\whatsnet}{\textsc{WHATsNet}\xspace}
+
+\definecolor{lucky}{RGB}{220, 20, 60}
+\definecolor{kjgreen}{RGB}{77, 175, 74}
+
+\newcommand\blue[1]{\textcolor{blue}{#1}}
+\newcommand\red[1]{\textcolor{red}{#1}}
+\newcommand\green[1]{\textcolor{green}{#1}}
+\newcommand\yellow[1]{\textcolor{yellow}{#1}}
+\newcommand\lucky[1]{\textcolor{lucky}{#1}}
+
+\newcommand\revisewww[1]{{#1}}
+\newcommand\revisewwwcolor{\color{black}}
+
+\newcommand\revisekdd[1]{{#1}}
+\newcommand\revisekddcolor{\color{black}}
+
+
+\newcommand\fanchen[1]{\textcolor{lucky}{[Fanchen: #1]}}
+
+
+\makeatletter
+\newtheorem*{rep@theorem}{\rep@title}
+\newcommand{\newreptheorem}[2]{%
+\newenvironment{rep#1}[1]{%
+ \def\rep@title{#2 \ref{##1}}%
+ \begin{rep@theorem}}%
+ {\end{rep@theorem}}}
+\makeatother
+
+
+
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newreptheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newreptheorem{proposition}{Proposition}
+\newtheorem{property}{Property}
+\newreptheorem{property}{Property}
+\newtheorem{lemma}{Lemma}
+\newreptheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newreptheorem{corollary}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{intuition}{Intuition}
+\newtheorem{observation}{Observation}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{problem}{Problem}
+\newtheorem{example}{Example}
+\newtheorem{evidence}{Evidence}
+
+\usepackage{enumitem}
+\usepackage{multirow,multicol}
+\usepackage{bigstrut}
+\usepackage{adjustbox}
+
+\newcommand{\greencheck}{{\color{kjgreen}\checkmark}}
+
+
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\newcommand\mycommfont[1]{\fontfamily{lmr}\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetAlFnt{\small}
+
+\usepackage{placeins}
+
+
+\setlength{\textfloatsep}{0.12cm}
+\setlength{\floatsep}{0.12cm}
+\setlength{\intextsep}{0.12cm}
+\setlength{\dbltextfloatsep}{0.12cm}
+\setlength{\dblfloatsep}{0.12cm}
+
+\setlength{\abovecaptionskip}{0.12cm}
+\setlength{\belowcaptionskip}{0.12cm}
+
+\setlength{\abovedisplayskip}{0.12cm}
+\setlength{\belowdisplayskip}{0.12cm}
+
+\setlength{\topsep}{0.12cm}
+\setlength{\partopsep}{0.12cm}
+\setlength{\itemsep}{0.12cm}
+
+\setlist{nolistsep}

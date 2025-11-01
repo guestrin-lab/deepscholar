@@ -1,0 +1,20 @@
+\small
+\begin{tabular}{@{}lcc c@{\hspace{1pt}} cc c@{\hspace{1pt}} c c@{\hspace{1pt}} cc@{}}
+    \toprule
+     \multirow{2}{*}{loss} & \multirow{2}{*}{avg} & \multicolumn{1}{c}{artwork} & & \multicolumn{2}{c}{landmark} & & \multicolumn{1}{c}{product} & & \multicolumn{2}{c}{multi} \\
+     \cline{3-3}
+     \cline{5-6}
+     \cline{8-8}
+     \cline{10-11}
+
+     & & MET & & ROP & GLD & & SOP & & INS & mIL \\
+    \midrule 
+    pretrained & $47.5$ & $67.3$ & & $45.0$ & $15.7$ & & $55.4$ & & $80.6$ & $21.0$ \\
+    \midrule 
+    recall@k ~\citep{ptm22} &  $\textbf{52.6}$ & $75.0$ & & $\textbf{48.7}$ & $18.3$ & & $55.3$ & & $87.4$ & $30.8$ \\
+    infoNCE ~\citep{chen2020simple}  & $52.2$ & $\textbf{75.1}$ & & $48.6$ & $\textbf{18.8}$ & & $54.2$ & & $86.0$ & $30.7$ \\
+    contrastive ~\citep{chl05} & $50.6$ & $62.8$ & & $46.0$ & $16.1$ & & $53.8$ & & $86.4$ & $\textbf{38.4}$ \\
+    softmax margin ~\citep{wwz+18}  & $51.5$ & $70.1$ & & $47.3$ & $18.4$ & & $\textbf{55.4}$ & & $\textbf{88.0}$ & $29.8$ \\
+    \bottomrule
+\end{tabular}
+

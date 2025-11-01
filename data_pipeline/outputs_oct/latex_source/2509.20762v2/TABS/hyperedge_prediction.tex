@@ -1,0 +1,21 @@
+\begingroup
+\setlength{\tabcolsep}{6pt}
+\begin{table*}[t!]
+    \centering
+    \caption{\uline{Q4: The anchor strengths from \ours provide useful information in group interaction prediction.} With additional information derived from anchor strengths, VilLain achieves higher accuracy (\%) in distinguishing realistic and fake group interactions. For each setting, the better performance is highlighted in bold.}
+    \label{tab:downstream}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|ccccccccccccc|c}
+\hline
+\multirow{2}[1]{*}{\textbf{Dataset}} & \multicolumn{2}{c}{\texttt{coDB}} & \multicolumn{2}{c}{\texttt{coSM}} & \multirow{2}[1]{*}{\texttt{qaBI}} & \multirow{2}[1]{*}{\texttt{qaPH}} & \multirow{2}[1]{*}{\texttt{qaST}} &  \multirow{2}[1]{*}{\texttt{emEN}} & \multirow{2}[1]{*}{\texttt{emEU}} & \multirow{2}[1]{*}{\texttt{emER}} & \multirow{2}[1]{*}{\texttt{soME}} & \multirow{2}[1]{*}{\texttt{soRE}} & \multirow{2}[1]{*}{\texttt{moML}} & \multirow{2}[1]{*}{\texttt{Avg.}}  \bigstrut[t]\\
+ & (first) & (last) & (first) & (last) & & & & & & & & & & \bigstrut[b]\\
+\hline
+Original VilLain & 89.71 & 89.71 & 91.40 & 91.40 & 71.68 & 74.58 & \textbf{76.69} & 89.65 & 87.22 & 87.45 & 96.76 & 94.39 & 95.56 & 87.40 \bigstrut[t]\\
++ Anchor Strengths & \textbf{93.11} & \textbf{93.41} & \textbf{91.94} & \textbf{92.47} & \textbf{80.45} & \textbf{85.64} & 74.06 & \textbf{97.57} & \textbf{92.01} & \textbf{90.73} & \textbf{97.87} & \textbf{95.82} & \textbf{96.52} & \textbf{90.89}  \bigstrut[b]\\
+\hline
+\multicolumn{15}{l}{\small *The largest dataset (\texttt{coAA}) is omitted since VilLain runs out of memory on it} \\
+\multicolumn{15}{l}{\small *The smallest dataset (\texttt{qaMA}) is omitted since it is too sparse and we cannot obtain enough meaningful test hyperedges} \\
+\end{tabular}%
+\end{adjustbox}
+\end{table*}
+\endgroup

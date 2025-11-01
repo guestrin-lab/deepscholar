@@ -1,0 +1,23 @@
+\section{Experimental Setup}
+\label{appx:exp_setup}
+
+% \paragraph{Detailed experiment setups} For WMDP \citep{li2024wmdp}, we adopt Llama-3 8B Instruct as the reference model. The dataset comprises a forget set of plain-text biosecurity knowledge and a retain set of unrelated general-domain text from Wikitext \citep{merity2016pointer}. We run 125 unlearning steps with grid searches over learning rates in [$2.5 \times 10^{-6}$, $10^{-5}$]. For NPO, we additionally explore $\beta$ in [0.01, 0.05]... For ILU, we adopt a single invariance dataset setting using GSM8K. The invariance regularization weight $\lambda$, which controls the strength of the invariance constraint, is tuned within $[0.1, 2.0]$. The retain regularization parameter $\gamma$, which balances the retain loss, is selected from $[1, 2.5]$. The batch size is fixed to 48 for each unlearning step.
+
+\paragraph{Detailed experimental setup.} For WMDP unlearning \citep{li2024wmdp}, we employ Llama-3 8B Instruct as the reference model. 
+The dataset consists of a forget set containing plain-text biosecurity knowledge and a retain set drawn from general-domain text in Wikitext \citep{merity2016pointer}. 
+We perform 125 unlearning steps with a batch size of 4, conducting grid searches over learning rates in $[1 \times 10^{-5}, 5 \times 10^{-5}]$. 
+The retain regularization parameter $\lambda$, which balances the retain loss, is tuned within $[1.0, 5.0]$. 
+For NPO and SimNPO, we further explore $\beta \in [0.01, 0.1]$. 
+For NPO+SAM, we grid search the perturbation radius $\rho$ within $[10^{-3}, 10^{-1}]$. 
+For NPO+IRM, we adopt a single-dataset invariance setting using GSM8K, where the invariance weight $\gamma$ (controlling the strength of the constraint) is selected from $[0.1, 2.0]$. 
+The batch size for GSM8K is fixed at 48 per unlearning step. 
+For {\MRejB}, we utilize GPT-4o to reformat the plain-text forget set $\Df$ into a QA-style format \citep{lucki2024adversarial}. 
+For DPO and IDK+AP, $\beta$ is tuned within $[0.01, 0.1]$. 
+For all other methods, we follow the configurations in \citet{che2025model}. For in-domain relearning, we fine-tune on $\Df$ for 100 steps with a batch size of 4 and learning rate $2 \times 10^{-5}$. 
+For out-of-domain fine-tuning, we fine-tune for 250 steps with a batch size of 32 and the same learning rate, using data from GSM8K, SST-2, and MNLI.
+
+
+\paragraph{Implementation details of few-shot entailment score.}
+
+Few-shot entailment score (ES) measures the factual correctness of a model’s output relative to ground truth answers by leveraging a Natural Language Inference (NLI) model. Following prior work~\citep{liu2024learning,yuan2024closer}, we use a pre-trained NLI model~\citep{sileo2023tasksource} to classify the relationship between the model’s output (treated as the premise) and the ground truth answer (treated as the hypothesis). The predicted labels include entailment, contradiction, and neutral. We define the ES score as the proportion of examples classified as entailment. This metric is expected to be low on the forget set. Before generating answers for ES evaluation, we add a few-shot prompt consisting of 2 demonstration examples. These demonstrations do not involve NLI labels, but simply show the model the required output format in the multiple-choice setting (e.g., "C. tiger") without any explanations. The purpose is solely to ensure that the model outputs remain restricted to the given options (A–D), which makes the subsequent NLI evaluation reliable.
+% 

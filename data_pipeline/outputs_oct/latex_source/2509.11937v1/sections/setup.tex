@@ -1,0 +1,14 @@
+\section{Evaluation Setup}
+We evaluate \mmore{}'s processing and RAG modules independently. Below, we detail our methodology for assessing efficiency, accuracy, and scalability.
+
+\subsection{Processing}
+The processing module is evaluated along two axes: efficiency and accuracy, versus \textit{Docling}~\cite{auer2024docling} as a baseline due to its popularity and ease of use.
+
+\textbf{Efficiency.} We benchmark processing speed using a single A100 80GB. For scalability analysis, we use an 18-page paper and synthetically generate longer documents by duplicating its content to reach 36, 54, 90, to 720 pages. This setup allows us to test throughput for both single-device and distributed processing. The distributed experiments are conducted on a Kubernetes cluster with 1 vs 4 nodes (1 A100 per node) to evaluate parallelization efficiency. To highlight \mmore{}'s strength in handling heterogeneous data, we also evaluate its performance across a diverse set of 19 files, spanning 9 unique file types.
+
+\textbf{Accuracy.} To assess text extraction quality, we create a benchmark using public-domain books from Project Gutenberg~\cite{projectgutenberg} by pairing PDF inputs with their corresponding plain-text ground truths. We select two contrasting cases: "The Blue Castle" (a clean, digital-friendly PDF) and "The Great Gatsby" (a scanned, image-based file). Each document is truncated to 50k characters to ensure computational feasibility, 
+particularly for metrics like Levenshtein distance. We report standard metrics: BLEU~\cite{bleuscore} for n-gram overlap,
+ROUGE-L~\cite{lin2004rouge}, and character error rate (CER)~\cite{levenshtein}. Metric formulations are provided in the Appendix~\ref{app:metrics}
+
+\subsection{RAG}
+To evaluate our RAG pipeline, we focus on the PubMedQA benchmark~\cite{jin2019pubmedqa}, a biomedical question-answering task. We construct a retrieval corpus by indexing all PubMed abstracts and conclusions into a dense vector database using \mmore{}. At inference time, the top-\(k\) most relevant documents are retrieved using a similarity search and prepended to the original question as context for the language model. We experiment with both Meditron3-8B and Meditron3-70B~\cite{sallinen2025llama}, evaluating how different values of \(k\) affect downstream accuracy. This setup isolates the effect of retrieval depth on performance within a consistent biomedical knowledge source.

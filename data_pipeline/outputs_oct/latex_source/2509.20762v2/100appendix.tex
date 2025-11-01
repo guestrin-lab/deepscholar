@@ -1,0 +1,411 @@
+
+\crefname{section}{appendix}{appendices}%
+\Crefname{section}{Appendix}{Appendices}%
+
+\begin{center}
+    {\large \textbf{Identifying Group Anchors in Real-World Group Interactions Under Label Scarcity: Appendix}}
+\end{center}
+
+{\small
+\tableofcontents
+}
+
+\section{Additional Discussions on More General Hypergraphs (Supplementing Section~\ref{sec:prelim})}\label{appx:discussions}
+
+Here, we provide additional discussions on more general hypergraphs, supplementing Section~\ref{sec:prelim}.
+
+\smallsection{Directed hypergraphs.}
+In directed hypergraphs, nodes within each hyperedge are partitioned into a source set and a destination set, and each hyperedge is considered to be from the nodes in the source set to the nodes in the destination set.
+Specifically, directed hypergraphs can be used to model chemical reactions~\citep{jost2019hypergraph}, and the source set contains the reactant entities, which can be seen as entities that initialize the reaction, which is similar to the concept of group anchors in this work.
+
+Specifically, for the real-world systems considered in this work:
+\begin{itemize}[leftmargin=*]
+    \item Co-authorship and movie cast datasets do not have intuitive directions;
+    \item For online Q\&A datasets, the intuitive direction is from the questioner (which is the group anchor) to the answerers. Therefore, if we know the direction, we will immediately know the anchor in each group, and the problem of identifying group anchors will become trivial.
+    \item Similarly, for email and social network datasets, the intuitive direction is from the sender (which is the group anchor) to the recipients, and the direction will immediately tell us the group anchors.
+\end{itemize}
+
+In general, the proposed algorithm \ours can be applied to directed graphs as follows:
+\begin{itemize}[leftmargin=*]
+    \item In Stage 1, when we calculate and collect topological features, directions can be considered. Specifically, for the topological features used in \ours:
+    \begin{itemize}
+        \item Node degrees can be divided into in-degrees and out-degrees;
+        \item For eigenvector centrality and PageRank, we can consider the edge directions by using asymmetric adjacency matrices of directed graphs;
+        \item For coreness, we can use the existing generalization of $k$-cores on directed graphs~\citep{giatsidis2013d};
+    \end{itemize}
+    \item In both Stage 1 and Stage 2, when we calculate and train anchor strengths, we can associate two (instead of one) anchor strengths to each node, representing its tendency to be the anchor when it is a head node and a tail node, respectively.  
+\end{itemize}
+
+\smallsection{Heterogeneous hypergraphs.}
+Nodes or edges may have different classes/types in heterogeneous hypergraphs.
+In such cases, there might be additional subtlety in defining group anchors.
+We may define different group anchors for different classes/types.
+Also, for some domains, classes/types may directly provide information on the significance of group members.
+
+\input{FIGTEX/method_illustration}
+
+\section{Additional Discussions on General Node Classification (Supplementing Section~\ref{sec:rel_wk})}\label{appx:general_node_cls}
+
+Here, we provide more discussions on general node classification, complementing Section~\ref{sec:rel_wk}.
+
+Node classification is a common task on both graphs~\citep{bhagat2011node} and hypergraphs~\citep{feng2019hypergraph}, where one aims to assign labels to nodes.
+As deep learning techniques develop, the most popular methods for node classification on hypergraphs are hypergraph neural networks, including but not limited to 
+HGNN~\citep{feng2019hypergraph}, 
+HyperGCN~\citep{yadati2019hypergcn}, 
+HNHN~\citep{dong2020hnhn}, 
+HCHA~\citep{bai2021hypergraph}, and 
+UniGNN~\citep{huang2021unignn}.
+In general node classification, the node labels for a node are the same across different hyperedges, i.e., the node labels are edge-independent. The above existing methods for such general node classification cannot be directly applied to identifying group anchors, which are edge-dependent. For more details, please refer to recent surveys~\citep{antelmi2023survey,kim2024survey}.
+
+\section{Additional Details on Group Roles and Group Anchors (Supplementing Section~\ref{sec:problem_state})}\label{appx:roles_and_seed_members}
+
+Here, we provide additional details on group roles and group anchors, complementing Section~\ref{sec:problem_state}.
+
+\smallsection{Domains.}
+The real-world datasets used in our experiments are from five different domains:
+\begin{enumerate}[leftmargin=*]
+    \item Co-authorship domain: $D_{\text{co}}$;
+    \item Online Q\&A domain: $D_{\text{qa}}$;
+    \item Email domain: $D_{\text{em}}$;
+    \item Social network domain: $D_{\text{so}}$;
+    \item Movie cast domain: $D_{\text{mo}}$.
+\end{enumerate}
+
+\smallsection{Group roles.}
+Below, for each domain $D$ considered in this work, we list the group roles $\calR(D)$ in the domain:
+\begin{enumerate}[leftmargin=*]
+    \item Co-authorship domain: $\calR(D_{\text{co}}) =$\;\{\texttt{firstAuthor},  \texttt{middleAuthor}, \texttt{lastAuthor}\};
+    \item Online Q\&A domain: $\calR(D_{\text{qa}}) =$\;\{\texttt{questioner}, \texttt{answerer}\};
+    \item Email domain: $\calR(D_{\text{em}}) =$\;\{\texttt{sender}, \texttt{TO-recipient}, \texttt{CC-recipient}\};
+    \item Social network domain: $\calR(D_{\text{so}}) =$\;\{\texttt{initiator}, \texttt{participant}\}; for the Message (\texttt{soME}) dataset, for each group/hyperedge that represents a message, the initiator is the sender of the message, who initially chooses to include all the recipients; for the Retweet (\texttt{soRE}) dataset, for each group/hyperedge that represents a post, the initiator is the retweeted user, who uploads the original post so that the others can retweet it;
+    \item Movie cast domain: $\calR(D_{\text{mo}}) =$\;\{\texttt{leadingActor}, \texttt{supportingActor}\}.
+\end{enumerate}
+
+\smallsection{Group anchors.}
+The \textit{group-anchor function} $f_{\text{anchor}}$ maps each domain to the group role of anchors in that domain.
+Given a domain $D \in \mathcal{D}$, $f_{\text{anchor}}(D) \in \mathcal{R}(D)$ is the group role of group anchors in domain $D$:
+\begin{enumerate}
+    \item $f_{\text{anchor}}(D_{\text{co}}) = \texttt{firstAuthor}~\text{or}~\texttt{lastAuthor}$;
+    \item $f_{\text{anchor}}(D_{\text{qa}}) = \texttt{questioner}$;
+    \item $f_{\text{anchor}}(D_{\text{em}}) = \texttt{sender}$;
+    \item $f_{\text{anchor}}(D_{\text{so}}) = \texttt{initiator}$;
+    \item $f_{\text{anchor}}(D_{\text{mo}}) = \texttt{leadingActor}$.
+\end{enumerate} 
+
+\input{TABS/obs_2_all}
+
+\section{Additional Details on Observation 2 (Supplementing Section~\ref{sec:intuition:global_consistency})}\label{appx:obs_2_all}
+
+Here, we provide statistics on all hyperedges regarding Observation 2, supplementing Section~\ref{sec:intuition:global_consistency} (especially \cref{tab:label_purity}).
+
+\section{Illustration of Proposed Method \ours (Supplementing Section~\ref{sec:method})}\label{appx:method_illustration}
+
+Here, we provide an illustration of the proposed method \ours, supplementing Section~\ref{sec:method}.
+See Figure~\ref{fig:method_illustration}.
+
+\section{Additional Details on Feature Processing (Supplementing Section~\ref{sec:method:stage1})}\label{appx:feature_process}
+
+Here, we provide additional details on feature processing in Stage 1 of \ours, supplementing Section~\ref{sec:method:stage1}.
+
+Below are the details of feature normalization and aggregation used to obtain the features.
+As mentioned in \cref{sec:method:stage1}, we use the same four topological features used by \citet{choe2023classification} and \citet{zheng2024co}:
+(1) \textbf{node degree}, the number of hyperedges each node is in (see \cref{sec:prelim}),
+(2 \& 3) \textbf{eigenvector centrality}~\citep{bonacich1987power} and \textbf{PageRank centrality}~\citep{page1999pagerank} computed on the weighted clique expansion, and (4) \textbf{coreness}~\citep{sun2020fully,seidman1983network}.
+The feature processing on each raw topological feature is the same.
+Let $x_{v}$ be the raw topological feature value of the node $v$.
+For global features, the processed features for $v$ are the same across different hyperedges.
+We normalize and/or aggregate each raw feature in six different ways:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{(1) Global min-max normalization.} The processed feature 
+    \[
+    \tilde{x}^{(1)}_{v} = \frac{x_{v} - x_{min}}{x_{max} - x_{min}} \in [0, 1],
+    \] 
+    where
+    $x_{max} = \max_{v' \in V} x_{v'}$ and
+    $x_{min} = \min_{v' \in V} x_{v'}$.
+    \item \textbf{(2) Global rank normalization.} We rank $x_{u}$'s for all the nodes $u \in V$ in zero-index and descending order, i.e., the largest value has rank $0$, the second-largest has rank $1$, etc.
+    Let $r_{v}$ be the rank of $v$.
+    The processed feature 
+    \[
+    \tilde{x}^{(2)}_{v} = \frac{r_{v}}{|V| - 1} \in [0, 1].
+    \]    
+    \item \textbf{(3\&4) Local min-max aggregated (mean and standard deviation).} First, we do min-max normalization in each hyperedge, i.e., $\hat{x}_{v;e} = \frac{x_{v;e} - x^{(e)}_{min}}{x^{(e)}_{max} - x^{(e)}_{min}}$ with
+    $x^{(e)}_{max} = \max_{u \in e} x_{v;e}$ and
+    $x^{(e)}_{min} = \min_{u \in e} x_{v;e}$.
+    Then, we take the mean and standard deviation to obtain two aggregated features:
+    \[
+    \tilde{x}^{(3)}_{v} = \operatorname{Mean}(\hat{x}_{v;e'}: v \in e')
+    \]
+    and
+    \[
+    \tilde{x}^{(4)}_{v} = \operatorname{Stdev}(\hat{x}_{v;e'}: v \in e').
+    \]    
+    \item \textbf{(5\&6) Local rank aggregated (mean and standard deviation).}
+    First, we compute normalized ranks in each hyperedge, i.e.,
+    we rank $x_{u}$'s for all the nodes $u \in e$ in zero-index and descending order, let $\hat{r}_{v;e}$ be the rank of $v$ in $e$, and let $\hat{x}_{v;e} = \frac{\hat{r}_{v;e}}{|e| - 1}$.
+    Then, we take the mean and standard deviation to obtain two aggregated features:
+    \[
+    \tilde{x}^{(5)}_{v} = \operatorname{Mean}(\hat{r}_{v;e'}: v \in e')
+    \]
+    and
+    \[
+    \tilde{x}^{(6)}_{v} = \operatorname{Stdev}(\hat{r}_{v;e'}: v \in e').
+    \]    
+\end{itemize}
+For local features, the processed features might be distinct in different hyperedges, even for the same node.
+We normalize and/or aggregate each raw feature in two different ways:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{(1) Local min-max normalization.} We do min-max normalization in each hyperedge, i.e., 
+    \[
+    \tilde{x}^{(1)}_{v;e} = \frac{x_{v;e} - x^{(e)}_{min}}{x^{(e)}_{max} - x^{(e)}_{min}}
+    \]
+    with
+    $x^{(e)}_{max} = \max_{u \in e} x_{v;e}$ and
+    $x^{(e)}_{min} = \min_{u \in e} x_{v;e}$.    
+    \item \textbf{(2) Local rank normalization.}
+    We compute normalized ranks in each hyperedge, i.e.,    
+    we rank $x_{u}$'s for all the nodes $u \in e$ in zero-index and descending order, let $\hat{r}_{v;e}$ be the rank of $v$ in $e$, and let
+    \[
+    \tilde{x}^{(2)}_{v;e} = \frac{\hat{r}_{v;e}}{|e| - 1}.
+    \]    
+\end{itemize}
+
+\input{TABS/hyperparams_ours}
+\input{TABS/hyperparams_whatsnet}
+\input{TABS/hyperparams_conhd_i}
+\input{TABS/hyperparams_conhd_u}
+\input{TABS/hyperparams_hnhn}
+\input{TABS/hyperparams_hgnn}
+\input{TABS/hyperparams_hcha}
+\input{TABS/hyperparams_hat}
+\input{TABS/hyperparams_unigcn}
+\input{TABS/hyperparams_hnn}
+\input{TABS/inductive}
+
+\section{Additional Details on Complexity Analysis (Supplementing Section~\ref{sec:method:complexity})}\label{appx:complexity}
+
+Here, we provide additional details on the complexity analysis of \ours, supplementing Section~\ref{sec:method:complexity}.
+Below, we analyze the time and space complexities of \ours in detail.
+
+\smallsection{Stage 1.}
+We use a two-layer MLP with hidden dimension $D_h$.
+The input topological feature matrix $X$ has a size of $\sum_{e \in E} |e| \times n_{f}$ with $n_{f}$ features.
+A forward pass takes 
+$O(\sum_{e \in E} |e| (n_{f} D_h + D_h + D_h + 1)) = O(\sum_{e \in E} |e| n_{f} D_h),$ 
+and Eq.~\eqref{eq:loss_stage_1} takes
+$O(\sum_{e \in E} |e|).$
+Hence, the training (backward) time complexity is 
+$O(n^{(1)}_{ep} \sum_{e \in E} |e| n_{f} D_h)$
+and the inference (forward) takes
+$O(\sum_{e \in E} |e| n_{f} D_h).$
+The space complexity is
+$O(\sum_{e \in E} |e| n_{f} + n_{f} D_h + D_h) = O(n_{f} (D_h + \sum_{e \in E} |e|)).$
+The number of learnable parameters is 
+$n_{f} D_h + D_h + D_h + 1 = D_h (n_{f} + 2) + 1.$
+
+\smallsection{Stage 2.}
+Eq.~\eqref{eq:loss_stage_2_label} takes 
+$O(\sum_{e \in E} |e|)$.
+Eq.~\eqref{eq:loss_stage_2_align} takes
+$O(\sum_{e \in E} |e|)$.
+Eq.~\eqref{eq:pred_member_prop} takes
+$O(\sum_{e \in E} |e|)$.
+Hence, the training (backward) time complexity is $O(n^{(2)}_{ep} \sum_{e \in E} |e|)$
+and the inference (forward) takes
+$O(\sum_{e \in E} |e|).$
+The space complexity is
+$O(|V| + \sum_{e \in E} |e|) = O(\sum_{e \in E} |e|).$
+The number of learnable parameters is $|V|.$
+
+\smallsection{Total.}
+The training time complexity is
+$O(\sum_{e \in E} (n^{(1)}_{ep} |e| n_{f} D_h + n^{(2)}_{ep})),$
+the inference time complexity is
+$O(\sum_{e \in E} |e| n_{f} D_h),$
+the space complexity is
+$O(n_{f} (D_h + \sum_{e \in E} |e|)),$ and
+the number of learnable parameters is
+$O(D_h (n_{f} + 2) + 1 + |V|).$
+
+\smallsection{Notes.}
+In our experiments, we use $D_h = 64$, $n_f = 33$ (see \cref{sec:method:stage1}), and $n^{(1)}_{ep} = n^{(2)}_{ep} = 100$.
+For $|V|$ and $|e|$, see \cref{tab:dataset_summary}.
+
+\section{Additional Details on Experimental Settings (Supplementing Section~\ref{sec:exp_settings})}\label{appx:exp_settings}
+
+Here, we provide additional details on experimental settings, supplementing Section~\ref{sec:exp_settings}.
+
+\smallsection{Hardware.}
+All the experiments are run on a machine with 
+two Intel Xeon\textsuperscript{\textregistered}   Silver 4214R (12 cores, 24 threads) processors,
+a 512GB RAM,
+and RTX 8000 D6 (48GB) GPUs.
+A single GPU is used for all the experiments.
+
+\smallsection{Data processing.}
+Some datasets contain hyperedges of size one (i.e., a single node).
+Such single-node groups are included when computing topological features but not included for training, validation, or testing.
+
+\smallsection{Implementation.}
+The implementation of the baseline methods is obtained from the official GitHub repositories of \citep{choe2023classification} and \citep{zheng2024co}: 
+\url{https://github.com/young917/EdgeDependentNodeLabel} and \url{https://github.com/zhengyijia/CoNHD}.
+All the methods are implemented in Python using Pytorch~\citep{paszke2019pytorch}.
+
+\smallsection{Baseline methods.}
+The baseline methods are trained on the original edge-dependent node classification (ENC) problem.
+After training, each baseline method predicts a label distribution for each node-hyperedge pair $(v, e)$, i.e., 
+\[
+p(v, e, x^*) = \Pr[\text{$v$ has label $x$ in hyperedge $e$}]
+\]
+for different labels $x$.
+Let $x_s$ be the label corresponding to group anchors.
+We pick the node 
+$v^* = \arg \max_v p(v, e, x^*)$ in each hyperedge $e$ as the predicted anchor.
+
+\smallsection{Hyperparameter fine-tuning.}
+We use validation data to fine-tune the hyperparameters of \ours and the baselines.
+For \ours, we fix the number of iterations in both stages as $100$, and fine-tune the learning rates, the loss term coefficient $\alpha^{(2)}$, and the global aggregation weight $w^{(2)}$:
+\begin{itemize}[leftmargin=*]
+    \item Stage 1 learning rate: $\setbr{0.001, 0.01, 0.1}$;
+    \item Stage 2 learning rate: $\setbr{0.001, 0.01, 0.1}$;
+    \item Loss term coefficient $\alpha^{(2)}$: $\setbr{0, 0.01, 0.02, \ldots, 0.09, 0.1, 0.2, \ldots, 0.9, 1}$;
+    \item Global aggregation weight $w^{(2)}$: $\setbr{1, 2, 3, \ldots, 10}$.
+\end{itemize}
+For the baselines, we follow the settings in original papers~\citep{choe2023classification,zheng2024co} for their fine-tuning.
+For completeness, we repeat their fine-tuning settings below.
+Specifically, for all the baselines, we fix the hidden dimension to $64$, the final embedding dimension to $128$, the number of the inducing points to $4$, the number of attention layers to $2$, and the dropout ratio to $0.7$.
+We fine-tune their learning rate, batch size, and the number of layers.
+Exceptionally, for HCHA~\cite{bai2021hypergraph} and HNN~\cite{aponte2022hypergraph}, we use full-batch training without sampling. We tune their hyperparameters in a larger search space for learning rates, the number of layers, and dropout ratios, while we fix the dimension of final node and hyperedge embeddings to $128$, the hidden dimension to $64$, and the number of epochs to $300$.
+See Tables~\ref{tab:hyperparams_ours} to~\ref{tab:hyperparams_hnn} for the fine-tuned hyperparameters of all the methods.
+
+\input{TABS/res_5p}
+\input{TABS/res_2p5}
+
+\section{Additional Results with Different Training Ratios (Supplementing Section~\ref{sec:experiments:acc})}\label{appx:diff_training_ratios}
+
+Here, we provide additional experimental results with different training ratios, supplementing Section~\ref{sec:experiments:acc} (especially Table~\ref{tab:single_node_res}).
+As mentioned in \cref{sec:exp_settings}, in the main results, the ratios of unique hyperedges for training, validation, and test are 7.5\%, 2.5\%, and 90\%, respectively.
+We provide additional results with the following two settings:
+\begin{itemize}[leftmargin=*]
+    \item The ratios of unique hyperedges for training, validation, and test are \textbf{5\%}, 2.5\%, and \textbf{92.5\%}, respectively;
+    \item The ratios of unique hyperedges for training, validation, and test are \textbf{2.5\%}, 2.5\%, and \textbf{95\%}, respectively.
+\end{itemize}
+The other experimental settings are kept the same.
+
+See Table~\ref{tab:res_5p_train} for the results with a training ratio of 5\%, and see Table~\ref{tab:res_2p5_train} for the results with a training ratio of 2.5\%.
+In both settings, \ours still outperforms the baseline methods in most cases.
+
+\input{TABS/res_ndcg}
+\input{TABS/res_mrr}
+
+
+\section{Additional Results with Different Evaluation Metrics (Supplementing Section~\ref{sec:experiments:acc})}\label{appx:diff_eval_metrics}
+
+Here, we provide additional experimental results with different evaluation metrics, supplementing Section~\ref{sec:experiments:acc} (especially Table~\ref{tab:single_node_res}).
+Below, we provide results with two additional evaluation metrics: NDCG (normalized discounted cumulative gain) and MRR (mean reciprocal rank).
+
+\smallsection{Ranking.}
+To compute NDCG and MRR, we need to obtain a ranking of the nodes in each hyperedge. For \ours, the ranking is based on the anchor strength of each node. 
+For the baselines, the ranking is based on the label logits of each node. 
+Let the rankings be (1) descending, i.e., the node with the highest anchor strength or label logit is ranked first, and (2) 1-based, i.e., the rank of the first node is 1.
+
+\smallsection{NDCG.}
+The NDCG is calculated as the ratio of the DCG (discounted cumulative gain) to the IDCG (ideal DCG).
+In each hyperedge $e = \{v_1, v_2, \ldots, v_k\}$, WLOG let $v_1$ be the ground-truth group anchor.
+Then, for $e$, the relevance score of $v_1$ is $r_1 = 1$, and the relevance score of any other node is $r_i = 0, \forall i \neq 1$.
+Let $a_i$ be the rank of $v_i$ in the ranking.
+Then the DCG of $e$ is
+$$\text{DCG}(e) = \sum_{i = 1}^{k} \frac{r_i}{\log_2(a_i+1)} = \frac{r_1}{\log_2(a_1+1)},$$
+and the IDCG of $e$ is
+$$\text{IDCG}(e) = \frac{1}{\log_2(1+1)} = 1.$$
+Therefore, the NDCG of $e$ is
+$$\text{NDCG}(e) = \frac{\text{DCG}(e)}{\text{IDCG}(e)} = \frac{r_1}{\log_2(a_1+1)}.$$
+By averaging the NDCG of all hyperedges, we obtain the NDCG of the dataset.
+
+\smallsection{MCC.}
+The MRR is calculated as the reciprocal of the rank of the group anchor.
+In each hyperedge $e = \{v_1, v_2, \ldots, v_k\}$, WLOG let $v_1$ be the ground-truth group anchor.
+Let $a_i$ be the rank of $v_i$ in the ranking.
+Then, the MRR of $e$ is
+$$\text{MRR}(e) = \frac{1}{a_1}.$$
+By averaging the MRR of all hyperedges, we obtain the MRR of the dataset.
+
+See Table~\ref{tab:res_ndcg} for the results evaluated using NDCG, and see Table~\ref{tab:res_mrr} for the results evaluated using MRR.
+In both settings, \ours still outperforms the baseline methods in most cases.
+
+\input{TABS/res_random_seeds}
+
+\input{FIGTEX/hyperparams}
+
+\section{Additional Results with Multiple Random Seeds (Supplementing Section~\ref{sec:experiments:acc})}\label{appx:random_seeds}
+
+Here, we provide additional experimental results with multiple random seeds, supplementing Section~\ref{sec:experiments:acc} (especially Table~\ref{tab:single_node_res}).
+In Table~\ref{tab:single_node_res}, we show the performance of \ours with different training/validation/test splits and a single fixed random seed.
+In Table~\ref{tab:res_random_seeds}, we provide the performance of \ours with different random seeds (still averaged over different training/validation/test splits).
+
+\section{Additional Results on Hyperparameter Sensitivity (Supplementing Section~\ref{sec:experiments:acc})}\label{appx:hyperparam_sens}
+
+Here, we provide additional experimental results on hyperparameter sensitivity, supplementing Section~\ref{sec:experiments:acc} (especially Table~\ref{tab:single_node_res}).
+For each dataset, we examine the performance of \ours when we change each hyperparameter to $200$\%, $100\sqrt{2}$\% ($\approx 141.4$\%), $50\sqrt{2}$\% ($\approx 70.2$\%), and $50$\% of the originally fine-tuned value (see \cref{tab:hyperparams_ours}), while keeping the other hyperparameters unchanged.
+
+See Figures~\ref{fig:hyperparams} for the changes in the performance when we change Stage 1 learning rate, Stage 2 learning rate, loss term coefficient $\alpha^{(2)}$, and global aggregation weight $w^{(2)}$.
+
+\section{Additional Results on Inductive Settings (Supplementing Section~\ref{sec:experiments:acc})}\label{appx:experiments:acc}
+
+Here, we provide additional experimental results on inductive settings, supplementing Section~\ref{sec:experiments:acc} (especially Table~\ref{tab:single_node_res}).
+
+As mentioned in \cref{sec:experiments:acc}, we also consider inductive settings for \ours, i.e., \ours can be trained and tested on different datasets in the same domain.
+We assume the same amount of known group anchors (i.e., 7.5\%) for the training dataset and no known group anchors for the test dataset.
+We report the performance of the proposed method \ours in both transductive (i.e., trained and tested on the same dataset; the results in \cref{tab:single_node_res}) and inductive settings.
+We use the performance of the strongest baseline in transductive settings as a reference.
+As shown in \cref{tab:inductive}, even when trained and tested on different datasets (and using limited training data), it is possible for \ours to transfer knowledge on the correlations between topological features and group anchors.
+Surprisingly, the performance of \ours in inductive settings is better than that of the strongest baseline in transductive settings in many cases and even better than the performance of \ours in transductive settings sometimes.
+
+\input{TABS/res_multi}
+
+\section{Additional Discussions and Results on Scenarios with Multiple Group Anchors (Supplementing Section~\ref{sec:intro} and Section~\ref{sec:experiments:acc})}\label{appx:multiple_seed_members}
+
+Here, we provide additional discussions and experimental results on scenarios with multiple anchors in each group, supplementing Section~\ref{sec:intro} and Section~\ref{sec:experiments:acc}.
+
+\smallsection{Experimental settings.}
+To the best of our knowledge, no real-world group interaction datasets with multiple anchors in each group are available.
+Therefore, we consider co-authorship datasets and set both the first and second authors as
+anchors (motivated by scenarios with ``equal contribution'').
+The accuracy is calculated as the proportion of groups where both anchors are correctly predicted.
+See Table~\ref{tab:res_multi}.
+
+\section{Additional Details on Downstream Application (Supplementing Section~\ref{sec:experiments:downstream})}\label{appx:downstream}
+
+Here, we provide additional details on downstream application, supplementing Section~\ref{sec:experiments:downstream} (especially Table~\ref{tab:downstream}).
+
+\smallsection{VilLain.}
+For completeness, we include the details of VilLain~\citep{lee2024villain} below.
+For more details, refer to the original paper~\citep{lee2024villain}.
+The problem of hyperedge prediction is formulated as a binary classification task, predicting whether the given hyperedge is real or fake~\cite{patil2020negative,hwang2022ahp,yoon2020much}.
+For each real hyperedge, VilLain generates a corresponding fake hyperedge with the same hyperedge size by randomly sampling subsets of nodes.
+VilLain learns node embeddings.
+To obtain the embedding of each hyperedge, VilLain applies maxmin pooling by (elementwise max pooling - elementwise min pooling) to the embeddings of the nodes in it.
+After obtaining embeddings for both real and fake hyperedges, VilLain first trains a logistic regression classifier on training
+hyperedges and their fake counterparts, and then tests on test hyperedges and their fake counterparts.
+In each dataset, for group anchor identification, we have 7.5\% training hyperedges, 2.5\% validation hyperedges, and 90\% test hyperedges.
+For this downstream application, we take 10\% hyperedges out of the test hyperedges as test hyperedges for group-interaction prediction.
+VilLain uses the remaining hyperedges (7.5\% training, 2.5\% validation, and 80\% remaining test) to learn node embeddings.
+
+\smallsection{Additional dimensions.}
+As mentioned in \cref{sec:experiments:downstream}, based on the anchor strengths learned by \ours, we generate 11 additional dimensions, whose details we provide below.
+Let $s^{(2)}_v$ denote the learned anchor strength of each node $v$.
+First, we compute its within-edge normalized value, i.e.,
+$\tilde{s}^{(2)}_{v;e} = \frac{\exp(s^{(2)}_v)}{\sum_{u \in e} s^{(2)}_u}$.
+For each hyperedge $e$, we generate the following eleven additional dimensions:
+\textbf{(1)} $\max_{v \in e} s^{(2)}_v$,
+\textbf{(2)} $\min_{v \in e} s^{(2)}_v$,
+\textbf{(3)} $\max_{v \in e} s^{(2)}_v - \min_{v \in e} s^{(2)}_v$,
+\textbf{(4)} $\operatorname{Mean}(s^{(2)}_v: v \in e)$,
+\textbf{(5)} $\operatorname{Stdev}(s^{(2)}_v: v \in e)$,
+\textbf{(6)} $\sum_{v \in e} s^{(2)}_v$,
+\textbf{(7)} $\max_{v \in e} \tilde{s}^{(2)}_{v;e}$,
+\textbf{(8)} $\min_{v \in e} \tilde{s}^{(2)}_{v;e}$,
+\textbf{(9)} $\max_{v \in e} \tilde{s}^{(2)}_{v;e} - \min_{v \in e} \tilde{s}^{(2)}_{v;e}$,
+\textbf{(10)} $\operatorname{Mean}(s^{(2)}_v: v \in e)$,
+and \textbf{(11)} $\operatorname{Stdev}(s^{(2)}_v: v \in e)$.
+

@@ -1,0 +1,18 @@
+CXL shared memory and persistent memory allow the contents of memory
+to persist beyond crashes.  Stores to persistent or CXL memory are typically
+not immediately made persistent; developers must manually flush the
+corresponding cache lines to force the data to be written to the
+underlying storage. Correctly using flush and fence operations is known to 
+be challenging.  While state-of-the-art
+tools can find missing flush instructions, they often require
+bug-revealing test cases.  No existing tools can ensure the absence of
+missing flush bugs.
+
+In this paper, we present \tool, a compiler that automatically inserts
+flush and fence operations to ensure that code using persistent memory
+is free from missing flush and fence bugs. \Tool employs a novel
+static analysis with optimizations that target newly allocated objects.
+We have evaluated \tool on persistent memory libraries and
+several persistent memory data structures and measured a geometric
+mean overhead of \overhead relative to the original benchmarks with
+hand-placed flush and fence operations.

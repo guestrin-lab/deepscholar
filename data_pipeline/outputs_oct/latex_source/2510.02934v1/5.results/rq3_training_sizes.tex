@@ -1,0 +1,13 @@
+\subsubsection{Impact of Training Data Size}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/sensitivity_training_size.pdf}
+    \caption{Impact of training size on \tool's performance and memory usage, left axis: \textit{F1-Score}; right axis: \textit{Memory Usage (GB)}}
+    \label{fig:training_size}
+\end{figure}
+
+Figure~\ref{fig:training_size} shows that \textit{increasing the training data size enhances classification accuracy, but also leads to higher memory consumption.} Specifically, as the training size increases from 1 fold to 5 folds, the F1-score steadily improves from 0.66 to 0.72. This suggests that a larger training set enables the probing classifier and attention mechanism to better learn and generalize correctness-related patterns. 
+Moreover, memory consumption grows almost linearly with the training size, ranging from around 5 GB at 1 fold to about 23 GB at 5 folds of data.
+This is expected, as more training examples lead to larger sets of internal representations being processed and stored during training.
+The results emphasize the importance of selecting a training size that balances performance needs with computational resources.

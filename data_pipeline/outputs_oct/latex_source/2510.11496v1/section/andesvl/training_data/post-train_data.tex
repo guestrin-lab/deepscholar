@@ -1,0 +1,179 @@
+\subsubsection{Post-train Data}
+\label{sec:post-train_data}
+AndesVL undergoes two distinct post-training phases: SFT leveraging instruction data in a specific format and MPO utilizing sample \& reject data pairs for AndesVL-Instruct or GRPO data for AndesVL-Thinking.
+
+\paragraph{SFT Data}
+The SFT phase enhances the model's conversational capabilities and instruction-following abilities by using a large-scale, diverse dataset of instruction data obtained from publicly available resources and meticulously curated by closed-source strong models.
+
+\begin{table}[tb]
+\belowrulesep=0pt
+\aboverulesep=0pt
+    \centering
+    \begin{tabular}{|c|c|}
+        \toprule
+        Task Type & Dataset Name \\
+        \midrule
+        VQA & \thead{EATEN \cite{guo2019eaten}, PMC-VQA \cite{zhang2023pmcvqa}, OmniAlign-V \cite{zhao2025omnialign}, Dvqa \cite{kafle2018dvqa},  \\
+        mm-localized-narratives \cite{PontTuset_eccv2020},
+        OCR-VQA\cite{mishra2019ocrvqa},
+        Plotqa\cite{Methani_2020_WACV},
+        ShareGPT-4o \cite{OpenGVLab_ShareGPT_4o},   \\
+        geoqa-plus\cite{chen2021geoqa},
+        Figureqa \cite{kahou2017figureqa}, Tallyqa \cite{acharya2019tallyqa}, 
+        LACR-I2I \cite{nimapourjafar_LACR_I2I},
+        Robut-wikisql \cite{nimapourjafar_robut_wikisql}, \\
+        Mimic-cgd \cite{laurenccon2024matters},
+        clevr \cite{johnson2017clevr}, textvqa \cite{singh2019towards}, scienceqa \cite{lu2022learn},
+        mpdocvqa \cite{tito2022hierarchical},\\
+        nlvr2 \cite{suhr2019nlvr2}, 
+        ShareGPT4V \cite{chen2024sharegpt4v}, cocoqa \cite{du2019cocoqa}, ScreenQa \cite{hsiao2022screenqa}, raven \cite{zhang2019raven}, \\
+        unigeo \cite{chen2022unigeo}, 
+        docmatix \cite{laurenccon2024building},
+        robut-wtq \cite{zhao2023robut},
+        mapqa \cite{chang2022mapqa}, 
+        iconqa \cite{lu2021iconqa}, chart2text \cite{obeid2020chart},   \\
+        docreason25k \cite{hu2024mplug},
+        kvqa \cite{kim2019korean},
+        scitsr \cite{chi2019complicated},
+        mm-LADD \cite{nimapourjafar_mm_LADD}, tabmwp \cite{lu2022dynamic},\\
+        KonIQ-10k \cite{hosu2020koniq},  
+        SVIT \cite{zhao2023svit},
+        sujet-finance-qa-vision \cite{Sujet-Finance-QA-Vision-100k}, \\
+        viet-sharegpt-4o-text-vqa \cite{doan2024vintern1befficientmultimodallarge}, 
+        ChartQA \cite{liu2024chatqa}, cambrian-10m \cite{tong2024cambrian}, mm-aokvqa \cite{schwenk2022okvqa},  \\
+        ai2diagram \cite{kembhavi2016diagram}, Clevr-CoGenT-TrainA-70K-Complex \cite{johnson2017clevr}, 
+        laion-gpt4v \cite{laion_laion_gpt4v}, \\
+        geometry3k \cite{lu2021inter},
+        DocVQA \cite{mathew2021docvqa},
+        vistext \cite{tang2023vistext}, simchart9k \cite{xia2023structchart}, \\
+        geomverse \cite{kazemi2023geomverse}, spot-the-diff \cite{tan2013spot},
+        robut-sqa \cite{zhao2023robut}, 
+        multihiertt \cite{zhao2022multihiertt}, \\
+        lrv-instruction \cite{liu2023aligning}, objects365 \cite{shao2019objects365},
+        mtvqa-train \cite{tang2024mtvqa},
+        iam \cite{cheng2022iam},
+        finqa \cite{chen2021finqa},  \\
+        viquae \cite{lerner2022viquae}, fsc147-controlnet \cite{Theonewhomadethings_fsc147_controlnet},
+        mm-tat-qa \cite{zhu2021tat},
+        infographic-vqa \cite{gonzalez2024metrics},  \\
+        vsr \cite{zhang2021vsr},
+        orand-car-a \cite{Labeled_ORAND_CAR_A},  mm-tqa \cite{nimapourjafar_mm_tqa},
+        mm-intergps \cite{nimapourjafar_mm_intergps}, \\
+        JourneyBench-Hallucination \cite{JourneyBench_Hallucination}, mm-vqarad \cite{nimapourjafar_mm_vqarad}, 
+        mm-diagram-image-to-text \cite{nimapourjafar_diagram_image_to_text}, \\
+        ctw\cite{liu2019curved}, naf\cite{davis2019deep},
+        LIME-DATA-ai2d-train \cite{LIME_DATA_ai2d_train},
+        mmc-inst \cite{MMC_Instructed_Dataset}, COCO-Text \cite{howard_hou_COCO_Text},\\
+        HME100K \cite{VLM_Perception_HME100k_400}, 
+        st-vqa \cite{vikhyatk_st_vqa}, fintabnet \cite{apoidea_fintabnet} 
+        , CoSyn-400K \cite{deitke2024molmo}, PuzzleVQA \cite{chia2024puzzlevqa} } \\
+        \hline
+        OCR & \thead{anytext \cite{tuo2023anytext}, CORD \cite{park2019cord}, invoice-to-json \cite{Invoice-to-Json},
+        arxiv-ocr \cite{nz_arxiv_ocr}, textocr \cite{MiXaiLL76_TextOCR_OCR},  \\
+        invoices-and-receipts-ocr-v2 \cite{mychen76_invoices_receipts_ocr_v2},
+        mall-receipt-extraction \cite{CC1984_mall_receipt_extraction_dataset}, \\
+        invoices-and-receipts-ocr-v1 \cite{mychen76_invoices_receipts_ocr_v1}, 
+        ds-receipts-v2-train \cite{ds_receipts_v2_train}, dataset-receipt \cite{ilhamxx_dataset_receipt}, \\
+        invoices-donut-data-v1 \cite{katanaml_invoices_donut_data_v1}, 
+        Vision-OCR-Financial-Reports \cite{Vision_OCR_Financial_Reports_10k},\\
+        handwritten-text-ocr \cite{toghrultahirov_handwritten_text_ocr}, 
+        nutritional-data-poie \cite{kashindra_mahato_nutritional_data_poie} } \\
+        \hline
+        Pure Text Dialogue & \thead{sharegpt-gpt4 \cite{shibing624_sharegpt_gpt4}, 
+        ruozhiba \cite{LooksJuicy_ruozhiba}, 
+        Ner-sentiment-analysis-sharegpt \cite{Yeenyi_ner_sentiment_analysis_sharegpt},  \\
+        chinese-ner-sft \cite{qgyd2021_chinese_ner_sft},
+        few-shot-ner-sft \cite{qgyd2021_few_shot_ner_sft}, 
+        SystemChat \cite{cognitivecomputations_SystemChat}
+        }
+        \\
+        \hline
+        Image Captioning & \thead{Detailed Caption \cite{li2023monkey}, VizWiz \cite{gurari2018vizwiz} }\\
+        \hline
+        Code Generation & \thead{WebSight \cite{laurencon2024unlocking}, mm-datikz \cite{nimapourjafar_mm_datikz}} \\
+        \hline
+        Function Calling & \thead{Function-Calling-Dataset-V1 \cite{Hermes-Function-Calling-Dataset-V1}, glaive-function-calling \cite{glaiveai_glaive_function_calling}
+        }
+ \\
+        \hline
+        Markdown & Docomini\cite{hu2024mplug}, Mdocr Chinese markdown \cite{wang2024pin}  \\
+        \hline 
+        Math & \thead{cmm-math\cite{liu2024cmmmath}, MMR1-Math-RL-Data-v0 \cite{MMR1_Math_RL_Data_v0}, Codegebragpt-multimodal \cite{sr5434_CodegebraGPT_data},  \\
+        Geo170K \cite{Luckyjhg_Geo170K},
+        MathV360K \cite{shi2024math}, Multimath-300k \cite{multimath_300k}, 
+        Unimer-math-ocr \cite{wang2024unimernetuniversalnetworkrealworld},  \\
+        Openr1-math-220k \cite{mOpenR1_Math_220k},
+        MathInstruct \cite{yue2023mammoth}, MetaMathQA \cite{yu2023metamath}}  \\
+        \hline
+        In-house Data & Meticulously auto-generated, labeled, and curated instruction data \\
+        \bottomrule
+    \end{tabular}
+    \caption{The detailed lists of SFT datasets.} % 表格标题
+    \label{tab:sft_data}
+\end{table}
+
+As illustrated in Fig.~\ref{fig:SFT_Data_Construction_Pipeline}, we adopted a multi-stage data filtering process to further enhance the quality of these datasets. Initially, we utilized traditional rule-based single-modality filtering only on text and images, eliminating basic noise (\textit{e.g.}, invalid or blurry images, incorrect instructions) and inappropriate data within each dataset. After this, we employed Qwen2.5-VL-72B~\cite{bai2025qwen2} that clusters all datasets into different task categories. Then, these clustered image-text pairs were filtered on the measurement of quality and difficulty level by the LLM-as-a-judge \cite{zheng2023vicuna} approach. We used GPT-4o~\cite{chatgpt4o} to measure quality according to factual accuracy, image-text correspondence, and hallucination levels. We employed previously trained checkpoints for difficulty filtering to generate multiple responses for the image-query pair. The image-text pair was considered unsuitable for the SFT training if most of the generated responses were judged to be the same as or above the level of the image-text pairs.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figure/sft_data_filtering_pipeline.png}
+    \caption{SFT Data Filtering Pipeline}
+    \label{fig:SFT_Data_Construction_Pipeline}
+\end{figure}
+
+The final SFT dataset encompasses approximately 16 million entries, distributed between unimodal text data (10\%) and multimodal data, incorporating interleaved image-text sequences. This data composition, characterized by a significant proportion of multimodal data complemented by a supplementary portion of pure text, enables the model to maintain robust performance even in purely text-based scenarios.
+
+To facilitate the acquisition of more comprehensive and superior capabilities, the instruction data covers a wide range of task types, including VQA, OCR, image captioning, pure text dialogue, code generation, function calling, markdown format generation, pure text math, and multimodal math. We list the details of the SFT datasets in Table~\ref{tab:sft_data}.
+
+
+\paragraph{MPO Data}
+The MPO dataset was derived from two distinct sources: one is constructed through our in-house data generation pipeline, and the other is the publicly available MMPR-v1.2 dataset~\cite{wang2024mpo} introduced by InternVL~\cite{zhu2025internvl3}.
+% \href{}{}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{MPO_data_pipeline.png}
+    \caption{MPO data construction pipeline}
+    \label{fig:MPO_data_construction_pipeline}
+\end{figure}
+
+The MPO data construction pipeline, as illustrated in Fig.~\ref{fig:MPO_data_construction_pipeline}, began with the collection of SFT data from specific domains to act as input sources. Following this, sampling-based inference was conducted using
+AndesVL after SFT, yielding an n-best list of responses for each input. Subsequently, an MLLM, \textit{e.g.}, GPT-4o~\cite{chatgpt4o}, was leveraged to evaluate these candidate responses, selecting the most precise and coherent response as the \textit{chosen response} and the least relevant or erroneous one as the \textit{rejected response}, based on the input image, query, and reference answer.
+
+Then a filtering strategy was applied to guarantee the quality of data. In particular, two similarity scores were calculated: (a) comparing the chosen and rejected responses and (b) comparing the rejected response with the ground-truth answer. Instances were discarded if (a) they fell below a designated threshold—indicating insufficient contrast—or if (b) they exceeded a specific level, implying that the rejected response is too similar to the correct answer, which could mislead the preference learning process. Finally, we obtained about 80k valid MPO data through this process.
+
+\paragraph{GRPO Data}
+% 所有数据
+The GRPO data primarily comprised tasks from STEM-related domains, encompassing both unimodal text and multimodal inputs. The data sources included publicly available datasets as well as annotated in-house data. Specifically, the GRPO dataset integrated the following: We-Math2.0~\cite{qiao2025wemath}, MathV360K~\cite{shi2024mathv}, KVQA~\cite{shah2019kvqa}, ChartQA~\cite{masry2022chartqa}, ThinkLite~\cite{wang2025sota}, STEM-500k~\cite{shen2024measuring}, deepscaler~\cite{deepscaler2025} and Statics-5k. Among these, Stats-5K is an in-house annotated dataset specifically designed for computational tasks involving statistical charts in English-language contexts. To enhance data quality and training efficacy, we applied post-processing procedures, including difficulty grading and content categorization.
+
+\textbf{Difficulty Grading} Difficulty grading refers to performing \textit{n} rollouts on these data using the thinking model after SFT training and then categorizing the difficulty levels based on the number of correct answers obtained in the \textit{n} rollouts. A higher number of correct responses corresponds to a lower difficulty level. 
+
+\textbf{Content Categorization} This involved first identifying the model’s deficient capabilities, followed by employing an LLM to select and group data instances with semantically similar content.
+
+Through these refinement strategies, we constructed a reinforcement learning dataset predominantly composed of mathematical and STEM tasks, amounting to approximately 43.6k samples.
+
+%\subsubsection{Specific-domain Data}
+%\label{sec:specific_domain_data}
+
+% \subsubsection{Multi-Scenario Training Data}
+
+% \paragraph{Base Model Training Phase}
+% The data construction for multi-scenario base model training prioritizes abstract capability coverage across scenarios. This phase integrates:
+% \begin{itemize}
+%     \item Generalized task abstractions from diverse business scenarios (OCR, caption generation, long-text summarization)
+%     \item Curated mixtures of public multimodal datasets (COCO, VQA) and proprietary business data
+%     \item Hybrid annotation approaches:
+%     \begin{itemize}
+%         \item Manual fine-grained annotation for complex tasks (structured extraction, complex instruction following)
+%         \item Rule-based or model-assisted auto-labeling for fundamental tasks
+%     \end{itemize}
+% \end{itemize}
+
+% \paragraph{LoRA Model Training Phase}
+% The data strategy shifts to scenario-specific specialization and customization, featuring:
+% \begin{itemize}
+%     \item Dedicated high-quality datasets with strong domain relevance
+%     \item Task definitions and labels tightly coupled with actual business requirements. Enhanced focus on information density (e.g., color attributes, quantitative information, object categories for album search applications)
+%     \item Continuous data distribution optimization through business feedback loops
+% \end{itemize}
+
+% This phase emphasizes depth over breadth, maximizing model performance in targeted scenarios through precision-crafted data assets.

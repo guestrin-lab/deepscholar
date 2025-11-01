@@ -1,0 +1,19 @@
+\subsection{Efficiency Analysis}
+
+
+
+The time complexity of \tool is primarily influenced by three components: (1) extracting internal representations, (2) training the attention scores and probing classifier, and (3) performing inference. 
+%
+Internal representations were extracted from the studied code LLMs on an NVIDIA A6000 GPU with 48GB of VRAM. This process required approximately 125 hours for the entire dataset. Importantly, the extraction was performed concurrently during code generation and did not introduce additional latency into the generation process.
+
+All subsequent experiments, including training and inference of the probing classifier, were conducted on an Ubuntu Server 22.04  equipped with a single NVIDIA A6000 GPU (48GB VRAM) and 512GB of system RAM.
+%
+Since \tool bypasses costly embedding computations, its classifier training and inference are extremely fast. Specifically, the training phase requires just about 1 minute, and the inference phase takes only 0.6 milliseconds per generated code unit. Meanwhile, the black-box baselines such as CodeBERT and CodeT5+ are significantly more time-consuming, taking around 83 minutes to train, with over 98\% of the time spent on embedding generation.
+
+Regarding memory usage, the standard variant of \tool consumes about 16.5 GB of GPU and CPU memory. However, 
+When token position sampling is disabled, i.e., using the representations of all generated tokens, \tool's memory consumption increases substantially, reaching up to 300 GB. 
+
+
+\begin{gtheorem} 
+\textbf{Answer to RQ4}: \tool achieves high efficiency in both training and inference. By employing token and layer sampling strategies it significantly reduces memory consumption without sacrificing performance.  This makes \tool a practical and scalable solution for real-world deployment.
+\end{gtheorem}

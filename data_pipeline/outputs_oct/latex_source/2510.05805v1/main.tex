@@ -1,0 +1,2514 @@
+\documentclass[twoside]{article}
+
+% \usepackage{aistats2026}
+% If your paper is accepted, change the options for the package
+% aistats2026 as follows:
+%
+% \usepackage[accepted]{aistats2026}
+%
+% This option will print headings for the title of your paper and
+% headings for the authors names, plus a copyright note at the end of
+% the first column of the first page.
+%
+% We also include a `preprint' option for non-anonymous preprints. 
+% Change the options for the package aistats2026 as follows:
+%
+\usepackage[preprint]{aistats2026}
+%
+% This option will print headings for the title of your paper and
+% headings for the authors names, but does not print the copyright and 
+% venue note at the end of the first column of the first page.
+
+% If you set papersize explicitly, activate the following three lines:
+%\special{papersize = 8.5in, 11in}
+%\setlength{\pdfpageheight}{11in}
+%\setlength{\pdfpagewidth}{8.5in}
+
+% If you use the natbib package, activate the following three lines:
+\usepackage[round]{natbib}
+\setcitestyle{authoryear, open={(},close={)}}
+\newcommand{\boldsc}[1]{{\scalefont{1.2}\textsc{#1}}}
+\renewcommand{\bibname}{References}
+\renewcommand{\bibsection}{\subsubsection*{\bibname}}
+
+% If you use BibTeX in apalike style, activate the following line:
+\bibliographystyle{apalike}
+
+
+
+% Additional packages
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{float}
+
+\definecolor{bestOurs}{RGB}{0,0,255}   % blue
+\definecolor{bestOther}{RGB}{255,0,0}  % red
+\definecolor{btmgray}{gray}{0.9}       % light gray 
+\newcommand{\bestOurs}[1]{\textbf{\textcolor{bestOurs}{#1}}}
+\newcommand{\bestOther}[1]{\textbf{\textcolor{bestOther}{#1}}}
+\newcolumntype{B}{!{\vrule width 1pt}}
+
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsthm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,  % Enable colored links
+    linkcolor=blue,   % Internal links
+    citecolor=blue,   % Citations
+    urlcolor=blue     % URLs
+}
+\usepackage{xr-hyper}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}
+
+
+
+
+
+\begin{document}
+
+% If your paper is accepted and the title of your paper is very long,
+% the style will print as headings an error message. Use the following
+% command to supply a shorter title of your paper so that it can be
+% used as headings.
+%
+%\runningtitle{I use this title instead because the last one was very long}
+
+% If your paper is accepted and the number of authors is large, the
+% style will print as headings an error message. Use the following
+% command to supply a shorter version of the author names so that
+% they can be used as headings (for example, use only the surnames)
+%
+%\runningauthor{Surname 1, Surname 2, Surname 3, ...., Surname n}
+
+% \twocolumn[
+
+% \aistatstitle{Improving Clinical Dataset Condensation with Mode Connectivity–based Trajectory Surrogates}
+
+% \aistatsauthor{Pafue Christy Nganjimi^{1} \And Andrew Soltan^{1} \And  Danielle Belgrave^{2} \and Lei Clifton^{3} \And David A. Clifton^{1,4} \And Anshul Thakur^{1}}
+% % \runningauthor{Nganjimi, Soltan, Belgrave, Clifton, Clifton, Thakur}
+
+% \aistatsaddress{Institute of Biomedical Engineering, University of Oxford, UK \And  GlaxoSmithKline, London, UK \And Nuffield Department of Primary Care Health Sciences, University of Oxford, UK \And Oxford-Suzhou Institute of Advanced Research (OSCAR), Suzhou, China } ]
+
+\runningauthor{Nganjimi et al.}
+
+
+\twocolumn[
+\aistatstitle{Improving Clinical Dataset Condensation with Mode Connectivity–based Trajectory Surrogates}
+
+\aistatsauthor{
+Pafue Christy Nganjimi$^{1}$ \And Andrew Soltan$^{1}$ \And Danielle Belgrave$^{2}$ \And
+Lei Clifton$^{3}$ \AND David A. Clifton$^{1,4}$ \And Anshul Thakur$^{1}$
+}
+
+\aistatsaddress{\\
+$^{1}$Institute of Biomedical Engineering, University of Oxford, UK \\
+$^{2}$GlaxoSmithKline, London, UK \\
+$^{3}$Nuffield Department of Primary Care Health Sciences, University of Oxford, UK \\
+$^{4}$Oxford-Suzhou Institute of Advanced Research (OSCAR), Suzhou, China
+}
+]
+
+
+
+
+
+\begin{abstract}
+  Dataset condensation (DC) enables the creation of compact, privacy-preserving synthetic datasets that can match the utility of real patient records, supporting democratised access to highly regulated clinical data for developing downstream clinical models. State-of-the-art DC methods supervise synthetic data by aligning the training dynamics of models trained on real and those trained on synthetic data, typically using full stochastic gradient descent (SGD) trajectories as alignment targets; however, these trajectories are often noisy, high-curvature, and storage-intensive, leading to unstable gradients, slow convergence, and substantial memory overhead. We address these limitations by replacing full SGD trajectories with smooth, low-loss parametric surrogates, specifically quadratic Bézier curves that connect the initial and final model states from real training trajectories. These mode-connected paths provide noise-free, low-curvature supervision signals that stabilise gradients, accelerate convergence, and eliminate the need for dense trajectory storage. We theoretically justify Bézier-mode connections as effective surrogates for SGD paths and empirically show that the proposed method outperforms state-of-the-art condensation approaches across five clinical datasets, yielding condensed datasets that enable clinically effective model development.
+
+  % Dataset condensation (DC) generates compact synthetic datasets that preserve the training utility of real data. In the clinical domain, DC produces privacy-preserving surrogates of patient data that can be safely shared, supporting broader access and data democratisation. State-of-the-art DC methods supervise synthetic data by matching the training dynamics of models trained on real and synthetic data, using SGD trajectories as alignment targets. However, these trajectories are often noisy, high-curvature, and densely stored, leading to unstable gradients, slow convergence, and high storage costs. We address these limitations by replacing full SGD trajectories with smooth and low-loss parametric surrogates, specifically quadratic Bézier curves that connect the initial and final model states from the real training trajectories. These mode-connected paths provide noise-free and low-curvature supervision signals that stabilise gradients, accelerate convergence during synthetic data optimisation, and eliminate the need to store dense trajectories. We theoretically justify Bézier-mode connections as effective surrogates for SGD paths and empirically show that our method outperforms state-of-the-art condensation approaches across five clinical datasets yielding clinically meaning full performance. (V2)
+
+  % Dataset condensation (DC) aims to generate compact synthetic datasets that retain the training utility of the original data. In the clinical domain, DC offers a compelling approach for producing privacy-preserving surrogates of real patient data that can be safely shared, supporting broader access and data democratisation. State-of-the-art DC methods supervise synthetic data by matching the SGD training trajectories of models on real data, guiding synthetic samples to induce similar optimisation behaviour. However, these trajectories are often noisy and high-curvature, leading to unstable gradients, slower convergence, and significant storage overhead. This paper addresses these limitations by replacing full SGD trajectories with smooth, low-loss parametric surrogates—specifically, quadratic Bézier curves connecting the initial and final model states from the corresponding real-data SGD trajectory. These mode-connected paths provide noise-free, low-curvature supervision signals that yield stable gradients, improve convergence during synthetic data optimisation, and eliminate the need to store dense trajectories. We theoretically justify the use of Bézier-mode connections as surrogates for SGD paths and empirically demonstrate that, across multiple clinical benchmarks, our method outperforms state-of-the-art condensation approaches. A particularly important gain is the improvement in positive predictive value in imbalanced clinical tasks, where accurate disease and condition detection is critical.
+\end{abstract}
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{INTRODUCTION}
+\label{sec:intro}
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/btm_par_space.pdf}
+        \subcaption{Parameter-space Paths}
+        \label{fig:tm_param_space}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/btm_loss_along_path.pdf}
+        \subcaption{Training Set Loss Along Paths}
+        \label{fig:tm_loss_path}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/btm_convergence.pdf}
+        \subcaption{Condensation Loss Convergence}
+        \label{fig:tm_convergence}
+    \end{subfigure}
+    \caption{
+        Illustration of the key differences between traditional SGD trajectories and mode-connected paths in TM.  
+        (a) SGD trajectories are noisy and require many intermediate checkpoints, whereas mode-connected paths give smooth, direct connections using only the start and end models.  
+        (b) The average loss of the training set fluctuates and has high curvature along SGD trajectories, while mode-connected paths yield a stable, smoothly decreasing profile.  
+        (c) Mode-connected surrogates accelerate optimisation and reach lower trajectory-matching loss than raw SGD trajectories.
+    }
+    \label{fig:tm_vs_sgd}
+\end{figure*}
+
+Clinical artificial intelligence (AI) advances not by algorithms alone but by access to large, well-characterised datasets drawn from electronic health records (EHRs), disease registries, and biobanks \citep{rajkomar2019machine}. Yet access to clinical data is tightly constrained by privacy regulations and institutional governance frameworks designed to protect sensitive patient data \citep{thakur2024data,shabani2019gdpr}. These constraints slow methodological innovation by limiting opportunities to develop and rigorously evaluate models on real-world cohorts, undermining generalisability and clinical robustness \citep{topol2019high}. Dataset condensation (DC) addresses this gap by synthesising a compact, task-preserving proxy that approaches full data performance at a fraction of the storage and training cost \citep{li2025dataset}. The condensation objective typically yields synthetic samples that act as latent summaries of many underlying real samples, weakening any one-to-one correspondence with individual patients \citep{wang2023medical}. When paired with differential privacy, DC provides formal guarantees that patient-level information cannot be inferred \citep{carlini2022no}.
+
+Trajectory matching (TM) constitutes a prominent class of methods that define the current state of the art in DC \citep{cazenavette2022dataset, liu2023tesla, du2023ftd}. The central idea is to optimise the synthetic dataset by explicitly aligning the parameter trajectories induced when training a model on the synthetic data with those obtained from training on the real data. This alignment objective ensures that the condensed dataset not only preserves discriminative information but also replicates the training dynamics of the original data, thereby improving generalisation and downstream performance \citep{guo2024datm}. Despite their empirical success, TM methods face several practical limitations. They typically require storing and sampling from multiple intermediate checkpoints along each training trajectory, incurring substantial storage overhead. Moreover, stochastic gradient descent (SGD) trajectories are inherently noisy and frequently traverse high-curvature regions of the loss landscape, leading to high variability and unstable supervision signals for the condensation process (see Fig.~\ref{fig:tm_vs_sgd}a–b). These issues can lead to slower optimisation, degraded alignment quality, and limited generalisation across architectures.
+
+To address these limitations, we replace full SGD trajectories with smooth, low-loss parametric surrogates computed via mode connectivity \citep{garipov2018loss,thakur2025optimising}. For each real-data training trajectory, we learn a mode-connected path by training a quadratic Bézier curve in parameter space that links the initial (high-loss) and final (low-loss) model states; the curve is defined by a single control point, which we optimise to minimise the average training loss along the path. Crucially, this path preserves the same endpoints and overall optimisation direction as the original trajectory while smoothing away stochastic, high-curvature detours, yielding a fixed, low-curvature, low-loss supervision target once fitted. Optimisation-wise, removing stochastic sampling noise from the target and enforcing low curvature produce a well-conditioned, low-variance signal in which gradients vary smoothly along the path. This improves conditioning, stabilises updates, and accelerates convergence, reducing computational cost without sacrificing alignment fidelity. From a storage standpoint, each trajectory requires storing only three points: the initial checkpoint, the final checkpoint, and the learned control point. The intermediate states can be computed on the fly (see Section~\ref{subsec:surr-hyp}), eliminating the need to store multiple intermediate checkpoints and yielding order-of-magnitude savings.
+
+Building on these mode-connected surrogates, we formulate a DC framework that supervises synthetic data via alignment to smooth, low-loss trajectories. Rather than aligning to noisy SGD paths, we sample pairs of nearby points along the surrogate curves and optimise the synthetic dataset so that a model trained on it advances between them. This retains the trajectory-level supervision signal while improving stability, reducing variance, and eliminating the need to store full optimisation traces. The major contributions of this work are listed below: 
+
+% \begin{itemize}[noitemsep, topsep=0pt]
+\begin{itemize}[topsep=0pt]
+    \item We introduce mode connectivity–based trajectory surrogates (quadratic Bézier curves) as compact, low-curvature replacements for full SGD paths in TM-based DC framework. This proposed mechanism can be employed in any existing TM framework.
+    \item We theoretically justify the use of mode connectivity, specifically quadratic Bézier curves, as an effective surrogate for full optimisation trajectories, explaining why it preserves essential training signals while avoiding SGD stochasticity.
+    \item We conduct an extensive empirical evaluation on five real-world clinical datasets, demonstrating that the proposed approach produces clinically useful condensed datasets that support reliable downstream model development. It achieves performance comparable to real-data training and consistently outperforms state-of-the-art baselines across the evaluated clinical datasets.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RELATED WORKS}
+\label{sec:rel_works}
+
+% \textsc{Dataset Condensation:} Dataset Distillation (DD) \citep{wang2018dataset} pioneered the synthesis of small training sets through nested bilevel optimisation, addressing the computational burden of training on massive real-world datasets by creating dramatically smaller yet equally effective alternatives. Early extensions explored soft-label optimisation \citep{sucholutsky2019soft, bohdal2020flexible}, while Dataset Condensation (DC) with gradient matching \citep{zhao2021dataset} addressed the computational intensity of bilevel optimisation by formulating dataset synthesis as a gradient matching problem, avoiding expensive nested optimisation loops. Kernel-based methods framed the problem in the neural tangent kernel regime \citep{nguyen2021dataset, nguyen2022dataset, jacot2018neural}, offering closed-form updates but with heavy matrix costs and limited use beyond images. Distribution-matching (DM) strategies instead aligned feature statistics, often through maximum mean discrepancy \citep{zhao2023dataset, wang2022cafe, zhao2023improved, zhang2024m3d}, scaling more efficiently but typically requiring larger synthetic sets to achieve strong performance. More recent methods, such as Squeeze, Recover and Relabel (SRe2$^2$L) \citep{sre2l2023} and Realistic, Diverse, and Efficient Dataset Distillation (RDED) \citep{rded2023}, decouple generation from training by inverting pre-trained models or matching batch-normalisation statistics. While effective on images, these methods transfer poorly to structured clinical data, where synthetic–real performance gaps remain a significant barrier to deployment.
+
+\textsc{Dataset Condensation:} 
+Dataset Distillation \citep{wang2018dataset} pioneered synthetic dataset synthesis through nested bilevel optimisation, addressing the computational burden of training on massive real-world datasets by creating dramatically smaller yet equally effective alternatives. Gradient matching approaches \citep{zhao2021dataset} improved computational efficiency by avoiding expensive inner-loop unrolling, while soft-label extensions \citep{sucholutsky2019soft, bohdal2020flexible} explored label optimisation. Kernel-based methods \citep{nguyen2021dataset, nguyen2022dataset, jacot2018neural} reformulated the problem using neural tangent kernel theory, offering closed-form solutions but with heavy computational costs. Distribution matching methods \citep{zhao2023dataset, wang2022cafe, zhao2023improved, zhang2024m3d} achieved efficiency gains by aligning feature statistics without bilevel optimisation, though often requiring larger synthetic sets to achieve strong performance. Recent image-focussed decoupling approaches like Squeeze, Recover and Relabel \citep{yin2023sre2l} and Realistic, Diverse, and Efficient Dataset Distillation \citep{sun2023rded} separate synthesis from training optimisation. While effective on vision datasets, these methods transfer poorly to structured clinical data, where performance gaps remain significant.
+
+\textsc{Trajectory Matching:} 
+TM narrows this gap by supervising synthetic data with the training dynamics of real data. Matching Training Trajectories (MTT) \citep{cazenavette2022dataset} first aligned long-range trajectories, capturing richer information than stepwise gradient matching. Extensions such as Flat Trajectory Distillation (FTD) \citep{du2023ftd}, Difficulty-Aligned Trajectory Matching (DATM) \citep{guo2024datm}, and TrajEctory matching with Soft Label Assignment (TESLA) \citep{liu2023tesla} introduce curvature regularisation, difficulty-based curricula, and scalable soft-label assignment respectively. Despite strong results, TM methods depend on dense trajectories—tens to hundreds of checkpoints—and inherit the noise and curvature of SGD paths, inflating storage and introducing instability that limits clinical use.
+
+\textsc{Mode Connectivity:}
+Mode connectivity studies the geometry of neural loss landscapes by constructing smooth, low-loss paths between trained models, most commonly parameterised as quadratic Bézier curves \citep{garipov2018loss, draxler2018essentially, izmailov2018averaging}. These paths preserve endpoint performance while bypassing high-loss regions, and have been used to analyse generalisation and reparameterisation. In clinical machine learning, they have supported incremental learning and mitigated distribution shift \citep{thakur2023clinical}. Requiring only two endpoints and a single control point, mode connections provide compact yet expressive representations of optimisation paths.
+
+\textsc{Comparison With Proposed Approach:}
+These approaches present distinct trade-offs: non-TM methods are efficient but struggle with structured clinical data; TM captures richer dynamics but suffers from SGD instability and heavy storage requirements; mode connectivity provides compact, smooth paths but remains unexplored for DC. This work bridges these limitations by replacing noisy SGD trajectories with smooth mode-connected surrogates, combining TM's supervisory power with mode connectivity's efficiency for effective clinical data synthesis.
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{BACKGROUND}
+\label{sec:background}
+
+\textsc{Problem Statement:} Given a large real dataset $\mathcal{D} = \{(\boldsymbol{x}_i, \boldsymbol{y}_i)\}_{i=1}^{|\mathcal{D}|}$, where  $\boldsymbol{x}_i \in \mathbb{R}^d$ is an example and $\boldsymbol{y}_i$ its corresponding class label, DC seeks to learn a much smaller synthetic dataset $\tilde{\mathcal{D}} = \{(\boldsymbol{\tilde{x}}_i, \boldsymbol{\tilde{y}}_i)\}_{i=1}^{|\tilde{\mathcal{D}}|}$ with $|\tilde{\mathcal{D}}| \ll |\mathcal{D}|$. The objective is that models trained on $\tilde{\mathcal{D}}$ achieve comparable performance to those trained on $\mathcal{D}$. In practice, only a few synthetic samples per class (often referred to as \emph{instances per class}) are retained, making the overall synthetic dataset orders of magnitude smaller than the original. 
+
+Formally, DC can be expressed as the optimisation problem:
+\begin{equation}
+\begin{split}
+    \tilde{\mathcal{D}}^* &= \arg\min_{\tilde{\mathcal{D}}} \;
+    \mathbb{E}_{\boldsymbol{\theta}_0 \sim \mathcal{P}}
+    \big[ \mathcal{L}_{\mathrm{val}}(f_{\boldsymbol{\theta}_T}) \big], \\
+    &\quad \text{where } \boldsymbol{\theta}_T \leftarrow 
+    \mathrm{Train}(f_{\boldsymbol{\theta}_0}, \tilde{\mathcal{D}}).
+\end{split}
+\label{eq:dc}
+\end{equation}
+
+Here, $\boldsymbol{\theta}_0 \sim \mathcal{P}$ denotes parameters drawn from the initialisation distribution, $\boldsymbol{\theta}_T$ are the parameters obtained after training on the synthetic dataset $\tilde{\mathcal{D}}$, and $\mathcal{L}_{\mathrm{val}}$ is the validation loss of the trained model $f_{\boldsymbol{\theta}_T}$. 
+The goal is to find a synthetic dataset $\tilde{\mathcal{D}}^*$ that minimises this expected validation loss, ensuring that training from scratch on $\tilde{\mathcal{D}}$ yields models that generalise as well as those trained on the full dataset.
+
+
+% \begin{equation*}
+% % \label{eq:dc}
+% \begin{split}
+%     \tilde{\mathcal{D}}^* &= \arg\min_{\tilde{\mathcal{D}}} \;
+%     \mathbb{E}_{\boldsymbol{\theta}_0 \sim \mathcal{P}}
+%     \big[ \mathcal{L}_{\mathrm{val}}(f_{\boldsymbol{\theta}_T}) \big], \\
+%     &\quad \text{where } \boldsymbol{\theta}_T \leftarrow \mathrm{Train}(f_{\boldsymbol{\theta}_0}, \tilde{\mathcal{D}})
+% \end{split}
+% \end{equation*}
+% The goal is to learn an informative synthetic dataset $\tilde{\mathcal{D}}$ that provides sufficiently reliable information to guide an optimizer in mapping randomly initialised weights $\boldsymbol{\theta}_0 \sim \mathcal{P}$ into an approximately optimal parameter region $\mathcal{W} = \{\boldsymbol{\theta} : \mathcal{L}_{\mathrm{val}}(f_{\boldsymbol{\theta}}) \leq \mathcal{L}_{\mathrm{tol}}\}$, where $\mathcal{L}_{\mathrm{tol}} > 0$ denotes a tolerable performance threshold.
+
+% \textsc{Trajectory Matching Framework:} TM supervises synthetic dataset learning using expert trajectories—optimisation checkpoints $\{\boldsymbol{\theta}_k\}_{k=0}^K$ obtained by training networks on real data $\mathcal{D}$. During condensation, trajectory segments are sampled: starting from checkpoint $\boldsymbol{\theta}_k$ and targeting checkpoint $\boldsymbol{\theta}_{k+M}$ (where $M$ denotes segment length), a student model initialised at $\boldsymbol{\tilde{\theta}}_{k,0}=\boldsymbol{\theta}_k$ is trained on synthetic data $\tilde{\mathcal{D}}$ for $N$ steps, and $\tilde{\mathcal{D}}$ is optimised to minimise the final parameter displacement between $\boldsymbol{\tilde{\theta}}_{k,N}$ and $\boldsymbol{\theta}_{k+M}$. Through repeated segment matching, synthetic data learns to guide optimisation from initialisation to convergence. While effective, this approach requires storing dozens checkpoints per trajectory, incurring significant storage overhead, and relies on pre-recorded paths that reflect the stochastic, often indirect routes taken by SGD.
+
+% \textsc{Trajectory Matching Framework:} Trajectory Matching (TM) supervises synthetic dataset learning using \emph{expert trajectories}, i.e., optimisation checkpoints $\{\boldsymbol{\theta}_k\}_{k=0}^K$ obtained by training a model on the real dataset $\mathcal{D}$. During condensation, short trajectory segments are sampled: starting from checkpoint $\boldsymbol{\theta}_k$ and targeting a later checkpoint $\boldsymbol{\theta}_{k+M}$ (with $M$ denoting the segment length). A student model initialised at $\boldsymbol{\tilde{\theta}}_{k,0} = \boldsymbol{\theta}_k$ is then trained on the synthetic dataset $\tilde{\mathcal{D}}$ for $N$ steps, and $\tilde{\mathcal{D}}$ is updated to minimise the displacement between the student’s final parameters $\boldsymbol{\tilde{\theta}}_{k,N}$ and the target checkpoint $\boldsymbol{\theta}_{k+M}$. By repeatedly aligning such segments, the synthetic dataset learns to guide optimisation from initialisation toward convergence. While effective, this approach requires storing many intermediate checkpoints per trajectory, which incurs substantial storage overhead, and the supervision signals inherit the stochastic, often indirect paths taken by SGD, leading to instability.
+\textsc{Trajectory Matching Framework:} TM supervises synthetic dataset learning using \emph{expert trajectories}, the optimisation checkpoints $\{\boldsymbol{\theta}_k\}_{k=0}^K$ obtained by training a model on the real dataset $\mathcal{D}$. During condensation, a segment of length $M$ is sampled by starting from checkpoint $\boldsymbol{\theta}_k$ and targeting a later point $\boldsymbol{\theta}_{k+M}$. A student model initialised at $\boldsymbol{\tilde{\theta}}_{k,0} = \boldsymbol{\theta}_k$ is trained on the synthetic dataset $\tilde{\mathcal{D}}$ for $N$ steps, and $\tilde{\mathcal{D}}$ is updated to minimise the displacement between the student’s final parameters $\boldsymbol{\tilde{\theta}}_{k,N}$ and the target $\boldsymbol{\theta}_{k+M}$. Repeated alignment across segments teaches $\tilde{\mathcal{D}}$ to guide optimisation from initialisation to convergence. While effective, TM requires storing many intermediate checkpoints per trajectory, creating storage overhead, and its supervision inherits the stochastic, indirect paths of SGD, leading to instability.
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{PROPOSED METHOD}
+\label{sec:prop_meth}
+The limitations of TM frameworks raise a central question: does DC require replicating the exact, noisy dynamics of SGD, or can smoother surrogate paths provide equally effective supervision? This section addresses this question by introducing a surrogate-path hypothesis, analysing its theoretical properties, and presenting a condensation framework built on these paths.
+
+
+% \subsection{Surrogate-path Hypothesis}
+% The core role of trajectory matching is to teach synthetic datasets how to guide models from initialisation towards well-performing parameter regions in the loss landscape. This does not necessarily require exact replication of the stochastic, noisy trajectories followed by SGD; what matters is providing reliable guidance between checkpoints. This motivates the hypothesis that \emph{smooth, low-loss paths connecting the initial and final model states---ideally with a monotonically or near-monotonically decreasing loss profile---can serve as effective surrogates for the noisy trajectories followed by SGD}. Analyses of neural network loss landscapes show that multiple such non-linear low-loss paths exist, and can act as stable alternatives to the noisy SGD trajectories used in TM frameworks.
+
+% Mode connectivity provides a principled way to realise these surrogate paths. A mode connection, denoted $\gamma_{\theta_A \rightarrow \theta_B}$, is defined as a low-loss path in parameter space between two optima $\theta_A, \theta_B \in \mathbb{R}^N$. Along this path, every intermediate point remains an effective optimum and no loss barriers are encountered, so that the loss decreases monotonically from $\theta_A$ to $\theta_B$. This highlights that mode connections essentially exhibit the characteristics required to be the surrogate trajectories. 
+
+% To approximate a training trajectory, the connection must extend beyond optima to link an initial high-loss model state $\theta_0$ with a converged model state $\theta_T$. We therefore employ a parameterised quadratic Bézier curve $\Phi_{\phi}(t)$ \citep{garipov2018loss} as a non-linear mode connection:
+% \begin{equation}
+% \Phi_{\phi}(t) = (1-t)^2 \theta_0 + 2t(1-t)\phi + t^2 \theta_T,
+% \label{eq:bz}
+% \end{equation}
+% where $\phi \in \mathbb{R}^N$ is the trainable control point of the curve. The variable $t \in [0,1]$ determines the position along the path, with $t=0$ corresponding to $\theta_0$ and $t=1$ to $\theta_T$. The curve $\Phi_{\phi}$ is fitted by updating control point $\phi$ to minimise the training loss at sampled points along the path using dataset $\mathcal{D}$, thereby yielding the desired mode connection $\gamma_{\theta_0 \rightarrow \theta_T}$:
+% \begin{equation}
+% \label{eq:phi_optim}
+% \boldsymbol{\phi}^\star = \arg\min_{\boldsymbol{\phi}}
+% \mathbb{E}_{t \sim \mathcal{U}(0,1)}
+% \big[\mathcal{L}_{\mathrm{train}}(\Phi_{\phi}(t), \mathcal{D})\big].
+% \end{equation}
+% The resulting path, $\Phi_{\phi^{\star}}(t)$ , is fully determined by just three parameter vectors: the initial state $\boldsymbol{\theta}_0$, the final state $\boldsymbol{\theta}_T$, and the learned control point $\boldsymbol{\phi}^\star$. Hence, we obtain a surrogate for an SGD trajectory that is both noise-free and low-curvature (Figure~\ref{fig:tm_vs_sgd}a), reliably connects high-loss and low-loss regions in parameter space (Figure~\ref{fig:tm_vs_sgd}b), and eliminates the need to store the full trajectory.
+
+\subsection{Surrogate-path Hypothesis}
+\label{subsec:surr-hyp}
+The core role of TM is to teach synthetic datasets how to guide models from initialisation towards well-performing parameter regions in the loss landscape. This does not necessarily require exact replication of the stochastic, noisy trajectories followed by SGD; what matters is providing reliable guidance between checkpoints. This motivates the hypothesis that \emph{smooth, low-loss paths connecting the initial and final model states---ideally with a monotonically or near-monotonically decreasing loss profile---can serve as effective surrogates for the noisy trajectories followed by SGD}. Analyses of neural network loss landscapes show that multiple such non-linear low-loss paths exist, and can act as stable alternatives to the noisy SGD trajectories used in TM frameworks.
+
+Mode connectivity provides a principled way to realise these surrogate paths. A mode connection, denoted $\gamma_{\boldsymbol{\theta}_A \rightarrow \boldsymbol{\theta}_B}$, is defined as a low-loss path in parameter space between two optima $\boldsymbol{\theta}_A, \boldsymbol{\theta}_B \in \mathbb{R}^N$. Along this path, every intermediate point remains an effective optimum and no loss barriers are encountered, so that the loss decreases monotonically from $\boldsymbol{\theta}_A$ to $\boldsymbol{\theta}_B$. This highlights that mode connections essentially exhibit the characteristics required to be the surrogate trajectories. 
+
+To approximate a training trajectory, the connection must extend beyond optima to link an initial high-loss model state $\boldsymbol{\theta}_0$ with a converged model state $\boldsymbol{\theta}_T$. We therefore employ a parameterised quadratic Bézier curve $\Phi_{\boldsymbol{\phi}}(t)$ \citep{garipov2018loss} as a non-linear mode connection:
+\begin{equation}
+    \Phi_{\boldsymbol{\phi}}(t) = (1-t)^2 \boldsymbol{\theta}_0 + 2t(1-t)\boldsymbol{\phi} + t^2 \boldsymbol{\theta}_T,
+\label{eq:bz}
+\end{equation}
+
+where $\boldsymbol{\phi} \in \mathbb{R}^N$ is the trainable control point of the curve. The variable $t \in [0,1]$ determines the position along the path, with $t=0$ corresponding to $\boldsymbol{\theta}_0$ and $t=1$ to $\boldsymbol{\theta}_T$. The curve $\Phi_{\boldsymbol{\phi}}$ is fitted by updating control point $\boldsymbol{\phi}$ to minimise the training loss at sampled points along the path using dataset $\mathcal{D}$, thereby yielding the desired mode connection $\gamma_{\boldsymbol{\theta}_0 \rightarrow \boldsymbol{\theta}_T}$ \citep{thakur2025optimising}:
+\begin{equation}
+\label{eq:phi_optim}
+    \boldsymbol{\phi}^\star = \arg\min_{\boldsymbol{\phi}}
+    \mathbb{E}_{t \sim \mathcal{U}(0,1)}
+    \big[\mathcal{L}_{\mathrm{train}}(\Phi_{\boldsymbol{\phi}}(t), \mathcal{D})\big].
+\end{equation}
+
+The resulting path, $\Phi_{\boldsymbol{\phi}^{\star}}(t)$, is fully determined by just three parameter vectors: the initial state $\boldsymbol{\theta}_0$, the final state $\boldsymbol{\theta}_T$, and the learned control point $\boldsymbol{\phi}^\star$. Hence, we obtain a surrogate for an SGD trajectory that is both noise-free and low-curvature (Figure~\ref{fig:tm_vs_sgd}a), reliably connects high-loss and low-loss regions in parameter space (Figure~\ref{fig:tm_vs_sgd}b), and eliminates the need to store the full trajectory.
+
+
+
+\subsection{Theoretical Guarantees of Bézier Surrogates} 
+\label{subsec:bez-theory}
+
+Bézier curves provide not only a faithful surrogate to noisy SGD trajectories but also a potentially superior alternative for optimisation. An optimised Bézier path retains the functional behaviour of the trajectory—maintaining low average loss and consistent predictions—while offering two crucial advantages: it is noise-free and exhibits strictly lower curvature. These properties make the surrogate path more stable, easier to follow, and less sensitive to stochastic fluctuations. In this sense, Bézier surrogates are not just approximations of SGD trajectories, but improved optimisation paths that preserve essential functionality while reducing geometric complexity. Theorem \ref{thm:bez-sur} formalises these guarantees.
+
+\begin{theorem}
+\label{thm:bez-sur}
+Let $\mathcal{L}:\Theta \to \mathbb{R}$ be a $\beta$-smooth, lower-bounded loss function, $\boldsymbol{\theta}_0 \in \Theta$ be a random initialisation with loss $\ell_0 = \mathcal{L}(\boldsymbol{\theta}_0)$, and $\boldsymbol{\theta}_T$ be an SGD endpoint after $K$ steps such that
+$\|\nabla \mathcal{L}(\boldsymbol{\theta}_T)\| \le \varepsilon$, where $\mathcal{L}(\boldsymbol{\theta}_T) = \ell_T \ll \ell_0.$ 
+
+\noindent Let $\gamma(t)$ denote the piecewise-linear interpolation of the SGD iterates $\{\boldsymbol{\theta}_k\}_{k=0}^K$. Also, let $\Phi_{\boldsymbol{\phi}}(t)$ denote the quadratic Bézier curve with control point $\boldsymbol{\phi} \in \Theta$ as defined in Eq.~\eqref{eq:bz}. Define the optimised Bézier path and its curvature $\kappa$ as
+\begin{equation*}
+    \Phi_{\boldsymbol{\phi}^\star}(t) := \Phi_{\boldsymbol{\phi}}(t) \quad \text{with} \quad 
+    \boldsymbol{\phi}^\star = \arg\min_{\boldsymbol{\phi}} \int_0^1 \mathcal{L}(\Phi_{\boldsymbol{\phi}}(t))\, dt,
+\end{equation*}
+\begin{equation*}
+    \kappa := 2\|\boldsymbol{\theta}_0 - 2\boldsymbol{\phi}^\star + \boldsymbol{\theta}_T\|.
+\end{equation*}
+\noindent Assume the model map $f_{\boldsymbol{\theta}}(\boldsymbol{x})$ is $L_f$-Lipschitz in $\boldsymbol{\theta}$ for every $\boldsymbol{x} \in \mathcal{X}$. Then:
+
+\begin{enumerate}
+\itemsep 0.2em
+    \item[\textbf{(i)}] \textbf{Average loss along the Bézier path is near-optimal:}
+    \begin{equation}
+    \label{eq:bez_loss}
+        \int_0^1 \mathcal{L}(\Phi_{\boldsymbol{\phi}^\star}(t))\, dt 
+        \le
+        \int_0^1 \mathcal{L}(\gamma(t))\, dt + \frac{\beta \kappa^2}{240}.
+    \end{equation}
+    
+    \item[\textbf{(ii)}] \textbf{Bézier path has lower and noise-free curvature compared to SGD trajectory:}
+    \begin{equation}
+    \label{eq:bez_noise}
+        \sup_{t \in [0, 1]} \|\Phi_{\boldsymbol{\phi}^\star}''(t)\| = \kappa, \quad
+        \mathbb{E}\left[\sup_t \|\gamma''(t)\|\right] \ge \kappa + c \cdot \sigma_{\mathrm{sgd}},
+    \end{equation}
+    where $\sigma_{\mathrm{sgd}}^2$ is the variance of stochastic gradient noise, and $c > 0$ is a constant dependent on the step size.
+
+    \item[\textbf{(iii)}] \textbf{Model predictions along Bézier path remain close to those along SGD:}
+    \begin{equation}
+    \label{eq:bez_pred}
+        \sup_{\boldsymbol{x} \in \mathcal{X},\; t \in [0, 1]} 
+        \|f_{\Phi_{\boldsymbol{\phi}^\star}(t)}(\boldsymbol{x}) - f_{\gamma(t)}(\boldsymbol{x})\| \le \frac{L_f \kappa}{8}.
+    \end{equation}
+
+\end{enumerate}
+
+\noindent Hence, the optimised Bézier path $\Phi_{\boldsymbol{\phi}^\star}(t)$ serves as a smooth, low-loss, and functionally faithful surrogate to the original SGD trajectory.
+\end{theorem}
+
+\begin{proof}
+    Section~\ref{sec:thm1-proof} of the supplementary material provides the complete proof.
+\end{proof}
+
+These guarantees establish Bézier surrogates as smooth, low-loss, and functionally faithful replacements for noisy SGD trajectories. Crucially, their reduced curvature and noise-free geometry make them more stable and efficient to use within trajectory-based optimisation. Building on this foundation, we now propose a complete condensation framework that leverages these surrogates to guide synthetic datasets in place of raw SGD trajectories.
+
+
+\subsection{Dataset Condensation Using Surrogates}
+The proposed DC framework, termed Bézier Trajectory Matching (BTM), begins with a randomly initialised synthetic dataset that is iteratively optimised using Bézier surrogates. It assumes access to a collection of $K$ optimised Bézier surrogates ${\Phi_{\boldsymbol{\phi}^\star}^{(k)}}_{k=1}^K$ that approximate SGD trajectories on the real dataset and a synthetic dataset $\tilde{\mathcal{D}} = \{(\boldsymbol{x}_i, \boldsymbol{y}_i)\}_{i=1}^{|\tilde{\mathcal{D}}|}$, where we stack the synthetic inputs into a matrix $\tilde{\mathbf{X}} \in \mathbb{R}^{{|\tilde{\mathcal{D}}|} \times d}$  and the associated labels into a tensor $\tilde{\mathbf{Y}} \in \mathbb{R}^{{|\tilde{\mathcal{D}}|} \times C}$.
+
+At each iteration, a surrogate $\Phi_{\boldsymbol{\phi}^\star}^{(k)}$ is sampled. 
+Two interpolation parameters $t_{\text{start}}, t_{\text{end}} \sim \mathcal{U}(0,1)$ 
+are drawn such that $t_{\text{start}} < t_{\text{end}}$. 
+These define the segment of the surrogate path used for matching: $\boldsymbol{\theta}_{\text{start}} = \Phi_{\boldsymbol{\phi}^\star}^{(k)}(t_{\text{start}})$ and  $\boldsymbol{\theta}_{\text{target}} = \Phi_{\boldsymbol{\phi}^\star}^{(k)}(t_{\text{end}})$. A student model is initialised at $\tilde{\boldsymbol{\theta}}_0 = \boldsymbol{\theta}_{\text{start}}$, and is trained for $N$ gradient steps on mini-batches 
+$B_i = \{(\boldsymbol{x}_j, \boldsymbol{y}_j)\}_{j=1}^b$ 
+of size $b$ sampled from the synthetic dataset $\tilde{\mathcal{D}}$ as: 
+\begin{equation}
+\tilde{\boldsymbol{\theta}}_{i+1} =
+\tilde{\boldsymbol{\theta}}_i - \eta_s 
+\nabla_{\tilde{\boldsymbol{\theta}}_i} \!\left[
+  \frac{1}{b} \sum_{\substack{(\boldsymbol{x},\boldsymbol{y}) \\ \in B_i}}
+  \ell(f_{\tilde{\boldsymbol{\theta}}_i}(\boldsymbol{x}), \boldsymbol{y})
+\right],
+\end{equation}
+
+where $\ell(\cdot,\cdot)$ is the supervised loss and $\eta_s$ is the student learning rate. 
+After $N$ steps, the student reaches $\tilde{\boldsymbol{\theta}}_N$.  
+
+To align the student’s progression with the Bézier surrogate, we measure the discrepancy 
+using a normalised matching loss:
+\begin{equation}
+\mathcal{L}_{\text{BTM}} = 
+\frac{\|\tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}}\|_2^2}
+     {\|\boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}}\|_2^2}.
+\end{equation}
+
+The synthetic data $\tilde{\mathbf{X}}$ is updated to minimise $\mathcal{L}_{\text{BTM}}$. Since this loss depends on the synthetic data only indirectly through the unrolled student updates, exact differentiation would 
+require second-order derivatives through the full trajectory. To avoid this, we 
+adopt a first-order approximation and use the gradient of the BTM loss with respect 
+to the final student parameters as the update signal:
+\begin{equation}
+\boldsymbol{g}_L = 
+\nabla_{\tilde{\boldsymbol{\theta}}_N} \mathcal{L}_{\text{BTM}}
+= \frac{2(\tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}})}
+       {\|\boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}}\|_2^2}.
+\end{equation}
+
+The corresponding approximate meta-gradient with respect to the synthetic inputs is
+\begin{align}
+    \nabla_{\tilde{\mathbf{X}}}\mathcal{L}_{\text{BTM}} \;\approx\;& \\[0.5ex]
+    &\hspace{-3em} -\eta_s \sum_{i=0}^{N-1} \frac{1}{|B_i|}
+       \sum_{\substack{(\boldsymbol{x},\boldsymbol{y}) \\ \in B_i}}
+       \nabla_{\tilde{\mathbf{X}}}\,\Big\langle
+       \nabla_{\tilde{\boldsymbol{\theta}}_i}
+       \ell\!\big(f_{\tilde{\boldsymbol{\theta}}_i}(\boldsymbol{x}), \boldsymbol{y}\big),\,
+       \boldsymbol{g}_L \Big\rangle.
+\end{align}
+
+Finally, the synthetic dataset is updated by gradient descent:
+\begin{equation}
+\tilde{\mathbf{X}} \;\leftarrow\; 
+\tilde{\mathbf{X}} - \eta_x\,\nabla_{\tilde{\mathbf{X}}}\mathcal{L}_{\text{BTM}}.
+\end{equation}
+Note that we can also train labels $\tilde{\mathbf{Y}}$ in the same manner. The complete dataset condensation process is depicted as Algorithm \ref{alg:condensation} in Section \ref{sec:btm-algo} of the supplementary material. 
+
+
+% We assume access to a collection of $K$ optimised Bézier surrogates 
+% $\{\Phi_{\boldsymbol{\phi}^\star}^{(k)}\}_{k=1}^K$ and a synthetic dataset 
+% $\tilde{\mathcal{D}} = \{(\boldsymbol{x}_i, \boldsymbol{y}_i)\}_{i=1}^M$. 
+% At each iteration, a surrogate $\Phi_{\boldsymbol{\phi}^\star}^{(k)}$ is sampled. 
+% Two interpolation parameters $t_{\text{start}}, t_{\text{end}} \sim \mathcal{U}(0,1)$ 
+% are drawn such that $t_{\text{start}} < t_{\text{end}}$. 
+% These define the segment of the surrogate path used for matching:
+% \begin{equation}
+% \boldsymbol{\theta}_{\text{start}} = \Phi_{\boldsymbol{\phi}^\star}^{(k)}(t_{\text{start}}), 
+% \quad 
+% \boldsymbol{\theta}_{\text{target}} = \Phi_{\boldsymbol{\phi}^\star}^{(k)}(t_{\text{end}}).
+% \end{equation}
+% A student model is initialised at $\tilde{\boldsymbol{\theta}}_0 = \boldsymbol{\theta}_{\text{start}}$, and is trained for $N$ gradient steps on mini-batches 
+% $B_i = \{(\boldsymbol{x}_j, \boldsymbol{y}_j)\}_{j=1}^b$ 
+% of size $b$ sampled from the synthetic dataset $\tilde{\mathcal{D}}$ as: 
+% \begin{equation}
+% \tilde{\boldsymbol{\theta}}_{i+1} = 
+% \tilde{\boldsymbol{\theta}}_i - \eta_s 
+% \nabla_{\tilde{\boldsymbol{\theta}}_i} \left[
+% \frac{1}{b} \sum_{(\boldsymbol{x}, \boldsymbol{y}) \in B_i} 
+% \ell\big(f_{\tilde{\boldsymbol{\theta}}_i}(\boldsymbol{x}), \boldsymbol{y}\big)
+% \right],
+% \end{equation}
+% where $\ell(\cdot,\cdot)$ is the supervised loss and $\eta_s$ is the student learning rate. 
+% After $N$ steps, the student reaches $\tilde{\boldsymbol{\theta}}_N$.  
+
+% To align the student’s progression with the Bézier surrogate, we measure the discrepancy 
+% using a normalised matching loss:
+% \begin{equation}
+% \mathcal{L}_{\text{BTM}} = 
+% \frac{\|\tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}}\|_2^2}
+%      {\|\boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}}\|_2^2}.
+% \end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% A student model is initialised at
+% \begin{equation}
+% \tilde{\boldsymbol{\theta}}_0 = \boldsymbol{\theta}_{\text{start}},
+% \end{equation}
+% and trained for $N$ gradient steps on mini-batches 
+% $B = \{(\boldsymbol{x}_j, \boldsymbol{y}_j)\} \subset \tilde{\mathcal{D}}$ 
+% sampled from the synthetic dataset. The parameter updates are
+% \begin{equation}
+% \tilde{\boldsymbol{\theta}}_{i+1} = 
+% \tilde{\boldsymbol{\theta}}_i - \eta_s \nabla_{\tilde{\boldsymbol{\theta}}_i} 
+% \ell(f_{\tilde{\boldsymbol{\theta}}_i}(\boldsymbol{x}_j), \boldsymbol{y}_j),
+% \quad i = 0, \ldots, N-1,
+% \end{equation}
+% where $\ell(\cdot,\cdot)$ is the supervised loss and $\eta_s$ is the student learning rate. 
+% After $N$ steps the student reaches $\tilde{\boldsymbol{\theta}}_N$.  
+
+% To align the student’s progression with the Bézier trajectory, we measure the discrepancy 
+% using a normalised matching loss:
+% \begin{equation}
+% \mathcal{L}_{\text{BTM}} = 
+% \frac{\|\tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}}\|_2^2}
+%      {\|\boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}}\|_2^2}.
+% \end{equation}
+
+% Finally, the synthetic dataset $\tilde{\mathcal{D}}$ and its learning rate schedule 
+% are updated by descending the gradient of $\mathcal{L}_{\text{BTM}}$, so that training 
+% on $\tilde{\mathcal{D}}$ increasingly aligns student trajectories with the 
+% smooth, noise-free Bézier surrogates. Repeating this procedure over many iterations 
+% refines the synthetic dataset into one that consistently guides models from 
+% high-loss initialisations toward low-loss regions of parameter space.
+
+
+
+% \newpage
+% \begin{theorem}
+% \label{thm:bez-sur}
+% Let $\mathcal{L}:\Theta \to \mathbb{R}$ be a $\beta$-smooth, lower-bounded loss function, $\boldsymbol{\theta}_0 \in \Theta$ be a random initialisation with loss $\ell_0 = \mathcal{L}(\boldsymbol{\theta}_0)$, and $\boldsymbol{\theta}_T$ be an SGD endpoint after $K$ steps such that
+% $\|\nabla \mathcal{L}(\boldsymbol{\theta}_T)\| \le \varepsilon$, where $\mathcal{L}(\boldsymbol{\theta}_T) = \ell_T \ll \ell_0.$ 
+
+% \noindent Assume $\gamma(t)$ denote the piecewise-linear interpolation of the SGD iterates $\{\boldsymbol{\theta}_k\}_{k=0}^K$. Also, $\boldsymbol{\theta}(t; \boldsymbol{\phi})$ is the quadratic Bézier curve with control point $\boldsymbol{\phi} \in \Theta$. Let $\boldsymbol{\phi}^\star = \arg\min_{\boldsymbol{\phi}} \int_0^1 \mathcal{L}(\boldsymbol{\theta}(t; \boldsymbol{\phi}))\, dt$, and define the optimised Bézier curve and its curvature as
+% \begin{equation*}
+%     \boldsymbol{\theta}^\star(t) := \boldsymbol{\theta}(t; \boldsymbol{\phi}^\star), \quad 
+%     \kappa := 2\|\boldsymbol{\theta}_0 - 2\boldsymbol{\phi}^\star + \boldsymbol{\theta}_T\|.
+% \end{equation*}
+
+% \noindent Also, assume the model map $f_{\boldsymbol{\theta}}(\boldsymbol{x})$ is $L_f$-Lipschitz in $\boldsymbol{\theta}$ for every $\boldsymbol{x} \in \mathcal{X}$. Then:
+
+% \begin{enumerate}
+% \itemsep 0.2em
+%     \item[\textbf{(i)}] \textbf{Average loss along the Bézier path is near-optimal:}
+%     \begin{equation}
+%     \label{eq:bez_loss}
+%         \int_0^1 \mathcal{L}(\boldsymbol{\theta}^\star(t))\, dt 
+%         \le
+%         \int_0^1 \mathcal{L}(\gamma(t))\, dt + \frac{\beta \kappa^2}{240}.
+%     \end{equation}
+    
+%     \item[\textbf{(ii)}] \textbf{Bézier path has lower and noise-free curvature compared to SGD trajectory:}
+%     \begin{equation}
+%     \label{eq:bez_noise}
+%         \sup_{t \in [0, 1]} \|\boldsymbol{\theta}^{\star\prime\prime}(t)\| = \kappa, \quad
+%         \mathbb{E}\left[\sup_t \|\gamma''(t)\|\right] \ge \kappa + c \cdot \sigma_{\mathrm{sgd}},
+%     \end{equation}
+%     where $\sigma_{\mathrm{sgd}}^2$ is the variance of stochastic gradient noise, and $c > 0$ is a constant dependent on the step size.
+
+%     \item[\textbf{(iii)}] \textbf{Model predictions along Bézier path remain close to those along SGD:}
+%     \begin{equation}
+%     \label{eq:bez_pred}
+%         \sup_{\boldsymbol{x} \in \mathcal{X},\; t \in [0, 1]} \|f_{\boldsymbol{\theta}^\star(t)}(\boldsymbol{x}) - f_{\gamma(t)}(\boldsymbol{x})\| \le \frac{L_f \kappa}{8}.
+%     \end{equation}
+
+% \end{enumerate}
+
+% \noindent Hence, the optimised Bézier path $\boldsymbol{\theta}^\star(t)$ serves as a smooth, low-loss, and functionally faithful surrogate to the original SGD trajectory.
+% \end{theorem}
+
+% \begin{proof}
+%     Section ~\ref{subsec:thm1-proof} of the supplementary document provides the complete proof.
+% \end{proof}
+
+% Having established the geometric properties of Bézier surrogates, the following analysis examines their implications for ranking-based evaluation metrics in imbalanced classification tasks.
+
+
+
+
+
+% \newpage
+% The core function of TM is teaching synthetic datasets to advance student models toward better parameter regions. This navigation task may not require specific paths—only reliable guidance between checkpoints. We hypothesize that smooth, engineered paths connecting initialisation to trained models could provide effective supervision for dataset condensation, even without reflecting actual training dynamics.
+
+% Mode connectivity research demonstrates that neural network loss landscapes contain smooth, low-loss paths between different trained solutions. While existing work connects optima within low-loss regions, we extend this concept to bridge high-loss initialisation with converged models. Despite initialisation and convergence occupying vastly different loss regimes, careful path optimisation may discover smooth descents that maintain traversability while avoiding stochastic wandering. Quadratic Bézier curves provide the necessary geometric flexibility for this approach while requiring minimal storage.
+
+% \subsection{Bézier Trajectory Matching (BTM)}
+% \label{subsec:btm}
+% The proposed TM-based framework, termed BTM, substitutes SGD trajectories with mode-connected Bézier curves and is detailed as follows:
+
+% \textsc{Bézier Curve Construction:} For each SGD trajectory, a smooth surrogate is constructed by parameterising a quadratic Bézier curve that directly connects initialisation $\boldsymbol{\theta}_0$ to final parameters $\boldsymbol{\theta}_T$:
+% \begin{equation}
+% \label{eq:bez_curve}
+%     \boldsymbol{\theta}(t; \boldsymbol{\phi})
+%     = (1-t)^2 \boldsymbol{\theta}_0 
+%     + 2t(1-t)\boldsymbol{\phi} 
+%     + t^2 \boldsymbol{\theta}_T,
+%     \quad t \in [0,1]
+% \end{equation}
+
+% The variable $t$ controls the position along the curve, with $t=0$ corresponding to $\boldsymbol{\theta}_0$ and $t=1$ to $\boldsymbol{\theta}_T$. The control point $\boldsymbol{\phi}$ is optimised to minimise the expected cross-entropy loss over the real dataset $\mathcal{D}$ along the curve:
+% \begin{equation}
+% \label{eq:phi_optim}
+%     \boldsymbol{\phi}^\star = \arg\min_{\boldsymbol{\phi}} 
+%     \mathbb{E}_{t \sim \mathcal{U}(0,1)} \big[\mathcal{L}_{\mathrm{train}}(f_{\boldsymbol{\theta}_{\boldsymbol{\phi}}(t)}, y)\big]
+% \end{equation}
+
+% The resulting smooth curve, $\boldsymbol{\theta}^\star(t):=\boldsymbol{\theta}(t; \boldsymbol{\phi}^\star)$, requires only three parameter vectors $(\boldsymbol{\theta}_0, \boldsymbol{\phi}^\star, \boldsymbol{\theta}_T)$.
+
+% \textsc{Condensation Process:} In each condensation step, an optimised Bézier curve is randomly sampled and position $t \sim \mathcal{U}(0,1-n)$ is drawn, where $n$ is the segment length. This establishes start and target waypoints along the curve:
+% \begin{align*}
+%     \boldsymbol{\theta}_{\text{start}} &= \boldsymbol{\theta}^\star(t) \\
+%     \boldsymbol{\theta}_{\text{target}} &= \boldsymbol{\theta}^\star(t+n)
+% \end{align*}
+
+% A student model is initialized at $\tilde{\boldsymbol{\theta}}_0 = \boldsymbol{\theta}_{\text{start}}$ and trained on the current synthetic dataset $\tilde{\mathcal{D}}$ for $N$ optimisation steps, reaching $\tilde{\boldsymbol{\theta}}_N$. The optimisation objective encourages the student to progress toward $\boldsymbol{\theta}_{\text{target}}$ and final parameter displacement is quantified through normalised matching loss:
+% \begin{equation}
+% \label{eq:btm_loss}
+%     \mathcal{L}_{\text{BTM}} = 
+%     \frac{\left\| \tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}} \right\|_2^2}
+%          {\left\| \boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}} \right\|_2^2}
+% \end{equation}
+
+% The synthetic dataset is updated via gradient descent on $\mathcal{L}_{\text{BTM}}$, progressively refining $\tilde{\mathcal{D}}$ to advance student parameters along the Bézier curve towards better performing parameter regions.
+
+
+
+
+
+
+% \subsection{Functional Preservation and Ranking Metrics}
+% \label{subsec:func-ranking}
+
+% The Bézier surrogates established in Section~\ref{subsec:bez-theory} provide smoother parameter trajectories than SGD paths. This section demonstrates how for binary classification problems, this parameter-space stability translates to superior functional behavior, ensuring that networks sampled at intermediate points maintain predictive consistency. In tasks with severe class imbalance, such consistency is particularly relevant for ranking-based evaluation criteria such as the Area Under the Precision--Recall Curve (AUPRC), which emphasizes correct ordering of positive instances rather than overall classification accuracy. For binary classification, the model's output $f_{\boldsymbol{\theta}}(\boldsymbol{x})$ now scalar, serves as the classification score.
+
+
+% \textbf{SGD Incurs Larger Score Deviations}\\
+% While Theorem~\ref{thm:bez-sur} establishes geometric advantages of Bézier paths, practical performance depends on functional behavior. Fix the \emph{late-phase reference} parameter
+% \begin{equation*}
+%     \boldsymbol{\theta}_{\mathrm{late}} := \boldsymbol{\theta}_T.
+% \end{equation*}
+
+% Define the worst-case score deviations with respect to this reference:
+% \begin{align*}
+%     \delta_{\mathrm{B}} & :=
+%       \sup_{\boldsymbol{x}\in\mathcal{X},\,t\in[0,1]}
+%          \bigl|f_{\boldsymbol{\theta}^\star(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_{\mathrm{late}}}(\boldsymbol{x})\bigr|, \\ \\
+%     \delta_{\mathrm{S}} & :=
+%       \sup_{\boldsymbol{x}\in\mathcal{X},\,t\in[0,1]}
+%          \bigl|f_{\gamma(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_{\mathrm{late}}}(\boldsymbol{x})\bigr|,
+% \end{align*}
+
+
+% Let the \emph{score-gap margin} be
+% \begin{equation*}
+%     \varepsilon := \delta_{\mathrm{S}} - \delta_{\mathrm{B}} > 0.
+% \end{equation*}
+
+% \begin{lemma}[SGD path leaves a wider score gap]
+% \label{lem:margin}
+% Under the assumptions of Theorem~\ref{thm:bez-sur},
+% \begin{align*}
+%     \delta_{\mathrm{B}}
+%       &\le \frac{L_f\,\kappa}{8},
+%     \qquad
+%     \delta_{\mathrm{S}}
+%       \ge \frac{L_f\,(\kappa + c\,\sigma_{\mathrm{sgd}})}{8},
+%     \\ \\
+%     &\Longrightarrow
+%     \qquad
+%     \varepsilon
+%       \ge \frac{L_f\,c\,\sigma_{\mathrm{sgd}}}{8}.
+% \end{align*}
+% \end{lemma}
+
+% \begin{proof}
+%     The bound on $\delta_{\mathrm{B}}$ follows directly from Theorem~\ref{thm:bez-sur}(iii).
+    
+%     For the SGD path, Theorem~\ref{thm:bez-sur}(ii) establishes that $\sup_t\|\gamma''(t)\|\ge\kappa + c\,\sigma_{\mathrm{sgd}}$ in expectation. By the same Lipschitz reasoning used in the proof of Theorem~\ref{thm:bez-sur}(iii), higher expected curvature in the SGD trajectory leads to larger parameter-space deviations from $\boldsymbol{\theta}_{\mathrm{late}}$. Specifically, integrating the curvature along the path and applying the $L_f$-Lipschitz property of $f_{\boldsymbol{\theta}}$ yields the stated lower bound on $\delta_{\mathrm{S}}$.
+    
+%     Subtracting the two bounds gives the claimed $\varepsilon$.
+% \end{proof}
+
+% \textbf{AUPRC Gain from Bézier Trajectories}
+
+% \begin{corollary}[Strict AUPRC improvement]
+% \label{cor:auprc_gain}
+% Assume
+% \begin{enumerate}
+%   \item The score function $f_{\boldsymbol{\theta}}(\boldsymbol{x})\in[0,1]$ is \emph{strictly monotone} in the conditional probability $P(y=1\mid \boldsymbol{x})$ and $L_f$-Lipschitz in $\theta$.
+%   \item The positive-class prior $\pi$ satisfies $\pi\le 0.1$.
+%   \item The margin $\varepsilon$ of Lemma~\ref{lem:margin} is positive.
+% \end{enumerate}
+
+% Then
+% \begin{equation}
+% \label{eq:auprc_improvement}
+%     \mathrm{AUPRC}_{\mathrm{B}}
+%       \ge
+%       \mathrm{AUPRC}_{\mathrm{S}}
+%       +
+%       \frac{3\,\varepsilon}{\pi}.
+% \end{equation}
+% \end{corollary}
+
+% \begin{proof}
+%     Section ~\ref{subsec:cor1-proof} of the supplementary material provides the complete proof.
+% \end{proof}
+
+% \begin{remark}[Practical magnitude]
+%     With representative values $L_f = 2$, $c = 1$, $\sigma_{\mathrm{sgd}} = 0.04$, and $\pi = 0.05$, the bounds yield
+%     \begin{equation}
+%         \varepsilon
+%           \ge
+%           \frac{2 \times 1 \times 0.04}{8}
+%           = 0.01,
+%         \qquad
+%         \frac{3\varepsilon}{\pi}
+%           \approx
+%           0.60.
+%     \end{equation}
+%     Thus Bézier-based trajectory matching is predicted to raise AUPRC by approximately $0.6$ absolute points—consistent with the empirical improvements in Section~\ref{sec:results}.
+% \end{remark}
+
+
+
+% \textsc{Functional Stability and Head-of-Ranking Precision:}
+% The key insight underlying Corollary~\ref{cor:auprc_gain} is that smoother Bézier trajectories induce smaller functional deviations ($\delta_B < \delta_S$), which translates to fewer ranking inversions. In imbalanced settings where $\pi \ll 1$, the $1/\pi$ scaling amplifies this advantage: small reductions in score deviation yield substantial AUPRC improvements.
+
+% \textsc{Why AUPRC benefits more than AUROC:} While both metrics benefit from functional stability, AUPRC exhibits distinctive sensitivity to ranking location. AUROC depends only on total pairwise misordering, treating all inversions equally. However, AUPRC emphasizes precision at early recall—errors affecting top predictions cause disproportionately large performance drops.
+
+% In imbalanced settings with prevalence $\pi \ll 1$, this sensitivity becomes particularly relevant. High-confidence false positives at critical low-recall operating points cause substantial AUPRC degradation while leaving AUROC relatively unchanged. The proposed Bézier-based trajectory matching, by producing functionally stable paths (smaller $\delta_B$), generates fewer such critical errors, theoretically preserving precision at operating points most relevant for rare-event detection.
+
+% \textsc{Implications for trajectory matching design:} This functional stability analysis motivates the trajectory matching framework design. Standard approaches using noisy SGD reference paths may introduce functional instabilities that propagate to student models. The proposed Bézier surrogates from \eqref{eq:bez_curve} provide inherently more stable guidance, while the BTM objective in \eqref{eq:btm_loss} encourages students to follow both smoother parameter paths and functionally more reliable ones.
+
+% This theoretical framework predicts that the proposed method should maintain competitive AUROC performance while improving AUPRC, particularly in imbalanced classification scenarios where head-of-ranking precision is critical. The functional stability perspective provides the theoretical foundation for expecting such differential performance across ranking metrics. A more detailed analysis of functional stability and its connection to ranking inversions is provided in Appendix~\ref{app:func_stability}.
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{EXPERIMENTAL SETUP}
+% \label{sec:exp}
+
+% \textbf{DATASETS:} The proposed method is evaluated on three de-identified clinical datasets spanning both tabular and time-series modalities. Each dataset is framed as a binary classification task, with outcome prevalences reported below.
+
+% \begin{itemize}[noitemsep, topsep=0pt]
+    % \item \textsc{CURIAL}: A private COVID-19 triage dataset collected across three NHS Trusts---Oxford University Hospitals (OUH), Portsmouth University Hospitals (PUH), and Univer sity Hospitals Birmingham (UHB). Each record contains 27 routinely measured blood tests and vital signs; demographic variables are excluded to reduce bias. Data are partitioned into 56/25/19 train/validation/test splits, with COVID-19 prevalence matched across splits: OUH — 1.7\%, UHB — 0.8\%, PUH — 5.3\%.
+    % \item \textsc{eICU Collaborative Research Database}~\citep{pollard2018eicu}: A multi-centre critical care dataset comprising 49,305 adult ICU stays. Patients with at least 15 hourly observations and no missing values are retained. Each record is represented as a 402-dimensional vector capturing admission, ICU, and demographic variables (categorical features one-hot encoded). The dataset is split 70/15/15 into train/validation/test, with in-hospital mortality (IHM) prevalence of 9.1\% across partitions.
+    % \item \textsc{MIMIC-III}~\citep{johnson2016mimic}: A large single-centre ICU dataset from Beth Israel Deaconess Medical Center. 21,156 stays with complete 48-hour sequences across 60 curated physiological and laboratory features (after removing redundancies) are selected. Data are split 70/15/15, with a class-balanced training set. IHM prevalence is 13.5\% in validation and 11.5\% in test.
+% \end{itemize}
+
+% \textsc{Pre-processing:} Continuous features are z-score normalised using training statistics. Missing values (CURIAL only) are median-imputed. Training sets are used exclusively for condensation, validation sets for early stopping, and test sets held out for final evaluation.
+
+
+% \textbf{BASELINES}: We compare our method to five representative dataset condensation methods: minimising Maximum Mean Discrepancy DC (M3D)~\citep{zhang2024m3d}, MTT~\citep{cazenavette2023dataset}, TESLA~\citep{liu2023tesla}, FTD~\citep{du2023ftd}, and DATM~\citep{guo2024datm}. Together, these span both TM and distribution matching paradigms. We additionally include a \textit{Random} baseline (unoptimised real samples) and the \textit{Full Dataset} as performance lower and upper bounds, respectively. All methods are re-implemented or adapted for structured clinical data and the resulting condensed datasets are evaluated under a unified protocol for fair comparison.
+
+% \textbf{IMPLEMENTATION DETAILS}" We follow standard DC protocol, training class-balanced synthetic datasets at 50, 100, 200, and 500 \textit{ipc}. Synthetic sets are evaluated on a held-out test set by training randomly initialised networks using shared evaluation hyperparameters across all methods. Results are reported as mean ± standard deviation over 15 seeds. Given the class imbalance in our clinical tasks, we prioritise AUPRC over AUROC for its sensitivity to rare events.
+
+% During condensation, validation AUPRC is monitored for early stopping. For trajectory-matching methods, expert trajectories are generated using SGD (BTM, MTT, TESLA) or GSAM (FTD, DATM), with matching windows covering 10\% of training for tabular data and 20\% for time-series. When FTD underperformed MTT, we used SGD-based trajectories for DATM to ensure a fair comparison. All trajectory-matching methods use 80 inner-loop steps for tabular datasets and 30 for time-series datasets. Evaluation architectures are fixed across methods: a shallow MLP for tabular data and a temporal convolutional network (TCN) for time-series. Full network descriptions and hyperparameter settings are provided in the supplementary material.
+
+% To align with common practice in dataset condensation, we initialise synthetic inputs using real training examples. To mitigate potential information leakage, we also test an alternative approach where synthetic inputs are drawn from class-conditional Gaussian distributions, with the empirical means and variances of the training sets computed post-normalisation. Labels are fixed and unoptimised for all methods except TESLA, which requires soft labels. While we also evaluated soft label optimisation, we observed no consistent benefit, so fixed labels are used throughout.
+
+
+
+
+
+% CURIAL RESULTS Tab
+\begin{table*}[t]
+\centering
+\caption{Performance on CURIAL datasets across different \emph{ipc} levels. Best results at each \emph{ipc} are highlighted in \textcolor{blue}{blue} (ours) and \textcolor{red}{red} (baseline).}
+
+\label{tab:curial_results}
+
+% OUH
+\textbf{(a) Oxford University Hospitals (OUH)}\\[0.5ex]
+\begin{sc}
+\resizebox{0.85\linewidth}{!}{
+    \begin{tabular}{lccccBcccc}
+    \toprule
+    & \multicolumn{4}{cB}{\textbf{AUROC}} & \multicolumn{4}{c}{\textbf{AUPRC}} \\
+    \cmidrule(lr{0.5em}){2-5} \cmidrule(lr{0.5em}){6-9}
+    % \cline{2-9}
+    \textbf{Method} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} & 
+    \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+    \midrule
+    Random     & $0.835_{\pm 0.021}$ & $0.855_{\pm 0.007}$ & $0.869_{\pm 0.006}$ & $0.888_{\pm 0.004}$ 
+               & $0.158_{\pm 0.036}$ & $0.176_{\pm 0.029}$ & $0.219_{\pm 0.024}$ & $0.276_{\pm 0.031}$ \\
+    M3D        & $0.840_{\pm 0.004}$ & $0.862_{\pm 0.003}$ & $0.872_{\pm 0.003}$ & \bestOther{$0.893_{\pm 0.002}$} 
+               & $0.162_{\pm 0.015}$ & $0.190_{\pm 0.010}$ & $0.266_{\pm 0.010}$ & $0.290_{\pm 0.012}$ \\
+    MTT        & $0.824_{\pm 0.016}$ & $0.849_{\pm 0.011}$ & $0.855_{\pm 0.008}$ & $0.870_{\pm 0.005}$ 
+               & $0.356_{\pm 0.019}$ & $0.381_{\pm 0.019}$ & $0.405_{\pm 0.012}$ & $0.407_{\pm 0.007}$ \\
+    TESLA      & $0.839_{\pm 0.007}$ & $0.875_{\pm 0.002}$ & $0.874_{\pm 0.003}$ & $0.880_{\pm 0.002}$ 
+               & $0.169_{\pm 0.012}$ & $0.205_{\pm 0.009}$ & $0.202_{\pm 0.010}$ & $0.217_{\pm 0.011}$ \\
+    FTD        & $0.831_{\pm 0.014}$ & $0.847_{\pm 0.006}$ & $0.852_{\pm 0.005}$ & $0.860_{\pm 0.006}$ 
+               & $0.321_{\pm 0.031}$ & $0.382_{\pm 0.012}$ & $0.400_{\pm 0.009}$ & $0.400_{\pm 0.023}$ \\
+    DATM       & $0.829_{\pm 0.010}$ & $0.844_{\pm 0.007}$ & $0.851_{\pm 0.009}$ & $0.872_{\pm 0.009}$ 
+               & $0.338_{\pm 0.020}$ & $0.394_{\pm 0.009}$ & $0.414_{\pm 0.009}$ & $0.409_{\pm 0.004}$ \\
+    \rowcolor{btmgray}
+    BTM (Ours) & \bestOurs{$0.854_{\pm 0.012}$} & \bestOurs{$0.863_{\pm 0.009}$} & \bestOurs{$0.876_{\pm 0.00}$} & $0.888_{\pm 0.003}$ 
+           & \bestOurs{$0.394_{\pm 0.014}$} & \bestOurs{$0.396_{\pm 0.010}$} & \bestOurs{$0.427_{\pm 0.006}$} & \bestOurs{$0.436_{\pm 0.003}$} \\
+    \midrule
+    \emph{\textbf{Full Dataset}} & \multicolumn{4}{cB}{$\mathbf{0.901_{\pm 0.001}}$} & \multicolumn{4}{c}{$\mathbf{0.445_{\pm 0.004}}$} \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{sc}
+\par\vspace{3ex}
+
+% PUH
+\textbf{(b) Portsmouth University Hospitals (PUH)}\\[0.5ex]
+\begin{sc}
+\resizebox{0.85\linewidth}{!}{
+    \begin{tabular}{lccccBcccc}
+    \toprule
+    & \multicolumn{4}{cB}{\textbf{AUROC}} & \multicolumn{4}{c}{\textbf{AUPRC}} \\
+    \cmidrule(lr{0.5em}){2-5} \cmidrule(lr{0.5em}){6-9}
+    % \cline\cline{2-9}
+    \textbf{Method} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+    \midrule
+    Random     & $0.858_{\pm 0.006}$ & $0.867_{\pm 0.004}$ & $0.879_{\pm 0.004}$ & $0.893_{\pm 0.004}$
+               & $0.322_{\pm 0.025}$ & $0.347_{\pm 0.011}$ & $0.410_{\pm 0.029}$ & $0.473_{\pm 0.018}$ \\
+    M3D        & $0.863_{\pm 0.004}$ & $0.883_{\pm 0.003}$ & $0.888_{\pm 0.002}$ & $0.900_{\pm 0.001}$
+               & $0.348_{\pm 0.013}$ & $0.405_{\pm 0.011}$ & $0.416_{\pm 0.011}$ & $0.527_{\pm 0.011}$ \\
+    MTT        & $0.845_{\pm 0.009}$ & $0.871_{\pm 0.005}$ & $0.887_{\pm 0.005}$ & $0.895_{\pm 0.004}$
+               & $0.495_{\pm 0.013}$ & $0.517_{\pm 0.012}$ & $0.529_{\pm 0.013}$ & $0.544_{\pm 0.018}$ \\
+    TESLA      & $0.861_{\pm 0.006}$ & $0.861_{\pm 0.006}$ & $0.885_{\pm 0.004}$ & $0.893_{\pm 0.002}$
+               & $0.412_{\pm 0.019}$ & $0.385_{\pm 0.016}$ & $0.472_{\pm 0.009}$ & $0.483_{\pm 0.009}$ \\
+    FTD        & $0.845_{\pm 0.007}$ & $0.870_{\pm 0.007}$ & $0.885_{\pm 0.006}$ & $0.899_{\pm 0.003}$
+               & $0.499_{\pm 0.013}$ & $0.536_{\pm 0.010}$ & $0.550_{\pm 0.010}$ & $0.584_{\pm 0.007}$ \\
+    DATM       & $0.871_{\pm 0.005}$ & $0.876_{\pm 0.004}$ & $0.887_{\pm 0.004}$ & $0.889_{\pm 0.003}$
+               & $0.540_{\pm 0.007}$ & $0.555_{\pm 0.008}$ & $0.555_{\pm 0.008}$ & $0.579_{\pm 0.005}$ \\
+    \rowcolor{btmgray}
+    BTM (Ours) & \bestOurs{$0.881_{\pm 0.007}$} & \bestOurs{$0.895_{\pm 0.007}$} & \bestOurs{$0.902_{\pm 0.003}$} & \bestOurs{$0.905_{\pm 0.002}$}
+           & \bestOurs{$0.564_{\pm 0.011}$} & \bestOurs{$0.575_{\pm 0.008}$} & \bestOurs{$0.593_{\pm 0.009}$} & \bestOurs{$0.603_{\pm 0.007}$} \\
+    \midrule
+    \emph{\textbf{Full Dataset}} & \multicolumn{4}{cB}{$\mathbf{0.906_{\pm 0.002}}$} & \multicolumn{4}{c}{$\mathbf{0.610_{\pm 0.004}}$} \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{sc}
+\par\vspace{3ex}
+
+% UHB
+\textbf{(c) University Hospitals Birmingham (UHB)}\\[0.5ex]
+\begin{sc}
+\resizebox{0.85\linewidth}{!}{
+    \begin{tabular}{lccccBcccc}
+    \toprule
+    & \multicolumn{4}{cB}{\textbf{AUROC}} & \multicolumn{4}{c}{\textbf{AUPRC}} \\
+    \cmidrule(lr{0.5em}){2-5} \cmidrule(lr{0.5em}){6-9}
+    % \cline\cline{2-9}
+    \textbf{Method} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+    \midrule  
+    Random      & $0.847_{\pm 0.015}$ & \bestOther{$0.856_{\pm 0.010}$} & $0.876_{\pm 0.007}$ & $0.891_{\pm 0.005}$
+                & $0.089_{\pm 0.024}$ & $0.108_{\pm 0.018}$ & $0.126_{\pm 0.019}$ & $0.153_{\pm 0.015}$ \\
+    M3D         & \bestOther{$0.863_{\pm 0.005}$} & $0.853_{\pm 0.003}$ & $0.872_{\pm 0.004}$ & \bestOther{$0.891_{\pm 0.003}$}
+                & $0.107_{\pm 0.005}$ & $0.070_{\pm 0.006}$ & $0.107_{\pm 0.008}$ & $0.153_{\pm 0.006}$ \\
+    MTT         & $0.802_{\pm 0.008}$ & $0.847_{\pm 0.013}$ & $0.871_{\pm 0.013}$ & $0.884_{\pm 0.007}$
+                & $0.092_{\pm 0.065}$ & $0.228_{\pm 0.021}$ & $0.242_{\pm 0.016}$ & $0.234_{\pm 0.017}$ \\
+    TESLA       & $0.820_{\pm 0.001}$ & $0.850_{\pm 0.004}$ & $0.859_{\pm 0.004}$ & $0.873_{\pm 0.006}$
+                & $0.099_{\pm 0.001}$ & $0.079_{\pm 0.006}$ & $0.125_{\pm 0.008}$ & $0.131_{\pm 0.014}$ \\
+    FTD         & $0.830_{\pm 0.005}$ & $0.839_{\pm 0.010}$ & $0.847_{\pm 0.010}$ & $0.872_{\pm 0.010}$
+                & $0.122_{\pm 0.056}$ & $0.218_{\pm 0.013}$ & $0.216_{\pm 0.018}$ & $0.233_{\pm 0.012}$ \\
+    DATM        & $0.828_{\pm 0.028}$ & $0.832_{\pm 0.022}$ & $0.843_{\pm 0.015}$ & $0.870_{\pm 0.005}$
+                & $0.152_{\pm 0.019}$ & $0.176_{\pm 0.022}$ & $0.221_{\pm 0.017}$ & $0.237_{\pm 0.017}$ \\
+    \rowcolor{btmgray}
+    BTM (Ours) & $0.842_{\pm 0.011}$ & $0.836_{\pm 0.023}$ & \bestOurs{$0.884_{\pm 0.007}$} & $0.891_{\pm 0.006}$
+            & \bestOurs{$0.258_{\pm 0.006}$} & \bestOurs{$0.246_{\pm 0.013}$} & \bestOurs{$0.253_{\pm 0.011}$} & \bestOurs{$0.272_{\pm 0.006}$} \\
+    \midrule
+    \emph{\textbf{Full Dataset}} & \multicolumn{4}{cB}{$\mathbf{0.895_{\pm 0.005}}$} & \multicolumn{4}{c}{$\mathbf{0.284_{\pm 0.005}}$} \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{sc}
+
+\end{table*}
+
+
+
+
+
+\section{EXPERIMENTAL SETUP}
+\label{sec:exp}
+\textsc{DATASETS}: The proposed method is evaluated on three de-identified clinical datasets spanning tabular and time-series modalities, each framed as binary classification:
+\begin{itemize}[noitemsep, topsep=0pt]
+    % \item \textsc{eICU} \citep{pollard2018eicu}: 49,305 multi-centre ICU stays with 402-dimensional feature vectors (admission, ICU, demographic variables). In-hospital mortality prevalence: 9.1\%.
+    % \item \textsc{CURIAL}: Private COVID-19 triage dataset from three NHS Trusts with 27 blood tests and vital signs. COVID-19 prevalence: Oxford University Hospitals—1.7\%, University Hospitals Birmingham—0.8\%, Portsmouth University Hospitals—5.3\%.
+
+    \item \textsc{CURIAL} \citep{soltan2024scalable}: Anonymised EHR data from emergency departments at three NHS Trusts in the UK—Oxford (161,955 examples), Portsmouth (38,717), and Birmingham (95,236)—comprising demographics, blood tests, and vital signs, used for COVID-19 diagnosis.
+    
+    \item \textsc{eICU} \citep{pollard2018eicu}: 49,305 multi-centre ICU stays represented by 402 tabular features (admission, ICU, and demographic variables), used for in-hospital mortality prediction.  
+
+    % \item \textsc{MIMIC-III} \citep{johnson2016mimic}: 21,156 ICU stays with 48-hour sequences across 60 physiological features. In-hospital mortality prevalence: 13.5\% (validation), 11.5\% (test).
+    \item \textsc{MIMIC-III} \citep{johnson2016mimic}: This large critical care dataset is processed for in-hospital mortality prediction. We use 21,156 ICU stays represented as multivariate time-series with 48 time-steps and 60 physiological features.
+\end{itemize}
+
+Full dataset descriptions and preprocessing details are provided in Section \ref{sec:dataset_details} of the supplementary material.
+
+\textsc{BASELINES}: The proposed approach is compared against state-of-the-art dataset condensation methods spanning trajectory matching (MTT \citep{cazenavette2022dataset}, TESLA \citep{liu2023tesla}, FTD \citep{du2023ftd}, DATM \citep{guo2024datm}) and distribution matching (M3D \citep{zhang2024m3d}). Random selection and full dataset training serve as lower and upper bounds respectively.
+
+\textsc{EXPERIMENTAL PROTOCOL}: Synthetic datasets are condensed at 50, 100, 200, and 500 instances per class (\emph{ipc}). All methods are adapted to our clinical data modalities following their original implementations, with unoptimised labels throughout—hard labels for most methods, soft labels for TESLA. Following standard evaluation protocol, randomly initialised networks are trained from scratch on the condensed data and evaluated on held-out test sets. Performance is measured using area under the receiver operating characteristic curve (AUROC) and area under the precision-recall curve (AUPRC), with results reported as mean $\pm$ standard deviation over 10 random initialisations.
+
+Evaluation architectures remain fixed across all methods: a shallow multi-layer perceptron (MLP) \citep{rumelhart1986learning} for tabular data and a temporal convolutional network (TCN) \citep{bai2018empirical} for time-series. Consistent with prior work, the same architectures are employed for both condensation and evaluation (apart from ablation studies). Synthetic inputs are initialised from real examples unless otherwise specified. Complete implementation details, including parameter settings, are provided in Section~\ref{sec:implementation} of the supplementary material.
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RESULTS \& DISCUSSIONS}
+\label{sec:results}
+
+% \subsubsection{Comparison to Baselines}
+
+% \textsc{CURIAL Datasets:}
+% Across all three CURIAL hospital sites (Table~\ref{tab:curial_results}), BTM demonstrates consistent improvements over baseline methods as the number of instances per class increases, with the most substantial gains observed in AUPRC rather than AUROC. This differential performance highlights an important limitation of AUROC in severely imbalanced clinical settings: whilst BTM achieves modest AUROC improvements over baselines (typically 1-3 percentage points), the corresponding AUPRC gains are far more pronounced (5-15 percentage points across sites). This discrepancy is particularly evident at UHB, where despite the extreme class imbalance (0.8\% COVID-19 prevalence), M3D achieves competitive AUROC scores (0.863-0.891) yet produces substantially lower AUPRC (0.070-0.153) compared to BTM's AUPRC of 0.246-0.272. Similarly, at OUH (1.7\% prevalence), M3D's strong AUROC performance (0.840-0.893) masks poor ranking quality reflected in its AUPRC (0.162-0.290), demonstrating that AUROC can be misleading when evaluating model utility for clinical decision-making in imbalanced scenarios where correctly ranking positive cases is critical. TESLA exhibits notably poor performance, particularly at sites with high class imbalance such as UHB, where it achieves AUPRC scores of only 0.079-0.131. This observation aligns with prior findings that soft label assignment—TESLA's key innovation—provides limited benefit in binary classification tasks \citep{liu2023tesla}, as unlike multi-class settings where class labels encode complementary discriminative information, binary labels offer minimal additional signal for soft assignment. Moreover, TESLA's computational efficiency strategy of assigning soft labels using intermediate checkpoint models rather than converged models may introduce additional instability, particularly problematic when the minority class requires precise calibration for effective ranking performance.
+
+% \textsc{eICU and MIMIC-III Datasets:}
+% The in-hospital mortality prediction results on eICU (tabular, 9.1\% prevalence) and MIMIC-III (time-series, 11.5\% prevalence) demonstrate BTM's effectiveness across both data modalities (Figure~\ref{fig:ihm_res}). On eICU, BTM achieves the highest AUROC across all \emph{ipc} levels (0.858-0.871) and consistently outperforms baselines in AUPRC, reaching 0.504 at 500 \emph{ipc}—approaching the full dataset performance of 0.515 whilst using less than 3\% of the training data. The AUPRC improvements over the strongest baseline (DATM) are particularly notable: whilst DATM plateaus at 0.477, BTM continues improving with increased \emph{ipc}, demonstrating more effective preservation of minority class ranking quality. On MIMIC-III, BTM maintains competitive performance with DATM in AUROC (both achieving approximately 0.84) but demonstrates marginal AUPRC advantages at most \emph{ipc} levels, reaching 0.502 at 500 \emph{ipc} compared to DATM's 0.498. The smaller performance gap on MIMIC-III compared to eICU and CURIAL may reflect the time-series modality's inherent complexity and the relatively balanced class distribution (11.5\% prevalence), where the benefits of stable trajectory supervision are less pronounced than in more severely imbalanced scenarios. Across both datasets, M3D exhibits characteristically poor AUPRC performance (0.334-0.447 on eICU, 0.390-0.413 on MIMIC-III) despite respectable AUROC scores, reinforcing the pattern observed in CURIAL that distribution matching methods struggle to preserve fine-grained ranking information critical for clinical decision support. TESLA's performance remains consistently weak across both datasets, particularly evident in Figure~\ref{fig:ihm_res} where its AUPRC consistently ranks among the lowest methods, further supporting the hypothesis that soft label assignment provides limited value in binary classification tasks where calibrated confidence scores for the minority class are paramount.
+
+% \textsc{Key Observations:}
+% BTM attains near–full-dataset performance with over 99\% compression whilst storing only three checkpoints per trajectory, compared with dozens for other trajectory-based methods. Its Bézier surrogates provide consistent supervision across \emph{ipc} levels without additional tuning, in contrast to DATM's reliance on \emph{ipc}-specific alignment. These properties make BTM simpler to configure and more robust across diverse datasets, whilst the underperformance of TESLA and M3D illustrates the limitations of soft-label assignment and distribution matching in binary clinical settings.
+
+% \textsc{AUPRC Performance and Clinical Relevance:}
+% A consistent theme across datasets is that BTM's largest advantages emerge in AUPRC, particularly in highly imbalanced settings where ranking quality at high recall is clinically critical. On UHB (0.8\% prevalence), for instance, BTM delivers a 141\% relative AUPRC improvement over M3D at 50 \emph{ipc} (0.258 vs 0.107) despite similar AUROC, demonstrating that smoother surrogate trajectories translate into more stable precision–recall performance for rare-event detection. Similar patterns emerge at OUH, where BTM achieves 143\% improvement over M3D at 50 \emph{ipc} (0.394 vs 0.162), and on eICU (9.1\% prevalence), where BTM provides 39\% gains at 50 \emph{ipc} (0.466 vs 0.334). These findings underscore that AUROC can provide an overly optimistic assessment of model utility in imbalanced clinical tasks, whilst AUPRC more faithfully reflects downstream decision-making requirements. Distribution-matching methods like M3D achieve competitive AUROC yet fail to preserve precision under clinically relevant thresholds. A discussion of potential mechanisms linking trajectory smoothness to ranking performance is provided in Section~\ref{subsec:ranking_metrics}.
+% Might have to remove the final sentence if analysis is not rigorous enough
+
+% IHM RESULTS Fig
+\begin{figure}[t]
+    \centering
+    \captionsetup{skip=1pt}
+    \begin{subfigure}[t]{1.0\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/eicu_auprc_bars.pdf}
+        \subcaption{eICU}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{1.0\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/mimic-iii_auprc_bars.pdf}
+        \subcaption{MIMIC-III}
+    \end{subfigure}
+    \caption{
+  Performance comparison of different methods across \emph{ipc} levels on eICU and MIMIC-III datasets.
+    }
+    \label{fig:ihm_results}
+\end{figure}
+
+\subsection{Performance of Condensed Catasets}
+% \textsc{CURIAL Datasets:}
+% Across the three CURIAL sites (Table~\ref{tab:curial_results}), performance generally improves with more \emph{ipc}, with the largest and most reliable gains accruing to AUPRC rather than AUROC as \emph{ipc} increases. This pattern reflects that AUROC can be deceptive for binary clinical tasks under high class imbalance: for example, at UHB (0.8\% prevalence) and OUH (1.7\% prevalence), M3D attains competitive AUROC scores yet substantially lower AUPRC than BTM, indicating poor precision at clinically relevant recall levels despite seemingly strong discrimination. TESLA performs poorly across CURIAL—especially at UHB—consistent with prior findings that soft-label assignment is most beneficial in multi-class problems where class labels carry complementary structure; moreover, TESLA assigns soft labels using intermediate checkpoint models for computational efficiency, which introduces additional instability and degrades ranking performance in these imbalanced, binary settings.
+
+\textsc{CURIAL Datasets:}
+% Bézier-mode Trajectory Matching (BTM) consistently outperforms baseline methods across all three CURIAL sites (Table~\ref{tab:curial_results}), with performance improving as \emph{ipc} increases and larger gains in AUPRC than AUROC. This reflects that AUROC can be deceptive for imbalanced binary tasks: at UHB (0.8\% prevalence) and OUH (1.7\% prevalence), M3D attains competitive AUROC yet substantially lower AUPRC than BTM, indicating poor precision at clinically relevant recall levels. TESLA performs poorly across CURIAL—especially at UHB—consistent with soft-label assignment being most beneficial in multi-class settings; moreover, TESLA's use of intermediate checkpoints for soft label assignment introduces instability that degrades ranking performance in imbalanced binary tasks.
+BTM achieves consistently strong results across all three CURIAL sites (Table~\ref{tab:curial_results}), with performance improving as \emph{ipc} increases. Gains are particularly clear in AUPRC, where BTM outperforms all baselines at every site, while AUROC improvements are competitive and generally comparable across methods. At Oxford (OUH) and Portsmouth (PUH), BTM provides the best performance across both metrics, and at Birmingham (UHB) it delivers the largest AUPRC gains despite similar AUROC to strong baselines. In imbalanced prediction tasks, AUPRC provides a more informative evaluation than AUROC, as it directly reflects precision at clinically relevant recall levels. This is particularly important in CURIAL, where outcome prevalence is low—0.8\% at UHB, 1.7\% at OUH, and 5.3\% at PUH. Under these conditions, baselines such as M3D can achieve competitive AUROC yet still perform poorly in detecting positives, as reflected in their lower AUPRC. By contrast, BTM not only delivers consistent gains in AUPRC across all sites but also improves or maintains AUROC relative to strong baselines, highlighting its robustness for imbalanced clinical prediction tasks.
+
+\textsc{eICU and MIMIC-III Datasets:}
+On in-hospital mortality tasks (Figure~\ref{fig:ihm_results}), BTM achieves strong AUPRC gains on eICU and is effectively lossless on MIMIC-III at 500 \emph{ipc}. FTD performs poorly relative to MTT, highlighting that enforcing trajectory flatness is less effective than using smoother surrogates. Unlike DATM, BTM achieves comparable performance without requiring \emph{ipc}-specific difficulty alignment, offering a simpler alternative. Complete results including AUROC are in Section \ref{sec:add_res} of the supplementary material.
+
+
+% \textsc{Synthetic Data Compression Ratio:}  
+% On CURIAL, condensing each site to 500 \emph{ipc} reduces the synthetic datasets to around 1\% of their original size while still achieving performance close to the full dataset. On eICU, the synthetic dataset is only 2\% of the original (1,000 vs.\ 49,305) yet maintains near--full-dataset performance. On MIMIC-III, comparable performance is achieved already at 200 \emph{ipc}, where the synthetic dataset is again about 2\% of the original (400 vs.\ 21,156). Across all three settings, BTM demonstrates that extreme compression can be achieved without sacrificing noticeable predictive performance.
+
+\textsc{Synthetic Data Compression Ratio:}  
+On CURIAL, condensing to 500 \emph{ipc} reduces datasets to between 0.6\% (OUH) and 2.6\% (PUH) of their original size while achieving performance close to the full dataset. On eICU, the synthetic dataset is only 2\% of the original (1,000 vs.\ 49,305) yet maintains near--full--dataset performance. On MIMIC-III, comparable performance is achieved already at 200 \emph{ipc}, where the synthetic dataset is again about 2\% of the original (400 vs.\ 21,156). Across all three settings, BTM demonstrates that extreme compression can be achieved without sacrificing noticeable predictive performance.
+
+
+
+
+
+
+
+
+% \textsc{eICU and MIMIC-III Datasets:}
+% On the in-hospital mortality tasks (Figure~\ref{fig:ihm_results}), BTM achieves the strongest AUPRC gains on eICU, steadily approaching full-data performance as \emph{ipc} increases, whilst on MIMIC-III the method is effectively lossless at high \emph{ipc}, with both BTM and DATM converging to the full-dataset AUROC/AUPRC. FTD performs poorly relative to MTT despite its flatness objective, highlighting that enforcing trajectory flatness is less effective than using smoother surrogates; accordingly, we used standard SGD trajectories for DATM (same as MTT) on MIMIC-III rather than flat trajectories. Unlike DATM, however, BTM achieves the same performance gains without requiring DATM's \emph{ipc}-specific difficulty alignment curriculum, offering a more stable and configuration-free alternative. Complete AUROC and AUPRC results for both datasets are provided in Section~\ref{sec:add_res} of the supplementary material.
+
+
+
+
+
+
+% BTM attains near-full-dataset performance with over 99\% compression whilst storing only three checkpoints per trajectory, compared with dozens for other trajectory-based methods. The method's largest advantages emerge in AUPRC, particularly in highly imbalanced settings: BTM achieves 141\% AUPRC improvement over M3D at UHB (50 \emph{ipc}), 143\% at OUH, and 39\% on eICU, despite comparable AUROC scores. A discussion of potential mechanisms linking trajectory smoothness to ranking performance is provided in Section~\ref{subsec:ranking_metrics}.
+
+
+
+% \begin{table}[t]
+% \centering
+% \caption{Cross-architecture generalisation at 500 \emph{ipc}. Synthetic data distilled with one architecture (grey) transfer to unseen architectures. (a) eICU: MLP depth/width variants. (b) MIMIC-III: TCN/LSTM transfer. Architecture details in Section~\ref{sec:impl_details}.}
+% \label{tab:crossarch}
+
+% \textbf{(a) eICU}\\[0.5ex]
+% \begin{small}
+% \begin{sc}
+% \resizebox{0.7\linewidth}{!}{
+%     \begin{tabular}{lcc}
+%     \toprule
+%     \textbf{Network} & \textbf{AUROC} & \textbf{AUPRC}\\
+%     \midrule
+%     MLP-1      & $0.871_{\pm0.001}$ & $0.504_{\pm0.001}$ \\
+%     MLP-2      & $0.871_{\pm0.001}$ & $0.501_{\pm0.002}$ \\
+%     MLP-3      & $0.872_{\pm0.001}$ & $0.505_{\pm0.001}$ \\
+%     MLP-4      & $0.873_{\pm0.002}$ & $0.506_{\pm0.002}$ \\
+%     MLP-5      & $0.871_{\pm0.002}$ & $0.501_{\pm0.001}$ \\
+%     MLP-6      & $0.867_{\pm0.002}$ & $0.488_{\pm0.001}$ \\
+%     \rowcolor{btmgray}
+%     \emph{MLP} & $\mathbf{0.874}_{\pm0.002}$ & $\mathbf{0.504}_{\pm0.001}$ \\
+%     \bottomrule
+%     \end{tabular}
+% }
+% \end{sc}
+% \end{small}
+% \par\vspace{3ex}
+
+% \textbf{(b) MIMIC-III}\\[0.5ex]
+% \begin{sc}
+% \resizebox{0.6\linewidth}{!}{
+%     \begin{tabular}{lcc}
+%     \toprule
+%     \textbf{Network} & \textbf{AUROC} & \textbf{AUPRC}\\
+%     \midrule
+%     LSTM-1     & $0.810_{\pm0.003}$ & $0.440_{\pm0.006}$ \\
+%     LSTM-2     & $0.819_{\pm0.004}$ & $0.450_{\pm0.008}$ \\
+%     TCN-1      & $0.835_{\pm0.002}$ & $0.491_{\pm0.005}$ \\
+%     TCN-2      & $0.831_{\pm0.002}$ & $0.487_{\pm0.003}$ \\
+%     \rowcolor{btmgray}
+%     \emph{TCN} & $\mathbf{0.840}_{\pm0.001}$ & $\mathbf{0.502}_{\pm0.003}$ \\
+%     \bottomrule
+%     \end{tabular}
+% }
+% \end{sc}
+
+% \end{table}
+
+\begin{table}[t]
+\centering
+\caption{Cross-architecture generalisation at 500 \emph{ipc}. Synthetic data condensed with one architecture (grey) is evaluated on unseen architectures: (a) eICU with MLP depth/width variants, (b) MIMIC-III with TCN/LSTM transfer. See Section~\ref{subsec:architectures} of the supplementary material for architecture details.}
+\label{tab:crossarch}
+
+\begin{minipage}{0.48\linewidth}
+\centering
+\textbf{(a) eICU}\\[0.5ex]
+\begin{small}
+\begin{sc}
+\resizebox{\linewidth}{!}{
+    \begin{tabular}{lcc}
+    \toprule
+    \textbf{Network} & \textbf{AUROC} & \textbf{AUPRC}\\
+    \midrule
+    MLP-1      & $0.871_{\pm0.001}$ & $0.504_{\pm0.001}$ \\
+    MLP-2      & $0.873_{\pm0.002}$ & $0.506_{\pm0.002}$ \\
+    MLP-3      & $0.871_{\pm0.002}$ & $0.501_{\pm0.001}$ \\
+    MLP-4      & $0.867_{\pm0.002}$ & $0.488_{\pm0.001}$ \\
+    \rowcolor{btmgray}
+    \emph{MLP} & $\mathbf{0.874}_{\pm0.002}$ & $\mathbf{0.504}_{\pm0.001}$ \\
+    \bottomrule
+    \end{tabular}
+}
+\end{sc}
+\end{small}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+\centering
+\textbf{(b) MIMIC-III}\\[0.5ex]
+\begin{small}
+\begin{sc}
+\resizebox{\linewidth}{!}{
+    \begin{tabular}{lcc}
+    \toprule
+    \textbf{Network} & \textbf{AUROC} & \textbf{AUPRC}\\
+    \midrule
+    LSTM-1     & $0.810_{\pm0.003}$ & $0.440_{\pm0.006}$ \\
+    LSTM-2     & $0.819_{\pm0.004}$ & $0.450_{\pm0.008}$ \\
+    TCN-1      & $0.835_{\pm0.002}$ & $0.491_{\pm0.005}$ \\
+    TCN-2      & $0.831_{\pm0.002}$ & $0.487_{\pm0.003}$ \\
+    \rowcolor{btmgray}
+    \emph{TCN} & $\mathbf{0.840}_{\pm0.001}$ & $\mathbf{0.502}_{\pm0.003}$ \\
+    \bottomrule
+    \end{tabular}
+}
+\end{sc}
+\end{small}
+\end{minipage}
+
+\end{table}
+
+
+
+\subsection{Cross-Architecture Generalisation} 
+A key question for DC is whether synthetic data condensed with one model architecture can generalise to others, avoiding the need for repeated re-condensation. Table~\ref{tab:crossarch} evaluates this transferability at 500 \emph{ipc}. On eICU, synthetic data condensed with a 1-layer MLP transfers robustly across MLP variants of different depths and widths, with minimal variation in AUROC and AUPRC. On MIMIC-III, synthetic data condensed with a TCN generalises well to other TCNs and transfers competitively to LSTMs despite their fundamentally different temporal processing mechanisms, showing only modest degradation. Performance remains stable both within and across architecture families, demonstrating that BTM produces architecture-agnostic synthetic data suitable for deployment without re-condensation.
+
+
+
+% \begin{table}[t]
+% \centering
+% \caption{Cross-architecture generalisation on eICU and MIMIC-III at 500 \emph{ipc}. Synthetic data condensed with one architecture (grey columns) transfer effectively to alternative unseen architectures. (a) eICU: MLP variants with different depths and widths. (b) MIMIC-III: Transfer between TCN and LSTM architectures with distinct temporal processing mechanisms. Performance remains stable across architectures, demonstrating that BTM captures task structure rather than architecture-specific inductive biases.}
+% \label{tab:crossarch}
+% \begin{sc}
+% \resizebox{0.98\linewidth}{!}{
+%     \begin{tabular}{l|ccccccc|ccccc}
+%     \toprule
+%     \multicolumn{1}{c}{} & \multicolumn{7}{c|}{\textbf{(a) eICU}} & \multicolumn{5}{c}{\textbf{(b) MIMIC-III}} \\
+%     \cmidrule(lr){2-8} \cmidrule(lr){9-13}
+%     \multicolumn{1}{c}{} & \textbf{MLP-1} & \textbf{MLP-2} & \textbf{MLP-3} & \textbf{MLP-4} & \textbf{MLP-5} & \textbf{MLP-6} & \textbf{\emph{MLP}} & \textbf{LSTM-1} & \textbf{LSTM-2} & \textbf{TCN-1} & \textbf{TCN-2} & \textbf{\emph{TCN}} \\
+%     \midrule
+%     \textbf{AUROC} & $0.871{\pm0.001}$ & $0.871{\pm0.001}$ & $0.872{\pm0.001}$ & $0.873{\pm0.002}$ & $0.871{\pm0.002}$ & $0.867{\pm0.002}$ & \cellcolor{btmgray}$\mathbf{0.874}{\pm0.002}$ & $0.810{\pm0.003}$ & $0.819{\pm0.0004}$ & $0.835{\pm0.002}$ & $0.831{\pm0.002}$ & \cellcolor{btmgray}$\mathbf{0.840}{\pm0.001}$ \\
+%     % \cmidrule(lr){2-13} 
+%     \textbf{AUPRC} & $0.504{\pm0.001}$ & $0.501{\pm0.002}$ & $0.505{\pm0.001}$ & $0.506{\pm0.002}$ & $0.501{\pm0.001}$ & $0.488{\pm0.001}$ & \cellcolor{btmgray}$\mathbf{0.504}{\pm0.001}$ & $0.440{\pm0.006}$ & $0.450{\pm0.008}$ & $0.491{\pm0.005}$ & $0.487{\pm0.003}$ & \cellcolor{btmgray}$\mathbf{0.502}{\pm0.003}$ \\
+%     \bottomrule
+%     \end{tabular}
+%     }
+% \end{sc}
+% \end{table}
+
+
+
+
+% \subsection{Storage Efficiency} 
+% Figure~\ref{fig:storage_cost} highlights the storage efficiency of BTM across all clinical datasets. Reduction factors depend on model architecture and trajectory length: tabular models (CURIAL, eICU) achieve around 33$\times$ savings, while the larger TCN architecture in MIMIC-III yields about 20$\times$ savings. These reductions substantially lower memory demands, allowing more expert trajectories to be retained and enabling dataset condensation in resource-constrained clinical settings where trajectory storage would otherwise be prohibitive.
+
+\subsection{Storage Efficiency}
+Figure~\ref{fig:storage_cost} highlights the storage efficiency of BTM across all clinical datasets. Reduction factors depend on trajectory length: storing 100 checkpoints per trajectory yields approximately 33$\times$ savings for CURIAL and eICU, while 60 checkpoints yield about 20$\times$ savings for MIMIC-III. These reductions substantially lower memory demands, allowing more expert trajectories to be retained and enabling DC in resource-constrained clinical settings where trajectory storage would otherwise be prohibitive.
+
+\begin{figure}
+\centering
+    \includegraphics[width=.9\linewidth]{figs/storage_cost_pointplot.pdf}
+    \caption{Trajectory storage requirements across clinical datasets. SGD trajectories require 33$\times$ (eICU, CURIAL) and 20$\times$ (MIMIC-III) more storage than Bézier surrogates, which store only initial, final, and control checkpoints.}
+\label{fig:storage_cost}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Ablation Studies}
+
+% \textsc{Inner Loop Steps:} Unlike standard trajectory matching methods where the number of training steps $N$ directly corresponds to epochs along stored SGD trajectories, Bézier surrogates parameterise continuous paths via interpolation parameter $t \in [0,1]$. The relationship between trajectory segment length (determined by $t_{\text{start}}$ and $t_{\text{end}}$) and the appropriate number of student training steps $N$ is therefore not immediately clear. Figure~\ref{fig:inner_loop} ablates the number of inner-loop steps used during synthetic dataset optimisation across three datasets at 200 \emph{ipc}. Whilst prior trajectory-matching methods typically require $N \ge 50$ steps \cite{guo2024datm}, BTM maintains strong performance even at $N=30$ steps, with minimal degradation in AUROC. On MIMIC-III, performance actually peaks at $N=50$ before declining slightly at higher values, suggesting that excessively long student trajectories may introduce unnecessary variance. This reduced inner-loop requirement improves computational efficiency and demonstrates that Bézier surrogates provide more stable supervision signals that require fewer gradient steps to match effectively.
+
+
+% \textsc{Inner Loop Steps:} In standard trajectory matching, training steps $N$ can be selected by considering the number of expert optimisation epochs along SGD trajectory segments, $M$. With Bézier surrogates, however, the continuous parameterisation via $t \in [0,1]$ means segment length ($t_{\text{start}}$, $t_{\text{end}}$) does not directly correspond to discrete optimisation steps, necessitating empirical investigation. Figure~\ref{fig:inner_loop} ablates inner-loop steps at 200 \emph{ipc}. Whilst prior methods typically require $N \ge 40$ \citep{guo2024datm}, BTM maintains strong performance even at $N=30$ across both AUROC and AUPRC, demonstrating that Bézier surrogates provide stable supervision requiring fewer gradient steps to match effectively.
+
+\textsc{Inner Loop Steps:} The inner loop controls the number of gradient updates the student model takes when trained on the synthetic data before matching against the expert trajectory. 
+
+\begin{figure}[H]
+\centering
+    \includegraphics[width=1\linewidth]{figs/inner_loop.pdf}
+    \caption{Impact of inner-loop steps $N$ on AUROC performance at 200 \emph{ipc}. BTM achieves strong performance with only 30 steps, reducing computational overhead. Similar trends observed for AUPRC.}
+\label{fig:inner_loop}
+\end{figure}
+
+In standard TM, this is tied to the expert optimisation epochs M, but with Bézier surrogates the continuous parameterisation $t \in [0,1]$ decouples segment length ($t_{\text{start}}$, $t_{\text{end}}$) from discrete optimisation steps. As a result, the optimal number of steps must be determined empirically. Figure \ref{fig:inner_loop} ablates $N$ at 200 \emph{ipc}. While prior methods typically require $N \ge 40$ \citep{guo2024datm}, BTM sustains strong AUROC and AUPRC even at $N = 30$, demonstrating that Bézier surrogates provide stable supervision, enabling the student to train effectively with few gradient steps.
+
+
+
+
+
+
+
+
+
+\textsc{Initialisation:} Table~\ref{tab:init} compares real and random initialisation on eICU. Real initialisation seeds synthetic inputs from real samples; random initialisation samples from class-conditional Gaussians. Performance is comparable, with real initialisation providing modest improvements at 500 \emph{ipc}. Critically, random initialisation maintains competitive performance while eliminating direct dependence on real samples, offering stronger privacy guarantees. Combined with differential privacy \citep{dwork2006calibrating}, this enables secure sharing of condensed clinical datasets to democratise healthcare AI development without compromising patient confidentiality.
+
+\begin{table}
+\centering
+\caption{Initialisation strategy comparison on eICU. Random initialisation remains competitive while providing stronger privacy guarantees.}
+\label{tab:init}
+\begin{sc}
+\resizebox{1.0\linewidth}{!}{
+    \begin{tabular}{ll|cccc}
+    \toprule
+    & \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Init.}}} & \multicolumn{4}{c}{\textbf{IPC}} \\
+    \cmidrule(lr){3-6}
+    & \multicolumn{1}{c}{} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+    \midrule
+    \multirow{2}{*}{\textbf{AUROC}}
+        & Real   & $0.866_{\pm0.001}$ & $0.856_{\pm0.004}$ & $0.858_{\pm0.003}$ & $0.871_{\pm0.001}$ \\
+        & Random & $0.852_{\pm0.009}$ & $0.858_{\pm0.004}$ & $0.853_{\pm0.004}$ & $0.862_{\pm0.002}$ \\
+    \cmidrule(lr){2-6}
+    \multirow{2}{*}{\textbf{AUPRC}}
+        & Real   & $0.474_{\pm0.005}$ & $0.479_{\pm0.008}$ & $0.473_{\pm0.007}$ & $0.504_{\pm0.003}$ \\
+        & Random & $0.463_{\pm0.015}$ & $0.474_{\pm0.007}$ & $0.475_{\pm0.008}$ & $0.499_{\pm0.004}$ \\
+    \bottomrule
+    \end{tabular}
+}
+\end{sc}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CONCLUSION}
+% This work introduces mode connectivity–based trajectory surrogates to overcome key limitations of trajectory matching in dataset condensation. By replacing unstable, storage-intensive SGD trajectories with smooth Bézier paths, we generate condensed clinical datasets that enable effective downstream model development while requiring only three checkpoints per trajectory. Our theoretical analysis shows that optimised Bézier curves preserve the functional properties of SGD trajectories while reducing curvature and eliminating stochastic noise. Empirically, across five clinical datasets, the proposed approach consistently matches or outperforms state-of-the-art condensation methods, with especially strong gains in AUPRC for imbalanced classification tasks.
+
+% The framework achieves near–full-dataset performance with up to 99\% compression and order-of-magnitude reductions in storage. Cross-architecture experiments confirm transferability without re-condensation, and random initialisation enhances privacy guarantees. A current limitation is that we have not incorporated differential privacy into our framework, though this can be readily integrated to provide formal privacy guarantees on the condensed datasets. Overall, this framework advances the practical viability of dataset condensation in healthcare, enabling privacy-preserving model development without sacrificing downstream performance.
+
+This work introduces mode connectivity–based trajectory surrogates to overcome key limitations of trajectory matching in dataset condensation. By replacing unstable, storage-intensive SGD trajectories with smooth Bézier paths, we generate condensed clinical datasets that enable effective model development while requiring only three checkpoints per trajectory. Our theoretical analysis shows optimised Bézier curves preserve SGD functional properties while reducing curvature and eliminating stochastic noise. Empirically, across five clinical datasets, our approach consistently matches or outperforms state-of-the-art methods, with particularly strong AUPRC gains for imbalanced tasks.
+
+The framework achieves near–full-dataset performance with up to 99\% compression and order-of-magnitude storage reductions. Cross-architecture experiments confirm transferability without re-condensation, and random initialisation enhances privacy guarantees. A current limitation is that we have not incorporated differential privacy into our framework, though this can be readily integrated to provide formal privacy guarantees on the condensed datasets Overall, this framework advances the practical viability of dataset condensation in healthcare, enabling privacy-preserving model development without sacrificing performance.
+
+
+
+
+
+
+
+
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection*{Code}
+% The implementation of the proposed method is avail-
+% able at ...
+
+
+
+
+
+
+
+
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection*{Acknowledgements}
+% Pafue C. Nganjimi is supported by the EPSRC Centre for Doctoral Training in Health Data Science (EP/S02428X/1). 
+
+% David A. Clifton is supported by the Pandemic Sciences Institute at the University of Oxford; the National Institute for Health Research (NIHR) Oxford Biomedical Research Center (BRC); an NIHR Research Professorship; a Royal Academy of Engineering Research Chair; the Wellcome Trust; the UKRI; and the InnoHK Hong Kong Center for Center for Cerebrocardiovascular Engineering (COCHE).
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\itemindent}{-\leftmargin}
+\makeatletter
+\renewcommand{\@biblabel}[1]{}
+\makeatother
+
+
+\bibliography{ref} 
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Checklist}
+
+\begin{enumerate}
+
+  \item For all models and algorithms presented, check if you include:
+  \begin{enumerate}
+    \item A clear description of the mathematical setting, assumptions, algorithm, and/or model. [Yes]
+    \item An analysis of the properties and complexity (time, space, sample size) of any algorithm. [Yes]
+    \item (Optional) Anonymized source code, with specification of all dependencies, including external libraries. 
+  \end{enumerate}
+
+  \item For any theoretical claim, check if you include:
+  \begin{enumerate}
+    \item Statements of the full set of assumptions of all theoretical results. [Yes]
+    \item Complete proofs of all theoretical results. [Yes]
+    \item Clear explanations of any assumptions. [Yes]     
+  \end{enumerate}
+
+  \item For all figures and tables that present empirical results, check if you include:
+  \begin{enumerate}
+    \item The code, data, and instructions needed to reproduce the main experimental results (either in the supplemental material or as a URL). [Yes]
+    \item All the training details (e.g., data splits, hyperparameters, how they were chosen). [Yes]
+    \item A clear definition of the specific measure or statistics and error bars (e.g., with respect to the random seed after running experiments multiple times). [Yes]
+    \item A description of the computing infrastructure used. (e.g., type of GPUs, internal cluster, or cloud provider). [Yes]
+  \end{enumerate}
+
+  \item If you are using existing assets (e.g., code, data, models) or curating/releasing new assets, check if you include:
+  \begin{enumerate}
+    \item Citations of the creator If your work uses existing assets. [Yes]
+    \item The license information of the assets, if applicable. [Not Applicable]
+    \item New assets either in the supplemental material or as a URL, if applicable. [Yes]
+    \item Information about consent from data providers/curators. [Not Applicable]
+    \item Discussion of sensible content if applicable, e.g., personally identifiable information or offensive content. [Not Applicable]
+  \end{enumerate}
+
+  \item If you used crowdsourcing or conducted research with human subjects, check if you include:
+  \begin{enumerate}
+    \item The full text of instructions given to participants and screenshots. [Not Applicable]
+    \item Descriptions of potential participant risks, with links to Institutional Review Board (IRB) approvals if applicable. [Not Applicable]
+    \item The estimated hourly wage paid to participants and the total amount spent on participant compensation. [Not Applicable]
+  \end{enumerate}
+
+\end{enumerate}
+
+
+
+\clearpage
+\appendix
+\thispagestyle{empty}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Supplementary material: To improve readability, you must use a single-column format for the supplementary material.
+\onecolumn
+\aistatstitle{Supplementary Material}
+
+% Reset counters
+\setcounter{section}{0}
+\setcounter{theorem}{0}
+\setcounter{equation}{0}
+\setcounter{table}{0}
+\setcounter{lemma}{0}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{PIPELINE OF PROPOSED METHOD}
+\label{sec:btm-algo}
+
+\begin{algorithm}[H]
+\caption{Dataset Condensation Using Trajectory Surrogates}
+\label{alg:condensation}
+\begin{algorithmic}[1]
+\REQUIRE Collection of $K$ optimised Bézier surrogates $\{\Phi_{\boldsymbol{\phi}^\star}^{(k)}\}_{k=1}^K$, synthetic dataset $\tilde{\mathcal{D}} = \{(\boldsymbol{x}_i, \boldsymbol{y}_i)\}_{i=1}^{|\tilde{\mathcal{D}}|}$, number of classes $C$, input dimension $d$, student learning rate $\eta_s$, meta learning rate $\eta_x$, number of student steps $N$, batch size $b$, maximum iterations $T_{\max}$
+\ENSURE Optimised synthetic dataset $\tilde{\mathcal{D}}^\star$
+\STATE Stack synthetic inputs into matrix $\tilde{\mathbf{X}} \in \mathbb{R}^{|\tilde{\mathcal{D}}| \times d}$
+\STATE Stack synthetic labels into tensor $\tilde{\mathbf{Y}} \in \mathbb{R}^{|\tilde{\mathcal{D}}| \times C}$
+\FOR{$t = 1$ to $T_{\max}$}
+    \STATE Sample surrogate index $k \sim \mathcal{U}\{1, \ldots, K\}$
+    \STATE Sample $t_{\text{start}}, t_{\text{end}} \sim \mathcal{U}(0,1)$ such that $t_{\text{start}} < t_{\text{end}}$
+    \STATE $\boldsymbol{\theta}_{\text{start}} \leftarrow \Phi_{\boldsymbol{\phi}^\star}^{(k)}(t_{\text{start}})$ \COMMENT{Start position on surrogate}
+    \STATE $\boldsymbol{\theta}_{\text{target}} \leftarrow \Phi_{\boldsymbol{\phi}^\star}^{(k)}(t_{\text{end}})$ \COMMENT{Target position on surrogate}
+    \STATE $\tilde{\boldsymbol{\theta}}_0 \leftarrow \boldsymbol{\theta}_{\text{start}}$ \COMMENT{Initialise student model}
+    \FOR{$i = 0$ to $N-1$}
+        \STATE Sample mini-batch $B_i = \{(\boldsymbol{x}_j, \boldsymbol{y}_j)\}_{j=1}^b \subset \tilde{\mathcal{D}}$
+        \STATE $\tilde{\boldsymbol{\theta}}_{i+1} \leftarrow \tilde{\boldsymbol{\theta}}_i - \eta_s \nabla_{\tilde{\boldsymbol{\theta}}_i} \!\left[\frac{1}{b} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in B_i} \ell(f_{\tilde{\boldsymbol{\theta}}_i}(\boldsymbol{x}), \boldsymbol{y})\right]$
+    \ENDFOR
+    \STATE $\mathcal{L}_{\text{BTM}} \leftarrow \frac{\|\tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}}\|_2^2}{\|\boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}}\|_2^2}$ \COMMENT{Normalised matching loss}
+    \STATE $\boldsymbol{g}_L \leftarrow \nabla_{\tilde{\boldsymbol{\theta}}_N} \mathcal{L}_{\text{BTM}} = \frac{2(\tilde{\boldsymbol{\theta}}_N - \boldsymbol{\theta}_{\text{target}})}{\|\boldsymbol{\theta}_{\text{start}} - \boldsymbol{\theta}_{\text{target}}\|_2^2}$ \COMMENT{Gradient signal}
+    \STATE Compute $\nabla_{\tilde{\mathbf{X}}}\mathcal{L}_{\text{BTM}} \approx -\eta_s \sum_{i=0}^{N-1} \frac{1}{|B_i|} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in B_i} \nabla_{\tilde{\mathbf{X}}}\,\Big\langle \nabla_{\tilde{\boldsymbol{\theta}}_i} \ell\!\big(f_{\tilde{\boldsymbol{\theta}}_i}(\boldsymbol{x}), \boldsymbol{y}\big), \boldsymbol{g}_L \Big\rangle$
+    \STATE $\tilde{\mathbf{X}} \leftarrow \tilde{\mathbf{X}} - \eta_x\,\nabla_{\tilde{\mathbf{X}}}\mathcal{L}_{\text{BTM}}$ \COMMENT{Update synthetic inputs}
+\ENDFOR
+\STATE \textbf{return} $\tilde{\mathcal{D}}^\star = \tilde{\mathcal{D}}$
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{PROOF OF THEOREM~\ref{thm:bez-sur}}
+\label{sec:thm1-proof}
+
+This section provides the complete proof of Theorem~\ref{thm:bez-sur} presented in Section~\ref{subsec:bez-theory} of the main paper, establishing that optimised Bézier curves serve as effective surrogates for SGD trajectories in dataset condensation. 
+
+\begin{proof}
+    \textbf{(i) Average loss along the Bézier path is near-optimal.}  
+    Since $\mathcal{L}$ is $\beta$-smooth, we have:
+    \begin{equation}
+        \mathcal{L}(\Phi_{\boldsymbol{\phi}^\star}(t)) \le \mathcal{L}(\gamma(t)) + \frac{\beta}{2} \|\Phi_{\boldsymbol{\phi}^\star}(t) - \gamma(t)\|^2.
+    \end{equation}
+    
+    From Bézier interpolation theory \citep{pottmann2001}, the deviation between the Bézier curve and the piecewise-linear trajectory at parameter $t$ satisfies:
+    \begin{equation}
+        \|\Phi_{\boldsymbol{\phi}^\star}(t) - \gamma(t)\| \leq \frac{t(1 - t)}{2} \cdot \sup_u \|\Phi_{\boldsymbol{\phi}^\star}''(u) - \gamma''(u)\|.
+    \end{equation}
+    
+    Since the Bézier curve has constant curvature $\|\Phi_{\boldsymbol{\phi}^\star}''(u)\| = \kappa$ (not dependent on $u$) and the SGD trajectory $\gamma''(u)$ is noisy, we conservatively bound the supremum difference by $\kappa$. Also, since $t(1-t)$ attains its maximum value $\frac{1}{4}$ at $t=\frac{1}{2}$, we have
+    \begin{equation}
+        0 \;\le\; t(1-t) \;\le\; \frac{1}{4}
+        \qquad\Longrightarrow\qquad
+        \|\Phi_{\boldsymbol{\phi}^\star}(t)-\gamma(t)\|
+        \;\le\;
+        \frac{t(1-t)}{2}\,\kappa.
+    \end{equation}
+    
+    \noindent Squaring the deviation gives
+    \begin{equation}
+        \|\Phi_{\boldsymbol{\phi}^\star}(t)-\gamma(t)\|^{2}
+        \;\le\;
+        \frac{t^{2}(1-t)^{2}\,\kappa^{2}}{4}.
+    \end{equation}
+    
+    \noindent
+    Substituting this bound into the $\beta$-smoothness inequality yields
+    \begin{equation}
+        \mathcal{L}(\Phi_{\boldsymbol{\phi}^\star}(t))
+        \;\le\;
+        \mathcal{L}(\gamma(t))
+        +\frac{\beta}{2}\,
+        \frac{t^{2}(1-t)^{2}\,\kappa^{2}}{4}
+        \;=\;
+        \mathcal{L}(\gamma(t))
+        +\frac{\beta\,\kappa^{2}}{8}\,t^{2}(1-t)^{2}.
+    \end{equation}
+    
+    \noindent%
+    Finally, integrate over $t\in[0,1]$:
+    \begin{equation}
+        \int_{0}^{1}\mathcal{L}(\Phi_{\boldsymbol{\phi}^\star}(t))\,dt
+        \;\le\;
+        \int_{0}^{1}\mathcal{L}(\gamma(t))\,dt
+        +
+        \frac{\beta\,\kappa^{2}}{8}
+        \int_{0}^{1} t^{2}(1-t)^{2}\,dt.
+    \end{equation}
+    
+    A direct calculation shows
+    $\displaystyle \int_{0}^{1} t^{2}(1-t)^{2}\,dt = \frac{1}{30}$, so
+    \begin{equation}
+        \int_{0}^{1}\mathcal{L}(\Phi_{\boldsymbol{\phi}^\star}(t))\,dt
+        \;\le\;
+        \int_{0}^{1}\mathcal{L}(\gamma(t))\,dt
+        +\frac{\beta\,\kappa^{2}}{240}.
+    \end{equation}
+    This completes the proof of part~(i).
+    
+    
+    \medskip
+    \medskip
+    \noindent \textbf{(ii) Bézier path has lower and noise-free curvature compared to SGD trajectory.}  
+    The quadratic Bézier curve $\Phi_{\boldsymbol{\phi}^\star}(t)$ has constant second derivative given by:
+    \begin{equation}
+        \Phi_{\boldsymbol{\phi}^\star}''(t) = 2(\boldsymbol{\theta}_0 - 2\boldsymbol{\phi}^\star + \boldsymbol{\theta}_T),
+    \end{equation}
+    
+    so the curvature magnitude along the Bézier path is
+    \begin{equation}
+        \sup_{t \in [0,1]} \|\Phi_{\boldsymbol{\phi}^\star}''(t)\| = \kappa.
+    \end{equation}
+    
+    \noindent To approximate curvature along the discrete SGD trajectory, we adopt the standard second-order finite difference:
+    \begin{equation}
+        \Delta_k := \boldsymbol{\theta}_{k+1} - 2\boldsymbol{\theta}_k + \boldsymbol{\theta}_{k-1}.
+    \end{equation}
+    
+    \noindent Using the SGD update rule:
+    \begin{equation}
+        \boldsymbol{\theta}_{k+1} = \boldsymbol{\theta}_k - \eta_k \left( \nabla \mathcal{L}(\boldsymbol{\theta}_k) + \boldsymbol{\xi}_k \right),
+    \end{equation}
+    
+    where $\eta_k$ is the learning rate and $\boldsymbol{\xi}_k$ is the stochastic gradient noise due to mini-batching, we expand:
+    \begin{align}
+        \Delta_k &= \boldsymbol{\theta}_{k+1} - 2\boldsymbol{\theta}_k + \boldsymbol{\theta}_{k-1} \\
+        &= \left( \boldsymbol{\theta}_k - \eta_k (\nabla \mathcal{L}(\boldsymbol{\theta}_k) + \boldsymbol{\xi}_k) \right)
+        - 2\boldsymbol{\theta}_k
+        + \left( \boldsymbol{\theta}_k + \eta_{k-1} (\nabla \mathcal{L}(\boldsymbol{\theta}_{k-1}) + \boldsymbol{\xi}_{k-1}) \right) \\
+        &= -\eta_k (\nabla \mathcal{L}(\boldsymbol{\theta}_k) + \boldsymbol{\xi}_k)
+        + \eta_{k-1} (\nabla \mathcal{L}(\boldsymbol{\theta}_{k-1}) + \boldsymbol{\xi}_{k-1}).
+    \end{align}
+    
+    \noindent
+    If we assume the gradients vary slowly compared to the noise, or average out across steps (e.g., near convergence), we can approximate:
+    \begin{equation}
+        \Delta_k \approx -\eta_k \boldsymbol{\xi}_k + \eta_{k-1} \boldsymbol{\xi}_{k-1},
+    \end{equation}
+    
+    highlighting the role of stochastic noise in introducing curvature into the discrete SGD path.
+    
+    Assuming unbiased noise and using standard deviation $\sigma_{\mathrm{sgd}}^2 = \mathbb{E}[\|\boldsymbol{\xi}_k\|^2]$, we treat $\gamma''(t)$ as a signed measure as per \cite{moulines2011}. Then the expected curvature of the SGD trajectory satisfies:
+    \begin{equation}
+        \mathbb{E}\left[\sup_t \|\gamma''(t)\|\right] \ge \mathbb{E}\left[\sum_k \|\Delta_k\|\right] \ge c \cdot \sigma_{\mathrm{sgd}},
+    \end{equation}
+    
+    for some constant $c > 0$ depending on the learning rate schedule.
+    
+    \noindent Hence, we obtain:
+    \begin{equation}
+        \mathbb{E}\left[\sup_t \|\gamma''(t)\|\right] \ge \kappa + c \cdot \sigma_{\mathrm{sgd}}.
+    \end{equation}
+    
+    \noindent
+    In summary, the curvature of the optimised Bézier path and the expected curvature of the SGD trajectory satisfy:
+    \begin{equation}
+        \boxed{
+        \sup_{t} \|\Phi_{\boldsymbol{\phi}^\star}''(t)\| = \kappa 
+        \;\;<\;\; 
+        \mathbb{E}\left[\sup_t \|\gamma''(t)\|\right] \approx \kappa + c \cdot \sigma_{\mathrm{sgd}}.
+        }
+    \end{equation}
+    
+    This inequality highlights that the Bézier path provides a smoother alternative to SGD by avoiding the curvature amplification caused by stochastic gradient noise.
+    
+    
+    \medskip
+    \medskip
+    \noindent \textbf{(iii) Model predictions along Bézier path remain close to those along SGD.}  
+    Assume the model map $f_{\boldsymbol{\theta}}(\boldsymbol{x})$ is $L_f$-Lipschitz continuous in $\boldsymbol{\theta}$ for every $\boldsymbol{x} \in \mathcal{X}$, i.e.,
+    \begin{equation}
+        \|f_{\boldsymbol{\theta}_1}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_2}(\boldsymbol{x})\| \le L_f \|\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2\| \quad \forall \boldsymbol{\theta}_1, \boldsymbol{\theta}_2 \in \Theta.
+    \end{equation}
+    
+    \noindent
+    Applying this to $\boldsymbol{\theta}_1 = \Phi_{\boldsymbol{\phi}^\star}(t)$ and $\boldsymbol{\theta}_2 = \gamma(t)$ yields:
+    \begin{equation}
+        \|f_{\Phi_{\boldsymbol{\phi}^\star}(t)}(\boldsymbol{x}) - f_{\gamma(t)}(\boldsymbol{x})\| \le L_f \|\Phi_{\boldsymbol{\phi}^\star}(t) - \gamma(t)\|.
+    \end{equation}
+    
+    \noindent
+    From the curvature bound derived earlier (see part (i)), we already have:
+    \begin{equation}
+        \|\Phi_{\boldsymbol{\phi}^\star}(t) - \gamma(t)\| \le \frac{t(1 - t)}{2} \kappa.
+    \end{equation}
+    
+    \noindent
+    Since $t(1 - t) \le \frac{1}{4}$ for all $t \in [0, 1]$, it follows that:
+    \begin{equation}
+        \|\Phi_{\boldsymbol{\phi}^\star}(t) - \gamma(t)\| \le \frac{\kappa}{8},
+    \end{equation}
+    
+    and therefore,
+    \begin{equation}
+        \|f_{\Phi_{\boldsymbol{\phi}^\star}(t)}(\boldsymbol{x}) - f_{\gamma(t)}(\boldsymbol{x})\| \le \frac{L_f \kappa}{8},
+    \end{equation}
+    
+    for all $\boldsymbol{x} \in \mathcal{X}$ and $t \in [0, 1]$. This establishes that the model predictions along the Bézier path remain uniformly close to those along the SGD trajectory.
+
+    This completes the proof.
+\end{proof}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{AUPRC ANALYSIS}
+% \label{sec:auprc-anal}
+
+
+
+% %%%%%%%%%%%%
+% \subsection{Proof of Corollary~\ref{cor:auprc_gain}}
+% \label{subsec:cor1-proof}
+
+% \begin{proof}
+%     We translate binary classification score deviation into AUPRC deviation in three steps.
+    
+%     \textsc{Step 1: CDF shift.}
+%     For any trajectory $\vartheta(\cdot)$, let
+%     \begin{equation}
+%         \delta(\vartheta)
+%           := \sup_{\boldsymbol{x},t}
+%                \bigl|f_{\vartheta(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_T}(\boldsymbol{x})\bigr|
+%     \end{equation}
+
+%     denote the functional deviations with respect to the converged solution $\boldsymbol{}{\theta}_T$, as this represents thee target behaviour that intermediate trajectory points should approximate.
+    
+%     Because $f_{\boldsymbol{\theta}}$ maps to $[0,1]$ and is strictly monotone in the true class probability, the class-conditional cumulative distribution functions (CDFs) obey
+%     \begin{equation}
+%     \label{eq:cdf_shift}
+%         \bigl|F^\sigma_{\vartheta}(\tau)
+%               -F^\sigma_{{\boldsymbol{\theta}_T}}(\tau)\bigr|
+%           \le
+%           \delta(\vartheta),
+%           \qquad
+%           \forall\,\sigma\in\{+,-\},\;\tau\in[0,1],
+%     \end{equation}
+%     where $F^\sigma_{\vartheta}(\tau) = P(f_{\vartheta}(X) \le \tau \mid Y = \sigma)$ denotes the CDF of scores for class $\sigma$ under trajectory $\vartheta$. This follows because if scores differ by at most $\delta(\vartheta)$ uniformly, then the probability mass below any threshold $\tau$ can shift by at most $\delta(\vartheta)$ in either direction.
+    
+%     To see why \eqref{eq:cdf_shift} holds, note that for any threshold $\tau$, the indicator function $\mathbf{1}[f_{\vartheta(t)}(\boldsymbol{x}) \le \tau]$ can differ from $\mathbf{1}[f_{\boldsymbol{\theta}_T}(\boldsymbol{x}) \le \tau]$ only when $|f_{\vartheta(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_T}(\boldsymbol{x})| \ge |\tau - f_{\boldsymbol{\theta}_T}(\boldsymbol{x})|$. Since scores differ by at most $\delta(\vartheta)$ uniformly over all $x$ and $t$, the probability mass below any threshold $\tau$ can shift by at most $\delta(\vartheta)$ in either direction. Formally, for any measurable set $A$:
+%     \begin{equation}
+%         \bigl|P(f_{\vartheta}(X) \in A) - P(f_{\boldsymbol{\theta}_T}(X) \in A)\bigr| \le \delta(\vartheta).
+%     \end{equation}
+    
+%     Applying this to $A = (-\infty, \tau]$ gives the claimed CDF bound.
+    
+%     \textsc{Step 2: Precision--recall shift.}
+%     Let $\mathrm{PR}_{\vartheta}(r)$ denote precision at recall~$r$ for the trajectory~$\vartheta$.
+%     At recall level $r$, we select threshold $\tau_r$ such that $1 - F^+_{\vartheta}(\tau_r) = r$. The corresponding false positive rate is $\mathrm{FPR}_{\vartheta}(r) = 1 - F^-_{\vartheta}(\tau_r)$, giving precision:
+%     \begin{equation}
+%         \mathrm{PR}_{\vartheta}(r) = \frac{\pi \cdot r}{\pi \cdot r + (1-\pi) \cdot \mathrm{FPR}_{\vartheta}(r)}.
+%     \end{equation}
+    
+%     A first-order Taylor expansion around the perturbed CDFs yields
+%     \begin{equation}
+%     \label{eq:pr_shift}
+%         \bigl|\mathrm{PR}_{\vartheta}(r)
+%               -\mathrm{PR}_{\boldsymbol{\theta}_T}(r)\bigr|
+%           \le
+%           \frac{2\,\delta(\vartheta)}{\pi r}
+%           + O\bigl(\delta(\vartheta)^2/\pi^2\bigr),
+%           \qquad
+%           r\in[\pi,1].
+%     \end{equation}
+    
+%     The dominant $1/(\pi r)$ term arises from the sensitivity of precision to false positive rate changes in imbalanced settings. The derivation uses:
+%     \begin{equation}
+%         \frac{\partial \mathrm{PR}}{\partial \mathrm{FPR}} = -\frac{\pi r (1-\pi)}{[\pi r + (1-\pi) \mathrm{FPR}]^2} \approx -\frac{1}{\pi r}
+%     \end{equation}
+%     for small $\mathrm{FPR}$ and $\pi \ll 1$.
+    
+%     \textsc{Step 3: Integrate to AUPRC.}
+%     The Area Under the Precision-Recall Curve is:
+%     \begin{equation}
+%         \mathrm{AUPRC}_{\vartheta} = \int_0^1 \mathrm{PR}_{\vartheta}(r)\, dr.
+%     \end{equation}
+    
+%     Integrating the bound \eqref{eq:pr_shift} over $r\in[\pi,1]$ (the meaningful recall range) and noting $|\log\pi|\le 3$ for $\pi\le0.1$:
+%     \begin{align}
+%         \bigl|\mathrm{AUPRC}_{\vartheta}
+%               - \mathrm{AUPRC}_{\boldsymbol{\theta}_T\bigr|
+%           &\le \int_\pi^1 \frac{2\,\delta(\vartheta)}{\pi r}\, dr + O(\delta(\vartheta)^2/\pi^2) \\
+%           &= \frac{2\,\delta(\vartheta)}{\pi} \log(1/\pi) + O(\delta(\vartheta)^2/\pi^2) \\
+%           &\le \frac{3\,\delta(\vartheta)}{\pi} + O(\delta(\vartheta)^2/\pi^2).
+%     \end{align}
+    
+%     For typical values ($\delta \approx 0.01$, $\pi \approx 0.05$), the second-order term contributes $\approx 0.04$, which is small compared to the first-order term.
+    
+%     \textsc{Apply to Bézier and SGD.}
+%     Setting $\vartheta=\theta^\star$ (Bézier) and $\vartheta=\gamma$ (SGD):
+%     \begin{align}
+%         \mathrm{AUPRC}_{\mathrm{B}}
+%           &\ge
+%           \mathrm{AUPRC}_{\boldsymbol{\theta}_T}
+%           -\frac{3\,\delta_{\mathrm{B}}}{\pi}, \\
+%         \mathrm{AUPRC}_{\mathrm{S}}
+%           &\le
+%           \mathrm{AUPRC}_\boldsymbol{\theta}_T}
+%           +\frac{3\,\delta_{\mathrm{S}}}{\pi}.
+%     \end{align}
+    
+%     Subtracting these two inequalities:
+%     \begin{equation}
+%         \mathrm{AUPRC}_{\mathrm{B}}
+%           -\mathrm{AUPRC}_{\mathrm{S}}
+%           \ge
+%           \frac{3\,(\delta_{\mathrm{S}}-\delta_{\mathrm{B}})}{\pi}
+%           =
+%           \frac{3\,\varepsilon}{\pi}
+%           >0,
+%     \end{equation}
+%     establishing the stated improvement.
+
+%     This completes the proof.
+% \end{proof}
+
+
+
+% %%%%%%%%%%%%
+% \subsection{Functional Stability and Ranking Metrics}
+% \label{subsec:func-stability-anal}
+
+% While Theorem~\ref{thm:bez-sur} establishes geometric advantages of Bézier paths, practical performance depends on functional behavior. This section provides detailed analysis of how parameter-space stability translates to functional consistency and ranking quality.
+
+% \textbf{Trajectory Matching Inheritance Assumption}\\
+% The connection between teacher trajectory properties and student model performance relies on the following assumption:
+
+% \begin{assumption}
+% \label{assump:tm_inheritance}
+% Consider student models $\boldsymbol{\theta}_{\mathrm{student}}(t)$ trained via trajectory matching on synthetic data $\mathcal{\tilde{D}}$ optimized to match a teacher trajectory $\boldsymbol{\theta}_{\mathrm{teacher}}(t)$. Then the student's functional behavior satisfies:
+% \begin{equation}
+%     \sup_{\boldsymbol{x} \in \mathcal{X}, t \in [0,1]} |f_{\boldsymbol{\theta}_{\mathrm{student}}(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_{\mathrm{teacher}}(t)}(\boldsymbol{x})| \le C \cdot \delta(\boldsymbol{\theta}_{\mathrm{teacher}}(\cdot)),
+% \end{equation}
+
+% where $\delta(\theta_{\mathrm{teacher}}(\cdot)) = \sup_{\boldsymbol{x},t} |f_{\boldsymbol{\theta}_{\mathrm{teacher}}(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_T}(\boldsymbol{x})|$ measures the teacher's functional deviation, and $C \ge 1$ is a constant depending on the quality of trajectory matching.
+% \end{assumption}
+
+% \textsc{Justification:} This assumption states that if the teacher trajectory has bounded functional deviations, then students trained to follow that trajectory inherit similar bounds (up to a multiplicative constant $C$). The constant $C$ captures:
+% \begin{itemize}
+%     \item Imperfect trajectory matching: $\|\boldsymbol{\theta}_{\mathrm{student}}(t) - \boldsymbol{\theta}_{\mathrm{teacher}}(t)\|$ may not be zero
+%     \item Synthetic data approximation quality
+%     \item Network architecture differences between teacher and student
+% \end{itemize}
+
+% Empirically, we observe $C \approx 1$-$2$ in practice when trajectory matching converges well, supporting the validity of this assumption for well-optimized synthetic datasets.
+
+
+% \textbf{Parameter Stability Induces Functional Stability}\\
+% Define the functional deviation of any trajectory from the converged solution $\boldsymbol{\theta}_T$:
+% \begin{equation}
+%     \delta(\boldsymbol{\theta}(\cdot)) := \sup_{\boldsymbol{x} \in \mathcal{X}, t \in [0,1]} |f_{\boldsymbol{\theta}(t)}(\boldsymbol{x}) - f_{\boldsymbol{\theta}_T}(\boldsymbol{x})|.
+% \end{equation}
+
+% By Theorem~\ref{thm:bez-sur}(iii), Bézier trajectories exhibit superior functional stability:
+% \begin{equation}
+%     \delta_B := \delta(\boldsymbol{\theta}^\star(\cdot)) \leq \frac{L_f\kappa}{8} < \delta_S := \delta(\gamma(\cdot)).
+% \end{equation}
+
+% This stability advantage directly benefits trajectory matching, as student models encounter fewer extreme functional variations during optimization.
+
+% \textbf{Functional Stability Preserves Ranking Quality}\\
+% For ranking-based evaluation, functional deviations manifest as scoring inconsistencies that flip positive-negative pair orderings. Consider functionally perturbed model $s = e + \delta$ where $\|\delta\|_{\infty} \leq \varepsilon$.
+
+% \begin{lemma}[Functional stability bounds ranking degradation]
+% \label{lem:func-bounds}
+%     Under mild expert margin conditions, both Area Under the Receiver Operating Characteristic curve (AUROC) and AUPRC performance gaps are bounded by pairwise inversion rates, which decrease as functional perturbations $\|\delta\|_{\infty}$ become smaller.
+% \end{lemma}
+
+% \begin{proof}
+%     Let $(X,Y)$ be the data distribution with $Y \in \{0,1\}$ and prevalence $\pi = \Pr(Y=1)$. Consider expert model $e: \mathcal{X} \to \mathbb{R}$ and perturbed model $s = e + \delta$ where $\|\delta\|_{\infty} \leq \varepsilon$.
+    
+%     On test set with positives $\mathcal{X}_+ = \{\boldsymbol{x}_i^+\}_{i=1}^{n_+}$ and negatives $\mathcal{X}_- = \{\boldsymbol{x}_j^-\}_{j=1}^{n_-}$, define \textbf{pairwise inversions}:
+%     \begin{equation}
+%         \mathrm{Inv}(s;e) = \#\{(\boldsymbol{x}^+,\boldsymbol{x}^-): e(\boldsymbol{x}^+) > e(\boldsymbol{x}^-) \text{ but } s(\boldsymbol{x}^+) \leq s(\boldsymbol{x}^-)\}.
+%     \end{equation}
+    
+%     \textsc{Step 1: Margin assumption and inversion bound.}
+%     Assume expert maintains margin $\gamma > 0$ with confidence $1-\eta$:
+%     \begin{equation}
+%         \Pr[e(\boldsymbol{x}^+) - e(\boldsymbol{x}^-) \geq \gamma] \geq 1-\eta.
+%     \end{equation}
+    
+%     For any pair $(\boldsymbol{x}^+,\boldsymbol{x}^-)$, an inversion requires:
+%     \begin{align}
+%         s(\boldsymbol{x}^+) \leq s(\boldsymbol{x}^-) &\iff e(\boldsymbol{x}^+) + \delta(\boldsymbol{x}^+) \leq e(\boldsymbol{x}^-) + \delta(\boldsymbol{x}^-) \\
+%         &\iff \delta(\boldsymbol{x}^+) - \delta(\boldsymbol{x}^-) \leq -(e(\boldsymbol{x}^+) - e(\boldsymbol{x}^-)).
+%     \end{align}
+    
+%     Decompose on margin event $A = \{e(\boldsymbol{x}^+) - e(\boldsymbol{x}^-) \geq \gamma\}$:
+%     \begin{equation}
+%         \Pr[\text{inversion}] \leq \Pr(A^c) + \Pr[\delta(\boldsymbol{x}^+) - \delta(\boldsymbol{x}^-) \leq -\gamma \mid A].
+%     \end{equation}
+    
+%     Since $\|\delta\|_{\infty} \leq \varepsilon$, we have $|\delta(\boldsymbol{x}^+) - \delta(\boldsymbol{x}^-)| \leq 2\varepsilon$. Therefore:
+%     \begin{itemize}
+%         \item If $\gamma > 2\varepsilon$: $\Pr[\delta(\boldsymbol{x}^+) - \delta(\boldsymbol{x}^-) \leq -\gamma \mid A] = 0$
+%         \item If $\gamma \leq 2\varepsilon$: $\Pr[\delta(\boldsymbol{x}^+) - \delta(\boldsymbol{x}^-) \leq -\gamma \mid A] \leq 1$
+%     \end{itemize}
+    
+%     Thus:
+%     \begin{equation}
+%         \frac{\mathbb{E}[\mathrm{Inv}(s;e)]}{n_+ n_-} \leq \eta + \mathbf{1}_{\gamma \leq 2\varepsilon}.
+%     \end{equation}
+    
+%     \textsc{Step 2: Link inversions to AUROC.}
+%     AUROC measures the probability that a randomly chosen positive scores higher than a randomly chosen negative:
+%     \begin{equation}
+%         \mathrm{AUROC}(s) = \Pr[s(\boldsymbol{x}^+) > s(\boldsymbol{x}^-)].
+%     \end{equation}
+    
+%     Each inversion reduces this probability by $1/(n_+ n_-)$, giving:
+%     \begin{equation}
+%         |\mathrm{AUROC}(e) - \mathrm{AUROC}(s)| \leq \frac{\mathrm{Inv}(s;e)}{n_+ n_-}.
+%     \end{equation}
+    
+%     \textsc{Step 3: Link inversions to AUPRC.}
+%     AUPRC (Average Precision) for ranking $r_1, r_2, \ldots, r_{n_+ + n_-}$ by scores $s$:
+%     \begin{equation}
+%         \mathrm{AUPRC}(s) = \frac{1}{n_+} \sum_{i: y_{r_i} = 1} \frac{\text{TP at position } i}{i}.
+%     \end{equation}
+    
+%     Each inversion can affect multiple precision values. However, both metrics are Lipschitz in the inversion count:
+%     \begin{equation}
+%         |\mathrm{AUPRC}(e) - \mathrm{AUPRC}(s)| \leq C \cdot \frac{\mathrm{Inv}(s;e)}{n_+ n_-}
+%     \end{equation}
+%     for some constant $C$ depending on the dataset structure.
+    
+%     \textsc{Step 4: Functional perturbation bound.}
+%     As $\varepsilon \to 0$, we have $\mathbf{1}_{\gamma \leq 2\varepsilon} \to 0$ for any fixed $\gamma > 0$. Therefore:
+%     \begin{equation}
+%         \frac{\mathbb{E}[\mathrm{Inv}(s;e)]}{n_+ n_-} \to \eta,
+%     \end{equation}
+%     which bounds both AUROC and AUPRC gaps.
+
+%     this completes the proof
+% \end{proof}
+
+% %------------------------------------------------------------
+% \textbf{AUPRC Head-of-Ranking Sensitivity}
+% \begin{proposition}[AUPRC head-of-ranking sensitivity]
+% \label{prop:head_sensitivity}
+%     AUPRC is more sensitive than AUROC to inversions affecting top-ranked predictions.
+% \end{proposition}
+
+% \begin{proof}
+%     Consider moving a negative example from position $k$ to position $j < k$, displacing a positive instance.
+    
+%     \textsc{AUROC impact.}
+%     Each such move creates exactly one new positive-negative inversion. AUROC decreases by exactly $1/(n_+ n_-)$, regardless of positions $j$ and $k$.
+    
+%     \textsc{AUPRC impact.}
+%     Moving the negative to position $j$ affects precision for all positives originally ranked between $j$ and $k$. Specifically, a positive originally at position $\ell \in [j,k)$ now has precision $\frac{\text{TP at }\ell}{\ell+1}$ instead of $\frac{\text{TP at }\ell}{\ell}$.
+    
+%     The precision drop is
+%     \begin{equation}
+%         \frac{\text{TP at }\ell}{\ell(\ell+1)} \geq \frac{1}{\ell+1}.
+%     \end{equation}
+    
+%     For head inversions (small $j$), this creates large precision drops $O(1/j)$. For tail inversions (large $j$), drops are small $O(1/j)$.
+    
+%     Let $\Delta\mathrm{AUPRC}(j)$ denote the AUPRC drop when inserting a false positive at position $j$. Then:
+%     \begin{equation}
+%         \Delta\mathrm{AUPRC}(j) \geq \frac{c}{j}
+%     \end{equation}
+    
+%     for some constant $c > 0$. This $1/j$ scaling explains why head errors disproportionately harm AUPRC.
+
+%     This completes the proof.
+% \end{proof}
+
+% %------------------------------------------------------------
+% \textbf{Connection to Bézier Trajectory Stability}
+% \begin{proposition}[Bézier stability improves ranking]
+% \label{prop:bezier_ranking}
+%     Bézier-based trajectory matching produces functionally more stable paths, leading to fewer head inversions and improved AUPRC.
+% \end{proposition}
+
+% \begin{proof}
+%     From Theorem~\ref{thm:bez-sur}(iii), Bézier paths satisfy:
+%     \begin{equation}
+%         \sup_{\boldsymbol{x},t} |f_{\boldsymbol{\theta}^\star(t)}(\boldsymbol{x}) - f_{\gamma(t)}(\boldsymbol{x})| \leq \frac{L_f \kappa}{8}.
+%     \end{equation}
+    
+%     This establishes that the Bézier path stays close to the SGD trajectory in function space. Combined with the curvature analysis from Theorem~\ref{thm:bez-sur}(ii), we observe that Bézier paths have:
+%     \begin{enumerate}
+%         \item \textbf{Constant curvature} $\kappa$ in parameter space
+%         \item \textbf{Reduced noise-induced deviations} compared to SGD's $\kappa + c\sigma_{\mathrm{sgd}}$
+%     \end{enumerate}
+    
+%     During trajectory matching, student models trained on synthetic data matched to these smoother trajectories inherit functional stability properties via Assumption~\ref{assump:tm_inheritance}. Specifically:
+    
+%     \textsc{For Bézier-based trajectory matching:}
+%     \begin{itemize}
+%         \item Teacher trajectory has bounded functional deviations $\delta_B \leq \frac{L_f\kappa}{8}$
+%         \item Students learn consistent patterns from stable teacher guidance
+%         \item Resulting perturbations satisfy $\|\delta_{\text{inherited}}\|_\infty \leq C \cdot \delta_B$ for some constant $C$
+%     \end{itemize}
+    
+%     \textsc{For standard SGD trajectory matching:}
+%     \begin{itemize}
+%         \item Teacher trajectory has larger functional deviations $\delta_S > \delta_B$
+%         \item Students learn inconsistent patterns from noisy teacher guidance
+%         \item Resulting perturbations satisfy $\|\delta_{\text{inherited}}\|_\infty \leq C \cdot \delta_S$
+%     \end{itemize}
+    
+%     By Lemma~\ref{lem:func-bounds}, smaller functional perturbations lead to fewer inversions and better ranking metrics. The systematic nature of Bézier smoothness means high-confidence regions (determining head-of-ranking behavior) are particularly well-preserved, leading to observed AUPRC improvements while maintaining AUROC performance.
+    
+%     This completes the proof.
+% \end{proof}
+
+
+
+% %%%%%%%%%%%%
+% \subsection{Technical Assumptions and Limitations}
+% \label{subsec:assumptions}
+
+% \textsc{Required assumptions:}
+% \begin{enumerate}
+%     \item \textbf{Lipschitz neural networks:} $|f_{\boldsymbol{\theta}}(\boldsymbol{x}) - f_{\boldsymbol{\theta}'}(\boldsymbol{x})| \leq L_f \|\boldsymbol{\theta} - \boldsymbol{\theta}'\|$. This is reasonable for networks with bounded weights and Lipschitz activation functions.
+%     \item \textbf{Strictly monotone scores:} The score function $f_\theta(\boldsymbol{x})$ is strictly monotone in $P(y=1|x)$. This holds for properly calibrated classifiers.
+%     \item \textbf{Expert margin condition:} $\Pr[e(\boldsymbol{x}^+) - e(\boldsymbol{x}^-) \geq \gamma] \geq 1-\eta$. This assumes the expert model maintains reasonable separation between positive and negative classes.
+%     \item \textbf{Bounded perturbations:} $\|\delta\|_{\infty} \leq \varepsilon$. This is an empirical assumption about trajectory matching quality.
+% \end{enumerate}
+
+% \textsc{Limitations:}
+% \begin{itemize}
+%     \item Analysis assumes test-time evaluation on fixed datasets, while practical deployment involves distribution shift.
+%     \item Margin conditions may not hold uniformly across all data distributions, particularly in regions with inherent label noise.
+%     \item Constants $C, L_f$ may be large in practice for deep networks, potentially loosening bounds.
+%     \item Quadratic Bézier assumption limits trajectory complexity; higher-order curves could provide further improvements.
+%     \item The analysis treats trajectory matching as producing exact functional inheritance, while in practice this is approximate.
+% \end{itemize}
+
+% \textsc{Empirical validation.}
+% Despite these theoretical limitations, the framework provides useful insight into observed phenomena:
+% \begin{itemize}
+%     \item Predicted AUPRC improvements of $\approx 0.6$ match empirical results
+%     \item The $1/\pi$ scaling correctly predicts heightened sensitivity in imbalanced settings
+%     \item Differential AUPRC vs.\ AUROC behavior is consistent with head-sensitivity analysis
+% \end{itemize}
+
+% These correspondences suggest the theoretical sketch captures essential mechanisms even if mathematical rigor is incomplete given current understanding of neural network training dynamics.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{DATASET DETAILS}
+\label{sec:dataset_details}
+
+Across all datasets, we employed a 70/15/15 split for training, validation, and test sets. Continuous features were z-score normalised using training-set statistics. The training set was used for condensation, the validation set for hyperparameter and model selection, and the test set was held out for final evaluation.
+
+
+%%%%%%%%%%%%
+\subsection{CURIAL}
+
+The CURIAL database is an anonymised database with United Kingdom National Health Service (NHS) approval via the national oversight/regulatory body, the Health Research Authority (HRA) (CURIAL; NHS HRA IRAS ID: 281832). 
+
+Data from Oxford University Hospitals (OUH) studied here are available from the Infections in Oxfordshire Research Database\footnote{\url{https://oxfordbrc.nihr.ac.uk/research-themes/modernising-medical-microbiology-and-big-infection-diagnostics/infections-in-oxfordshire-research-database-iord/}}, subject to an application meeting the ethical and governance requirements of the Database. Data from University Hospital Birmingham (UHB) and Portsmouth University Hospitals (PUH) are available on reasonable request to the respective trusts, subject to HRA requirements.
+
+\begin{table}[ht]
+\centering
+\caption{Dataset characteristics for CURIAL sites.}
+\label{tab:curial_examples}
+\begin{tabular}{lccc}
+\toprule
+                        & Oxford  & Portsmouth & Birmingham \\ 
+\midrule
+\# Examples             & 161,955 & 38,717     & 95,236     \\
+\# Positive Examples    & 2,791   & 2,005      & 790        \\ 
+\# Features             & 27      & 27         & 27         \\ 
+Prevalence (\%)         & 1.7     & 5.3        & 0.8        \\
+\bottomrule    
+\end{tabular}
+\end{table}
+
+
+\begin{table}[ht]
+\centering
+\caption{Clinical predictors considered for COVID-19 status prediction.}
+\label{tab:curial_features}
+\scalebox{0.9}{
+\begin{tabular}{p{0.43\textwidth}p{0.5\textwidth}}\toprule
+\multicolumn{1}{c}{\textbf{Category}} & \multicolumn{1}{c}{\textbf{Features}} \\ \midrule
+Vital Signs & Heart rate, respiratory rate, oxygen saturation, systolic blood pressure, diastolic blood pressure, temperature \\ 
+\cmidrule{2-2}
+Blood Tests & Haemoglobin, haematocrit, mean cell volume, white cell count, neutrophil count, lymphocyte count, monocyte count, eosinophil count, basophil count, platelets \\ 
+\cmidrule{2-2}
+Liver Function Tests \& C-reactive protein & Albumin, alkaline phosphatase, alanine aminotransferase, bilirubin, C-reactive protein \\ 
+\cmidrule{2-2}
+Urea \& Electrolytes & Sodium, potassium, creatinine, urea, estimated glomerular filtration rate \\ \bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+\noindent Tables~\ref{tab:curial_features} and \ref{tab:curial_examples} document the features and dataset characteristics at each CURIAL site. Median imputation was applied to missing values in CURIAL datasets.
+
+
+%%%%%%%%%%%%
+\subsection{eICU}
+
+The eICU Collaborative Research Database (eICU-CRD) is a publicly available multi-centre EHR dataset~\citep{pollard2018eicu}. We used a pre-processed version available at \url{https://physionet.org/content/mimic-eicu-fiddle-feature/1.0.0/}. The dataset comprises 49,305 adult ICU stays with 402 features per sample. Features were derived through quantile-based binning of continuous variables and one-hot encoding of categorical variables.
+
+\begin{table}[ht]
+\centering
+\caption{Dataset characteristics for eICU.}
+\label{tab:eicu_examples}
+\begin{tabular}{lc}
+\toprule
+                        & eICU    \\ 
+\midrule
+\# Examples             & 49,305  \\
+\# Positive Examples    & 4,501   \\ 
+\# Features             & 402     \\ 
+Prevalence (\%)         & 9.1     \\
+\bottomrule    
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Source physiological and demographic variables used to construct the 402-dimensional feature vector for eICU IHM prediction.}
+\label{tab:eicu_features}
+\scalebox{0.85}{
+\begin{tabular}{p{0.43\textwidth}p{0.5\textwidth}}\toprule
+\multicolumn{1}{c}{\textbf{Category}} & \multicolumn{1}{c}{\textbf{Variables}} \\ \midrule
+Demographics & Age, height, weight, gender \\
+\cmidrule{2-2}
+Admission Information & Hospital admit source, hospital admit offset, unit admit source, unit stay type, unit type, Apache admission diagnosis, airway type \\
+\cmidrule{2-2}
+Vital Signs & Heart rate, respiratory rate, oxygen saturation, temperature (Celsius and Fahrenheit), temperature location \\
+\cmidrule{2-2}
+Blood Pressure & Non-invasive systolic/diastolic/mean blood pressure, invasive systolic/diastolic/mean blood pressure, central venous pressure \\
+\cmidrule{2-2}
+Oxygen Support & O2 administration device, O2 level percentage \\
+\cmidrule{2-2}
+Laboratory Measurements & Glucose \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\noindent Continuous variables were binned into quantiles (typically 5 bins) and summary statistics (minimum, maximum, mean) were computed where applicable. Categorical variables were one-hot encoded. This preprocessing resulted in the 402-dimensional feature vector used for model training.
+
+
+%%%%%%%%%%%%
+\subsection{MIMIC-III}
+
+The MIMIC-III database is a large publicly available ICU dataset from Beth Israel Deaconess Medical Center~\citep{johnson2016mimic}. We processed the dataset using publicly available benchmarking code, removing duplicate features to obtain a 60-dimensional feature vector at each time-step across 48 hourly time-steps. The training set was class-balanced to address the imbalanced nature of in-hospital mortality prediction.
+
+\begin{table}[ht]
+\centering
+\caption{Dataset characteristics for MIMIC-III.}
+\label{tab:mimic_examples}
+\begin{tabular}{lc}
+\toprule
+                                & MIMIC-III \\ 
+\midrule
+\# Examples                     & 21,156    \\
+\# Time-steps                   & 48        \\
+\# Features per time-step       & 60        \\ 
+Prevalence - Train (\%)         & 50.0      \\
+Prevalence - Validation (\%)    & 13.5      \\
+Prevalence - Test (\%)          & 11.5      \\
+\bottomrule    
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Source physiological and demographic variables used to construct the 60-dimensional feature vector at each time-step for MIMIC-III IHM prediction.}
+\label{tab:mimic_features}
+\scalebox{0.85}{
+\begin{tabular}{p{0.43\textwidth}p{0.5\textwidth}}\toprule
+\multicolumn{1}{c}{\textbf{Category}} & \multicolumn{1}{c}{\textbf{Variables}} \\ \midrule
+Demographics & Height, weight \\
+\cmidrule{2-2}
+Vital Signs & Heart rate, respiratory rate, temperature, oxygen saturation, capillary refill rate \\
+\cmidrule{2-2}
+Blood Pressure & Systolic blood pressure, diastolic blood pressure, mean blood pressure \\
+\cmidrule{2-2}
+Respiratory Support & Fraction inspired oxygen \\
+\cmidrule{2-2}
+Neurological Assessment & Glasgow Coma Scale (eye opening, motor response, verbal response, total score) \\
+\cmidrule{2-2}
+Laboratory Measurements & Glucose, pH \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\noindent Glasgow Coma Scale components were one-hot encoded (eye opening: 5 categories; motor response: 6 categories; verbal response: 5 categories; total score: 11 categories). Capillary refill rate was encoded as a binary variable. Binary mask features indicate the presence or absence of measurements at each time-step. This preprocessing resulted in 60 features per time-step, capturing both the physiological measurements and their availability across the 48-hour observation window.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{IMPLEMENTATION DETAILS}
+\label{sec:implementation}
+
+
+%%%%%%%%%%%%
+\subsection{Model Architectures}
+\label{subsec:architectures}
+\textsc{CURIAL and eICU:} A multi-layer perceptron (MLP) \citep{rumelhart1986learning} with a single hidden layer of $h$ nodes was used, followed by ReLU activation, an output layer, and sigmoid activation. Dropout with rate 0.25 was applied after the hidden layer during training. For eICU, $h = 256$ hidden nodes were used; for CURIAL datasets, $h = 64$ hidden nodes were used.
+
+To evaluate the generalisability of the condensed eICU dataset across different network architectures, several variants of the base MLP were tested:
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item MLP-1: Doubles the hidden layer width to $2h$ nodes
+    \item MLP-2: Quadruples the hidden layer width to $4h$ nodes
+    \item MLP-3: Adds a second hidden layer with $h$ nodes in the first layer and $2h$ nodes in the second layer
+    \item MLP-4: Uses three hidden layers with $h$, $2h$, and $4h$ nodes respectively
+\end{itemize}
+All variants maintain the same dropout rate (0.25) applied after each hidden layer and activation function (ReLU) as the base architecture.
+
+\textsc{MIMIC-III:} A multi-scale multi-branch temporal convolutional network (TCN) architecture \citep{bai2018empirical} with 192 output channels was used. This consisted of 3 parallel branches with kernel sizes of [3, 5, 7], each producing 64 channels, with PReLU activation and dropout rate 0.5. The network processes 48 time-steps of 60-dimensional feature vectors using causal dilated convolutions with residual connections. The output is averaged across the temporal dimension, followed by a linear layer with sigmoid activation.
+
+To evaluate cross-architecture generalisability of the condensed MIMIC-III dataset, the following TCN and long short-term memory (LSTM) \citep{hochreiter1997long} networks were tested:
+\begin{itemize}[noitemsep, topsep=0pt]
+    \item TCN-1: Single-scale TCN with kernel size 9, 64 channels, PReLU activation, and dropout rate 0.75
+    \item TCN-2: Two-layer multi-scale TCN with kernel sizes of [3, 5], 256 output channels per layer, PReLU activation, and dropout rate 0.5
+    \item LSTM-1: Single-layer LSTM with 128 hidden units, followed by dropout (0.25) and a linear output layer with sigmoid activation
+    \item LSTM-2: Single-layer LSTM with 256 hidden units, followed by dropout (0.25) and a linear output layer with sigmoid activation
+\end{itemize}
+
+
+%%%%%%%%%%%%
+\subsection{Training Trajectories}
+All hyperparameters were selected using the validation set for each dataset through grid search. Fifty training trajectories were generated for each dataset by training the backbone networks described in Section \ref{subsec:architectures} from different random initialisations. 
+
+For MTT and TESLA, standard SGD optimisation was employed with learning rates of 0.02 for MIMIC-III, eICU, OUH, and UHB, and 0.01 for PUH. Momentum was set to 0.0 for MIMIC-III and 0.9 for all other datasets, with training conducted for 60 epochs on MIMIC-III and 100 epochs on all other datasets. 
+
+FTD trajectories were trained using the Generalized Sharpness-Aware Minimization (GSAM) optimiser. A linear learning rate scheduler was employed, decaying from the maximum learning rate (matching the corresponding SGD runs) to 0 over $t_{\text{max}}$ steps, where $t_{\text{max}}$ was defined as the product of the number of epochs and the number of batches per epoch. The proportional scheduler for the perturbation radius scaled from 1 to 0 as the learning rate decayed, coupling the perturbation magnitude to the learning rate schedule.
+
+DATM employed FTD trajectories (with GSAM) for all tabular datasets (eICU, OUH, PUH, UHB), but used standard MTT trajectories (with SGD) for MIMIC-III, as FTD demonstrated worse performance than MTT on this sequential dataset.
+
+
+
+
+%%%%%%%%%%%%
+% \subsection{CONTROL POINT OPTIMISATION}
+% For each SGD trajectory (same ones used for MTT and TESLA) we learn an optimised bezier curves as per Algorithm \ref{alg:control_optimization}
+
+% \begin{algorithm}[H]
+% \caption{Control Point Optimization}
+% \label{alg:control_optimization}
+% \begin{algorithmic}[1]
+%     \REQUIRE SGD trajectory endpoints $\boldsymbol{\theta}_0, \boldsymbol{\theta}_T$, dataset $\mathcal{D}$, learning rate $\eta_{\phi}$, convergence tolerance $\epsilon$, maximum iterations $T_{\max}$, Monte Carlo samples $N_{MC}$
+%     \ENSURE Optimized control point $\boldsymbol{\phi}^*$
+%     \STATE Initialise $\boldsymbol{\phi} \leftarrow \frac{\boldsymbol{\theta}_0 + \boldsymbol{\theta}_T}{2}$ \COMMENT{Midpoint initialization}
+%     \STATE $t \leftarrow 0$
+%     \WHILE{$t < T_{\max}$}
+%         \STATE Sample $\{t_1, t_2, \ldots, t_{N_{MC}}\} \sim \mathcal{U}(0,1)$ \COMMENT{Monte Carlo samples}
+%         \STATE $\mathcal{L}_{\text{avg}} \leftarrow 0$
+%         \FOR{$i = 1$ to $N_{MC}$}
+%             \STATE $\boldsymbol{\theta}_{t_i} \leftarrow (1-t_i)^2 \boldsymbol{\theta}_0 + 2t_i(1-t_i)\boldsymbol{\phi} + t_i^2 \boldsymbol{\theta}_T$
+%             \STATE Sample mini-batch $\mathcal{B} \subset \mathcal{D}$
+%             \STATE $\mathcal{L}_{\text{avg}} \leftarrow \mathcal{L}_{\text{avg}} + \frac{1}{N_{MC}} \mathcal{L}_{\mathrm{CE}}(f_{\boldsymbol{\theta}_{t_i}}, \mathcal{B})$
+%         \ENDFOR
+%         \STATE $\boldsymbol{g} \leftarrow \nabla_{\boldsymbol{\phi}} \mathcal{L}_{\text{avg}}$ \COMMENT{Compute gradient w.r.t. control point}
+%         \IF{$\|\boldsymbol{g}\|_2 < \epsilon$}
+%             \STATE \textbf{break} \COMMENT{Convergence achieved}
+%         \ENDIF
+%         \STATE $\boldsymbol{\phi} \leftarrow \boldsymbol{\phi} - \eta_{\phi} \boldsymbol{g}$ \COMMENT{Gradient descent update}
+%         \STATE $t \leftarrow t + 1$
+%     \ENDWHILE
+%     \STATE \textbf{return} $\boldsymbol{\phi}^* = \boldsymbol{\phi}$
+% \end{algorithmic}
+% \end{algorithm}
+
+% \textbf{Initialization Strategy:} We initialise the control point $\boldsymbol{\phi}$ at the parameter space midpoint between $\boldsymbol{\theta}_0$ and $\boldsymbol{\theta}_T$. This provides a reasonable starting point that ensures the initial Bézier curve lies within the convex hull of the endpoints.
+
+% \textbf{Gradient Computation:} The gradient $\nabla_{\boldsymbol{\phi}} \mathcal{L}_{\text{avg}}$ is computed via automatic differentiation through the Bézier parameterization. The chain rule yields:
+% \begin{equation}
+%     \nabla_{\boldsymbol{\phi}} \mathcal{L}_{\text{avg}} = \frac{1}{N_{MC}} \sum_{i=1}^{N_{MC}} \nabla_{\boldsymbol{\theta}} \mathcal{L}_{\mathrm{CE}}(f_{\boldsymbol{\theta}_{t_i}}, \mathcal{B}) \cdot \frac{\partial \boldsymbol{\theta}_{t_i}}{\partial \boldsymbol{\phi}}
+% \end{equation}
+
+% where $\frac{\partial \boldsymbol{\theta}_{t_i}}{\partial \boldsymbol{\phi}} = 2t_i(1-t_i)$ from the Bézier parameterization.
+
+% \textbf{Control Point Optimization Parameters}\\
+
+% \textsc{Monte Carlo Sample Size ($N_{MC}$):} The number of uniform samples used to approximate the expectation in \eqref{eq:phi_optim}. Our experiments show robust performance across $N_{MC} \in [1, 4]$, with diminishing returns beyond $4$ samples. Lower values (e.g., $N_{MC} = 2$) provide computational efficiency while maintaining optimization quality.
+
+% \textsc{Optimization Steps ($T_{\max}$):} Maximum iterations for control point optimization. We observe convergence typically occurs within $[100, 500]$ iterations depending on the complexity of the loss landscape. Setting $T_{\max} = 200$ provides a good balance between optimization quality and computational cost.
+
+% \textsc{Learning Rate ($\eta_{\phi}$):} We used $\eta_{\phi} = 10^{-2}$ across all experiments
+
+% \textsc{Convergence Tolerance ($\epsilon$):} Gradient norm threshold for early stopping. Values in $[10^{-6}, 10^{-4}]$ provide good convergence without over-optimization. We use $\epsilon = 10^{-5}$ as default.
+
+\subsection{Control Point Optimisation}
+
+For BTM, quadratic Bézier curves were optimised between each pair of SGD trajectory endpoints (the same trajectories used for MTT and TESLA) following Algorithm \ref{alg:control_optimization}. The control point $\boldsymbol{\phi}$ was initialised at the parameter space midpoint between $\boldsymbol{\theta}_0$ and $\boldsymbol{\theta}_T$, ensuring the initial Bézier curve lies within the convex hull of the endpoints.
+
+\begin{algorithm}[H]
+\caption{Control Point Optimisation}
+\label{alg:control_optimization}
+\begin{algorithmic}[1]
+    \REQUIRE SGD trajectory endpoints $\boldsymbol{\theta}_0, \boldsymbol{\theta}_T$, dataset $\mathcal{D}$, learning rate $\eta_{\phi}$, convergence tolerance $\epsilon$, maximum iterations $T_{\max}$, Monte Carlo samples $N_{MC}$
+    \ENSURE Optimised control point $\boldsymbol{\phi}^*$
+    \STATE Initialise $\boldsymbol{\phi} \leftarrow \frac{\boldsymbol{\theta}_0 + \boldsymbol{\theta}_T}{2}$ \COMMENT{Midpoint initialisation}
+    \STATE $t \leftarrow 0$
+    \WHILE{$t < T_{\max}$}
+        \STATE Sample $\{t_1, t_2, \ldots, t_{N_{MC}}\} \sim \mathcal{U}(0,1)$ \COMMENT{Monte Carlo samples}
+        \STATE $\mathcal{L}_{\text{avg}} \leftarrow 0$
+        \FOR{$i = 1$ to $N_{MC}$}
+            \STATE $\boldsymbol{\theta}_{t_i} \leftarrow (1-t_i)^2 \boldsymbol{\theta}_0 + 2t_i(1-t_i)\boldsymbol{\phi} + t_i^2 \boldsymbol{\theta}_T$
+            \STATE Sample mini-batch $\mathcal{B} \subset \mathcal{D}$
+            \STATE $\mathcal{L}_{\text{avg}} \leftarrow \mathcal{L}_{\text{avg}} + \frac{1}{N_{MC}} \mathcal{L}_{\mathrm{CE}}(f_{\boldsymbol{\theta}_{t_i}}, \mathcal{B})$
+        \ENDFOR
+        \STATE $\boldsymbol{g} \leftarrow \nabla_{\boldsymbol{\phi}} \mathcal{L}_{\text{avg}}$ \COMMENT{Compute gradient w.r.t. control point}
+        \IF{$\|\boldsymbol{g}\|_2 < \epsilon$}
+            \STATE \textbf{break} \COMMENT{Convergence achieved}
+        \ENDIF
+        \STATE $\boldsymbol{\phi} \leftarrow \boldsymbol{\phi} - \eta_{\phi} \boldsymbol{g}$ \COMMENT{Gradient descent update}
+        \STATE $t \leftarrow t + 1$
+    \ENDWHILE
+    \STATE \textbf{return} $\boldsymbol{\phi}^* = \boldsymbol{\phi}$
+\end{algorithmic}
+\end{algorithm}
+
+
+The gradient with respect to the control point was computed via automatic differentiation through the Bézier parameterisation using the chain rule:
+\begin{equation}
+    \nabla_{\boldsymbol{\phi}} \mathcal{L}_{\text{avg}} = \frac{1}{N_{MC}} \sum_{i=1}^{N_{MC}} \nabla_{\boldsymbol{\theta}} \mathcal{L}_{\mathrm{CE}}(f_{\boldsymbol{\theta}_{t_i}}, \mathcal{B}) \cdot \frac{\partial \boldsymbol{\theta}_{t_i}}{\partial \boldsymbol{\phi}}
+\end{equation}
+where $\frac{\partial \boldsymbol{\theta}_{t_i}}{\partial \boldsymbol{\phi}} = 2t_i(1-t_i)$ from the Bézier curve formula.
+
+\textbf{Hyperparameters.}
+The following hyperparameters were used for control point optimisation: learning rate $\eta_{\phi} = 10^{-2}$, convergence tolerance $\epsilon = 10^{-5}$, maximum iterations $T_{\max} = 300$, and Monte Carlo samples $N_{MC}=2$. Convergence typically occurred within 200-300 iterations depending on the complexity of the loss landscape, with the algorithm terminating when $\|\boldsymbol{g}\|_2 < \epsilon$ or after $T_{\max}$ iterations.
+
+\textbf{Computational Cost.}
+The control point optimisation requires $2 \times T_{\max}$ forward passes per trajectory (corresponding to $N_{MC} = 2$ Monte Carlo samples at each iteration). For a training dataset with $|\mathcal{D}_{\text{train}}|$ examples and batch size $b$, a single training epoch requires $|\mathcal{D}_{\text{train}}|/b$ forward passes. Thus, optimising one control point at the maximum $T_{\max} = 300$ iterations is equivalent to approximately $\frac{2 \times 300}{|\mathcal{D}_{\text{train}}|/b} = \frac{600b}{|\mathcal{D}_{\text{train}}|}$ epochs of training. All datasets use batch size $b = 256$ and a 70/15/15 train/validation/test split. For OUH with $|\mathcal{D}_{\text{train}}| = 0.7 \times 161{,}955 \approx 113{,}369$ examples, this amounts to $\frac{600 \times 256}{113{,}369} \approx 1.4$ equivalent epochs per trajectory. Similarly, for UHB ($|\mathcal{D}_{\text{train}}| \approx 66{,}665$), PUH ($|\mathcal{D}_{\text{train}}| \approx 27{,}102$), eICU ($|\mathcal{D}_{\text{train}}| \approx 34{,}514$), and MIMIC-III ($|\mathcal{D}_{\text{train}}| \approx 14{,}809$), the costs are approximately $2.3$, $5.7$, $4.5$, and $10.4$ equivalent epochs per trajectory, respectively. Since control point optimisation is performed once per trajectory during the initial surrogate construction phase (prior to dataset condensation), this one-off computational overhead is amortised across all subsequent condensation iterations.
+
+
+
+%%%%%%%%%%%%
+% \subsection{DATASET CONDENSATION}
+% BTM uses a segment length of 0.2 with $t_{\text{start}} \sim \mathcal{U}(0,0.8)$ and $t_{\text{start}} = t_{\text{start}} + 0.2$
+
+% The number of gradient steps $N$ taken by the student is set $N=80$ for all TM methods and $N=30$ for BTM across all datasets.
+
+% MTT, FTD and TESLA match along the entire trajectory with $M=5$ and $N=80 $for all datasets.
+
+% for eICU and CURIAL, DATM uses sequential generation with $M=5$:
+%     0,20,40 - 50 ipc
+%     10,20,60 - 100 ipc
+%     20,40,100 - 200, 500 ipc 
+
+% for MIMIC-III, DATM uses sequential generation with M=5:
+%     0,10,20 - 50 ipc
+%     5,15,30 - 100 ipc
+%     10,30,40 - 200 ipc
+%     30,40,60 - 500 ipc
+% The three numbers represent T^-, T and T^+ as described in the DATM paper.
+
+
+% During distillation, we evaluate the synthetic dataset every 10 iterations by training a randomly iniitalised network with the following hyperparameters and save the synthetic dataset is AUPRC is improved on the validation set. We also saved did an experiments saving on based AUROC and found that best AUPRC always corresponsed to high AUROC but the reverse wasn't true for reasons discussed in the main paper.
+% MIMIC3 lr=0.02, mom=0.9, num_epochs=60
+% eICU: lr=0.05, mom=0.9, num_epochs=50
+% UHB: lr=0.05, mom=0.9, num_epochs=50
+% PUH: lr=0.05, mom=0.9, num_epochs=50
+% UHB: lr=0.05, mom=0.9, num_epochs=50
+
+
+% We use the distillation backbone nets for M3D without the sigmoid activation and set the number layer to 62 nodes for CURIAL, 256 for eICU and 128 for MIMIC-III
+
+% The synthetic data is optimised using an SGD optimiser and lr=100 and mom=0.9
+% the inner loop lr is the same as the trajectoru training lr and that is also optimised using the meta gradient wrt to the synthetic data. it is optimised with lr=1e-4 and mom-0.5 across all methods. The unoptimised hard binary labels are used for all methods except TESLA which uses the target model to generate soft labels in each condensation iteration.
+
+\subsection{Dataset Condensation}
+
+\textbf{BTM Hyperparameters.}
+Our proposed BTM method uses trajectory segments of length 0.2, with starting points sampled as $t_{\text{start}} \sim \mathcal{U}(0, 0.8)$ and ending points set to $t_{\text{end}} = t_{\text{start}} + 0.2$. The student model takes $N = 30$ gradient steps with learning rate $\eta_s = 0.01$. The synthetic data is optimised using SGD with meta learning rate $\eta_x = 100$ and momentum $0.9$. The student learning rate $\eta_s$ is itself meta-optimised with respect to the synthetic data using learning rate $10^{-4}$ and momentum $0.5$. The synthetic batch size is set to $b = \max(2 \times \text{ipc}, 256)$, and the total number of condensation iterations is $T_{\max} = 40{,}000$.
+
+\textbf{Baseline Configurations.}
+For comparison, MTT, FTD, and TESLA matched along the entire trajectory with $M = 5$ expert epochs and $N = 80$ student gradient steps for all datasets. DATM employed sequential generation with $M = 5$, where $T^-$, $T$, and $T^+$ denote the lower bound, current upper bound, and final upper bound of the trajectory sampling range, respectively. For eICU and CURIAL datasets, the configurations were: $(T^-, T, T^+) = (0, 20, 40)$ for 50 \emph{ipc}, $(10, 20, 60)$ for 100 \emph{ipc}, and $(20, 40, 100)$ for 200 and 500 \emph{ipc}. For MIMIC-III, the configurations were: $(0, 10, 25)$ for 50 \emph{ipc}, $(5, 15, 40)$ for 100 \emph{ipc}, $(20, 40, 50)$ for 200 \emph{ipc}, and $(30, 40, 60)$ for 500 \emph{ipc}. All baseline methods used $N = 80$ student steps and shared the same synthetic data optimisation settings as BTM. All methods used hard binary labels except TESLA, which generated soft labels from the target teacher model $\boldsymbol{\theta}_{t+M}$ at each condensation iteration.
+
+For the M3D baseline, the trajectory matching backbone networks were used without sigmoid activation, with the output size changed from $1$ to $62$ nodes for CURIAL, $256$ for eICU, and $128$ for MIMIC-III.
+
+\textbf{Evaluation Protocol.}
+During condensation, the synthetic dataset was evaluated every 10 iterations by training a randomly initialised network and saved when validation AUPRC improved. Experiments saving based on AUROC found that the best AUPRC always corresponded to high AUROC, but the reverse was not true, for reasons discussed in the main paper. The evaluation hyperparameters were: for MIMIC-III, learning rate $0.02$, momentum $0.9$, and $60$ epochs; for eICU, OUH, PUH, and UHB, learning rate $0.05$, momentum $0.9$, and $50$ epochs. 
+
+
+
+
+
+% Different configurations were employed during condensation for trajectory matching-based methods. BTM used segments of length 0.2, with starting points sampled as $t_{\text{start}} \sim \mathcal{U}(0,0.8)$ and ending points set to $t_{\text{end}} = t_{\text{start}} + 0.2$. The number of gradient steps $N$ taken by the student model was set to $N=30$ for BTM and $N=80$ for all other trajectory matching methods across all datasets.
+
+% MTT, FTD, and TESLA matched along the entire trajectory with $M=5$ expert epochs and $N=80$ student gradient steps for all datasets. DATM employed sequential generation with $M=5$, where $T^-$, $T$, and $T^+$ denote the lower bound, current upper bound, and final upper bound of the trajectory sampling range, respectively. For eICU and CURIAL datasets, the configurations were: $(T^-, T, T^+) = (0, 20, 40)$ for 50 \emph{ipc}, $(10, 20, 60)$ for 100 \emph{ipc}, and $(20, 40, 100)$ for 200 and 500 \emph{ipc}. For MIMIC-III, the configurations were: $(0, 10, 25)$ for 50 \emph{ipc}, $(5, 15, 40)$ for 100 \emph{ipc}, $(20, 40, 50)$ for 200 \emph{ipc}, and $(30, 40, 60)$ for 500 \emph{ipc}.
+
+% The synthetic data was optimised using SGD with learning rate $100$ and momentum $0.9$ across all TM methods, datasets, and \emph{ipc} values. The initial inner loop learning rate matched the trajectory training learning rate and was meta-optimised with respect to the synthetic data using learning rate $10^{-4}$ and momentum $0.5$ across all methods. All methods used hard binary labels except TESLA, which generated soft labels from the target teacher model $\boldsymbol{\theta}_{t+M}$ at each condensation iteration.
+
+% For the M3D baseline, the trajectory matching backbone networks were used without sigmoid activation, with the output size changed from $1$ to $62$ nodes for CURIAL, $256$ for eICU, and $128$ for MIMIC-III.
+
+% The synthetic dataset was learnt for $40{,}000$ iterations across all methods and datasets. During condensation, the synthetic dataset was evaluated every 10 iterations by training a randomly initialised network and saved when validation AUPRC improved. Experiments saving based on AUROC found that the best AUPRC always corresponded to high AUROC, but the reverse was not true, for reasons discussed in the main paper. The evaluation hyperparameters were: for MIMIC-III, learning rate $0.02$, momentum $0.9$, and $60$ epochs; for eICU, OUH, PUH, and UHB, learning rate $0.05$, momentum $0.9$, and $50$ epochs.
+
+
+
+
+%%%%%%%%%%%%
+% \subsection{EVALUATION}
+% All methods are evaluated using the TM backbone nets with the following hyperparamters
+% MIMIC3: lr=0.02, mom=0.9, num_epochs=80
+% eICU: lr=0.05, mom=0.9, num_epochs=100
+% OUH: lr=0.05, mom=0.9, num_epochs=100
+% PUH: lr=0.05, mom=0.9, num_epochs=100
+% UHB: lr=0.05, mom=0.9, num_epochs=100
+
+% The MLP and TCN archtectures describe above are used for main evaluation. The MLP variants used for eICU and cross-architecture evaluation use the same hyper paramters above. the TCN variants used for MIMIC-III cross-architecture eval use the same hyperparams above and the LSTMs use lr=0.01, mom=0.9 and num_epochs=30
+
+
+
+
+\subsection{Evaluation}
+
+\textbf{Final Evaluation Protocol.}
+All methods were evaluated using the trajectory-matching backbone networks described in Section~\ref{subsec:architectures}. Models were trained on the condensed synthetic datasets with the following hyperparameters: for MIMIC-III, learning rate $0.02$, momentum $0.9$, and $80$ epochs; for eICU, OUH, PUH, and UHB, learning rate $0.05$, momentum $0.9$, and $100$ epochs.
+
+\textbf{Main Results.}
+The primary evaluation used the MLP and TCN architectures across all datasets to assess the quality of the condensed synthetic datasets.
+
+\textbf{Cross-Architecture Generalisation.}
+To evaluate the transferability of condensed datasets across different architectures, we conducted cross-architecture experiments. For eICU, the MLP variants (MLP-1 through MLP-4) were evaluated using the same hyperparameters as the base MLP (learning rate $0.05$, momentum $0.9$, $100$ epochs). For MIMIC-III, the TCN variants (TCN-1, TCN-2) used the same hyperparameters as the base TCN (learning rate $0.02$, momentum $0.9$, $80$ epochs), while the LSTM variants (LSTM-1, LSTM-2) were trained with learning rate $0.01$, momentum $0.9$, and $30$ epochs.
+
+
+
+
+% \subsection{Evaluation}
+
+% All methods were evaluated using the trajectory-matching backbone networks described in Section~\ref{subsec:architectures}. For the final evaluation, models were trained on the condensed synthetic datasets with the following hyperparameters: for MIMIC-III, a learning rate of $0.02$, momentum of $0.9$, and $80$ epochs; for eICU, OUH, PUH, and UHB, a learning rate of $0.05$, momentum of $0.9$, and $100$ epochs.
+
+% The MLP and TCN architectures were used for the main evaluation. For cross-architecture experiments, the MLP variants (MLP-1 through MLP-4) on eICU used the same hyperparameters as the base MLP. For MIMIC-III, the TCN variants (TCN-1, TCN-2) used the same hyperparameters as the base TCN, whereas the LSTM variants (LSTM-1, LSTM-2) were trained with a learning rate of $0.01$, momentum of $0.9$, and $30$ epochs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ADDITIONAL RESULTS}
+\label{sec:add_res}
+
+%%% TimeSeries RESULTS
+\begin{table}
+\centering
+\caption{
+Performance on eICU and MIMIC-III datasets across different \emph{ipc} levels. Best results at each \emph{ipc} are highlighted in \textcolor{blue}{blue} (ours) and \textcolor{red}{red} (baseline).}
+\label{tab:extra_res}
+
+
+\textbf{(a) eICU}\\[0.5ex]
+\begin{sc}
+\resizebox{0.9\linewidth}{!}{
+    \begin{tabular}{lccccBcccc}
+    \toprule
+    & \multicolumn{4}{cB}{\textbf{AUROC}} & \multicolumn{4}{c}{\textbf{AUPRC}} \\
+    \cmidrule(lr{0.5em}){2-5} \cmidrule(lr{0.5em}){6-9}
+    \textbf{Method} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} &
+    \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+    \midrule
+    Random     & $0.740_{\pm 0.010}$ & $0.763_{\pm 0.009}$ & $0.804_{\pm 0.008}$ & $0.840_{\pm 0.005}$
+               & $0.277_{\pm 0.018}$ & $0.308_{\pm 0.020}$ & $0.368_{\pm 0.018}$ & $0.429_{\pm 0.013}$ \\
+    M3D        & $0.779_{\pm 0.002}$ & $0.824_{\pm 0.002}$ & $0.846_{\pm 0.001}$ & $0.852_{\pm 0.001}$
+               & $0.334_{\pm 0.003}$ & $0.400_{\pm 0.003}$ & $0.447_{\pm 0.002}$ & $0.435_{\pm 0.005}$ \\
+    MTT        & $0.768_{\pm 0.004}$ & $0.793_{\pm 0.002}$ & $0.824_{\pm 0.003}$ & $0.845_{\pm 0.002}$
+               & $0.336_{\pm 0.004}$ & $0.369_{\pm 0.004}$ & $0.388_{\pm 0.006}$ & $0.450_{\pm 0.004}$ \\
+    TESLA      & $0.740_{\pm 0.004}$ & $0.796_{\pm 0.001}$ & $0.815_{\pm 0.001}$ & $0.839_{\pm 0.001}$
+               & $0.312_{\pm 0.005}$ & $0.343_{\pm 0.003}$ & $0.377_{\pm 0.004}$ & $0.436_{\pm 0.002}$ \\
+    FTD        & $0.802_{\pm 0.002}$ & $0.798_{\pm 0.002}$ & $0.816_{\pm 0.002}$ & $0.849_{\pm 0.002}$
+               & $0.378_{\pm 0.008}$ & $0.382_{\pm 0.003}$ & $0.422_{\pm 0.003}$ & $0.444_{\pm 0.003}$ \\
+    DATM       & $0.852_{\pm 0.002}$ & $0.853_{\pm 0.002}$ & $0.850_{\pm 0.002}$ & $0.854_{\pm 0.001}$
+               & $0.459_{\pm 0.002}$ & $0.448_{\pm 0.002}$ & $0.461_{\pm 0.002}$ & $0.477_{\pm 0.002}$ \\
+    \rowcolor{btmgray}
+    BTM (Ours) & \bestOurs{$0.858_{\pm 0.004}$} & \bestOurs{$0.856_{\pm 0.004}$} & \bestOurs{$0.858_{\pm 0.003}$} & \bestOurs{$0.871_{\pm 0.001}$}
+               & \bestOurs{$0.466_{\pm 0.007}$} & \bestOurs{$0.479_{\pm 0.008}$} & \bestOurs{$0.473_{\pm 0.007}$} & \bestOurs{$0.504_{\pm 0.003}$} \\
+    \midrule
+    \emph{\textbf{Full Dataset}} & \multicolumn{4}{cB}{$\mathbf{0.879_{\pm 0.002}}$} & \multicolumn{4}{c}{$\mathbf{0.515_{\pm 0.003}}$} \\
+    \bottomrule
+    \end{tabular}
+}
+\end{sc}
+\par\vspace{3ex}
+
+
+% MIMIC-III
+\textbf{(b) MIMIC-III}\\[0.5ex]
+\begin{sc}
+\resizebox{0.9\linewidth}{!}{
+    \begin{tabular}{lccccBcccc}
+    \toprule
+    & \multicolumn{4}{cB}{\textbf{AUROC}} & \multicolumn{4}{c}{\textbf{AUPRC}} \\
+    \cmidrule(lr{0.5em}){2-5} \cmidrule(lr{0.5em}){6-9}
+    \textbf{Method} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} &
+    \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+    \midrule
+    Random     & $0.743_{\pm 0.014}$ & $0.751_{\pm 0.016}$ & $0.776_{\pm 0.008}$ & $0.789_{\pm 0.009}$ 
+               & $0.344_{\pm 0.028}$ & $0.360_{\pm 0.027}$ & $0.383_{\pm 0.024}$ & $0.399_{\pm 0.014}$ \\
+    M3D        & $0.771_{\pm 0.006}$ & $0.774_{\pm 0.004}$ & $0.788_{\pm 0.010}$ & $0.799_{\pm 0.008}$ 
+               & $0.390_{\pm 0.007}$ & $0.401_{\pm 0.006}$ & $0.413_{\pm 0.007}$ & $0.403_{\pm 0.017}$ \\
+    MTT        & $0.805_{\pm 0.006}$ & $0.823_{\pm 0.003}$ & $0.833_{\pm 0.002}$ & $0.836_{\pm 0.002}$ 
+               & $0.431_{\pm 0.020}$ & $0.456_{\pm 0.013}$ & $0.483_{\pm 0.006}$ & $0.488_{\pm 0.008}$ \\
+    TESLA      & $0.788_{\pm 0.006}$ & $0.793_{\pm 0.006}$ & $0.800_{\pm 0.010}$ & $0.808_{\pm 0.006}$ 
+               & $0.385_{\pm 0.006}$ & $0.395_{\pm 0.008}$ & $0.413_{\pm 0.015}$ & $0.418_{\pm 0.005}$ \\
+    FTD        & $0.798_{\pm 0.004}$ & $0.813_{\pm 0.006}$ & $0.815_{\pm 0.006}$ & $0.823_{\pm 0.004}$ 
+               & $0.434_{\pm 0.009}$ & $0.438_{\pm 0.018}$ & $0.448_{\pm 0.013}$ & $0.467_{\pm 0.009}$ \\
+    DATM       & $0.824_{\pm 0.003}$ & $0.834_{\pm 0.002}$ & $0.838_{\pm 0.002}$ & $0.837_{\pm 0.003}$ 
+               & $0.467_{\pm 0.010}$ & $0.488_{\pm 0.007}$ & \bestOther{$0.500_{\pm 0.007}$} & $0.498_{\pm 0.006}$ \\
+    \rowcolor{btmgray}
+    BTM        & \bestOurs{$0.830_{\pm 0.005}$} & \bestOurs{$0.835_{\pm 0.004}$} & \bestOurs{$0.840_{\pm 0.001}$} & \bestOurs{$0.840_{\pm 0.001}$} 
+               & \bestOurs{$0.472_{\pm 0.014}$} & \bestOurs{$0.489_{\pm 0.010}$} & $0.498_{\pm 0.005}$ & \bestOurs{$0.502_{\pm 0.003}$} \\
+    \midrule
+    \emph{\textbf{Full Dataset}} & \multicolumn{4}{cB}{$\mathbf{0.837_{\pm 0.003}}$} & \multicolumn{4}{c}{$\mathbf{0.499_{\pm 0.008}}$} \\
+    \bottomrule
+    \end{tabular}
+}
+\end{sc}
+% \par\vspace{3ex}
+
+
+% % PhysioNet
+% \textbf{(c) PhysioNet}\\[0.5ex]
+% \begin{sc}
+% \resizebox{0.9\linewidth}{!}{
+%     \begin{tabular}{lccccBcccc}
+%     \toprule
+%     & \multicolumn{4}{cB}{\textbf{AUROC}} & \multicolumn{4}{c}{\textbf{AUPRC}} \\
+%     \cmidrule(lr{0.5em}){2-5} \cmidrule(lr{0.5em}){6-9}
+%     \textbf{Method} & \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} &
+%     \textbf{50} & \textbf{100} & \textbf{200} & \textbf{500} \\
+%     \midrule
+%     Random     & $0.758_{\pm 0.034}$ & $0.802_{\pm 0.017}$ & $0.819_{\pm 0.010}$ & $0.842_{\pm 0.006}$
+%                & $0.342_{\pm 0.050}$ & $0.405_{\pm 0.039}$ & $0.418_{\pm 0.027}$ & $0.463_{\pm 0.026}$ \\
+%     M3D        & $0.834_{\pm 0.003}$ & $0.837_{\pm 0.005}$ & $0.844_{\pm 0.004}$ & \bestOther{$0.851_{\pm 0.004}$} 
+%                & $0.464_{\pm 0.010}$ & $0.451_{\pm 0.010}$ & $0.473_{\pm 0.011}$ & $0.489_{\pm 0.009}$ \\
+%     MTT        & $0.834_{\pm 0.007}$ & $0.843_{\pm 0.005}$ & $0.842_{\pm 0.005}$ & $0.840_{\pm 0.004}$ 
+%                & $0.483_{\pm 0.009}$ & \bestOther{$0.501_{\pm 0.008}$} & $0.498_{\pm 0.007}$ & $0.485_{\pm 0.012}$ \\
+%     TESLA      & $0.809_{\pm 0.008}$ & $0.831_{\pm 0.002}$ & $0.837_{\pm 0.003}$ & $0.842_{\pm 0.004}$ 
+%                & $0.447_{\pm 0.014}$ & $0.472_{\pm 0.005}$ & $0.473_{\pm 0.008}$ & $0.477_{\pm 0.009}$ \\
+%     FTD        & \bestOther{$0.840_{\pm 0.006}$} & $0.841_{\pm 0.006}$ & \bestOther{$0.847_{\pm 0.003}$} & $0.843_{\pm 0.004}$ 
+%                & \bestOther{$0.495_{\pm 0.008}$} & $0.497_{\pm 0.008}$ & $0.490_{\pm 0.008}$ & $0.471_{\pm 0.010}$ \\
+%     DATM       & $0.826_{\pm 0.012}$ & $0.829_{\pm 0.013}$ & $0.831_{\pm 0.012}$ & $0.838_{\pm 0.006}$ 
+%                & $0.481_{\pm 0.015}$ & $0.493_{\pm 0.014}$ & $0.490_{\pm 0.014}$ & $0.481_{\pm 0.013}$ \\
+%     \rowcolor{btmgray}
+%     BTM (Ours) & $0.838_{\pm 0.006}$ & \bestOurs{$0.844_{\pm 0.005}$} & $0.846_{\pm 0.004}$ & $0.839_{\pm 0.009}$ 
+%                & $0.479_{\pm 0.015}$ & $0.497_{\pm 0.015}$ & \bestOurs{$0.493_{\pm 0.015}$} & \bestOurs{$0.490_{\pm 0.015}$} \\
+%     \midrule
+%     \emph{\textbf{Full Dataset}} & \multicolumn{4}{cB}{$\mathbf{0.866 \pm 0.005}$} & \multicolumn{4}{c}{$\mathbf{0.513 \pm 0.011}$} \\
+%     \bottomrule
+%     \end{tabular}
+% }
+% \end{sc}
+\end{table}
+
+
+
+\end{document}

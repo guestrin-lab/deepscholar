@@ -1,0 +1,185 @@
+\section{Method: MARL for Cooperative Payload Transport}
+
+We train decentralized \gls{marl} policies that enable $Q$ Crazyflie quadrotors to transport a cable suspended payload. The task is modeled as a \gls{dec-pomdp}
+$
+(\mathcal{Q},\mathcal{S},\{\mathcal{A}^i\},P,r,\{\Omega^i\},O,\rho_0,\gamma),
+$
+where $\mathcal{Q}=\{1,\dots,Q\}$ is the agent index set, $\mathcal{S}$ is the state space, $\mathcal{A}^i=[-1,1]^4$ is the action space of agent $i$, $P$ is the transition kernel, $r$ is the shared reward, $\Omega^i$ is the local observation space of agent $i$, $O$ is the observation function, $\rho_0$ is the reset distribution, and $\gamma\in[0,1)$ is the discount.
+
+The global state at time $t$ is
+\begin{equation}
+\mathbf{s}_t=\Bigl(\{\mathbf{p}^i_t,\mathbf{v}^i_t,\mathbf{R}^i_t,\boldsymbol{\omega}^i_t\}_{i=1}^Q,\,\mathbf{p}^P_t,\mathbf{v}^P_t\Bigr),
+\end{equation}
+with $\mathbf{p}^i_t\in\mathbb{R}^3$ and $\mathbf{v}^i_t\in\mathbb{R}^3$ the position and linear velocity of agent $i$, $\mathbf{R}^i_t\in\mathrm{SO}(3)$ its attitude, $\boldsymbol{\omega}^i_t\in\mathbb{R}^3$ its body rates, and $\mathbf{p}^P_t,\mathbf{v}^P_t\in\mathbb{R}^3$ are the payload position and velocity.
+
+Each agent produces a normalized motor command $\mathbf{a}^i_t\in[-1,1]^4$. We write $\mathbf{a}_t$ for the joint action, the concatenation of $\{\mathbf{a}^i_t\}_{i=1}^Q$. The team receives a shared reward $r(\mathbf{s}_t,\mathbf{a}_t)$. The observation spaces are $\{\Omega^i\}$ and the observation function $O$ yields local observations $\mathbf{o}^i_t$ from $\mathbf{s}_t$ as defined below. The initial state is sampled from $\rho_0$ through the randomized reset distribution. The objective is
+
+\begin{equation}
+\max_{\theta}\;J(\theta)=\mathbb{E}\!\left[\sum_{t=0}^{\infty}\gamma^t\,r(\mathbf{s}_t,\mathbf{a}_t)\right],
+\quad
+\mathbf{a}^i_t\sim\pi_{\theta}(\cdot\mid \mathbf{o}^i_t,\mathbf{a}^i_{t-1}).
+\end{equation}
+We use \gls{ippo} with parameter sharing. A single actor and critic are trained on data from all agents and the critic conditions only on $\mathbf{o}^i_t$ and $\mathbf{a}^i_{t-1}$. Training is centralized by shared parameters and execution is decentralized, following a \gls{ctde} paradigm without privileged information.
+To mitigate partial observability, improve stability, and ease sim-to-real transfer, we augment each local observation with the previous action and encourage smooth commands during training.
+
+\subsection{CrazyMARL Framework}
+We propose CrazyMARL, an end-to-end JAX-based pipeline that couples MuJoCo MJX with JaxMARL algorithms \cite{todorov2012mujoco,flair2023jaxmarl}. It is designed for training coordinated behaviors with multiple quadrotors. We specialize it for use with the Crazyflie research platform carrying a cable-suspended payload, but it can be easily reparameterized for other multirotors and scenarios. MJX allows us to run thousands of environments in parallel on GPU. Our tasks cover single-robot hover/tracking and multi-robot cable-suspended transport with configurable payloads and cables (MuJoCo tendons). We focus on disturbance rejection and hovering under harsh conditions. 
+
+
+
+\subsection{Observations}
+We form a global observation
+\begin{equation}
+\mathbf{o}_t=\bigl[\mathbf{e}^P_t,\mathbf{v}^P_t,\{\boldsymbol{\delta}^i_t,\mathrm{vec}(\mathbf{R}^i_t),\mathbf{v}^i_t,\boldsymbol{\omega}^i_t,\mathbf{a}^i_{t-1}\}_{i=1}^Q\bigr],
+\label{eq:obs_global}
+\end{equation}
+where $\mathbf{e}^P_t=\mathbf{p}^P_{\mathrm{des},t}-\mathbf{p}^P_t$, $\boldsymbol{\delta}^i_t=\mathbf{p}^i_t-\mathbf{p}^P_t$, and
+$\mathrm{vec}(\mathbf{R}^i_t)$ denotes the column vector obtained by stacking the columns of $\mathbf{R}^i_t$.
+For decentralized execution, agent $i$ receives its own observation and the other agents' relative positions
+\begin{equation}
+\mathbf{o}^i_t=\bigl[\mathbf{e}^P_t,\mathbf{v}^P_t,\boldsymbol{\delta}^i_t,\mathrm{vec}(\mathbf{R}^i_t),\mathbf{v}^i_t,\boldsymbol{\omega}^i_t,\mathbf{a}^i_{t-1},\{\boldsymbol{\delta}^j_t\}_{j\neq i}\bigr].
+\end{equation}
+During training, we optionally inject scaled Gaussian noise into $\mathbf{o}_t$.
+
+\subsection{Actions}
+Each agent outputs $\mathbf{a}^i_t\in[-1,1]^4$. We map to desired thrusts by
+\begin{equation}
+\mathbf{u}^i_t=\tfrac{\mathbf{a}^i_t+\mathbf{1}}{2}\in[0,1]^4,
+\qquad
+\mathbf{f}^{i,\mathrm{cmd}}_t=\mathbf{u}^i_t\,f^i_{\max}.
+\end{equation}
+A first-order lag on a rotor speed proxy approximates non-ideal actuation \cite{molchanov_sim--multi-real_2019}. Since thrust grows approximately with the square of rotor speed, we define
+\begin{equation}
+\boldsymbol{\nu}^{\,i}_t=\sqrt{\mathbf{f}^{i,\mathrm{cmd}}_t},
+\quad
+\tilde{\boldsymbol{\nu}}^{\,i}_{t+1}
+=\tilde{\boldsymbol{\nu}}^{\,i}_{t}
++\alpha^i\!\left(\boldsymbol{\nu}^{\,i}_t-\tilde{\boldsymbol{\nu}}^{\,i}_{t}\right),
+\quad
+\alpha^i=\tfrac{\Delta t}{\tau^i},
+\label{eq:motor-first-order}
+\end{equation}
+and apply thrust as
+\begin{equation}
+\mathbf{f}^i_t=\mathrm{clip}\!\bigl((\tilde{\boldsymbol{\nu}}^{\,i}_{t+1})^2,\,0,\,f^i_{\max}\bigr).
+\end{equation}
+Working in the rotor speed domain aligns the lag more closely with motor and propeller time constants. The filtered speed proxy is initialized near hover and set to zero for grounded starts.
+In Mujoco the thrust of motor $j$ on vehicle $i$ is applied as an upward force along the body $z$ axis at the motor position and a reaction torque proportional to thrust is added with rotor spin sign and fixed thrust to torque coefficient $k_{\tau}=0.006$. All control runs at $250\,\mathrm{Hz}$. On the real hardware, the policy output controls \gls{pwm} directly without battery voltage compensation. We scale $\mathbf{u}^i_t$ to \gls{pwm} duty cycle. This is justified because in the operating range of the micro brushed motors, thrust is approximately proportional to duty cycle and in the model, the commanded thrust is proportional to $\mathbf{u}^i_t$. The same normalized action $\mathbf{u}^i_t$ can therefore be interpreted as a normalized thrust command in simulation and as a normalized \gls{pwm} command on hardware. Direct \gls{pwm} output avoids the typical thrust mixing step that can lead to motor saturation and therefore improves robustness, especially when operating close to the actuation limits of small lightweight quadrotors with low thrust-to-weight ratio.
+
+\subsection{Simulation and Transition Model}
+We simulate rigid body dynamics with Mujoco at $250\,\mathrm{Hz}$ with step $\Delta t=0.004\,\mathrm{s}$. At time $t$ the environment samples the next state from the transition function $s_{t+1} \sim P(\cdot \mid s_t, a_t)$ induced by one Mujoco physics step with our actuation model. 
+It aggregates actuator forces and torques, tendon tension when the cable is taut, contact, and gravity. 
+Each quadrotor is modeled as a freejoint rigid body and connects to the payload body through a Mujoco tendon of length $L$ that exerts tension along the line from payload to robot only when taut, and zero otherwise. Domain randomization parameters and external disturbances enter $P$ at every step. 
+Contacts and friction are solved by the physics engine. This model captures multi-body coupling and the hybrid slack and taut cable modes while remaining fast enough for large scale parallel training.
+
+
+
+\subsection{Domain Randomization for Sim-to-Real Transfer}
+
+\begin{figure}[]
+  \includegraphics[width=0.7\columnwidth]{initial_states_two.pdf}
+  \caption{50 randomized initial states for $s_0\!\sim\!\rho_0$; harsh cases (slack cables, ground starts) are included. The target is at the center. the top-right shows one state in MuJoCo.}
+  \label{fig:env-reset}
+\end{figure}
+
+
+To narrow the reality gap between simulation and reality, we rely on \gls{dr} techniques.
+We introduce randomization into several aspects of our training pipeline, including randomized initial states, actuator dynamics parameters, observations, targets, and stochastic disturbances. 
+Our JAX and GPU-based training setup enables training with \gls{dr} on a large number of environments, resulting in effective zero-shot transfer and robust performance in the real world.
+Our \gls{dr} strategy includes the following:
+
+\smallskip
+\noindent\textbf{Initial states}: The payload is sampled around a nominal target, and quadrotors are placed on a spherical shell clipped by cable length, with randomized attitudes and linear and angular velocities. Challenging cases, such as ground starts and slack cables, are included, as shown in Fig.~\ref{fig:env-reset}.
+
+\smallskip
+\noindent\textbf{Dynamics and actuator parameters}
+We randomize the per motor thrust cap around a quad level base to remain robust under battery discharge and motor aging. For each quad we draw a base thrust from $\mathcal{U}(0.105,0.15)\,\mathrm{N}$ and add an independent motor offset from $\mathcal{N}(0,0.008^2)\,\mathrm{N}$, then clip to $[0.095,0.16]\,\mathrm{N}$. The actuation lag time constants $\tau^i$ are sampled in $\mathcal{U}(0.004,0.05)\,\mathrm{s}$. The filtered thrust state receives a small perturbation at every reset and we inject occasional bounded steps in the filtered \textsc{rpm} proxy. Together, these randomizations support zero-shot sim-to-real transfer despite large variation of motor characteristics in micro brushed motors.
+
+
+\smallskip
+\noindent\textbf{Observations}:
+We inject Gaussian noise into the
+global observation vector at each timestep. Concretely, given an observation $\mathbf{o}$, we sample a
+standard normal vector $\bm{\eta} \sim \mathcal{N}(0, \mathbf{I})$ of the same dimension, and compute the noisy observation using $\mathbf{o}' = \mathbf{o} + \sigma_\text{obs} \Lambda \bm{\eta}$, where $\sigma_\text{obs}$ is a tunable noise amplitude and $\Lambda$ is a diagonal scaling term to tune the noise for each observation component.
+
+
+\smallskip
+\noindent\textbf{Stochastic disturbances and target randomization.} At each step, we randomly apply bounded external wrenches. A random \gls{uav} receives a small force $f \sim \mathcal{U}(0,0.05)$N and a torque $\tau \sim \mathcal{U}(0,0.03)$Nm in a direction biased toward its body $z$-axis. The payload receives a small impulse force $f_p \sim \mathcal{U}(0,5)$N. We also add occasional jumps in the filtered RPM proxy, and when enabled, bounded random target updates around the goal to improve trajectory following.
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Reward Design}
+
+\newcommand{\meanI}[1]{\avg_{i}\!\left[#1\right]}        %
+\newcommand{\meanIJ}[1]{\avg_{i\neq j}\!\left[#1\right]}  %
+\newcommand{\meanJ}[1]{\avg_{j}\!\left[#1\right]}         %
+
+We propose a modular reward that applies to one or many quadrotors, with or without a cable-suspended payload. It combines tracking, stability, and safety, and uses a bounded exponential envelope to keep gradients smooth \cite{molchanov_sim--multi-real_2019,Eschmann2024,kaufmann_benchmark_2022,huang_collision_2024}. At a low level, the terms promote fast recovery with low swing and tilt, taut cables, safe spacing, and smooth thrust for sim-to-real transfer. We design reward components to lie in the range $[0,1]$ wherever possible. This limits trade-off tuning, avoids learning to terminate behavior, and removes the need for a curriculum reward.
+Our composite reward is defined as  
+\begin{equation}
+    r = r_\mathrm{track} \, r_\mathrm{stable} + r_\mathrm{safe},
+    \label{eq:reward}
+\end{equation}
+where $r_\mathrm{track}$ rewards small payload error and aligns payload velocity with the target direction, and $r_\mathrm{stable}$ combines terms that cap velocity smoothly, limit payload swing, keep the body-$z$ axis near vertical, and maintain taut cables. The safety component $r_\mathrm{safe}$ promotes temporal smoothness in actions, balanced motor thrust distribution, and discourages action saturation. It also encourages collision avoidance and distance keeping.
+The coupling of tracking and stability in \eqref{eq:reward} encourages high speeds only when the payload is stable, while the additive safety reward applies strict incentives independent of tracking. The same reward structure scales with the number of robots $Q$, and with minor adjustments, also applies in payload-free scenarios. Full details of the sub-components of the individual rewards in \eqref{eq:reward} are provided in the Appendix.
+
+
+
+
+
+
+
+
+\subsection{Training and Policy Architecture}
+We train decentralized policies with \gls{ippo}~\cite{witt_is_2020} extending the JaxMARL implementation~\cite{flair2023jaxmarl}. All agents share parameters and act independently from local observations. Synchronous vectorized actors collect \(N\times T\) transitions per update and we optimize the \gls{ppo} objective with generalized advantage estimation, value loss, and an entropy bonus.
+
+The actor is a \gls{mlp} with three hidden layers \([64,64,64]\) with \texttt{tanh} activations and a linear mean head. The action distribution is a diagonal Gaussian with learned log standard deviation. The critic is an \gls{mlp} \([128,128,128]\) that maps to a scalar value. We use orthogonal weight initialization with zero bias, sample actions during training, and use the mean at evaluation. In our experiments \gls{ippo} is sufficient for up to three quadrotors. For larger teams or stronger partial observability a centralized training variant with a joint critic such as \gls{mappo} may be beneficial. 
+
+Hyperparameters were selected with Bayesian optimization over fixed compute budgets. While the pipeline can produce a usable policy in minutes when trained with a small number of environments, we find that with full \gls{dr} robust performance requires significant parallelization. We therefore use \(N{=}16,384\) environments, which reduces gradient variance, yields smooth learning curves, and shows little sensitivity to the random seed, while delivering very robust performance under all randomized conditions. Key settings are summarized in Table~\ref{tab:hyperparams}. Unless stated otherwise, all reported results use these defaults on a single Nvidia Ada RTX~4000 GPU with \(20\,\mathrm{GB}\) memory and \textsc{jax} and \textsc{mjx} parallelization.
+
+\begin{table}[t]
+\centering
+\caption{Key training and model hyperparameters.}
+\label{tab:hyperparams}
+
+\renewcommand{\arraystretch}{1.0}
+\setlength{\tabcolsep}{4pt}
+\resizebox{1.0\columnwidth}{!}{
+\begin{tabular}{ll}
+\hline
+
+\textbf{Parameter} & \textbf{Setting} \\
+\hline
+Algorithm & \gls{ippo}~\cite{witt_is_2020} \\
+Actor network & MLP \([64,64,64]\), \texttt{tanh} \\
+Critic network & MLP \([128,128,128]\), \texttt{tanh} \\
+Initialization & Orthogonal weights, zero bias \\
+Action distribution & Diagonal Gaussian, learned log std \\
+Rollout & \(N{=}16{,}384\) envs, \(T{=}128\) steps \\
+Optimization & 256 minibatches, 8 epochs per update \\
+Learning rate & \(4\times10^{-4}\) \\
+Entropy coefficient & 0.01 \\
+Value loss coefficient & 0.5 \\
+Clip range & 0.2 \\
+Grad norm clip & 0.5 \\
+Discount \(\gamma\) & 0.997 \\
+GAE \(\lambda\) & 0.95 \\
+Episode length & 3072 steps \(\approx 12.3\,\mathrm{s}\) at 250\,Hz \\
+Control rate & 250\,Hz, one sim step per action \\
+Observation noise std & 1.0 \\
+Action noise std & 0.0 \\
+Total environment steps & \(2\times10^{9}\) \\
+Seed & 0 \\
+Tuning & Bayesian optimization \\
+Hardware & Single Nvidia Ada RTX~4000, \(20\,\mathrm{GB}\) \\
+\hline
+\end{tabular}}
+\end{table}

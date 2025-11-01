@@ -1,0 +1,217 @@
+\clearpage
+\section{Appendix}
+\subsection{Document Ingestion}
+\label{app:ingestion}
+To better situate \mmore{} within the ecosystem of document ingestion systems, Table~\ref{tab:ingestion_comparison_expanded} presents a fine-grained comparison with two representative alternatives: \textit{Docling} and \textit{NV-Ingest} (part of NeMo Retriever). We evaluate them across modality support, indexing capabilities, and RAG integration. Green cells indicate native support, while grey cells denote the absence of the corresponding capability.
+
+\begin{table}[h]
+    \centering
+    \small
+    \resizebox{0.5\textwidth}{!}{%
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Feature} & \textbf{Docling} & \textbf{NV-Ingest\tablefootnote{\href{https://docs.nvidia.com/nemo/retriever/extraction/overview/}{NeMo Retriever Documentation}}} & \textbf{MMORE} \\
+        \midrule
+        % ---------------------- SUPPORTED MODALITIES ----------------------
+        \rowcolor{gray!20}
+        \multicolumn{4}{l}{\textit{Supported Modalities}} \\
+        \midrule
+        PDF & \greencell & \greencell & \greencell \\
+        DOCX & \greencell & \greencell & \greencell \\
+        PPTX & \greencell & \greencell & \greencell \\
+        XLSX / spreadsheets & \greencell & \greycell & \greencell \\
+        TXT & \greencell & \greencell & \greencell \\
+        HTML & \greencell & \greycell & \greencell \\
+        Markdown & \greencell & \greycell & \greencell \\
+        CSV & \greencell & \greycell & \greencell \\
+        Images (PNG/JPEG/SVG/TIFF/BMP) & \greencell & \greencell & \greencell \\
+        Audio & \greycell & \greycell & \greencell \\
+        Video & \greycell & \greycell & \greencell \\
+        EML & \greycell & \greycell & \greencell \\
+        \midrule
+        % ---------------------- INDEXING & EMBEDDING ----------------------
+        \rowcolor{gray!20}
+        \multicolumn{4}{l}{\textit{Indexing \& Embedding}} \\
+        \midrule
+        Native engine included & \greycell & \greencell & \greencell \\
+        LangChain / LlamaIndex connector & \greencell & \greencell & \greencell \\
+        \midrule
+        % ---------------------- RAG INTEGRATION ----------------------
+        \rowcolor{gray!20}
+        \multicolumn{4}{l}{\textit{RAG}} \\
+        \midrule
+        Built--in RAG pipeline & \greycell & \greycell & \greencell \\
+        Plugin--based RAG & \greencell & \greencell & \greycell \\
+        \midrule
+        % ---------------------- LICENSE ----------------------
+        Open--Source license & MIT & Apache~2.0 & Apache~2.0 \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \caption{Fine-grained comparison of Docling, NV-Ingest, and MMORE document-ingestion pipelines. Green cells indicate native support; grey cells indicate absence of the capability.}
+    \label{tab:ingestion_comparison_expanded}
+\end{table}
+
+
+\mmore{} supports a wide range of file formats through modular extractors. For each supported type, we define a \textit{default mode} prioritizing accuracy and a \textit{fast mode} optimized for speed. When no alternative tool is available, the fast mode is left unspecified (--). A complete list of tools used per file type is shown in Table \ref{tab:ingestion_tools}.
+
+\begin{table*}[h]
+\centering
+\small
+\resizebox{0.99\textwidth}{!}{%
+\begin{tabular}{l l l}
+\toprule
+\textbf{File Type} & \textbf{Default Mode Tool(s)} & \textbf{Fast Mode Tool(s)} \\
+\midrule
+\rowcolor{gray!5}
+DOCX & \texttt{python-docx} for text and image extraction & -- \\
+MD & \texttt{markdown} for text, \texttt{markdownify} for HTML conversion & -- \\
+\rowcolor{gray!5}
+PPTX & \texttt{python-pptx} for text and image extraction & -- \\
+XLSX & \texttt{openpyxl} for table and text extraction & -- \\
+\rowcolor{gray!5}
+TXT & Python built-in \texttt{open()} & -- \\
+EML & Python built-in \texttt{email} module & -- \\
+\rowcolor{gray!5}
+Audio/Video (MP4, MP3, etc.) & \texttt{moviepy} for frames, \texttt{whisper-large-v3-turbo} for transcription & \texttt{whisper-tiny} \\
+PDF & \texttt{marker-pdf} for OCR/structured data & \texttt{PyMuPDF} \\
+\rowcolor{gray!5}
+HTML & \texttt{BeautifulSoup} & -- \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Overview of supported file types and extraction tools in \mmore{}. Full URLs are included in the project documentation.}
+\label{tab:ingestion_tools}
+\end{table*}
+
+
+% \begin{table*}[t!]
+% \centering
+% \small
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lccc}
+% \toprule
+% \textbf{Feature} & \textbf{Docling} & \textbf{NV-Ingest\tablefootnote{\href{https://docs.nvidia.com/nemo/retriever/extraction/overview/}{NeMo Retriever Documentation}}} & \textbf{MMORE} \\
+% \midrule
+% Model Stack & Pydantic v2 + native PDF backend + ONNX/PyTorch AI models\tablefootnote{\label{fn:docling-github}See GitHub repo} 
+%             & NIM microservices (NeMo Retriever modules)
+%             & Modular Python processors + Milvus indexing + LangChain RAG \\
+% \rowcolor{gray!10}
+% Supported Modalities & PDF, DOCX, PPTX, XLSX, TXT, HTML, Markdown, CSV, images (PNG, JPEG, TIFF, BMP, SVG)\tablefootnote{\label{docling-github}GitHub: full format list}
+%                      & PDF, DOCX, PPTX, TXT, images (JPEG, PNG, SVG, TIFF)
+%                      & PDF, media (video/audio), spreadsheets, EML \\
+% Throughput (best) & GPU: 2.08 pages/sec (L4); CPU: 1.35 pages/sec (M3 Max)\tablefootnote{\label{docling-technical-report}See technical report}
+%                   & 12 pages/sec, 900 embeddings/sec (1× H100)
+%                   & 3.89 pages/sec (4× A100) \\
+% \rowcolor{gray!10}
+% Indexing \& Embedding & Exports JSON/Markdown; connectors for LangChain/LlamaIndex; no native engine
+%                       & Optional Milvus indexing via NeMo Retriever
+%                       & Integrated Milvus + LangChain \\
+% RAG Integration & Via LangChain/LlamaIndex plugins
+%                 & LangChain via JSON output
+%                 & Built-in LangChain interface \\
+% \rowcolor{gray!10}
+% Open-Source License & MIT
+%                    & Apache 2.0
+%                    & Apache 2.0 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \caption{Comparison of Docling, NV-Ingest, and MMORE Document Ingestion Pipelines.}
+% \label{tab:ingestion_comparison}
+% \end{table*}
+
+
+\subsection{Multimodal Sample}
+
+The format provides a standardized representation for processed documents, combining extracted text with references to non-text elements. As shown in the example, the "text" field contains the document's content with \texttt{<attachment>} placeholders (which are configurable) marking modality locations, while the modalities array contains all embedded objects with their types and storage paths.
+
+
+\label{app:data_format}
+\begin{tcolorbox}[
+  enhanced,
+  colback=black!3,          % Light gray background inside
+  colframe=black!50,        % Medium gray border
+  coltitle=white,           % White title text
+  fonttitle=\bfseries,      % Bold title font
+  title=Format Example:, % Box title
+  colbacktitle=black!50,    % Dark gray title background
+  boxrule=0.4mm,
+  toptitle=1mm,
+  bottomtitle=1mm
+]
+
+\begin{lstlisting}[
+    basicstyle=\small\ttfamily,
+    numbers=none,
+    backgroundcolor=\color{black!3}
+]
+{
+  "text": "A report containing a cool image <attachment> and a chart <attachment>...",
+  "modalities": [
+    {
+      "type": "image",
+      "value": "chart_url_2.png"
+    },
+    {
+      "type": "image",
+      "value": "chart_url_1.png"
+    }
+  ]
+}
+\end{lstlisting}
+
+\noindent\rule{\linewidth}{0.4pt}
+
+\small{\textit{The standardized format for document processing.}}
+
+
+\end{tcolorbox}
+
+\subsection{Processing Accuracy - Metrics}
+\label{app:metrics}
+
+To quantify extraction accuracy, we used a combination of machine translation, summarization and string similarity metrics. Their definitions are given below.
+
+\textbf{BLEU Score (bilingual evaluation understudy)} \cite{bleuscore}:  
+The BLEU score evaluates the overlap between the n-grams (sequences of words of length \(n\)) between the extracted text and the ground truth. It is defined as:
+
+\begin{equation}  
+\text{BLEU} = \text{BP} \cdot \exp \left( \sum_{n=1}^{N} w_n \log p_n \right)
+\end{equation}
+
+
+where \(p_n\) is the precision for n-grams of length \(n\), ranging from [1 to 4], \(w_n\) are the weights (uniform), and brevity penalty (\(\text{BP}\)), given by:
+
+\begin{equation}  
+\text{BP} = 
+\begin{cases} 
+1 & \text{if } c > r \\ 
+\exp\left(1 - \frac{r}{c}\right) & \text{if } c \leq r
+\end{cases}
+\end{equation}
+
+Here, \(c\) is the length of the candidate (extracted) text, and \(r\) is the length of the reference (ground truth). BLEU considers how much of the extracted text matches the reference text in terms of word sequences, while also penalizing outputs that are too short.
+
+\textbf{ROUGE-L (recall-oriented understudy for gisting evaluation)} \cite{lin2004rouge}:  
+ROUGE-L measures the quality of the extracted text using the longest common subsequence (LCS) between the extracted text and the ground truth. The LCS is the longest sequence of words appearing in the same order in both texts (though not necessarily consecutively). ROUGE-L is calculated as:
+
+\begin{equation}  
+\text{ROUGE-L} = F_\text{measure} = \frac{(1 + \beta^2) \cdot \text{Precision} \cdot \text{Recall}}{\beta^2 \cdot \text{Precision} + \text{Recall}}
+\end{equation}
+
+where \(\beta\) is a weighting factor (set to 1 for equal weighting), and:
+
+\begin{equation}  
+\begin{aligned}
+\text{Precision} &= \frac{\text{LCS}}{\text{Length of Extracted Text}}, \\
+\text{Recall} &= \frac{\text{LCS}}{\text{Length of Ground Truth}}.
+\end{aligned}
+\end{equation}
+
+\textbf{Levenshtein distance - character error rate (CER)} \cite{levenshtein}:  
+Given two strings, \( s_1 \) (extracted text) and \( s_2 \) (ground truth), the Levenshtein distance \( d(s_1, s_2) \) measures the minimum number of insertions, deletions, or substitutions required to transform \( s_1 \) into \( s_2 \). We normalize this distance over the length of the ground truth and is defined as:
+
+\begin{equation}
+\text{CER} = \frac{d(s_1, s_2)}{|s_1|}
+\end{equation}

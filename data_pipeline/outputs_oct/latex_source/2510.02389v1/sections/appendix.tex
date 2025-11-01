@@ -1,0 +1,610 @@
+\newpage
+\appendix
+\section{Appendix}
+
+\subsection{ARVO Crash Type}
+
+To understand where our vulnerability localization agent should focus, we analyze the crash type distribution in ARVO dataset. 
+ARVO's crash type distribution is dominated by classic memory corruption: Buffer Overflow accounts for 49.9\% of crashes, led by heap-buffer-overflow (36.1\% overall) and followed by stack-buffer-overflow (6.2\%), index-out-of-bounds (3.3\%), and global-buffer-overflow (3.2\%), with underflows/containers in the long tail (around 1\% each). Uninitialized Access \& Unknown States is the second largest family at 35.4\%, primarily use-of-uninitialized-value (20.3\%), then UNKNOWN READ/WRITE (around 11.8\% combined). Memory Lifecycle Errors contribute 11.5\%, dominated by heap-use-after-free (7.8\% overall) plus double-free, use-after-poison, and invalid frees. Type Safety \& Parameter Validation is smaller (2.9\%)—notably bad-cast (1.3\%) and negative-size-param (0.8\%). System \& Runtime Errors are rare (0.3\%). Overall, around 85\% of ARVO crashes fall into Buffer Overflow or Uninitialized/Unknown categories. 
+
+\begin{longtable}{l l r r r}
+\caption{Crash Families and Subtypes Analysis}\\
+\toprule
+\tiny
+Family & Subtype & Count & \% within family & \% of total \\
+\midrule
+\endfirsthead
+\caption[]{Crash Families and Subtypes Analysis (continued)}\\
+\toprule
+Family & Subtype & Count & \% within family & \% of total \\
+\midrule
+\endhead
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+
+\multicolumn{5}{l}{\textbf{Buffer Overflow Vulnerabilities}} \\
+& \textit{Total} & \textit{2490} & \textit{---} & \textit{49.9\%} \\
+\addlinespace[0.5ex]
+& Heap-buffer-overflow & 1802 & 72.4\% & 36.1\% \\
+& Stack-buffer-overflow & 308 & 12.4\% & 6.2\% \\
+& Index-out-of-bounds & 165 & 6.6\% & 3.3\% \\
+& Global-buffer-overflow & 160 & 6.4\% & 3.2\% \\
+& Container-overflow & 33 & 1.3\% & 0.7\% \\
+& Stack-buffer-underflow & 13 & 0.5\% & 0.3\% \\
+& Dynamic-stack-buffer-overflow & 9 & 0.4\% & 0.2\% \\
+\addlinespace
+
+\multicolumn{5}{l}{\textbf{Uninitialized Access \& Unknown States}} \\
+& \textit{Total} & \textit{1768} & \textit{---} & \textit{35.4\%} \\
+\addlinespace[0.5ex]
+& Use-of-uninitialized-value & 1015 & 57.4\% & 20.3\% \\
+& UNKNOWN READ & 462 & 26.1\% & 9.3\% \\
+& Segv on unknown address & 134 & 7.6\% & 2.7\% \\
+& UNKNOWN WRITE & 123 & 7.0\% & 2.5\% \\
+& Null-dereference READ & 25 & 1.4\% & 0.5\% \\
+& UNKNOWN & 8 & 0.5\% & 0.2\% \\
+& Unknown-crash & 1 & 0.1\% & 0.0\% \\
+\addlinespace
+
+\multicolumn{5}{l}{\textbf{Memory Lifecycle Errors}} \\
+& \textit{Total} & \textit{573} & \textit{---} & \textit{11.5\%} \\
+\addlinespace[0.5ex]
+& Heap-use-after-free & 389 & 67.9\% & 7.8\% \\
+& Heap-double-free & 63 & 11.0\% & 1.3\% \\
+& Use-after-poison & 48 & 8.4\% & 1.0\% \\
+& Invalid-free & 29 & 5.1\% & 0.6\% \\
+& Stack-use-after-return & 26 & 4.5\% & 0.5\% \\
+& Stack-use-after-scope & 13 & 2.3\% & 0.3\% \\
+& Bad-free & 5 & 0.9\% & 0.1\% \\
+\addlinespace
+
+\multicolumn{5}{l}{\textbf{Type Safety \& Parameter Validation}} \\
+& \textit{Total} & \textit{147} & \textit{---} & \textit{2.9\%} \\
+\addlinespace[0.5ex]
+& Bad-cast & 65 & 44.2\% & 1.3\% \\
+& Negative-size-param & 42 & 28.6\% & 0.8\% \\
+& Memcpy-param-overlap & 20 & 13.6\% & 0.4\% \\
+& Object-size & 9 & 6.1\% & 0.2\% \\
+& Incorrect-function-pointer-type & 6 & 4.1\% & 0.1\% \\
+& Non-positive-vla-bound-value & 3 & 2.0\% & 0.1\% \\
+& Strcpy-param-overlap & 1 & 0.7\% & 0.0\% \\
+& Strncpy-param-overlap & 1 & 0.7\% & 0.0\% \\
+\addlinespace
+
+\multicolumn{5}{l}{\textbf{System \& Runtime Errors}} \\
+& \textit{Total} & \textit{15} & \textit{---} & \textit{0.3\%} \\
+\addlinespace[0.5ex]
+& Check failed & 6 & 40.0\% & 0.1\% \\
+& Unknown signal & 6 & 40.0\% & 0.1\% \\
+& Bad parameters to --sanitizer-annotate-contiguous-container & 2 & 13.3\% & 0.0\% \\
+& Nested bug in the same thread, aborting. & 1 & 6.7\% & 0.0\% \\
+
+\end{longtable}
+
+% \begin{table}[ht]
+% \centering
+% \caption{Crash Families --- Totals}
+% \label{tab:families}
+% \small
+% \begin{tabular}{l r r}
+% \toprule
+% Family & Count & \% of total \\
+% \midrule
+% Buffer Overflow Vulnerabilities & 2490 & 49.9\% \\
+% Uninitialized Access \& Unknown States & 1768 & 35.4\% \\
+% Memory Lifecycle Errors & 573 & 11.5\% \\
+% Type Safety \& Parameter Validation & 147 & 2.9\% \\
+% System \& Runtime Errors & 15 & 0.3\% \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+
+% \begin{longtable}{l l r r}
+% \caption{Subtypes by Family}\\
+% \toprule
+% Family & Subtype & Count & \% within family \\
+
+% \endfirsthead
+
+% \endhead
+% \midrule
+
+% \multicolumn{4}{l}{\textbf{Buffer Overflow Vulnerabilities}}\\
+%  & Heap-buffer-overflow & 1802 & 72.4\% \\
+%  & Stack-buffer-overflow & 308 & 12.4\% \\
+%  & Index-out-of-bounds & 165 & 6.6\% \\
+%  & Global-buffer-overflow & 160 & 6.4\% \\
+%  & Container-overflow & 33 & 1.3\% \\
+%  & Stack-buffer-underflow & 13 & 0.5\% \\
+%  & Dynamic-stack-buffer-overflow & 9 & 0.4\% \\
+% \addlinespace
+
+% \multicolumn{4}{l}{\textbf{Uninitialized Access \& Unknown States}}\\
+%  & Use-of-uninitialized-value & 1015 & 57.4\% \\
+%  & UNKNOWN READ & 462 & 26.1\% \\
+%  & Segv on unknown address & 134 & 7.6\% \\
+%  & UNKNOWN WRITE & 123 & 7.0\% \\
+%  & Null-dereference READ & 25 & 1.4\% \\
+%  & UNKNOWN & 8 & 0.5\% \\
+%  & Unknown-crash & 1 & 0.1\% \\
+% \addlinespace
+
+% \multicolumn{4}{l}{\textbf{Memory Lifecycle Errors}}\\
+%  & Heap-use-after-free & 389 & 67.9\% \\
+%  & Heap-double-free & 63 & 11.0\% \\
+%  & Use-after-poison & 48 & 8.4\% \\
+%  & Invalid-free & 29 & 5.1\% \\
+%  & Stack-use-after-return & 26 & 4.5\% \\
+%  & Stack-use-after-scope & 13 & 2.3\% \\
+%  & Bad-free & 5 & 0.9\% \\
+% \addlinespace
+
+% \multicolumn{4}{l}{\textbf{Type Safety \& Parameter Validation}}\\
+%  & Bad-cast & 65 & 44.2\% \\
+%  & Negative-size-param & 42 & 28.6\% \\
+%  & Memcpy-param-overlap & 20 & 13.6\% \\
+%  & Object-size & 9 & 6.1\% \\
+%  & Incorrect-function-pointer-type & 6 & 4.1\% \\
+%  & Non-positive-vla-bound-value & 3 & 2.0\% \\
+%  & Strcpy-param-overlap & 1 & 0.7\% \\
+%  & Strncpy-param-overlap & 1 & 0.7\% \\
+% \addlinespace
+
+% \multicolumn{4}{l}{\textbf{System \& Runtime Errors}}\\
+%  & Check failed & 6 & 40.0\% \\
+%  & Unknown signal & 6 & 40.0\% \\
+%  & Bad parameters to --sanitizer-annotate-contiguous-container & 2 & 13.3\% \\
+%  & Nested bug in the same thread, aborting. & 1 & 6.7\% \\
+% \midrule
+
+% \end{longtable}
+
+
+\subsection{ARVO Dataset Profiling}
+
+We profiled the full ARVO corpus with all 4,993 vulnerabilities across 288 projects to guide \texttt{T2L-ARVO}'s design and document its coverage. The analysis maps distributional patterns, project traits, and crash-type frequencies, and clarifies how our 50-case subset aligns with the broader ARVO ecosystem. These profiles confirm that \texttt{T2L-ARVO} is representative across crash families, project complexity, and severity, providing a transparent baseline for extensions and alternative benchmarks. We include compact visualizations of these profiles to convey key ARVO factors—such as crash families, project complexity, and severity at a glance.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/profile/02_project_distribution.pdf}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/profile/04_comments_distribution.pdf}
+  \end{subfigure}
+  \caption{Distribution of vulnerability counts across the 288 ARVO projects. Most projects have under 25 vulnerabilities, with a long-tail of highly vulnerable ones.}
+  \label{fig:prof1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.42\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/profile/03_severity_distribution.pdf}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.42\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/profile/06_fuzzer_distribution.pdf}
+  \end{subfigure}
+  \caption{Breakdown of vulnerability severities in ARVO. Over 70\% are medium severity, while high severity cases account for the remaining 29\%.}
+  \label{fig:prof2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.93\linewidth]{diagrams/profile/01_top30_projects.pdf}
+    \caption{Analysis of fuzzing tools used in ARVO. libFuzzer dominates at 74.7\%, followed by AFL and honggfuzz.}
+    \label{fig:prof3}
+    \vspace{-3mm}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/profile/10_project_statistics.pdf}
+    \vspace{-6mm}
+    \caption{Visualization of the 30 most vulnerable projects in ARVO. ImageMagick leads with 368 vulnerabilities, with others showing diverse security footprints.}
+    \label{fig:prof7}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{diagrams/profile/05_crash_types.pdf}
+    \vspace{-6mm}
+    \caption{Project grouping by vulnerability count. Nearly half the projects have only 2–5 vulnerabilities, with very few exceeding 100.}
+    \label{fig:prof6}
+\end{figure}
+
+\subsection{Model Failure Analysis}
+
+We conducted a targeted failure analysis on several baseline models to map out common failure modes as shown in Tab. ~\ref{fig:failures}. Claude 4 Sonnet and Gemini 2.5 Pro hit the budget ceiling in 81.6\% and 85.7\% of runs respectively, indicating efficient resource utilization. GPT-5 reaches 61.2\% with execution errors (28.6\%), while Qwen3 235B struggles with basic data operations (59.2\%). Open-source baselines stall early: Qwen 3 Next fails to surface actionable candidates in 44.9\% of trials. Execution errors remain common across older models (20–30\%), showing that tool use often breaks even when a plan exists. Net-net, while newer models show improved resource management, legacy models skew toward either incomplete exploration or difficulty navigating real-world code.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{diagrams/failure_analysis.pdf}
+    \caption{Model failure type distribution across five models on \texttt{T2L-ARVO}. GPT-5 commonly fails due to budget limits, while Qwen3 models often fail to generate actionable candidates.}
+    \label{fig:failures}
+\end{figure}
+
+
+\subsection{T2L-ARVO Challenge List}
+We provide the comprehensive list of \texttt{T2L-ARVO} benchmark we verified and collected in this work along with the key meta information for each challenge.
+\begin{longtable}{p{1.2cm}p{1.5cm}p{1.5cm}p{2.2cm}p{4.5cm}p{1.0cm}}
+\caption{Bug Analysis Results by Category} \label{tab:bug_analysis} \\
+\toprule
+\footnotesize
+\centering
+\textbf{Id} & \textbf{Fuzzer} & \textbf{Sanitizer} & \textbf{Project} & \textbf{Crash Type} & \textbf{Severity} \\
+\midrule
+\endfirsthead
+
+\multicolumn{6}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\textbf{Id} & \textbf{Fuzzer} & \textbf{Sanitizer} & \textbf{Project} & \textbf{Crash Type} & \textbf{Severity} \\
+\midrule
+\endhead
+
+\midrule \multicolumn{6}{r}{{Continued on next page}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+\multicolumn{6}{l}{\textbf{System \& Runtime Errors}} \\
+\midrule
+16737 & libfuzzer & ubsan & graphicsmagick & Unknown signal & - \\
+7966 & libfuzzer & ubsan & graphicsmagick & Unknown signal & - \\
+7654 & libfuzzer & ubsan & graphicsmagick & Unknown signal & - \\
+7639 & libfuzzer & ubsan & graphicsmagick & Unknown signal & - \\
+59193 & libfuzzer & msan & faad2 & Check failed & - \\
+49915 & libfuzzer & msan & ndpi & Check failed & - \\
+48780 & libfuzzer & msan & libvpx & Check failed & - \\
+7361 & afl & asan & ots & Bad parameters to sanitizer & - \\
+32939 & libfuzzer & asan & rdkit & Bad parameters to sanitizer & - \\
+\addlinespace
+
+\multicolumn{6}{l}{\textbf{Buffer Overflow Vulnerabilities}} \\
+\midrule
+16614 & libfuzzer & asan & opensc & Heap-buffer-overflow & Med \\
+13956 & libfuzzer & asan & yara & Heap-buffer-overflow & Med \\
+16615 & libfuzzer & asan & opensc & Heap-buffer-overflow & Med \\
+20856 & libfuzzer & asan & ndpi & Heap-buffer-overflow & Med \\
+17330 & libfuzzer & asan & openthread & Stack-buffer-overflow & High \\
+42454 & libfuzzer & asan & ghostpdl & Stack-buffer-overflow & High \\
+17297 & libfuzzer & asan & openthread & Stack-buffer-overflow & Med \\
+18562 & libfuzzer & asan & lwan & Global-buffer-overflow & - \\
+30507 & honggfuzz & asan & serenity & Global-buffer-overflow & - \\
+18231 & afl & asan & binutils-gdb & Global-buffer-overflow & - \\
+\addlinespace
+
+\multicolumn{6}{l}{\textbf{Uninitialized Access \& Unknown States}} \\
+\midrule
+49493 & libfuzzer & asan & mruby & Segv on unknown address & - \\
+24290 & honggfuzz & asan & libvips & Segv on unknown address & - \\
+57037 & libfuzzer & asan & mruby & Segv on unknown address & - \\
+23778 & libfuzzer & msan & binutils-gdb & Use-of-uninitialized-value & Med \\
+20112 & libfuzzer & msan & open62541 & Use-of-uninitialized-value & Med \\
+47855 & libfuzzer & msan & harfbuzz & Use-of-uninitialized-value & Med \\
+16857 & libfuzzer & msan & matio & Use-of-uninitialized-value & Med \\
+43989 & libfuzzer & asan & ghostpdl & Null-dereference & - \\
+2623 & libfuzzer & asan & h2o & Null-dereference & - \\
+45320 & libfuzzer & asan & ghostpdl & Null-dereference & - \\
+\addlinespace
+
+\multicolumn{6}{l}{\textbf{Memory Lifecycle Errors}} \\
+\midrule
+42503 & libfuzzer & asan & php-src & Heap-use-after-free & High \\
+38878 & libfuzzer & asan & harfbuzz & Heap-use-after-free & High \\
+14245 & afl & asan & karchive & Heap-use-after-free & High \\
+19723 & libfuzzer & asan & leptonica & Heap-use-after-free & Med \\
+33750 & honggfuzz & asan & fluent-bit & Heap-double-free & High \\
+34116 & honggfuzz & asan & fluent-bit & Heap-double-free & High \\
+20785 & libfuzzer & asan & llvm-project & Use-after-poison & High \\
+3505 & afl & asan & librawspeed & Use-after-poison & High \\
+51687 & afl & asan & mongoose & Use-after-poison & High \\
+31705 & afl & asan & c-blosc2 & Invalid-free & - \\
+\addlinespace
+
+\multicolumn{6}{l}{\textbf{Type Safety \& Parameter Validation}} \\
+\midrule
+2798 & libfuzzer & ubsan & gdal & Bad-cast & High \\
+29267 & libfuzzer & ubsan & serenity & Bad-cast & High \\
+33150 & libfuzzer & ubsan & libredwg & Object-size & Med \\
+20217 & libfuzzer & ubsan & arrow & Object-size & Med \\
+12679 & afl & asan & openthread & Memcpy-param-overlap & Med \\
+23547 & honggfuzz & asan & php-src & Memcpy-param-overlap & Med \\
+25357 & libfuzzer & asan & libsndfile & Negative-size-param & - \\
+60605 & libfuzzer & asan & ndpi & Negative-size-param & Med \\
+2692 & libfuzzer & ubsan & boringssl & Incorrect-function-pointer-type & Med \\
+50623 & libfuzzer & ubsan & serenity & Non-positive-vla-bound-value & Med \\
+\end{longtable}
+
+\vspace{-2mm}
+\subsection{T2L Toolkit List}
+\vspace{-2mm}
+\label{app:toolkit}
+We list the tools used in \texttt{T2L-Agen} and their roles in the analysis workflow. The framework is modular and can be easily extended with new tools based on task requirements.
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{p{4.7cm}p{11.7cm}}
+\caption{T2L Toolkit list and the usage description.} \label{tab:t2l-toolkit} \\
+\hline
+\textbf{Tool (NAME)} & \textbf{Description} \\
+\hline
+\endfirsthead
+
+\multicolumn{2}{c}{\textbf{Table \thetable{} continued from previous page}} \\
+\hline
+\textbf{Tool (NAME)} & \textbf{Description} \\
+\hline
+\endhead
+
+\hline
+\multicolumn{2}{r}{Continued on next page} \\
+\endfoot
+
+\hline
+\endlastfoot
+
+\texttt{view\_source} & Preview a source file with line numbers. Optionally specify start\_line/end\_line. \\
+\texttt{grep\_source} & Search code by regex under a root directory. Returns `file:line:match` lines. \\
+\texttt{insert\_print} & Insert a single line of debug print before the given line number in a source file. \\
+\texttt{build\_project} & Build the project inside container. Default workdir=/src. \\
+\texttt{container\_exec} & Run an arbitrary shell command inside the container (advanced use). \\
+\texttt{copy\_out} & Copy a file/dir from container to host. \\
+\texttt{giveup} & Give up this case to terminate it immediately. Use this to stop solving the ARVO container. \\
+\texttt{diff\_index} & Parse unified diff and build a simple line-level index without extra anchoring. Output JSON has per-file \{anchors\_old, insert\_points=[], per\_line\{line-\textgreater\{roles, matched\}\}\}; all line numbers are OLD-file coordinates from the diff. \\
+\texttt{static\_analysis} & Run comprehensive analysis. For binaries: run Ghidra RE then static tools; for sources: run static tools directly. Uses cppcheck/clang-tidy/infer; aggregates findings to JSON and env state. \\
+\texttt{chunk\_case} & Parse C/C++ sources under root\_dir with tree-sitter and save chunks JSON (index, file\_path, chunk\_kind, symbol, start/end\_line, source, ast\_type, imports). \\
+\texttt{publish\_verified\_locations} & Verify/overwrite LLM locations by matching symbol+snippet in numbered snapshots; fallback to original lines; save verified JSON and snapshot index; updates \texttt{env.\_state['last\_llm\_json\_path']}. \\
+\texttt{run\_san} & Run ARVO workflow that triggers ASAN/fuzzer and capture output. \\
+\texttt{run\_gdb} & Run gdb in the ARVO container and return a backtrace. \\
+\texttt{llm\_analyze} & Send crash/ASAN log to the LLM to predict likely bug locations (JSON expected). Supports refine mode with source slices. \\
+\texttt{mark\_diff} & Load anchored diff (anchors\_old + insert\_points) and mark chunks touched by these lines; updates chunks JSON (adds \texttt{diff}, \texttt{diff\_hit\_lines}). \\
+\texttt{compare\_llm\_metrics} & Compute detection rate (chunk-level) and localization rate (diff-line-level), plus strict localization by exact interval equality; updates JSON flags accordingly. \\
+\texttt{gdb\_script} & Run GDB non-interactively with \texttt{-batch} and provided commands; returns GDB output. \\
+\texttt{extract\_json} & Extract JSON array from a raw LLM response; optionally merge with last predictions; writes temp JSON and updates state. \\
+\texttt{extract\_modified\_lines} & Parse a unified diff and return modified (file, line) list. \\
+\texttt{compare\_patch} & Compare LLM predicted spans with the patch; set solved by match rate. \\
+\texttt{pipeline} & End-to-end: ASAN, GDB, LLM analyze, (optional) compare with patch. \\
+\texttt{delegate} & Delegate a task to an executor LLM agent (autonomous, equipped for CTF-style tasks). \\
+\texttt{static\_analysis\_config} & Enable/disable static analysis inclusion in crash log (\texttt{enabled} flag). \\
+\texttt{baseline\_llm\_analyze} & Single-shot baseline without ASAN/GDB or static context—ask LLM to guess once (no refine/verify/postprocess). \\
+\end{longtable}
+
+\subsection{Other case studies}
+% \textcolor{blue}{Minghao: Haoran please give some title to this section, need to put a lot case studies here.}
+
+In this section, we present several additional demonstration cases that were not included in the main body of the paper. These examples aim to further illustrate the internal workflow, reasoning strategies, and decision-making processes of the \texttt{T2L-Agent} across diverse scenarios. By showcasing these supplementary cases, we hope to enhance the reader's understanding of how \texttt{T2L-Agent} performs trace-to-line localization in practice and highlight its robustness across varying bug types and complexity levels.
+
+% \subsubsection{GPT-4o mini Divergence Tracing}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_app_figure_p01.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_app_figure_p02.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_app_figure_p03.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_app_figure_p04.png}
+    \caption{GPT-4o mini Divergence Tracing for case 12679.}
+    \label{fig:12679_topn}
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/16857_app_figure_p01.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/16857_app_figure_p02.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/16857_app_figure_p03.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/16857_app_figure_p04.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/16857_app_figure_p05.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/16857_app_figure_p06.png}
+    \caption{GPT-4o mini Divergence Tracing for case 16857.}
+    \label{fig:16857_topn}
+\end{figure}
+
+
+
+
+
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p01.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p02.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p03.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p04.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p05.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p06.png}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p07.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20112_app_figure_p08.png}
+    \caption{GPT-4o mini Divergence Tracing for case 20112.}
+\end{figure}
+
+
+
+
+
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p01.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p02.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p03.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p04.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p05.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p06.png}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p07.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p08.png}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/20217_app_figure_p09.png}\hfill
+
+    \caption{GPT-4o mini Divergence Tracing for case 20217.}
+\end{figure}
+
+
+
+
+
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p01.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p02.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p03.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p04.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p05.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p06.png}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/25357_app_figure_p07.png}\hfill
+    \caption{GPT-4o mini Divergence Tracing for case 25357.}
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_baseline_app_figure_p01.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_baseline_app_figure_p02.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_baseline_app_figure_p03.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_baseline_app_figure_p04.png}
+
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_baseline_app_figure_p05.png}\hfill
+  \includegraphics[width=.48\textwidth,height=\textheight,keepaspectratio]{diagrams/12679_baseline_app_figure_p06.png}
+  \caption{GPT-4o mini Baseline for case 12679.}
+\end{figure}
+
+
+
+
+
+% \begin{table*}[t]
+% \centering
+% \small
+% \caption{Localization and Detection Rate Performance Across Different Models.}
+% \label{tab:Performance_Comparison}
+% \setlength{\tabcolsep}{4pt}
+% \begin{tabular}{l r r r r r r r r r r r r}
+% \toprule
+% & \multicolumn{2}{c}{\textbf{\% solved}} & \multicolumn{2}{c}{\textbf{Buffer}} & \multicolumn{2}{c}{\textbf{Initialize}} & \multicolumn{2}{c}{\textbf{Memory}} & \multicolumn{2}{c}{\textbf{Parameter}} & \multicolumn{2}{c}{\textbf{Runtime}} \\
+% \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11} \cmidrule(lr){12-13}
+% & \textbf{Det} & \textbf{Loc} & \textbf{Det} & \textbf{Loc} & \textbf{Det} & \textbf{Loc} & \textbf{Det} & \textbf{Loc} & \textbf{Det} & \textbf{Loc} & \textbf{Det} & \textbf{Loc} \\
+% \midrule
+% GPT-4.1\_baseline & 48.0 & 38.5 & 60.8 & 36.5 & 50.6 & 46.4 & 60.8 & 46.1 & 26.5 & 29.9 & 21.2 & 20.5 \\
+% GPT-4o mini \_baseline & 44.3 & 22.6 & 60.8 & 20.2 & 48.1 & 12.5 & 55.8 & 24.7 & 28.7 & 26.7 & 11.2 & 10.0 \\
+% Qwen3 235B\_baseline & 25.9 & 9.2 & 25.8 & 6.5 & 23.1 & 1.7 & 40.8 & 16.7 & 28.7 & 17.2 & 7.9 & 0.0 \\
+% Qwen3\_baseline & 37.4 & 5.9 & 54.2 & 3.7 & 33.1 & 0.4 & 55.8 & 14.5 & 29.1 & 6.8 & 1.2 & 0.0 \\
+% GPT-5 low-think \_baseline & 44.3 & 41.7 & 57.5 & 53.8 & 35.6 & 35.5 & 60.8 & 55.9 & 36.5 & 39.4 & 11.2 & 10.0 \\
+
+% \midrule
+
+% Claude4s\_refine & 44.8 & 41.4 & 57.5 & 54.3 & 40.6 & 43.2 & 61.7 & 52.5 & 26.1 & 29.4 & 14.6 & 10.5 \\
+% Gemini2.5 pro\_refine & 14.1 & 11.4 & 10.0 & 8.6 & 20.0 & 16.2 & 40.0 & 32.1 & 0.4 & 0.3 & 0.0 & 0.0 \\
+% GPT-5 low-think \_refine & 52.4 & 44.5 & 57.5 & 55.0 & 55.6 & 43.1 & 60.8 & 41.3 & 43.5 & \textbf{48.2} & 21.2 & 20.5 \\
+% GPT-4.1\_refine & 48.3 & 40.8 & 60.8 & 51.9 & 53.1 & 44.9 & 57.5 & 46.1 & 39.8 & 42.9 & 6.7 & 0.0 \\
+% GPT-4o mini \_refine & 34.6 & 29.1 & 45.8 & 43.6 & 30.6 & 20.2 & 45.8 & 33.6 & 22.4 & 21.2 & 0.0 & 0.0 \\
+% Qwen3\_refine & 42.9 & 39.5 & 60.8 & 55.1 & 50.6 & 44.4 & 60.8 & 48.6 & 25.7 & 29.2 & 0.0 & 0.0 \\
+% Qwen3\_235B\_refine & 34.1 & 26.7 & 34.2 & 32.0 & 30.6 & 34.5 & 57.5 & 38.8 & 23.3 & 13.3 & 5.0 & 8.2 \\
+
+% \midrule
+
+% GPT-4.1 temp02\_temp & 51.0 & 43.6 & 57.5 & 44.4 & 55.6 & 51.1 & 55.8 & 45.7 & 43.2 & 35.4 & 21.2 & 20.2 \\
+% GPT-4.1 temp06\_temp & 50.8 & 43.5 & 60.8 & 52.0 & 53.1 & 47.8 & 55.8 & 44.8 & 39.4 & 42.7 & 17.9 & 10.1 \\
+% Claude4stemp02\_temp & 46.5 & 43.0 & 54.2 & 56.1 & 55.6 & 43.0 & 61.7 & 49.0 & 36.5 & 39.7 & 11.2 & 10.9 \\
+% Claude4stemp06\_temp & 47.3 & 44.9 & 54.2 & 56.1 & 50.6 & 48.0 & 60.8 & \textbf{53.6} & 36.5 & 39.6 & 11.2 & 10.9 \\
+
+% \midrule
+
+% GPT-5 high-think\_think & 41.3 & 36.1 & 54.2 & 47.8 & 40.6 & 32.4 & 55.8 & 39.3 & 32.8 & 36.7 & 10.0 & 10.0 \\
+
+% \midrule
+
+% GPT-4o mini\_topn & 47.2 & 43.3 & \textbf{64.2} & 55.6 & 55.6 & 48.8 & 52.5 & 47.0 & 33.9 & 32.4 & 1.2 & 0.5 \\
+% GPT-4.1\_topn & 52.0 & 49.9 & 60.8 & 53.5 & \textbf{60.6} & \textbf{57.3} & 57.5 & 53.0 & 43.2 & 37.1 & 21.2 & 20.1 \\
+% GPT-5 low-think\_topn & \textbf{58.0} & \textbf{52.0} & 60.8 & \textbf{56.8} & \textbf{60.6} & 53.4 & \textbf{62.5} & 47.6 & \textbf{53.2} & 46.7 & \textbf{26.2} & \textbf{28.7} \\
+% \bottomrule
+% \end{tabular}
+% \end{table*}

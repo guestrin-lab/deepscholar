@@ -1,0 +1,10 @@
+\subsubsection{Impact of Informative Representation Selector}
+
+\input{tables/tab_intrinsic_selector}
+Table~\ref{tab:intrinsic_selector} illustrates that \textit{the informative representation selector module significantly contributes to \tool's performance}. 
+Indeed, not all internal representations contribute equally to correctness prediction. Without a mechanism to identify and prioritize useful signals, the classifier struggles to capture important information.
+By incorporating an attention mechanism to assign higher weights to the important representations and downweight the irrelevant ones, \tool's F1-Score in code correctness prediction improves from 0.69 to 0.76 (more than 10\% relatively). 
+The selector module thus plays a crucial role in directing the model's focus toward the most relevant internal states, leading to more effective and reliable correctness assessment. 
+%
+Moreover, since the attention scores are jointly trained with the probing classifier, the training time remains comparable with and without the selector module.
+This suggests that the performance improvement comes at a reasonable computational cost, making the selector a lightweight yet useful addition to the \tool's design.

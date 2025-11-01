@@ -1,0 +1,93 @@
+\section{On-Device Performance}
+\label{sec:experiments_on-device}
+
+\subsection{Results of Quantization-Aware Training}
+To evaluate the capabilities of our on-device models, we use OCR capabilities as a testbed and conduct experiments on multiple OCR-related benchmarks, including DocVQA~\cite{mathew2021docvqa}, InfoVQA~\cite{mathew2022infographicvqa}, TextVQA~\cite{singh2019textvqa} and ChartQA~\cite{masry2022chartqa}.
+
+As mentioned in Sec.~\ref{sec:QAT_AndesVL}, directly applying PTQ to floating-point models can significantly degrade model performance, and we introduced QAT to solve this. We compare the quantized and floating-point models based on Top-1 overlap across multiple OCR-related benchmarks. The experimental results are shown in Table~\ref{tab:QAT_top1_qcc}. In Table~\ref{tab:QAT_top1_qcc}, AndesVL-4B-Instruct-Base (PTQ) represents the model of AndesVL-4B-Instruct-Base post-trained on OCR data  with PTQ, AndesVL-4B-Instruct-Base (QAT+PTQ) is the model of AndesVL-4B-Instruct-Base post-trained on OCR data with QAT and PTQ. The results demonstrate that QAT+PTQ can achieve 95\% Top-1 overlap~\cite{li2025bild} between the quantized and floating-point models, and achieves significant improvement over PTQ alone.
+
+\begin{table}[tb]
+\centering
+\begin{tabular}{l|cccc|c}
+    \toprule
+    Model           &\makecell{DocVQA\\(test)} &\makecell{InfoVQA\\(test)}& \makecell{TextVQA\\(val)} &  \makecell{ChartQA\\(test)}  & Overall   \\ 
+    \toprule
+    AndesVL-4B-Instruct-Base (PTQ)       & 93.2   &  89.0 &  91.4 & 89.3    & 90.7 \\
+    AndesVL-4B-Instruct-Base (QAT+PTQ)   & 95.4   &  95.2 & 97.5  & 95.1     & 95.8 \\ 
+    \bottomrule
+    \end{tabular}
+\caption{Top-1 overlap between AndesVL-4B-Instruct-Base (PTQ) and AndesVL-4B-Instruct-Base (QAT+PTQ) on 4 OCR benchmarks.}
+\label{tab:QAT_top1_qcc}
+\end{table}
+\iffalse
+\subsection{Results of QALFT}
+To further improve performance across various on-device scenarios, we utilize the QLAFT framework to train LoRA weights specific to each situation.  The experiments mentioned in the Table \ref{tab:qat_qalft_performance} are all completed based on the pre-trained AndesVL-4B-Instruct-Base model. AndesVL-4B-Instruct-Base-LoRA (floating point) represents LoRA fine-tuned floating-point model trained on  OCR data, AndesVL-4B-Instruct-Base-LoRA (PTQ) represents AndesVL-4B-Instruct-Base-LoRA (floating point) with PTQ, AndesVL-4B-Instruct-Base-LoRA (PTQ) represents AndesVL-4B-Instruct-Base-LoRA (floating point) with QAT and PTQ.
+AndesVL-4B-Instruct-Base (PTQ+QALFT) represents QALFT training on AndesVL-4B-Instruct-Base with PTQ, AndesVL-4B-Instruct-Base (QAT+PTQ+QALFT) represents QALFT training on AndesVL-4B-Instruct-Base with QAT and PTQ. The experimental results in Table \ref{tab:qat_qalft_performance} show that the performance of the model only with PTQ decreases significantly, QAT and QALFT can significantly improve the performance of the model on the device side, while QALFT can decrease slightly by 3\% compared to the
+floating-point model.
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[tb]
+\resizebox{1\textwidth}{!}{
+\centering
+\begin{tabular}{l|ccccc|c}
+    \toprule
+    LoRA Models   &\makecell{DocVQA\\(test)}  & \makecell{InfoVQA\\(test)} & \makecell{TextVQA\\(val)} & \makecell{ChartQA\\(test)} &  \makecell{AI2D\\(w M)} & Overall \\ 
+    \hline
+    AndesVL-4B-Instruct-Base-LoRA (floating point)  &  94.6 &  78.5 & 81.1  & 87.5  &  83.4 &  85.0       \\ 
+    \hline
+    AndesVL-4B-Instruct-Base-LoRA (PTQ)            &  82.1 &  53.3 &  66.9 &  74.6 &  77.0 &  70.8       \\
+    AndesVL-4B-Instruct-Base-LoRA (QAT+PTQ)        &  86.8 & 69.7  &  73.7 &  77.9 &  77.1 &    77.0     \\ 
+    \hline
+    AndesVL-4B-Instruct-Base (PTQ+QALFT)           & 83.5  &  58.5 & 69.6  &  69.4  &  72.9  &   70.8     \\
+    AndesVL-4B-Instruct-Base (QAT+PTQ+QALFT)       &   &   &  70.6 &   84.6 & 77.6  &         \\ 
+    \bottomrule
+\end{tabular}}
+\caption{Comparison on 5 OCR benchmarks performance among AndesVL-4B-Instruct-Base-LoRA (floating point), AndesVL-4B-Instruct-Base-LoRA (PTQ), AndesVL-4B-Instruct-Base-LoRA (QAT+PTQ), AndesVL-4B-Instruct-Base (PTQ+QALFT) and AndesVL-4B-Instruct-Base (QAT+PTQ+QALFT), the results prove that QAT and QALFT significantly improve performance.}
+\label{tab:qat_qalft_performance}
+\end{table}
+\fi
+
+\subsection{Results of Cache Eviction}
+Our cache eviction strategy is tailored for tasks with long prompts. We use the call summary task, which is a popular and pioneering feature of OPPO AI phones and involves substantial input information redundancy, to verify its effectiveness.
+% Among the various manufacturers of mobile phones, OPPO pioneered the introduction of call summary, a significant artificial intelligence feature that has benefited numerous users. 
+% Call summary scenarios typically involve substantial information redundancy and a large volume of KV caches, making KV cache eviction an effective strategy for reducing memory usage and improving decoding speed.
+In this task, our proprietary OKV cache eviction algorithm results in a more than 10\% improvement in Rouge-1 relative to SnapKV with 50\% eviction ratios. In certain instances, it even outperformed the baseline with full KV caches. Comprehensive results presented in Table \ref{tab:cache_eviction_performance}. All experiments are based on the same AndesVL-4B-Instruct-Base model and are carried out on one device. The baseline AndesVL-4B-Instruct-Base  is supervised fine-tuned on the call summary task; SnapKV and OKV are applied to the model for inference respectively.
+
+
+\begin{table}[tb]
+\centering
+\begin{tabular}{l l ccc}
+\toprule
+\textbf{Eviction Ratio} & \textbf{Method} & \textbf{ROUGE-1} & \textbf{ROUGE-2} & \textbf{ROUGE-L} \\
+\midrule
+0\% (Baseline)          & AndesVL-4B-Instruct-Base & 0.59 & \textbf{0.33} & \textbf{0.42} \\
+\midrule
+25\%                    & SnapKV                   & 0.55 & 0.30          & 0.39 \\
+                        & OKV                      & \textbf{0.60} & \textbf{0.33} & 0.41 \\
+\midrule
+50\%                    & SnapKV                   & 0.50 & 0.25          & 0.36 \\
+                        & OKV                      & 0.56 & 0.30          & 0.39 \\
+\bottomrule
+\end{tabular}
+\caption{ROUGE performance of the reproduced SnapKV and our OKV under 25\% and 50\% key-value cache eviction ratios on the call summary task.}
+\label{tab:cache_eviction_performance}
+\end{table}
+
+
+\subsection{Results of Speculative Decoding}
+Our customized speculative decoding achieves significant decoding acceleration across multiple multimodal and text-only tasks. We combined it with our key breakthrough in LLM sparsification and MediaTek's hardware-aware compression, and show the final results in Table \ref{tab:speculative_decoding_performance}. In this table, the PTQ (baseline) represents the quantized version of the floating point AndesVL-4B-Instruct-Base, + Hardware-aware compression represents PTQ (baseline) with hardware compression, + Sparsification denotes PTQ (baseline) with hardware-aware compression and sparsification, and + Speculative decoding denotes PTQ (baseline) with speculative decoding, sparsification, and hardware-aware compression. The results show that we can achieve 6.7x peak decoding speedup ratio and 1.8 bits-per-weight under extreme sparsification and hardware-aware compression. Moreover, we achieved a memory reduction of up to 30.9\% on the MediaTek Dimensity 9500 chips.
+
+\begin{table}[tb]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Compression \& Acceleration Method} & \textbf{Peak Speedup} & \textbf{BPW} \\
+\midrule
+PTQ (baseline)                              & 1.0$\times$           & 3.0 \\
+\quad + Hardware-aware compression                  & 1.1$\times$           & 3.0 \\
+\quad\quad + Sparsification                                  & 1.6$\times$           & 1.8 \\
+\quad\quad\quad + Speculative decoding                      & 6.7$\times$           & 1.8 \\
+\bottomrule
+\end{tabular}
+\caption{Peak decoding speedup ratio and bits-per-weight (BPW) of AndesVL-4B-Instruct-Base under various compression and acceleration techniques on an edge device. The baseline is PTQ-only.}
+\label{tab:speculative_decoding_performance}
+\end{table}

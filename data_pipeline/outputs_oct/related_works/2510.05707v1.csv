@@ -1,0 +1,199 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.05707v1,http://arxiv.org/abs/2510.05707v1,2025-10-07 09:16:48+00:00,Stable Robot Motions on Manifolds: Learning Lyapunov-Constrained Neural Manifold ODEs,"Learning stable dynamical systems from data is crucial for safe and reliable
+robot motion planning and control. However, extending stability guarantees to
+trajectories defined on Riemannian manifolds poses significant challenges due
+to the manifold's geometric constraints. To address this, we propose a general
+framework for learning stable dynamical systems on Riemannian manifolds using
+neural ordinary differential equations. Our method guarantees stability by
+projecting the neural vector field evolving on the manifold so that it strictly
+satisfies the Lyapunov stability criterion, ensuring stability at every system
+state. By leveraging a flexible neural parameterisation for both the base
+vector field and the Lyapunov function, our framework can accurately represent
+complex trajectories while respecting manifold constraints by evolving
+solutions directly on the manifold. We provide an efficient training strategy
+for applying our framework and demonstrate its utility by solving Riemannian
+LASA datasets on the unit quaternion (S^3) and symmetric positive-definite
+matrix manifolds, as well as robotic motions evolving on \mathbb{R}^3 \times
+S^3. We demonstrate the performance, scalability, and practical applicability
+of our approach through extensive simulations and by learning robot motions in
+a real-world experiment.","\label{sec:related-work}
+\newcommand{\ck}{\textcolor{bettergreen}{\(\pmb{\checkmark}\)}}
+\newcommand{\no}{\textcolor{betterred}{\(\pmb{\times}\)}}
+\newcommand{\na}{--}
+\begin{table}[b]
+    \centering
+    \caption{\textbf{Comparison with Existing LfD Frameworks}.}
+    \label{tab:related-work-comparison}
+    \begin{tabular}{>{\centering}p{.13\columnwidth} @{} >{\centering}p{.18\columnwidth} @{} >{\centering}p{.18\columnwidth} @{} >{\centering}p{.18\columnwidth} @{} >{\centering\arraybackslash}p{.12\columnwidth}}
+        \ \newline\textbf{Reference} & \textbf{Riemannian}\newline\textbf{Manifold} & \ \textbf{Stability}\newline\textbf{Guarantee} & \ \textbf{Learned}\newline\textbf{Vector Field} & \textbf{Neural}\newline\textbf{ODE} \\ \midrule
+        
+        \cite{AuddyEtAl2023Continual}
+        & \no & \no & \ck &\ck \\
+        
+        \cite{SochopoulosGiengerVijayakumar2024,AuddyEtAl2023Scalable}
+        & \no & \(\textcolor{betterorange}{\pmb{\checkmark}}^{\;\!\!\ast}\) & \ck &\ck \\
+        
+        \cite{LemmeEtAl2014,NawazEtAl2024}
+        & \no & \ck & \ck & \ck \\
+
+        \cite{KhansariZadehBillard11}
+        & \no & \ck & \ck & \no \\
+        
+        \cite{WangSaverianoAbuDakka2022}
+        & \ck & \no & \ck & \ck \\
+        
+        \cite{SaverianoAbuDakkaKyrki2023}
+        & \ck & \ck & \no &\no \\
+        
+        \cite{ZhangBeikMohammadiRozo2022}
+        & \ck & \(\textcolor{betterorange}{\pmb{\checkmark}}^{\;\!\!\dagger}\)  & \no & \ck \\
+        
+        \textbf{Ours}
+        & \ck & \ck &\ck & \ck \\
+    \end{tabular}
+    
+    {\footnotesize \({}^\ast\)Affected by the equilibrium point issue that we address in this paper.}\\
+    {\footnotesize \({}^\dagger\)Unlike the other approaches, the equilibrium point is not user-defined.}
+\end{table}
+In this section, we review existing works related to stable neural ODEs (NODEs) on Riemannian manifolds. \Cref{tab:related-work-comparison} provides a concise comparison of our \ourframework{} framework to existing learning from demonstrations (LfD) frameworks.
+We first discuss approaches in Euclidean space.
+
+\paragraph{NODEs and Stability}
+NODEs~\cite{NODEs} are a powerful paradigm for modelling complex continuous-time dynamical systems, from image processing~\cite{NODEs,KangEtAl2021,LuoEtAl2025} to learning robotic skills~\cite{LemmeEtAl2014,WhiteEtAl2023,NawazEtAl2024,SochopoulosGiengerVijayakumar2024,AuddyEtAl2023Continual,AuddyEtAl2023Scalable}.
+%
+Stability in NODEs is addressed using Lyapunov functions~\cite{ManekKolter2019,AuddyEtAl2023Scalable,KangEtAl2021,SochopoulosGiengerVijayakumar2024,LuoEtAl2025} and contraction metrics~\cite{KhansariZadehBillard11, NawazEtAl2024}. 
+
+However, these stability frameworks are fundamentally limited to Euclidean spaces and cannot handle data evolving on more general Riemannian manifolds. Additionally, we identify a critical equilibrium consistency issue in~\cite{ManekKolter2019} that invalidates theoretical stability guarantees and causes numerical instability in practice. This issue also affects subsequent works~\cite{AuddyEtAl2023Scalable,SochopoulosGiengerVijayakumar2024} that build upon~\cite{ManekKolter2019}. We address this critical issue in \cref{sec:main-stability-issue}.
+%While providing stability guarantees, these approaches can not handle data lying on more general Riemannian manifolds. Additionally, there is a significant issue in~\cite{ManekKolter2019} that invalidates the stability guarantees and creates numerical instability in practice. This also applies to~\cite{AuddyEtAl2023Scalable,SochopoulosGiengerVijayakumar2024}, which build upon~\cite{ManekKolter2019}. We discuss this issue in detail in \cref{sec:main-stability-issue}.
+% 
+% Existing frameworks for stable Euclidean neural ODEs often exhibit limited expressivity.
+% For instance,~\cite{LemmeEtAl2014} induces stability by restricting the last-layer weights, significantly limiting the flexibility of their models.
+% Similarly,~\cite{NawazEtAl2024} relies on manually designed Lyapunov functions, significantly constraining the model’s adaptability and practical scalability. 
+% In contrast, we leverage learned neural Lyapunov functions, preserving expressive modelling capabilities while ensuring rigorous stability guarantees.
+
+\paragraph{NODEs on Riemannian Manifolds}
+Neural Manifold ODEs (NMODEs)~\cite{DynamicChartMethod} provide an expressive framework for learning dynamical systems while respecting manifold geometry. 
+While~\cite{DynamicChartMethod} employs dynamic coordinate charts to solve NMODEs,~\cite{WangSaverianoAbuDakka2022} projects the manifold data into a single tangent space.
+% We experimentally compare these approaches for solving NMODEs in \cref{sec:experiments-mode-solvers}.
+% They employ coordinate charts and local parameterisations to solve ODEs on manifolds, though computational complexity remains a challenge.
+% In~\cite{WangSaverianoAbuDakka2022}, non-Euclidean data is projected to a tangent space where a neural ODE operates, and the results are then projected back to the Riemannian manifold.
+% However, this tangent space approximation significantly distorts learned trajectories.
+Both~\cite{DynamicChartMethod} and~\cite{WangSaverianoAbuDakka2022} lack stability guarantees.
+%We discuss~\cite{ZhangBeikMohammadiRozo2022}, which employs NMODEs to obtain stability guarantees below.
+
+\paragraph{Stable Dynamical Systems on Riemannian Manifolds} 
+% Learning stable dynamical systems on Riemannian manifolds is an underexplored area. 
+% Existing frameworks that learn stable dynamical systems on Riemannian manifolds learn a smooth bijective mapping (diffeomorphism) between two manifolds~\cite{SaverianoAbuDakkaKyrki2023,ZhangBeikMohammadiRozo2022}. While this can be a viable approach, it is only practical if the learned diffeomorphism can be evaluated quickly, as it has to be evaluated for every time step of each predicted trajectory. Since~\cite{ZhangBeikMohammadiRozo2022} use NMODEs to learn the diffeomorphism,~\cite{ZhangBeikMohammadiRozo2022} is not practically viable, as evaluating an NMODE is costly. Using a Gaussian Mixture Models (GMM) instead, as applied by~\cite{SaverianoAbuDakkaKyrki2023}, offers a practical alternative, as they are fast to evaluate. However, GMMs scale poorly to higher-dimensional spaces, unlike NMODEs. Instead of learning a diffeomorphism, we directly use an NMODE to learn a stable vector field.
+%Zhang et al.~\cite{ZhangBeikMohammadiRozo2022} propose learning Neural MODE-based diffeomorphisms that inherit stability from hand-crafted geodesic flows in latent space. While their method shows high expressiveness and strong performance on complex product manifolds ($\mathbb{R}^3 \times \mathcal{S}^3$), it has critical limitations that our method resolves: (1) it requires costly Neural MODE integration at each inference step, complicating real-time control due to the need for evaluating both the diffeomorphism and its pullback operator.(2) The two-stage process (latent stable system → diffeomorphism → target manifold) can accumulate approximation errors, whereas our direct learning eliminates this intermediate step. In contrast, Saveriano et al.~\cite{SaverianoAbuDakkaKyrki2023} utilize Gaussian Mixture Models (GMMs) for faster evaluation but struggle with scalability to higher dimensions. Unlike these approaches, ours directly learns stable vector fields on the target manifold with NMODEs, ensuring stronger stability, better computational efficiency, and robust training while preserving the expressiveness of neural approaches for high-dimensional manifold learning.
+%
+Learning stable dynamical systems on Riemannian manifolds combines differential geometry, control theory, and machine learning challenges. Recent approaches~\cite{ZhangBeikMohammadiRozo2022,SaverianoAbuDakkaKyrki2023} focus on learning diffeomorphic mappings to transform stable canonical dynamics into complex behaviours using NMODEs and Gaussian mixture models (GMMs).
+
+RSDS~\cite{ZhangBeikMohammadiRozo2022} uses NMODEs to construct diffeomorphisms for Riemannian stable dynamical systems, providing theoretical stability guarantees through pullback operations. However, this method is costly, as it solves an NMODE at each time step, hindering real-time applications. 
+Additionally, a fundamental issue in~\cite{ZhangBeikMohammadiRozo2022} is that the equilibrium of the learned diffeomorphism is assumed to automatically correspond to the desired equilibrium point, without enforcing this constraint during training. While~\cite{ZhangBeikMohammadiRozo2022} ensures convergence to \emph{some} equilibrium point, users have no control over the location of this equilibrium point.
+
+In contrast, SDS-RM~\cite{SaverianoAbuDakkaKyrki2023} employs GMMs to effectively learn diffeomorphisms. Compared to RSDS, SDS-RM ensures computational efficiency while guaranteeing convergence to a user-defined equilibrium point. Nevertheless, GMMs struggle with scalability in high-dimensional manifolds~\cite{abu-dakka2018force} and oftentimes fail to capture the complex nonlinear dynamics that neural networks handle well.
+
+Alternative approaches~\cite{ravichandar2019learning,mukadam2020riemannian} explore contraction theory on manifolds~\cite{ravichandar2019learning} and Riemannian motion policies~\cite{mukadam2020riemannian}, but focus on tracking a reference trajectory rather than learning stable dynamics from demonstrations.
+
+\paragraph{Positioning Our Approach}
+Our work addresses key limitations in current methods by merging the expressiveness of NODEs with stability guarantees on Riemannian manifolds.
+Unlike diffeomorphism-based methods~\cite{ZhangBeikMohammadiRozo2022,SaverianoAbuDakkaKyrki2023}, we learn stable vector fields on manifolds directly, avoiding expensive inverse mappings. 
+% We address the equilibrium consistency problem in~\cite{ManekKolter2019} using explicit constraints. 
+Our approach retains the computational benefits of NODEs while offering the geometric awareness crucial for robotic applications involving orientation, impedance, or other manifold-valued quantities.
+%Our approach both guarantees stability and maintains Riemannian manifold constraints, while being fast and scalable to high-dimensional data, as we demonstrate in \cref{sec:experiments}.
+
+% Among those,~\cite{SaverianoAbuDakkaKyrki2023} rely on Gaussian Mixture Models (GMMs) instead of neural ODEs.
+% As we demonstrate in \cref{sec:experiments} GMMs on Riemannian manifolds scale poorly to higher-dimensional spaces, unlike neural ODEs.
+% While~\cite{ZhangBeikMohammadiRozo2022} use neural ODEs, they use neural ODEs to learn the diffeomorphism.
+% In contrast, we directly learn the vector field of a dynamical system using a neural ODE.
+% While~\cite{ZhangBeikMohammadiRozo2022} requires solving a neural ODE on a Riemannian manifold for each time step of a trajectory, our method only requires solving a single neural ODE per trajectory.
+% Concretely, simulating a trajectory with~\(1000\) time steps requires~\cite{ZhangBeikMohammadiRozo2022} to solve~\(1000\) NMODEs, while we only solve one.
+% \TODO{Concrete inference times from Abdelrahman.}
+% 
+% Particularly,~\cite{ZhangBeikMohammadiRozo2022} introduces stability in manifold-valued dynamical systems by employing NMODEs to learn diffeomorphisms mapping complex trajectories to predefined stable reference paths (e.g., geodesics). Although effective, this diffeomorphic approach incurs significant computational overhead during inference, as each trajectory step demands solving an individual NMODE.
+
+
+
+    
+%===============================================================================","\newcommand{\ck}{\textcolor{bettergreen}{\(\pmb{\checkmark}\)}}
+\newcommand{\no}{\textcolor{betterred}{\(\pmb{\times}\)}}
+\newcommand{\na}{--}
+\begin{table}[b]
+    \centering
+    \caption{\textbf{Comparison with Existing LfD Frameworks}.}
+        \begin{tabular}{>{\centering}p{.13\columnwidth} @{} >{\centering}p{.18\columnwidth} @{} >{\centering}p{.18\columnwidth} @{} >{\centering}p{.18\columnwidth} @{} >{\centering\arraybackslash}p{.12\columnwidth}}
+        \ \newline\textbf{Reference} & \textbf{Riemannian}\newline\textbf{Manifold} & \ \textbf{Stability}\newline\textbf{Guarantee} & \ \textbf{Learned}\newline\textbf{Vector Field} & \textbf{Neural}\newline\textbf{ODE} \\ \midrule
+        
+        \cite{AuddyEtAl2023Continual}
+        & \no & \no & \ck &\ck \\
+        
+        \cite{SochopoulosGiengerVijayakumar2024,AuddyEtAl2023Scalable}
+        & \no & \(\textcolor{betterorange}{\pmb{\checkmark}}^{\;\!\!\ast}\) & \ck &\ck \\
+        
+        \cite{LemmeEtAl2014,NawazEtAl2024}
+        & \no & \ck & \ck & \ck \\
+
+        \cite{KhansariZadehBillard11}
+        & \no & \ck & \ck & \no \\
+        
+        \cite{WangSaverianoAbuDakka2022}
+        & \ck & \no & \ck & \ck \\
+        
+        \cite{SaverianoAbuDakkaKyrki2023}
+        & \ck & \ck & \no &\no \\
+        
+        \cite{ZhangBeikMohammadiRozo2022}
+        & \ck & \(\textcolor{betterorange}{\pmb{\checkmark}}^{\;\!\!\dagger}\)  & \no & \ck \\
+        
+        \textbf{Ours}
+        & \ck & \ck &\ck & \ck \\
+    \end{tabular}
+    
+    {\footnotesize \({}^\ast\)Affected by the equilibrium point issue that we address in this paper.}\\
+    {\footnotesize \({}^\dagger\)Unlike the other approaches, the equilibrium point is not user-defined.}
+\end{table}
+In this section, we review existing works related to stable neural ODEs (NODEs) on Riemannian manifolds. \Cref{tab:related-work-comparison} provides a concise comparison of our \ourframework{} framework to existing learning from demonstrations (LfD) frameworks.
+We first discuss approaches in Euclidean space.
+
+\paragraph{NODEs and Stability}
+NODEs~\cite{NODEs} are a powerful paradigm for modelling complex continuous-time dynamical systems, from image processing~\cite{NODEs,KangEtAl2021,LuoEtAl2025} to learning robotic skills~\cite{LemmeEtAl2014,WhiteEtAl2023,NawazEtAl2024,SochopoulosGiengerVijayakumar2024,AuddyEtAl2023Continual,AuddyEtAl2023Scalable}.
+
+Stability in NODEs is addressed using Lyapunov functions~\cite{ManekKolter2019,AuddyEtAl2023Scalable,KangEtAl2021,SochopoulosGiengerVijayakumar2024,LuoEtAl2025} and contraction metrics~\cite{KhansariZadehBillard11, NawazEtAl2024}. 
+
+However, these stability frameworks are fundamentally limited to Euclidean spaces and cannot handle data evolving on more general Riemannian manifolds. Additionally, we identify a critical equilibrium consistency issue in~\cite{ManekKolter2019} that invalidates theoretical stability guarantees and causes numerical instability in practice. This issue also affects subsequent works~\cite{AuddyEtAl2023Scalable,SochopoulosGiengerVijayakumar2024} that build upon~\cite{ManekKolter2019}. We address this critical issue in \cref{sec:main-stability-issue}.
+
+
+
+
+
+
+
+\paragraph{NODEs on Riemannian Manifolds}
+Neural Manifold ODEs (NMODEs)~\cite{DynamicChartMethod} provide an expressive framework for learning dynamical systems while respecting manifold geometry. 
+While~\cite{DynamicChartMethod} employs dynamic coordinate charts to solve NMODEs,~\cite{WangSaverianoAbuDakka2022} projects the manifold data into a single tangent space.
+
+
+
+
+Both~\cite{DynamicChartMethod} and~\cite{WangSaverianoAbuDakka2022} lack stability guarantees.
+
+
+\paragraph{Stable Dynamical Systems on Riemannian Manifolds} 
+
+
+
+
+Learning stable dynamical systems on Riemannian manifolds combines differential geometry, control theory, and machine learning challenges. Recent approaches~\cite{ZhangBeikMohammadiRozo2022,SaverianoAbuDakkaKyrki2023} focus on learning diffeomorphic mappings to transform stable canonical dynamics into complex behaviours using NMODEs and Gaussian mixture models (GMMs).
+
+RSDS~\cite{ZhangBeikMohammadiRozo2022} uses NMODEs to construct diffeomorphisms for Riemannian stable dynamical systems, providing theoretical stability guarantees through pullback operations. However, this method is costly, as it solves an NMODE at each time step, hindering real-time applications. 
+Additionally, a fundamental issue in~\cite{ZhangBeikMohammadiRozo2022} is that the equilibrium of the learned diffeomorphism is assumed to automatically correspond to the desired equilibrium point, without enforcing this constraint during training. While~\cite{ZhangBeikMohammadiRozo2022} ensures convergence to \emph{some} equilibrium point, users have no control over the location of this equilibrium point.
+
+In contrast, SDS-RM~\cite{SaverianoAbuDakkaKyrki2023} employs GMMs to effectively learn diffeomorphisms. Compared to RSDS, SDS-RM ensures computational efficiency while guaranteeing convergence to a user-defined equilibrium point. Nevertheless, GMMs struggle with scalability in high-dimensional manifolds~\cite{abu-dakka2018force} and oftentimes fail to capture the complex nonlinear dynamics that neural networks handle well.
+
+Alternative approaches~\cite{ravichandar2019learning,mukadam2020riemannian} explore contraction theory on manifolds~\cite{ravichandar2019learning} and Riemannian motion policies~\cite{mukadam2020riemannian}, but focus on tracking a reference trajectory rather than learning stable dynamics from demonstrations.
+
+\paragraph{Positioning Our Approach}
+Our work addresses key limitations in current methods by merging the expressiveness of NODEs with stability guarantees on Riemannian manifolds.
+Unlike diffeomorphism-based methods~\cite{ZhangBeikMohammadiRozo2022,SaverianoAbuDakkaKyrki2023}, we learn stable vector fields on manifolds directly, avoiding expensive inverse mappings. 
+
+Our approach retains the computational benefits of NODEs while offering the geometric awareness crucial for robotic applications involving orientation, impedance, or other manifold-valued quantities.",N/A

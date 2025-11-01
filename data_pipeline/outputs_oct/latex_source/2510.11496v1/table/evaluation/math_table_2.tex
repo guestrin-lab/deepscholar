@@ -1,0 +1,148 @@
+% \begin{table*}[!thb]
+% \centering
+% \caption{{Comparison of Base Models on Reasoning\&Math}. Models are categorized by their parameter size and type, highlighting top performers in each category with {bold} for overall leaders and {underline} for leaders within their parameter group.}
+% \vspace{-2mm}
+% \label{tab:enhanced_model_results}
+% \resizebox{\linewidth}{!}{
+% \begin{tabular}{lcccccccc}
+% \hline
+% {Models/Datasets} & {WinoGrande} & {HellaSwag} & {BBH} & {GSM-8K} & {MATH} & {TheoremQA} & {MathBench-CN}& {MathBench-EN}\\
+% & {0-shot} & {0-shot} & {0-shot} & {4-shot} & {4-shot}& {0-shot} & {0-shot\&8-shot}& {0-shot\&8-shot}\\
+% \hline
+% \multicolumn{8}{c}{\purplecolor{{\ding{72}API Models}}} \\
+% GPT-3.5 & 68.7 & 70.2 & 41.9 & 24.6 & 5.5 & 1.6 & - \\
+% \multicolumn{8}{c}{\greencolor{{$\triangle$ $\sim7B Models$}}} \\
+% ChatGLM3-6B & 61.7 & 73.1 & 56.0 & 53.8 & 20.4 & 9.3 & - \\
+% Llama2-7B-Chat & 51.5 & 49.5 & 41.4 & 28.4 & 4.1 & 0.3 & - \\
+% Baichuan2-7B-Chat & 49.9 & 36.4 & 35.9 & 32.4 & 5.7 & 2.4 & - \\
+% Mistral-7B-Instruct-v0.2 & 50.8 & 64.1 & 46.4 & 48.3 & 8.6 & 2.3 & - \\
+% Qwen-7B-Chat & 54.2 & 61.9 & 45.5 & 44.1 & 12.0 & 5.8 & - \\
+% Qwen1.5-7B-Chat & 55.5 & 66.4 & 32.5 & 56.9 & 9.3 & 5.4 & - \\
+% InternLM2-Chat-7B-SFT & 65.8 & {83.5} & 60.9 & 68.8 & 13.0 & {11.3} & - \\
+% InternLM2-Chat-7B & {65.8} & 83.0 & {61.2} & {70.7} & {23.0} & 9.5 & 34.3 \\
+% \multicolumn{8}{c}{\bluecolor{{$\heartsuit$ $\sim20B Models$}}} \\
+% Llama2-13B-Chat & 50.8 & 57.0 & 49.7 & 43.1 & 5.2 & 1.1 & - \\
+% Baichuan2-13B-Chat & 50.9 & 34.4 & 42.5 & 56.0 & 4.3 & 3.4 & 24.1 \\
+% Mixtral-8x7B-Instruct-v0.1 & 60.9 & 80.3 & 57.3 & 71.7 & 22.5 & 9.6 & 32.1 \\
+% Qwen-14B-Chat & 55.7 & 79.2 & 55.8 & 57.7 & 27.6 & 8.1 & - \\
+% Qwen1.5-14B-Chat & 65.6 & 76.9 & 49.6 & 63.5 & 24.0 & 10.5 & 47.4 \\
+% InternLM2-Chat-20B-SFT &{75.0} & {85.9} & 66.9 & 77.1 & 20.1 & 13.6 & 48.1 \\
+% InternLM2-Chat-20B & 74.8 & 85.8 & {68.3} & {79.6} & {31.9} & {14.1} & {48.0} \\
+% \hline
+% \end{tabular}}
+% \end{table*}
+
+% \begin{table*}[!thb]
+% \centering
+% \caption{{Base Models Comparison on Reasoning Tasks: WinoGrande, HellaSwag, BBH}. Models are categorized by their parameter size and type, highlighting top performers in each category with {bold} for overall leaders and {underline} for leaders within their parameter group.}
+% \vspace{-2mm}
+% \label{tab:chat_reasoning_result}
+% \resizebox{\linewidth}{!}{
+% \begin{tabular}{lccc}
+% \hline
+% {Models/Datasets} & {WinoGrande} & {HellaSwag} & {BBH} \\
+% & {0-shot} & {0-shot} & {0-shot} \\
+% \hline
+% \multicolumn{4}{c}{\purplecolor{{\ding{72}API Models}}} \\
+% GPT-3.5 & 68.7 & 70.2 & 41.9 \\
+% \multicolumn{4}{c}{\greencolor{{$\triangle$ $\sim7B Models$}}} \\
+% ChatGLM3-6B & 61.7 & 73.1 & 56.0 \\
+% Llama2-7B-Chat & 51.5 & 49.5 & 41.4 \\
+% Baichuan2-7B-Chat & 49.9 & 36.4 & 35.9 \\
+% Mistral-7B-Instruct-v0.2 & 50.8 & 64.1 & 46.4 \\
+% Qwen-7B-Chat & 54.2 & 61.9 & 45.5 \\
+% Qwen1.5-7B-Chat & 55.5 & 66.4 & 32.5 \\
+% InternLM2-Chat-7B-SFT & 65.8 & {83.5} & 60.9 \\
+% InternLM2-Chat-7B & {65.8} & 83.0 & {61.2} \\
+% \multicolumn{4}{c}{\bluecolor{{$\heartsuit$ $\sim20B Models$}}} \\
+% Llama2-13B-Chat & 50.8 & 57.0 & 49.7 \\
+% Baichuan2-13B-Chat & 50.9 & 34.4 & 42.5 \\
+% Mixtral-8x7B-Instruct-v0.1 & 60.9 & 80.3 & 57.3 \\
+% Qwen-14B-Chat & 55.7 & 79.2 & 55.8 \\
+% Qwen1.5-14B-Chat & 65.6 & 76.9 & 49.6 \\
+% InternLM2-Chat-20B-SFT & {75.0} & {85.9} & 66.9 \\
+% InternLM2-Chat-20B & 74.8 & 85.8 & {68.3} \\
+% \hline
+% \end{tabular}}
+% \end{table*}
+
+
+% \begin{table*}[!thb]
+% \centering
+% \caption{{Base Models Comparison on Math \& Advanced Reasoning Tasks: GSM-8K, MATH, TheoremQA, MathBench-CN, MathBench-EN}. Models are categorized by their parameter size and type, highlighting top performers in each category with {bold} for overall leaders and {underline} for leaders within their parameter group.}
+% \vspace{-2mm}
+% \label{tab:base_math_result}
+% \resizebox{\linewidth}{!}{
+% \begin{tabular}{lccccc}
+% \hline
+% {Models/Datasets} & {GSM-8K} & {MATH} & {TheoremQA} & {MathBench-CN}& {MathBench-EN}\\
+% & {4-shot} & {4-shot}& {0-shot} & {0-shot\&8-shot}& {0-shot\&8-shot}\\
+% \hline
+% \multicolumn{6}{c}{\purplecolor{{\ding{72}API Models}}} \\
+% GPT-3.5 & 24.6 & 5.5 & 1.6 & - \\
+% \multicolumn{6}{c}{\greencolor{{$\triangle$ $\sim7B Models$}}} \\
+% ChatGLM3-6B & 53.8 & 20.4 & 9.3 & - \\
+% Llama2-7B-Chat & 28.4 & 4.1 & 0.3 & - \\
+% Baichuan2-7B-Chat & 32.4 & 5.7 & 2.4 & - \\
+% Mistral-7B-Instruct-v0.2 & 48.3 & 8.6 & 2.3 & - \\
+% Qwen-7B-Chat & 44.1 & 12.0 & 5.8 & - \\
+% Qwen1.5-7B-Chat & 56.9 & 9.3 & 5.4 & - \\
+% InternLM2-Chat-7B-SFT & 68.8 & 13.0 & {11.3} & - \\
+% InternLM2-Chat-7B & {70.7} & {23.0} & 9.5 & 34.3 \\
+% \multicolumn{6}{c}{\bluecolor{{$\heartsuit$ $\sim20B Models$}}} \\
+% Llama2-13B-Chat & 43.1 & 5.2 & 1.1 & - \\
+% Baichuan2-13B-Chat & 56.0 & 4.3 & 3.4 & 24.1 \\
+% Mixtral-8x7B-Instruct-v0.1 & 71.7 & 22.5 & 9.6 & 32.1 \\
+% Qwen-14B-Chat & 57.7 & 27.6 & 8.1 & - \\
+% Qwen1.5-14B-Chat & 63.5 & 24.0 & 10.5 & 47.4 \\
+% InternLM2-Chat-20B-SFT & 77.1 & 20.1 & 13.6 & 48.1 \\
+% InternLM2-Chat-20B & {79.6} & {31.9} & {14.1} & {48.0} \\
+% \hline
+% \end{tabular}}
+% \end{table*}
+
+
+\begin{table*}[!t]
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|c|ccccc|c}
+\multirow{2}{*}{model name} & \multirow{2}{*}{\#param}  & {GSM8K} & {MATH} & {TheoremQA} & {MathBench-CN}& {MathBench-EN} & \multirow{2}{*}{avg.} \\
+& & (4-shot) & (4-shot) & (0-shot) & (0-shot\&8-shot) & (0-shot\&8-shot) & \\
+\hline
+% \multicolumn{7}{c}{\purplecolor{{\ding{72}API Models}}} \\
+GPT-3.5 & -- & 78.2 & 28.0 & 9.1 & 26.4 & 42.5 & 36.8\\
+\hline
+% \multicolumn{7}{c}{\greencolor{{$\triangle$ $\sim7B\ Models$}}} \\
+Llama2-7B-Chat & 7B & 28.4 & 4.1 & 0.3 & 3.3 & 7.7 & 8.8 \\
+Llama2-13B-Chat & 13B & 43.1 & 5.2 & 1.1 & 6.7 & 15.7 & 14.4\\
+
+Mistral-7B-Instruct-v0.2 & 7.3B & 48.3 & 8.6 & 2.3 & 14.5 & 28.3 & 20.4\\
+Mixtral-8x7B-Instruct-v0.1 & 46.7B & 71.7 & 22.5 & 9.6 & 27.2 & 44.3 & 35.1 \\
+
+Baichuan2-7B-Chat & 7B & 32.4 & 5.7 & 2.4 & 16.9 & 17.8  & 15.0\\
+Baichuan2-13B-Chat & 13B & 56.0 & 4.3 & 3.4 & 28.3 & 29.1 & 24.2\\
+
+Qwen-7B-Chat & 7B & 44.1 & 12.0 & 5.8 & 31.2 & 29.0 & 24.4 \\
+Qwen-14B-Chat & 14B & 57.7 & 27.6 & 8.1 & 47.1 & 40.6 & 36.2 \\
+
+ChatGLM3-6B & 6.2B & 53.8 & 20.4 & 9.3 & 18.2 & 21.7 & 24.7 \\
+% Qwen1.5-7B-Chat & 56.9 & 9.3 & 5.4 & 38.0 & 34.2 \\
+% \multicolumn{7}{c}{\bluecolor{{$\heartsuit$ $\sim20B\  Models$}}} \\
+% Qwen1.5-14B-Chat & 63.5 & 24.0 & 10.5 & {52.0} & {50.8} \\
+\hline
+\rowcolor{gray!15}
+InternLM2-Chat-7B-SFT & 7B & 68.8 & 23.2 & {11.3} & {43.1} & 40.1 & {37.3} \\
+\rowcolor{gray!15}
+InternLM2-Chat-7B & 7B & {70.7} & {23.6} & 9.5 & 38.0 & {42.3} & 36.8 \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B-SFT & 20B & 77.1 & 31.9 & 13.6 & 47.5 & {50.6} & 44.1 \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B & 20B & {79.6} & {32.4} & {14.1} & {48.0} & 48.5 & {44.5} \\
+\end{tabular}}
+\caption{\textbf{Comparison of chat models on math tasks}. }
+\vspace{-2mm}
+\label{tab:chat_math_result}
+\end{table*}
+
+
+

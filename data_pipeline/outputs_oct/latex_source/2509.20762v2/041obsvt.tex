@@ -1,0 +1,118 @@
+\section{Observations on Real-World Datasets}\label{sec:observations}
+
+We shall describe several observations we have on the group anchors in real-world group interactions.
+
+Note that we assume realistic settings with label scarcity~\citep{zhu2022introduction,zhu2005semi,yang2022semi}, where the anchors in only a low proportion of groups are known.
+Specifically, we use 7.5\% training data and 2.5\% validation data in our main experiments (see Section~\ref{sec:experiments} for more details; \revisekdd{see also Appendix~\ref{appx:diff_training_ratios} for additional results with different training ratios}).
+Hence, when we discuss observations, we also assume 7.5\% groups with known anchors, and show that our observations are well established even with only such a low proportion of known group anchors.
+
+For each observation, we shall first provide the statement, then real-world intuitions behind the observation, and finally, empirical evidence from the real-world hypergraphs we use.
+
+\smallsection{Datasets.}
+For ease of discussion on our observations, we shall first introduce the real-world group-interaction (hypergraph) datasets used in this work, with some details deferred to \cref{sec:experiments} on experiments.
+We collect datasets from existing works~\citep{choe2023classification,chodrow2020annotated}.
+Specifically, we use thirteen datasets from five different domains:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Co-authorship (\texttt{co}) datasets}:
+    Each node represents a scholar, and each hyperedge includes the coauthors of the same publication.
+    In each hyperedge, the group anchor is the author who connects and gathers the other authors.
+    Arguably, either the first or the last author can be the anchor~\citep{osborne2019authorship}. Therefore, in this work, we consider both possible cases.
+    \item \textbf{Online Q\&A (\texttt{qa}) datasets}:
+    Each node represents a user, and each hyperedge includes those involved in a Q\&A session.
+    In each hyperedge, the group anchor is the questioner, who opens the session so that the other users can join it.
+    \item \textbf{Email (\texttt{em}) datasets}:
+    Each node represents a person, and each hyperedge includes those involved in the same email correspondence.
+    In each hyperedge, the anchor is the sender, who initially includes all the recipients in the correspondence.
+    \item \textbf{Social network (\texttt{so}) datasets}:
+    Each node represents a user, and each hyperedge includes those involved in the same social interaction (message or retweet).
+    In each hyperedge, the group anchor is the person initiating the interaction, i.e., the sender of the message, who initially chooses to include all the recipients, or the retweeted user, who uploads the original post so that the others can retweet it.    
+    \item \textbf{Movie cast (\texttt{mo}) dataset}:
+    Each node represents an actor, and each hyperedge includes those acting in the same movie.
+    In each hyperedge, the group anchor is the leading actor, typically around whom the whole ensemble is built~\citep{colliderMoviesStarring}.
+\end{itemize}
+See \cref{tab:single_node_label} for a summary of the datasets.
+See Table~\ref{tab:dataset_summary} for the basic statistics of the datasets.
+More details on data processing are deferred to Section~\ref{sec:exp_settings} when discussing experiments.
+
+\input{TABS/degree_perf}
+
+\subsection{Observation 1: Informative Yet Limited Topological Features (\cref{tab:degree_perf})}\label{sec:intuition:topological_feat}
+
+The most immediate information we have is the topology (i.e., nodes and hyperedges; see \cref{prob:seed_identification}), especially under label scarcity.
+From topology, we can derive topological features. 
+However, are topological features actually helpful in identifying anchors in real-world group interactions?
+Our first observation gives a partially positive answer to this question.
+
+\vspace{-1mm}
+\begin{observation}\label{intu:topological_feat}
+    In real-world group interactions, topological features are informative about group anchors.
+    That is, one can achieve considerable, yet not outstanding, accuracy in identifying group anchors based on only topological features.
+\end{observation}
+\vspace{-1mm}
+
+\smallsection{Intuition.}
+Let us first provide concrete intuition in different real-world domains behind the observation.
+Specifically, let us consider one of the simplest topological features, node degrees (see \cref{sec:prelim}).
+In co-authorship datasets, nodes with high degrees are likely senior scholars, who are also likely the last authors, but early-career scholars can also sometimes be the last authors (e.g., a new professor with her students).
+In online Q\&A datasets, nodes with low degrees are likely new users in the forum, who are also likely to ask questions, but experienced users can also sometimes ask questions.
+In movie cast datasets, nodes with high degrees are likely famous actors, who are also likely the leading actors, but novice actors (e.g., ``rising stars'') can also sometimes be the leading actors.
+
+\smallsection{Evidence.}
+Below, we provide more detailed evidence of our observation.
+We compare the performance of a simple heuristic based on only node degrees, with state-of-the-art deep-learning methods (WHATsNet~\citep{choe2023classification} and CoNHD~\citep{zheng2024co}) for edge-dependent node classification (ENC; see \cref{sec:rel_wk}), which we adapt for group anchor identification.
+For each dataset, between the highest and lowest degree, the heuristic chooses the better one based on their accuracy on the 7.5\% training data with known group anchors.
+Notably, WHATsNet~\citep{choe2023classification} and CoNHD~\citep{zheng2024co} also use topological features (including node degrees).
+The detailed experimental settings will be introduced later in \cref{sec:exp_settings}.
+As shown in \cref{tab:degree_perf}, in many real-world hypergraphs, simply predicting the node with the highest or lowest degree in each hyperedge has considerable accuracy.
+Yet, a clear gap remains between such a purely topological feature-based heuristic and the strongest baseline WHATsNet.
+We also include the accuracy of random guesses as a reference.
+
+\input{TABS/label_purity}
+
+\input{TABS/scalar_acc}
+
+\subsection{Observation 2: Stable Yet Contextual Anchorship Across Groups (Tables~\ref{tab:label_purity} \& \ref{tab:scalar_acc})}\label{sec:intuition:global_consistency}
+
+Group anchors are \textit{edge-dependent}, i.e., the same node might be the anchor in some hyperedges but not the anchor in others.
+Even so, can we still find some patterns about each node's anchorship (i.e., whether the node is the anchor or not) across different hyperedges?
+Our second observation provides insights into the question.
+
+\begin{observation}\label{intu:global_consistency}
+    In real-world group interactions, whether a node is the group anchor or not is overall stable, yet not fully homogeneous, across different hyperedges.
+    That is, if a node is (not) the anchor in one hyperedge, it is likely, yet not always, (not) the anchor in another hyperedge as well.
+\end{observation}
+
+\smallsection{Intuition.}
+Again, let us provide some concrete real-world intuition.
+In co-authorship datasets, the last author of a paper is usually a professor, who is likely to be the last author of other papers, but can also collaborate with professors as a non-last author.
+In email datasets, some employees are in charge of communicating with other companies, who frequently send emails to others, but also receive emails as responses.
+In movie cast datasets, the leading actor in one movie is usually a famous one, who is likely to be the leading actor in other movies, but may also play supporting roles.
+
+\input{ALGS/stage1}
+
+\smallsection{Evidence.}
+Again, we provide more detailed evidence.
+We examine the \textit{anchor purity} of nodes in real-world hypergraphs.
+
+\begin{definition}[Anchor degree, anchor proportion and anchor purity]\label{def:seed_member_prop_purity}
+    Given a hypergraph $H = (V, E)$, the \textit{anchor degree} $\delta_v$ of a node $v \in V$ is the number of hyperedges where $v$ is the group anchor, i.e., $\delta_v = |\mtsetbr{e \in E: A(e) = v}|$, the  
+    \textit{anchor proportion} $p_v$ of $v$ is the proportion of hyperedges where $v$ is the anchor, i.e., $p_v = \frac{\delta_v}{d_v}$,
+    and the \textit{anchor purity} $\rho_v$ of $v$ is the probability that $v$ is the anchor in both or neither of two hyperedges containing $v$ picked uniformly at random, i.e.,
+    $\rho_v = \left({\binom{\delta_v}{2} + \binom{d_v - \delta_v}{2}}\right) / {\binom{d_v}{2}}$.
+\end{definition}
+When we observe that $v$ is (not) the anchor in one hyperedge, the anchor purity is the probability that $v$ is also (not) the anchor in another hyperedge.
+Anchor purity is not considered for nodes appearing in only a single hyperedge.
+
+As shown in \cref{tab:label_purity}, in many real-world hypergraphs, the average anchor purity is high, yet not near 100\%.
+The average anchor purity of the nodes in each real-world dataset is significantly (with one-sided $t$-tests) higher than its randomized counterparts where the anchor is randomly chosen in each hyperedge.
+Yet, the purity is not near 100\% in most cases.
+
+\smallsection{Further analysis.}
+The statistics suggest that there is global consistency and local variability at the same time, which inspires us to hypothesize that, 
+(1) each node has its \textit{global anchor strength} across different hyperedges, yet
+(2) there is \textit{local competition} in each hyperedge.
+Indeed, if we set the anchor strength of each node as its anchor proportion (see \cref{def:seed_member_prop_purity}), and take the node with the highest anchor proportion in each hyperedge as the anchor, the known group anchors are well explained.
+As shown in \cref{tab:scalar_acc}, the average accuracy is 92.4\% over all the datasets.
+Note that the observation in \cref{tab:scalar_acc} is not intended to provide a realistic way to predict group anchors since we need ground-truth anchors to compute anchor proportions.
+Instead, it (1) shows the \textit{existence} of such anchor strengths that can accurately indicate group anchors, and (2) validates the usefulness of considering local contextual interplay among nodes in the same group.
+This further motivates us to set ``finding such anchor strengths that well explain known anchors'' as an objective, and to consider local contextual interplay in our method \ours, which we shall introduce below.

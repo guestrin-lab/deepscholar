@@ -1,0 +1,32 @@
+\begingroup
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.92}
+\begin{table*}[t!]
+    \centering
+    \caption{
+    \uline{With a training ratio of 2.5\%, \ours still achieves higher accuracy in identifying group anchors than all the baseline in most cases.}
+    For each setting, the best performance is highlighted in bold, while the second-best is underlined.
+    The mean accuracy values (\%) over five random splits are reported with standard deviations. OOM represents ``out of memory''.}
+    \label{tab:res_2p5_train}
+\begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{c|cccccccccccccccc}
+    \hline
+    \multirow{2}[2]{*}{\textbf{Dataset}} & \multicolumn{2}{c}{\texttt{coAA}} & \multicolumn{2}{c}{\texttt{coDB}} & \multicolumn{2}{c}{\texttt{coSM}} & \multirow{2}[2]{*}{\texttt{qaBI}} & \multirow{2}[2]{*}{\texttt{qaPH}} & \multirow{2}[2]{*}{\texttt{qaMA}} & \multirow{2}[2]{*}{\texttt{qaST}} & \multirow{2}[2]{*}{\texttt{emEN}} & \multirow{2}[2]{*}{\texttt{emEU}} & \multirow{2}[2]{*}{\texttt{emER}} & \multirow{2}[2]{*}{\texttt{soME}} & \multirow{2}[2]{*}{\texttt{soRE}} & \multirow{2}[2]{*}{\texttt{moML}} \bigstrut[t]\\
+          & (first) & (last) & (first) & (last) & (first) & (last) &       &       &       &       &       &       &       &       &       &  \bigstrut[b]\\
+    \hline
+    WHATsNet & \uline{45.72} & \uline{46.09} & \uline{41.72} & \uline{45.23} & \uline{34.57} & 37.43 & \uline{84.89} & \uline{86.92} & 33.74 & 29.83 & \uline{41.99} & 49.54 & \textbf{65.05} & \uline{72.36} & \textbf{97.17} & 40.79 \bigstrut[t]\\
+    CoNHD-U & 42.43 & 43.09 & 39.17 & 40.79 & 31.57 & 30.08 & 76.30 & 73.72 & 23.35 & 21.57 & 38.18 & 49.60 & 50.21 & 67.09 & 94.51 & 40.18 \\
+    CoNHD-I & 44.53 & 44.78 & 39.91 & 41.48 & 31.91 & 39.10 & 77.27 & 75.92 & 26.31 & 21.64 & 34.68 & \textbf{50.43} & \uline{64.36} & 71.47 & 94.39 & \uline{41.78} \\
+    HNHN  & 38.90 & 40.46 & 34.70 & 36.91 & 31.25 & 38.17 & 60.40 & 67.30 & 24.73 & 21.74 & 32.78 & 46.98 & 46.24 & 52.87 & 53.17 & 33.26 \\
+    HGNN  & 44.45 & 44.48 & 41.16 & 43.64 & 33.57 & 36.93 & 78.02 & 80.25 & 30.48 & 30.51 & 34.12 & 45.52 & 42.32 & 54.84 & 85.65 & 31.12 \\
+    HCHA  & 37.65 & 38.49 & 33.33 & 32.24 & 33.64 & 35.61 & 59.72 & 52.13 & 28.54 & 23.49 & 16.90 & 46.05 & 43.68 & 41.89 & 52.98 & 20.62 \\
+    HAT   & 41.09 & 44.39 & 33.49 & 34.91 & 30.64 & 32.86 & 58.60 & 78.65 & 28.03 & 22.54 & 41.18 & 49.24 & 43.45 & 65.67 & 83.86 & 32.28 \\
+    UniGCN & 40.52 & 42.15 & 41.34 & 44.70 & 34.34 & \uline{40.50} & 75.97 & 74.95 & \uline{39.32} & \uline{30.79} & 40.10 & 47.27 & 48.36 & 66.70 & 82.33 & 38.52 \\
+    HNN   & 36.31 & 37.61 & 34.05 & 33.40 & 33.67 & 34.68 & 40.10 & 53.23 & 31.07 & 21.06 & 27.93 & OOM   & 48.40 & 47.91 & 60.74 & 25.97 \bigstrut[b]\\
+    \hline
+    \ours & \textbf{48.93} & \textbf{49.42} & \textbf{44.41} & \textbf{47.92} & \textbf{41.18} & \textbf{45.35} & \textbf{86.90} & \textbf{88.25} & \textbf{39.62} & \textbf{36.15} & \textbf{47.53} & \uline{49.85} & 62.73 & \textbf{73.38} & \uline{96.28} & \textbf{41.87} \bigstrut\\
+    \hline
+    \end{tabular}%
+\end{adjustbox}
+\end{table*}
+\endgroup

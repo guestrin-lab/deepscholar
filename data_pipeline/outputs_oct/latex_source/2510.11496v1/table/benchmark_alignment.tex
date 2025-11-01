@@ -1,0 +1,43 @@
+
+\begin{table*}[!t]
+\centering
+
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|c|ccccc|c}
+% \diagbox{Models}{Datasets }
+\multirow{2}{*}{model name} & \multirow{2}{*}{\#param}  & {AlpacaEval} & {MTBench} & {CompassArena} & {AlignBench} & {IFEval} & \multirow{2}{*}{avg.} \\
+& & (WinRate) & (0-10 Score) & (WinRate) & (0-10 Score) & (0-100 Acc) \\
+\hline
+% \multicolumn{7}{c}{\purplecolor{{\ding{72}API Models}}} \\
+GPT-3.5 & - & 9.6 & 8.4 & 24.7 & 5.7 & - & - \\
+\hline
+% \multicolumn{7}{c}{\greencolor{{$\triangle$ $\sim7B\ Models$}}} \\
+
+Llama2-7B-Chat & 7B & 5 & 6.3 & 6.5 & - & 44.6 & - \\
+Llama2-13B-Chat & 13B & 7.7 & 6.7 & 9.8 & - & 46.1 & -\\
+
+Mistral-7B-Instruct-v0.2 & 7.3B & {14.7} & - & 14.2 & -  & {{57.9}} & - \\
+Mixtral-8x7B-Instruct-v0.1 & 46.7B & - & {{8.3}} & 18.9 & - & {56.5} & -\\
+
+Baichuan2-7B-Chat & 7B & - & - & 16.1 & 5.1 & 42.1 & -\\
+Baichuan2-13B-Chat & 13B & - & - & 20.5 & 5.3 & 42.5 & - \\
+
+Qwen-7B-Chat & 7B & - & - & 15.8 & 4.7 & 37.3 & - \\
+Qwen-14B-Chat & 14B & 7.5 & 7.0 & 24.8 & 5.4 & 43.8 & - \\
+
+ChatGLM3-6B & 6.2B  & - & - & 17.2 & 5.0 & 33.7 & - \\
+\hline
+\rowcolor{gray!15}
+InternLM2-Chat-7B-SFT & 7B & 6.9 & 7.1 & 14.1 & 4.9 & 48.5 & 16.3 \\
+\rowcolor{gray!15}
+InternLM2-Chat-7B & 7B & 11.3 & {7.7} & {28.7} & {6.1} & 45.9 & {19.9} \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B-SFT & 20B & 8.0 & 7.3 & 15.2 & 5.3 & 48.7  & 16.9  \\
+\rowcolor{gray!15}
+InternLM2-Chat-20B & 20B & {{21.8}} & 7.9 & {{31.4}} & {{6.8}} & 42.2 & {{22.0}} \\
+\end{tabular}}
+\caption{\textbf{Comparison of models on alignment benchmarks}. }
+
+\label{tab:alignment_model_results}
+\end{table*}
+

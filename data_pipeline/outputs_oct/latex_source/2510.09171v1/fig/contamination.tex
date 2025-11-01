@@ -1,0 +1,67 @@
+% \footnotesize
+% \small
+% \newcommand{\topone}[2]{\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top0_ilgen.jpg}&\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top0_#1.jpg}}
+% \newcommand{\toptwo}[2]{\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top1_ilgen.jpg}&\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top1_#1.jpg}}
+
+% \begin{tabular}{@{\hspace{0pt}}r@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{13pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}}
+
+% & \multicolumn{2}{c}{similarity: 0.87} & & \multicolumn{2}{c}{similarity: 0.84} \\
+% & \topone{MET}{} & & \toptwo{MET}{}\\
+% & ILGen & MET & & ILGen & MET \\[4pt]
+
+% & \multicolumn{2}{c}{similarity: 0.79} & & \multicolumn{2}{c}{similarity: 0.} \\
+% & \topone{roxford5k}{} & & \toptwo{roxford5k}{}\\
+% & ILGen & R-Oxford & & ILGen & R-Oxford \\[4pt]
+
+% & \multicolumn{2}{c}{similarity: 0.} & & \multicolumn{2}{c}{similarity: 0.} \\
+% & \topone{sop}{} & & \toptwo{sop}{}\\
+% & ILGen & SOP & & ILGen & SOP \\[4pt]
+
+% & \multicolumn{2}{c}{similarity: 0.733} & & \multicolumn{2}{c}{similarity: 0.726} \\
+% & \topone{instre}{} & & \toptwo{instre}{}\\
+% & ILGen & INSTRE & & ILGen & INSTRE \\
+
+
+% \end{tabular}
+
+% iccv version 4 * 2
+% \small
+% \newcommand{\topone}[2]{\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top0_ilgen.jpg}&\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top0_#1.jpg}}
+% \newcommand{\toptwo}[2]{\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top1_ilgen.jpg}&\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top1_#1.jpg}}
+
+% \begin{tabular}{@{\hspace{0pt}}r@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{13pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}}
+
+% & \multicolumn{2}{c}{similarity: $0.87$} & & \multicolumn{2}{c}{similarity: $0.83$} \\
+% & \topone{MET}{} & & \topone{gldv2-test}{}\\
+% & \oursplus{} & MET & & \oursplus{} & GLDv2 \\[4pt]
+
+% & \multicolumn{2}{c}{similarity: $0.79$} & & \multicolumn{2}{c}{similarity: $0.77$} \\
+% & \topone{roxford5k}{} & & \topone{rparis6k}{}\\
+% & \oursplus{} & R-Oxford & & \oursplus{} & R-Paris \\[4pt]
+
+% & \multicolumn{2}{c}{similarity: $0.73$} & & \multicolumn{2}{c}{similarity: $0.82$} \\
+% & \topone{instre}{} & & \topone{sop}{}\\
+% & \oursplus{} & INSTRE & & \oursplus{} & SOP \\[4pt]
+
+% & \multicolumn{2}{c}{similarity: $0.74$} & & \multicolumn{2}{c}{similarity: $0.73$} \\
+% & \topone{ilias}{} & & \toptwo{ilias}{}\\
+% & \oursplus{} & mini-ILIAS & & \oursplus{} & mini-ILIAS \\
+
+% \end{tabular}
+
+\small
+\newcommand{\topone}[2]{\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top0_ilgen.jpg}&\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top0_#1.jpg}}
+\newcommand{\toptwo}[2]{\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top1_ilgen.jpg}&\includegraphics[width=50pt,height=50pt]{fig/contamination/ilgen_#1_top1_#1.jpg}}
+
+\begin{tabular}{@{\hspace{0pt}}c@{\hspace{2pt}}c@{\hspace{2pt}} c@{\hspace{13pt}} c@{\hspace{2pt}}c@{\hspace{2pt}} c@{\hspace{13pt}} c@{\hspace{2pt}}c@{\hspace{2pt}} c@{\hspace{13pt}} c@{\hspace{2pt}}c@{\hspace{2pt}}}
+
+\multicolumn{2}{c}{similarity: $0.87$} & & \multicolumn{2}{c}{similarity: $0.83$} & & \multicolumn{2}{c}{similarity: $0.79$} & & \multicolumn{2}{c}{similarity: $0.77$}\\
+\topone{MET}{} & & \topone{gldv2-test}{} & & \topone{roxford5k}{} & & \topone{rparis6k}{}\\
+\oursplus{} & MET & & \oursplus{} & GLDv2 & & \oursplus{} & R-Oxford & & \oursplus{} & R-Paris \\[4pt]
+
+\multicolumn{2}{c}{similarity: $0.73$} & & \multicolumn{2}{c}{similarity: $0.82$} & & \multicolumn{2}{c}{similarity: $0.74$} & & \multicolumn{2}{c}{similarity: $0.73$} \\
+\topone{instre}{} & & \topone{sop}{} & & \topone{ilias}{} & & \toptwo{ilias}{}\\
+\oursplus{} & INSTRE & & \oursplus{} & SOP & & \oursplus{} & mini-ILIAS & & \oursplus{} & mini-ILIAS \\[4pt]
+
+\end{tabular}
+

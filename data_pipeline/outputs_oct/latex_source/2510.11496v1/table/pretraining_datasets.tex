@@ -1,0 +1,271 @@
+\begin{table*}[t!]
+{\fontsize{8}{10}\selectfont 
+    \centering
+    \setlength{\tabcolsep}{3mm} 
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{l|l}
+         Task & Dataset \\
+         \hline
+\multicolumn{2}{l}{\emph{Type: Single/Multi-Image Datasets}} \\
+                            & FaceCaption~\cite{dai202415m},
+                            COCO-Caption~\cite{singh2025benchmarking},
+                            OpenImages-Caption~\cite{kuznetsova2020openimage},
+                            Objects365-Caption~\cite{shao2019objects365},
+                            TextCap~\cite{sidorov2020textcaps},
+                            \\
+                            &Laion-ZH~\cite{schuhmann2022laion5b},
+                            Laion-EN~\cite{schuhmann2022laion5b}, 
+                            Laion-COCO~\cite{schuhmann2022laioncoco},
+                            LLaVAR~\cite{zhang2023llavar}, 
+                            InternVL-SA-1B-Caption~\cite{kirillov2023segment}, 
+                            \\
+\multirow{-2}{*}{Captioning}& 
+                            MMInstruct~\cite{liu2024mminstruct},
+                            GRIT-Caption~\cite{peng2023kosmos2},
+                            ShareGPT4V~\cite{chen2023sharegpt4v},
+                            LVIS-Instruct-4V~\cite{wang2023lvisinstruct4v},
+                            ShareCaptioner~\cite{chen2023sharegpt4v},
+                            \\
+                            &
+                            OmniCorpus~\cite{li2024omnicorpus},
+                            ShareGPT4o~\cite{chen2024far}
+                            \\
+
+\rowcolor{gray!15}          
+                            & GQA~\cite{hudson2019gqa},
+                            OKVQA~\cite{marino2019okvqa},
+                            A-OKVQA~\cite{schwenk2022aokvqa},
+                            Visual7W~\cite{zhu2016visual7w},
+                            VisText~\cite{tang2023vistext},
+                            VSR~\cite{liu2023vsr},
+                            TallyQA~\cite{acharya2019tallyqa},
+                            \\
+\rowcolor{gray!15}
+\multirow{-2}{*}{General QA}   
+                            & 
+                            Objects365-YorN~\cite{shao2019objects365},
+                            IconQA~\cite{lu2021iconqa},
+                            Stanford40~\cite{yao2011human},
+                            VisDial~\cite{das2017visdial},
+                            VQAv2~\cite{goyal2017vqav2}, 
+                            Hateful-Memes~\cite{kiela2020hateful} \\
+
+
+                            & MAVIS~\cite{zhang2024mavis},
+                            GeomVerse~\cite{kazemi2023geomverse},
+                            % CLEVR-Math~\cite{lindstrom2022clevrmath}, 
+                            MetaMath-Rendered~\cite{yu2023metamath}, 
+                            MapQA~\cite{chang2022mapqa}, 
+                            GeoQA+~\cite{cao2022geoqa_plus},
+                            Geometry3K~\cite{lu2021geometry3k}, \\
+\multirow{-2}{*}{Mathematics}
+                            & UniGeo~\cite{chen2022unigeo},
+                            GEOS~\cite{seo2015solving},
+                            CLEVR-Math~\cite{lindstrom2022clevrmath}  \\
+
+\rowcolor{gray!15}
+                            & 
+                            ChartQA~\cite{masry2022chartqa}, 
+                            PlotQA~\cite{methani2020plotqa},
+                            FigureQA~\cite{kahou2017figureqa},
+                            LRV-Instruction~\cite{liu2023lrv-instruction}, 
+                            ArxivQA~\cite{li2024multimodal},
+                            MMC-Inst~\cite{liu2023mmc}, \\
+\rowcolor{gray!15}
+                            & TabMWP~\cite{lu2022tablemwp},
+                            DVQA~\cite{kafle2018dvqa},
+                            UniChart~\cite{masry2023unichart}, 
+                            SimChart9K~\cite{xia2023structchart},
+                            Chart2Text~\cite{obeid2020chart},
+                            FinTabNet~\cite{zheng2021global}, \\
+\rowcolor{gray!15}
+\multirow{-3}{*}{Chart}                            
+                            & SciTSR~\cite{chi2019complicated},
+                            \textcolor{gray}{Synthetic Chart2Markdown}
+                            \\
+                            & 
+                            LaionCOCO-OCR~\cite{schuhmann2022laioncoco}, 
+                            Wukong-OCR~\cite{gu2022wukong},  
+                            ParsynthOCR~\cite{hezarai_parsynth_ocr_200k},
+                            SynthDoG-EN~\cite{kim2022synthdog},
+                            SynthDoG-ZH~\cite{kim2022synthdog},
+                            \\
+                            & 
+                            SynthDoG-RU~\cite{kim2022synthdog},
+                            SynthDoG-JP~\cite{kim2022synthdog},
+                            SynthDoG-KO~\cite{kim2022synthdog},
+                            IAM~\cite{marti2002iam},
+                            EST-VQA~\cite{wang2020general},
+                            ST-VQA~\cite{biten2019stvqa}, \\
+                            &
+                            NAF~\cite{davis2019deep}, 
+                            InfoVQA~\cite{mathew2022infographicvqa}, 
+                            HME100K~\cite{yuan2022syntax},
+                            OCRVQA~\cite{mishra2019ocrvqa}, 
+                            SROIE~\cite{huang2019icdar2019},
+                            POIE~\cite{kuang2023visual},
+                            CTW~\cite{yuan2019ctw}, \\
+                            & SynthText~\cite{gupta2016synthtext},
+                            ArT~\cite{chng2019art}, 
+                            LSVT~\cite{sun2019lsvt}, 
+                            RCTW-17~\cite{shi2017rctw17}, 
+                            ReCTs~\cite{zhang2019rects},
+                            MTWI~\cite{he2018icpr2018}, 
+                            TextVQA~\cite{singh2019textvqa}, \\
+                            & CASIA~\cite{liu2020casia},
+                            TextOCR~\cite{singh2021textocr}, 
+                            Chinese-OCR~\cite{chinese-ocr}, 
+                            EATEN~\cite{guo2019eaten},
+                            COCO-Text~\cite{veit2016coco},
+                            \textcolor{gray}{Synthetic Arxiv OCR},
+                             \\
+\multirow{-5}{*}{OCR} 
+                            & 
+                            \textcolor{gray}{Synthetic Image2Latex}, 
+                            \textcolor{gray}{Synthetic Handwritten OCR}, 
+                            \textcolor{gray}{Synthetic Infographic2Markdown} 
+                            \\
+
+
+\rowcolor{gray!15}
+                            & KVQA~\cite{shah2019kvqa},
+                            A-OKVQA~\cite{schwenk2022aokvqa},
+                            ViQuAE~\cite{lerner2022viquae}, 
+                            iNaturalist2018~\cite{van2018inaturalist}, 
+                            MovieNet~\cite{huang2020movienet},
+                            ART500K~\cite{mao2017deepart}, 
+                            \\      
+\rowcolor{gray!15}
+                            & 
+                            KonIQ-10K~\cite{hosu2020koniq},
+                            IconQA~\cite{lu2021iconqa}, 
+                            VisualMRC~\cite{tanaka2021visualmrc},
+                            ChemVLM Data~\cite{li2024chemvlm},
+                            ScienceQA~\cite{lu2022scienceqa},
+                            AI2D~\cite{kembhavi2016ai2d}, \\
+\rowcolor{gray!15}
+\multirow{-3}{*}{Knowledge}
+                            &
+                            TQA~\cite{kembhavi2017tqa},
+                            Wikipedia-QA~\cite{he2023wanjuan}, 
+                            \textcolor{gray}{Synthetic Multidisciplinary Knowledge / QA} \\
+                            & Objects365~\cite{shao2019objects365},
+                            GRIT~\cite{you2023ferret}, 
+                            RefCOCO~\cite{yu2016refcoco},
+                            GPT4Gen-RD-BoxCoT~\cite{chen2023shikra},
+                            All-Seeing-V1~\cite{wang2023allseeing}, \\
+\multirow{-2}{*}{Grounding}
+                            & 
+                            All-Seeing-V2~\cite{wang2024allseeingv2},
+                            V3Det~\cite{wang2023v3det},
+                            TolokaVQA~\cite{ustalov2023toloka} \\
+
+\rowcolor{gray!15}
+Document
+                            & DocReason25K~\cite{hu2024mplug_docowl_1_5},
+                            DocVQA~\cite{mathew2021docvqa},
+                            Docmatix~\cite{2024docmatrix}, 
+                            \textcolor{gray}{Synthetic Arxiv QA} \\
+
+                            & ALLaVA~\cite{chen2024allava},
+                            SVIT~\cite{zhao2023svit},
+                            Cambrain-GPT4o~\cite{tong2024cambrian},
+                            TextOCR-GPT4V~\cite{textocr_gpt4v_dataset}, 
+                            MMDU~\cite{liu2024mmdu}, \\
+\multirow{-2}{*}{Conversation}
+                            &
+                            \textcolor{gray}{Synthetic Real-World Conversations}
+                            \\
+
+\rowcolor{gray!15}
+                            & PMC-VQA~\cite{zhang2023pmc},
+                            VQA-RAD~\cite{lau2018dataset},
+                            ImageCLEF~\cite{garcia2015overview},
+                            SLAKE~\cite{liu2021slake}, 
+                            Medical-Diff-VQA~\cite{hu2023medical},\\
+\rowcolor{gray!15}
+\multirow{-2}{*}{Medical}
+                            & PMC-CaseReport~\cite{pmccase},
+                            GMAI-VL (subset)~\cite{li2024gmai}\\
+
+GUI
+% Infographic
+                            & Screen2Words~\cite{wang2021screen2words},
+                            WebSight~\cite{laurenccon2024unlocking} \\
+
+\hline
+\multicolumn{2}{l}{\emph{Type: Video Datasets}} \\
+
+\rowcolor{gray!15}
+Captioning                  & Mementos~\cite{wang2024mementos},
+                            ShareGPT4Video~\cite{chen2024sharegpt4video},
+                            VideoGPT+~\cite{Maaz2024VideoGPT+},
+                            ShareGPT4o-Video~\cite{chen2024far} \\
+                            
+General QA                  & VideoChat2-IT~\cite{li2024mvbench},
+                            EgoTaskQA~\cite{jia2022egotaskqa},
+                            NTU RGB+D~\cite{liu2020ntu},
+                            CLEVRER~\cite{yi2019clevrer},
+                            STAR~\cite{wu2024star}, 
+                            LSMDC~\cite{rohrbach2015dataset} \\
+    \end{tabular}
+    \caption{\textbf{Summary of the pre-training data mixture of InternVL 2.5.}
+    Notably, we exclusively use conversaiton-format instruction data, and at this stage, only the MLP or both MLP and ViT parameters are trainable, allowing the incorporation of both low-quality and high-quality data.
+    } 
+\label{tab:pretraining_datasets}
+}
+\end{table*}
+
+
+% 没找到的
+% % japanese_ocr
+% % image_textualization
+% % diagram_image_to_text_gpt4o
+% % chrome_writting
+% mmmu\_data
+% * xueersi\_\*
+% % latex10k_qa_20240805
+% % pixel_art_instruction_gpt4o_filtered
+% 爬虫 crawler\_data2
+% crawler\_data
+% gaokao/文件夹里面的
+% ocr\_st/文件夹
+% % mmmu_tiku_gpt4o_20240626_18k_filtered
+% % reflux_20240510_to_20240621_gpt4o_filtered
+% % mmmu_baidu_image_caption_gpt4o_filtered
+% % EdrawSVG_Caption_13K_v1
+% % coco_clothes_zh_20240402
+
+% CAR-A_20240621
+
+% safety_20240619
+% study_com_image_20240619
+% reflow_gpt4o_correct_shanghai_0510_To_0523_filtered
+% reflow_gpt4o_correct_shanghai_0212_To_0510_filtered
+
+% Pathology_VQA
+% medical_longanswer_*
+% SenseChat_Vision_0429_To_0517_gpt4o_filtered st的？
+% GPT4o_LongCaption_20240819_90k_v1.0_reformat
+% GPT4o_LongCaption_20240819_v1.0_reformat
+% llavar\_inhous不管
+% AndroidUI_longcaption_0312to0327_20240409_v1 这个是private？
+% ocr/pdf60k_cn_v1.0_woBox.jsonl
+% synth_handwrite_small_500k_v1.0.jsonl
+% irregular_layout_v1.0_woBox.jsonl
+% industry_research_report_woBox_v1.0.jsonl
+% EdrawSVG2PNG
+% charts2500_qa_v1.jsonl
+% ocr-st/eastmoney3k_qa_20240621_v1.jsonl
+% ccbench_inhouse_20240401_v2
+% inhouse没有
+% ctrip_food_qa_zh_20240624_gpt4o_filtered
+% ctrip_food_longcap_zh_20240624_gpt4o_filtered
+% ctrip_insight_gpt4v_zh_20240402
+% douban_movie_qa_zh_gpt4o_20240625_filtered
+% douban_movie_longcap_gpt4o_20240624_filtered
+% coco_poetry_zh_20240402
+% vqa_rad_en_20240402
+% pic_math2k/images 合成数据
+% Baidu_Baike_500k_zh_20240402_filtered_v2
+% chart_data_with_markdown.jsonl

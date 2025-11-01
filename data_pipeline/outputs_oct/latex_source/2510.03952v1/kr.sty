@@ -1,0 +1,279 @@
+%Filename: kr.sty -- version 1.2 (27-Feb-2020)
+%
+\typeout{Conference Style for KR for LaTeX 2e -- version 1.2 (27-Feb-2020)}
+% WARNING: IF YOU ARE USING THIS STYLE SHEET FOR A KR PUBLICATION, YOU
+% MAY NOT MODIFY IT FOR ANY REASON. MODIFICATIONS (IN YOUR SOURCE
+% OR IN THIS STYLE SHEET WILL RESULT IN REJECTION OF YOUR PAPER).
+
+% NOTICE: This file is based on the AAAI formatting instructions as they
+% were in December 2013. It includes modifications for KR introduced in Jan 2020.
+% This file was originally prepared by Peter F. Patel-Schneider, liberally
+% using the ideas of other style hackers, including Barbara Beeton. It was
+% modified in April 1999 by J. Scott Penberthy and George Ferguson. It was
+% modified in 2007 by AAAI. It was modified in February 2009
+% and in November 2009 by Hans W. Guesgen and Giuseppe De Giacomo. It
+% was further modified in March 2010 by AAAI and adapted for KR in Jan 2020 by
+% confDNA.
+% The original preparation of this file was supported by
+% Schlumberger Palo Alto Research, AT\&T Bell Laboratories, AAAI, and
+% Morgan Kaufmann Publishers.
+%
+% WARNING: This style is NOT guaranteed to work. It is provided in the
+% hope that it might make the preparation of papers easier, but this style
+% file is provided "as is" without warranty of any kind, either express or
+% implied, including but not limited to the implied warranties of
+% merchantability, fitness for a particular purpose, or noninfringement.
+% You use this style file at your own risk. Standard disclaimers apply.
+%
+% Do not use this file unless you are an experienced LaTeX user. Please ensure
+% that your version of dvips maps to type 1 fonts. Place this document in
+% a file called kr.sty in the TeX search path. (Placing it in the same
+% directory as the paper should also work.)
+%
+% You must also format your paper for US letter-sized paper.
+%
+% There are undoubtably bugs in this style. If you would like to submit
+% bug fixes, improvements, etc. please let us know.
+%
+% USE OF PDFTeX IS NOW REQUIRED
+
+% PHYSICAL PAGE LAYOUT
+\setlength\topmargin{-0.25in} \setlength\oddsidemargin{-0.25in}
+\setlength\textheight{9.0in} \setlength\textwidth{7.0in}
+\setlength\columnsep{0.375in}
+\setlength\headheight{0pt}  \setlength\headsep{0pt}
+%\setlength\footheight{0pt}  \setlength\footskip{0pt}
+\thispagestyle{empty} \pagestyle{empty}
+\flushbottom \twocolumn \sloppy
+% We're never going to need a table of contents, so just flush it to
+% save space --- suggested by drstrip@sandia-2
+\def\addcontentsline#1#2#3{}
+
+
+% latex2e compatibility mode hack - kek@cs.brown.edu 11/10/98
+\def\@normalsize{\@setsize\normalsize{11pt}\xpt\@xpt}   % 10 point on 11
+\def\normalsize{\@setsize\normalsize{11pt}\xpt\@xpt}   % 10 point on 11
+\def\small{\@setsize\small{10pt}\ixpt\@ixpt}            % 9 point on 10
+\def\footnotesize{\@setsize\footnotesize{10pt}\ixpt\@ixpt} % 9 point on 10
+\def\scriptsize{\@setsize\scriptsize{8pt}\viipt\@viipt} % 7 point on 8
+\def\tiny{\@setsize\tiny{7pt}\vipt\@vipt}               % 6 point on 7
+\def\large{\@setsize\large{12pt}\xipt\@xipt}            % 11 point on 12
+\def\Large{\@setsize\Large{14pt}\xiipt\@xiipt}          % 12 point on 14
+\def\LARGE{\@setsize\LARGE{16pt}\xivpt\@xivpt}          % 14 point on 16
+\def\huge{\@setsize\huge{20pt}\xviipt\@xviipt}          % 17 point on 20
+\def\Huge{\@setsize\Huge{23pt}\xxpt\@xxpt}              % 20 point on 23
+
+
+
+% Title stuff, taken from deproc.
+\newlength\titlepad \setlength\titlepad{0in}
+\newlength\titlebox \setlength\titlebox{2.25in}
+\def\maketitle{\par
+ \begingroup % to make the footnote style local to the title
+   \def\thefootnote{\fnsymbol{footnote}}
+   \def\@makefnmark{$^{\@thefnmark}$}
+   \twocolumn[\@maketitle] \@thanks
+ \endgroup
+ \setcounter{footnote}{0}
+ \let\maketitle\relax \let\@maketitle\relax
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}%
+
+ \def\@maketitle{%
+ \newsavebox{\titlearea}
+ \sbox{\titlearea}{
+     \let\footnote\thanks\relax
+     \vbox{
+         \hsize\textwidth \linewidth\hsize%
+         \vskip 0.5in%
+         \centering%
+         {\LARGE\bf \@title \par}%
+         \vskip 0.1in%
+         {%
+             \def\and{\unskip\thinspace{\rm ,}\enspace}%
+             \def\And{\unskip\enspace{\rm and}\enspace}%
+             \def\affiliations{%
+                 \egroup\par\Large\bgroup\rm%
+             }%
+             \def\emails{%
+                 \egroup\par\Large\bgroup\rm%
+             }%
+             \bgroup\Large\bf\@author\egroup%%
+         }%
+         \vskip 0.2in%
+     }
+ }
+
+ \newlength\actualheight
+ \settoheight{\actualheight}{\usebox{\titlearea}}
+
+
+ \ifdim\actualheight>\titlebox
+     \setlength{\titlebox}{\actualheight}
+ \fi
+ %\setlength{\titlepad}{\dimexpr\titlepad+\titlepad\relax}
+
+ \setcounter{footnote}{0}
+ \vbox to \titlebox {
+     \def\thanks##1{\footnotemark}\relax
+     \hsize\textwidth \linewidth\hsize%
+         \vskip 0.5in%
+         \centering%
+         {\LARGE\bf \@title \par}%
+         \vskip 0.2in plus 4fil minus 0.1in%
+         {%
+             \def\and{\unskip\thinspace{\rm ,}\enspace}%
+             \def\And{\unskip\enspace{\rm and}\enspace}%
+             \def\affiliations{
+                 \egroup%
+                 \vskip 0.05in minus 0.05in%
+                 \par\bgroup\Large\rm%
+             }
+             \def\emails{
+                 \egroup%
+                 \vskip 0.05in minus 0.05in%
+                 \par\bgroup\Large\rm%
+             }
+             \bgroup\Large\bf\@author\egroup%
+         }%
+         \vskip 0.3in plus 8fil minus 0.1in
+ }
+}
+
+
+
+
+\renewenvironment{abstract}{\centerline{\bf
+Abstract}\vspace{0.5ex}\begin{quote}\small}{\par\end{quote}\vskip 1ex}
+% jsp added:
+\def\pubnote#1{\thispagestyle{myheadings}
+\pagestyle{myheadings}
+\markboth{#1}{#1}
+\setlength\headheight{10pt}  \setlength\headsep{10pt}
+}
+% SECTIONS with less space
+\def\section{\@startsection {section}{1}{\z@}{-2.0ex plus
+-0.5ex minus -.2ex}{3pt plus 2pt minus 1pt}{\Large\bf\centering}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-2.0ex plus
+-0.5ex minus -.2ex}{3pt plus 2pt minus 1pt}{\large\bf\raggedright}}
+\def\subsubsection{\@startsection{subparagraph}{3}{\z@}{-6pt plus
+%%% DIEGO changed: 29/11/2009
+%% 2pt minus 1pt}{-1em}{\normalsize\bf}}
+-2pt minus -1pt}{-1em}{\normalsize\bf}}
+%%% END changed
+\setcounter{secnumdepth}{2}
+% add period to section (but not subsection) numbers, reduce space after
+%\renewcommand{\thesection}
+%   {\arabic{section}.\hskip-0.6em}
+%\renewcommand{\thesubsection}
+%   {\arabic{section}.\arabic{subsection}\hskip-0.6em}
+% FOOTNOTES
+\footnotesep 6.65pt %
+\skip\footins 9pt plus 4pt minus 2pt
+\def\footnoterule{\kern-3pt \hrule width 5pc \kern 2.6pt }
+\setcounter{footnote}{0}
+% LISTS AND PARAGRAPHS
+\parindent 10pt
+\topsep 4pt plus 1pt minus 2pt
+\partopsep 1pt plus 0.5pt minus 0.5pt
+\itemsep 2pt plus 1pt minus 0.5pt
+\parsep 2pt plus 1pt minus 0.5pt
+\leftmargin 10pt \leftmargini\leftmargin \leftmarginii 10pt
+\leftmarginiii 5pt \leftmarginiv 5pt \leftmarginv 5pt \leftmarginvi 5pt
+\labelwidth\leftmargini\advance\labelwidth-\labelsep \labelsep 5pt
+\def\@listi{\leftmargin\leftmargini}
+\def\@listii{\leftmargin\leftmarginii
+\labelwidth\leftmarginii\advance\labelwidth-\labelsep
+\topsep 2pt plus 1pt minus 0.5pt
+\parsep 1pt plus 0.5pt minus 0.5pt
+\itemsep \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+\labelwidth\leftmarginiii\advance\labelwidth-\labelsep
+\topsep 1pt plus 0.5pt minus 0.5pt
+\parsep \z@ \partopsep 0.5pt plus 0pt minus 0.5pt
+\itemsep \topsep}
+\def\@listiv{\leftmargin\leftmarginiv
+\labelwidth\leftmarginiv\advance\labelwidth-\labelsep}
+\def\@listv{\leftmargin\leftmarginv
+\labelwidth\leftmarginv\advance\labelwidth-\labelsep}
+\def\@listvi{\leftmargin\leftmarginvi
+\labelwidth\leftmarginvi\advance\labelwidth-\labelsep}
+\abovedisplayskip 7pt plus2pt minus5pt%
+\belowdisplayskip \abovedisplayskip
+\abovedisplayshortskip 0pt plus3pt%
+\belowdisplayshortskip 4pt plus3pt minus3pt%
+% Less leading in most fonts (due to the narrow columns)
+% The choices were between 1-pt and 1.5-pt leading
+\def\normalsize{\@setfontsize\normalsize\@xpt{11}}   % 10 point on 11
+\def\small{\@setfontsize\small\@ixpt{10}}    % 9 point on 10
+\def\footnotesize{\@setfontsize\footnotesize\@ixpt{10}}  % 9 point on 10
+\def\scriptsize{\@setfontsize\scriptsize\@viipt{10}}  % 7 point on 8
+\def\tiny{\@setfontsize\tiny\@vipt{7}}    % 6 point on 7
+\def\large{\@setfontsize\large\@xipt{12}}    % 11 point on 12
+\def\Large{\@setfontsize\Large\@xiipt{14}}    % 12 point on 14
+\def\LARGE{\@setfontsize\LARGE\@xivpt{16}}    % 14 point on 16
+\def\huge{\@setfontsize\huge\@xviipt{20}}    % 17 point on 20
+\def\Huge{\@setfontsize\Huge\@xxpt{23}}    % 20 point on 23
+
+% This file can be modified and used in other conferences as long
+% as credit to the authors and supporting agencies is retained, this notice
+% is not changed, and further modification or reuse is not restricted.
+% The ``named'' bibliography style creates citations with labels like
+% \citeauthoryear{author-info}{year}
+% these labels are processed by the following commands:
+% \cite{keylist}
+%  which produces citations with both author and year,
+%  enclosed in square brackets
+% \shortcite{keylist}
+%  which produces citations with year only,
+%  enclosed in square brackets
+% \citeauthor{key}
+%  which produces the author information only
+% \citeyear{key}
+%  which produces the year information only
+\def\leftcite{(}\def\rightcite{)}
+\def\cite{\def\citeauthoryear##1##2{\def\@thisauthor{##1}%
+\ifx \@lastauthor \@thisauthor \relax \else##1 \fi ##2}\@icite}
+\def\shortcite{\def\citeauthoryear##1##2{##2}\@icite}
+\def\citeauthor{\def\citeauthoryear##1##2{##1}\@nbcite}
+\def\citeyear{\def\citeauthoryear##1##2{##2}\@nbcite}
+% internal macro for citations with () and with breaks between citations
+% used in \cite and \shortcite
+\def\@icite{\leavevmode\def\@citeseppen{-1000}%
+\def\@cite##1##2{\leftcite\nobreak\hskip 0in{##1\if@tempswa , ##2\fi}\rightcite}%
+\@ifnextchar [{\@tempswatrue\@citex}{\@tempswafalse\@citex[]}}
+% internal macro for citations without [] and with no breaks
+% used in \citeauthor and \citeyear
+\def\@nbcite{\leavevmode\def\@citeseppen{1000}%
+\def\@cite##1##2{{##1\if@tempswa , ##2\fi}}%
+\@ifnextchar [{\@tempswatrue\@citex}{\@tempswafalse\@citex[]}}
+% don't box citations, separate with ; and a space
+% also, make the penalty between citations a parameter,
+% it may be a good place to break
+\def\@citex[#1]#2{%
+\def\@lastauthor{}\def\@citea{}%
+\@cite{\@for\@citeb:=#2\do
+{\@citea\def\@citea{;\penalty\@citeseppen\ }%
+\if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+\@ifundefined{b@\@citeb}{\def\@thisauthor{}{\bf ?}\@warning
+{Citation `\@citeb' on page \thepage \space undefined}}%
+{\csname b@\@citeb\endcsname}\let\@lastauthor\@thisauthor}}{#1}}
+%Ignore the key when generating the Reference section.
+\def\@lbibitem[#1]#2{\item\if@filesw
+{ \def\protect##1{\string ##1\space}\immediate
+\write\@auxout{\string\bibcite{#2}{#1}}}\fi\ignorespaces}
+\def\@biblabel#1{}
+\def\thebibliography#1{\section*{References\@mkboth
+{REFERENCES}{REFERENCES}}\list
+{}{\labelwidth 0in\leftmargin\labelwidth
+%%% DIEGO removed
+%%\advance\leftmargin\labelsep
+%%% END removed
+%%% DIEGO changed
+\itemsep .01in % original
+%%\itemsep -.0125in % reduced space between bib entries
+%%% END changed
+}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+\sloppy\clubpenalty4000\widowpenalty4000
+\sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist

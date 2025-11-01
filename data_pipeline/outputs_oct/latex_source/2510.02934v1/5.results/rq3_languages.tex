@@ -1,0 +1,16 @@
+\subsubsection{Impact of Programming Language Variability}
+
+\input{tables/tab_sensitivity_languages}
+
+Table~\ref{tab:sensitivity_languages} shows the generalization performance of the approaches in assessing the code correctness across different programming languages. This experiment is conducted on the multilingual version of \textit{HumanEval} benchmark.
+For each task in a target language, \deepseek-6.7B is employed to generate 10 candidate solutions. 
+To evaluate cross-language generalization, one programming language is held out for testing, while the classifiers are trained on either the generated code (for post-hoc classifications) or internal representations (for \openia and \tool) from the remaining languages. 
+
+Overall, \textit{\tool exhibits strong generalization capability across diverse programming languages}. \tool achieves the highest average F1-Score of 0.80, outperforming \openia by 5\% and the black-box methods by up to 32\%. 
+Notably, for Python programs, \tool obtains an F1-score of 0.78, 
+improving over the baselines by margins ranging from 17\% to 111\%.
+
+Moreover, \textit{white-box approaches, such as \tool and \openia, demonstrate stability across languages}, maintaining their performance within a relatively narrow F1-score range. In contrast, black-box models, like CodeBERT and CodeT5+, show greater variability, with performance dropping significantly for certain languages. 
+For example, while CodeT5+ performs competitively on TypeScript (F1-score of 0.82), its performance declines sharply to just 0.50 on Python. 
+The reason is that black-box approaches operate on final code outputs; thus, they could be sensitive to language-specific characteristics such as keywords, syntax, and conventions. Meanwhile, white-box approaches leverage LLMs' internal representations, allowing them to capture deeper semantic understanding rather than relying on shallow surface-level features such as token sequences.
+As a result, the white-box approaches, like \tool or \openia, can exhibit greater robustness across languages and programming paradigms.

@@ -1,0 +1,43 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.10695v1,http://arxiv.org/abs/2510.10695v1,2025-10-12 16:48:25+00:00,Stock Prediction via a Dual Relation Fusion Network incorporating Static and Dynamic Relations,"Accurate modeling of inter-stock relationships is critical for stock price
+forecasting. However, existing methods predominantly focus on single-state
+relationships, neglecting the essential complementarity between dynamic and
+static inter-stock relations. To solve this problem, we propose a Dual Relation
+Fusion Network (DRFN) to capture the long-term relative stability of stock
+relation structures while retaining the flexibility to respond to sudden market
+shifts. Our approach features a novel relative static relation component that
+models time-varying long-term patterns and incorporates overnight informational
+influences. We capture dynamic inter-stock relationships through distance-aware
+mechanisms, while evolving long-term structures via recurrent fusion of dynamic
+relations from the prior day with the pre-defined static relations. Experiments
+demonstrate that our method significantly outperforms the baselines across
+different markets, with high sensitivity to the co-movement of relational
+strength and stock price.","Earlier studies have used historical data and technical indicators of individual stocks for predictions \cite{patel2015predicting,nelson2017stock}. Li et al. \cite{li2020multimodal} used online news text and stock price time-series market indicators as input, and they proposed a multimodal event-driven LSTM model to perform the interaction and integration of the multimodal inputs to enhance the performance of stock price prediction. However, these studies ignored correlations between stocks and deemed them independent entities, making it difficult to capture their interactive influence on stock predictions. Subsequent studies have recognized this issue and developed stock prediction methods based on relational modeling. Graph models are widely used in relationship modeling. Ying et al. \cite{ying2020time} designed a time-aware relational attention mechanism to capture the time-varying correlation strength between stocks. However, the use of predefined relations lacks an effective mechanism for handling attribute-related influences. The method in \cite{cheng2021modeling} infers latent firm relations from market signals and, with its attribute-driven graph attention network, captures attribute-sensitive momentum spillovers and complex market signal interactions. Huynh et al. \cite{huynh2023efficient} attempted to capture more sophisticated dynamic relations using industry hypergraphs, wavelet hypergraph convolutions, and temporal generative filters to capture multi-order and internal dynamic relationships. Relation modeling is further improved by capturing momentary and cross-time stock correlations through intra- and inter-stock information aggregation, using a gating mechanism for automatic feature selection based on market information \cite{li2024master}. However, this may not fully capture the long-term invariant relationships between stocks. LSR-IGRU \cite{zhu2024lsr} constructed long-short-term relationship matrices using secondary industry and overnight price information, enhancing GRU input to better integrate temporal and relationship information. Extending LSR-IGRU, we propose DRFN to capture persistent relational structures while maintaining flexibility in responding to sudden market shifts.
+
+
+
+
+\begin{figure*}[t]
+    \centering
+        \includegraphics[scale=0.11]{System_Framework.jpg}
+    \caption{Overview of our framework.}
+    \label{fig:System Framework Overview}
+\end{figure*}","Earlier studies have used historical data and technical indicators of individual stocks for predictions \cite{patel2015predicting,nelson2017stock}. Li et al. \cite{li2020multimodal} used online news text and stock price time-series market indicators as input, and they proposed a multimodal event-driven LSTM model to perform the interaction and integration of the multimodal inputs to enhance the performance of stock price prediction. However, these studies ignored correlations between stocks and deemed them independent entities, making it difficult to capture their interactive influence on stock predictions. Subsequent studies have recognized this issue and developed stock prediction methods based on relational modeling. Graph models are widely used in relationship modeling. Ying et al. \cite{ying2020time} designed a time-aware relational attention mechanism to capture the time-varying correlation strength between stocks. However, the use of predefined relations lacks an effective mechanism for handling attribute-related influences. The method in \cite{cheng2021modeling} infers latent firm relations from market signals and, with its attribute-driven graph attention network, captures attribute-sensitive momentum spillovers and complex market signal interactions. Huynh et al. \cite{huynh2023efficient} attempted to capture more sophisticated dynamic relations using industry hypergraphs, wavelet hypergraph convolutions, and temporal generative filters to capture multi-order and internal dynamic relationships. Relation modeling is further improved by capturing momentary and cross-time stock correlations through intra- and inter-stock information aggregation, using a gating mechanism for automatic feature selection based on market information \cite{li2024master}. However, this may not fully capture the long-term invariant relationships between stocks. LSR-IGRU \cite{zhu2024lsr} constructed long-short-term relationship matrices using secondary industry and overnight price information, enhancing GRU input to better integrate temporal and relationship information. Extending LSR-IGRU, we propose DRFN to capture persistent relational structures while maintaining flexibility in responding to sudden market shifts.","Earlier studies have used historical data and technical indicators of individual stocks for predictions [ 9,10]. Li et al. [ 2]
+used online news text and stock price time-series market indicators as input, and they proposed a multimodal event-
+driven LSTM model to perform the interaction and integration of the multimodal inputs to enhance the performance
+of stock price prediction. However, these studies ignored correlations between stocks and deemed them independent
+entities, making it difficult to capture their interactive influence on stock predictions. Subsequent studies have
+recognized this issue and developed stock prediction methods based on relational modeling. Graph models are widely
+used in relationship modeling. Ying et al. [ 11] designed a time-aware relational attention mechanism to capture
+the time-varying correlation strength between stocks. However, the use of predefined relations lacks an effective
+mechanism for handling attribute-related influences. The method in [ 12] infers latent firm relations from market
+signals and, with its attribute-driven graph attention network, captures attribute-sensitive momentum spillovers and
+complex market signal interactions. Huynh et al. [ 13] attempted to capture more sophisticated dynamic relations using
+industry hypergraphs, wavelet hypergraph convolutions, and temporal generative filters to capture multi-order and
+internal dynamic relationships. Relation modeling is further improved by capturing momentary and cross-time stock
+correlations through intra- and inter-stock information aggregation, using a gating mechanism for automatic feature
+selection based on market information [ 5]. However, this may not fully capture the long-term invariant relationships
+between stocks. LSR-IGRU [ 6] constructed long-short-term relationship matrices using secondary industry and
+overnight price information, enhancing GRU input to better integrate temporal and relationship information. Extending
+LSR-IGRU, we propose DRFN to capture persistent relational structures while maintaining flexibility in responding to
+sudden market shifts."

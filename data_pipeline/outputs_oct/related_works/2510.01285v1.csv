@@ -1,0 +1,76 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.01285v1,http://arxiv.org/abs/2510.01285v1,2025-09-30 22:34:23+00:00,LLM-based Multi-Agent Blackboard System for Information Discovery in Data Science,"The rapid advancement of Large Language Models (LLMs) has opened new
+opportunities in data science, yet their practical deployment is often
+constrained by the challenge of discovering relevant data within large
+heterogeneous data lakes. Existing methods struggle with this: single-agent
+systems are quickly overwhelmed by large, heterogeneous files in the large data
+lakes, while multi-agent systems designed based on a master-slave paradigm
+depend on a rigid central controller for task allocation that requires precise
+knowledge of each sub-agent's capabilities. To address these limitations, we
+propose a novel multi-agent communication paradigm inspired by the blackboard
+architecture for traditional AI models. In this framework, a central agent
+posts requests to a shared blackboard, and autonomous subordinate agents --
+either responsible for a partition of the data lake or general information
+retrieval -- volunteer to respond based on their capabilities. This design
+improves scalability and flexibility by eliminating the need for a central
+coordinator to have prior knowledge of all sub-agents' expertise. We evaluate
+our method on three benchmarks that require explicit data discovery: KramaBench
+and modified versions of DS-Bench and DA-Code to incorporate data discovery.
+Experimental results demonstrate that the blackboard architecture substantially
+outperforms baselines, including RAG and the master-slave multi-agent paradigm,
+achieving between 13% to 57% relative improvement in end-to-end task success
+and up to a 9% relative gain in F1 score for data discovery over the
+best-performing baselines across both proprietary and open-source LLMs. Our
+findings establish the blackboard paradigm as a scalable and generalizable
+communication framework for multi-agent systems.","\paragraph{LLMs for Data Science:} Specialized benchmarks have emerged to evaluate LLMs in data science. DS-1000 \citep{10.5555/3618408.3619164}, ARCADE \citep{yin-etal-2023-natural}, DataSciBench \citep{zhang2025datascibenchllmagentbenchmark}, and DSEval \citep{zhang-etal-2024-benchmarking-data} assess the translation of natural language instructions into correct implementations, distinguishing them from broader programming benchmarks such as SWE-Bench \citep{jimenez2024swebench}, ML-Bench \citep{tang2025mlbench}, and BigCodeBench \citep{zhuo2025bigcodebench}. While most assume that the relevant data files are pre-specified, recent efforts address multi-step reasoning: DS-Bench \citep{jing2025dsbench} and BLADE \citep{gu-etal-2024-blade} evaluate implementation planning, and ScienceAgentBench \citep{chen2025scienceagentbench} and BixBench \citep{mitchener2025bixbenchcomprehensivebenchmarkllmbased} focus on integrating domain knowledge. These benchmarks, however, still overlook the practical challenge of discovering relevant data within large, heterogeneous repositories—a gap addressed by KramaBench \citep{lai2025kramabenchbenchmarkaisystems}, which explicitly evaluates data discovery. Building on this, we study how agents can autonomously identify and leverage the correct data sources for end-to-end analysis.
+
+Applications of LLMs in data science have evolved from single-turn code generation to interactive, tool-augmented agents that exploit models specialized for code, including GPT \citep{10.5555/3495724.3495883}, CodeGen \citep{rubavicius2025conversationalcodegenerationcase}, StarCoder \citep{li2023starcoder}, and Code Llama \citep{codellama}. While few-shot prompting \citep{10.5555/3495724.3495883} remains effective, state-of-the-art approaches adopt agentic or multi-agentic frameworks that combine iterative reasoning with external tool use. ReAct \citep{yao2023react} pioneered the interleaving of reasoning and action, later extended to execution environments \citep{chen2018executionguided}. Toolformer \citep{schick2023toolformer} and Gorilla \citep{patil2024gorilla} explicitly train LLMs to call APIs, a capability critical for tasks relying on specialized libraries. Self-correction is a another key feature: frameworks like Self-Debug \citep{chen2024teaching} and Reflexion \citep{shinn2023reflexion} refine generated code using execution feedback. To further enhance reliability, many systems integrate RAG \citep{10.5555/3495724.3496517, salemi2025planandrefinediversecomprehensiveretrievalaugmented, 10.1145/3731120.3744584, 10.1145/3626772.3657733} to retrieve documentation or code examples, reducing hallucinations and ensuring up-to-date library use. Additionally, multi-agent master-slave frameworks, such as AutoKaggle \citep{li2025autokaggle}, have demonstrated promising results in addressing these challenges.
+
+\paragraph{Blackboard Systems:}
+
+The blackboard system is a seminal architectural model from classical AI, developed for complex problems that require incremental and opportunistic reasoning. It was implemented in the Hearsay-II speech understanding \citep{10.1145/356810.356816} and is characterized by three components: (1) a global, hierarchical data structure (the blackboard) that maintains the current state of the solution; (2) independent specialist modules, known as knowledge sources, which monitor the blackboard and contribute partial solutions; and (3) a control mechanism that opportunistically determines which knowledge source to activate next \citep{Nii_1986}. Following successful applications in domains such as sonar interpretation with the HASP/SIAP system \citep{Nii_Feigenbaum_Anton_1982}, the architecture evolved to incorporate more sophisticated control strategies. Inspired by this paradigm, we adapt the blackboard architecture for multi-agent communication: rather than a central controller assigning tasks, all agents operate autonomously, responding to requests posted on the blackboard. A central main agent then leverages the information contributed by sub-agents to solve the problem.","\paragraph{LLMs for Data Science:} Specialized benchmarks have emerged to evaluate LLMs in data science. DS-1000 \citep{10.5555/3618408.3619164}, ARCADE \citep{yin-etal-2023-natural}, DataSciBench \citep{zhang2025datascibenchllmagentbenchmark}, and DSEval \citep{zhang-etal-2024-benchmarking-data} assess the translation of natural language instructions into correct implementations, distinguishing them from broader programming benchmarks such as SWE-Bench \citep{jimenez2024swebench}, ML-Bench \citep{tang2025mlbench}, and BigCodeBench \citep{zhuo2025bigcodebench}. While most assume that the relevant data files are pre-specified, recent efforts address multi-step reasoning: DS-Bench \citep{jing2025dsbench} and BLADE \citep{gu-etal-2024-blade} evaluate implementation planning, and ScienceAgentBench \citep{chen2025scienceagentbench} and BixBench \citep{mitchener2025bixbenchcomprehensivebenchmarkllmbased} focus on integrating domain knowledge. These benchmarks, however, still overlook the practical challenge of discovering relevant data within large, heterogeneous repositories—a gap addressed by KramaBench \citep{lai2025kramabenchbenchmarkaisystems}, which explicitly evaluates data discovery. Building on this, we study how agents can autonomously identify and leverage the correct data sources for end-to-end analysis.
+
+Applications of LLMs in data science have evolved from single-turn code generation to interactive, tool-augmented agents that exploit models specialized for code, including GPT \citep{10.5555/3495724.3495883}, CodeGen \citep{rubavicius2025conversationalcodegenerationcase}, StarCoder \citep{li2023starcoder}, and Code Llama \citep{codellama}. While few-shot prompting \citep{10.5555/3495724.3495883} remains effective, state-of-the-art approaches adopt agentic or multi-agentic frameworks that combine iterative reasoning with external tool use. ReAct \citep{yao2023react} pioneered the interleaving of reasoning and action, later extended to execution environments \citep{chen2018executionguided}. Toolformer \citep{schick2023toolformer} and Gorilla \citep{patil2024gorilla} explicitly train LLMs to call APIs, a capability critical for tasks relying on specialized libraries. Self-correction is a another key feature: frameworks like Self-Debug \citep{chen2024teaching} and Reflexion \citep{shinn2023reflexion} refine generated code using execution feedback. To further enhance reliability, many systems integrate RAG \citep{10.5555/3495724.3496517, salemi2025planandrefinediversecomprehensiveretrievalaugmented, 10.1145/3731120.3744584, 10.1145/3626772.3657733} to retrieve documentation or code examples, reducing hallucinations and ensuring up-to-date library use. Additionally, multi-agent master-slave frameworks, such as AutoKaggle \citep{li2025autokaggle}, have demonstrated promising results in addressing these challenges.
+
+\paragraph{Blackboard Systems:}
+
+The blackboard system is a seminal architectural model from classical AI, developed for complex problems that require incremental and opportunistic reasoning. It was implemented in the Hearsay-II speech understanding \citep{10.1145/356810.356816} and is characterized by three components: (1) a global, hierarchical data structure (the blackboard) that maintains the current state of the solution; (2) independent specialist modules, known as knowledge sources, which monitor the blackboard and contribute partial solutions; and (3) a control mechanism that opportunistically determines which knowledge source to activate next \citep{Nii_1986}. Following successful applications in domains such as sonar interpretation with the HASP/SIAP system \citep{Nii_Feigenbaum_Anton_1982}, the architecture evolved to incorporate more sophisticated control strategies. Inspired by this paradigm, we adapt the blackboard architecture for multi-agent communication: rather than a central controller assigning tasks, all agents operate autonomously, responding to requests posted on the blackboard. A central main agent then leverages the information contributed by sub-agents to solve the problem.","LLMs for Data Science:Specialized benchmarks have emerged to evaluate LLMs in data science.
+DS-1000 (Lai et al., 2023), ARCADE (Yin et al., 2023), DataSciBench (Zhang et al., 2025), and DSEval
+(Zhang et al., 2024) assess the translation of natural language instructions into correct implementa-
+tions, distinguishingthemfrombroaderprogrammingbenchmarkssuchasSWE-Bench(Jimenezetal.,
+2024), ML-Bench (Tang et al., 2025), and BigCodeBench (Zhuo et al., 2025). While most assume that
+the relevant data files are pre-specified, recent efforts address multi-step reasoning: DS-Bench (Jing
+et al., 2025) and BLADE (Gu et al., 2024) evaluate implementation planning, and ScienceAgentBench
+(Chen et al., 2025) and BixBench (Mitchener et al., 2025) focus on integrating domain knowledge.
+These benchmarks, however, still overlook the practical challenge of discovering relevant data within
+large, heterogeneous repositories—a gap addressed by KramaBench (Lai et al., 2025), which explicitly
+evaluates data discovery. Building on this, we study how agents can autonomously identify and
+leverage the correct data sources for end-to-end analysis.
+Applications of LLMs in data science have evolved from single-turn code generation to interactive,
+tool-augmented agents that exploit models specialized for code, including GPT (Brown et al., 2020),
+CodeGen (Rubavicius et al., 2025), StarCoder (Li et al., 2023), and Code Llama (Rozière et al., 2024).
+While few-shot prompting (Brown et al., 2020) remains effective, state-of-the-art approaches adopt
+agentic or multi-agentic frameworks that combine iterative reasoning with external tool use. ReAct
+(Yao et al., 2023) pioneered the interleaving of reasoning and action, later extended to execution
+environments (Chen et al., 2019). Toolformer (Schick et al., 2023) and Gorilla (Patil et al., 2024)
+10
+LLM-based Multi-Agent Blackboard System for Information Discovery in Data Science
+explicitly train LLMs to call APIs, a capability critical for tasks relying on specialized libraries. Self-
+correction is a another key feature: frameworks like Self-Debug (Chen et al., 2024) and Reflexion
+(Shinn et al., 2023) refine generated code using execution feedback. To further enhance reliability,
+many systems integrate RAG (Lewis et al., 2020; Salemi and Zamani, 2024a, 2025; Salemi et al.,
+2025) to retrieve documentation or code examples, reducing hallucinations and ensuring up-to-date
+library use. Additionally, multi-agent master-slave frameworks, such as AutoKaggle (Li et al., 2024),
+have demonstrated promising results in addressing these challenges.
+Blackboard Systems:The blackboard system is a seminal architectural model from classical AI,
+developed for complex problems that require incremental and opportunistic reasoning. It was
+implemented in the Hearsay-II speech understanding (Erman et al., 1980) and is characterized by
+threecomponents: (1)aglobal,hierarchicaldatastructure(theblackboard)thatmaintainsthecurrent
+state of the solution; (2) independent specialist modules, known as knowledge sources, which monitor
+the blackboard and contribute partial solutions; and (3) a control mechanism that opportunistically
+determines which knowledge source to activate next (Nii, 1986). Following successful applications in
+domains such as sonar interpretation with the HASP/SIAP system (Nii et al., 1982), the architecture
+evolved to incorporate more sophisticated control strategies. Inspired by this paradigm, we adapt the
+blackboard architecture for multi-agent communication: rather than a central controller assigning
+tasks, all agents operate autonomously, responding to requests posted on the blackboard. A central
+main agent then leverages the information contributed by sub-agents to solve the problem."

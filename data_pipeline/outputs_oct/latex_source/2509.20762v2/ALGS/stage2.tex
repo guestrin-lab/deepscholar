@@ -1,0 +1,24 @@
+\begin{algorithm}[t]
+    \caption{\ours: Stage 2}\label{algo:stage2}
+    \SetKwInput{KwInput}{Input}
+    \SetKwInput{KwOutput}{Output}
+    \KwInput{\textbf{(1)} $V$ and $E$: topology;
+    \textbf{(2)} $E'$ and $A(e), \forall e \in E'$: known group anchors;
+    \textbf{(3)} $s^{(1)}_{v;e}, \forall v \in e \in E$: learned strengths from Stage 1;
+    \textbf{(4)} $\alpha^{(2)}$: loss term coefficient;
+    \textbf{(5)} $w^{(2)}$: global aggregation weight;
+    \textbf{(6)} $n^{(2)}_{ep}$: number of optimization epochs}
+    \KwOutput{$\tilde{A}(e), \forall e \in E \setminus E'$: predicted group anchors}
+    $s^{(2)}_{v} \gets 1, \forall v \in V$ \Comment*[f]{Initialization} \\
+    \For{$i_{ep} = 1, 2, \ldots, n^{(2)}_{ep}$}{
+        $\mathcal{L}^{(2)}_1 = -\sum_{e \in E'} \log \frac{\exp(s^{(2)}_{A(e)})}{\sum_{u \in e} \exp(s^{(2)}_u)}$ \Comment*[f]{Eq.~\eqref{eq:loss_stage_2_label}} \\
+        $\mathcal{L}^{(2)}_2 = -\sum_{e \in E'}
+    \frac{\exp(s^{(2)}_{A(e)})}{\sum_{u \in e} \exp(s^{(2)}_u)} \cdot \frac{\exp(s^{(1)}_{A(e);e})}{\sum_{u \in e} \exp(s^{(1)}_{u;e})}$ \Comment*[f]{Eq.~\eqref{eq:loss_stage_2_align}} \\
+        Update each $s^{(2)}_{v}$ w.r.t. $\frac{\partial \left(\mathcal{L}^{(2)}_1 + \alpha^{(2)} \mathcal{L}^{(2)}_2\right)}{\partial s^{(2)}_{v}}$ \Comment*[f]{Gradient descent} \\
+    }
+    $\hat{A}(e) = \arg \max_{v^* \in e} s^{(2)}_{v^*}, \forall e \in E$ \Comment*[f]{Max anchor strength} \\         
+    $\hat{p}_v = \frac{w^{(2)} 
+    \sum_{e \in E'} \mathbf{1}[A(e) = v]
+    + \sum_{e \in E \setminus E'} \mathbf{1}[\hat{A}(e) = v]}{d_v}, \forall v \in V$ \Comment*[f]{Eq.~\eqref{eq:pred_member_prop}} \\    
+ \Return $\tilde{A}(e) = \arg\max_{v^* \in e} \hat{p}_{v^*}, \forall e \in E \setminus E'$ \Comment*[f]{Final prediction}
+\end{algorithm}

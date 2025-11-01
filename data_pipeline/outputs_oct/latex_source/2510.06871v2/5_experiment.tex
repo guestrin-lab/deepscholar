@@ -1,0 +1,296 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\vspace{-0.9em}
+\section{Experiments}
+\label{sec:experiments}
+\vspace{-0.5em}
+We conduct experiments to validate the effectiveness of \method{} for multimodal safety alignment and to analyze how key design choices shape robust safety-aware reasoning. To guide our evaluation, we formulate the following research questions (RQs): 
+\vspace{-0.5em}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{RQ1:} How does \method{} compare with state-of-the-art multimodal models and representative safety alignment methods?
+    \vspace{-0.3em}
+    \item \textbf{RQ2:} Can reflection-driven metacognition enhance the model’s adaptation to unsafe prompts?
+    \vspace{-0.3em}
+    \item \textbf{RQ3:} Does QI-based data curation provide tangible benefits for reinforcement learning on safety-critical cases?
+    \vspace{-0.3em}
+    \item \textbf{RQ4:} How do the choice of reward models and the design of evaluation prompts affect generative reward modeling?
+\end{itemize}
+
+
+\vspace{-0.7em}
+\subsection{Main Results}
+\vspace{-0.5em}
+\begin{table*}[t]
+\centering
+\caption{Comparison of \method{} and baselines on safety and helpfulness benchmarks. Scores are averaged over \textit{reasoning} and \textit{answer} blocks. Best results are in \textbf{bold}, and second best are \underline{underlined}.}
+\vspace{-5pt}
+\label{tab:main_new}
+\setlength\tabcolsep{3pt}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{rl||cccccccccccc|cc}
+    \toprule
+    \multirow{2}{*}{\centering \bf Size} & \multirow{2}{*}{ \centering ~~~~~~~\bf Method}
+    & \multicolumn{2}{c|}{\bf Beavertails-V}
+    & \multicolumn{2}{c|}{\bf MM\mbox{-}SafetyBench}
+    & \multicolumn{2}{c|}{\bf MSS\mbox{-}Bench}
+    & \multicolumn{2}{c|}{\bf SIUO}
+    & \multicolumn{2}{c|}{\bf SPA\mbox{-}VL}
+    & \multicolumn{2}{c|}{\bf VLGuard}
+    & \multicolumn{2}{c}{ \bf Avg.} \\
+    \cmidrule(lr){3-4}
+    \cmidrule(lr){5-6}
+    \cmidrule(lr){7-8}
+    \cmidrule(lr){9-10}
+    \cmidrule(lr){11-12}
+    \cmidrule(lr){13-14}
+    \cmidrule(lr){15-16}
+     & 
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{ \bf Safety$\uparrow$} & \multicolumn{1}{c}{ \bf Helpful$\uparrow$} \\
+    \midrule
+    \multicolumn{16}{c}{\bf \large{\llmname{\textcolor{myred} {Close Source}}}} \\
+    \midrule
+    \midrule
+    >7B & GPT\mbox{-}4o\mbox{-}Mini
+    & 55.76 & 53.31 & 75.09 & 62.23 & 9.18 & 30.77 & 28.44 & 46.41 & 70.70 & 61.53 & 78.35 & 58.40 & 52.92 & 52.11 \\
+    >7B & GPT\mbox{-}4.1\mbox{-}Mini
+    & 46.02 & 71.86 & 62.29 & 77.62 & 11.07 & 37.55 & 29.82 & 53.31 & 68.68 & 81.79 & 78.48 & 78.23 & 49.39 & 66.73 \\
+    >7B & GPT\mbox{-}5\mbox{-}Mini
+    & \textbf{87.46} & \textbf{96.61} & \textbf{93.45} & \textbf{98.42} & \underline{40.00} & \underline{53.42} & \underline{50.30} & \underline{64.67} & \textbf{91.51} & \underline{96.51} & \textbf{89.95} & \textbf{97.75} & \textbf{75.44} & \textbf{84.56} \\
+    >7B & Gemini\mbox{-}2.5\mbox{-}Flash
+    & \underline{63.90} & \underline{81.78} & \underline{78.34} & \underline{90.08} & \textbf{37.81} & \textbf{59.23} & \textbf{51.50} & \textbf{65.57} & \underline{86.58} & \textbf{96.03} & \underline{72.80} & \underline{87.45} & \underline{65.15} & \underline{80.02} \\
+    
+    \midrule
+    \multicolumn{16}{c}{\bf \large{\llmname{\textcolor{codegreen} {Open Source}}}} \\
+    \midrule
+    \midrule
+    16B & Kimi\mbox{-}VL\mbox{-}A3B\mbox{-}Instruct 
+    & 32.37 & 50.34 & 44.75 & 57.75 & 4.85 & 24.03 & 21.56 & 38.02 & 51.99 & 64.77 & 59.51 & 67.37 & 35.84 & 50.38 \\
+    38B & Skywork\mbox{-}R1V3\mbox{-}38B
+    & 55.64 & 83.25 & 61.06 & 80.76 & 37.35 & \underline{66.84} & \underline{46.08} & \underline{69.28} & 74.39 & \underline{93.38} & 64.08 & 87.27 & 56.43 & \underline{80.13} \\
+    72B & Qwen2.5VL\mbox{-}72B
+    & 38.14 & 78.22 & 55.54 & 80.42 & 16.79 & 53.78 & 34.73 & 61.68 & 67.64 & \textbf{93.96} & 67.00 & 88.05 & 46.64 & 76.02 \\
+    106B & GLM\mbox{-}4.5V
+    & 52.93 & 75.90 & 56.02 & 68.79 & 12.91 & 36.73 & 37.43 & 59.58 & 76.60 & 90.94 & 70.10 & 84.10 & 51.00 & 69.34 \\
+    
+    \midrule
+    3B & Qwen2.5VL\mbox{-}3B
+    & 29.58 & 58.39 & 48.36 & 59.36 & 8.42 & 24.39 & 11.68 & 30.24 & 51.13 & 60.19 & 65.70 & 56.95 & 35.81 & 48.25 \\
+    3B & Figstep
+    & 32.17 & 56.54 & 56.54 & 55.91 & 9.74 & 21.12 & 17.07 & 35.93 & 53.21 & 54.82 & 66.45 & 53.35 & 39.20 & 46.28 \\
+    3B & ECSO
+    & 22.03 & 51.19 & 38.24 & 57.03 &  6.38 & 25.66 & 11.08 & 27.25 & 37.08 & 56.89 & 49.75 & 51.25 & 27.43 & 44.88 \\
+    3B & SIA
+    & 25.04 & 46.83 & 37.22 & 37.01 & 4.95 & 13.78 & 15.57 & 22.46 & 38.28 & 43.86 & 51.30 & 31.86 & 28.73 & 32.63 \\
+    3B & Qwen2.5VL\_GRLHF\mbox{-}V
+    & 33.48 & 61.24 & 44.58 & 57.73 & 8.32 & 32.24 & 18.56 & 35.93 & 47.35 & 65.34 & 42.38 & 53.06 & 32.44 & 50.92 \\
+    \rowcolor{backcolour} 3B & \method{} (Ours)
+     & \underline{78.81} & \underline{85.25} & \underline{89.73} & \textbf{87.80} & \underline{47.40} & 64.95 & 41.92 & 57.78 & \underline{81.04} & 89.72 & \underline{82.03} & 88.29 & \underline{70.15} & 78.97 \\
+    \midrule
+    7B & Qwen2.5VL\mbox{-}7B
+    & 43.64 & 79.24 & 56.79 & 75.80 & 10.46 & 45.51 & 35.63 & 61.08 & 73.82 & 93.48 & 75.20 & 84.65 & 49.26 & 73.29 \\
+    7B & Figstep
+    & 53.06 & \underline{86.67} & 70.52 & \underline{85.20} & 11.07 & 41.99 & 38.62 & 64.07 & 77.45 & 93.02 & 79.35 & \underline{89.75} & 55.01 & 76.78 \\
+    7B & ECSO
+   & 36.53 & 75.93 & 49.55 & 75.63 & 11.89 & 47.45 & 26.05 & 56.59 & 62.55 & 90.28 & 63.55 & 82.70 & 41.69 & 71.43 \\
+    7B & SIA
+    & 54.75 & 84.41 & 67.62 & 76.16 & 12.65 & 40.05 & 27.84 & 51.20 & 59.34 & 79.34 & 69.20 & 83.60 & 48.57 & 69.13 \\
+    7B & LLaVA\mbox{-}NeXT\_Safe\_RLHF\mbox{-}V
+    & 37.35 & 63.07 & 47.22 & 57.10 & 4.29 & 17.19 & 25.45 & 43.41 & 51.61 & 74.48 & 50.65 & 57.96 & 36.09 & 52.20 \\
+    7B & Qwen2VL\_Safe\_RLHF\mbox{-}V
+    & 44.29 & 75.38 & 50.89 & 69.86 & 8.06 & 30.20 & 29.34 & 49.70 & 67.92 & 87.17 & 72.36 & 85.55 & 45.48 & 66.31 \\
+    7B & Qwen2VL\_GRLHF\mbox{-}V
+    & 29.71 & 53.82 & 42.08 & 52.77 & 5.51 & 29.39 & 17.37 & 34.13 & 41.13 & 60.38 & 46.12 & 55.40 & 30.32 & 47.65 \\
+    7B & Qwen2.5VL\_GRLHF\mbox{-}V
+    & 38.90 & 75.51 & 49.14 & 66.94 & 11.79 & 48.98 & 29.34 & 52.99 & 65.60 & 87.62 & 61.70 & 82.45 & 42.74 & 69.08 \\
+    \rowcolor{backcolour} 7B & \method{} (Ours)
+    & \textbf{93.36} & \textbf{95.57} & \textbf{92.62} & 84.85 & \textbf{56.94} & \textbf{67.40} & \textbf{62.73} & \textbf{70.00} & \textbf{91.79} & 93.23 & \textbf{94.00} & \textbf{95.65} & \textbf{81.91} & \textbf{84.45} \\
+    \bottomrule
+\end{tabular}
+}
+% \vspace{-1.2em}
+\end{table*}
+
+\begin{figure}[h]
+    % \vspace{-0.6em}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_show_safety.pdf}
+    \vspace{-1.6em}
+    \caption{
+    Safety score distributions on six benchmarks, comparing baseline models with our \method-7B, which achieves consistently higher and more stable performance.}
+    \label{fig:show_safe}
+    \vspace{-1.6em}
+\end{figure}
+
+\vspace{-0.7em}
+\subsection{Experimental Setup} \label{sec:exp_set}
+\vspace{-0.5em}
+\paragraph{Dataset Curation.} For collecting \ourdata, we start from approximately 159K samples sourced from SPA-VL~\cite{spavl}, Beavertails-V~\cite{safe-algin-saferlhfv}, and Align-Anything~\cite{Data-align}. We use a set of seven vision-language models (Qwen2-VL 2B/7B~\cite{MLLM-qwen2vl}, Qwen2.5-VL 3B/7B/72B~\cite{MLLM-qwen2.5vl}, Skywork-R1V3-38B~\cite{MLRM-model-skywork}, and Kimi-VL-A3B-Instruct~\cite{MLRM-model-2025kimi}) to generate 3 responses per sample at a temperature of 0.7. For each sample, we compute a quality score and an instability score based on the multi-model outputs. We then apply a dual-axis QI-Box filter to retain samples that are informative and exhibit cross-model disagreement and intra-model inconsistency, yielding a curated set of 10K safety-critical examples.
+
+\vspace{-0.9em}
+\paragraph{Environment.} All experimental results are obtained on a server equipped with 8 NVIDIA A100 (80 GB) GPUs. For RL training in \Cref{sec:metd}, we use the EasyR1\footnote{\url{https://github.com/hiyouga/EasyR1}} training platform. Among the 8 GPUs, 2 are allocated for serving the generative reward model using vLLM, while the remaining 6 are used for reinforcement learning optimization.
+
+\vspace{-0.9em}
+\paragraph{Model \& Parameter Configuration.} Our experiments use Qwen2.5-VL 3B/7B as base models, with GRM-7B~\cite{safe-algin-G-RLHF-V} as the reward model. For RL training in \Cref{sec:metd}, we adopt \num{5} rollouts per prompt, a batch size of \num{480}, and a mini-batch size of \num{120}. We train with AdamW (lr=\num{1e-6}, weight decay=\num{1e-2}) in bfloat16 (BF16) precision.
+
+\vspace{-0.9em}
+\paragraph{Benchmarks \& Evaluation.} To evaluate the effectiveness of \method, we adopt six benchmarks: four \underline{explicit} safety datasets (Beavertails-V~\cite{Data-align}, MM-SafetyBench~\cite{mmsafetybench}, SPA-VL~\cite{spavl}, and VLGuard~\cite{vlguard}) and two \underline{implicit} safety datasets (MSS-Bench~\cite{mssbench} and SIUO~\cite{siuo}). We use GPT-4o-mini~\cite{MLLM-gpt4o} as the judge, scoring \textit{reasoning} and \textit{answer} blocks separately on helpfulness $[0,3]$ and safety $[-3,3]$. For each block, we compute the proportion of samples with helpfulness $\geq 2$ and safety $=3$, and the final helpfulness and safety are obtained by averaging the two block-level proportions.
+
+
+\vspace{-0.9em}
+\paragraph{Baselines.} We evaluate \method~against both commercial closed-source and open-source multimodal models, as well as defense and alignment strategies under comparable parameter scales. For closed-source models, we consider GPT-4o-mini~\cite{MLLM-gpt4o}, GPT-4.1-mini~\cite{gpt4.1}, GPT-5-mini~\cite{gpt5}, and Gemini-2.5-Flash~\cite{comanici2025gemini}. For open-source models, we include larger systems such as Kimi-VL-A3B-Instruct (16B)~\cite{MLRM-model-2025kimi}, Skywork-R1V3-38B (38B)~\cite{MLRM-model-skywork}, Qwen2.5-VL-72B (72B)~\cite{MLLM-qwen2.5vl}, and GLM-4.5V (106B)~\cite{MLRM-model-glm4.5}. In addition, we compare with \textbf{inference-time defense} methods (Figstep~\cite{safe-risk-figstep}, ECSO~\cite{safe-guard-esco}, and SIA~\cite{safe-guard-sia}) as well as \textbf{training-based alignment} approaches (Safe RLHF-V and GRLHF-V~\cite{safe-algin-G-RLHF-V}), which are implemented at the same parameter scale as our base models.
+
+
+
+This section provides empirical evidence that \method{} achieves \textit{robust safety-aware reasoning} under a highly stringent evaluation protocol, where only responses with safety $=3$ and helpfulness $\geq 2$ are credited. Table~\ref{tab:main_new} reports detailed safety and helpfulness results across six multimodal safety benchmarks, together with overall averages, allowing direct comparison with both open- and closed-source baselines. Complementing these results, Figure~\ref{fig:show_safe} visualizes safety score distributions, highlighting not only improvements in mean performance but also reduced variance and fewer unsafe outliers. Taken together, these results confirm that \method{} consistently achieves higher accuracy and stronger stability than competing approaches under the strictest evaluation setting.
+
+
+\begin{table*}[t]
+\centering
+\caption{Ablation study on Qwen2.5VL-3B. $\heartsuit$: answer reward, $\spadesuit$: reasoning reward, $\clubsuit$: reflection. Adding components step by step consistently improves safety and helpfulness.}
+\label{tab:main_abla}
+\vspace{-0.6em}
+\setlength\tabcolsep{3pt}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{c||cccccccccccc|cc}
+    \toprule
+    \multirow{2}{*}{ \centering \bf Method}
+    & \multicolumn{2}{c|}{\bf Beavertails-V}
+    & \multicolumn{2}{c|}{\bf MM\mbox{-}SafetyBench}
+    & \multicolumn{2}{c|}{\bf MSS\mbox{-}Bench}
+    & \multicolumn{2}{c|}{\bf SIUO}
+    & \multicolumn{2}{c|}{\bf SPA\mbox{-}VL}
+    & \multicolumn{2}{c|}{\bf VLGuard}
+    & \multicolumn{2}{c}{ \bf Avg.} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    \cmidrule(lr){6-7}
+    \cmidrule(lr){8-9}
+    \cmidrule(lr){10-11}
+    \cmidrule(lr){12-13}
+    \cmidrule(lr){14-15}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{\bf Safety$\uparrow$} & \multicolumn{1}{c|}{\bf Helpful$\uparrow$}
+    & \multicolumn{1}{c}{ \bf Safety$\uparrow$} & \multicolumn{1}{c}{ \bf Helpful$\uparrow$} \\
+    \midrule
+    Qwen2.5VL-3B (Base)          & 29.58 & 58.39 & 48.36 & 59.36 &  8.42 & 24.39 & 11.68 & 30.24 & 51.13 & 60.19 & 65.70 & 56.95 & 35.81 & 48.25 \\
+    +$\heartsuit$         & 70.42 & 89.41 & 72.95 & 73.63 & 23.67 & 38.01 & 32.63 & 52.69 & 76.89 & 87.45 & 74.80 & 86.05 & 58.56 & 71.21 \\
+    +$\spadesuit$        & 66.27 & 85.34 & 78.93 & 84.33 & 24.54 & 41.38 & 32.63 & 50.60 & 73.49 & 86.98 & 70.07 & 79.78 & 57.66 & 71.40 \\
+
+     +$\heartsuit$ +$\spadesuit$         & 69.92 & \textbf{90.00} & 80.58 & 84.10 & 42.45 & 55.35 & 36.23 & 47.60 & 78.68 & 87.74 & 75.15 & 86.15 & 63.83 & 75.16  \\
+    \rowcolor{backcolour} +$\heartsuit$ +$\spadesuit$ + $\clubsuit$    & \textbf{78.81} & 85.25 & \textbf{89.73} & \textbf{87.80} & \textbf{47.40} & \textbf{64.95} & \textbf{41.92 }& \textbf{57.78} & \textbf{81.04} & \textbf{89.72} & \textbf{82.03} & \textbf{88.29} & \textbf{70.15} & \textbf{78.97} \\
+
+    \bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\begin{figure}[t]
+    % \vspace{-0.6em}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_ds_show.pdf}
+    \vspace{-1.6em}
+    \caption{
+    \llmname{QI-Box} curation with Qwen2.5VL-7B. \textbf{\textit{Left.}} Selected Quality–Instability region. \textbf{\textit{Right.}} Ablations on three datasets, with the chosen region giving the best Safety and Helpfulness.}
+    \label{fig:abla_qibox}
+\end{figure}
+
+
+
+
+
+\textbf{Observation \ding{182} (Comprehensive superiority: \method{} achieves SOTA safety and near-SOTA helpfulness across scales).}
+From Table~\ref{tab:main_new}, we observe that \method{} delivers a decisive leap in multimodal safety alignment under a stringent evaluation protocol. At the \llmname{3B} scale, it achieves \textbf{70.15 safety / 78.97 helpfulness}, representing a \textbf{+35.8 safety gain} over Qwen2.5VL-3B (35.81 / 48.25) and nearly doubling ECSO (27.43 / 44.88) and SIA (28.73 / 32.63). Strikingly, this small-scale model even surpasses systems more than \textbf{$10\times$ larger}, including Skywork-R1V3-38B (56.43 / 80.13), Qwen2.5VL-72B (46.64 / 76.02), and GLM-4.5V-106B (51.00 / 69.34). At the \llmname{7B} scale, \method{} further extends this advantage, reaching \textbf{81.91 / 84.45}. On safety, it exceeds Gemini-2.5-Flash by \textbf{+16.8} and GPT-5-Mini by \textbf{+6.5}, while maintaining nearly identical helpfulness (\textbf{84.56 $\approx$ 84.45}). These results demonstrate not incremental progress but \textbf{cross-scale superiority}, proving that \method{}’s advantage stems from safety-aware reasoning rather than raw parameter count.
+
+
+
+\textbf{Observation \ding{183} (Distributional robustness: \method{} consistently achieves higher and more concentrated safety scores).}  
+Figure~\ref{fig:show_safe} compares safety score distributions across six benchmarks. \method-7B not only achieves the highest means but also much tighter spreads, e.g., \textbf{2.93 $\pm$ 0.26} on Beavertails-V and \textbf{2.89 $\pm$ 0.41} on MM-SafetyBench. In contrast, baselines such as Qwen2.5VL-7B and Skywork-R1V3-38B show large variance with heavy lower tails, while Gemini-2.5-Flash and GPT-5-Mini still produce unsafe outputs. These results confirm that \method-7B’s superiority arises from consistently safe reasoning across both explicit and implicit safety benchmarks.  
+
+
+
+
+
+
+
+\vspace{-0.7em}
+
+\subsection{Ablation Study}
+\vspace{-0.7em}
+We ablate the three core components of \method{}: \textbf{QI-Safe-10k}, \textbf{reflection-driven rollout}, and \textbf{structured reward modeling}. On Qwen2.5VL-3B, the base achieves only 35.81 / 48.25. Adding the \textit{answer reward} raises performance to 58.56 / 71.21, and incorporating the \textit{reasoning reward} further improves to 63.83 / 75.16. With \textit{reflection}, the model reaches \textbf{70.15 / 78.97}, confirming its decisive impact (Table~\ref{tab:main_abla}).  
+For data curation, the middle QI-Box yields \textbf{62.70 / 70.00} on SIUO, clearly outperforming the lower (45.20 / 59.90) and upper (41.80 / 52.40) regions (Figure.~\ref{fig:abla_qibox}). For prompts, Weighted Criteria elevate Beavertails-V from 39.07 / 25.85 to \textbf{78.81 / 85.25}, while GRM-RL-7B achieves \textbf{82.03 / 88.29} on VLGuard, surpassing Qwen2.5VL-72B (76.70 / 87.05) (Figure.~\ref{fig:abla_prompt}).  
+\textbf{Insight \ding{182}:} Gains arise not from scale but from the synergy of curated data, reflection, and structured rewards, embedding safety as a principle of reasoning.  
+
+
+\vspace{-0.7em}
+\subsection{Case Study: Unsafe Eating Challenge}
+\vspace{-0.5em}
+
+\begin{figure}[t]
+    \centering
+    \vspace{-0.5em}
+    \includegraphics[width=\linewidth]{figs/fig_reward.pdf}
+    \vspace{-1.2em}
+    \caption{
+   Impact of prompt design and reward model choice on generative reward modeling with Qwen2.5VL-3B. \textbf{\textit{Left.}} \llmname{Weighted Criteria} prompts outperform simpler rules. \textbf{\textit{Right.} } Larger and safety-aligned models further boost Safety and Helpfulness, with \llmname{GRM-RL-7B} best.}
+    \label{fig:abla_prompt}
+    \vspace{-0.3em}
+\end{figure}
+
+\begin{figure}[t]
+    \vspace{-1em}
+    \centering
+    \includegraphics[width=\linewidth]{figs/fig_show_case.pdf}
+    \vspace{-1.5em}
+    \caption{
+    Case study from SIUO. 
+    Unlike \llmname{GPT-5-Mini} and \llmname{Gemini-2.5-Flash}, \llmname{\method{}(7B)} actively identifies hidden risks, refuses unsafe requests, and redirects the user toward safe alternatives, exemplifying safety-aware reasoning in practice.}
+    \label{fig:case_study}
+    \vspace{-1.3em}
+\end{figure}
+
+Figure~\ref{fig:case_study} shows a SIUO example where the user asks for a slogan to promote an extreme eating challenge. Baselines such as \llmname{GPT-5-Mini} and \llmname{Gemini-2.5-Flash} generate promotional slogans that reinforce the risky behavior, revealing a lack of intrinsic safety awareness. In contrast, \llmname{\method{}(7B)} demonstrates safety-aware reasoning: it actively identifies the hidden health hazards, issues a principled refusal, and redirects the request toward safe alternatives. \textbf{Insight \ding{183}:} This case highlights that \method{} does not merely block unsafe outputs but integrates safety into the reasoning process itself, enabling robust handling of subtle yet high-risk prompts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

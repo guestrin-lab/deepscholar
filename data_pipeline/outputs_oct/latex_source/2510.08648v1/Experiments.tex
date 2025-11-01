@@ -1,0 +1,115 @@
+% =========================
+% EXPERIMENTS (PREREGISTERED)
+% =========================
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Scope and preregistration}
+\label{sec:scope-prereg}
+This paper reports \emph{no measured results}. We preregister a complete, executable evaluation plan for the diagnostics introduced in \S\ref{sec:method} and visualized in \S\ref{sec:diagnostics}, scored by the metrics in \S\ref{sec:metrics}. Unless stated otherwise, we use the defaults in Table~\ref{tab:exp-setup} for all diagnostics. Code and schemas follow the CSV contracts in \S\ref{sec:systems-interfaces}.
+
+
+% In: \section{Experiments} \subsection{Experimental Setup}
+\begin{table*}[t!]
+\caption{Consolidated experimental setup and diagnostics knobs used across all planned experiments.
+Thresholds are calibrated on a validation set and fixed for test reporting.}
+\label{tab:diag-setup}
+\label{tab:exp-setup}
+\centering
+\setlength{\tabcolsep}{6pt}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+Category & Item & Value / Notes \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{General setup}}\\
+& Models & Llama-2/3, Mistral, Gemma (7B–13B) \\
+& Precision & BF16/FP16; FP32 for LN/softmax JVPs \\
+& Context length & 2k–8k tokens \\
+& Tokenizer & model default \\
+& Decoding (code) & pass@k; $k\in\{1,10\}$; max gen length 256 tokens \\
+& Seeds & 3–5; deterministic where available \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Diagnostics knobs}}\\
+& Probes $r$ & 6 \;\;(range 4–12) \\
+& Targets/layer $k$ & 8 \;\;(range 4–16) \\
+& Neighbors $m$ & 6 \;\;(range 4–12) \\
+& Comm. thresh $\tau_\Delta$ & 0.10 \;\;(0.05–0.20) \\
+& Curv. thresh $\tau_\kappa$ & 0.12 \;\;(0.06–0.25) \\
+& Orbit tol $\delta$ & 0.02 \;\;(0.00–0.05) \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Experimental setup}
+\label{sec:setup}
+\paragraph{Models.}
+Open decoder-only Transformers with RoPE/relative positions: small/medium checkpoints (e.g., 7B--13B); inference in BF16/FP16 with FP32 pins for LayerNorm/softmax JVPs. We fix tokenizer/version and freeze weights throughout.
+
+
+\paragraph{Tasks and datasets.}
+(i) \textbf{Code orbits} for invariance: HumanEval/MBPP-style prompts with semantics-preserving $\alpha$-renaming and algebraic rewrites (Fig.~\ref{fig:alpha-rename}). (ii) \textbf{RoPE stress}: synthetic sequences for controlled phase offsets (Fig.~\ref{fig:rope-rotation}). (iii) \textbf{Calibration batches} for commutators/reorder probes (random and task-like inputs). All prompts are deduplicated; orbits are verified to preserve semantics.
+
+\paragraph{Hardware.}
+A100-class GPUs (40--80\,GB), PyTorch (\texttt{torch.func} JVPs), cudnn deterministic kernels where available. Batch sizes and context lengths are recorded in artifacts.
+
+\paragraph{Seeds and determinism.}
+We fix global seeds for Python/NumPy/PyTorch; log RNG states; reuse identical input slices across seeds for cross-seed comparability. Gauge-fix (whiten+Procrustes) is applied only for logging, not when computing $\kappa_{\mathrm{inv}}$.
+
+\paragraph{Diagnostic knobs (defaults).}
+Hutchinson probes $r{=}6$, targets per layer $k{=}8$, neighbors per target $m{=}6$, commutator threshold $\tau_{\Delta}{=}0.10$, curvature threshold $\tau_{\kappa}{=}0.12$, orbit tolerance $\delta{=}0.02$; see Table~\ref{tab:exp-setup}. 
+
+\subsection{Planned procedures}
+\label{sec:procedures}
+
+\paragraph{E1: Invariance under clean transforms.}
+For each input $x$, generate an orbit $\mathcal{O}(x)$ of semantics-preserving transforms (identifier renaming, algebraic equivalence). Compute the decision function $f(\cdot)$ (pass@k for code, argmax for classification) and the invariance ratio $\mathrm{IR}(x)$ defined in \S\ref{sec:metrics}. Emit \texttt{ir.csv} with labels $y{=}1$ if $\mathrm{IR}(x) < 1-\delta$. 
+
+\paragraph{E2: Gauge-stable logging.}
+On matched seeds/slices, compute probes/saliency both \emph{pre}- and \emph{post}-gauge-fix (Fig.~\ref{fig:gauge-pipeline}). Log probe-accuracy variance and Kendall-$\tau$ rank agreements to \texttt{gauge\_stats.csv}. 
+
+\paragraph{E3: Commutator maps and reorder drift.}
+For selected submodule pairs $(A,B)$, compute $\Delta_{A,B}=\|A\!\circ\!B-B\!\circ\!A\|_F$ on a calibration batch (Fig.~\ref{fig:comm-heatmap}). Apply \emph{safe} reorder/fuse interventions (no change in semantics, numerically stable) and measure output drift $\delta=\|y_{AB}-y_{BA}\|$; report $\rho(\Delta,\delta)$ and $r$ as in \S\ref{sec:metrics} and plot trends as in Fig.~\ref{fig:diagnostic-suite}(b).
+
+\paragraph{E4: RoPE phase-drift.}
+Apply controlled phase offsets $\delta\theta$ to RoPE; compute per-layer distribution distances between perturbed and unperturbed attention scores and summarize area-under-drift vs.\ depth/context length (definition in \S\ref{sec:metrics}).
+
+\paragraph{E5: Curvature maps (holonomy).}
+Compute inverse-free curvature $\kappa_{\mathrm{inv}}$ via Eq.~\eqref{eq:invfree-kappa} using JVPs: \emph{scan} with frozen-softmax transports to propose edges; \emph{confirm} hotspots with full JVP loops. Emit per-position/layer maps (Fig.~\ref{fig:holonomy-scatter}) to \texttt{holonomy.csv}.
+
+\paragraph{E6: Curvature $\rightarrow$ failure prediction.}
+Aggregate loop scores per input $x$ (e.g., $\kappa_{\max}$, $\kappa_{p95}$ from \S\ref{sec:metrics}); use these as scores for predicting $y$ from E1. Produce ROC/PR curves and report AUC/AP/Brier/ECE with bootstrap CIs (illustrative ROC in Fig.~\ref{fig:diagnostic-suite}a).
+
+\paragraph{E7: Overhead and budget.}
+Measure wall-clock of \emph{scan}, \emph{confirm}, and total overhead at defaults and reduced settings; attribute cost (matrix multiplies vs.\ JVPs) and report as in Fig.~\ref{fig:diagnostic-suite}c. Target $\le$\,20\% at defaults.
+
+\subsection{Baselines and ablations}
+\label{sec:ablations}
+\paragraph{Null baselines.}
+(i) \textbf{Permuted curvature maps:} randomly permute $\kappa_{\mathrm{inv}}$ across inputs before scoring E6; (ii) \textbf{Random-init network:} compute the full pipeline on width/depth-matched randomly initialized models.
+
+\paragraph{Comparative baselines.}
+Heuristics without geometry: (i) attention-entropy thresholds, (ii) gradient-norm canaries, (iii) layerwise activation variance. Compare AUC/AP and calibration vs.\ $\kappa$-based scores.
+
+\paragraph{Ablation knobs.}
+(i) Loop size: $1{\times}1$ vs.\ $2{\times}2$ rectangles; (ii) Transport mode: frozen-softmax scan only vs.\ scan+JVP confirm; (iii) Sampling: $(r,k,m)$ sweeps; (iv) Gauge-fix: none vs.\ whiten-only vs.\ whiten+Procrustes (for logging stability, not for $\kappa_{\mathrm{inv}}$).
+
+\subsection{Metrics and statistical protocol}
+\label{sec:exp-metrics}
+We use the formal definitions in \S\ref{sec:metrics}: IR (per-input and macro/micro aggregates), ROC AUC \& AP (E6), $\rho(\Delta,\delta)$ and $r$ (E3), area-under-drift (E4), variance ratios and Kendall-$\tau$ (E2), and overhead breakdowns (E7). Confidence intervals use stratified bootstrap ($\ge$1000 resamples). Calibration uses 10-bin ECE with bin-wise Wilson intervals.
+
+\subsection{Artifacts and reproducibility}
+\label{sec:artifacts}
+We export \texttt{holonomy.csv}, \texttt{commutator.csv}, \texttt{ir.csv}, and \texttt{gauge\_stats.csv} as append-only records (schemas in \S\ref{sec:systems-interfaces}). Scripts match the code in the \texttt{Documentation of Key Code} section; Colab notebooks reproduce all figures (\S\ref{sec:diagnostics}, \S\ref{sec:metrics}). Seeds, model hashes, knob settings, and schema versions are stored per run.
+
+\subsection{Compute budget and runtime}
+\label{sec:budget}
+Complexity follows \S\ref{sec:method-cost}:
+$\mathcal{O}(rLkm\cdot \mathrm{cost}_{\mathrm{JVP}})$ with batched JVPs. We report end-to-end wall-clock per experiment and per figure, along with GPU type and batch sizes. 
+
+\subsection{Success criteria (targets)}
+\label{sec:targets}
+We pre-register the following targets: ROC AUC $\ge 0.75$ and AP $\ge 0.60$ for curvature predicting invariance failures (E6); Spearman $\rho(\Delta,\delta)\ge 0.65$ (E3); area-under-drift decreases with depth stabilization interventions (E4); probe-variance ratio $\le 0.6$ and higher Kendall-$\tau$ after gauge-fix (E2); total overhead $\le 20\%$ at defaults (E7). Deviations from targets will be reported with CIs and effect sizes.
+
+\paragraph{Disclosure.}
+All illustrative curves in figures (e.g., Fig.~\ref{fig:diagnostic-suite}) are placeholders; they are replaced by measured values upon running this plan.

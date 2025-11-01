@@ -1,0 +1,65 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.10806v1,http://arxiv.org/abs/2510.10806v1,2025-10-12 20:52:43+00:00,Is Implicit Knowledge Enough for LLMs? A RAG Approach for Tree-based Structures,"Large Language Models (LLMs) are adept at generating responses based on
+information within their context. While this ability is useful for interacting
+with structured data like code files, another popular method,
+Retrieval-Augmented Generation (RAG), retrieves relevant documents to augment
+the model's in-context learning. However, it is not well-explored how to best
+represent this retrieved knowledge for generating responses on structured data,
+particularly hierarchical structures like trees. In this work, we propose a
+novel bottom-up method to linearize knowledge from tree-like structures (like a
+GitHub repository) by generating implicit, aggregated summaries at each
+hierarchical level. This approach enables the knowledge to be stored in a
+knowledge base and used directly with RAG. We then compare our method to using
+RAG on raw, unstructured code, evaluating the accuracy and quality of the
+generated responses. Our results show that while response quality is comparable
+across both methods, our approach generates over 68% fewer documents in the
+retriever, a significant gain in efficiency. This finding suggests that
+leveraging implicit, linearized knowledge may be a highly effective and
+scalable strategy for handling complex, hierarchical data structures.","\label{sec:relatedwork}
+
+Existing graph-based LLM applications can be broadly categorized into two types. The first category focuses on solving fundamental graph problems, such as those related to node properties (e.g., degree, centrality) and relational properties (e.g., shortest path between two nodes) \cite{wang2023can,fatemi2023talk,li2024can}. The second category, which is more relevant to our work, evaluates the ability of LLMs to ""talk to a graph"" by answering natural language queries about its content and structure  (\cite{he2024g, sarthi2024raptor}).
+
+Our work shares a conceptual similarity with the latter category, particularly the bottom-up knowledge aggregation approach proposed by  \cite{sarthi2024raptor}. However, our primary objective is to distill knowledge from a hierarchical structure for a more efficient Retrieval-Augmented Generation (RAG) pipeline. In contrast, their method focuses on retrieving similar embedding vectors and summarizing clusters to provide answers, which represents a different approach to a similar problem.
+
+Another line of work centers on the construction of Knowledge Graphs (KGs) from text and using LLMs for subsequent reasoning over these KGs  (\cite{li2024simple,edge2024local}). These methods primarily address the challenge of structuring unstructured text into a graph format, whereas our work begins with an existing hierarchical structure and focuses on creating an optimal representation of its knowledge for efficient retrieval.
+
+Another line of work relevant to our research is knowledge distillation, which focuses on compressing knowledge from a large model into a smaller one. Our concept of generating implicit knowledge shares commonality with this field. For instance, some methods create explicit frameworks, such as using ""teacher-models"" to improve Chain-of-Thought reasoning  (\cite{deng2023implicit}) or to distill knowledge for unlabeled data  (\cite{wang2023explicit}). Other works use customized loss functions to extract subtler forms of implicit knowledge from a model's activations or internal states (\cite{li2024direct}). While these methods primarily focus on model-level distillation, they underscore the broader principle that valuable knowledge can be distilled into a more compact and efficient form. Our work applies this fundamental idea to the realm of RAG, demonstrating how knowledge can be distilled from a data source itself, rather than from a model. 
+
+Finally, it has been demonstrated that the performance of RAG-based approaches can be significantly affected by the number of documents stored in vector databases, often leading to performance degradation as the context size increases (\cite{levy2025more, warfield2024vector}). This has spurred research into methods that optimize the retrieval process and manage large contexts more effectively, such as the work on long-context RAG by Jiang et al. (\cite{jiang2024longrag}). This body of literature underscores the critical need for developing efficient and scalable methods to manage the knowledge used in RAG frameworks. Our work on generating implicit knowledge addresses this need directly by enabling more concise and effective storage of information, thus mitigating the very performance issues identified in these studies.","Existing graph-based LLM applications can be broadly categorized into two types. The first category focuses on solving fundamental graph problems, such as those related to node properties (e.g., degree, centrality) and relational properties (e.g., shortest path between two nodes) \cite{wang2023can,fatemi2023talk,li2024can}. The second category, which is more relevant to our work, evaluates the ability of LLMs to ""talk to a graph"" by answering natural language queries about its content and structure  (\cite{he2024g, sarthi2024raptor}).
+
+Our work shares a conceptual similarity with the latter category, particularly the bottom-up knowledge aggregation approach proposed by  \cite{sarthi2024raptor}. However, our primary objective is to distill knowledge from a hierarchical structure for a more efficient Retrieval-Augmented Generation (RAG) pipeline. In contrast, their method focuses on retrieving similar embedding vectors and summarizing clusters to provide answers, which represents a different approach to a similar problem.
+
+Another line of work centers on the construction of Knowledge Graphs (KGs) from text and using LLMs for subsequent reasoning over these KGs  (\cite{li2024simple,edge2024local}). These methods primarily address the challenge of structuring unstructured text into a graph format, whereas our work begins with an existing hierarchical structure and focuses on creating an optimal representation of its knowledge for efficient retrieval.
+
+Another line of work relevant to our research is knowledge distillation, which focuses on compressing knowledge from a large model into a smaller one. Our concept of generating implicit knowledge shares commonality with this field. For instance, some methods create explicit frameworks, such as using ""teacher-models"" to improve Chain-of-Thought reasoning  (\cite{deng2023implicit}) or to distill knowledge for unlabeled data  (\cite{wang2023explicit}). Other works use customized loss functions to extract subtler forms of implicit knowledge from a model's activations or internal states (\cite{li2024direct}). While these methods primarily focus on model-level distillation, they underscore the broader principle that valuable knowledge can be distilled into a more compact and efficient form. Our work applies this fundamental idea to the realm of RAG, demonstrating how knowledge can be distilled from a data source itself, rather than from a model. 
+
+Finally, it has been demonstrated that the performance of RAG-based approaches can be significantly affected by the number of documents stored in vector databases, often leading to performance degradation as the context size increases (\cite{levy2025more, warfield2024vector}). This has spurred research into methods that optimize the retrieval process and manage large contexts more effectively, such as the work on long-context RAG by Jiang et al. (\cite{jiang2024longrag}). This body of literature underscores the critical need for developing efficient and scalable methods to manage the knowledge used in RAG frameworks. Our work on generating implicit knowledge addresses this need directly by enabling more concise and effective storage of information, thus mitigating the very performance issues identified in these studies.","Existing graph-based LLM applications can be broadly categorized into two types. The first category focuses on solving
+fundamental graph problems, such as those related to node properties (e.g., degree, centrality) and relational properties
+(e.g., shortest path between two nodes) [ 3,6,7]. The second category, which is more relevant to our work, evaluates the
+ability of LLMs to ""talk to a graph"" by answering natural language queries about its content and structure ([8, 4]).
+Our work shares a conceptual similarity with the latter category, particularly the bottom-up knowledge aggregation
+approach proposed by [ 4]. However, our primary objective is to distill knowledge from a hierarchical structure for a
+more efficient Retrieval-Augmented Generation (RAG) pipeline. In contrast, their method focuses on retrieving similar
+embedding vectors and summarizing clusters to provide answers, which represents a different approach to a similar
+problem.
+Another line of work centers on the construction of Knowledge Graphs (KGs) from text and using LLMs for subsequent
+reasoning over these KGs ([ 9,10]). These methods primarily address the challenge of structuring unstructured text into
+2
+Technical ReportA PREPRINT
+a graph format, whereas our work begins with an existing hierarchical structure and focuses on creating an optimal
+representation of its knowledge for efficient retrieval.
+Another line of work relevant to our research is knowledge distillation, which focuses on compressing knowledge from
+a large model into a smaller one. Our concept of generating implicit knowledge shares commonality with this field.
+For instance, some methods create explicit frameworks, such as using ""teacher-models"" to improve Chain-of-Thought
+reasoning ([ 14]) or to distill knowledge for unlabeled data ([ 15]). Other works use customized loss functions to extract
+subtler forms of implicit knowledge from a model’s activations or internal states ([ 16]). While these methods primarily
+focus on model-level distillation, they underscore the broader principle that valuable knowledge can be distilled into a
+more compact and efficient form. Our work applies this fundamental idea to the realm of RAG, demonstrating how
+knowledge can be distilled from a data source itself, rather than from a model.
+Finally, it has been demonstrated that the performance of RAG-based approaches can be significantly affected by the
+number of documents stored in vector databases, often leading to performance degradation as the context size increases
+([11,12]). This has spurred research into methods that optimize the retrieval process and manage large contexts more
+effectively, such as the work on long-context RAG by Jiang et al. ([ 13]). This body of literature underscores the
+critical need for developing efficient and scalable methods to manage the knowledge used in RAG frameworks. Our
+work on generating implicit knowledge addresses this need directly by enabling more concise and effective storage of
+information, thus mitigating the very performance issues identified in these studies."

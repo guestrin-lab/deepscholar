@@ -1,0 +1,52 @@
+\begin{table*}[t!]
+\scriptsize
+\centering
+\renewcommand{\arraystretch}{1.1}
+\setlength\tabcolsep{4.5pt}
+\newcommand{\MODELNAME}{\makecell{\\ model name}}
+\newcommand{\PARAM}{\makecell{\\ \#param}}
+\newcommand{\GMAIMMBench}{\makecell{\\GMAI-MMBench\\(val)}}
+\newcommand{\WorldMedQABrazil}{\makecell{Brazil\\(t.only / t.\&i.)}}
+\newcommand{\WorldMedQAIsrael}{\makecell{Israel\\(t.only / t.\&i.)}}
+\newcommand{\WorldMedQAJapan}{\makecell{Japan\\(t.only / t.\&i.)}}
+\newcommand{\WorldMedQASpain}{\makecell{Spain\\(t.only / t.\&i.)}}
+\begin{tabular}{l|cccc|c}
+\multirow{2}{*}{\MODELNAME}      & \multicolumn{4}{c|}{WorldMedQA-V}    & \multirow{2}{*}{\GMAIMMBench} \\
+                                 & \WorldMedQABrazil & \WorldMedQAIsrael & \WorldMedQAJapan &  \WorldMedQASpain &  \\
+
+\hline
+InternVL2-1B                     &   &   &   &   & 36.3     \\
+\rowcolor{gray!15}
+InternVL2.5-1B                   &   &   &   &   & 39.3  \\
+InternVL2-2B                     &   &   &   &   & 37.5 \\
+\rowcolor{gray!15}
+InternVL2.5-2B                   &   &   &   &   & 41.9 \\
+\hline
+InternVL2-4B                     &   &   &   &   & 38.7  \\
+\rowcolor{gray!15}
+InternVL2.5-4B                   &   &   &   &   & 45.4  \\
+\hline
+InternVL2-8B                     &   &   &   &   & 43.5  \\
+\rowcolor{gray!15}
+InternVL2.5-8B                   &   &   &   &   & 47.2  \\
+\hline
+InternVL-Chat-V1.5               &   &   &   &   & 38.9     \\
+InternVL2-26B                    &   &   &   &   & 46.7  \\
+\rowcolor{gray!15}
+InternVL2.5-26B                  &   &   &   &   & 51.3  \\
+\hline 
+InternVL2-40B                    &   &   &   &   & 49.2  \\
+\rowcolor{gray!15}
+InternVL2.5-38B                  &   &   &   &   & 51.7  \\
+\hline
+InternVL2-Llama3-76B             &   &   &   &   &   \\
+\rowcolor{gray!15}
+InternVL2.5-Llama3.1-76B         &   &   &   &   &   \\
+\end{tabular}
+\caption{\textbf{Comparison of medical image understanding  performance.}
+We evaluate InternVL's capabilities in medical image understanding across WorldMedQA-V~\cite{matos2024worldmedqa} and GMAI-MMBench~\cite{chen2024gmai}.
+The two settings of WorldMedQA-V are text-only (t. only) and text and image (t. \& i.).
+}
+\label{tab:benchmark_medical}
+\end{table*}
+% worldmedqa-v https://www.arxiv.org/pdf/2410.12722 appendix5

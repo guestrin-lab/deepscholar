@@ -1,0 +1,28 @@
+\section{Dataset and Evaluation}
+\label{sec:dataset_metrics}
+
+\subsection{Datasets}
+
+To evaluate our retrieval capabilities, we use the FinQA dataset~\cite{chen2021finqa}, a benchmark designed for financial question answering. FinQA contains 8{,}281 question–answer pairs derived from 10-K filings, requiring numerical reasoning and domain expertise. The dataset is split into training (6{,}251), validation (883), and testing (1{,}147) sets.
+
+While the FinQA dataset provides ground-truth question–answer pairs, it only includes \textit{pre-extracted} context passages. To enable full-document retrieval evaluation, we recover the original 10-K filings corresponding to each FinQA instance. Using SEC EDGAR records\footnote{\url{https://www.sec.gov/search-filings}}, we match company names to ticker symbols and Central Index Keys (CIKs), resulting in a corpus of 720 full-length 10-K filings (we refer to these as our \textit{recovered 10-K filings}).
+
+These documents span a diverse set of industries—including technology, healthcare, financial services, consumer goods, and energy—and cover companies listed in the S\&P 500 index between 1999 and 2019. Filings are converted from PDF to structured Markdown format, preserving original SEC itemization. This setup ensures FinGEAR retrieves from complete, uncurated documents, reflecting real-world retrieval challenges.
+
+\noindent\textit{Dataset breadth.} FinQA dataset includes both numerical and categorical questions and covers single-step and multi-hop reasoning. We use this typology in our evaluations (see Section~\ref{sec:results} and Table~\ref{tab:dataset_ablation_results}), underscoring that FinQA dataset is a multifaceted dataset rather than a narrowly scoped benchmark.
+
+\subsection{Evaluation Framework}
+\label{subsec:evaluation_framework}
+
+We evaluate FinGEAR’s retrieval performance using the RAGAS framework~\cite{shahul2023ragas}, which provides \textit{component-level RAG evaluation metrics}. Specifically, we report:
+
+\noindent\textbf{Precision.} The proportion of retrieved passages that are relevant to the query. \\
+\textbf{Recall.} The proportion of all relevant passages that are successfully retrieved. \\
+\textbf{F1 Score.} The harmonic mean of precision and recall. This serves as our \textit{primary} retrieval metric, as it best isolates retrieval quality without conflating it with downstream generation performance. \\
+\textbf{Relevancy.} A semantic alignment score based on LLM evaluations, measuring how well retrieved passages support the query’s intent.
+
+Retrieval is evaluated at multiple depths, including Top-5, Top-10, and Top-15, to capture trade-offs between precision and coverage. All metrics are reported per depth and averaged to provide a comprehensive assessment.
+
+In addition to retrieval metrics, we report \textit{final answer accuracy}, defined as the correctness of a fixed reader model’s response given the retrieved context (reader details in Section~\ref{sec:experiments_setup}). While not a direct measure of retrieval quality, it reflects the downstream utility of the system for real-world financial question answering and analytical tasks.
+
+To improve transparency, we also report token-level statistics in Appendix~\ref{appendix:token_statistics}, including average tokens per passage, total input length by depth, average tree depth, and maximum context constraints.

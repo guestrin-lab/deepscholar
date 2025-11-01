@@ -1,0 +1,161 @@
+%\documentclass[conference]{IEEEtran}
+\documentclass[10pt,conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+\setlength{\abovecaptionskip}{6pt} 
+\setlength{\belowcaptionskip}{-3pt} 
+\setlength{\floatsep}{12pt}        
+\setlength{\textfloatsep}{12pt}
+
+
+\usepackage[font=footnotesize, skip=2pt]{caption}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+\newcounter{rq}
+\newenvironment{researchquestion}{
+  \refstepcounter{rq}
+  \begin{tcolorbox}[colback=gray!5, colframe=gray!75!black, 
+    fonttitle=\bfseries, coltitle=white, 
+    title=Research Question~\arabic{rq}]
+}{
+  \end{tcolorbox}
+}
+
+\newcounter{arq}
+\newenvironment{researchanswer}{
+  \refstepcounter{arq}
+  \begin{tcolorbox}[colback=gray!5, colframe=gray!75!black, 
+    fonttitle=\bfseries, coltitle=white, 
+    title=Answer to Research Question~\arabic{arq}]
+}{
+  \end{tcolorbox}
+}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
+\usepackage{comment}
+\usepackage{algorithmic}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\newcommand{\st}[1]{\textcolor{red}{\sout{\textcolor{red}{#1}}}}
+
+%\newcommand\major[1]{\textcolor{red}{#1}}
+\newcommand\major[1]{\textcolor{black}{#1}}
+
+\newcommand\mashal[1]{\textcolor{purple}{Mashal: #1}}
+\newcommand\pat[1]{\textcolor{cyan}{Patrizio: #1}}
+\newcommand\marco[1]{\textcolor{red}{Marco: #1}}
+
+\newcommand{\chg}[2]{\textcolor{red}{\sout{#1}}$\rightarrow$\textcolor{blue}{#2}}
+
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+%\usepackage[most]{tcolorbox}
+
+
+
+\begin{document}
+
+%\title{Evaluating Ethical Reasoning Agreement in Multi-Modal Generative AI Models for Software Engineering Applications}
+
+\title{Advancing Automated Ethical Profiling in SE:\\a Zero-Shot Evaluation of LLM Reasoning} 
+%\title{\major{Evaluating LLM Ethical Reasoning for SE:\\Zero-Shot Evidence for an Ethical Interpreter}}
+
+%Agreement
+
+\author{\IEEEauthorblockN{Patrizio Migliarini}
+ \IEEEauthorblockA{\textit{} 
+ \textit{University of L'Aquila}\\
+ L'Aquila, Italy \\
+ patrizio.migliarini@univaq.it}
+ \and
+ \IEEEauthorblockN{Mashal Afzal Memon}
+ \IEEEauthorblockA{\textit{} 
+ \textit{University of L'Aquila}\\
+ L'Aquila, Italy \\
+ mashal.memon@univaq.it}
+ \and
+ \IEEEauthorblockN{Marco Autili}
+ \IEEEauthorblockA{\textit{}
+ \textit{University of L'Aquila}\\
+ L'Aquila, Italy \\
+ marco.autili@univaq.it}
+ \and
+ \IEEEauthorblockN{Paola Inverardi}
+ \IEEEauthorblockA{\textit{Gran Sasso Science Institute} 
+ \textit{}\\
+ L'Aquila, Italy \\
+ paola.inverardi@gssi.it}
+% \and
+% \IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+% \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+% \textit{name of organization (of Aff.)}\\
+% City, Country \\
+% email address or ORCID}
+% \and
+% \IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+% \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+% \textit{name of organization (of Aff.)}\\
+% City, Country \\
+% email address or ORCID}
+}
+%\author{authors}
+\maketitle
+%\begin{abstract}
+%\pat{added}
+%Large Language Models (LLMs) are being integrated into software engineering (SE) tools for tasks that extend well beyond code synthesis, including judgment under uncertainty and reasoning in complex scenarios. This paper presents a systematic comparison of multiple state-of-the-art LLMs on decision tasks requiring ethical reasoning, using a curated set of ethically charged scenarios as a realistic and challenging benchmark. 
+
+%We introduce a fully automated, zero-shot experimental protocol to quantify model-to-model agreement, both on discrete judgments and free-text explanations.
+
+%addressing the question: is a single LLM sufficient for dependable SE decision support, or does a multi-model approach offer greater robustness? 
+
+%Sixteen leading LLMs were evaluated across thirty scenarios, with results compared to expert human judgments. Our findings reveal substantial, but not universal, inter-model agreement, with significant divergences in certain cases. The analysis provides actionable insight for the integration of LLMs in SE pipelines where reliability and traceability of AI reasoning are critical.
+
+%We propose a fully automated, zero-shot framework to evaluate whether LLMs can support the construction of ethical user profiles in software engineering applications. We evaluate 16 leading LLMs across 30 ethically-charged scenarios derived from real-world decision points, comparing their judgments and explanations to those of expert ethicists. We introduce inter-model agreement metrics to quantify consistency in ethical reasoning. Our results show that LLMs exhibit robust but non-universal agreement patterns, enabling their potential use as ethical reasoning components in SE pipelines where traceability and interpretability are essential.
+
+%All data and analysis artifacts are released for replication and benchmarking.
+
+%\end{abstract}
+\vspace{-1cm}
+\begin{abstract}
+Large Language Models (LLMs) are increasingly integrated into software engineering (SE) tools for tasks that extend beyond code synthesis, including judgment under uncertainty and reasoning in ethically significant contexts. We present a fully automated framework for assessing ethical reasoning capabilities across 16 LLMs in a zero-shot setting, using 30 real-world ethically charged scenarios. Each model is prompted to identify the most applicable ethical theory to an action, assess its moral acceptability, and explain the reasoning behind their choice. Responses are compared against expert ethicists' choices using inter-model agreement metrics. Our results show that LLMs achieve an average Theory Consistency Rate (TCR) of 73.3\% and Binary Agreement Rate (BAR) on moral acceptability of 86.7\%, with interpretable divergences concentrated in ethically ambiguous cases. A qualitative analysis of free-text explanations reveals strong conceptual convergence across models despite surface-level lexical diversity. These findings support the potential viability of LLMs as ethical inference engines within SE pipelines, enabling scalable, auditable, and adaptive integration of user-aligned ethical reasoning. Our focus is the Ethical Interpreter component of a broader profiling pipeline: we evaluate whether current LLMs exhibit sufficient interpretive stability and theory-consistent reasoning to support automated profiling.
+\end{abstract}
+
+
+
+
+
+\begin{IEEEkeywords}
+software engineering ethics, large language models, moral reasoning, zero-shot learning
+\end{IEEEkeywords}
+
+
+\input{sections/introduction}
+\input{sections/setting_context}
+\input{sections/approach}
+\input{sections/quantitative}
+\input{sections/qualitative}
+\input{sections/discussion}
+\input{sections/back_Related}
+\input{sections/conclusion}
+\input{sections/acknowledgments}
+
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+
+\end{document}

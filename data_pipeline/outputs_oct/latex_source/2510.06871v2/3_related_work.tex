@@ -1,0 +1,21 @@
+
+\section{Related Work}
+
+\vspace{-0.4em}
+\paragraph{Multimodal Large Reasoning Models (MLRM).} 
+MLRMs extend MLLMs~\cite{MLLM-flamingo, MLLM-gpt4o, MLLM-cogvlm, MLLM-qwen2vl, MLLM-qwen2.5vl} by enhancing multimodal reasoning capabilities for complex decision-making tasks. Recent advances, inspired by \llmname{OpenAI's O1}~\cite{MLRM-o1} and \llmname{DeepSeek-R1}~\cite{MLRM-r1}, have integrated reinforcement learning methods like GRPO~\cite{MLRM-grpo} to improve generalization beyond supervised fine-tuning, achieving success in mathematical reasoning~\cite{MLRM-math-lmmr1, MLRM-math-ursa}, spatial understanding~\cite{MLRM-spatial-star}, and visual perception~\cite{MLRM-per-perception, MLRM-per-visionr1, MLRM-per-vrft}. Furthermore, multimodal CoT reasoning~\cite{MLRM-mcot-chain, MLRM-mcot-grit, MLRM-mcot-rex, MLRM-mcot-deepeyes} and self-reflection mechanisms~\cite{MLRM-reflect-mulberry, MLRM-reflect-r3, MLRM-reflect-srpo, MLRM-reflect-vl-rethinker} enable models to integrate visual feedback and revise erroneous reasoning paths. Robustness is additionally enhanced by data augmentation methods~\cite{MLRM-aug-visionmatters, MLRM-aug-shareVL, MLRM-aug-thinknot}, while diverse reward strategies~\cite{MLRM-reward-got-r1, MLRM-reward-pixel, MLRM-reward-sophiavl} improve efficiency and control reasoning quality. Despite these advances, the safety of MLRMs remains underexplored. We introduce \method{}, which embeds reflection and correction~\cite{kumar2024training, safe-safemlrm} into the reasoning process, ensuring that safety shapes reasoning dynamics rather than only outcomes.
+
+
+
+
+
+\vspace{-0.4em}
+\paragraph{Safety of MLLMs.}
+Multimodal large language models (MLLMs) have enabled advanced multimodal reasoning but also raise critical safety risks, including adversarial manipulation~\cite{safe-risk-safety, safe-guard-eta, safe-risk-figstep}, harmful content generation~\cite{safe-risk-mllmguard, mmsafetybench, safe-risk-usb}, and representational biases~\cite{safe-risk-aialign, safe-risk-red}. Addressing these challenges requires both \textbf{training-based alignment} and \textbf{inference-time defenses}.  
+\textbf{Training-based alignment} incorporates safety during model development, typically guided by the Helpful, Honest, and Harmless principle~\cite{safe-3h}. Representative techniques include supervised fine-tuning with safety-oriented datasets~\cite{vlguard, safe-algin-think}, reinforcement learning from human feedback~\cite{safe-algin-saferlhfv, safe-algin-G-RLHF-V}, and direct preference optimization~\cite{safe-algin-ADPO, safe-algin-SafeVid}. Recent studies further explore generative reward modeling and safe reasoning distillation~\cite{safe-guard-vlmguard} to guide corrective behaviors.  
+\textbf{Inference-time defenses} regulate model behavior during deployment without modifying parameters. These include prompt rewriting~\cite{safe-guard-rapguard, safe-guard-vlmguard}, adaptive defense prompting~\cite{safe-guard-adashield}, harm detection modules~\cite{safe-guard-mllmprotector, safe-guard-guardreasoner}, and controlled decoding~\cite{safe-guard-coca, safe-guard-immune}, which mitigate risks while preserving utility.  
+However, most existing methods remain outcome-level, constraining outputs without addressing the reasoning dynamics. This gap underscores the need to embed \textbf{safety-aware reasoning} directly into the model’s thought process, making safety an intrinsic driver of reasoning rather than a superficial safeguard.
+
+
+
+

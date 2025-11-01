@@ -1,0 +1,366 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ribeiro2020checklist,\cite{ribeiro2020checklist},CheckList: A Behavioral Testing Framework for NLP,,,"Ribeiro, Marco Tulio and Wu, Tongshuang and Guestrin, Carlos and Singh, Sameer",2020,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,goel2021robustgym,\cite{goel2021robustgym},Robustness Gym: Unifying the NLP Evaluation Landscape,http://arxiv.org/abs/2101.04840v1,"Despite impressive performance on standard benchmarks, deep neural networks
+are often brittle when deployed in real-world systems. Consequently, recent
+research has focused on testing the robustness of such models, resulting in a
+diverse set of evaluation methodologies ranging from adversarial attacks to
+rule-based data transformations. In this work, we identify challenges with
+evaluating NLP systems and propose a solution in the form of Robustness Gym
+(RG), a simple and extensible evaluation toolkit that unifies 4 standard
+evaluation paradigms: subpopulations, transformations, evaluation sets, and
+adversarial attacks. By providing a common platform for evaluation, Robustness
+Gym enables practitioners to compare results from all 4 evaluation paradigms
+with just a few clicks, and to easily develop and share novel evaluation
+methods using a built-in set of abstractions. To validate Robustness Gym's
+utility to practitioners, we conducted a real-world case study with a
+sentiment-modeling team, revealing performance degradations of 18%+. To verify
+that Robustness Gym can aid novel research analyses, we perform the first study
+of state-of-the-art commercial and academic named entity linking (NEL) systems,
+as well as a fine-grained analysis of state-of-the-art summarization models.
+For NEL, commercial systems struggle to link rare entities and lag their
+academic counterparts by 10%+, while state-of-the-art summarization models
+struggle on examples that require abstraction and distillation, degrading by
+9%+. Robustness Gym can be found at https://robustnessgym.com/","Goel, Karan and Rajani, Nazneen Fatema and Reif, Emily and others",2021,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ankner2021varrename,\cite{ankner2021varrename},Transformer Models Should Be Invariant to Variable Renaming,,,"Ankner, Zachary and others",2021,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,wang2022recoderobustnessevaluationcode,\cite{wang2022recoderobustnessevaluationcode},ReCode: Robustness Evaluation of Code Generation Models,http://arxiv.org/abs/2212.10264v1,"Code generation models have achieved impressive performance. However, they
+tend to be brittle as slight edits to a prompt could lead to very different
+generations; these robustness properties, critical for user experience when
+deployed in real-life applications, are not well understood. Most existing
+works on robustness in text or code tasks have focused on classification, while
+robustness in generation tasks is an uncharted area and to date there is no
+comprehensive benchmark for robustness in code generation. In this paper, we
+propose ReCode, a comprehensive robustness evaluation benchmark for code
+generation models. We customize over 30 transformations specifically for code
+on docstrings, function and variable names, code syntax, and code format. They
+are carefully designed to be natural in real-life coding practice, preserve the
+original semantic meaning, and thus provide multifaceted assessments of a
+model's robustness performance. With human annotators, we verified that over
+90% of the perturbed prompts do not alter the semantic meaning of the original
+prompt. In addition, we define robustness metrics for code generation models
+considering the worst-case behavior under each type of perturbation, taking
+advantage of the fact that executing the generated code can serve as objective
+evaluation. We demonstrate ReCode on SOTA models using HumanEval, MBPP, as well
+as function completion tasks derived from them. Interesting observations
+include: better robustness for CodeGen over InCoder and GPT-J; models are most
+sensitive to syntax perturbations; more challenging robustness evaluation on
+MBPP over HumanEval.",Shiqi Wang and Zheng Li and Haifeng Qian and Chenghao Yang and more,2022,,https://arxiv.org/abs/2212.10264,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,chen2018tvm,\cite{chen2018tvm},Optimizing {DNN} Computation with {TVM},,,"Chen, Tianqi and others",2018,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,higham2002accuracy,\cite{higham2002accuracy},Accuracy and Stability of Numerical Algorithms,,,"Higham, Nicholas J.",2002,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,liu2023lostmiddle,\cite{liu2023lostmiddle},Lost in the Middle: How Language Models Use Long Contexts,http://arxiv.org/abs/2307.03172v3,"While recent language models have the ability to take long contexts as input,
+relatively little is known about how well they use longer context. We analyze
+the performance of language models on two tasks that require identifying
+relevant information in their input contexts: multi-document question answering
+and key-value retrieval. We find that performance can degrade significantly
+when changing the position of relevant information, indicating that current
+language models do not robustly make use of information in long input contexts.
+In particular, we observe that performance is often highest when relevant
+information occurs at the beginning or end of the input context, and
+significantly degrades when models must access relevant information in the
+middle of long contexts, even for explicitly long-context models. Our analysis
+provides a better understanding of how language models use their input context
+and provides new evaluation protocols for future long-context language models.","Liu, Nelson F. and Lin, Kevin and Hewitt, John and Paranjape, Ashwin and Bevilacqua, Michele and Petroni, Fabio and Liang, Percy",2023,,https://arxiv.org/abs/2307.03172,,arXiv preprint arXiv:2307.03172
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,chen2024premiseorder,\cite{chen2024premiseorder},Premise Order Matters in Reasoning with Large Language Models,http://arxiv.org/abs/2402.08939v3,"Large language models (LLMs) have accomplished remarkable reasoning
+performance in various domains. However, in the domain of reasoning tasks, we
+discover a frailty: LLMs are surprisingly brittle to the ordering of the
+premises, despite the fact that such ordering does not alter the underlying
+task. In particular, we observe that LLMs achieve the best performance when the
+premise order aligns with the context required in intermediate reasoning steps.
+For example, in deductive reasoning tasks, presenting the premises in the same
+order as the ground truth proof in the prompt (as opposed to random ordering)
+drastically increases the model's accuracy. We first examine the effect of
+premise ordering on deductive reasoning on a variety of LLMs, and our
+evaluation shows that permuting the premise order can cause a performance drop
+of over 30%. In addition, we release the benchmark R-GSM, based on GSM8K, to
+examine the ordering effect for mathematical problem-solving, and we again
+observe a significant drop in accuracy, relative to the original GSM8K
+benchmark.","Chen, Xin and Xu, Haiyang and Zhao, Wayne and et al.",2024,,https://arxiv.org/abs/2402.08939,,arXiv preprint arXiv:2402.08939
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,cuconasu2025rags,\cite{cuconasu2025rags},Do RAG Systems Really Suffer From Positional Bias?,http://arxiv.org/abs/2505.15561v2,"Retrieval Augmented Generation enhances LLM accuracy by adding passages
+retrieved from an external corpus to the LLM prompt. This paper investigates
+how positional bias - the tendency of LLMs to weight information differently
+based on its position in the prompt - affects not only the LLM's capability to
+capitalize on relevant passages, but also its susceptibility to distracting
+passages. Through extensive experiments on three benchmarks, we show how
+state-of-the-art retrieval pipelines, while attempting to retrieve relevant
+passages, systematically bring highly distracting ones to the top ranks, with
+over 60% of queries containing at least one highly distracting passage among
+the top-10 retrieved passages. As a result, the impact of the LLM positional
+bias, which in controlled settings is often reported as very prominent by
+related works, is actually marginal in real scenarios since both relevant and
+distracting passages are, in turn, penalized. Indeed, our findings reveal that
+sophisticated strategies that attempt to rearrange the passages based on LLM
+positional preferences do not perform better than random shuffling.",Florin Cuconasu and Simone Filice and Guy Horowitz and Yoelle Maarek and Fabrizio Silvestri,2025,,https://arxiv.org/abs/2505.15561,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,zhang2024compensateposbias,\cite{zhang2024compensateposbias},Can We Instruct LLMs to Compensate for Position Bias?,,,"Zhang, Ming and Sun, Yutong and Xu, Yichong and Cai, Deng and Wang, Yizhou and Zhang, Yue",2024,,https://aclanthology.org/2024.findings-emnlp.732/,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,cohen2016groupcnn,\cite{cohen2016groupcnn},Group Equivariant Convolutional Networks,http://arxiv.org/abs/1602.07576v3,"We introduce Group equivariant Convolutional Neural Networks (G-CNNs), a
+natural generalization of convolutional neural networks that reduces sample
+complexity by exploiting symmetries. G-CNNs use G-convolutions, a new type of
+layer that enjoys a substantially higher degree of weight sharing than regular
+convolution layers. G-convolutions increase the expressive capacity of the
+network without increasing the number of parameters. Group convolution layers
+are easy to use and can be implemented with negligible computational overhead
+for discrete groups generated by translations, reflections and rotations.
+G-CNNs achieve state of the art results on CIFAR10 and rotated MNIST.","Cohen, Taco and Welling, Max",2016,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,cohen2017steerable,\cite{cohen2017steerable},Steerable {CNN}s,,,"Cohen, Taco and Welling, Max",2017,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,bronstein2021geometric,\cite{bronstein2021geometric},"Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges",http://arxiv.org/abs/2104.13478v2,"The last decade has witnessed an experimental revolution in data science and
+machine learning, epitomised by deep learning methods. Indeed, many
+high-dimensional learning tasks previously thought to be beyond reach -- such
+as computer vision, playing Go, or protein folding -- are in fact feasible with
+appropriate computational scale. Remarkably, the essence of deep learning is
+built from two simple algorithmic principles: first, the notion of
+representation or feature learning, whereby adapted, often hierarchical,
+features capture the appropriate notion of regularity for each task, and
+second, learning by local gradient-descent type methods, typically implemented
+as backpropagation.
+  While learning generic functions in high dimensions is a cursed estimation
+problem, most tasks of interest are not generic, and come with essential
+pre-defined regularities arising from the underlying low-dimensionality and
+structure of the physical world. This text is concerned with exposing these
+regularities through unified geometric principles that can be applied
+throughout a wide spectrum of applications.
+  Such a 'geometric unification' endeavour, in the spirit of Felix Klein's
+Erlangen Program, serves a dual purpose: on one hand, it provides a common
+mathematical framework to study the most successful neural network
+architectures, such as CNNs, RNNs, GNNs, and Transformers. On the other hand,
+it gives a constructive procedure to incorporate prior physical knowledge into
+neural architectures and provide principled way to build future architectures
+yet to be invented.","Bronstein, Michael M. and Bruna, Joan and Cohen, Taco and Veli{\v{c}}kovi{\'c}, Petar",2021,,,,Proceedings of the IEEE
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,press2021alibi,\cite{press2021alibi},"Train Short, Test Long: Attention with Linear Biases Enables Input
+  Length Extrapolation",http://arxiv.org/abs/2108.12409v2,"Since the introduction of the transformer model by Vaswani et al. (2017), a
+fundamental question has yet to be answered: how does a model achieve
+extrapolation at inference time for sequences that are longer than it saw
+during training? We first show that extrapolation can be enabled by simply
+changing the position representation method, though we find that current
+methods do not allow for efficient extrapolation. We therefore introduce a
+simpler and more efficient position method, Attention with Linear Biases
+(ALiBi). ALiBi does not add positional embeddings to word embeddings; instead,
+it biases query-key attention scores with a penalty that is proportional to
+their distance. We show that this method trains a 1.3 billion parameter model
+on input sequences of length 1024 that extrapolates to input sequences of
+length 2048, achieving the same perplexity as a sinusoidal position embedding
+model trained on inputs of length 2048 but training 11% faster and using 11%
+less memory. ALiBi's inductive bias towards recency also leads it to outperform
+multiple strong position methods on the WikiText-103 benchmark.","Press, Ofir and Smith, Noah A. and Levy, Mike",2021,,,,arXiv preprint arXiv:2108.12409
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,chen2023positioninterp,\cite{chen2023positioninterp},"Extending Context Window of Large Language Models via Positional
+  Interpolation",http://arxiv.org/abs/2306.15595v2,"We present Position Interpolation (PI) that extends the context window sizes
+of RoPE-based pretrained LLMs such as LLaMA models to up to 32768 with minimal
+fine-tuning (within 1000 steps), while demonstrating strong empirical results
+on various tasks that require long context, including passkey retrieval,
+language modeling, and long document summarization from LLaMA 7B to 65B.
+Meanwhile, the extended model by Position Interpolation preserve quality
+relatively well on tasks within its original context window. To achieve this
+goal, Position Interpolation linearly down-scales the input position indices to
+match the original context window size, rather than extrapolating beyond the
+trained context length which may lead to catastrophically high attention scores
+that completely ruin the self-attention mechanism. Our theoretical study shows
+that the upper bound of interpolation is at least $\sim 600 \times$ smaller
+than that of extrapolation, further demonstrating its stability. Models
+extended via Position Interpolation retain its original architecture and can
+reuse most pre-existing optimization and infrastructure.","Chen, Shouyuan and Wong, Sherman and Chen, Liangjian and Tian, Yuandong",2023,,,,arXiv preprint arXiv:2306.15595
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ding2024longrope,\cite{ding2024longrope},LongRoPE: Extending LLM Context Window Beyond 2 Million Tokens,http://arxiv.org/abs/2402.13753v1,"Large context window is a desirable feature in large language models (LLMs).
+However, due to high fine-tuning costs, scarcity of long texts, and
+catastrophic values introduced by new token positions, current extended context
+windows are limited to around 128k tokens. This paper introduces LongRoPE that,
+for the first time, extends the context window of pre-trained LLMs to an
+impressive 2048k tokens, with up to only 1k fine-tuning steps at within 256k
+training lengths, while maintaining performance at the original short context
+window. This is achieved by three key innovations: (i) we identify and exploit
+two forms of non-uniformities in positional interpolation through an efficient
+search, providing a better initialization for fine-tuning and enabling an 8x
+extension in non-fine-tuning scenarios; (ii) we introduce a progressive
+extension strategy that first fine-tunes a 256k length LLM and then conducts a
+second positional interpolation on the fine-tuned extended LLM to achieve a
+2048k context window; (iii) we readjust LongRoPE on 8k length to recover the
+short context window performance. Extensive experiments on LLaMA2 and Mistral
+across various tasks demonstrate the effectiveness of our method. Models
+extended via LongRoPE retain the original architecture with minor modifications
+to the positional embedding, and can reuse most pre-existing optimizations.","Ding, Yiran and others",2024,,,,arXiv preprint arXiv:2404.13760
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,peng2024yarn,\cite{peng2024yarn},YaRN: Efficient Context Window Extension of Large Language Models,http://arxiv.org/abs/2309.00071v2,"Rotary Position Embeddings (RoPE) have been shown to effectively encode
+positional information in transformer-based language models. However, these
+models fail to generalize past the sequence length they were trained on. We
+present YaRN (Yet another RoPE extensioN method), a compute-efficient method to
+extend the context window of such models, requiring 10x less tokens and 2.5x
+less training steps than previous methods. Using YaRN, we show that LLaMA
+models can effectively utilize and extrapolate to context lengths much longer
+than their original pre-training would allow, while also surpassing previous
+the state-of-the-art at context window extension. In addition, we demonstrate
+that YaRN exhibits the capability to extrapolate beyond the limited context of
+a fine-tuning dataset. The models fine-tuned using YaRN has been made available
+and reproduced online up to 128k context length at
+https://github.com/jquesnelle/yarn",Bowen Peng and Jeffrey Quesnelle and Honglu Fan and Enrico Shippole,2024,,https://openreview.net/forum?id=wHBfxhZu1u,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,liang2022helm,\cite{liang2022helm},Holistic Evaluation of Language Models,http://arxiv.org/abs/2211.09110v2,"Language models (LMs) are becoming the foundation for almost all major
+language technologies, but their capabilities, limitations, and risks are not
+well understood. We present Holistic Evaluation of Language Models (HELM) to
+improve the transparency of language models. First, we taxonomize the vast
+space of potential scenarios (i.e. use cases) and metrics (i.e. desiderata)
+that are of interest for LMs. Then we select a broad subset based on coverage
+and feasibility, noting what's missing or underrepresented (e.g. question
+answering for neglected English dialects, metrics for trustworthiness). Second,
+we adopt a multi-metric approach: We measure 7 metrics (accuracy, calibration,
+robustness, fairness, bias, toxicity, and efficiency) for each of 16 core
+scenarios when possible (87.5% of the time). This ensures metrics beyond
+accuracy don't fall to the wayside, and that trade-offs are clearly exposed. We
+also perform 7 targeted evaluations, based on 26 targeted scenarios, to analyze
+specific aspects (e.g. reasoning, disinformation). Third, we conduct a
+large-scale evaluation of 30 prominent language models (spanning open,
+limited-access, and closed models) on all 42 scenarios, 21 of which were not
+previously used in mainstream LM evaluation. Prior to HELM, models on average
+were evaluated on just 17.9% of the core HELM scenarios, with some prominent
+models not sharing a single scenario in common. We improve this to 96.0%: now
+all 30 models have been densely benchmarked on the same core scenarios and
+metrics under standardized conditions. Our evaluation surfaces 25 top-level
+findings. For full transparency, we release all raw model prompts and
+completions publicly for further analysis, as well as a general modular
+toolkit. We intend for HELM to be a living benchmark for the community,
+continuously updated with new scenarios, metrics, and models.","Liang, Percy and others",2022,,https://arxiv.org/abs/2211.09110,,arXiv preprint arXiv:2211.09110
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,kiela2021dynabench,\cite{kiela2021dynabench},Dynabench: Rethinking Benchmarking in NLP,http://arxiv.org/abs/2104.14337v1,"We introduce Dynabench, an open-source platform for dynamic dataset creation
+and model benchmarking. Dynabench runs in a web browser and supports
+human-and-model-in-the-loop dataset creation: annotators seek to create
+examples that a target model will misclassify, but that another person will
+not. In this paper, we argue that Dynabench addresses a critical need in our
+community: contemporary models quickly achieve outstanding performance on
+benchmark tasks but nonetheless fail on simple challenge examples and falter in
+real-world scenarios. With Dynabench, dataset creation, model development, and
+model assessment can directly inform each other, leading to more robust and
+informative benchmarks. We report on four initial NLP tasks, illustrating these
+concepts and highlighting the promise of the platform, and address potential
+objections to dynamic benchmarking as a new standard for the field.","Kiela, Douwe and Bartolo, Max and Nie, Yixin and others",2021,,https://aclanthology.org/2021.naacl-main.324/,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,raghu2017svcca,\cite{raghu2017svcca},"SVCCA: Singular Vector Canonical Correlation Analysis for Deep Learning
+  Dynamics and Interpretability",http://arxiv.org/abs/1706.05806v2,"We propose a new technique, Singular Vector Canonical Correlation Analysis
+(SVCCA), a tool for quickly comparing two representations in a way that is both
+invariant to affine transform (allowing comparison between different layers and
+networks) and fast to compute (allowing more comparisons to be calculated than
+with previous methods). We deploy this tool to measure the intrinsic
+dimensionality of layers, showing in some cases needless over-parameterization;
+to probe learning dynamics throughout training, finding that networks converge
+to final representations from the bottom up; to show where class-specific
+information in networks is formed; and to suggest new training regimes that
+simultaneously save computation and overfit less. Code:
+https://github.com/google/svcca/","Raghu, Maithra and Gilmer, Justin and Yosinski, Jason and Sohl-Dickstein, Jascha",2017,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,kornblith2019cka,\cite{kornblith2019cka},Similarity of Neural Network Representations Revisited,http://arxiv.org/abs/1905.00414v4,"Recent work has sought to understand the behavior of neural networks by
+comparing representations between layers and between different trained models.
+We examine methods for comparing neural network representations based on
+canonical correlation analysis (CCA). We show that CCA belongs to a family of
+statistics for measuring multivariate similarity, but that neither CCA nor any
+other statistic that is invariant to invertible linear transformation can
+measure meaningful similarities between representations of higher dimension
+than the number of data points. We introduce a similarity index that measures
+the relationship between representational similarity matrices and does not
+suffer from this limitation. This similarity index is equivalent to centered
+kernel alignment (CKA) and is also closely connected to CCA. Unlike CCA, CKA
+can reliably identify correspondences between representations in networks
+trained from different initializations.","Kornblith, Simon and Norouzi, Mohammad and Lee, Honglak and Hinton, Geoffrey",2019,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,hewitt2019designing,\cite{hewitt2019designing},Designing and Interpreting Probes with Control Tasks,http://arxiv.org/abs/1909.03368v1,"Probes, supervised models trained to predict properties (like
+parts-of-speech) from representations (like ELMo), have achieved high accuracy
+on a range of linguistic tasks. But does this mean that the representations
+encode linguistic structure or just that the probe has learned the linguistic
+task? In this paper, we propose control tasks, which associate word types with
+random outputs, to complement linguistic tasks. By construction, these tasks
+can only be learned by the probe itself. So a good probe, (one that reflects
+the representation), should be selective, achieving high linguistic task
+accuracy and low control task accuracy. The selectivity of a probe puts
+linguistic task accuracy in context with the probe's capacity to memorize from
+word types. We construct control tasks for English part-of-speech tagging and
+dependency edge prediction, and show that popular probes on ELMo
+representations are not selective. We also find that dropout, commonly used to
+control probe complexity, is ineffective for improving selectivity of MLPs, but
+that other forms of regularization are effective. Finally, we find that while
+probes on the first layer of ELMo yield slightly better part-of-speech tagging
+accuracy than the second, probes on the second layer are substantially more
+selective, which raises the question of which layer better represents
+parts-of-speech.","Hewitt, John and Liang, Percy",2019,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,elhage2021mathematical,\cite{elhage2021mathematical},A Mathematical Framework for Transformer Circuits,,,"Elhage, Nelson and Nanda, Neel and more",2021,,https://transformer-circuits.pub/2021/framework/index.html,,Anthropic
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,nanda2023progress,\cite{nanda2023progress},Progress measures for grokking via mechanistic interpretability,http://arxiv.org/abs/2301.05217v3,"Neural networks often exhibit emergent behavior, where qualitatively new
+capabilities arise from scaling up the amount of parameters, training data, or
+training steps. One approach to understanding emergence is to find continuous
+\textit{progress measures} that underlie the seemingly discontinuous
+qualitative changes. We argue that progress measures can be found via
+mechanistic interpretability: reverse-engineering learned behaviors into their
+individual components. As a case study, we investigate the recently-discovered
+phenomenon of ``grokking'' exhibited by small transformers trained on modular
+addition tasks. We fully reverse engineer the algorithm learned by these
+networks, which uses discrete Fourier transforms and trigonometric identities
+to convert addition to rotation about a circle. We confirm the algorithm by
+analyzing the activations and weights and by performing ablations in Fourier
+space. Based on this understanding, we define progress measures that allow us
+to study the dynamics of training and split training into three continuous
+phases: memorization, circuit formation, and cleanup. Our results show that
+grokking, rather than being a sudden shift, arises from the gradual
+amplification of structured mechanisms encoded in the weights, followed by the
+later removal of memorizing components.",Neel Nanda and Lawrence Chan and more,2023,,https://openreview.net/forum?id=9XFSbDPmdW,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,zhang2024towards,\cite{zhang2024towards},"Towards Best Practices of Activation Patching in Language Models:
+  Metrics and Methods",http://arxiv.org/abs/2309.16042v2,"Mechanistic interpretability seeks to understand the internal mechanisms of
+machine learning models, where localization -- identifying the important model
+components -- is a key step. Activation patching, also known as causal tracing
+or interchange intervention, is a standard technique for this task (Vig et al.,
+2020), but the literature contains many variants with little consensus on the
+choice of hyperparameters or methodology. In this work, we systematically
+examine the impact of methodological details in activation patching, including
+evaluation metrics and corruption methods. In several settings of localization
+and circuit discovery in language models, we find that varying these
+hyperparameters could lead to disparate interpretability results. Backed by
+empirical observations, we give conceptual arguments for why certain metrics or
+methods may be preferred. Finally, we provide recommendations for the best
+practices of activation patching going forwards.",Fred Zhang and Neel Nanda,2024,,https://openreview.net/forum?id=Hf17y6u9BC,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,samal2018forman,\cite{samal2018forman},"Comparative analysis of two discretizations of Ricci curvature for
+  complex networks",http://arxiv.org/abs/1712.07600v2,"We have performed an empirical comparison of two distinct notions of discrete
+Ricci curvature for graphs or networks, namely, the Forman-Ricci curvature and
+Ollivier-Ricci curvature. Importantly, these two discretizations of the Ricci
+curvature were developed based on different properties of the classical smooth
+notion, and thus, the two notions shed light on different aspects of network
+structure and behavior. Nevertheless, our extensive computational analysis in a
+wide range of both model and real-world networks shows that the two
+discretizations of Ricci curvature are highly correlated in many networks.
+Moreover, we show that if one considers the augmented Forman-Ricci curvature
+which also accounts for the two-dimensional simplicial complexes arising in
+graphs, the observed correlation between the two discretizations is even
+higher, especially, in real networks. Besides the potential theoretical
+implications of these observations, the close relationship between the two
+discretizations has practical implications whereby Forman-Ricci curvature can
+be employed in place of Ollivier-Ricci curvature for faster computation in
+larger real-world networks whenever coarse analysis suffices.","Samal, Areejit and Sreejith, Rinoj and Gu, Xianfeng David and Liu, Shi and Saucan, Emil and Jost, J{\""u}rgen",2018,,,,Scientific Reports
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ni2015ricci,\cite{ni2015ricci},Ricci Curvature of Markov Chains on Graphs,,,"Ni, Chien-Chun and Lin, Yu-Yao and Gao, Jie and Gu, Xianfeng David",2015,,,,Journal of Graph Theory
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ollivier2007markov,\cite{ollivier2007markov},Ricci curvature of Markov chains on metric spaces,http://arxiv.org/abs/math/0701886v4,"We define the Ricci curvature of Markov chains on metric spaces as a local
+contraction coefficient of the random walk acting on the space of probability
+measures equipped with a Wasserstein transportation distance. For Brownian
+motion on a Riemannian manifold this gives back the value of Ricci curvature of
+a tangent vector. Examples of positively curved spaces for this definition
+include the discrete cube and discrete versions of the Ornstein--Uhlenbeck
+process. Moreover this generalization is consistent with the Bakry--\'Emery
+Ricci curvature for Brownian motion with a drift on a Riemannian manifold.
+  Positive Ricci curvature is easily shown to imply a spectral gap, a
+L\'evy--Gromov-like Gaussian concentration theorem and a kind of modified
+logarithmic Sobolev inequality. These bounds are sharp in several interesting
+examples.","Ollivier, Yann",2007,,,10.1016/j.crma.2007.10.041,"C. R. Acad. Sci. Paris, Ser. I"
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ahrens2020reprod,\cite{ahrens2020reprod},Algorithms for Efficient Reproducible Floating Point Summation,,,"Ahrens, Willow and Demmel, James and Nguyen, Hong Diep",2020,,,10.1145/3389360,ACM Transactions on Mathematical Software
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,chang2025UCCT,\cite{chang2025UCCT},"The Unified Cognitive Consciousness Theory for Language Models:
+  Anchoring Semantics, Thresholds of Activation, and Emergent Reasoning",http://arxiv.org/abs/2506.02139v4,"Unified Cognitive Consciousness Theory} (UCCT) casts them instead as vast
+unconscious pattern repositories: apparent reasoning arises only when external
+anchoring mechanisms, few shot prompts, retrieval-augmented context,
+fine-tuning, or multi-agent debate, activate task-relevant patterns. UCCT
+formalizes this process as Bayesian competition between statistical priors
+learned in pre-training and context-driven target patterns, yielding a single
+quantitative account that unifies existing adaptation techniques. We ground the
+theory in three principles: threshold crossing, modality universality, and
+density-distance predictive power, and validate them with (i) cross-domain
+demonstrations (text QA, image captioning, multi-agent debate) and (ii) two
+depth-oriented experiments: a controlled numeral-base study (bases 8, 9, 10)
+that isolates pattern-density effects, and a layer-wise trajectory analysis
+that reveals phase transitions inside a 7B-parameter model. Both experiments
+confirm UCCT's predictions of threshold behavior, asymmetric interference, and
+memory hysteresis. By showing that LLM ``intelligence'' is created through
+semantic anchoring rather than contained within the model, UCCT offers a
+principled foundation for interpretable diagnostics and practical guidance for
+prompt engineering, model selection, and alignment-centric system design.",Edward Y. Chang and Zeyneb N. Kaya and Ethan Chang,2025,,https://arxiv.org/abs/2506.02139,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,weyl1952symmetry,\cite{weyl1952symmetry},Symmetry,,,"Weyl, Hermann",1952,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,noether1918invariante,\cite{noether1918invariante},Invariante Variationsprobleme,,,"Noether, Emmy",1918,,,,"Nachrichten von der Gesellschaft der Wissenschaften zu G{\""o}ttingen, Mathematisch-Physikalische Klasse"
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,yang1954gauge,\cite{yang1954gauge},Conservation of Isotopic Spin and Isotopic Gauge Invariance,,,"Yang, Chen-Ning and Mills, Robert",1954,,,,Physical Review
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,kobayashi1963foundations,\cite{kobayashi1963foundations},"Foundations of Differential Geometry, Vol.~I",,,"Kobayashi, Shoshichi and Nomizu, Katsumi",1963,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,nakahara2003gtp,\cite{nakahara2003gtp},Geometry and topology in many-body physics,http://arxiv.org/abs/2006.15567v1,"Some intensive observables of the electronic ground state in condensed matter
+have a geometrical or even topological nature. In this Review I present the
+geometrical observables whose expression is known in a full many-body
+framework, beyond band-structure theory. The formalism allows dealing with the
+general case of disordered and/or correlated many-electron systems.","Nakahara, Mikio",2003,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,frankel2011geometry,\cite{frankel2011geometry},The Geometry of Physics: An Introduction,,,"Frankel, Theodore",2011,,,,
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,ambrose1953holonomy,\cite{ambrose1953holonomy},A Theorem of Holonomy,,,"Ambrose, Warren and Singer, Isadore M.",1953,,,,Transactions of the American Mathematical Society
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,wilson1974confinement,\cite{wilson1974confinement},Confinement of Quarks,,,"Wilson, Kenneth G.",1974,,,,Physical Review D
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,simon1983holonomy,\cite{simon1983holonomy},"Holonomy, the Adiabatic Theorem, and Berry's Phase",,,"Simon, Barry",1983,,,,Physical Review Letters
+Inverse-Free Wilson Loops for Transformers: A Practical Diagnostic for Invariance and Order Sensitivity,http://arxiv.org/abs/2510.08648v1,berry1984phase,\cite{berry1984phase},Quantal Phase Factors Accompanying Adiabatic Changes,,,"Berry, Michael V.",1984,,,,Proceedings of the Royal Society A

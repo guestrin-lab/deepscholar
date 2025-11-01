@@ -1,0 +1,195 @@
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.96\linewidth]{fig/fig_multi.pdf}
+    \caption{Multi-task performance and latent space visualization. (a) A single model trained jointly on all tasks achieves comparable normalized performance to specialized single-task models. (b-c) The t-SNE visualizations reveal a clear separation of tasks in the latent spaces. As envisioned by our design, the latent $h_t$ primarily represents dynamics, showing significant evolution over time, while the latent $z_t$ provides a more compressed representation of the current environmental observation. }
+    \label{fig:multi}
+    \vspace{-15pt}
+\end{figure*}
+
+\section{Experiments}
+% In the experiment, we answer the following questions regarding the performance in object interaction and contact planning:
+% \begin{itemize}
+%     \item \textbf{Q1:} Can our method leverage offline random data and improve the planning performance?
+%     \item \textbf{Q2:} Can our method achieve multi-task planning?
+%     \item \textbf{Q3:} Can our method achieve real-world and real-time contact planning from the ego-centric image? 
+%     \item \textbf{Q4:} Interpret the process of our method?
+% \end{itemize}
+Our experimental platform is the Unitree G1 humanoid robot, equipped with a RealSense D435i camera. All quantitative analyses, including ablation studies and baseline comparisons, are conducted in a controlled simulation environment. All comparisons are conducted using a consistent set of training epochs and hyperparameters. The mean and standard deviation are then computed from ten independent trials across three different random seeds. We subsequently validate our approach with real-time experiments on a physical robot. We designed three core tasks to evaluate the model's ability to plan and execute diverse contact-rich behaviors, including \textbf{exploit contact for stability} and \textbf{avoid contact for safety}.
+
+
+\paragraph{Task}(1)~\textbf{Support the Wall}: the robot must resist external disturbances by stabilizing itself only through supportive hand contact;
+(2)~\textbf{Block the Ball}: the robot must intercept a flying object only with defensive hand contact;
+(3)~\textbf{Traverse the Arch}: the robot must pass through a low-clearance arch while avoiding unintended head contact.
+
+
+% We designed three core tasks to evaluate the model's ability to plan and execute diverse \textbf{contact-rich behaviors}. 
+% These tasks require the agent to intelligently reason about when to initiate, react to, or avoid physical contact: 1) \textbf{Support the Wall}: the robot must learn to purposefully initiate supportive contact with a wall using its hands to maintain balance against external disturbances; 2) \textbf{Block the Ball}: the robot must make dynamic, defensive contact with its hands to intercept an object flying towards its head; and 3) \textbf{Traverse the Arch}: The robot must navigate a contact-constrained environment, lowering its body to pass under an arch while actively avoiding detrimental contact with its head. All comparisons were conducted using a consistent set of training epochs and MPC parameters. The mean and standard deviation were then computed from ten independent trials across three different random seeds.
+
+\paragraph{Baselines} 
+We compare our method with these baseline methods:
+(1) \textbf{PPO}: implementation in \cite{rudin2022learning} .
+(2) \textbf{ARWM}: replace our framework with auto-regressive prediction training like~\cite{li2025offline, li2025robotic}. 
+(3) \textbf{Rew-MPC}: replace objective function Eq.~\eqref{eq: final-obj} with $\sum_{k=0}^{N-1} \gamma^k\hat{r}_k$ from PlaNet~\cite{hafner2019learning}.
+(4) \textbf{TD-MPC}: replace objective function Eq.~\eqref{eq: final-obj} with  $\sum_{k=0}^{N-1} \gamma^k\hat{r}_k + \gamma^N\hat{Q}$ from TD-MPC~\cite{hansen2022temporal}.
+
+
+\begin{table}
+\centering
+\caption{Single-Task Reward Evaluation of Our Method and Baselines: we analyze the influence of three key design choices on performance: the planning horizon $N$, the world model training methodology, and the objective function.}
+\label{tab:results}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llccc}
+\toprule
+\multicolumn{2}{l}{\textbf{METHOD}} & \textbf{Reward:Wall} $\uparrow$ & \textbf{Reward:Ball} $\uparrow$ & \textbf{Reward:Arch} $\uparrow$ \\
+\midrule
+\multicolumn{5}{c}{\textbf{HORIZON $N$}} \\
+\midrule
+ & Ours, N=1 & $0.0557 \pm 0.0047$ & $-0.0066 \pm 0.0050$ & $-0.0396 \pm 0.0121$ \\
+ & Ours, N=2 & $0.0607 \pm 0.0023$ & $0.0056 \pm 0.0003$ & $0.0154 \pm 0.0011$ \\
+ & Ours, N=3 & $0.0611 \pm 0.0025$ & $0.0059 \pm 0.0003$ & $0.0156 \pm 0.0011$ \\
+ & Ours, N=4 & $0.0614 \pm 0.0027$ & $\mathbf{0.0061} \pm 0.0003$ & $\mathbf{0.0157} \pm 0.0015$ \\
+ & Ours, N=5 & $0.0598 \pm 0.0049$ & $0.0058 \pm 0.0012$ & $0.0144 \pm 0.0062$ \\
+ & Ours, N=6 & $\mathbf{0.0617} \pm 0.0031$ & $0.0053 \pm 0.0020$ & $0.0115 \pm 0.0099$ \\
+\midrule
+\multicolumn{5}{c}{\textbf{WORLD MODEL}} \\
+\midrule
+ & ARWM & $0.0609 \pm 0.0047$ & $0.0039 \pm 0.0033$ & $-0.0018 \pm 0.0183$ \\
+\midrule
+\multicolumn{5}{c}{\textbf{OBJECTIVE FUNCTION}} \\
+\midrule
+ & Rew-MPC & $0.0302 \pm 0.0204$ & $-0.0033 \pm 0.0044$ & $-0.0211 \pm 0.0092$ \\
+ & TD-MPC & $\mathbf{0.0699} \pm 0.0035$ & $-0.0016 \pm 0.0047$ & $0.0145 \pm 0.0005$ \\
+\bottomrule
+\end{tabular}
+\vspace{-5mm}
+\label{fig:tab-compare}
+\end{table}
+
+
+
+
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=1.0\linewidth]{fig/exp2.png}
+%     \caption{Real-world experiments performing (a) Block a ball that has the same size in simulation dataset (b) Block a box, which is unseen in the dataset.}
+%     \label{fig:exp2}
+% \end{figure}
+
+\subsection{Advantages of the Use of Offline data}
+
+\textbf{Sample Efficiency In Single-Task: } We first compare our method against PPO implemented in \cite{rudin2022learning}, an online on-policy RL algorithm that remains the dominant training method in the legged robotics domain. A key distinction is that PPO requires continuous interaction with the environment, whereas our approach is fully offline, trained from a fixed, demonstration-free dataset without any environment interaction. We do not compare against off-policy methods such as SAC and its variants, which, although more sample-efficient than on-policy approaches, are less commonly applied to humanoid robots in real-world settings due to their limited scalability to complex, high-DoF dynamic control. 
+
+To compare single-task training performance, both our method and the PPO baseline leverage an identical low-level controller that tracks commands for end-effector position ($p_{ee}^{\top}$) and body height ($h_{body}$).
+
+As shown in Fig. \ref{fig:exp-data-effi}, in three contact-reward-dominant tasks, our method completes the task using only 0.5M data steps. In contrast, PPO requires a significantly larger amount of data, especially in simulations that necessitate visual rendering, where it consumes considerably more time. While PPO can quickly match our efficiency in tasks with simple visual features and a stationary robot, such as ``Block the Ball," our method achieves better performance on tasks with more complex visual representations and significant changes in the robot's viewpoint. For instance, in the ``Traverse the Arch" task, where the robot’s perspective changes dramatically between standing and squatting positions, our method substantially outperforms PPO.
+
+\textbf{Multi-Task Capability: }In addition to sampling efficiency on the single task, we qualitatively analyze the challenges of applying online RL like PPO to a multi-task setting:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Reward Engineering:} online RL requires either (1) a unified reward function across all tasks, which is difficult to design, or (2) substantial engineering effort to implement complex logic for task switching and conditional rewards.
+    \item \textbf{Catastrophic Forgetting \& Curriculum Design:} online RL is prone to catastrophic forgetting. Mitigating this requires a carefully designed task sampling curriculum, the complexity of which grows as more tasks are added.
+\end{itemize}
+Our approach, which leverages offline data, circumvents these challenges by learning directly from a mixed dataset, enabling effective and scalable multi-task training. The result of our method in the multi-task setting is shown in Sec. \ref{sec:exp-multi}.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{fig/value.png}
+    \caption{Visualization of the world model's prediction and planning process during the ``Block the Ball'' task. (a) The evolution of the Q-value map for the hand's position in the X-Z plane. As the task unfolds (from Step 30 to 80, with the ball appearing at Step 60), the model dynamically updates its value estimates, with the high-value region (yellow) indicating the optimal location to intercept the object. (b) An open-loop prediction of future observations. Given an initial image, the model first reconstructs it (Horizon 0) and then generates a sequence of future frames (Horizon 2-16) by decoding its predicted latent states, visualizing its anticipation of the ball's trajectory. It is worth noting that while our planner uses a shorter \textbf{4-step horizon}, this visualization is for demonstrating the long-horizon physical coherence of our learned model.}
+    \label{fig:value}
+    \vspace{-15pt}
+\end{figure*}
+
+
+\subsection{Analysis of Key Design Choices}
+
+To demonstrate the necessity of our design, as shown in the Table \ref{fig:tab-compare}, we found that greedily maximizing the value (i.e., the horizon-1 case) is infeasible. This approach causes the robot to be myopic, favoring the maintenance of its default position and ignoring future contacts. We observe that longer horizons (e.g., $N{=}6$) degrade performance, likely because bias dominates from longer-term prediction  (see Sec.~\ref{sec: mpc}), whereas $N{=}4$ strikes a bias–variance sweet spot.
+
+We also find that incorporating autoregressive prediction in our method (the ARWM baseline in Table~\ref{fig:tab-compare}) is not necessary and can even be detrimental to value estimation in offline RL, as it overemphasizes precise prediction, which leads to value function overfitting. 
+
+As shown in the Table \ref{fig:tab-compare}, Rew-MPC, which uses reward as the objective function, yielded suboptimal results due to partial observability, noise, action lag, and sparse contact, which make rewards difficult to predict. And TD-MPC, which uses TD-target to evaluate trajectories, also costs unstable results. We attribute this to TD-error methods converging to deceptive solutions, where low TD error might mask highly inaccurate value estimates. As argued in~\cite{fujimoto2022should}, this phenomenon is caused by bias cancellation and the existence of infinitely many suboptimal solutions that satisfy the Bellman equation on an incomplete offline dataset.
+
+
+
+
+\subsection{Multi-Task Planning with Unified World Model}
+\label{sec:exp-multi}
+
+To evaluate the multi-task capability of our model, we trained a single model on a combined dataset from all tasks and compared it to the specialized single-task models from Table~I. As shown in Fig.~\ref{fig:multi}, the multi-task model achieves improved performance on two of the three tasks, with a minor drop in the ``Block the Ball" task, which we attribute to its smaller reward scale. 
+
+To understand how this is achieved, we visualized the latent spaces using t-SNE. The visualizations reveal that our model learns to form distinct clusters for each task. The latent state $h_t$ shows significant temporal evolution, confirming that the model learns to encode the unique latent dynamics for each task from the mixed data.
+
+
+
+\subsection{Model Interpretation and Visualization on Prediction}
+
+We provide visualizations in Fig.\ref{fig:value} that offer insight into the internal decision-making process of our framework. Specifically, we analyze this process on two levels: first, whether our model has learned a genuine understanding of the environment's dynamics, and second, how it leverages this understanding for its decision-making process.
+
+\textbf{Long-Horizon Prediction:} To verify the model's ability to make long-horizon predictions, we visualize its open-loop rollouts. As illustrated in Fig.~7(b), given a single initial observation, the model first reconstructs it (Horizon 0) and then generates a sequence of expected future observations (Horizon 2-16) by decoding its predicted latent states. This predicted sequence clearly visualizes the model's anticipation of the ball's trajectory from left to right. This demonstrates that the model has learned a coherent and physically plausible model of the world, even without auto-regressive training and constrained solely by the joint-embedding loss. The blurriness in the generated frames is reasonable, as our highly compressed 32-dimensional latent space forces the model to extract only the most salient physical information
+
+
+
+\textbf{Contact-Directed Planning:} Figure~7(a) visualizes how the model leverages its predictions for planning by showing the evolution of the objective function value in Eq.~\eqref{eq:obj} for the hand's target position. Early in the task (e.g., Step 30), the value map consistently encourages the hand to stay near a natural, energy-efficient default position. However, as the ball approaches and the plan solidifies (e.g., Step 60-70), a high-value region (yellow) emerges and sharpens, decisively guiding the robot's hand toward the optimal contact point. This dynamic evolution of the value map showcases the model's contact-directed reasoning, effectively forming an interpretable plan to achieve its objective.
+
+
+
+
+\subsection{Real-World Validation}
+We deployed our method for real-time experiments on Unitree G1 with 25 Hz real-time planning and evaluated a batch with 1024 action trajectories with a planning horizon of 4 steps at each timestep. The desired base velocity $v$ was controlled by a human operator.
+
+Our real-world deployments, shown in Fig.~\ref{fig:exp_all}, included both single-task and multi-task models, both of which proved capable of completing their assigned tasks. The policy also demonstrated the ability to generalize to out-of-distribution (OOD) scenarios, such as blocking a previously unseen box. These experiments validate that our method can achieve agile and robust vision-based control. Crucially, the learned policy exhibits reactive, context-dependent behavior rather than overfitting to a single action pattern. For instance, in the 'Support the Wall' task, the robot only braces its hands against the wall when actively disturbed and returns to a neutral stance once balance is recovered. Please check our supplementary video for more details. 
+
+% \subsection{Performance comparison in each task}
+% % fig1: data efficient compare with ppo
+% % table2: compare with baselines and ablation on horizon
+
+% For \textbf{Q1}, we compare our method against PPO, an online on-policy RL algorithm that remains the dominant training method in the legged robotics domain. A key distinction is that PPO requires continuous interaction with the environment, whereas our approach is fully offline, trained from a fixed, demonstration-free dataset without any environment interaction. We do not compare against online off-policy methods such as SAC and its variants, which, although more sample-efficient than on-policy approaches, are less commonly applied to humanoid robots in real-world settings due to their limited scalability to complex, high-DoF dynamic control. 
+
+% As shown in Fig. \ref{fig:exp-data-effi}, in three contact-reward-dominant tasks, our method successfully completes the task using only 0.5M data steps. In contrast, PPO requires a significantly larger amount of data, especially in simulations that necessitate visual rendering, where it consumes considerably more time. While PPO can quickly match our efficiency in tasks with simple visual features and a stationary robot, such as ``Block the Ball," our method achieves better performance on tasks with more complex visual representations and significant changes in the robot's viewpoint. For instance, in the ``Arch" task, where the robot’s perspective changes dramatically between standing and squatting positions, our method substantially outperforms PPO.
+
+
+
+% \subsection{One world model achieves multi-task planning}
+
+% To evaluate the multi-task capability of our model (Q2), we trained a single agent on a combined dataset from all tasks and compared it to the specialized single-task models from Table~I. As shown in Fig.~6, the multi-task model achieves improved performance on two of the three tasks, with only a minor drop in the ``Block the Ball" task, which we attribute to its smaller reward scale. To understand how this is achieved, we visualized the latent spaces using t-SNE. The visualizations reveal that our model learns to form distinct clusters for each task. The deterministic state $h_t$ shows significant temporal evolution, confirming that the model learns to encode the unique latent dynamics for each task from the mixed data.
+
+% We qualitatively analyze the challenges of applying online RL like PPO in robotics multi-task setting:
+% \begin{itemize}
+%     \item \textbf{Reward Engineering:} PPO requires either (1) a unified reward function that is meaningful across all tasks, which is difficult to design, or (2) substantial engineering effort to implement complex logic for task switching and conditional rewards.
+%     \item \textbf{Catastrophic Forgetting \& Curriculum Design:} PPO is prone to catastrophic forgetting. Mitigating this requires a carefully designed task sampling curriculum, the complexity of which grows prohibitively as more tasks are added.
+% \end{itemize}
+% Our approach, which leverages offline data, circumvents these challenges by learning directly from a mixed dataset, enabling effective and scalable multi-task training.
+
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=0.96\linewidth]{fig/fig_multi.pdf}
+%     \caption{Multi-task performance and latent space visualization. (a) A single model trained jointly on all tasks achieves comparable normalized performance to specialized single-task models. (b-c) The t-SNE visualizations reveal a clear separation of tasks in the latent spaces. As envisioned by our design, the $h_t$ primarily represents dynamics, showing significant evolution over time, while the $z_t$ provides a more compressed representation of the current environmental observation. }
+%     \label{fig:placeholder}
+% \end{figure*}
+
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=1\linewidth]{fig/value.png}
+%     \caption{Visualization of the world model's prediction and planning process during the 'Block the Ball' task. (a) The evolution of the Q-value map for the hand's position in the X-Z plane. As the task unfolds (from Step 30 to 80, where the ball appears at Step 60), the model dynamically updates its value estimates, with the high-value region (yellow) indicating the optimal location to intercept the object. (b) An open-loop prediction of future observations. Given an initial image, the model first reconstructs it (Horizon 0) and then generates a sequence of "imagined" future frames (Horizon 2-16) by decoding its predicted latent states, visualizing its anticipation of the ball's trajectory.}
+%     \label{fig:value}
+% \end{figure*}
+
+% \subsection{Real-world contact planning}
+
+% To answer Q3, We deployed our method for real-time experiments on Unitree G1 with 25 Hz real-time planning and evaluated a batch with 1024 trajectories per time.
+
+% As shown in Fig. \ref{fig:exp_all}, we deployed our single-task models in the real world, where they successfully completed their respective tasks. The policy also demonstrated the ability to generalize to out-of-distribution (OOD) scenarios, such as blocking a previously unseen box. These experiments validate that our method can achieve agile and robust vision-based control. Since we cannot rigorously quantify the force used to push the robot or the velocity of the ball, we do not present a quantitative analysis here. However, we encourage readers to view our supplementary video, which includes multiple consecutive trials for each task.
+
+
+
+% success rate 
+% image
+
+% \subsection{Interpret the process of our method}
+% % q value map
+% % predicted image
+
+% To answer Q4, we provide visualizations in Fig.~7 that offer insight into the internal decision-making process of our framework. Specifically, we analyze this process on two levels: first, whether our model has learned a genuine understanding of the environment's dynamics, and second, how it leverages this understanding for its decision-making process.
+
+% \textbf{Prediction through Imagination:} To verify the model's ability to make long-horizon predictions, we visualize its open-loop rollouts. As illustrated in Fig.~7(b), given a single initial observation, the model first reconstructs it (Horizon 0) and then generates a sequence of expected future observations (Horizon 2-16) by decoding its predicted latent states. This imagined sequence clearly visualizes the model's anticipation of the ball's trajectory from left to right. This demonstrates that the model has learned a coherent and physically plausible model of the world, even without auto-regressive training and constrained solely by the joint-embedding loss. The blurriness in the generated frames is reasonable, as our highly compressed 32-dimensional latent space forces the model to extract only the most salient physical information, akin to an abstract mental model, rather than focusing on pixel-perfect reconstruction.
+
+% \textbf{Contact-Directed Planning:} Figure~7(a) visualizes how the model leverages its predictions for planning by showing the evolution of the objective function value $\sum_{t=0}^{N-1} \hat{Q}(s_t, a_t)$ for the hand's target position. Early in the task (e.g., Step 30), the value map consistently encourages the hand to stay near a natural, energy-efficient default position. However, as the ball approaches and the plan solidifies (e.g., Step 60-70), a high-value region (yellow) emerges and sharpens, decisively guiding the robot's hand toward the optimal contact point. This dynamic evolution of the value map showcases the model's contact-directed reasoning, effectively forming an interpretable plan to achieve its objective.

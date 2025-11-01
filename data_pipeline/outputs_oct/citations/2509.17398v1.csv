@@ -1,0 +1,271 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,mcmahan2017communication,\cite{mcmahan2017communication},"Communication-Efficient Learning of Deep Networks from Decentralized
+  Data",http://arxiv.org/abs/1602.05629v4,"Modern mobile devices have access to a wealth of data suitable for learning
+models, which in turn can greatly improve the user experience on the device.
+For example, language models can improve speech recognition and text entry, and
+image models can automatically select good photos. However, this rich data is
+often privacy sensitive, large in quantity, or both, which may preclude logging
+to the data center and training there using conventional approaches. We
+advocate an alternative that leaves the training data distributed on the mobile
+devices, and learns a shared model by aggregating locally-computed updates. We
+term this decentralized approach Federated Learning.
+  We present a practical method for the federated learning of deep networks
+based on iterative model averaging, and conduct an extensive empirical
+evaluation, considering five different model architectures and four datasets.
+These experiments demonstrate the approach is robust to the unbalanced and
+non-IID data distributions that are a defining characteristic of this setting.
+Communication costs are the principal constraint, and we show a reduction in
+required communication rounds by 10-100x as compared to synchronized stochastic
+gradient descent.","McMahan, Brendan and Moore, Eider and Ramage, Daniel and Hampson, Seth and y Arcas, Blaise Aguera",Apr. 2017,,,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,10.5555/3546258.3546471,\cite{10.5555/3546258.3546471},"Cooperative SGD: A unified Framework for the Design and Analysis of
+  Communication-Efficient SGD Algorithms",http://arxiv.org/abs/1808.07576v3,"Communication-efficient SGD algorithms, which allow nodes to perform local
+updates and periodically synchronize local models, are highly effective in
+improving the speed and scalability of distributed SGD. However, a rigorous
+convergence analysis and comparative study of different communication-reduction
+strategies remains a largely open problem. This paper presents a unified
+framework called Cooperative SGD that subsumes existing communication-efficient
+SGD algorithms such as periodic-averaging, elastic-averaging and decentralized
+SGD. By analyzing Cooperative SGD, we provide novel convergence guarantees for
+existing algorithms. Moreover, this framework enables us to design new
+communication-efficient SGD algorithms that strike the best balance between
+reducing communication overhead and achieving fast error convergence with low
+error floor.","Wang, Jianyu and Joshi, Gauri",Jan. 2021,,,,Journal of Machine Learning Research
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,NEURIPS2018_3ec27c2c,\cite{NEURIPS2018_3ec27c2c},"Graph Oracle Models, Lower Bounds, and Gaps for Parallel Stochastic
+  Optimization",http://arxiv.org/abs/1805.10222v3,"We suggest a general oracle-based framework that captures different parallel
+stochastic optimization settings described by a dependency graph, and derive
+generic lower bounds in terms of this graph. We then use the framework and
+derive lower bounds for several specific parallel optimization settings,
+including delayed updates and parallel processing with intermittent
+communication. We highlight gaps between lower and upper bounds on the oracle
+complexity, and cases where the ""natural"" algorithms are not known to be
+optimal.","Woodworth, Blake E and Wang, Jialei and Smith, Adam and McMahan, Brendan and Srebro, Nati",Dec. 2018,,,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,10292582,\cite{10292582},"Federated Learning under Heterogeneous and Correlated Client
+  Availability",http://arxiv.org/abs/2301.04632v1,"The enormous amount of data produced by mobile and IoT devices has motivated
+the development of federated learning (FL), a framework allowing such devices
+(or clients) to collaboratively train machine learning models without sharing
+their local data. FL algorithms (like FedAvg) iteratively aggregate model
+updates computed by clients on their own datasets. Clients may exhibit
+different levels of participation, often correlated over time and with other
+clients. This paper presents the first convergence analysis for a FedAvg-like
+FL algorithm under heterogeneous and correlated client availability. Our
+analysis highlights how correlation adversely affects the algorithm's
+convergence rate and how the aggregation strategy can alleviate this effect at
+the cost of steering training toward a biased model. Guided by the theoretical
+analysis, we propose CA-Fed, a new FL algorithm that tries to balance the
+conflicting goals of maximizing convergence speed and minimizing model bias. To
+this purpose, CA-Fed dynamically adapts the weight given to each client and may
+ignore clients with low availability and large correlation. Our experimental
+results show that CA-Fed achieves higher time-average accuracy and a lower
+standard deviation than state-of-the-art AdaFed and F3AST, both on synthetic
+and real datasets.","Rodio, Angelo and Faticanti, Francescomaria and Marfoq, Othmane and Neglia, Giovanni and Leonardi, Emilio",Apr. 2024,,,,IEEE/ACM Transactions on Networking
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,9261995,\cite{9261995},Federated Learning Over Wireless Networks: Convergence Analysis and Resource Allocation,,,"Dinh, Canh T. and Tran, Nguyen H. and Nguyen, Minh N. H. and Hong, Choong Seon and Bao, Wei and Zomaya, Albert Y. and Gramoli, Vincent",Feb. 2021,,,,IEEE/ACM Transactions on Networking
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,cho2020clientselectionfederatedlearning,\cite{cho2020clientselectionfederatedlearning},"Client Selection in Federated Learning: Convergence Analysis and
+  Power-of-Choice Selection Strategies",http://arxiv.org/abs/2010.01243v1,"Federated learning is a distributed optimization paradigm that enables a
+large number of resource-limited client nodes to cooperatively train a model
+without data sharing. Several works have analyzed the convergence of federated
+learning by accounting of data heterogeneity, communication and computation
+limitations, and partial client participation. However, they assume unbiased
+client participation, where clients are selected at random or in proportion of
+their data sizes. In this paper, we present the first convergence analysis of
+federated optimization for biased client selection strategies, and quantify how
+the selection bias affects convergence speed. We reveal that biasing client
+selection towards clients with higher local loss achieves faster error
+convergence. Using this insight, we propose Power-of-Choice, a communication-
+and computation-efficient client selection framework that can flexibly span the
+trade-off between convergence speed and solution bias. Our experiments
+demonstrate that Power-of-Choice strategies converge up to 3 $\times$ faster
+and give $10$% higher test accuracy than the baseline random selection.",Yae Jee Cho and Jianyu Wang and Gauri Joshi,Oct. 2020,,,,arXiv preprint arXiv:2010.01243
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,chen2022optimalclientsamplingfederated,\cite{chen2022optimalclientsamplingfederated},Optimal Client Sampling for Federated Learning,http://arxiv.org/abs/2010.13723v3,"It is well understood that client-master communication can be a primary
+bottleneck in Federated Learning. In this work, we address this issue with a
+novel client subsampling scheme, where we restrict the number of clients
+allowed to communicate their updates back to the master node. In each
+communication round, all participating clients compute their updates, but only
+the ones with ""important"" updates communicate back to the master. We show that
+importance can be measured using only the norm of the update and give a formula
+for optimal client participation. This formula minimizes the distance between
+the full update, where all clients participate, and our limited update, where
+the number of participating clients is restricted. In addition, we provide a
+simple algorithm that approximates the optimal formula for client
+participation, which only requires secure aggregation and thus does not
+compromise client privacy. We show both theoretically and empirically that for
+Distributed SGD (DSGD) and Federated Averaging (FedAvg), the performance of our
+approach can be close to full participation and superior to the baseline where
+participating clients are sampled uniformly. Moreover, our approach is
+orthogonal to and compatible with existing methods for reducing communication
+overhead, such as local methods and communication compression methods.",Wenlin Chen and Samuel Horvath and Peter Richtarik,Oct. 2022,,,,arXiv preprint arXiv:2010.13723
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,9904868,\cite{9904868},Federated Learning under Importance Sampling,http://arxiv.org/abs/2012.07383v1,"Federated learning encapsulates distributed learning strategies that are
+managed by a central unit. Since it relies on using a selected number of agents
+at each iteration, and since each agent, in turn, taps into its local data, it
+is only natural to study optimal sampling policies for selecting agents and
+their data in federated learning implementations. Usually, only uniform
+sampling schemes are used. However, in this work, we examine the effect of
+importance sampling and devise schemes for sampling agents and data
+non-uniformly guided by a performance measure. We find that in schemes
+involving sampling without replacement, the performance of the resulting
+architecture is controlled by two factors related to data variability at each
+agent, and model variability across agents. We illustrate the theoretical
+findings with experiments on simulated and real data and show the improvement
+in performance that results from the proposed strategies.","Rizk, Elsa and Vlaski, Stefan and Sayed, Ali H.",Sep. 2022,,,,IEEE Transactions on Signal Processing
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,pmlr-v151-jee-cho22a,\cite{pmlr-v151-jee-cho22a},Towards Understanding Biased Client Selection in Federated Learning,,,"Jee Cho, Yae and Wang, Jianyu and Joshi, Gauri",Mar. 2022,,,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,fraboni2021clustered,\cite{fraboni2021clustered},"Clustered Sampling: Low-Variance and Improved Representativity for
+  Clients Selection in Federated Learning",http://arxiv.org/abs/2105.05883v2,"This work addresses the problem of optimizing communications between server
+and clients in federated learning (FL). Current sampling approaches in FL are
+either biased, or non optimal in terms of server-clients communications and
+training stability. To overcome this issue, we introduce \textit{clustered
+sampling} for clients selection. We prove that clustered sampling leads to
+better clients representatitivity and to reduced variance of the clients
+stochastic aggregation weights in FL. Compatibly with our theory, we provide
+two different clustering approaches enabling clients aggregation based on 1)
+sample size, and 2) models similarity. Through a series of experiments in
+non-iid and unbalanced scenarios, we demonstrate that model aggregation through
+clustered sampling consistently leads to better training convergence and
+variability when compared to standard sampling approaches. Our approach does
+not require any additional operation on the clients side, and can be seamlessly
+integrated in standard FL implementations. Finally, clustered sampling is
+compatible with existing methods and technologies for privacy enhancement, and
+for communication reduction through model compression.","Fraboni, Yann and Vidal, Richard and Kameni, Laetitia and Lorenzi, Marco",Jul. 2021,,,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,NEURIPS2024_7886b9ba,\cite{NEURIPS2024_7886b9ba},"Heterogeneity-Guided Client Sampling: Towards Fast and Efficient Non-IID
+  Federated Learning",http://arxiv.org/abs/2310.00198v2,"Statistical heterogeneity of data present at client devices in a federated
+learning (FL) system renders the training of a global model in such systems
+difficult. Particularly challenging are the settings where due to communication
+resource constraints only a small fraction of clients can participate in any
+given round of FL. Recent approaches to training a global model in FL systems
+with non-IID data have focused on developing client selection methods that aim
+to sample clients with more informative updates of the model. However, existing
+client selection techniques either introduce significant computation overhead
+or perform well only in the scenarios where clients have data with similar
+heterogeneity profiles. In this paper, we propose HiCS-FL (Federated Learning
+via Hierarchical Clustered Sampling), a novel client selection method in which
+the server estimates statistical heterogeneity of a client's data using the
+client's update of the network's output layer and relies on this information to
+cluster and sample the clients. We analyze the ability of the proposed
+techniques to compare heterogeneity of different datasets, and characterize
+convergence of the training process that deploys the introduced client
+selection method. Extensive experimental results demonstrate that in non-IID
+settings HiCS-FL achieves faster convergence than state-of-the-art FL client
+selection schemes. Notably, HiCS-FL drastically reduces computation cost
+compared to existing selection schemes and is adaptable to different
+heterogeneity scenarios.","Chen, Huancheng and Vikalo, Haris",Dec. 2024,,,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,10.1109/INFOCOM48880.2022.9796935,\cite{10.1109/INFOCOM48880.2022.9796935},"Tackling System and Statistical Heterogeneity for Federated Learning
+  with Adaptive Client Sampling",http://arxiv.org/abs/2112.11256v1,"Federated learning (FL) algorithms usually sample a fraction of clients in
+each round (partial participation) when the number of participants is large and
+the server's communication bandwidth is limited. Recent works on the
+convergence analysis of FL have focused on unbiased client sampling, e.g.,
+sampling uniformly at random, which suffers from slow wall-clock time for
+convergence due to high degrees of system heterogeneity and statistical
+heterogeneity. This paper aims to design an adaptive client sampling algorithm
+that tackles both system and statistical heterogeneity to minimize the
+wall-clock convergence time. We obtain a new tractable convergence bound for FL
+algorithms with arbitrary client sampling probabilities. Based on the bound, we
+analytically establish the relationship between the total learning time and
+sampling probabilities, which results in a non-convex optimization problem for
+training time minimization. We design an efficient algorithm for learning the
+unknown parameters in the convergence bound and develop a low-complexity
+algorithm to approximately solve the non-convex problem. Experimental results
+from both hardware prototype and simulation demonstrate that our proposed
+sampling scheme significantly reduces the convergence time compared to several
+baseline sampling schemes. Notably, our scheme in hardware prototype spends 73%
+less time than the uniform sampling baseline for reaching the same target loss.","Luo, Bing and Xiao, Wenli and Wang, Shiqiang and Huang, Jianwei and Tassiulas, Leandros",May 2022,,,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,9810502,\cite{9810502},Eiffel: Efficient and Fair Scheduling in Adaptive Federated Learning,,,"Sultana, Abeda and Haque, Md. Mainul and Chen, Li and Xu, Fei and Yuan, Xu",Jun. 2022,,,,IEEE Transactions on Parallel and Distributed Systems
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,ZW2024ultra-LoLa,\cite{ZW2024ultra-LoLa},Ultra-Low-Latency Edge Inference for Distributed Sensing,http://arxiv.org/abs/2407.13360v2,"There is a broad consensus that artificial intelligence (AI) will be a
+defining component of the sixth-generation (6G) networks. As a specific
+instance, AI-empowered sensing will gather and process environmental perception
+data at the network edge, giving rise to integrated sensing and edge AI (ISEA).
+Many applications, such as autonomous driving and industrial manufacturing, are
+latency-sensitive and require end-to-end (E2E) performance guarantees under
+stringent deadlines. However, the 5G-style ultra-reliable and low-latency
+communication (URLLC) techniques designed with communication reliability and
+agnostic to the data may fall short in achieving the optimal E2E performance of
+perceptive wireless systems. In this work, we introduce an ultra-low-latency
+(ultra-LoLa) inference framework for perceptive networks that facilitates the
+analysis of the E2E sensing accuracy in distributed sensing by jointly
+considering communication reliability and inference accuracy. By characterizing
+the tradeoff between packet length and the number of sensing observations, we
+derive an efficient optimization procedure that closely approximates the
+optimal tradeoff. We validate the accuracy of the proposed method through
+experimental results, and show that the proposed ultra-Lola inference framework
+outperforms conventional reliability-oriented protocols with respect to sensing
+performance under a latency constraint.","Wang, Zhanwei and Kalør, Anders E. and Zhou, You and Popovski, Petar and Huang, Kaibin",2024,,,10.1109/TWC.2025.3593802,IEEE Trans. Wireless Commun.
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,zw2025AIoutage,\cite{zw2025AIoutage},Revisiting Outage for Edge Inference Systems,http://arxiv.org/abs/2504.03686v2,"One of the key missions of sixth-generation (6G) mobile networks is to deploy
+large-scale artificial intelligence (AI) models at the network edge to provide
+remote-inference services for edge devices. The resultant platform, known as
+edge inference, will support a wide range of Internet-of-Things applications,
+such as autonomous driving, industrial automation, and augmented reality. Given
+the mission-critical and time-sensitive nature of these tasks, it is essential
+to design edge inference systems that are both reliable and capable of meeting
+stringent end-to-end (E2E) latency constraints. Existing studies, which
+primarily focus on communication reliability as characterized by channel outage
+probability, may fail to guarantee E2E performance, specifically in terms of
+E2E inference accuracy and latency. To address this limitation, we propose a
+theoretical framework that introduces and mathematically characterizes the
+inference outage (InfOut) probability, which quantifies the likelihood that the
+E2E inference accuracy falls below a target threshold. Under an E2E latency
+constraint, this framework establishes a fundamental tradeoff between
+communication overhead (i.e., uploading more sensor observations) and inference
+reliability as quantified by the InfOut probability. To find a tractable way to
+optimize this tradeoff, we derive accurate surrogate functions for InfOut
+probability by applying a Gaussian approximation to the distribution of the
+received discriminant gain. Experimental results demonstrate the superiority of
+the proposed design over conventional communication-centric approaches in terms
+of E2E inference reliability.",Zhanwei Wang and Qunsong Zeng and Haotian Zheng and Kaibin Huang,2025,,https://arxiv.org/abs/2504.03686,,
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,lin2024adaptsfl,\cite{lin2024adaptsfl},"AdaptSFL: Adaptive Split Federated Learning in Resource-constrained Edge
+  Networks",http://arxiv.org/abs/2403.13101v4,"The increasing complexity of deep neural networks poses significant barriers
+to democratizing them to resource-limited edge devices. To address this
+challenge, split federated learning (SFL) has emerged as a promising solution
+by of floading the primary training workload to a server via model partitioning
+while enabling parallel training among edge devices. However, although system
+optimization substantially influences the performance of SFL under
+resource-constrained systems, the problem remains largely uncharted. In this
+paper, we provide a convergence analysis of SFL which quantifies the impact of
+model splitting (MS) and client-side model aggregation (MA) on the learning
+performance, serving as a theoretical foundation. Then, we propose AdaptSFL, a
+novel resource-adaptive SFL framework, to expedite SFL under
+resource-constrained edge computing systems. Specifically, AdaptSFL adaptively
+controls client-side MA and MS to balance communication-computing latency and
+training convergence. Extensive simulations across various datasets validate
+that our proposed AdaptSFL framework takes considerably less time to achieve a
+target accuracy than benchmarks, demonstrating the effectiveness of the
+proposed strategies.","Lin, Zheng and Qu, Guanqiao and Wei, Wei and Chen, Xianhao and Leung, Kin K",2025,early access,,,IEEE Transactions on Networking
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,10980018,\cite{10980018},"Hierarchical Split Federated Learning: Convergence Analysis and System
+  Optimization",http://arxiv.org/abs/2412.07197v2,"As AI models expand in size, it has become increasingly challenging to deploy
+federated learning (FL) on resource-constrained edge devices. To tackle this
+issue, split federated learning (SFL) has emerged as an FL framework with
+reduced workload on edge devices via model splitting; it has received extensive
+attention from the research community in recent years. Nevertheless, most prior
+works on SFL focus only on a two-tier architecture without harnessing
+multi-tier cloudedge computing resources. In this paper, we intend to analyze
+and optimize the learning performance of SFL under multi-tier systems.
+Specifically, we propose the hierarchical SFL (HSFL) framework and derive its
+convergence bound. Based on the theoretical results, we formulate a joint
+optimization problem for model splitting (MS) and model aggregation (MA). To
+solve this rather hard problem, we then decompose it into MS and MA subproblems
+that can be solved via an iterative descending algorithm. Simulation results
+demonstrate that the tailored algorithm can effectively optimize MS and MA for
+SFL within virtually any multi-tier system.","Lin, Zheng and Wei, Wei and Chen, Zhe and Lam, Chan-Tong and Chen, Xianhao and Gao, Yue and Luo, Jun",Oct. 2025,,,,IEEE Transactions on Mobile Computing
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,10304624,\cite{10304624},"Accelerating Split Federated Learning over Wireless Communication
+  Networks",http://arxiv.org/abs/2310.15584v1,"The development of artificial intelligence (AI) provides opportunities for
+the promotion of deep neural network (DNN)-based applications. However, the
+large amount of parameters and computational complexity of DNN makes it
+difficult to deploy it on edge devices which are resource-constrained. An
+efficient method to address this challenge is model partition/splitting, in
+which DNN is divided into two parts which are deployed on device and server
+respectively for co-training or co-inference. In this paper, we consider a
+split federated learning (SFL) framework that combines the parallel model
+training mechanism of federated learning (FL) and the model splitting structure
+of split learning (SL). We consider a practical scenario of heterogeneous
+devices with individual split points of DNN. We formulate a joint problem of
+split point selection and bandwidth allocation to minimize the system latency.
+By using alternating optimization, we decompose the problem into two
+sub-problems and solve them optimally. Experiment results demonstrate the
+superiority of our work in latency reduction and accuracy improvement.","Xu, Ce and Li, Jinxuan and Liu, Yuan and Ling, Yushi and Wen, Miaowen",Jun. 2024,,,,IEEE Transactions on Wireless Communications
+Optimizing Split Federated Learning with Unstable Client Participation,http://arxiv.org/abs/2509.17398v1,shiranthika2023splitfedresiliencepacketloss,\cite{shiranthika2023splitfedresiliencepacketloss},"SplitFed resilience to packet loss: Where to split, that is the question",http://arxiv.org/abs/2307.13851v1,"Decentralized machine learning has broadened its scope recently with the
+invention of Federated Learning (FL), Split Learning (SL), and their hybrids
+like Split Federated Learning (SplitFed or SFL). The goal of SFL is to reduce
+the computational power required by each client in FL and parallelize SL while
+maintaining privacy. This paper investigates the robustness of SFL against
+packet loss on communication links. The performance of various SFL aggregation
+strategies is examined by splitting the model at two points -- shallow split
+and deep split -- and testing whether the split point makes a statistically
+significant difference to the accuracy of the final model. Experiments are
+carried out on a segmentation model for human embryo images and indicate the
+statistically significant advantage of a deeper split point.",Chamani Shiranthika and Zahra Hafezi Kafshgari and Parvaneh Saeedi and Ivan V. Bajić,Dec. 2023,,,,

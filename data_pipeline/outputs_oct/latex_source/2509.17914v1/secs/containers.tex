@@ -1,0 +1,94 @@
+
+To fundamentally change the way we distribute HPC software, we first need to understand how \emph{specialization points} affect the build and installation process (Section~\ref{sec:containers-build-specialization}).
+%
+Since discovering specialization points is complex due to the lack of standardization in build systems, we apply semi-automatic detection with the help of artificial intelligence (Section~\ref{sec:containers-specialization-discovery}).
+%
+By detecting specialization points, we can design performance-portable containers that delay the impact of specialization until we know the final specification (Section~\ref{sec:ir-container}).
+
+\input{secs/gromacs-example-table-short}
+
+\subsection{HPC Specialization}
+\label{sec:containers-build-specialization}
+
+The build process of an application can be split into three major parts:
+\textbf{configuration} that resolves dependencies and decides what should be built, and how;
+\textbf{compilation and linking}, responsible for turning source files into libraries and executables;
+and \textbf{installation}, which places headers, binaries, and project resources in a selected destination.
+%
+To create a transparent and seamless experience for HPC users, any solution must support all three steps.
+
+During \textbf{configuration}, source modules and files are enabled or disabled depending on the selected specialization.
+%
+Compiler flags are adjusted, and the build system adds compile-time definitions embedded into the application.
+%
+Paths to dependencies are resolved, and additional packages can be fetched into the build directory.
+
+Once source files are \textbf{compiled}, headers of chosen libraries will be introduced, preprocessing directives are applied, and compile-time definitions like C++ templates are resolved.
+%
+After that stage, we can no longer switch between libraries that are not ABI-compatible since the application has been introduced to types with different representations and functions with incompatible signatures.
+%
+Furthermore, preprocessing directives can potentially exclude certain code paths and already decide which kernels will be generated, as shown in the example of matrix transpose in BLAS libraries (Figure~\ref{fig:transpose-implementations}).
+%
+Since this operation is not standardized, different implementations are needed, but they can only be enabled if the selected library is present in the system.
+
+Once the source files are translated into the intermediate representation and optimized, the ISA is chosen, processor-specific decisions are made, and the final code is emitted.
+%
+At this point, the code is no longer portable between different systems.
+%
+Furthermore, it is no longer feasible to change vectorization settings or apply optimizations
+valid only on specific types of CPUs.
+
+At the \textbf{linking} stage, applications are relinked to a specific implementation of a dependency.
+%
+This decision can be changed later, as long as the library is linked dynamically and its implementations are ABI compatible.
+%
+For example, an application compiled against MPICH can be relinked to use Cray's specialized MPICH implementation.
+%
+While future MPI implementations will be ABI compatible~\cite{10.1145/3615318.3615319}, this method is currently limited since MPI types can have different implementations.
+%
+After that point, the only possible performance adjustments are runtime options, such as switching network providers in applications built on top of libfabric.
+
+Finally, the application is \textbf{installed}, which includes copying the contents of the package.
+%
+Specialization affects the generation of project-specific headers and the installation of libraries, since the inclusion of specific dependencies is affected by user decisions.
+
+
+\subsection{Specialization Discovery}
+\label{sec:containers-specialization-discovery}
+%
+To generate the list of specialization points an application supports, we need to parse build scripts and understand what dependencies and optimizations can be selected during configuration.
+%
+Unfortunately, this process is not standardized in common HPC programming languages, like C++ and Fortran.
+%
+In addition to supporting different build systems such as autotools, handwritten Makefiles, CMake, Bazel, or custom scripts, there is often no single way of determining dependencies within one ecosystem.
+%
+For example, third-party libraries can be located in CMake using standard CMake calls such as \texttt{find\_package}, with custom find modules for libraries not supported by CMake, by using \texttt{pkg-config}, or with a manual search for specific headers and libraries.
+%
+Moreover, large projects often define custom routines for locating packages.
+
+Analyzing configuration files to identify specialization points is difficult to automate due to the many diverse and unique patterns.
+%
+At the same time, it is a task that humans can handle easily. 
+%
+Thus, we employ a Large Language Model (LLM) to help users identify specialization points by processing the project configuration files with a structured prompt.
+%
+We apply \emph{in-context learning} by including in the prompt examples of specialization options, build flags, and CMake commands, helping the LLM to extract specialization options accurately and capture all relevant choices in the build file.
+%
+The model outputs a JSON file containing the detected specialization points. 
+%
+To enforce consistency and facilitate automated processing, we supply a predefined JSON schema, guiding the model to adhere to a structured format and minimizing anomalies. % in its responses.
+%
+As the accuracy and correctness of LLM systems vary heavily, the results of LLM extraction still serve mainly as a guideline for the developer to prepare the final specification (Section~\ref{sec:eval-llms}).
+
+On the target system, we collect information on system features and available specialization points.
+%
+Then, we intersect these results with the specialization discovery of the application.
+%
+At this point, we exclude the non-supported configuration options and present the user with a list of options for each specialization point.
+%
+Figure~\ref{fig:specialization-points} illustrates a subset of GROMACS’s specialization points alongside the system features of our test environment.
+%
+GROMACS supports OpenCL, SYCL, HIP, and CUDA as GPU backends, whereas the system is limited to CUDA and OpenCL.
+%
+The automatic checker identifies the intersection of supported GPU backends, and allows the user to manually select the final specialization points.
+

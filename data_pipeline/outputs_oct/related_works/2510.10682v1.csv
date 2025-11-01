@@ -1,0 +1,123 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.10682v1,http://arxiv.org/abs/2510.10682v1,2025-10-12 16:10:40+00:00,Action-Dynamics Modeling and Cross-Temporal Interaction for Online Action Understanding,"Action understanding, encompassing action detection and anticipation, plays a
+crucial role in numerous practical applications. However, untrimmed videos are
+often characterized by substantial redundant information and noise. Moreover,
+in modeling action understanding, the influence of the agent's intention on the
+action is often overlooked. Motivated by these issues, we propose a novel
+framework called the State-Specific Model (SSM), designed to unify and enhance
+both action detection and anticipation tasks. In the proposed framework, the
+Critical State-Based Memory Compression module compresses frame sequences into
+critical states, reducing information redundancy. The Action Pattern Learning
+module constructs a state-transition graph with multi-dimensional edges to
+model action dynamics in complex scenarios, on the basis of which potential
+future cues can be generated to represent intention. Furthermore, our
+Cross-Temporal Interaction module models the mutual influence between
+intentions and past as well as current information through cross-temporal
+interactions, thereby refining present and future features and ultimately
+realizing simultaneous action detection and anticipation. Extensive experiments
+on multiple benchmark datasets -- including EPIC-Kitchens-100, THUMOS'14,
+TVSeries, and the introduced Parkinson's Disease Mouse Behaviour (PDMB) dataset
+-- demonstrate the superior performance of our proposed framework compared to
+other state-of-the-art approaches. These results highlight the importance of
+action dynamics learning and cross-temporal interactions, laying a foundation
+for future action understanding research.","\subsection{Online Action Detection}
+Online Action Detection (OAD) requires identifying and classifying actions instantly, without access to future frames. Contemporary OAD methods frequently center on memory modeling to capture and leverage historical context from observed frames. Early methods primarily relied on RNN or CNN based models (e.g., \cite{deo2017learning}) to capture historical context. TRN proposed by Xu et al.\cite{xu2019temporal} explicitly modeled past frames and their temporal context, while Eun et al. \cite{eun2020learning} extended GRU \cite{cho2014learning} with a discriminative embedding model to more effectively learn representations for detecting ongoing actions. Zhao et al.\cite{zhao2022progressive} further improved learning efficiency through knowledge distillation to mitigate inconsistent visual content.
+
+With the success of Transformers \cite{vaswani2017attention} in modeling temporal sequences, recent approaches have explored attention-based architectures. Wang et al.\cite{wang2021oadtr}, proposed an encoder-decoder framework, referred to as OadTR, to jointly encode historical information and predict future actions. LSTR proposed by Xu et al.\cite{xu2021long} expanded the memory horizon by introducing segmented memory to analyze historical context in depth. Yang et al. \cite{yang2022colar} adopted exemplary frames to guide attention scheme learning representation sothat the detection accuracy is improved. Chen et al. \cite{chen2022gatehub} introduced a gated history unit and a future-augmented background suppression strategy to better capture temporal cues. Despite these advances, OAD still faces the inherent limitation of observed information, which can reduce the effectiveness of modeling. On the other hand, current  popular methods exploit transformer's capacity for memory modeling, but the ever-growing length of the memory sequence limits the effectiveness of these methods. For the limitation of observed information, our proposed SSM employs cross-temporal interactions to facilitate richer temporal information learning. Moreover, by focusing on state-based action dynamics, our method alleviates the limitations brought by the ever-growing length of memory sequences.
+\subsection{Online Action Anticipation}
+Online action anticipation has received significant attention in recent years, with its primary goal being the prediction of future actions based solely on observations. Early works predominantly employed recurrent neural networks. For instance, Furnari and Farinella \cite{furnari2020rolling} utilize a Dual-LSTM structure to encode and distill input sequences, generating cyclic predictions for future frames. Their framework additionally incorporated a learnable attention module to fuse representations from RGB, optical flow, and object-centric streams, thereby capturing a wide range of visual cues. Similarly, Qi et al. \cite{qi2021self}  tackle error accumulation in recurrent models by combining a contrastive loss with an attention mechanism, iteratively refining intermediate feature embeddings. They also introduce verb and noun classification for auxiliary guidance. Subsequently, Liu and Lam \cite{liu2022hybrid} enhance the recurrent pipeline with an external memory bank and a classification loss for observed content, while employing contrastive learning to more closely align anticipated features with ground-truth sequences. 
+
+Moving beyond recurrent networks, recent work has embraced Transformer architectures for action anticipation. Girdhar and Grauman \cite{girdhar2021anticipative} developed the Anticipative Video Transformer (AVT), combining a Transformer encoder on raw video frames with a masked decoder to jointly predict intermediate and final representations. Osman et al. \cite{osman2021slowfast} took inspiration from action recognition and devised a dual-stream approach with different frame sampling rates, aiming to capture both slow and fast dynamics in videos. Meanwhile, Roy et al. \cite{roy2024interaction} focused on human-object interactions, showing that modeling object-specific cues through attention or Transformer modules can effectively reveal which items are likely to be involved in upcoming activities. Most of the previous works have tended to focus solely on the single-task setting of action anticipation, overlooking a key aspect: The outcomes of online action detection and action anticipation mutually influence each other. Consequently, they miss the potential benefit of integrating complementary features from both tasks. Such complementarity may yield richer and more robust feature representations, which have the potential to guide the model to produce more accurate detection and anticipation results. Building on this insight, Our SSM addresses this limitation by enabling joint training or inference for both tasks simultaneously.
+\vspace{-5pt}","\subsection{Online Action Detection}
+Online Action Detection (OAD) requires identifying and classifying actions instantly, without access to future frames. Contemporary OAD methods frequently center on memory modeling to capture and leverage historical context from observed frames. Early methods primarily relied on RNN or CNN based models (e.g., \cite{deo2017learning}) to capture historical context. TRN proposed by Xu et al.\cite{xu2019temporal} explicitly modeled past frames and their temporal context, while Eun et al. \cite{eun2020learning} extended GRU \cite{cho2014learning} with a discriminative embedding model to more effectively learn representations for detecting ongoing actions. Zhao et al.\cite{zhao2022progressive} further improved learning efficiency through knowledge distillation to mitigate inconsistent visual content.
+
+With the success of Transformers \cite{vaswani2017attention} in modeling temporal sequences, recent approaches have explored attention-based architectures. Wang et al.\cite{wang2021oadtr}, proposed an encoder-decoder framework, referred to as OadTR, to jointly encode historical information and predict future actions. LSTR proposed by Xu et al.\cite{xu2021long} expanded the memory horizon by introducing segmented memory to analyze historical context in depth. Yang et al. \cite{yang2022colar} adopted exemplary frames to guide attention scheme learning representation sothat the detection accuracy is improved. Chen et al. \cite{chen2022gatehub} introduced a gated history unit and a future-augmented background suppression strategy to better capture temporal cues. Despite these advances, OAD still faces the inherent limitation of observed information, which can reduce the effectiveness of modeling. On the other hand, current  popular methods exploit transformer's capacity for memory modeling, but the ever-growing length of the memory sequence limits the effectiveness of these methods. For the limitation of observed information, our proposed SSM employs cross-temporal interactions to facilitate richer temporal information learning. Moreover, by focusing on state-based action dynamics, our method alleviates the limitations brought by the ever-growing length of memory sequences.
+\subsection{Online Action Anticipation}
+Online action anticipation has received significant attention in recent years, with its primary goal being the prediction of future actions based solely on observations. Early works predominantly employed recurrent neural networks. For instance, Furnari and Farinella \cite{furnari2020rolling} utilize a Dual-LSTM structure to encode and distill input sequences, generating cyclic predictions for future frames. Their framework additionally incorporated a learnable attention module to fuse representations from RGB, optical flow, and object-centric streams, thereby capturing a wide range of visual cues. Similarly, Qi et al. \cite{qi2021self}  tackle error accumulation in recurrent models by combining a contrastive loss with an attention mechanism, iteratively refining intermediate feature embeddings. They also introduce verb and noun classification for auxiliary guidance. Subsequently, Liu and Lam \cite{liu2022hybrid} enhance the recurrent pipeline with an external memory bank and a classification loss for observed content, while employing contrastive learning to more closely align anticipated features with ground-truth sequences. 
+
+Moving beyond recurrent networks, recent work has embraced Transformer architectures for action anticipation. Girdhar and Grauman \cite{girdhar2021anticipative} developed the Anticipative Video Transformer (AVT), combining a Transformer encoder on raw video frames with a masked decoder to jointly predict intermediate and final representations. Osman et al. \cite{osman2021slowfast} took inspiration from action recognition and devised a dual-stream approach with different frame sampling rates, aiming to capture both slow and fast dynamics in videos. Meanwhile, Roy et al. \cite{roy2024interaction} focused on human-object interactions, showing that modeling object-specific cues through attention or Transformer modules can effectively reveal which items are likely to be involved in upcoming activities. Most of the previous works have tended to focus solely on the single-task setting of action anticipation, overlooking a key aspect: The outcomes of online action detection and action anticipation mutually influence each other. Consequently, they miss the potential benefit of integrating complementary features from both tasks. Such complementarity may yield richer and more robust feature representations, which have the potential to guide the model to produce more accurate detection and anticipation results. Building on this insight, Our SSM addresses this limitation by enabling joint training or inference for both tasks simultaneously.
+\vspace{-5pt}","method, Section IV reports the experimental results, and
+Section V concludes.
+II. RELATEDWORK
+A. Online Action Detection
+Online Action Detection (OAD) requires identifying and
+classifying actions instantly, without access to future frames.
+Contemporary OAD methods frequently center on memory
+modeling to capture and leverage historical context from
+observed frames. Early methods primarily relied on RNN or
+CNN based models (e.g., [16]) to capture historical context.
+TRN proposed by Xu et al. [17] explicitly modeled past frames
+and their temporal context, while Eun et al. [18] extended
+GRU [19] with a discriminative embedding model to more
+effectively learn representations for detecting ongoing actions.
+Zhao et al. [20] further improved learning efficiency through
+knowledge distillation to mitigate inconsistent visual content.
+With the success of Transformers [21] in modeling temporal
+sequences, recent approaches have explored attention-based
+architectures. Wang et al. [22], proposed an encoder-decoder
+framework, referred to as OadTR, to jointly encode historical
+information and predict future actions. LSTR proposed by
+Xu et al. [9] expanded the memory horizon by introducing
+segmented memory to analyze historical context in depth.
+Yang et al. [23] adopted exemplary frames to guide attention
+scheme learning representation sothat the detection accuracy
+is improved. Chen et al. [10] introduced a gated history unit
+and a future-augmented background suppression strategy to
+better capture temporal cues. Despite these advances, OAD
+still faces the inherent limitation of observed information,
+which can reduce the effectiveness of modeling. On the other
+hand, current popular methods exploit transformer’s capacity
+for memory modeling, but the ever-growing length of the
+memory sequence limits the effectiveness of these methods.
+For the limitation of observed information, our proposed
+SSM employs cross-temporal interactions to facilitate richer
+temporal information learning. Moreover, by focusing on state-
+based action dynamics, our method alleviates the limitations
+brought by the ever-growing length of memory sequences.
+B. Online Action Anticipation
+Online action anticipation has received significant attention
+in recent years, with its primary goal being the prediction of
+future actions based solely on observations. Early works pre-
+dominantly employed recurrent neural networks. For instance,
+Furnari and Farinella [24] utilize a Dual-LSTM structure to en-
+code and distill input sequences, generating cyclic predictions
+for future frames. Their framework additionally incorporated a
+JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 3
+learnable attention module to fuse representations from RGB,
+optical flow, and object-centric streams, thereby capturing a
+wide range of visual cues. Similarly, Qi et al. [25] tackle
+error accumulation in recurrent models by combining a con-
+trastive loss with an attention mechanism, iteratively refining
+intermediate feature embeddings. They also introduce verb and
+noun classification for auxiliary guidance. Subsequently, Liu
+and Lam [26] enhance the recurrent pipeline with an external
+memory bank and a classification loss for observed content,
+while employing contrastive learning to more closely align
+anticipated features with ground-truth sequences.
+Moving beyond recurrent networks, recent work has em-
+braced Transformer architectures for action anticipation. Gird-
+har and Grauman [12] developed the Anticipative Video Trans-
+former (A VT), combining a Transformer encoder on raw video
+frames with a masked decoder to jointly predict intermediate
+and final representations. Osman et al. [27] took inspiration
+from action recognition and devised a dual-stream approach
+with different frame sampling rates, aiming to capture both
+slow and fast dynamics in videos. Meanwhile, Roy et al. [28]
+focused on human-object interactions, showing that modeling
+object-specific cues through attention or Transformer modules
+can effectively reveal which items are likely to be involved in
+upcoming activities. Most of the previous works have tended
+to focus solely on the single-task setting of action anticipation,
+overlooking a key aspect: The outcomes of online action
+detection and action anticipation mutually influence each other.
+Consequently, they miss the potential benefit of integrating
+complementary features from both tasks. Such complementar-
+ity may yield richer and more robust feature representations,
+which have the potential to guide the model to produce more
+accurate detection and anticipation results. Building on this
+insight, Our SSM addresses this limitation by enabling joint
+training or inference for both tasks simultaneously.
+III. METHOD
+The proposed method aims to enable the model to perform
+both action anticipation and detection within a video stream,
+as illustrated in Fig"

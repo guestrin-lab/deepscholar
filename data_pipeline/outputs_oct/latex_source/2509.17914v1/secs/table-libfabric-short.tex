@@ -1,0 +1,51 @@
+\begin{table}[t]
+	\footnotesize
+	%\caption{Comparison of feature availability in libfabric 2.0~\cite{githublibfabric} providers (\textbf{P} - partial support, \textbf{N/A} - not used, \textbf{?} - unknown). While the library offers a portable communication API, practical implementations must still specialize for available hardware.}
+	\caption{Feature availability in libfabric 2.0~\cite{githublibfabric} providers (\textbf{P} - partial support, \textbf{N/A} - not used, \textbf{?} - unknown). Libfabric offers a portable API, but implementations must still specialize to the hardware.}
+	\label{tab:libfabric-features}
+	%\adjustbox{max width=\linewidth}{
+	\centering
+	\begin{tabular}{l|c|c|c|c|c}
+		\textbf{Feature}    & \textbf{TCP}           & \textbf{IB}            & \textbf{Slingshot}     & \textbf{EFA}           & \textbf{Omni-Path}     \\
+		                    & \textbf{(tcp)}         & \textbf{(verbs)}       & \textbf{(cxi)}         & \textbf{(efa)}         & \textbf{(opx)}         \\
+		%\multicolumn{6}{l}{\textbf{Endpoint}} \\
+		\hline
+		Message             & \checkmarkOurs         & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \checkmarkNegativeOurs \\
+		Reliable Datagram   & \checkmarkOurs         & \textbf{P}             & \checkmarkOurs         & \checkmarkOurs         & \checkmarkOurs         \\
+		Datagram            & \checkmarkNegativeOurs & \checkmarkOurs         & \checkmarkNegativeOurs & \textbf{P}             & \checkmarkNegativeOurs \\
+		%\hline
+		%\multicolumn{6}{|l|}{\textbf{Data Transfer}} \\
+		\hline
+		% FI_TAGGED
+		Tagged Message      & \checkmarkOurs         & \textbf{P}             & \checkmarkOurs         & \checkmarkOurs         & \checkmarkOurs         \\
+		% FI_DIRECTED_RECV
+		Directed Receive    & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkOurs         & \checkmarkOurs         & \checkmarkOurs         \\
+		% FI_MULTI_RECV
+		Multi Receive       & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkOurs         & \checkmarkOurs         & \checkmarkOurs         \\
+		% FI_ATOMIC
+		Atomic Operations   & \checkmarkNegativeOurs & \textbf{P}             & \checkmarkOurs         & \textbf{P}             & \checkmarkOurs         \\
+		%                     &                        &                        &                                     &                        &                        \\
+		Memory Registration & \textbf{N/A}           & Basic                  & Scalable               & Local                  & Scalable               \\
+		%
+		\hline
+		%
+		%\textbf{Progress \& Events} & & & & &\\
+		% FI_PROGRESS_MANUAL
+		Manual Progress     & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \checkmarkOurs         & \checkmarkOurs         & \checkmarkOurs         \\
+		% FI_PROGRESS_AUTO
+		Auto Progress       & \checkmarkOurs         & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \textbf{P}             \\
+		%
+		Wait Objects        & \checkmarkOurs         & \textbf{P}             & \checkmarkOurs         & \checkmarkNegativeOurs & \textbf{?}             \\
+		% FI_RMA_EVENT
+		Completion Events   & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkNegativeOurs \\
+		\hline
+		%\textbf{Scalability Features} & & & & &\\
+		% FI_RM_ENABLED
+		Resource Management & \checkmarkOurs         & \textbf{P}             & \checkmarkOurs         & \textbf{P}             & \checkmarkOurs         \\
+		% SCALABLE ENDPOINTS
+		Scalable Endpoints  & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \checkmarkOurs         \\
+		% FI_TRIGGER
+		Trigger Operations  & \checkmarkNegativeOurs & \checkmarkNegativeOurs & \checkmarkOurs         & \checkmarkNegativeOurs & \checkmarkNegativeOurs \\
+	\end{tabular}
+	\vspace{-1.5em}
+\end{table}

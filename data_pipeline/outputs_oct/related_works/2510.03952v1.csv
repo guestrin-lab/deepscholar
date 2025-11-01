@@ -1,0 +1,46 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.03952v1,http://arxiv.org/abs/2510.03952v1,2025-10-04 21:37:14+00:00,"Strategy Logic, Imperfect Information, and Hyperproperties","Strategy logic (SL) is a powerful temporal logic that enables first-class
+reasoning over strategic behavior in multi-agent systems (MAS). In many MASs,
+the agents (and their strategies) cannot observe the global state of the
+system, leading to many extensions of SL centered around imperfect information,
+such as strategy logic with imperfect information (SL$_\mathit{ii}$). Along
+orthogonal lines, researchers have studied the combination of strategic
+behavior and hyperproperties. Hyperproperties are system properties that relate
+multiple executions in a system and commonly arise when specifying security
+policies. Hyper Strategy Logic (HyperSL) is a temporal logic that combines
+quantification over strategies with the ability to express hyperproperties on
+the executions of different strategy profiles. In this paper, we study the
+relation between SL$_\mathit{ii}$ and HyperSL. Our main result is that both
+logics (restricted to formulas where no state formulas are nested within path
+formulas) are equivalent in the sense that we can encode SL$_\mathit{ii}$
+instances into HyperSL instances and vice versa. For the former direction, we
+build on the well-known observation that imperfect information is a
+hyperproperty. For the latter direction, we construct a self-composition of
+MASs and show how we can simulate hyperproperties using imperfect information.","There exist many extensions of ATL$^*$ and SL to reason about imperfect information \cite{BelardinelliLM19,DimaT11,JamrogaMM19,abs-1908-02488,BelardinelliLMR17,BerthonMM17,HuangM14,HuangM18} or hyperproperties \cite{BeutnerF21,BeutnerF23LMCS,BeutnerF24,BeutnerF24SL}.
+The connection between knowledge and hyperproperties has been studied extensively \cite{Rabe16,coenen2020hierarchy,BeutnerFFM23,BeutnerF25a,BeutnerF25b}.
+The work most closely related to ours is the study of \cite{BozzelliMP15}, who show that LTL$_K$ and a fragment of HyperCTL* are equally expressive (on standard Kripke structures).
+We study the relation of hyperproperties and knowledge in the setting of MASs and strategies.
+For example, unlike LTL$_K$, \SLI{} does not use a knowledge operator that we can directly encode. Instead, \SLI{} quantifies over strategies with a given observation relation.","There exist many extensions of ATL$^*$ and SL to reason about imperfect information \cite{BelardinelliLM19,DimaT11,JamrogaMM19,abs-1908-02488,BelardinelliLMR17,BerthonMM17,HuangM14,HuangM18} or hyperproperties \cite{BeutnerF21,BeutnerF23LMCS,BeutnerF24,BeutnerF24SL}.
+The connection between knowledge and hyperproperties has been studied extensively \cite{Rabe16,coenen2020hierarchy,BeutnerFFM23,BeutnerF25a,BeutnerF25b}.
+The work most closely related to ours is the study of \cite{BozzelliMP15}, who show that LTL$_K$ and a fragment of HyperCTL* are equally expressive (on standard Kripke structures).
+We study the relation of hyperproperties and knowledge in the setting of MASs and strategies.
+For example, unlike LTL$_K$, \SLI{} does not use a knowledge operator that we can directly encode. Instead, \SLI{} quantifies over strategies with a given observation relation.","There exist many extensions of ATL∗and SL to reason
+about imperfect information (Belardinelli, Lomuscio, and
+Malvone 2019; Dima and Tiplea 2011; Jamroga, Malvone,
+and Murano 2019; Knight and Maubert 2019; Belardinelli et
+al. 2017; Berthon, Maubert, and Murano 2017; Huang and
+van der Meyden 2014; Huang and van der Meyden 2018)
+or hyperproperties (Beutner and Finkbeiner 2021; Beut-
+ner and Finkbeiner 2023; Beutner and Finkbeiner 2024b;
+Beutner and Finkbeiner 2024a). The connection between
+knowledge and hyperproperties has been studied extensively
+(Rabe 2016; Coenen et al. 2020; Beutner et al. 2023; Beutner
+and Finkbeiner 2025a; Beutner and Finkbeiner 2025b). The
+work most closely related to ours is the study of (Bozzelli,
+Maubert, and Pinchinat 2015), who show that LTL Kand a
+fragment of HyperCTL* are equally expressive (on standard
+Kripke structures). We study the relation of hyperproperties
+and knowledge in the setting of MASs and strategies. For
+example, unlike LTL K, SLiidoes not use a knowledge op-
+erator that we can directly encode. Instead, SL iiquantifies
+over strategies with a given observation relation."

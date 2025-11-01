@@ -1,0 +1,119 @@
+\section{Introduction}
+\label{sec:intro}
+
+Segmentation, as a fundamental task in computer vision, aims to partition images into distinct visual segments. With segmentation, individual image pixels would be categorized into specific regions or objects of interest, making it particularly essential for visual understanding in real-world applications, such as autonomous driving~\citep{zendel2022unifying}, medical imaging~\citep{shin2023sdc}, and robotics~\citep{goyal2022ifor}. In traditional semantic segmentation~\citep{long2015fully,cheng2021per}, models are generally trained to classify objects within a limited set of pre-defined categories (\eg, bear, gold fish, zebra, \etc). While promising results have been presented, these methods could not be easily applied in realistic scenarios, where the target objects are usually specified by free-form phrases or sentences (\eg, ``zebra eating grass with a goose in front of it'') rather than the category names alone. To advance segmentation to handle such natural language descriptions, referring image segmentation (RIS)~\citep{hu2016segmentation,yang2022lavt,liu2023polyformer,liu2023gres} emerges to learn and understand complex text queries while associating them with the input images to produce segmentation masks for the target objects. Recent RIS works~\citep{yang2022lavt,liu2023polyformer,liu2023gres} focus on designing Transformer-based or cross-attention models and employ vision-language learning to fuse the latent features from both modalities. Despite these advancements, when the visual input is a sequence of video frames rather than a single image, the time-varying object positions and appearance could result in inconsistent output masks from frame to frame, implying the inherent deficiency of image-based segmentation approaches. 
+% \textcolor{red}{shorten}
+
+
+% While recent open-vocabulary segmentation works~\cite{zhou2022extract,xu2023open,liang2023open} attempt to segment arbitrary categories specified by input texts, such text forms are mainly restricted to category names or phrases from manually-defined templates (\eg, ``\textit{A photo of a}''). 
+
+
+
+
+
+
+
+
+% \input{figures/teaser}
+
+
+
+
+
+
+Referring Video Object Segmentation (RVOS),
+% \textcolor{red}{~\cite{}}, 
+in response to this, aims to segment the object referred to by a text query throughout the entire video. In contrast to RIS, RVOS is particularly faced with dynamic visual challenges, such as position and size variation, object occlusion or exit, pose deformation, and scene variation. Moreover, the referring sentences may contain long-term motions or actions (\eg, ``a gold fish on the left swimming towards the top right''), which could not be easily recognized from a single frame. To address such a challenging task, a number of works~\citep{seo2020urvos,wu2022language,wu2023onlinerefer,miao2023spectrum,tang2023temporal,luo2024soc,wu2023segment,li2023learning,cheng2023tracking,yan2024referred,he2024decoupling,yuan2024losh} have been presented.
+% URVOS~\cite{seo2020urvos} is pioneering as a unified framework for referring video object segmentation, which introduces cross-modal attention and memory attention modules to prevent drift while enhance temporal consistency.
+With the rapid development of Transformer~\citep{vaswani2017attention}, ReferFormer~\citep{wu2022language} takes the text inputs as queries to perform attention on the referred objects and links the corresponding queries across frames to achieve object tracking. Recent works like FS-RVOS~\citep{li2023learning} and OnlineRefer~\citep{wu2023onlinerefer} further extend RVOS to the few-shot setting and online pipeline to handle limited samples and ongoing videos in real-world scenarios, respectively.
+Nevertheless, most existing methods require end-to-end training for vision-language segmentation models, which could be computationally expensive and time-consuming. Moreover, the requirement of dense mask annotations for training impedes the scalability of these approaches.
+
+
+% \vspace{1mm}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Recently, Segment Anything Model (SAM)~\cite{kirillov2023segment} has been proposed as a foundation segmentation model. 
+Recently, several foundation segmentation models~\citep{kirillov2023segment,wang2023seggpt,zou2024segment} have been presented. Among them, SAM~\citep{kirillov2023segment} is the most prominent one due to its overwhelming generalizability on various datasets. By employing large-scale model architectures and leveraging numerous image data for training, SAM can produce high-quality object masks according to visual prompts such as points or boxes, setting superior benchmarks for segmentation tasks. However, as SAM is trained solely with images and their associated masks, it could not properly handle natural language descriptions and video data in RVOS. Even though it is possible to incorporate additional grounding models (\eg,~\citet{liu2024grounding}) to generate text-associated box prompts and tracking models (\eg,~\citet{cheng2023segment}) to capture object movements across video frames, such naive combinations of off-the-shelf models has shown to be suboptimal~\citep{li2023refsam}, as they are individually trained for different tasks. This therefore raises a critical question: ``\textit{How to effectively and efficiently exploit foundation segmentation models for RVOS?}''
+
+% \vspace{1mm}
+
+\input{teaser}
+
+In this paper, we rethink the RVOS problem and aim to investigate the key to this challenging task. Based on the impressive results presented by foundation segmentation models, we decompose the RVOS task into the following three factors: \textit{referring}, \textit{video}, and \textit{segmentation}, and focus on addressing the referring and video factors while leaving the segmentation problem to foundation models. To achieve this goal, we propose a \textit{\namebf~(\textbf{\nameshort})} framework to efficiently adapt image-based foundation segmentation models to refer and segment video objects, as shown in Figure~\ref{figure:teaser}. Specifically, to generate visual prompts associated with the referring sentence, we leverage off-the-shelf object detectors and trackers to produce the \textit{\textbf{reference proposal}} and \textit{\textbf{candidate tracks}}. On the one hand, we perform object detection frame-by-frame to obtain box proposals indicating object positions, and the most confident (Top-1) proposals at each frame are together considered as reference proposals. On the other hand, to enhance the temporal consistency across frames, we also apply object tracking to Top-K proposals to form multiple candidate tracks. Based on our empirical analysis, a portion of these candidate tracks is shown to be superior to the reference proposal. However, such high-quality candidate tracks could \textit{NOT} be easily identified by the confidence scores of detected boxes. To tackle this problem, we propose \textbf{\textit{\nameselect}}, which employs a Transformer-based classifier to compare the quality of each candidate track with the reference proposal. By selecting the most preferred visual prompt to instruct image-based foundation segmentation models, high-quality masks for the referred object are produced, enabling efficient model adaptation to referring video object segmentation. Quantitative and qualitative experiments on standard RVOS benchmark datasets (Refer-Youtube-VOS and Refer-DAVIS$_{17}$) demonstrate the effectiveness of our proposed \nameshort~framework.
+
+The contributions of this paper are summarized as follows:
+
+ \begin{itemize}[leftmargin=*]
+
+    \item {We rethink the RVOS problem and propose a \textit{\namebf~(\textbf{\nameshort})} framework to efficiently adapt image-based foundation segmentation models to referring video object segmentation. Experiments on standard RVOS benchmarks demonstrate the effectiveness of the proposed \nameshort~framework.}
+    
+    \item {To generate visual prompts associated with the referring sentence, we leverage off-the-shelf object detectors and trackers to produce the \textit{\textbf{reference proposal}} and \textit{\textbf{candidate tracks}}. Based on our empirical analysis, a portion of these candidate tracks is shown to be superior to the reference proposal.}
+    
+    \item {To identify high-quality candidate tracks, we propose \textbf{\textit{\nameselect}} to compare the quality of each candidate track with the reference proposal. By selecting the most preferred visual prompt to instruct image-based foundation segmentation models, we would be able to produce high-quality masks for the referred object.}
+    
+\end{itemize}
+
+% We argue that the RVOS problem can be decomposed into \textit{referring}, \textit{video}, and \textit{segmentation} factors, and leave the segmentation problem to foundation segmentation models. We only focus on addressing the referring and video factors as current foundation models can already tackle to segmentation problem effectively. 
+
+% I think there are two questions:
+% 1.
+% Q: 
+% A: Yes. 
+% To support this answer, we decompose "S" from "RVOS", and feed GT bbox prompts to "S" (i.e., foundation seg, model). The performance is significantly better than ALL previous RVOS methods. This preliminary exp shows that given high-quality bbox prompts, foundation seg. model is capable of addressing RVOS.
+% 2. 
+% Q: How to do so?
+% A: based on the previous exp, we reformulate the problem as "How to generate high-quality bbox prompts for RVOS?" And then you can talk about all the proposed methods in the next paragraph
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+% In this paper, we aim to efficiently adapt image-based foundation segmentation models for addressing referring video object segmentation from weak supervision. To achieve this goal, we propose a novel \textit{\namebf~(\textbf{\nameshort})} framework, which advances vision-language learning to produce temporal-consistent yet text-aware position prompts for segmentation purposes. 
+% More specifically, we propose \textit{\namefbf~(\textbf{\namefabbr})} to enhance the association between the position prompts and the referring sentences with only box supervisions, including \textit{\namea~(\nameaabbr)}~and \textit{\nameb~(\namebabbr)} at frame level and video level, respectively. 
+% For \nameaabbr, we enforce our \nameshort~framework to generate distinct position prompts for different referring sentences within each video frame. As for the \namebabbr, given that the sentence description may contain long-term motions or actions spanning across different moments, we propose to align the whole sequence of position prompts and the corresponding object with the input text for each video clip. 
+% % for each of the video frames, a set of object queries would be derived to perform cross-modal attention on both the image and text. By properly propagating and aggregating object queries from frame to frame, our proposed \nameshort~framework can track the object throughout the entire video and generate temporal-consistent position prompts. 
+% With the proposed \namefabbr, our \nameshort~framework can generate temporal-consistent yet text-aware position prompts describing locations and movements for the referred object from the video. More importantly, our derived position prompts would be utilized to instruct image-based foundation segmentation models to produce object masks, enabling efficient adaptation to referring video object segmentation without requiring dense mask annotations. 
+% The experimental results in the standard RVOS benchmarks (Ref-YouTube-VOS, Ref-DAVIS17, A2D-Sentences, and JHMDB-Sentences) demonstrate the competitive performance of our proposed \nameshort~framework given only bounding box weak supervisions.
+% % \textcolor{red}{mention experiments, how efficient}
+
+%  We highlight the contributions of this paper as follows:
+%  \begin{itemize}
+
+%     \item {We propose a novel \textit{\namebf~(\textbf{\nameshort})} framework, which advances vision-language learning to produce temporal-consistent yet text-aware position prompts for segmentation purposes.\\}
+%     % \item {With our designed object query propagation and aggregation mechanism across frames, our proposed \nameshort~framework can track objects throughout the entire video and generate temporally-consistent position prompts.\\}
+%     \item {To facilitate the association between the position prompts and the referring sentences, we propose to jointly perform \textit{\namea}~and \textit{\nameb} at frame-level and video-level, respectively.\\}
+%     \item {The derived position prompts would be utilized to instruct image-based foundation segmentation models to produce object masks, enabling efficient adaptation to referring video object segmentation without requiring dense mask annotations.}
+    
+% \end{itemize}

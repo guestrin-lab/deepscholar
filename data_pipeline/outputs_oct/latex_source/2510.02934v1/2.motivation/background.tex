@@ -1,0 +1,46 @@
+\subsection{Background}
+
+%LLMs for code generation
+Large Language Models (LLMs), such as GPT-3~\cite{floridi2020gpt}, PaLM~\cite{anil2023palm}, and LlaMA~\cite{touvron2023llama}, are typically transformer-based models with hundreds of millions to billions of parameters~\cite{minaee2024large}. These models are pre-trained on massive text corpora using an autoregressive objective, i.e., predicting the next token given the preceding context, to model the probability distribution over token sequences.
+%
+This training paradigm enables LLMs to understand and generate coherent text, allowing them to perform a wide range of natural language tasks, like translation~\cite{ji2024zero}, summarization~\cite{zhang2025systematic}, and question answering~\cite{li2024flexkbqa}.
+%
+To extend their capabilities beyond natural language, LLMs have been trained or fine-tuned on large-scale code repositories, giving rise to a specialized class known as \textbf{code LLMs}, such as \deepseek~\cite{deepseek-coder}, \magiccoder~\cite{magicoder}, \codellama~\cite{codellama}.
+These models are capable of automating various SE tasks~\cite{zheng2025towards, wang2025can, bui2024rambo, chen2024chatunitest}, including code generation and code completion.
+
+%Internal representations
+Similar to general-purpose LLMs, code LLMs generate code output through an autoregressive decoding procedure. Given an input sequence $x = \{x_1, \dots, x_n\}$, which may consist of natural language instructions, code comments, and/or partially written code, the code LLM $\mathscr{M}$ produces a code output sequence $c = \{c_1, \dots, c_m\}$ one token at a time. At each generation step $s$, the model computes the probability distribution over possible next token $c_s$, conditioned on the input $x$ and previously generated tokens $c_{<s>} = \{c_1, \dots, c_{s-1}\}$, as follows:
+%
+%
+\begin{equation}
+\label{eq:next_token_probability}
+ P(c_s \mid x,c_{<s}) = \text{softmax}(W_o \cdot h_{l,s} + b_o)   
+\end{equation}
+%%
+%
+In Eq.~\ref{eq:next_token_probability}, $h_{l,s} \in \mathbb{R}^d$ denotes the  \textit{internal representation} (or hidden state) of the model at layer $l$ for the token position $s$, and $W_o$, $b_o$ are learned output projection weights.
+
+
+\begin{definition}[\textbf{Internal representation}]
+An internal representation $h_{l,s} \in \mathbb{R}^d$ is a $d$-dimensional vector that encodes the model's latent representation for token $c_{s}$ at layer $l$.   
+It is recursively computed from the hidden state at the previous layer $h_{l-1, s}$ and contextual information  $context_s$ via a layer-specific transformation function $f_l(\cdot)$:
+%
+\begin{equation}
+\label{eq:hidden_state_computation}
+    h_{l,s} = f_l(h_{l-1,s}, \text{$context$}_s)
+\end{equation}
+
+\end{definition}
+
+%
+The transformation function $f_l(\cdot)$ in Eq.~\ref{eq:hidden_state_computation} typically consists of a combination of multi-head self-attention, feedforward networks, and normalization operations.
+The internal representations form the core computational states of the model, capturing essential information at different levels of abstraction, including syntactic structure, semantic meaning, and task-specific context, that are required for token prediction at each generation step.
+
+
+%Hallucination and code correctness
+Despite their impressive capabilities, LLMs, including code LLMs, are prone to \textit{hallucinations}. In the context of code generation, hallucinations refer to code that is non-compilable, functionally incorrect, or insecure, potentially causing the program to crash, fail to meet requirements, or become vulnerable to attacks~\cite{openia, zhang2025llm}. 
+Several studies~\cite{openia, llmcheck, inside, zhang2025icr} have demonstrated that the model's internal representations encode signals indicative of hallucinations. Since these internal states reflect the model's evolving understanding and confidence during generation, they can serve as valuable indicators of uncertainty or inconsistency. By analyzing the internal representations, it is possible to detect hallucinations both in text and code generation with a certain degree of accuracy.
+
+
+
+

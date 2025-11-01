@@ -1,0 +1,34 @@
+
+\begin{table}[t]
+  \centering
+  \caption{Lip synchronisation on \textbf{Hallo3}. Higher is better for Acc and R-Precision; lower is better for Offset.}
+  \label{tab:sync_hallo3}
+  \setlength{\tabcolsep}{5pt} % 列间距可微调
+  \small
+  \begin{adjustbox}{max width=\linewidth}
+    {\rowcolors{2}{gray!10}{white}%
+     \begin{tabular}{@{} l
+                         cc  cc  cc  ccc @{}}
+       \toprule
+       \multirow{2}{*}{Method} &
+         \multicolumn{2}{c}{K = 1} &
+         \multicolumn{2}{c}{K = 5} &
+         \multicolumn{2}{c}{K = 15} &
+         \multicolumn{3}{c}{R-precision (32)} \\
+       \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-10}
+       & Acc $\uparrow$ (\%) & Offset $\downarrow$
+         & Acc $\uparrow$ (\%) & Offset $\downarrow$
+         & Acc $\uparrow$ (\%) & Offset $\downarrow$
+         & Top1 $\uparrow$ & Top2 $\uparrow$ & Top3 $\uparrow$ \\
+       \midrule
+       SyncNet\,-5           & 20.37 & 5.04 & 24.18 & 4.03 & 30.03 & 3.02  & 7.47  & 12.77 & 17.72 \\
+       VocaLiST\,-5          & 21.85 & 4.34 & 24.56 & 3.63 & 28.82 & 2.98  & 8.80  & 15.08 & 19.86 \\
+       StableSyncNet\,-16    & 27.95 & 2.78 & 28.60 & 2.72 & 31.66 & 2.72  & 14.40 & 25.65 & 34.52 \\
+       \addlinespace[2pt]
+       \textbf{\name\,-1 (ours)} & \textbf{52.53} & \textbf{2.66} & \textbf{68.41} &
+         \textbf{1.73} & \textbf{82.27} & \textbf{0.93} &
+         \textbf{40.18} & \textbf{61.48} & \textbf{73.49} \\
+       \bottomrule
+     \end{tabular}}
+  \end{adjustbox}
+\end{table}

@@ -1,0 +1,114 @@
+% \begin{wraptable}{r}{0.6\textwidth} % {r} 代表靠右, 第二个参数是
+ \begin{table}[htb]
+% \vspace{-8mm}
+\centering
+\caption{Taxonomy of 12 unlearning methods grouped into {\MDiv}, {\MRep}, and {\MRej} families. A checkmark (\cmark) marks incorporation of \textit{robust unlearning}. Methods are evaluated on benchmarks WMDP (W), MUSE (M), TOFU (T), WHP (H), PKU-SafeRLHF (P) and Circuit Breaker (C), using unlearning effectiveness (UE), utility retention (UT), and robustness (Rob). UE and UT are measured by multiple-choice (MCQ) or open question-answering (Open-QA), while Rob is tested at model-level or input-level. Benchmark abbreviations denote both methods and evaluation settings.
+}
+\label{tab:taxonomy}
+\renewcommand{\arraystretch}{1.25}
+\vspace{4mm}
+\resizebox{0.7\linewidth}{!}{%
+% \resizebox{1.0\linewidth}{!}{%
+\begin{tabular}{c|c|c|cc|cc|cc}
+\toprule[1pt]
+\toprule
+\multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Robust\\Design\end{tabular}}} & \multicolumn{2}{c|}{\textbf{UE}} & \multicolumn{2}{c|}{\textbf{UT}} & \multicolumn{2}{c}{\textbf{Rob}} \\
+\cline{4-9}
+& & & \textbf{MCQ} & \textbf{Open-QA} & \textbf{MCQ} & \textbf{Open-QA} & \textbf{Model} & \textbf{Input} \\
+\midrule
+\rowcolor{LightCyan!50}
+% \multicolumn{9}{c}{\textbf{\textit{Divergence-driven optimization}}} \\
+% \multicolumn{9}{c}{\textbf{\MDiv}} \\
+\multicolumn{9}{c}{\textbf{\textcolor{CDiv}{\textit{Divergence-driven optimization}}}} \\
+\midrule
+\rowcolor{gray!20}
+\textbf{GradDiff} & \citep{yao2023large} & \xmark & & P & & P & & \\
+\textbf{NPO} & \citep{zhang2024negative} & \xmark & & T & & T & & \\
+\rowcolor{gray!20}
+\textbf{SimNPO} & \citep{fan2024simplicity} & \xmark & W & T/M & W & T/M & T & \\
+\textbf{NPO+SAM} & \citep{fan2025towards} & \cmark & W & M & W & M & W/M & W \\
+\rowcolor{gray!20}
+\textbf{NPO+IRM} & \citep{wang2025invariance} & \cmark & W & M & W & M & W/M & \\
+\midrule
+\rowcolor{LightCyan!50}
+% \multicolumn{9}{c}{\textbf{\textit{Representation misalignment}}} \\
+% \multicolumn{9}{c}{\textbf{\MRep}} \\
+\multicolumn{9}{c}{\textbf{\textcolor{CRep}{\textit{Representation misalignment}}}} \\
+\midrule
+\textbf{RMU} & \citep{li2024wmdp} & \xmark & W & & W & W & & W \\
+\rowcolor{gray!20}
+\textbf{RR} & \citep{zou2024improving} & \xmark & C & & C & C & & C \\
+\textbf{RMU+LAT} & \citep{sheshadri2024latent} & \cmark & W/H & & W/H & W & W & H \\
+\rowcolor{gray!20}
+\textbf{TAR} & \citep{tamirisa2024tamper} & \cmark & W & & W & & W & \\
+\midrule
+\rowcolor{LightCyan!50}
+% \multicolumn{9}{c}{\textbf{\textit{Rejection-based targeted unlearning}}} \\
+% \multicolumn{9}{c}{\textbf{\MRej}} \\
+\multicolumn{9}{c}{\textbf{\textcolor{CRej}{\textit{Rejection-based targeted unlearning}}}} \\
+\midrule
+\textbf{ELM} & \citep{gandikota2024erasing} & \xmark & W/H & & W/H & W/H & & W \\
+\rowcolor{gray!20}
+\textbf{DPO} & \citep{zhang2024negative} & \xmark & & T & T & T & & \\
+\textbf{IDK+AP} & \citep{yuan2024closer} & \xmark & & T & T & T & & \\
+
+% \textbf{JensUn} & \citep{singh2025unlearning} & \xmark & L/R & L/R & L/R & R & L & \\
+
+\bottomrule
+\bottomrule[1pt]
+\end{tabular}
+% \vspace{-6mm}
+}
+% \end{wraptable}
+\end{table}
+
+
+
+% \begin{table}[h!]
+% \centering
+% \caption{Overview of 12 unlearning methods. The methods are categorized by principle: divergence-driven, representation-mismatch, and rejection-based. A checkmark (\cmark) indicates robust design, while a cross (\xmark) indicates otherwise. Evaluation metrics reported in the original papers include unlearning effectiveness (UE), utility (UT), and robustness evaluation (RE). Task formats are multiple-choice questions (MCQ) or Open-QA questions (Gen), and attack types are denoted as model/input. Letters denote the unlearning benchmarks used: WMDP (W), MUSE (M), TOFU (T), WHP (H), PKU-SafeRLHF (P), LKF (L), RWKU (R), and Circuit Breaker (C).}
+% \renewcommand{\arraystretch}{1.25}
+% \vspace{2mm}
+% \resizebox{0.5\textwidth}{!}{%
+% \begin{tabular}{c|c|c|cc|cc|cc}
+% \toprule[1pt]
+% \toprule
+% \multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Robust\\Design\end{tabular}}} & \multicolumn{2}{c|}{\textbf{UE}} & \multicolumn{2}{c|}{\textbf{UT}} & \multicolumn{2}{c}{\textbf{RE}} \\
+% \cline{4-9}
+% & & & \textbf{MCQ} & \textbf{Gen} & \textbf{MCQ} & \textbf{Gen} & \textbf{Model} & \textbf{Input} \\
+% \midrule
+% \rowcolor{LightCyan!50}
+% \multicolumn{9}{c}{\textbf{\textit{Divergence-driven}}} \\
+% \midrule
+% \rowcolor{gray!20}
+% \textbf{GradDiff} & \citet{yao2023large} & \xmark & & P & & P & & \\
+% \textbf{NPO} & \citet{zhang2024negative} & \xmark & & T & & T & & \\
+% \rowcolor{gray!20}
+% \textbf{SimNPO} & \citet{fan2024simplicity} & \xmark & W & T/M & W & T/M & T & \\
+% \textbf{NPO+SAM} & \citet{fan2025towards} & \cmark & W & M & W & M & W/M & W \\
+% \rowcolor{gray!20}
+% \textbf{NPO+IRM} & \citet{wang2025invariance} & \cmark & W & M & W & M & W/M & \\
+% \midrule
+% \rowcolor{LightCyan!50}
+% \multicolumn{9}{c}{\textbf{\textit{Representation-mismatch}}} \\
+% \midrule
+% \textbf{RMU} & \citet{li2024wmdp} & \xmark & W & & W & & & W \\
+% \rowcolor{gray!20}
+% \textbf{RR} & \citet{zou2024improving} & \xmark & C & & C & C & & C \\
+% \textbf{RMU+LAT} & \citet{sheshadri2024latent} & \cmark & W/H & & W/H & W & W & H \\
+% \rowcolor{gray!20}
+% \textbf{TAR} & \citet{tamirisa2024tamper} & \cmark & W & & W & & W & \\
+% \midrule
+% \rowcolor{LightCyan!50}
+% \multicolumn{9}{c}{\textbf{\textit{Rejection-based}}} \\
+% \midrule
+% \textbf{IDK+AP} & \citet{yuan2024closer} & \xmark & & T & T & T & & \\
+% \rowcolor{gray!20}
+% \textbf{JensUn} & \citet{singh2025unlearning} & \xmark & L/R & L/R & L/R & R & L & \\
+% \textbf{ELM} & \citet{gandikota2024erasing} & \xmark & W/H & & W/H & W/H & & W \\
+% \bottomrule
+% \bottomrule[1pt]
+% \end{tabular}
+% }
+% \label{tab:unlearn_method}
+% \end{table}

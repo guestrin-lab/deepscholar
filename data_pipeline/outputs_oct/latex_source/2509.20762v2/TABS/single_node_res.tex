@@ -1,0 +1,59 @@
+\begingroup
+\setlength{\tabcolsep}{2.5pt}
+\begin{table*}[t!]
+    \centering
+    \caption{\uline{Q1: \ours achieves higher accuracy in identifying group anchors than all the baselines in most cases.} For each setting, the best performance is highlighted in bold, while the second-best is underlined.
+    The mean accuracy values (\%) over five random splits are reported with standard deviations. OOM represents ``out of memory''.
+    \revisekdd{\ours also outperforms the baseline methods with different training ratios (see Appendix~\ref{appx:diff_training_ratios}) and w.r.t. other evaluation metrics (see Appendix~\ref{appx:diff_eval_metrics}).}}
+    \label{tab:single_node_res}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|cccccccccccccccc}
+\hline
+\multirow{2}[2]{*}{\textbf{Dataset}} 
+& \multicolumn{2}{c}{\texttt{coAA}} 
+& \multicolumn{2}{c}{\texttt{coDB}} 
+& \multicolumn{2}{c}{\texttt{coSM}} 
+& \multirow{2}[2]{*}{\texttt{qaBI}} 
+& \multirow{2}[2]{*}{\texttt{qaPH}} 
+& \multirow{2}[2]{*}{\texttt{qaMA}} 
+& \multirow{2}[2]{*}{\texttt{qaST}} 
+& \multirow{2}[2]{*}{\texttt{emEN}} 
+& \multirow{2}[2]{*}{\texttt{emEU}} 
+& \multirow{2}[2]{*}{\texttt{emER}} 
+& \multirow{2}[2]{*}{\texttt{soME}} 
+& \multirow{2}[2]{*}{\texttt{soRE}} 
+& \multirow{2}[2]{*}{\texttt{moML}} \bigstrut[t]\\
+      
+& (first) 
+      & (last) 
+      & (first) 
+      & (last) 
+      & (first) 
+      & (last) 
+      &       
+      &       
+      &       
+      &       
+      &       
+      &       
+      &       
+      &       
+      &       
+      &  \bigstrut[b]\\
+    \hline
+    WHATsNet & \uline{45.2{\scriptsize$\pm$0.2}} & \uline{45.8{\scriptsize$\pm$0.3}} & \uline{42.5{\scriptsize$\pm$0.3}} & 45.4{\scriptsize$\pm$0.2} & 34.3{\scriptsize$\pm$2.0} & \uline{39.8{\scriptsize$\pm$1.8}} & \uline{85.6{\scriptsize$\pm$0.4}} & \uline{88.1{\scriptsize$\pm$0.1}} & \uline{35.8{\scriptsize$\pm$1.1}} & \uline{31.2{\scriptsize$\pm$0.2}} & \uline{50.8{\scriptsize$\pm$3.4}} & 51.0{\scriptsize$\pm$0.3} & \uline{66.6{\scriptsize$\pm$3.1}} & \textbf{75.5{\scriptsize$\pm$0.2}} & 97.4{\scriptsize$\pm$0.3} & 41.4{\scriptsize$\pm$0.3} \bigstrut[t]\\
+    CoNHD-U & 42.7{\scriptsize$\pm$1.3} & 42.2{\scriptsize$\pm$2.0} & 41.2{\scriptsize$\pm$0.1} & 42.7{\scriptsize$\pm$0.3} & 31.4{\scriptsize$\pm$1.9} & 37.9{\scriptsize$\pm$2.1} & 78.7{\scriptsize$\pm$0.5} & 76.0{\scriptsize$\pm$1.0} & 29.0{\scriptsize$\pm$4.2} & 25.4{\scriptsize$\pm$3.8} & 44.0{\scriptsize$\pm$4.3} & \textbf{52.8{\scriptsize$\pm$0.3}} & 65.3{\scriptsize$\pm$2.2} & 74.3{\scriptsize$\pm$0.3} & 96.8{\scriptsize$\pm$0.6} & 42.4{\scriptsize$\pm$0.5} \\
+    CoNHD-I & 44.5{\scriptsize$\pm$0.8} & 44.7{\scriptsize$\pm$0.3} & 41.4{\scriptsize$\pm$0.5} & 43.5{\scriptsize$\pm$0.7} & 29.8{\scriptsize$\pm$2.6} & 39.4{\scriptsize$\pm$1.9} & 79.3{\scriptsize$\pm$0.4} & 77.3{\scriptsize$\pm$0.2} & 29.8{\scriptsize$\pm$6.1} & 26.6{\scriptsize$\pm$1.3} & 45.1{\scriptsize$\pm$3.8} & \uline{52.4{\scriptsize$\pm$0.4}} & 64.6{\scriptsize$\pm$1.2} & 74.6{\scriptsize$\pm$0.4} & \uline{97.5{\scriptsize$\pm$0.6}} & \uline{42.7{\scriptsize$\pm$0.3}} \\
+    HNHN  & 39.7{\scriptsize$\pm$0.0} & 41.2{\scriptsize$\pm$0.0} & 35.5{\scriptsize$\pm$0.4} & 39.1{\scriptsize$\pm$0.4} & 33.2{\scriptsize$\pm$1.4} & 33.7{\scriptsize$\pm$0.6} & 63.5{\scriptsize$\pm$1.4} & 37.7{\scriptsize$\pm$0.1} & 30.5{\scriptsize$\pm$0.8} & 22.9{\scriptsize$\pm$0.1} & 35.8{\scriptsize$\pm$2.1} & 49.2{\scriptsize$\pm$1.2} & 41.8{\scriptsize$\pm$6.4} & 56.4{\scriptsize$\pm$0.4} & 53.4{\scriptsize$\pm$0.8} & 35.2{\scriptsize$\pm$0.3} \\
+    HGNN  & 44.1{\scriptsize$\pm$0.0} & 45.9{\scriptsize$\pm$0.1} & 41.9{\scriptsize$\pm$0.1} & 44.6{\scriptsize$\pm$0.3} & 33.1{\scriptsize$\pm$0.3} & 38.1{\scriptsize$\pm$0.6} & 81.7{\scriptsize$\pm$0.3} & 74.9{\scriptsize$\pm$0.8} & 28.9{\scriptsize$\pm$1.0} & 30.4{\scriptsize$\pm$0.5} & 40.1{\scriptsize$\pm$0.7} & 49.3{\scriptsize$\pm$0.2} & 42.0{\scriptsize$\pm$0.9} & 62.1{\scriptsize$\pm$2.1} & 84.6{\scriptsize$\pm$3.4} & 37.9{\scriptsize$\pm$0.5} \\
+    HCHA  & 38.9{\scriptsize$\pm$0.2} & 39.4{\scriptsize$\pm$0.4} & 35.3{\scriptsize$\pm$0.6} & 31.4{\scriptsize$\pm$0.7} & 33.2{\scriptsize$\pm$1.1} & 35.2{\scriptsize$\pm$3.6} & 69.8{\scriptsize$\pm$2.1} & 68.0{\scriptsize$\pm$1.5} & 31.0{\scriptsize$\pm$2.4} & 23.4{\scriptsize$\pm$2.6} & 18.8{\scriptsize$\pm$2.2} & 45.4{\scriptsize$\pm$0.5} & 46.0{\scriptsize$\pm$4.9} & 30.7{\scriptsize$\pm$2.2} & 52.7{\scriptsize$\pm$0.6} & 17.3{\scriptsize$\pm$0.4} \\
+    HAT   & 43.5{\scriptsize$\pm$0.3} & 45.8{\scriptsize$\pm$0.1} & 38.1{\scriptsize$\pm$1.4} & 40.5{\scriptsize$\pm$2.0} & 30.1{\scriptsize$\pm$0.5} & 33.0{\scriptsize$\pm$1.0} & 75.8{\scriptsize$\pm$0.3} & 81.3{\scriptsize$\pm$0.2} & 29.2{\scriptsize$\pm$1.2} & 23.9{\scriptsize$\pm$0.2} & 49.8{\scriptsize$\pm$1.7} & 50.8{\scriptsize$\pm$0.4} & 42.3{\scriptsize$\pm$7.0} & 68.0{\scriptsize$\pm$0.9} & 92.4{\scriptsize$\pm$0.9} & 36.1{\scriptsize$\pm$0.8} \\
+    UniGCN & 43.3{\scriptsize$\pm$0.5} & 45.8{\scriptsize$\pm$0.4} & 41.2{\scriptsize$\pm$0.7} & \uline{45.8{\scriptsize$\pm$0.6}} & \uline{34.8{\scriptsize$\pm$2.7}} & 39.2{\scriptsize$\pm$4.2} & 76.3{\scriptsize$\pm$1.2} & 78.0{\scriptsize$\pm$1.4} & 35.0{\scriptsize$\pm$3.4} & 30.7{\scriptsize$\pm$0.4} & 45.3{\scriptsize$\pm$2.7} & 49.6{\scriptsize$\pm$0.7} & 55.5{\scriptsize$\pm$2.7} & 68.9{\scriptsize$\pm$1.3} & 88.1{\scriptsize$\pm$0.6} & 40.1{\scriptsize$\pm$1.8} \\
+    HNN   & 37.7{\scriptsize$\pm$0.1} & 39.3{\scriptsize$\pm$0.1} & 31.4{\scriptsize$\pm$0.8} & 36.3{\scriptsize$\pm$1.2} & 32.7{\scriptsize$\pm$0.7} & 36.8{\scriptsize$\pm$0.8} & 63.8{\scriptsize$\pm$0.9} & 62.6{\scriptsize$\pm$0.6} & 29.2{\scriptsize$\pm$3.2} & 24.8{\scriptsize$\pm$0.5} & 38.7{\scriptsize$\pm$2.7} & OOM   & 47.1{\scriptsize$\pm$4.3} & 56.0{\scriptsize$\pm$0.6} & 57.2{\scriptsize$\pm$7.6} & 33.8{\scriptsize$\pm$0.6} \bigstrut[b]\\
+    \hline
+    \ours & \textbf{49.7{\scriptsize$\pm$0.1}} & \textbf{50.6{\scriptsize$\pm$0.0}} & \textbf{46.5{\scriptsize$\pm$0.2}} & \textbf{49.9{\scriptsize$\pm$0.1}} & \textbf{40.9{\scriptsize$\pm$0.7}} & \textbf{48.1{\scriptsize$\pm$1.3}} & \textbf{87.4{\scriptsize$\pm$0.2}} & \textbf{88.7{\scriptsize$\pm$0.1}} & \textbf{40.6{\scriptsize$\pm$5.3}} & \textbf{36.6{\scriptsize$\pm$0.4}} & \textbf{53.6{\scriptsize$\pm$2.4}} & 50.9{\scriptsize$\pm$0.2} & \textbf{67.8{\scriptsize$\pm$2.6}} & \uline{74.9{\scriptsize$\pm$0.6}} & \textbf{97.8{\scriptsize$\pm$0.3}} & \textbf{45.0{\scriptsize$\pm$0.3}} \bigstrut\\
+    \hline
+\end{tabular}%
+\end{adjustbox}
+\end{table*}
+\endgroup

@@ -1,0 +1,127 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.06195v1,http://arxiv.org/abs/2510.06195v1,2025-10-07 17:52:08+00:00,Latent Speech-Text Transformer,"Auto-regressive speech-text models are typically pre-trained on a large
+number of interleaved sequences of text tokens and raw speech encoded as speech
+tokens using vector quantization. These models have demonstrated
+state-of-the-art performance in speech-to-speech understanding and generation
+benchmarks, together with promising scaling laws, primarily enabled by the
+representational alignment between text and speech. Nevertheless, they suffer
+from shortcomings, partly owing to the disproportionately longer sequences of
+speech tokens in contrast to textual tokens. This results in a large compute
+imbalance between modalities during pre-training as well as during inference,
+and a potential hindrance to effectively aligning speech and text, ultimately
+translating to several orders of magnitude slower scaling laws. We introduce
+the Latent Speech-Text Transformer (LST), which makes pre-training speech-text
+models more data-efficient by dynamically and inexpensively aggregating speech
+tokens into latent speech patches. These patches serve as higher-level units
+that can either align with corresponding textual units to aid capability
+transfer or even encapsulate common speech sequences like silences to be more
+compute-efficient. We show that LST outperforms vanilla approaches on
+speech-to-speech as well as text-to-text benchmarks in both data- and
+compute-controlled settings, the former indicating more effective
+representational alignment and the latter indicating steeper scaling laws for
+speech-text models. On HellaSwag story completion, LST achieves 6.5% absolute
+gain in speech accuracy under compute-controlled training and 5.3% under
+data-controlled training, while also improving text performance. We will
+release our models, code, and the evaluation data to facilitate further
+research.","\textbf{LLMs using speech tokens.} Early neural audio generation methods included direct auto-regressive generation of the speech waveform \citep{van2016wavenet}, or using adversarial approaches \citep{kong2020hifi}. Following this, \textit{textless NLP} work \citep{lakhotia2021generative} showed that by using discrete speech tokens obtained from self-supervised speech encoders (CPC, wav2vec 2.0, HuBERT) as targets for language modeling, can enable fully spoken LLMs.   AudioLM \citep{borsos2023audiolm} further uses hierarchical generation, first predicts semantic tokens, and subsequent stages predict fine-grained acoustic tokens from SoundStream \citep{zeghidour2021soundstream}, to achieve both high audio quality as well as long-term consistency. In addition to augmenting semantic speech tokens with pitch and style tokens to explicitly model expressivity, SpiritLM \citep{nguyen2025spirit} also introduced interleaving speech modeling with text-tokens. More recently, Moshi \citep{defossez2024moshi} propose a hierarchical \textit{inner monologue} method, that jointly predicts time-aligned text and acoustic tokens (with distilled semantic information), together with modeling multiple-stream audio for handling full-duplex audio dialogues. Finally, similar to scaling laws for text LLMs \citep{hoffmann2022training}, \cite{cuervo2024scaling} fit scaling law curves to predict the performance of spoken LLMs, and find that they scale upto three order of magnitude more slowly than text LLMs.
+
+
+
+\textbf{Transferring textual knowledge into speech LMs.} Slower scaling trends, together with a disproportionately lower amount of data, lead to a knowledge and reasoning gap between speech and text LLMs. To bridge this, AudioPaLM and TWIST \citep{rubenstein2023audiopalm,hassid2023textually} initialize a spoken LLM from a strong text model (PaLM-2, LLaMA), improving both speech understanding/generation and cross-lingual transfer. SpiritLM demonstrates that interleaved speech–text training significantly improves inter-modality knowledge transfer. Spectron \citep{nachmanispoken} uses a “Chain-of-Modality” pipeline to first produce text and then speech conditioned on the text, trading latency for stronger textual control, while Moshi \citep{defossez2024moshi} uses a similar approach but generates interleaved text and speech as an inner monologue. To improve latency, LLaMA-Omni \citep{fang2024llama} style systems decode text and speech simultaneously, by upsampling textual LLM hidden states to decode speech units, before proceeding to decode the next text token.
+
+
+
+\begin{table}[t]
+\centering
+\begin{threeparttable}
+\caption{Comparison of patching strategies with approximately matched patch sizes.  Static uses fixed patch lengths. Align (sil sep.) treats silence as separate patches, Align (sil merged) merges silence into words, and Curriculum starts with Align (sil sep.) and gradually shifts to Static during training.}
+
+
+% \caption{Ablation on patching strategies. Results are reported for HS, SC, and TSC under both S$\rightarrow$S and T$\rightarrow$T under 200k iterations. All the experiments are trained with interleaved and text data.}
+\label{tab:patching}
+\begin{tabular}{lccc|cc|cc}
+\toprule
+\textbf{Model} & \textbf{Ave Patch Size} & \multicolumn{2}{c|}{HellaSwag} & \multicolumn{2}{c|}{StoryCloze} & \multicolumn{2}{c}{TopicStoryCloze} \\
+ & (tokens) & S$\rightarrow$S & T$\rightarrow$T & S$\rightarrow$S & T$\rightarrow$T & S$\rightarrow$S & T$\rightarrow$T  \\
+\midrule
+% LST (Static)  & 3 &   40.6&	48.2&	\textbf{60.1}&	68.3&	86.5&	95.5 \\
+LST (Static)  & 4 &   40.5&	48.8&	58.2&	\textbf{69.4}&	86.2&	95.1 \\
+LST (\textbf{Curriculum})  & 5.8\tnote{*} $\rightarrow$ 4 &   \textbf{41.3}&	\textbf{49.2}&	\textbf{58.6} &	67.8&	\textbf{86.6}&	\textbf{95.4} \\
+\midrule
+% LST (Static)  & 5 &   \textbf{39.9} &	48.9&	58.4&	68.9&	85.2&	\textbf{95.7} \\
+% /3.7 (sil)
+LST (\textbf{Align, sil sep.})    & 5.8\tnote{*}  &    \textbf{39.9} &	\textbf{49.3}&	\textbf{60.3}&	\textbf{69.9}&	\textbf{85.7}&	\textbf{95.3} \\
+LST (Static)  & 6 &  39.4&	49.2&	58.7&	69.6&	84.9&	94.9  \\
+\midrule
+% LST (Static)  & 9 &  34.7&	\textbf{44.7}&	56.7&	66.3&	83.1&	94.7 \\ % TO UPDATE
+% LST (\textbf{Align, sil merged})   & 9.4 &  \textbf{35.0} &	44.4	& \textbf{57.9}	& \textbf{67.7} &	\textbf{85.2}	& \textbf{95.4} \\ % TO UPDATE
+% LST (Static) & 10 &  33.9&	44.4&	56.5&	67.1&	81.9&	94.3 \\ % TO UPDATE
+LST (Static)  & 9 & 37.2 & \textbf{49.4} & 57.5 & \textbf{69.7} & 84.7 & 95.9 \\ % TO UPDATE
+LST (\textbf{Align, sil merged}) & 9.4  &  \textbf{38.5} & 49.0 & \textbf{58.8} & \textbf{69.7} & \textbf{86.9} & \textbf{96.0}  \\ % TO UPDATE
+% LST (Static) & 10 & 36.3 & \textbf{49.5} & 57.1 & 69.4 & 84.1 & 95.7   \\ % TO UPDATE
+
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para,flushleft]
+\footnotesize
+\item[*] The average patch length is 5.8 for words in Align (sil sep.), while silence has an average of 3.7.
+\end{tablenotes}
+\end{threeparttable}
+\vspace{-2mm}
+\end{table}
+
+
+\textbf{Speech model efficiency.} Compared to text, speech yields much longer token sequences, owing to higher frequency audio codecs, that consume many times additional compute to pre-train and generate. Efforts to mitigate this include methods to produce coarser speech units \citep{baadesyllablelm,tseng2025taste}, hierarchical generation \citep{borsos2023audiolm}, and producing residual tokens using parallel streams \citep{copet2023simple}. Attempts at text-inspired approaches to compress token sequences such as BPE \citep{ren2022speech,li2024effectiveness} achieved limited success. In this paper, we take inspiration from recent dynamic patching approaches that have yielded improvements in other modalities such as text \citep{pagnoni2024byte,yu2023megabyte,videau2025bytes} and vision \citep{pang2024next,beyer2023flexivit}, and extend these methods to speech-text LLMs.
+
+\textbf{Speech Understanding Benchmarks.} Going beyond measuring only acoustic and phonetic capabilities of speech models using scores such as ABX \citep{kahn2020libri}, \cite{nguyen2020zero} established the Zero Resource Speech Benchmark 2021, comprising datasets/metrics to evaluate   lexical (sWUGGY), syntactic (sBLIMP) and lexical-semantic (sSIMI) capabilities of spoken LLMs. Since these benchmarks contrast between very short speech segments, we found that dynamic compute  approaches such as ours, do not yield significant improvements. However, subsequently, \cite{hassid2023textually} introduced the sStoryCloze and TopicStoryCloze datasets, which are story completion benchmarks in the speech modality measuring commonsense/understanding abilities of Spoken LLMs. We use these benchmarks in this paper, together with a speech version of the popular HellaSWAG textual benchmark, also measuring commonsense reasoning capabilities.
+
+%Voxeval","\textbf{LLMs using speech tokens.} Early neural audio generation methods included direct auto-regressive generation of the speech waveform \citep{van2016wavenet}, or using adversarial approaches \citep{kong2020hifi}. Following this, \textit{textless NLP} work \citep{lakhotia2021generative} showed that by using discrete speech tokens obtained from self-supervised speech encoders (CPC, wav2vec 2.0, HuBERT) as targets for language modeling, can enable fully spoken LLMs.   AudioLM \citep{borsos2023audiolm} further uses hierarchical generation, first predicts semantic tokens, and subsequent stages predict fine-grained acoustic tokens from SoundStream \citep{zeghidour2021soundstream}, to achieve both high audio quality as well as long-term consistency. In addition to augmenting semantic speech tokens with pitch and style tokens to explicitly model expressivity, SpiritLM \citep{nguyen2025spirit} also introduced interleaving speech modeling with text-tokens. More recently, Moshi \citep{defossez2024moshi} propose a hierarchical \textit{inner monologue} method, that jointly predicts time-aligned text and acoustic tokens (with distilled semantic information), together with modeling multiple-stream audio for handling full-duplex audio dialogues. Finally, similar to scaling laws for text LLMs \citep{hoffmann2022training}, \cite{cuervo2024scaling} fit scaling law curves to predict the performance of spoken LLMs, and find that they scale upto three order of magnitude more slowly than text LLMs.
+
+
+
+\textbf{Transferring textual knowledge into speech LMs.} Slower scaling trends, together with a disproportionately lower amount of data, lead to a knowledge and reasoning gap between speech and text LLMs. To bridge this, AudioPaLM and TWIST \citep{rubenstein2023audiopalm,hassid2023textually} initialize a spoken LLM from a strong text model (PaLM-2, LLaMA), improving both speech understanding/generation and cross-lingual transfer. SpiritLM demonstrates that interleaved speech–text training significantly improves inter-modality knowledge transfer. Spectron \citep{nachmanispoken} uses a “Chain-of-Modality” pipeline to first produce text and then speech conditioned on the text, trading latency for stronger textual control, while Moshi \citep{defossez2024moshi} uses a similar approach but generates interleaved text and speech as an inner monologue. To improve latency, LLaMA-Omni \citep{fang2024llama} style systems decode text and speech simultaneously, by upsampling textual LLM hidden states to decode speech units, before proceeding to decode the next text token.
+
+
+
+\begin{table}[t]
+\centering
+\begin{threeparttable}
+\caption{Comparison of patching strategies with approximately matched patch sizes.  Static uses fixed patch lengths. Align (sil sep.) treats silence as separate patches, Align (sil merged) merges silence into words, and Curriculum starts with Align (sil sep.) and gradually shifts to Static during training.}
+
+
+
+\begin{tabular}{lccc|cc|cc}
+\toprule
+\textbf{Model} & \textbf{Ave Patch Size} & \multicolumn{2}{c|}{HellaSwag} & \multicolumn{2}{c|}{StoryCloze} & \multicolumn{2}{c}{TopicStoryCloze} \\
+ & (tokens) & S$\rightarrow$S & T$\rightarrow$T & S$\rightarrow$S & T$\rightarrow$T & S$\rightarrow$S & T$\rightarrow$T  \\
+\midrule
+
+LST (Static)  & 4 &   40.5&	48.8&	58.2&	\textbf{69.4}&	86.2&	95.1 \\
+LST (\textbf{Curriculum})  & 5.8\tnote{*} $\rightarrow$ 4 &   \textbf{41.3}&	\textbf{49.2}&	\textbf{58.6} &	67.8&	\textbf{86.6}&	\textbf{95.4} \\
+\midrule
+
+
+LST (\textbf{Align, sil sep.})    & 5.8\tnote{*}  &    \textbf{39.9} &	\textbf{49.3}&	\textbf{60.3}&	\textbf{69.9}&	\textbf{85.7}&	\textbf{95.3} \\
+LST (Static)  & 6 &  39.4&	49.2&	58.7&	69.6&	84.9&	94.9  \\
+\midrule
+
+
+
+LST (Static)  & 9 & 37.2 & \textbf{49.4} & 57.5 & \textbf{69.7} & 84.7 & 95.9 \\ 
+LST (\textbf{Align, sil merged}) & 9.4  &  \textbf{38.5} & 49.0 & \textbf{58.8} & \textbf{69.7} & \textbf{86.9} & \textbf{96.0}  \\ 
+
+
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para,flushleft]
+\footnotesize
+\item[*] The average patch length is 5.8 for words in Align (sil sep.), while silence has an average of 3.7.
+\end{tablenotes}
+\end{threeparttable}
+\vspace{-2mm}
+\end{table}
+
+
+\textbf{Speech model efficiency.} Compared to text, speech yields much longer token sequences, owing to higher frequency audio codecs, that consume many times additional compute to pre-train and generate. Efforts to mitigate this include methods to produce coarser speech units \citep{baadesyllablelm,tseng2025taste}, hierarchical generation \citep{borsos2023audiolm}, and producing residual tokens using parallel streams \citep{copet2023simple}. Attempts at text-inspired approaches to compress token sequences such as BPE \citep{ren2022speech,li2024effectiveness} achieved limited success. In this paper, we take inspiration from recent dynamic patching approaches that have yielded improvements in other modalities such as text \citep{pagnoni2024byte,yu2023megabyte,videau2025bytes} and vision \citep{pang2024next,beyer2023flexivit}, and extend these methods to speech-text LLMs.
+
+\textbf{Speech Understanding Benchmarks.} Going beyond measuring only acoustic and phonetic capabilities of speech models using scores such as ABX \citep{kahn2020libri}, \cite{nguyen2020zero} established the Zero Resource Speech Benchmark 2021, comprising datasets/metrics to evaluate   lexical (sWUGGY), syntactic (sBLIMP) and lexical-semantic (sSIMI) capabilities of spoken LLMs. Since these benchmarks contrast between very short speech segments, we found that dynamic compute  approaches such as ours, do not yield significant improvements. However, subsequently, \cite{hassid2023textually} introduced the sStoryCloze and TopicStoryCloze datasets, which are story completion benchmarks in the speech modality measuring commonsense/understanding abilities of Spoken LLMs. We use these benchmarks in this paper, together with a speech version of the popular HellaSWAG textual benchmark, also measuring commonsense reasoning capabilities.",N/A

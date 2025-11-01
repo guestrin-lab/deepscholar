@@ -1,0 +1,58 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.05586v1,http://arxiv.org/abs/2510.05586v1,2025-10-07 05:16:29+00:00,CalibCLIP: Contextual Calibration of Dominant Semantics for Text-Driven Image Retrieval,"Existing Visual Language Models (VLMs) suffer structural limitations where a
+few low contribution tokens may excessively capture global semantics,
+dominating the information aggregation process and suppressing the
+discriminative features in text-driven image retrieval tasks. To address this,
+we introduce \textbf{CalibCLIP}, a training-free method designed to calibrate
+the suppressive effect of dominant tokens. Specifically, in the visual space,
+we propose the Contrastive Visual Enhancer (CVE), which decouples visual
+features into target and low information regions. Subsequently, it identifies
+dominant tokens and dynamically suppresses their representations.In the textual
+space, we introduce the Discriminative Concept Calibrator (DCC), which aims to
+differentiate between general and discriminative concepts within the text
+query. By mitigating the challenges posed by generic concepts and improving the
+representations of discriminative concepts, DCC strengthens the differentiation
+among similar samples. Finally, extensive experiments demonstrate consistent
+improvements across seven benchmarks spanning three image retrieval tasks,
+underscoring the effectiveness of CalibCLIP. Code is available at:
+https://github.com/kangbin98/CalibCLIP","\label{sec:related_work}
+\mypara{Visual Language Models.} VLMs\cite{Lai_2024_CVPR, Chen_2024_CVPR, Zhai_2023_ICCV, Guan_2024_CVPR} such as CLIP excel in achieving cross-modal alignment through contrastive pre-training but encounter a structural limitation where scattered attention hinders nuanced feature discrimination. Recent studies \cite{NEURIPS2024_a0303731, Zhang_2024_CVPR} have highlighted disruptive tokens and proposed various solutions for fine-grained tasks like open-vocabulary segmentation \cite{Shao-eccv-2024} and object detection\cite{Hamilton_2024_CVPR}. However, these methods often require additional training and currently lack a unified and comprehensive analysis and solution for image retrieval. In response, we introduce a straightforward, training-free, dual-space calibration framework that suppresses dominant token representations without the need for extra training, thereby enhancing fine-grained perception in retrieval tasks.
+
+\mypara{Text-driven image retrieval.} Building on the achievements of large language models (LLMs) \cite{longlora, bai2023qwentechnicalreport}, the field of text-driven image retrieval \cite{Xu2024Invisible, Liao2024Selection, liu2024candidate, bai_2023_sentence, APTM_MM_2023, Feng_ACMMM_2024}has made significant strides. However, existing methods \cite{Wan_2024_CVPR, Fu_2023_CVPR} mainly focus on global alignment between images and text, often neglecting fine-grained details and struggling with intricate queries. This issue is particularly pronounced in text-based person retrieval tasks \cite{tcsvt_2023_CTLG,tnnls_2024_EAIB, Liu2024Causality}, which require precise modeling of subtle attributes and spatial relationships. Yet, current models primarily concentrate on associations at the object level. While recent compositional retrieval methods \cite{Pan_2023_CVPR, 2024_SIGIR_ACM} extend semantic alignment to multi-concept queries, they are hindered by high computational demands and limitations in data scalability. This hampers both fine-grained perception and the performance of compositional queries. To address these challenges, we propose a training-free approach that tackles the semantic dominance of abnormal tokens in the shared embedding space, thereby enhancing fine-grained perception and cross-modal alignment.
+
+\begin{figure*}[!ht]
+\centering
+\includegraphics[width=.99\textwidth, height=10cm]{figure/overview.pdf} % 将图形宽度设置为文本宽度的98%
+\caption{Illustration of CalibCLIP framework. We calibrate contextually dominant tokens through a dual-space intervention: In visual space, the CVE module isolates objects from low information regions while suppressing dominant tokens. In text space, the DCC module disentangles text into general and discriminative attributes for fine-grained differentiation. } 
+\label{fig:overview}
+\end{figure*}","\mypara{Visual Language Models.} VLMs\cite{Lai_2024_CVPR, Chen_2024_CVPR, Zhai_2023_ICCV, Guan_2024_CVPR} such as CLIP excel in achieving cross-modal alignment through contrastive pre-training but encounter a structural limitation where scattered attention hinders nuanced feature discrimination. Recent studies \cite{NEURIPS2024_a0303731, Zhang_2024_CVPR} have highlighted disruptive tokens and proposed various solutions for fine-grained tasks like open-vocabulary segmentation \cite{Shao-eccv-2024} and object detection\cite{Hamilton_2024_CVPR}. However, these methods often require additional training and currently lack a unified and comprehensive analysis and solution for image retrieval. In response, we introduce a straightforward, training-free, dual-space calibration framework that suppresses dominant token representations without the need for extra training, thereby enhancing fine-grained perception in retrieval tasks.
+
+\mypara{Text-driven image retrieval.} Building on the achievements of large language models (LLMs) \cite{longlora, bai2023qwentechnicalreport}, the field of text-driven image retrieval \cite{Xu2024Invisible, Liao2024Selection, liu2024candidate, bai_2023_sentence, APTM_MM_2023, Feng_ACMMM_2024}has made significant strides. However, existing methods \cite{Wan_2024_CVPR, Fu_2023_CVPR} mainly focus on global alignment between images and text, often neglecting fine-grained details and struggling with intricate queries. This issue is particularly pronounced in text-based person retrieval tasks \cite{tcsvt_2023_CTLG,tnnls_2024_EAIB, Liu2024Causality}, which require precise modeling of subtle attributes and spatial relationships. Yet, current models primarily concentrate on associations at the object level. While recent compositional retrieval methods \cite{Pan_2023_CVPR, 2024_SIGIR_ACM} extend semantic alignment to multi-concept queries, they are hindered by high computational demands and limitations in data scalability. This hampers both fine-grained perception and the performance of compositional queries. To address these challenges, we propose a training-free approach that tackles the semantic dominance of abnormal tokens in the shared embedding space, thereby enhancing fine-grained perception and cross-modal alignment.","Visual Language Models.VLMs[ 10,19,28,62] such as CLIP
+excel in achieving cross-modal alignment through contrastive pre-
+training but encounter a structural limitation where scattered atten-
+tion hinders nuanced feature discrimination. Recent studies [ 29,68]
+have highlighted disruptive tokens and proposed various solutions
+for fine-grained tasks like open-vocabulary segmentation [ 47] and
+object detection[ 20]. However, these methods often require addi-
+tional training and currently lack a unified and comprehensive
+analysis and solution for image retrieval. In response, we introduce
+a straightforward, training-free, dual-space calibration framework
+that suppresses dominant token representations without the need
+for extra training, thereby enhancing fine-grained perception in
+retrieval tasks.
+Text-driven image retrieval.Building on the achievements of
+large language models (LLMs) [ 2,8], the field of text-driven image
+retrieval [ 3,16,34,42,55,59]has made significant strides. However,
+existing methods [ 17,49] mainly focus on global alignment between
+images and text, often neglecting fine-grained details and strug-
+gling with intricate queries. This issue is particularly pronounced intext-based person retrieval tasks [ 40,53,71], which require precise
+modeling of subtle attributes and spatial relationships. Yet, current
+models primarily concentrate on associations at the object level.
+While recent compositional retrieval methods [ 25,44] extend se-
+mantic alignment to multi-concept queries, they are hindered by
+high computational demands and limitations in data scalability.
+This hampers both fine-grained perception and the performance
+of compositional queries. To address these challenges, we propose
+a training-free approach that tackles the semantic dominance of
+abnormal tokens in the shared embedding space, thereby enhancing
+fine-grained perception and cross-modal alignment."

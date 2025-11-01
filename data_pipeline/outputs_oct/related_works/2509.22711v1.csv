@@ -1,0 +1,48 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.22711v1,http://arxiv.org/abs/2509.22711v1,2025-09-24 03:48:49+00:00,Beyond Western Politics: Cross-Cultural Benchmarks for Evaluating Partisan Associations in LLMs,"Partisan bias in LLMs has been evaluated to assess political leanings,
+typically through a broad lens and largely in Western contexts. We move beyond
+identifying general leanings to examine harmful, adversarial representational
+associations around political leaders and parties. To do so, we create datasets
+\textit{NeutQA-440} (non-adversarial prompts) and \textit{AdverQA-440}
+(adversarial prompts), which probe models for comparative plausibility
+judgments across the USA and India. Results show high susceptibility to biased
+partisan associations and pronounced asymmetries (e.g., substantially more
+favorable associations for U.S. Democrats than Republicans) alongside
+mixed-polarity concentration around India's BJP, highlighting systemic risks
+and motivating standardized, cross-cultural evaluation.","% \input{contents/related work}
+Partisan or political bias in LLMs has piqued researchers' interest, and several studies have evaluated the presence of this bias in various applications and frontier LLMs like ChatGPT, Google Gemini, etc. \cite{feng-etal-2023-pretraining, Yangetal, Rozado2023, Rotaru2024, yuksel2025languagedependentpoliticalbiasai}. Focusing on political bias in the American context, Motoki et al. studied the left-leaning political bias in LLMs and underscored the existing value misalignment between ChatGPT, a popular LLM application, and the average American \cite{Motoki2025}. Similarly, Faulborn et al. proposed a survey-type political bias measure grounded in political science theory and used it to test various commercial large language models, including multiple versions of ChatGPT \cite{Faulborn2025}. Going a step further from simply analysing partisan leaning, Peng et al. perform a comparative study of political bias in LLMs. They design a two-dimensional framework that assesses the political leaning of models on highly polarized topics while also assessing socio-political involvement on less polarized ones \cite{Peng2024}.
+
+When examining the manifestations of partisan bias in different contexts, it is crucial to also highlight the well-researched effects of interacting with a politically biased LLM and how it can influence decisions and individual political ideologies. Fisher et al. conducted a study to understand whether LLMs with a specific political leaning can influence the political decision-making of individuals interacting with those models. The experiment highlights the significant extent to which interacting with a biased model leads participants to adopt opinions and make decisions that match the model's \cite{Fisher2025}. Messer, in their study, uncovered a similar pattern where perceived alignment between a user’s political orientation and bias in generated content was found to increase reliance and acceptance of Generative AI systems by the user \cite{Messer2025}.\\
+Research not only highlights the pervasive influence of biased LLMs but also demonstrates their power to impact political conduct and public discourse around crucial topics. Goodman, in their thesis, further elaborates on the impact and detrimental effects of the presence of political bias in LLM applications like ChatGPT and reiterates how it can influence voting trends, especially the votes of voters with low self-confidence \cite{GoodmanFacultyAdvisor2024}.
+Therefore, it becomes imperative to first understand the extent of the bias in a system and thoroughly examine the harms it is perpetuating before aiming to mitigate the bias.","Partisan or political bias in LLMs has piqued researchers' interest, and several studies have evaluated the presence of this bias in various applications and frontier LLMs like ChatGPT, Google Gemini, etc. \cite{feng-etal-2023-pretraining, Yangetal, Rozado2023, Rotaru2024, yuksel2025languagedependentpoliticalbiasai}. Focusing on political bias in the American context, Motoki et al. studied the left-leaning political bias in LLMs and underscored the existing value misalignment between ChatGPT, a popular LLM application, and the average American \cite{Motoki2025}. Similarly, Faulborn et al. proposed a survey-type political bias measure grounded in political science theory and used it to test various commercial large language models, including multiple versions of ChatGPT \cite{Faulborn2025}. Going a step further from simply analysing partisan leaning, Peng et al. perform a comparative study of political bias in LLMs. They design a two-dimensional framework that assesses the political leaning of models on highly polarized topics while also assessing socio-political involvement on less polarized ones \cite{Peng2024}.
+
+When examining the manifestations of partisan bias in different contexts, it is crucial to also highlight the well-researched effects of interacting with a politically biased LLM and how it can influence decisions and individual political ideologies. Fisher et al. conducted a study to understand whether LLMs with a specific political leaning can influence the political decision-making of individuals interacting with those models. The experiment highlights the significant extent to which interacting with a biased model leads participants to adopt opinions and make decisions that match the model's \cite{Fisher2025}. Messer, in their study, uncovered a similar pattern where perceived alignment between a user’s political orientation and bias in generated content was found to increase reliance and acceptance of Generative AI systems by the user \cite{Messer2025}.\\
+Research not only highlights the pervasive influence of biased LLMs but also demonstrates their power to impact political conduct and public discourse around crucial topics. Goodman, in their thesis, further elaborates on the impact and detrimental effects of the presence of political bias in LLM applications like ChatGPT and reiterates how it can influence voting trends, especially the votes of voters with low self-confidence \cite{GoodmanFacultyAdvisor2024}.
+Therefore, it becomes imperative to first understand the extent of the bias in a system and thoroughly examine the harms it is perpetuating before aiming to mitigate the bias.","Partisan or political bias in LLMs has piqued researchers’ interest, and several studies have evaluated
+the presence of this bias in various applications and frontier LLMs like ChatGPT, Google Gemini,
+etc. Feng et al. [2023], Yang and Menczer [2025], Rozado [2023], Rotaru et al. [2024], Yuksel et al.
+[2025]. Focusing on political bias in the American context, Motoki et al. studied the left-leaning
+political bias in LLMs and underscored the existing value misalignment between ChatGPT, a popular
+LLM application, and the average American Motoki et al. [2025]. Similarly, Faulborn et al. proposed
+a survey-type political bias measure grounded in political science theory and used it to test various
+commercial large language models, including multiple versions of ChatGPT Faulborn et al. [2025].
+Going a step further from simply analysing partisan leaning, Peng et al. perform a comparative
+study of political bias in LLMs. They design a two-dimensional framework that assesses the political
+leaning of models on highly polarized topics while also assessing socio-political involvement on less
+polarized ones Peng et al. [2024].
+When examining the manifestations of partisan bias in different contexts, it is crucial to also highlight
+the well-researched effects of interacting with a politically biased LLM and how it can influence
+decisions and individual political ideologies. Fisher et al. conducted a study to understand whether
+LLMs with a specific political leaning can influence the political decision-making of individuals
+interacting with those models. The experiment highlights the significant extent to which interacting
+with a biased model leads participants to adopt opinions and make decisions that match the model’s
+Fisher et al. [2025]. Messer, in their study, uncovered a similar pattern where perceived alignment
+between a user’s political orientation and bias in generated content was found to increase reliance
+and acceptance of Generative AI systems by the user Messer [2025].
+Research not only highlights the pervasive influence of biased LLMs but also demonstrates their
+power to impact political conduct and public discourse around crucial topics. Goodman, in their
+thesis, further elaborates on the impact and detrimental effects of the presence of political bias in
+LLM applications like ChatGPT and reiterates how it can influence voting trends, especially the votes
+of voters with low self-confidence Advisor and Lohmann [2024]. Therefore, it becomes imperative to
+first understand the extent of the bias in a system and thoroughly examine the harms it is perpetuating
+before aiming to mitigate the bias."

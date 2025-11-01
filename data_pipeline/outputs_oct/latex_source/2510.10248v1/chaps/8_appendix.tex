@@ -1,0 +1,279 @@
+\appendix
+
+\section{Prompt Templates}
+\label{appa:prompt}
+% \begin{figure}[!htp]
+%   \centering
+%   \includegraphics[width=\linewidth]{figs/prompt.png}
+%   \caption{ Overview of multimodal prompt.} 
+%   \label{fig:prompt}
+% \end{figure}
+\begin{myexample}{Prompt Example for BACE Task}{}
+\label{example1}
+\ttfamily
+    \textbf{[Role]}\\
+    You are a top AI assistant specializing in molecular chemistry and drug discovery, proficient in molecular property prediction.\\
+    
+    \textbf{[Task]}\\
+    BACE1 is an aspartic-acid protease important in the pathogenesis of Alzheimer's disease, and in the formation of myelin sheaths...\\
+    output "True" or "False".\\
+    
+    \textbf{[Formatting]}\\
+    Place the thought process within {\ttfamily\textcolor{blue}{\textless{}think\textgreater{}\textless{}/think\textgreater{}}} and then conclude your answer with {\ttfamily\textcolor{red}{\textless{}answer\textgreater{}}True/False\textcolor{red}{\textless{}/answer\textgreater{}}}.\\
+    
+    \textbf{[Example]}\\
+    {\ttfamily
+    \textcolor{blue}{\textless{}think\textgreater{}}xxxx\textcolor{blue}{\textless{}/think\textgreater{}}\\
+    \textcolor{red}{\textless{}answer\textgreater{}}True/False\textcolor{red}{\textless{}/answer\textgreater{}}
+    }\\
+    
+    \textbf{[Few-shot]}\\
+    \begin{tabular}{|p{10cm}|c|}
+        \hline
+        {\scriptsize \ttfamily ClC1=CC(=CC(Cl)=C1NC(=O)C)CNC(=[NH2+1])NC(=O)CN2C3=CC(OC)=CC=C3C=C2} & False \\
+        \hline
+        {\scriptsize \ttfamily ClC1=CC(=CC(Cl)=C1NC(=O)C)CNC(=[NH2+1])NC(=O)CN2C3=CC(CC)=CC=C3C=C2} & True \\
+        \hline
+        {\scriptsize \ttfamily ClC1=CC(=CC(Cl)=C1NC(=O)C)CNC(=[NH2+1])NC(=O)CN2C3=CC(F)=CC3C=C2} & False \\
+        \hline
+    \end{tabular}\\
+    \\
+    \\
+    \textbf{[Molecule]}\\
+    {\small \ttfamily ClC1=CC(=CC(Cl)=C1NC(=O)C)CNC(=[NH2+1])NC(=O)CN2C3=C(C=CC=C3)C=C2}\\
+    \\
+    \includegraphics[width=0.5\textwidth]{figs/mol_example.png}
+\end{myexample}
+
+\vspace{1cm}
+
+\begin{myexample}{Prompt for ChemCoT-Based One-Shot Generattion}{}
+\ttfamily
+    {\ttfamily\textbf{Example Prompt:}}\\
+    
+    \textless{} PORMPT retrieved from {\ttfamily \underline{OpenMol/ChemCoTDataset}} \textgreater{}\\
+
+    {\ttfamily\textbf{Example Response:}}\\
+
+    \textless{} RESPONSE retrieved from {\ttfamily \underline{OpenMol/ChemCoTDataset}} \textgreater{}\\
+
+    {\ttfamily\textbf{Prompt:}}\\
+    
+    \textless{} PORMPT likes {\ttfamily Example~1 \textgreater{}}\\    
+
+    {\ttfamily\textbf{Response:}}
+\end{myexample}
+
+
+\begin{myexample}{Prompt for Expert-Guided Task-Specific Generation}{}
+\ttfamily
+    \textless{} PORMPT likes {\ttfamily Example~1 \textgreater{}}\\    
+    
+    \textbf{[Expert]}\\
+
+    \textless{} EXPERT KNOWLEDGE refined by {\ttfamily GPT4o \textgreater{}}\\    
+\end{myexample}
+
+\vspace{1cm}
+
+\begin{myexample}{Prompt for Logical Soundness Scoring}{}
+\ttfamily
+You are a professional reasoning-evaluation expert. Your task is to assess the \textbf{logical soundness} of a large language model's chain-of-thought when answering a question, and assign an integer score from \textbf{0 to 10}. Focus strictly on the logical connections between reasoning steps, not on whether the final answer is correct.\\
+
+{\ttfamily\textbf{Input:}}\\
+- [Question]: The original question.\\
+- [Model Response]: The model's full response, including its chain of thought.\\
+
+{\ttfamily\textbf{Scoring Dimension (Logical Soundness):}}\\
+- Do reasoning steps build progressively and refer back to earlier points?\\
+- Is each step a reasonable extension of the previous inference?\\
+- Is the language coherent, with no contradictions or confusing wording? \\
+
+{\ttfamily\textbf{Scoring Scale (0-10):}}\\
+- \textbf{10}: Perfect logical structure; steps are crystal-clear and fully justified.\\
+- \textbf{8-9}: Overall logic sound; only minor or negligible leaps/wording issues.\\
+- \textbf{6-7}: Main logic correct, but some jumps, insufficient explanation, or minor conflicts.\\
+- \textbf{4-5}: Noticeable breaks or missing key inferences, yet some coherent logic remains.\\
+- \textbf{2-3}: Most steps lack causality or contradict each other; only sporadic correct parts.\\
+- \textbf{0-1}: Virtually no discernible valid reasoning structure.\\
+
+% \textless{} FEWSHOT EXAMPLE \textgreater{}\\    
+
+\textbf{Your Task:}\\
+Adhering strictly to the rubric above, you must output only a single integer score from 0 to 10. Do not provide any additional explanations, text, or justifications.\\
+
+\textbf{Question:}\\
+\textless{} QUESTION \textgreater{}\\
+
+\textbf{Model Response:}\\
+\textless{} RESPONSE \textgreater{}\\
+
+\textbf{Output Format:} [integer score]
+ 
+\end{myexample}
+
+
+\begin{myexample}{Prompt for Accuracy \& Insight Scoring}{}
+\ttfamily
+You are a professional reasoning-evaluation expert. Your task is to assess the \textbf{accuracy and insight value} of a large language model's chain-of-thought when answering a question, and assign an integer score from \textbf{0 to 10}...\\
+% Ignore whether the final answer is correct; focus on the correctness of methods and facts, and on the usefulness of the reasoning for human experts.\\
+
+{\ttfamily\textbf{Scoring Dimension (Accuracy \& Insight):}}\\
+- Are the concepts, formulas, and facts used accurate and appropriate? \\
+- Do the reasoning perspective, decomposition approach, or intermediate conclusions provide substantive support or fresh insights for domain experts? \\
+
+{\ttfamily\textbf{Scoring Scale (0-10):}}\\
+- \textbf{10}: All methods and facts are completely correct, offering deep and original insights.\\
+- \textbf{8-9}: Core content is correct, with only minor detail errors or slightly shallower insights.\\
+- \textbf{6-7}: Mostly correct, but with notable secondary errors or average insight depth.\\
+- \textbf{4-5}: Mix of correct and incorrect information; limited insight value.\\
+- \textbf{2-3}: Most methods/facts are wrong or misused, providing almost no insight.\\
+- \textbf{0-1}: Completely incorrect or irrelevant.\\
+...
+\\
+\end{myexample}
+
+\vspace{1cm}
+
+
+\begin{myexample}{Prompt for Accuracy \& Insight Scoring}{}
+\ttfamily
+You are a professional reasoning-evaluation expert. Your task is to assess the \textbf{conciseness} of a large language model's chain-of-thought when answering a question, and assign an integer score from \textbf{0 to 10}...\\
+% Ignore whether the final answer is correct; evaluate only how succinct the reasoning is and whether it avoids redundancy.\\
+
+
+\textbf{Scoring Dimension (Conciseness):}\\
+- Does the response go straight to the point, avoiding irrelevant or repetitive explanations? \\
+- Does it convey the full reasoning with the minimum necessary steps? \\
+
+{\ttfamily\textbf{Scoring Scale (0-10):}}\\
+- \textbf{10}: Extremely concise, with no redundant or repetitive statements.\\
+- \textbf{8-9}: Generally concise, with only a tiny amount of removable content.\\
+- \textbf{6-7}: Noticeable redundant paragraphs or repeated explanations.\\
+- \textbf{4-5}: Long-winded and repetitive; key information diluted by noise.\\
+- \textbf{2-3}: Large portions are irrelevant or repetitive; core points hard to discern.\\
+- \textbf{0-1}: Almost entirely made up of redundant content.\\
+...
+\\
+\end{myexample}
+
+
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Reasoning quality scores across three evaluation dimensions. All scores are on a 0-10 scale.}
+\label{tab:reasoning_scores}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{Logical Soundness} & \textbf{Accuracy \& Insight} & \textbf{Conciseness} & \textbf{Average} \\
+\midrule
+o3-mini & 7.182 & 5.470 & 6.053 & 6.235 \\
+DeepSeek-V3.1-Think & 7.395 & 6.517 & 6.257 & 6.723 \\
+GPT-4o & 6.698 & 5.916 & 5.653 & 6.089 \\
+Qwen2.5-VL-72B-Instruct & 7.641 & 6.241 & 5.492 & 6.458 \\
+Qwen2.5-VL-7B-Instruct & 4.517 & 3.259 & 5.079 & 4.285 \\
+\rowcolor{gray!15}
+\textbf{MPPReasoner (Ours)} & \textbf{8.556} & \textbf{7.039} & \textbf{7.352} & \textbf{7.730} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section{Reasoning Quality Scores}
+\label{appb:quality}
+Table~\ref{tab:reasoning_scores} presents the detailed reasoning quality scores across three evaluation dimensions~\citep{sophiavlr1} for all models in our study.
+The detailed dimensional analysis reveals several important insights into model capabilities and reasoning patterns~\citep{surveyreasoning,evaluationlanguagemodels,rewardanything,rmr1}. MPPReasoner achieves the highest scores across all three evaluation dimensions, demonstrating comprehensive reasoning excellence. In logical soundness, MPPReasoner scores 8.556, significantly outperforming the best baseline DeepSeek-V3.1-Think at 7.395, indicating superior coherence in step-by-step reasoning flow. For accuracy \& insight, our model achieves 7.039, substantially exceeding DeepSeek-V3.1-Think's 6.517, which demonstrates the effectiveness of chemical principle integration in generating factually correct and insightful analyses.
+
+Examining model category patterns, advanced reasoning models like o3-mini and DeepSeek-V3.1-Think show relatively strong logical soundness but struggle with accuracy \& insight, particularly o3-mini at 5.470, suggesting that general reasoning capabilities cannot substitute for domain-specific knowledge. Large-scale models exhibit mixed performance: Qwen2.5-VL-72B-Instruct achieves decent logical soundness (7.641) but suffers in conciseness (5.492), while the smaller Qwen2.5-VL-7B-Instruct shows consistently poor performance across all dimensions, with particularly low accuracy \& insight at 3.259.
+Notably, MPPReasoner maintains balanced excellence across all dimensions, avoiding the trade-offs observed in baseline models. The model's conciseness score of 7.352 is particularly remarkable, as it demonstrates the ability to provide comprehensive chemical reasoning without unnecessary verbosity, a crucial factor for practical applications where chemists need clear and actionable insights.
+
+
+
+
+\section{Implementation Details}
+\label{appc:setting}
+
+We implement MPPReasoner based on Qwen2.5-VL-7B-Instruct~\citep{qwen25vl}, configured with a maximum sequence length of 8,192 tokens to accommodate detailed reasoning outputs. Our implementation follows a two-stage training pipeline with carefully tuned hyperparameters for optimal performance.
+
+SFT stage employs 16,000 curated reasoning trajectories over 3 epochs. We use an effective batch size of 16 with a learning rate of 1e-5 and the AdamW optimizer. A linear learning rate scheduler with 3\% warmup ratio ensures stable training convergence.
+
+RL stage utilizes the GRPO algorithm~\citep{grpo} for 500 optimization steps with dynamic sampling~\citep{dapo}t o filter training instances and focus on tractable reasoning examples. We employ a lower learning rate of 1e-6 with weight decay of 1e-2 and KL coefficient of 1e-2 to maintain stability during policy optimization. The rollout configuration generates 5 samples per input with temperature 1.0, using a global batch size of 128 and rollout batch size of 512 for efficient training.The hierarchical reward weights in RLPGR are set as ($\lambda_1$, $\lambda_2$, $\lambda_3$) = (1.0, 0.25, 0.25) for foundation, reasoning, and chemistry layers respectively.
+
+All training is conducted on 8 NVIDIA A100 80GB GPUs with mixed precision~\citep{mixedprecisiontraining} training for memory efficiency. The SFT stage requires approximately 2 hours, while the RL stage takes 12 hours, totaling 14 hours for complete training. During inference, we use temperature 1.0 with top-k sampling (k=5) to generate diverse yet high-quality reasoning paths.
+
+
+\begin{table}[!htb]
+\centering
+\caption{Hyperparameters Setting}
+\label{tab:setting}
+\begin{tabular}{l|c}
+\toprule
+\textbf{Hyperparameter} & \textbf{Value} \\ 
+\midrule
+\rowcolor{gray!20}
+\multicolumn{2}{c}{\textit{\# Supervised Fine-tuning (SFT)}} \\
+GPU Number (A100) & 8 \\
+Train Batch Size Per Device & 2 \\
+Gradient Accumulation Steps & 4 \\
+Learning Rate & 1.0e-5 \\
+Number of Train Epochs & 3 \\
+LR Scheduler Type & Linear \\
+Warmup Ratio & 0.03 \\
+\midrule
+\rowcolor{gray!20}
+\multicolumn{2}{c}{\textit{\# Reinforcement Learning (RL)}} \\
+GPU Number (A100) & 8 \\
+Learning Rate & 1.0e-6 \\
+Weight Decay & 1.0e-2 \\
+KL Coefficient & 1.0e-2 \\
+Rollout Number & 5 \\
+Rollout Temperature & 1.0 \\
+Global Batch Size & 128 \\
+Rollout Batch Size & 512 \\ 
+Micro Batch Size For Update Per Device  & 8 \\
+\midrule
+\rowcolor{gray!20}
+\multicolumn{2}{c}{\textit{\# Inference}} \\
+Temperature & 1.0 \\
+Top K & 5 \\
+Max Tokens & 8,192 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{More Cases}
+
+\begin{figure}[!htp]
+    \centering
+    \includegraphics[clip, trim=0cm 0.5cm 0cm 0.5cm, width=0.95\textwidth]{figs/more_case1.pdf}
+    \caption{Successful case on MPPReasoner for BACE1 protein binding prediction (ID).}
+    \label{fig:more_case1}
+\end{figure}
+
+\begin{figure}[!htp]
+    \centering
+    \includegraphics[clip, trim=0cm 0.5cm 0cm 0.5cm, width=0.95\textwidth]{figs/more_case2.pdf}
+    \caption{Successful case on MPPReasoner for oral bioavailability prediction (OOD).}
+    \label{fig:more_case2}
+\end{figure}
+
+
+
+\section{Limitations}
+
+While MPPReasoner demonstrates significant advances in chemical reasoning for molecular property prediction, several areas present opportunities for future enhancement:
+
+\begin{itemize}
+    \item \textit{Molecular Representation:} Current framework primarily utilizes 1D/2D molecular representations through SMILES and molecular images. Incorporating 3D structural information~\citep{3dllm}, conformational dynamics~\citep{mdsimulations}, and stereochemical effects~\citep{stereochemical} could further enhance prediction accuracy for properties sensitive to spatial arrangements and molecular flexibility.
+    
+    \item \textit{Computational Efficiency:} The generation of detailed reasoning paths introduces additional computational overhead compared to direct prediction models. This trade-off between interpretability and efficiency may limit scalability for certain high-throughput screening applications~\citep{highscreening}, though the enhanced explainability proves valuable for research and development workflows.
+    
+    \item \textit{Domain Scope:} The current evaluation focuses on molecular property prediction tasks. Expanding the framework to broader chemical domains such as reaction mechanism prediction~\citep{reactgpt,usptollm}, synthesis planning~\citep{chemdual,designdecision}, and molecular optimization~\citep{moleculeopt,mollm} could demonstrate wider applicability of the chemical reasoning approach.
+\end{itemize}
+
+
+Future work will address these limitations through more efficient architectures, enhanced molecular representations, and broader domain applications while maintaining the interpretability advantages that distinguish our approach.
+

@@ -1,0 +1,42 @@
+\section{Concepts and Problem}\label{sec:problem_state}
+
+We shall introduce the concept of \textit{group anchors} and the problem of \textit{group anchor identification}. 
+To the best of our knowledge, we are the first to formulate and study them.
+
+\smallsection{Domains and group roles.}
+We consider real-world hypergraphs (group interactions) in different \textit{domains} $\mathcal{D} = \setbr{D_{\text{co}}, D_{\text{qa}}, D_{\text{em}}, D_{\text{so}},  D_{\text{mo}}, \ldots}$, where 
+$D_{\text{co}}$ is the co-authorship domain, 
+$D_{\text{qa}}$ is the online Q\&A domain, 
+$D_{\text{em}}$ is the email domain, and so on (see \cref{tab:dataset_summary}).
+For each domain $D \in \mathcal{D}$, let $\mathcal{R}(D)$ be the set of \textit{group roles} (i.e., the roles members can take in each group) in that domain, e.g., the group roles in the co-authorship domain are $\mathcal{R}(D_{\text{co}}) = \setbr{\texttt{firstAuthor}, \texttt{middleAuthor}, \texttt{lastAuthor}}$.
+The domain $D(H) \in \mathcal{D}$ indicates the real-world meaning of the hyperedges (groups) in $H$,
+and in each hyperedge (group) $e \in E$, each node $v \in e$ has a group role $r(v; e) \in \mathcal{R}(D(H))$.
+
+\smallsection{Group anchors.}
+The \textit{group-anchor function} $f_{\text{anchor}}$ maps each domain to the group role of anchors in that domain.
+Given a domain $D \in \mathcal{D}$, $f_{\text{anchor}}(D) \in \mathcal{R}(D)$ is the group role of group anchors in domain $D$.
+For example, $f_{\text{anchor}}(D_{\text{qa}}) = \texttt{questioner}$, and 
+$f_{\text{anchor}}(D_{\text{em}}) = \texttt{sender}$.
+See Appendix~\ref{appx:roles_and_seed_members} for more details.
+Given a hypergraph $H = (V,E)$ in domain $D = D(H)$, the set of group anchors in each hyperedge $e \in E$ is $A(e;H) = \setbr{v \in e : r(v; e) = f_{\text{sm}}(D)}$.
+As mentioned in Section~\ref{sec:intro}, we focus on the scenario with a single anchor in each group (i.e., $|A(e;H)| \equiv 1$),
+as widely observed across different domains (see \cref{tab:single_node_label}).
+See Section~\ref{sec:experiments:acc} for discussions and results considering multiple group anchors.
+
+\color{black}
+
+\smallsection{Group anchor identification.}
+We formulate group anchor identification as an optimization problem on hypergraphs.
+\begin{problem}[Group anchor identification]\label{prob:seed_identification}
+ ~\\[-1em]
+\begin{itemize}[leftmargin=*]    
+    \item \textbf{Given:} A hypergraph $H = (V, E)$ with known group anchors in a hyperedge subset $E' \subseteq E$ (i.e., $A(e), \forall e \in E'$);
+    \item \textbf{To Predict:} The unknown group anchors in the remaining hyperedges $E \setminus E'$ (i.e., $A(e), \forall e \in E \setminus E'$);
+    \item \textbf{to Maximize:} The accuracy of the predicted group anchors.
+\end{itemize}
+\end{problem}
+
+
+
+As discussed in \cref{sec:prelim}, we assume no node or edge attributes (i.e., features) are given, which is true for the real-world datasets used in our experiments, and also many other datasets~\citep{lee2024villain}. Yet, attributes can be easily incorporated into our method if they are given. See Section~\ref{sec:conclusion} for more discussions.
+

@@ -1,0 +1,94 @@
+\vspace{-1mm}
+% \section{\name~Framework}
+\section{Proposed Framework: \nameshort}
+\label{sec:visual_prompt}
+\vspace{-2mm}
+\subsection{Problem Definition and Method Overview}
+
+\paragraph{Problem Definition.} For the sake of completeness, we first define the problem setting and notations used in this paper. In Referring Video Object Segmentation (RVOS), we assume that the training data contain a set of videos, where each video $V=\{I_t\}_{t=1}^T$ is a sequence of $T$ frames and the target object is associated with a referring sentence $S$. The goal of RVOS is to produce segmentation masks $M=\{M_t\}_{t=1}^T$ for the referred object from the video $V$ and referring sentence $S$. Since our goal is to prompt foundation segmentation models to achieve RVOS instead of training an end-to-end segmentation network as previous works~\citep{wu2022language, wu2023onlinerefer, miao2023spectrum} did, we assume that we only have access to box-level annotations $GT=\{\hat{B}_t\}_{t=1}^T$ corresponding to the referred object as the ground truth, where each bounding box $\hat{B}_t = (\hat{x}_t, \hat{y}_t, \hat{h}_t, \hat{w}_t)$ is represented by the coordinate of the center point and the height and width. Such box-level annotations could be considered as a type of weak supervision for segmentation tasks~\citep{khoreva2017simple}.
+\vspace{-2mm}
+\paragraph{Method Overview.} With the impressive performance of foundation segmentation models such as SAM~\citep{kirillov2023segment}, we decompose the Referring Video Object Segmentation (RVOS) task into three core components: \textit{referring}, \textit{video}, and \textit{segmentation}. We specifically address the challenges of the referring and video aspects, leveraging foundation models to handle segmentation. To this end, we propose a \textit{\namebf~(\textbf{\nameshort})} framework to efficiently adapt image-based foundation segmentation models to referring video object segmentation. Specifically, our approach begins by utilizing off-the-shelf detectors and trackers to generate visual prompts corresponding to the referred object. We perform object detection frame-by-frame to obtain box proposals indicating object positions, and the most confident (Top-1) proposals at each frame are together considered as the \textit{\textbf{reference proposal}}. On the other hand, to enhance the temporal consistency across frames, we also form multiple \textit{\textbf{candidate tracks}} by applying object tracking to Top-K proposals. To identify high-quality candidate tracks, we further propose \textbf{\textit{\nameselect}}, which employs a Transformer-based classifier to compare the quality of each candidate track with the reference proposal. By selecting the most preferred visual prompt to instruct image-based foundation segmentation models, we would be able to produce high-quality masks for the referred object, enabling efficient model adaptation to referring video object segmentation. 
+In the following subsections, we first introduce the generation process of temporal prompts and provide empirical analysis in Section~\ref{sec:generation}, and then detail the proposed \nameselect~to select temporal prompts in~\ref{sec:selection}.
+
+\vspace{-2mm}
+\subsection{Temporal Prompt Generation and Analysis}
+\label{sec:generation}
+
+Based on foundation segmentation models, we decompose the RVOS task into the following three factors: \textit{referring}, \textit{video}, and \textit{segmentation}. To focus on the referring and video factors, we first investigate how to generate high-quality temporal prompts to benefit RVOS.
+
+\paragraph{Temporal Prompt Generation.} To obtain object positions, we consider Grounding DINO~\citep{liu2024grounding} as our detector to produce box proposals from the input video $V$ and the referring sentence $S$. Specifically, given the box annotations $GT=\{\hat{B}_t\}_{t=1}^T$ of the RVOS training data, we first finetune Grounding-DINO with the common regression loss and generalized IoU loss. Since there is typically only one target object in referring segmentation tasks, we simply select the output proposal with the highest confidence score at each frame to compute the loss instead of using the Hungarian algorithm~\citep{carion2020end} for box matching. We then use the pretrained and finetuned Grounding DINO for producing the reference proposal and candidate tracks, as described below:
+\begin{itemize}[leftmargin=*]
+
+\item \textit{Reference Proposal}: With the finetuned Grounding DINO, intuitively, we can simply take the most confident (Top-1) proposal at each frame $t$.
+
+\item \textit{Candidate Tracks}: The above Top-1 proposals could be sensitive to prediction error and also inconsistent across frames. To achieve better temporal consistency, we consider the Top-K proposals and take an off-the-shelf motion-based tracker, OC-SORT~\citep{cao2023observation}, to perform object tracking. Here, the Top-K proposals are derived from the pretrained Grounding DINO since the finetuned one would lose generalizability and diversity and result in K repetitive boxes. As a result, we take the Top-K proposals from the pretrained Grounding DINO plus the Top-1 proposal from the finetuned one to produce candidate tracks from OC-SORT. Note that for the missed frames in each track, we use the Top-1 boxes to fill those untracked frames. 
+
+
+
+ \end{itemize}
+
+
+
+\paragraph{Temporal Prompt Analysis.} For quantitative and quantitative analysis, we consider the aforementioned reference proposal, candidate tracks, and several of their variants and baselines. By taking them as visual prompts to SAM~\citep{kirillov2023segment}, we present the quantitative results in Table~\ref{table:visual_prompt} and the associated visualization in Figure~\ref{fig:visual_prompt}. Here, we use Refer-Youtube-VOS~\citep{seo2020urvos} as the training dataset, and since its validation set does not provide ground truth boxes, we use the Refer-DAVIS$_{17}$~\citep{khoreva2018video} dataset for evaluation instead. For evaluation metrics, we consider mIoU for the box proposals, and we adopt the commonly used region similarity $\mathcal{J}$ (average IoU), contour accuracy $\mathcal{F}$ (average boundary similarity), and their mean $\mathcal{J}\&\mathcal{F}$ for the segmentation masks.
+
+We detail each row in Table~\ref{table:visual_prompt} as below:
+(a) Framewise Top-1 proposals from the pretrained Grounding DINO. (b) Framewise Top-1 proposals from the finetuned Grounding DINO. (c) The candidate track with the highest averaged confidence score produced by the Top-K proposals from the pretrained Grounding DINO plus the Top-1 proposal from the finetuned one. (d) The candidate track with the highest mIoU produced by the Top-K proposals from the pretrained Grounding DINO plus the Top-1 proposal from the finetuned one.
+
+\input{fig1}
+\input{new_table}
+% \input{Tables/new_table_2}
+
+We list our important findings point-by-point as follows:
+
+\begin{itemize}[leftmargin=*]
+
+\item \textit{Prompting foundation segmentation models is a promising direction for RVOS.} By taking the ground-truth boxes to prompt SAM, we see that the resulting $\mathcal{J}\&\mathcal{F}$ is $83.6\%$, which is $15.6\%$ higher than the state-of-the-art RVOS method, MUTR~\citep{yan2024referred}.
+
+\item \textit{The Top-1 proposals (reference proposal) from the finetuned detector outperforms the pretrained one.} Unsurprisingly, for the Top-1 proposals, the finetuned Grounding DINO (b) better fits the RVOS data and therefore surpasses the pretrained one (a) by $4.9\%$ in $\mathcal{J}\&\mathcal{F}$.
+
+\item \textit{The best candidate track produced from object tracking outperforms the reference proposal.} In (d), we present the result of the best-produced candidate track with the highest averaged box mIoU, and we see that the $\mathcal{J}\&\mathcal{F}$ is $5.6\%$ higher than the reference proposal (b), showing that at least one of the candidate is of high quality.
+
+% \item \textit{\textbf{The top-5 proposals from the pretrained detector are superior to the finetuned one.}} By comparing (d) and (e), we see that if we instead use top-5 proposals from the finetuned detector to produce tracks, a $5.5\%$ performance drop in $\mathcal{J}\&\mathcal{F}$ would be observed. This is because the finetuned detector would lose diversity and produce repetitive box proposals, making the subsequent tracking meaningless. As a result, we take the top-5 proposals from the pretrained Grounding DINO plus the top-1 proposal from the finetuned one to produce candidate tracks from OC-SORT.
+
+% \item \textit{\textbf{Considering candidate tracks individually is fairly good.}} Instead of simply selecting one best candidate track in (e), another alternative is to greedily select and merge the tracks according to the mIoUs. Nevertheless, the resulting $\mathcal{J}\&\mathcal{F}$ is only $1.2\%$ higher in (f). Hence, we simply consider the candidates individually.
+
+\item \textit{High-quality candidate tracks could not be easily identified.} In (c), we present the result of the candidate track with the highest averaged confidence score, and we see that the $\mathcal{J}\&\mathcal{F}$ is significantly ($7.3\%$) lower than the one with the highest box mIoU (d). This is because the frame-level confidence scores of detected boxes are not reliable for ranking video-level candidate tracks.
+
+
+\end{itemize}
+
+
+% \input{Figures/fig2}
+
+% In Table~\ref{table:num}, we additionally provide the results when varying the number of proposals K from the pretrained Grounding DINO, and we see that the $\mathcal{J}\&\mathcal{F}$ saturates when K$\geq$5. Therefore, we simply set K to 5 for efficiency. The qualitative results in Figure~\ref{fig:visual_prompt} also align with the results in Table~\ref{table:visual_prompt}. As for Figure~\ref{fig:visual_prompt2}, we see that the candidate track with the highest confidence score (c) performs significantly worse than the one with the highest mIoU (e). This further supports that high-quality candidate tracks could not be easily identified.
+
+
+
+
+\paragraph{Remarks.} In this section, we verify that prompting SAM is able to achieve superior performance and is a promising direction for referring video object segmentation. By performing object tracking to produce candidate tracks, we see that the best candidate would outperform the reference proposal from framewise detection. Nevertheless, high-quality candidate tracks could not be easily identified from confidence scores. As a result, we would like to learn a model that is able to properly evaluate the quality of candidate tracks.
+
+
+
+
+
+
+
+
+\input{model}
+\subsection{\nameselect}
+
+\label{sec:selection}
+
+% \subsection{\textcolor{red}{Track-Text Contrastive Learning}}
+
+
+As discussed in Section~\ref{sec:generation}, high-quality candidate tracks could not be easily identified from confidence scores. To identify the visual prompts that best describe the referred object, we propose \textit{\nameselect} to compare the quality of each candidate track with the reference proposal, as shown in Figure~\ref{fig:model}. Specifically, to derive the visual representations for the objects indicated by the visual prompts, we adopt an image encoder to extract the latent features conditioned on the box proposals, resulting in $f^r$ and $f^c_i$ for the reference proposal and the $i$th candidate track, respectively. Along with the text feature $f^t$ derived by inputting the referring sentence into the text encoder, we employ a Transformer-based binary classifier by taking visual features $f^r$ and $f^c_i$, the text features $f^t$, and an additional learnable classification token $z$ as input. Then, a standard binary cross entropy loss $L_{bce}$ is calculated as:
+\begin{equation}
+\begin{aligned}
+\label{eq:loss_bce}
+    L_{bce} = -&\sum_i\left[y_i \log \sigma(s_i) + (1-y_i) \log (1-\sigma(s_i)\right],\\
+   \text{where} \quad &s_i = Transformer([z, f^c_i, f^r, f^t]).\\
+\end{aligned}
+\vspace{1mm}
+\end{equation}
+Here, $\sigma(\cdot)$ denotes the sigmoid function and $y_i=1$ if the $i$th candidate track is of higher mIoU than the reference proposal, otherwise $0$. During inference, if there is at least one of the candidate track scores $\sigma(s_i)$ is over than $0.5$, we select the candidate with the highest score. Otherwise, we select the reference proposal as the visual prompt.

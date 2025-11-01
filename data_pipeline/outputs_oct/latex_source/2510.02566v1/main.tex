@@ -1,0 +1,249 @@
+%%
+%% This is file `sample-sigconf-authordraft.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% samples.dtx  (with options: `all,proceedings,bibtex,authordraft')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from sample-sigconf-authordraft.tex.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file samples.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%%
+%% Commands for TeXCount
+%TC:macro \cite [option:text,text]
+%TC:macro \citep [option:text,text]
+%TC:macro \citet [option:text,text]
+%TC:envir table 0 1
+%TC:envir table* 0 1
+%TC:envir tabular [ignore] word
+%TC:envir displaymath 0 word
+%TC:envir math 0 word
+%TC:envir comment 0 0
+%%
+%% The first command in your LaTeX source must be the \documentclass
+%% command.
+%%
+%% For submission and review of your manuscript please change the
+%% command to \documentclass[manuscript, screen, review]{acmart}.
+%%
+%% When submitting camera ready or to TAPS, please change the command
+%% to \documentclass[sigconf]{acmart} or whichever template is required
+%% for your publication.
+%%
+%%
+\documentclass[acmtog]{acmart}
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+\usepackage{multirow}
+\usepackage{enumitem}
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+
+
+\copyrightyear{2025}
+\acmYear{2025}
+\setcopyright{acmlicensed}\acmConference[SA Conference Papers '25]{SIGGRAPH Asia 2025 Conference Papers}{December 15--18, 2025}{Hong Kong, Hong Kong}
+\acmBooktitle{SIGGRAPH Asia 2025 Conference Papers (SA Conference Papers '25), December 15--18, 2025, Hong Kong, Hong Kong}
+\acmDOI{10.1145/3757377.3763951}
+\acmISBN{979-8-4007-2137-3/2025/12}
+%%
+%% Submission ID.
+%% Use this when submitting an article to a sponsored event. You'll
+%% receive a unique submission ID from the organizers
+%% of the event, and this ID should be used as the parameter to this command.
+\acmSubmissionID{1949}
+
+%%
+%% For managing citations, it is recommended to use bibliography
+%% files in BibTeX format.
+%%
+%% You can then either use BibTeX with the ACM-Reference-Format style,
+%% or BibLaTeX with the acmnumeric or acmauthoryear sytles, that include
+%% support for advanced citation of software artefact from the
+%% biblatex-software package, also separately available on CTAN.
+%%
+%% Look at the sample-*-biblatex.tex files for templates showcasing
+%% the biblatex styles.
+%%
+
+%%
+%% The majority of ACM publications use numbered citations and
+%% references.  The command \citestyle{authoryear} switches to the
+%% "author year" style.
+%%
+%% If you are preparing content for an event
+%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
+%% citations and references.
+%% Uncommenting
+%% the next command will enable that style.
+\citestyle{acmauthoryear}
+
+
+%%
+%% end of the preamble, start of the body of the document source.
+\begin{document}
+
+%%
+%% The "title" command has an optional parameter,
+%% allowing the author to define a "short title" to be used in page headers.
+\title{PhysHMR: Learning Humanoid Control Policies from Vision for Physically Plausible Human Motion Reconstruction}
+
+%%
+%% The "author" command and its associated commands are used to define
+%% the authors and their affiliations.
+%% Of note is the shared affiliation of the first two authors, and the
+%% "authornote" and "authornotemark" commands
+%% used to denote shared contribution to the research.
+\author{Qiao Feng}
+\email{fengqiao@seas.upenn.edu}
+\orcid{0000-0003-0625-651X}
+\affiliation{%
+  \institution{University of Pennsylvania}
+  \city{Philadelphia}
+  \state{Pennsylvania}
+  \country{USA}
+}
+
+\author{Yiming Huang}
+\email{ymhuang9@seas.upenn.edu}
+\orcid{0009-0004-4001-0630}
+\affiliation{%
+  \institution{University of Pennsylvania}
+  \city{Philadelphia}
+  \state{Pennsylvania}
+  \country{USA}
+}
+
+
+\author{Yufu Wang}
+\email{yufu@seas.upenn.edu}
+\orcid{0000-0001-9907-8382}
+\affiliation{%
+  \institution{University of Pennsylvania}
+  \city{Philadelphia}
+  \state{Pennsylvania}
+  \country{USA}
+}
+
+\author{Jiatao Gu}
+\email{jgu32@cis.upenn.edu}
+\orcid{0000-0003-3578-2711}
+\affiliation{%
+  \institution{University of Pennsylvania}
+  \city{Philadelphia}
+  \state{Pennsylvania}
+  \country{USA}
+}
+
+\author{Lingjie Liu}
+\email{lingjie.liu@seas.upenn.edu}
+\orcid{0000-0003-4301-1474}
+\affiliation{%
+  \institution{University of Pennsylvania}
+  \city{Philadelphia}
+  \state{Pennsylvania}
+  \country{USA}
+}
+
+
+%%
+%% By default, the full list of authors will be used in the page
+%% headers. Often, this list is too long, and will overlap
+%% other information printed in the page headers. This command allows
+%% the author to define a more concise list
+%% of authors' names for this purpose.
+\renewcommand{\shortauthors}{Qiao et al.}
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+\begin{abstract}
+Reconstructing physically plausible human motion from monocular videos remains a challenging problem in computer vision and graphics. Existing methods primarily focus on kinematics-based pose estimation, often leading to unrealistic results due to the lack of physical constraints. To address such artifacts, prior methods have typically relied on physics-based post-processing following the initial kinematics-based motion estimation. However, this two-stage design introduces error accumulation, ultimately limiting the overall reconstruction quality.
+In this paper, we present PhysHMR, a unified framework that directly learns a visual-to-action policy for humanoid control in a physics-based simulator, enabling motion reconstruction that is both physically grounded and visually aligned with the input video. A key component of our approach is the pixel-as-ray strategy, which lifts 2D keypoints into 3D spatial rays and transforms them into global space.
+These rays are incorporated as policy inputs, providing robust global pose guidance without depending on noisy 3D root predictions. This soft global grounding, combined with local visual features from a pretrained encoder, allows the policy to reason over both detailed pose and global positioning. To overcome the sample inefficiency of reinforcement learning, we further introduce a distillation scheme that transfers motion knowledge from a mocap-trained expert to the vision-conditioned policy, which is then refined using physically motivated reinforcement learning rewards. Extensive experiments demonstrate that PhysHMR produces high-fidelity, physically plausible motion across diverse scenarios, outperforming prior approaches in both visual accuracy and physical realism.
+\end{abstract}
+
+
+
+
+%%
+%% The code below is generated by the tool at http://dl.acm.org/ccs.cfm.
+%% Please copy and paste the code instead of the example below.
+%%
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10010147.10010257</concept_id>
+       <concept_desc>Computing methodologies~Machine learning</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010147.10010371.10010352</concept_id>
+       <concept_desc>Computing methodologies~Animation</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computing methodologies~Machine learning}
+\ccsdesc[500]{Computing methodologies~Animation}
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\keywords{Motion reconstruction, Physical plausibility, Humanoid control, Monocular video}
+%% A "teaser" image appears between the author and affiliation
+%% information and the body of the document, and typically spans the
+%% page.
+\begin{teaserfigure}
+\centering
+\includegraphics[width=\textwidth]{Figs/teaser.pdf}
+\caption{
+Given a monocular video (a), (b) kinematic-based methods (e.g., GVHMR~\cite{shen2024gvhmr}) often cannot produce physically plausible results and suffer from artifacts like foot floating. (c) While tracking-based controllers (e.g., PHC+~\cite{Luo2023PerpetualHC}) can enforce physical plausibility, they may amplify errors from inaccurate motion reconstruction, leading to unnatural behaviors. (d) In contrast, our PhysHMR model learns a visual-to-action policy that directly predicts control signals from visual input, preventing error amplification and producing motions that are both physically plausible and visually aligned with the input video (a). As videos are the most effective way to assess the physical plausibility of the results, we encourage readers to view our supplementary video. 
+}
+  \Description{teaser}
+  \label{fig:teaser}
+\end{teaserfigure}
+
+%%  \received{20 February 2007}
+%%  \received[revised]{12 March 2009}
+%%  \received[accepted]{5 June 2009}
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+\maketitle
+\input{Main/1_intro}
+\input{Main/2_related}
+\input{Main/3_method}
+\input{Main/4_result}
+\input{Main/5_conclusion}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{reference}
+\input{supp}
+\end{document}
+\endinput
+%%
+%% End of file `sample-sigconf-authordraft.tex'.

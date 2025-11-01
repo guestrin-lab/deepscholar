@@ -1,0 +1,61 @@
+\subsection{Tool Utilization}
+
+\subsubsection{Datasets}
+
+It is widely acknowledged that external tools and APIs can significantly enhance the capabilities of LLMs to tackle complex, real-world problems~\cite{DBLP:journals/corr/abs-2304-08354,DBLP:journals/corr/abs-2307-16789,DBLP:journals/corr/abs-2302-04761}. To analyze InternLM2's proficiency in tool utilization, 
+we conduct experiments across several benchmark datasets: GSM8K~\cite{DBLP:journals/corr/abs-2110-14168}, MATH~\cite{DBLP:conf/nips/HendrycksBKABTS21}, the recently introduced MathBench~\cite{Anonymousmathbench}, T-Eval~\cite{chen2023t}, and the template subset of CIBench~\cite{Anonymouscibench}, all employing the ReAct protocol~\cite{DBLP:conf/iclr/YaoZYDSN023} where LLMs alternate between generating thought processes and executing actions. 
+
+
+\textbf{GSM8K}, \textbf{MATH} and \textbf{MathBench} are introduced in Sec~\ref{sec:lm_reasoning_and_math}. 
+
+\textbf{T-Eval}: T-Eval features human-verified, high-quality question instructions with corresponding step-by-step solutions. It measures an LLM's proficiency with everyday tools such as Google Search and Gaode Map across six different dimensions. 
+
+\textbf{CIBench}: developed by our team, simulates genuine data analysis scenarios using interactive Jupyter notebooks. It encompasses multiple, consecutive tasks and covers the most commonly used Python modules in data analysis, including Pandas, Numpy, and Pytorch. This custom-made benchmark allows for a thorough assessment of an LLM's comprehensive ability in data analysis. 
+
+% Notably, MathBench comprises 3709 questions, covering the mathematical concepts in primary, middle, and high school, allowing us to measure LLM's math problem-solving ability thoroughly. T-Eval~\cite{chen2023t} consists of human-verified high-quality question instruction and corresponding step-by-step solutions, measuring LLM's ability on daily used tools, like Google search, Gaode map, etc, from six dimensions. CIBench is constructed by ourselves to simulate authentic scenarios in data analysis, consists of interactive Jupyter notebooks, which contain multiple and consecutive tasks, and cover the most widely-used Python modules used in data analysis (e.g. Pandas, Numpy, Pytorch), benchmark LLM's ability in data analysis comprehensively. 
+%The dataset details of CIBench are in the Appendix.
+
+\subsubsection{Evaluation Results}
+
+\paragraph{GSM8K, MATH and MathBench} We utilize the external code interpreter and follow the ReAct protocol to evaluate LLM's ability to solve coding and mathematic problems. The results, as depicted in Figure~\ref{fig:agent_gsm8k_math}, demonstrate a substantial improvement even when using the code interpreter, particularly on the MATH dataset where the enhancement is notably significant. 
+
+% TODO: wait for results to update the text.
+As depicted in Figure~\ref{fig:agent_mathbench}, regarding the recently introduced MathBench dataset, the utilization of a code interpreter results in improved performance for InternLM2's performance in most cases, and a minor decrease may be attributed to the incorrect usage of such interpreters. Moreover, notable improvements are observed within the Knowledge domain for InternLM2-20B-Chat and in the Application section for InternLM2-7B-Chat. These disparities can stem from a multitude of factors, including differences in the constitution of their respective training datasets.
+
+% what is the difference of application and knowledge
+
+% TODO: wait for decision on Qwen1.5
+% cibench fig:prompt_of_cibench
+\paragraph{T-Eval and CIBench} As depicted in Table~\ref{tab:cibench_teval}, the InternLM2 models consistently demonstrate superior or comparable performance compared to existing models across various benchmarks. Specifically, when comparing models of identical scale, InternLM2-Chat-7B emerges as the top performer on T-Eval and CIBench. Meanwhile, InternLM2-Chat-20B achieves competitive results on T-Eval while obtaining the highest scores on CIBench. Additionally, the InternLM2 series models achieve impressive results in Chinese, showcasing their proficiency in multiple languages.
+
+
+
+% Furthermore, InternLM2-Chat observes similar results with InternLM2-Chat-SFT, which serves as compelling evidence for the robustness and effectiveness of our RLHF alignment strategy. This consistency indicates that the fine-tuning process through RLHF has successfully maintained the model's competitive edge without compromising its inherent capabilities.
+
+% Comparing the performance of English with Chinese shows that the performance of Chinese is inferior to English, 
+
+
+
+% \paragraph{General Tool Utilization}
+% \paragraph{Code Interpreter}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[scale=0.38]{figure/internLM2/gsm8k_math.pdf}
+    \caption{Results on GSM8K (4-shot) and MATH (4-shot) with and w/o Code Interpreter.}
+    \label{fig:agent_gsm8k_math}
+\end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[scale=0.4]{figure/internLM2/mathbench.pdf}
+    \caption{Results on MathBench with and without ReAct.}
+    \label{fig:agent_mathbench}
+\end{figure*}
+
+\input{table/benchmark_teval_cibench}
+
+% \paragraph{CIBench}
+
+
+

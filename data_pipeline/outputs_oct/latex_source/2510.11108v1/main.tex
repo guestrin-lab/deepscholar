@@ -1,0 +1,45 @@
+\documentclass[runningheads]{llncs}
+\usepackage[T1]{fontenc}
+
+
+
+
+
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+\usepackage{graphicx}
+\begin{document}
+\title{A Vision for Access Control in LLM-based\\ Agent Systems}
+\author{Xinfeng Li\inst{1} \and
+Dong Huang\inst{2}\thanks{Corresponding Author: Dong Huang (e1143962@u.nus.edu)} \and
+Jie Li\inst{1} \and
+Hongyi Cai\inst{1} \and
+Zhenhong Zhou\inst{1} \and \\
+Wei Dong\inst{1} \and
+XiaoFeng Wang\inst{1} \and
+Yang Liu\inst{1}}
+\authorrunning{X. Li et al.}
+\institute{Nanyang Technological University, Singapore \and
+National University of Singapore, Singapore \\ \email{xinfeng.li@ntu.edu.sg}}
+\maketitle
+\begin{abstract}
+The autonomy and contextual complexity of LLM-based agents render traditional access control (AC) mechanisms insufficient. Static, rule-based systems designed for predictable environments are fundamentally ill-equipped to manage the dynamic information flows inherent in agentic interactions. This position paper argues for a paradigm shift from binary access control to a more sophisticated model of information governance, positing that the core challenge is not merely about permission, but about governing the flow of information. We introduce Agent Access Control (AAC), a novel framework that reframes AC as a dynamic, context-aware process of information flow governance. AAC operates on two core modules: (1) multi-dimensional contextual evaluation, which assesses not just identity but also relationships, scenarios, and norms; and (2) adaptive response formulation, which moves beyond simple allow/deny decisions to shape information through redaction, summarization, and paraphrasing. This vision, powered by a dedicated AC reasoning engine, aims to bridge the gap between human-like nuanced judgment and scalable AI safety, proposing a new conceptual lens for future research in trustworthy agent design.
+
+\keywords{Access Control \and Trustworthy Agent.}
+\end{abstract}
+\input{sections/1_intro}
+\input{sections/6_related}
+\input{sections/2_framework}
+\input{sections/3_reasoning}
+\input{sections/4_future}
+\input{sections/5_conclude}
+
+\begingroup
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\let\newpage\relax
+\bibliography{references}
+\endgroup
+
+\end{document}

@@ -1,0 +1,94 @@
+\section{Dataset}
+\label{sec:dataset}
+
+Our dataset consists of top-down RGB images of retail items, each accompanied by categorical labels and segmentation masks. In the following sections, we detail the dataset's structure, collection, and annotation methodology.
+
+\subsection{Dataset Structure}
+\label{subsec:dataset-structure}
+
+The dataset is organized into \emph{query} and \emph{reference} sets:
+
+\begin{enumerate}
+    \item \emph{Query dataset}: Contains image captures with associated:
+    \begin{enumerate}
+        \item \emph{Item identifier} (unique per item)
+        \item \emph{Defect severity} (no defect, minor, major)
+        \item \emph{Defect type(s)} for defective items (\eg, penetration, spillage)
+        \item \emph{Item material} (\eg cardboard, plastic, books)
+        \item \emph{Item segmentation mask}
+    \end{enumerate}
+    \item \emph{Reference dataset}: Contains 1-3 image captures per item identifier, primarily non-defective but not guaranteed.
+    \begin{enumerate}
+        \item \emph{Item identifier} (unique per item)
+        \item \emph{Item segmentation mask}
+    \end{enumerate}
+\end{enumerate}
+
+The dataset is further divided into training, validation, and test splits, each consisting of a unique query/reference set pair.  To test model generalization capabilities and prevent overfitting to specific items, we ensure that each item only appears exclusively in one of the splits, i.e. identifiers do not overlap between splits.
+
+\subsection{Images}
+\label{subsec:images}
+
+For image capture, we use a data collection station equipped with a 12~MP RGB camera with an f/12mm lens. The camera is positioned top-down to capture the singulated item located inside a logistics container ("tray"). To provide uniform diffuse illumination while minimizing reflections commonly induced by plastic materials, we enclose the station with side walls and ensure constant lighting using LED panels. We provide a schematic drawing of the data collection setup in the Supplementary Material (Section~\ref{sec:dataset_details}).
+
+We further post-process the acquired images by applying a square crop that includes only the tray, and resize the images to $2048 \times 2048$px. We also provide item segmentation masks/crops (Section~\ref{subsec:segmentation-masks}), but retain the full tray images as item boundaries are not always clearly defined due to dangling or protruding parts, and certain defects may only be visible on the tray surface (\eg, liquid spillages; see Figure~\ref{fig:damage_comparison}, examples 1 and 3, respectively).
+
+\subsection{Data Collection}
+\label{subsec:collection}
+
+A major challenge in creating defect detection datasets is the rarity of defect events, making the acquisition of positive (defective) samples extremely time-consuming. We address this through a two-stage collection strategy: First, we collect items flagged as defective by human operators for annotation. Second, we implement an iterative mining process where a binary classifier, trained on previously annotated images (Section~\ref{subsec:annotation}), identifies potential defect candidates for further annotation.
+
+The resulting initial query dataset of defective and non-defective images undergoes further curation based on the following criteria:
+(1) \emph{Quality control} through manual filtering of low-quality images, particularly those with missing or off-center items. (2) \emph{Diverse item range} with maximum 15 samples per item to ensure variety. (3) \emph{Balanced defect rate} (28.6\%) that aligns with existing benchmarks like MVTec-AD~\cite{bergmann_mvtec_2021} and VisA~\cite{zou2022spot} since defective samples are more valuable for training and evaluation than non-defective samples. (4) \emph{Exclusion} of items lacking non-defective samples to prevent model overfitting.
+
+The curated query dataset is split by item identifier into training (85\%), test (10\%), and validation (5\%) sets, each supplemented with up to three reference images from a separate unlabeled dataset. We remove missing or off-center reference images but exclude defect type and severity labels. This approach, including the limit of three reference images per sample, reflects real-world retail conditions where most items sell infrequently and creating a perfect reference database is impractical. Consequently, some limited amount of reference images may exhibit different packaging or contain defects.
+
+\subsection{Annotation}
+\label{subsec:annotation}
+
+Next, we describe the labels and annotation process.
+
+\subsubsection{Item Segmentation Masks}
+\label{subsec:segmentation-masks}
+
+The images depict the item inside the full tray, but some baseline methods may require item crops to perform optimally. We thus generate item segmentation masks using a U-Net~\cite{ronneberger_u-net_2015} model trained on 17,000 manually annotated masks, and create \emph{square} item-crops with 10\% padding. The generated masks and item-crop images are released as part of the dataset. Moreover, we evaluate the baselines on both full and item-cropped images.
+
+\begin{figure}
+    \centering
+        \includegraphics[width=0.15\textwidth]{unobservablecase.png}
+        \hfill
+        \includegraphics[width=0.134\textwidth]{complexcase-spillage.jpg}
+        \hfill
+        \includegraphics[width=0.12\textwidth]{subjectivecase.jpg}
+    \caption{
+ Examples for challenging defective cases (from left to right). (1) Unobservable cases. A small stripe in the bottom half of the CD could be either a reflection or a crack in the cover. (2) Complex cases. The detergent pack looks intact, but at a second look the  powder on the tray next to it item indicates a spillage defect. (3) Ambiguous cases. The multi-pack is complete but its units are unordered, which is acceptable but has different visual appearance than the corresponding reference image.
+\vspace*{-0.5cm}
+}
+    \label{fig:label-noise-samples}
+\end{figure}
+
+\begin{figure*}[th!]
+    \centering
+       \includegraphics[trim = 1mm 1mm 1mm 1mm, clip, width=0.495\textwidth]{item-type-no-damage.png}
+        \hfill
+       \includegraphics[trim = 1mm 1mm 1mm 1mm, clip, width=0.495\textwidth]{damage-types.png}
+    \caption{\textbf{Left}: Distribution of item material types and defect severities. We observe that items with cardboard material dominate the dataset, followed by plastic bags/cases and books.
+    \textbf{Right}: Distribution of defect types per defect severity. We find that \emph{deformation} is the most common defect type, however, it mostly results in minor defect severity, similar to \emph{penetration}, \emph{actuation} and \emph{superficial}. In contrast, \emph{deconstruction} and \emph{spillage} commonly result in major defect severity.
+    \label{fig:item-type-damage-type-distributions}
+    }
+\end{figure*}
+
+\subsubsection{Categorical Labels}
+\label{subsec:damage-taxonomy}
+
+Both the query and reference datasets are curated to avoid low-quality images, as described above. Additionally, each sample in the query datasets is manually annotated with the following categorical labels: \emph{defect severity}, \emph{defect type}, and \emph{item material}.
+
+\myparagraph{Defect severity.} Each sample is annotated with a defect severity label: \emph{no defect}, \emph{minor}, or \emph{major}. Major defect compromises the item's integrity (\eg significant crush or puncture) or risks doing so (\eg fully opened box lid). Minor defect renders the item not pristine but potentially acceptable (\eg small dents on cardboard packaging). Acknowledging the subtle boundaries between these categories, our benchmark (\Sec~\ref{sec:benchmark}) focuses on detecting \emph{any} defect (minor and major), with ablation studies model performance on major defect detection.
+
+\myparagraph{Defect type}. For each defective sample exhibiting at least minor defect severity, we annotate one or more \emph{defect types}: \emph{penetration} (\eg holes, tears, cuts), \emph{deformation} (\eg dents, crushes), \emph{actuation} (\eg open box/bag/book), \emph{deconstruction}, \emph{spillage} (liquid, powder, \etc), \emph{superficial} (\eg dirt, scratches), \emph{missing unit}. Assigning multiple defect types per item is explicitly permitted, as items may incur multiple defects at the same or different spatial locations.
+
+\myparagraph{Item material}. Each item is categorized according to its primary outer material: \emph{cardboard}, \emph{plastic (loose bag)}, \emph{plastic (hard)}, \emph{plastic (bubble wrap)}, \emph{plastic (tight wrap)}, \emph{paper}, \emph{book (paper)}, \emph{book (plastic)}, \emph{other}. The distribution per item material is shown in Figure~\ref{fig:item-type-damage-type-distributions} (left), indicating higher volumes of cardboard and plastic packaging, followed by books.
+
+Each sample is independently labeled by three annotators. We then aggregate annotations through majority voting. During our baseline evaluation experiments, we found some wrongly labeled samples, which we manually corrected. We observe that annotation errors primarily arise from the following issues, exemplified in Figure~\ref{fig:label-noise-samples}: (1) \emph{unobservable} cases where defects cannot be detected due to sensing limitations or lack of non-defective reference images; (2) \emph{complex} cases where defects are present but so subtle that they get overlooked by annotators; (3) \emph{ambiguous} cases where an anomaly is visible but it is not clear whether it qualifies as a defect. We acknowledge that, despite best efforts, the dataset may still contain mislabeled samples, but demonstrate that these do not negatively affect the evaluated baselines (see Supplementary Material).
+
+We visualize the resulting distribution of defect severities and types in Figure~\ref{fig:item-type-damage-type-distributions} (right)\footnote{The figure presents a slightly simplified version of the defect type distribution, as we only assume one single defect type per sample, which holds true for 72\% of all defective samples in the dataset. For samples with multiple defect types, we select one based on a predefined priority list, where more severe defects (such as spillage) take precedence over less severe ones (such as actuation).}.

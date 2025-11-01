@@ -1,0 +1,25 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \begin{table}[]
+% \begin{wraptable}{r}{0.4\textwidth}
+\vspace{-2mm}
+\centering
+\setlength{\abovecaptionskip}{0.1cm}
+\setlength{\belowcaptionskip}{0.1cm}
+\captionof{table}{Mean and variance (``Var.") of entropy from~\cite{sun2024llamagen} on COCOval17.}
+\setlength{\tabcolsep}{3.7mm}{
+\resizebox{1.0\columnwidth}{!}{%
+\begin{tabular}{@{}cc|cc@{}}
+\toprule
+Reso. & CFG & Mean & Var. \\ \midrule
+256   & 7.5 & 4.76 & 2.75 \\
+256   & 4.0 & 5.90 & 2.42 \\
+256   & 2.0 & 6.87 & 1.97 \\
+512   & 7.5 & 4.42 & 3.09 \\ \bottomrule
+\end{tabular}
+}}
+\vspace{-2mm}
+\label{tab_discuss_entropy}
+% \end{wraptable}
+% \end{table}

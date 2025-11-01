@@ -1,0 +1,86 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.19669v1,http://arxiv.org/abs/2509.19669v1,2025-09-24 01:02:24+00:00,Games Are Not Equal: Classifying Cloud Gaming Contexts for Effective User Experience Measurement,"To tap into the growing market of cloud gaming, whereby game graphics is
+rendered in the cloud and streamed back to the user as a video feed, network
+operators are creating monetizable assurance services that dynamically
+provision network resources. However, without accurately measuring cloud gaming
+user experience, they cannot assess the effectiveness of their provisioning
+methods. Basic measures such as bandwidth and frame rate by themselves do not
+suffice, and can only be interpreted in the context of the game played and the
+player activity within the game. This paper equips the network operator with a
+method to obtain a real-time measure of cloud gaming experience by analyzing
+network traffic, including contextual factors such as the game title and player
+activity stage. Our method is able to classify the game title within the first
+five seconds of game launch, and continuously assess the player activity stage
+as being active, passive, or idle. We deploy it in an ISP hosting NVIDIA cloud
+gaming servers for the region. We provide insights from hundreds of thousands
+of cloud game streaming sessions over a three-month period into the dependence
+of bandwidth consumption and experience level on the gameplay contexts.","\label{sec:related}
+
+\textbf{Network traffic analysis of cloud gaming services:}
+As an emerging type of multimedia streaming service that exhibits high demands on network conditions, cloud gaming services have been analyzed in prior works for their network traffic characteristics, including flow anatomy and volumetric profiles. For example, Lyu \textit{et al.} \cite{lyu_network_2024} discussed the use of network flows during entire user sessions, from platform administration to server selection and gameplay, which serve as indicative signatures for network operators to detect cloud gaming sessions played on different types of user setups by their broadband/mobile subscribers. The works in \cite{lyu_do_2024,carrascosa_cloud_2022,domenico_network_2021} analyzed the bandwidth demands of cloud gaming sessions with different levels of streaming quality settings.
+Furthermore, objective quality-of-experience metrics (\eg user input lag, graphic resolution, and streaming frame rates) have also been derived from network quality-of-service (QoS) attributes of game streaming flows \cite{monaco_real-time_2025,lyu_network_2024,baena_measuring_2023}.
+For the network observability industry, it has been highlighted that purely using objective QoE metrics such as frame rate cannot effectively measure the quality of game streaming perceived by players, as gameplay contexts, including game titles and player activities, can significantly vary the expected/requested QoE and network QoS levels for good user experience \cite{an_tooth_2025,carvalho_qoe_2024,he_vigor_2024,wu_zgaming_2023,saha_study_2023,iqbal_dissecting_2021,lindstrom_cloud_2020}.
+To bridge this gap, we develop a traffic analysis method to classify the contexts of cloud gameplay, enabling network operators to effectively measure user-perceived streaming quality when correlating with the objective QoE metrics.
+
+
+\textbf{Measuring multimedia services with contexts:}
+Gaining visibility into the coarse categories of multimedia streaming contexts has become important for the network observability industry to effectively measure user-perceived streaming quality as delivered by networks \cite{wang_standardizing_2024,varvello_performance_2022,bronzino_inferring_2019,barakabitze_qoe_2018,skorin-kapov_survey_2018,finamore_youtube_2011,mok_inferring_2011}. Prior works have developed methods to classify contexts in popular types of multimedia services such as video streaming \cite{wang_characterizing_2024,zhang_sensei_2021,adarsh_too_2021,bronzino_traffic_2021}, live streaming \cite{madanapalli_reclive_2021,loh_machine_2021}, video conferencing \cite{sharma_estimating_2023,michel_enabling_2022,macmillan_measuring_2021}, voice calling \cite{mauro_experimental_2020,holub_analysis_2018}, online gaming \cite{madanapalli_know_2022,schmidt_modeling_2021}, and virtual reality applications \cite{lyu_metavradar_2023,cheng_are_2022}.
+For example, the works in \cite{che_packet_2012,chen_network_2006} focus on the contexts in online gaming that vary the expected network conditions for a good gameplay experience including game titles, genres, the number of players, peripheral status and team communication model.
+In \cite{lyu_metavradar_2023,cheng_are_2022}, the authors measured the network demands for a good VR experience that depend on the user activity status and the number of surrounding users.
+This work is specialized in classifying the contexts (\ie game titles, gameplay activity patterns, and player activity stages) of cloud game streaming sessions. As demonstrated in a large-scale deployment at an ISP hosting NVIDIA's cloud gaming servers, our method, combined with objective QoE measurement, holds unique value for network operators to better support this highly demanding service by effectively measuring the user-perceived streaming quality.","\textbf{Network traffic analysis of cloud gaming services:}
+As an emerging type of multimedia streaming service that exhibits high demands on network conditions, cloud gaming services have been analyzed in prior works for their network traffic characteristics, including flow anatomy and volumetric profiles. For example, Lyu \textit{et al.} \cite{lyu_network_2024} discussed the use of network flows during entire user sessions, from platform administration to server selection and gameplay, which serve as indicative signatures for network operators to detect cloud gaming sessions played on different types of user setups by their broadband/mobile subscribers. The works in \cite{lyu_do_2024,carrascosa_cloud_2022,domenico_network_2021} analyzed the bandwidth demands of cloud gaming sessions with different levels of streaming quality settings.
+Furthermore, objective quality-of-experience metrics (\eg user input lag, graphic resolution, and streaming frame rates) have also been derived from network quality-of-service (QoS) attributes of game streaming flows \cite{monaco_real-time_2025,lyu_network_2024,baena_measuring_2023}.
+For the network observability industry, it has been highlighted that purely using objective QoE metrics such as frame rate cannot effectively measure the quality of game streaming perceived by players, as gameplay contexts, including game titles and player activities, can significantly vary the expected/requested QoE and network QoS levels for good user experience \cite{an_tooth_2025,carvalho_qoe_2024,he_vigor_2024,wu_zgaming_2023,saha_study_2023,iqbal_dissecting_2021,lindstrom_cloud_2020}.
+To bridge this gap, we develop a traffic analysis method to classify the contexts of cloud gameplay, enabling network operators to effectively measure user-perceived streaming quality when correlating with the objective QoE metrics.
+
+
+\textbf{Measuring multimedia services with contexts:}
+Gaining visibility into the coarse categories of multimedia streaming contexts has become important for the network observability industry to effectively measure user-perceived streaming quality as delivered by networks \cite{wang_standardizing_2024,varvello_performance_2022,bronzino_inferring_2019,barakabitze_qoe_2018,skorin-kapov_survey_2018,finamore_youtube_2011,mok_inferring_2011}. Prior works have developed methods to classify contexts in popular types of multimedia services such as video streaming \cite{wang_characterizing_2024,zhang_sensei_2021,adarsh_too_2021,bronzino_traffic_2021}, live streaming \cite{madanapalli_reclive_2021,loh_machine_2021}, video conferencing \cite{sharma_estimating_2023,michel_enabling_2022,macmillan_measuring_2021}, voice calling \cite{mauro_experimental_2020,holub_analysis_2018}, online gaming \cite{madanapalli_know_2022,schmidt_modeling_2021}, and virtual reality applications \cite{lyu_metavradar_2023,cheng_are_2022}.
+For example, the works in \cite{che_packet_2012,chen_network_2006} focus on the contexts in online gaming that vary the expected network conditions for a good gameplay experience including game titles, genres, the number of players, peripheral status and team communication model.
+In \cite{lyu_metavradar_2023,cheng_are_2022}, the authors measured the network demands for a good VR experience that depend on the user activity status and the number of surrounding users.
+This work is specialized in classifying the contexts (\ie game titles, gameplay activity patterns, and player activity stages) of cloud game streaming sessions. As demonstrated in a large-scale deployment at an ISP hosting NVIDIA's cloud gaming servers, our method, combined with objective QoE measurement, holds unique value for network operators to better support this highly demanding service by effectively measuring the user-perceived streaming quality.","Network traffic analysis of cloud gaming services:As an emerg-
+ing type of multimedia streaming service that exhibits high de-
+mands on network conditions, cloud gaming services have been an-
+alyzed in prior works for their network traffic characteristics, includ-
+ing flow anatomy and volumetric profiles. For example, Lyuet al.
+[32] discussed the use of network flows during entire user sessions,
+from platform administration to server selection and gameplay,
+which serve as indicative signatures for network operators to de-
+tect cloud gaming sessions played on different types of user setups
+by their broadband/mobile subscribers. The works in [ 13,18,34]
+analyzed the bandwidth demands of cloud gaming sessions with
+different levels of streaming quality settings. Furthermore, objective
+quality-of-experience metrics (e.g.,user input lag, graphic resolu-
+tion, and streaming frame rates) have also been derived from net-
+work quality-of-service (QoS) attributes of game streaming flows
+[6,32,44]. For the network observability industry, it has been high-
+lighted that purely using objective QoE metrics such as frame rate
+cannot effectively measure the quality of game streaming perceived
+by players, as gameplay contexts, including game titles and player
+activities, can significantly vary the expected/requested QoE and
+network QoS levels for good user experience [ 3,14,22,25,27,49,67].
+To bridge this gap, we develop a traffic analysis method to classify
+the contexts of cloud gameplay, enabling network operators to effec-
+tively measure user-perceived streaming quality when correlating
+with the objective QoE metrics.
+Measuring multimedia services with contexts:Gaining visi-
+bility into the coarse categories of multimedia streaming contexts
+has become important for the network observability industry to
+effectively measure user-perceived streaming quality as delivered
+by networks [ 7,12,21,42,54,60,66]. Prior works have developed
+methods to classify contexts in popular types of multimedia ser-
+vices such as video streaming [ 1,11,64,69], live streaming [ 30,37],
+video conferencing [ 35,39,51], voice calling [ 19,26], online gaming
+[36,50], and virtual reality applications [ 17,33]. For example, the
+works in [ 15,16] focus on the contexts in online gaming that vary
+the expected network conditions for a good gameplay experienceincluding game titles, genres, the number of players, peripheral
+status and team communication model. In [ 17,33], the authors mea-
+sured the network demands for a good VR experience that depend
+on the user activity status and the number of surrounding users.
+This work is specialized in classifying the contexts (i.e.,game titles,
+gameplay activity patterns, and player activity stages) of cloud
+game streaming sessions. As demonstrated in a large-scale deploy-
+ment at an ISP hosting NVIDIA’s cloud gaming servers, our method,
+combined with objective QoE measurement, holds unique value for
+network operators to better support this highly demanding service
+by effectively measuring the user-perceived streaming quality."

@@ -1,0 +1,36 @@
+\begingroup
+\setlength{\tabcolsep}{3pt}
+\begin{table}[t!]
+    \centering   
+    \caption{\uline{Observation 1: Topological features are informative about group anchors, yet are limited.} Predicting the node with the highest or lowest degree in each hyperedge as the anchor achieves considerable, yet not outstanding, accuracy (\%).
+    In each setting, the best performance is highlighted in bold, while the second-best is underlined.}
+    \label{tab:degree_perf}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{cc|ccccc}
+\hline
+\multicolumn{2}{c|}{\textbf{Dataset}} & {\small Degree} & {\small WHATsNet} & {\small CoNHD-U} & {\small CoNHD-I} & {\small Random} \bigstrut \\
+\hline
+\multirow{2}[0]{*}{\texttt{coAA}} & (first) & 44.4  & \textbf{45.2} & 42.7  & \uline{44.5} & 37.1 \bigstrut[t] \\
+      & (last) & \textbf{46.3} & \uline{45.8} & 42.2  & 44.7  & 37.1 \\
+\multirow{2}[0]{*}{\texttt{coDB}} & (first) & \textbf{42.5} & \uline{42.5} & 41.2  & 41.4  & 32.8 \\
+      & (last) & \textbf{45.5} & \uline{45.4} & 42.7  & 43.5  & 32.8 \\
+\multirow{2}[0]{*}{\texttt{coSM}} & (first) & 32.7  & \textbf{34.3} & 31.4  & 29.8  & \uline{33.7} \\
+      & (last) & 37.7  & \textbf{39.8} & 37.9  & \uline{39.4} & 33.7 \\
+\multicolumn{2}{c|}{\texttt{qaBI}} & 76.2  & \textbf{85.6} & 78.7  & \uline{79.3} & 44.3 \\
+\multicolumn{2}{c|}{\texttt{qaPH}} & 77.2  & \textbf{88.1} & 76.0  & \uline{77.3} & 41.1 \\
+\multicolumn{2}{c|}{\texttt{qaMA}} & \textbf{38.7} & \uline{35.8} & 29.0  & 29.8  & 32.4 \\
+\multicolumn{2}{c|}{\texttt{qaST}} & \uline{30.9} & \textbf{31.2} & 25.4  & 26.6  & 24.2 \\
+\multicolumn{2}{c|}{\texttt{emEN}} & 22.0  & \textbf{50.8} & 44.0  & \uline{45.1} & 18.8 \\
+\multicolumn{2}{c|}{\texttt{emEU}} & 49.0  & \textbf{51.0} & 52.8  & \uline{52.4} & 45.8 \\
+\multicolumn{2}{c|}{\texttt{emER}} & \uline{66.2} & \textbf{66.6} & 65.3  & 64.6  & 44.9 \\
+\multicolumn{2}{c|}{\texttt{soME}} & 65.0  & \textbf{75.5} & 74.3  & \uline{74.6} & 42.9 \\
+\multicolumn{2}{c|}{\texttt{soRE}} & 84.3  & \uline{97.4} & 96.8  & \textbf{97.5} & 50.0 \\
+\multicolumn{2}{c|}{\texttt{moML}} & 41.8  & 41.4  & \uline{42.4} & \textbf{42.7} & 21.3 \bigstrut[b]\\
+\hline
+\multicolumn{2}{c|}{Avg. Acc.} & 50.0  & \textbf{54.8} & 51.4  & \uline{52.1} & 35.8 \bigstrut[t]\\
+\multicolumn{2}{c|}{Avg. Rank} & 2.75  & \textbf{1.63} & 3.38  & \uline{2.56} & 4.69 \bigstrut[b]\\
+\hline
+\end{tabular}%
+\end{adjustbox}
+\end{table}
+\endgroup

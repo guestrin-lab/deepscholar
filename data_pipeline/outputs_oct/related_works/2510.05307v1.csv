@@ -1,0 +1,179 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.05307v1,http://arxiv.org/abs/2510.05307v1,2025-10-06 19:18:56+00:00,When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks,"Existing AI agents typically execute multi-step tasks autonomously and only
+allow user confirmation at the end. During execution, users have little
+control, making the confirm-at-end approach brittle: a single error can cascade
+and force a complete restart. Confirming every step avoids such failures, but
+imposes tedious overhead. Balancing excessive interruptions against costly
+rollbacks remains an open challenge. We address this problem by modeling
+confirmation as a minimum time scheduling problem. We conducted a formative
+study with eight participants, which revealed a recurring
+Confirmation-Diagnosis-Correction-Redo (CDCR) pattern in how users monitor
+errors. Based on this pattern, we developed a decision-theoretic model to
+determine time-efficient confirmation point placement. We then evaluated our
+approach using a within-subjects study where 48 participants monitored AI
+agents and repaired their mistakes while executing tasks. Results show that 81
+percent of participants preferred our intermediate confirmation approach over
+the confirm-at-end approach used by existing systems, and task completion time
+was reduced by 13.54 percent.","HCI research has primarily examined how to give users control, while reliability engineering has modeled when to intervene. We unify these perspectives by using mathematical models grounded in user behavior to determine when human control should occur in long-horizon agentic tasks.
+\subsection{Human Control in AI Agents}
+The tension between system autonomy and direct user control has been a recurring theme in HCI for decades \cite{horvitz1999principles, shneiderman1997direct, lieberman1997autonomous, maes1995agents}. Current AI agents are highly automated, integrating context, tools, and memory to solve complex real-world tasks \cite{thrun2002probabilistic}. Yet these reasoning and tool use systems are highly error-prone, yielding only ~30\% accuracy on 10-step tasks \cite{wei2022chain, dziri2023faith}. Errors propagate like a snowball—growing exponentially and causing downstream failures \cite{zhao2024retrieval, ji2023survey}. Agent self-correction is inconsistent and does not scale with task complexity \cite{kadavath2022language}. These challenges highlight the necessity of human control.
+
+To support such control, HCI researchers have proposed a wide range of tools for human involvement in agent planning and execution \cite{shao2024collaborative, das2024vime, zhao2024lightva, suh2024luminate, feng2024cocoa, lawley2023val, epperson2025interactive, kazemitabaar2024improving}. For instance, Cocoa builds on computational notebook interfaces to support co-planning and co-execution of research tasks \cite{feng2024cocoa}, AGDebugger enables pausing and editing agent behaviors in programming \cite{epperson2025interactive}, VAL lets users instruct agents to execute tasks in user-specified ways \cite{lawley2023val}, and Step-Phasewise decomposes complex analysis workflows for verification \cite{kazemitabaar2024improving}. These systems focus on how to give users control, but not when that control should be invoked in multi-step tasks.
+
+If we want to study ""when"", we inevitably need mathematical models. Beyond the agentic AI context, prior work has examined the timing of user engagement through mathematical models \cite{horvitz1999principles, cockburn2022probability, todi2021adapting, zhao2022bayesian}. For instance, \citet{horvitz1999principles} proposed expected-utility models for deciding whether to invoke services, and \citet{cockburn2022probability} showed that users’ probability-weighting biases shape when they engage or ignore assistive features. However, these works focus on single-event decisions and are not applicable to agentic AI, where tasks involve many interdependent steps. To capture the long-horizon nature of agent execution, we need to observe users’ sequential behaviors around errors and build mathematical models that identify the optimal moments for user confirmation from a global, system-level perspective.
+
+\subsection{Error Prevention and Recovery Models}
+Outside HCI, reliability engineering offers inspiration. Researchers have long developed mathematical models to optimize inspection intervals for complex systems such as railway tracks, drainage infrastructure, and manufacturing plants \cite{ten2013optimizing, iren2014cost, zhou2015preventive}. These studies show how inspection strategies affect whole-system performance, considering dependencies such as workforce allocation, spare parts, and interdependent subsystems \cite{dekker1997review, wang2002survey, de2020review}. The central challenge is to balance preventive maintenance (early inspections to prevent failures) with corrective maintenance (recovering after failures occur), minimizing long-run costs by trading off inspection labor and detection probabilities against repair and downtime losses \cite{assis2021dynamic, wang2012overview, barlow1960optimum, taghipour2012optimal}.
+For AI agents, the analogy is clear: deciding when to confirm execution steps likewise balances preventive checks with corrective recovery. But unlike engineering, the relevant cost is not purely economic—it is shaped by user experience, including confirmation burden and error recovery effort.
+
+HCI work on errors has largely focused on how to prevent or repair mistakes. Examples include encouraging users to issue longer or repeated commands for accuracy \cite{lam2022more}, designing conversations that make error recovery more resilient \cite{ashktorab2019resilient}, referring to third-party apps for additional information during repair \cite{li2020multi}, and studying whether error detection should be system- or user-initiated \cite{levy2021assessing}. These studies enrich our understanding of error handling, but they do not provide a mathematical account of when intervention should occur across multi-step tasks.
+
+In summary, while prior HCI work has richly explored how to give users control and how to prevent or repair errors, it has rarely asked when such intervention should occur across long-horizon tasks. Similarly, reliability engineering provides rigorous models of inspection timing, but they optimize purely for economic cost in physical systems. Our contribution is to bridge these two traditions: we introduce a mathematical perspective on the \textit{when} question in agentic AI, grounded not in labor or repair costs, but in the dynamics of user experience—balancing confirmation burden against recovery effort. This shift reframes human–agent interaction as a problem of scheduling when to switch initiative between agents acting and users verifying and correcting, opening new space for both theoretical modeling and practical design of adaptive confirmation strategies.
+
+
+
+\begin{figure*}
+  \centering
+  \includegraphics[width=1\linewidth]{task_type.png}
+  \caption{Representative Task Types and AI Agent Interface Example}
+  \Description{Left: Task taxonomy generated from 12 representative benchmarks. Right: Example of an AI agent interface.}
+  \label{fig:task type and interface}
+\end{figure*}","HCI research has primarily examined how to give users control, while reliability engineering has modeled when to intervene. We unify these perspectives by using mathematical models grounded in user behavior to determine when human control should occur in long-horizon agentic tasks.
+\subsection{Human Control in AI Agents}
+The tension between system autonomy and direct user control has been a recurring theme in HCI for decades \cite{horvitz1999principles, shneiderman1997direct, lieberman1997autonomous, maes1995agents}. Current AI agents are highly automated, integrating context, tools, and memory to solve complex real-world tasks \cite{thrun2002probabilistic}. Yet these reasoning and tool use systems are highly error-prone, yielding only ~30\
+
+To support such control, HCI researchers have proposed a wide range of tools for human involvement in agent planning and execution \cite{shao2024collaborative, das2024vime, zhao2024lightva, suh2024luminate, feng2024cocoa, lawley2023val, epperson2025interactive, kazemitabaar2024improving}. For instance, Cocoa builds on computational notebook interfaces to support co-planning and co-execution of research tasks \cite{feng2024cocoa}, AGDebugger enables pausing and editing agent behaviors in programming \cite{epperson2025interactive}, VAL lets users instruct agents to execute tasks in user-specified ways \cite{lawley2023val}, and Step-Phasewise decomposes complex analysis workflows for verification \cite{kazemitabaar2024improving}. These systems focus on how to give users control, but not when that control should be invoked in multi-step tasks.
+
+If we want to study ""when"", we inevitably need mathematical models. Beyond the agentic AI context, prior work has examined the timing of user engagement through mathematical models \cite{horvitz1999principles, cockburn2022probability, todi2021adapting, zhao2022bayesian}. For instance, \citet{horvitz1999principles} proposed expected-utility models for deciding whether to invoke services, and \citet{cockburn2022probability} showed that users’ probability-weighting biases shape when they engage or ignore assistive features. However, these works focus on single-event decisions and are not applicable to agentic AI, where tasks involve many interdependent steps. To capture the long-horizon nature of agent execution, we need to observe users’ sequential behaviors around errors and build mathematical models that identify the optimal moments for user confirmation from a global, system-level perspective.
+
+\subsection{Error Prevention and Recovery Models}
+Outside HCI, reliability engineering offers inspiration. Researchers have long developed mathematical models to optimize inspection intervals for complex systems such as railway tracks, drainage infrastructure, and manufacturing plants \cite{ten2013optimizing, iren2014cost, zhou2015preventive}. These studies show how inspection strategies affect whole-system performance, considering dependencies such as workforce allocation, spare parts, and interdependent subsystems \cite{dekker1997review, wang2002survey, de2020review}. The central challenge is to balance preventive maintenance (early inspections to prevent failures) with corrective maintenance (recovering after failures occur), minimizing long-run costs by trading off inspection labor and detection probabilities against repair and downtime losses \cite{assis2021dynamic, wang2012overview, barlow1960optimum, taghipour2012optimal}.
+For AI agents, the analogy is clear: deciding when to confirm execution steps likewise balances preventive checks with corrective recovery. But unlike engineering, the relevant cost is not purely economic—it is shaped by user experience, including confirmation burden and error recovery effort.
+
+HCI work on errors has largely focused on how to prevent or repair mistakes. Examples include encouraging users to issue longer or repeated commands for accuracy \cite{lam2022more}, designing conversations that make error recovery more resilient \cite{ashktorab2019resilient}, referring to third-party apps for additional information during repair \cite{li2020multi}, and studying whether error detection should be system- or user-initiated \cite{levy2021assessing}. These studies enrich our understanding of error handling, but they do not provide a mathematical account of when intervention should occur across multi-step tasks.
+
+In summary, while prior HCI work has richly explored how to give users control and how to prevent or repair errors, it has rarely asked when such intervention should occur across long-horizon tasks. Similarly, reliability engineering provides rigorous models of inspection timing, but they optimize purely for economic cost in physical systems. Our contribution is to bridge these two traditions: we introduce a mathematical perspective on the \textit{when} question in agentic AI, grounded not in labor or repair costs, but in the dynamics of user experience—balancing confirmation burden against recovery effort. This shift reframes human–agent interaction as a problem of scheduling when to switch initiative between agents acting and users verifying and correcting, opening new space for both theoretical modeling and practical design of adaptive confirmation strategies.","HCI research has primarily examined how to give users control,
+while reliability engineering has modeled when to intervene. We
+unify these perspectives by using mathematical models grounded
+in user behavior to determine when human control should occur
+in long-horizon agentic tasks.
+2.1 Human Control in AI Agents
+The tension between system autonomy and direct user control has
+been a recurring theme in HCI for decades [ 28,45,50,66]. Current
+AI agents are highly automated, integrating context, tools, and mem-
+ory to solve complex real-world tasks [ 73]. Yet these reasoning and
+tool use systems are highly error-prone, yielding only 30% accuracy
+on 10-step tasks [ 23,86]. Errors propagate like a snowball—growing
+exponentially and causing downstream failures [ 33,96]. Agent self-
+correction is inconsistent and does not scale with task complexity
+[35]. These challenges highlight the necessity of human control.
+To support such control, HCI researchers have proposed a wide
+range of tools for human involvement in agent planning and ex-
+ecution [ 19,24,25,37,39,63,68,97]. For instance, Cocoa builds
+on computational notebook interfaces to support co-planning and
+co-execution of research tasks [ 25], AGDebugger enables pausing
+and editing agent behaviors in programming [ 24], VAL lets users
+instruct agents to execute tasks in user-specified ways [ 39], and
+Step-Phasewise decomposes complex analysis workflows for verifi-
+cation [ 37]. These systems focus on how to give users control, but
+not when that control should be invoked in multi-step tasks.
+If we want to study ""when"", we inevitably need mathematical
+models. Beyond the agentic AI context, prior work has examined
+the timing of user engagement through mathematical models [ 17,
+28,74,95]. For instance, Horvitz [28] proposed expected-utility
+models for deciding whether to invoke services, and Cockburn et al .
+[17] showed that users’ probability-weighting biases shape when
+they engage or ignore assistive features. However, these works
+focus on single-event decisions and are not applicable to agentic
+AI, where tasks involve many interdependent steps. To capture the
+long-horizon nature of agent execution, we need to observe users’
+sequential behaviors around errors and build mathematical models
+When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks Conference’17, July 2017, Washington, DC, USA
+that identify the optimal moments for user confirmation from a
+global, system-level perspective.
+2.2 Error Prevention and Recovery Models
+Outside HCI, reliability engineering offers inspiration. Researchers
+have long developed mathematical models to optimize inspection
+intervals for complex systems such as railway tracks, drainage
+infrastructure, and manufacturing plants [ 32,71,100]. These studies
+show how inspection strategies affect whole-system performance,
+considering dependencies such as workforce allocation, spare parts,
+and interdependent subsystems [ 20,21,79]. The central challenge
+is to balance preventive maintenance (early inspections to prevent
+failures) with corrective maintenance (recovering after failures
+occur), minimizing long-run costs by trading off inspection labor
+and detection probabilities against repair and downtime losses
+[9,11,70,81]. For AI agents, the analogy is clear: deciding when to
+confirm execution steps likewise balances preventive checks with
+corrective recovery. But unlike engineering, the relevant cost is
+not purely economic—it is shaped by user experience, including
+confirmation burden and error recovery effort.
+HCI work on errors has largely focused on how to prevent or
+repair mistakes. Examples include encouraging users to issue longer
+or repeated commands for accuracy [ 38], designing conversations
+that make error recovery more resilient [ 8], referring to third-party
+apps for additional information during repair [ 44], and studying
+whether error detection should be system- or user-initiated [ 41].
+These studies enrich our understanding of error handling, but they
+do not provide a mathematical account of when intervention should
+occur across multi-step tasks.
+In summary, while prior HCI work has richly explored how to
+give users control and how to prevent or repair errors, it has rarely
+asked when such intervention should occur across long-horizon
+tasks. Similarly, reliability engineering provides rigorous models of
+inspection timing, but they optimize purely for economic cost in
+physical systems. Our contribution is to bridge these two traditions:
+we introduce a mathematical perspective on thewhenquestion in
+agentic AI, grounded not in labor or repair costs, but in the dy-
+namics of user experience—balancing confirmation burden against
+recovery effort. This shift reframes human–agent interaction as a
+problem of scheduling when to switch initiative between agents act-
+ing and users verifying and correcting, opening new space for both
+theoretical modeling and practical design of adaptive confirmation
+strategies.
+3Grounding Confirmation Modeling in Agentic
+AI Contexts
+Before building the model, we conducted a formative study to
+address two research questions:
+•RQ1: How do users monitor AI agents during task execution?
+Is there any consistency in user behavior patterns across
+different task types and interface designs?
+•RQ2: When should confirmation happen to support users in
+effectively monitoring AI agents?
+To ensure that the observed user behaviors and the resulting mod-
+eling are grounded in realistic usage contexts, we first reviewed
+representative task benchmarks and existing AI agents (Section3.1). Based on this review, we then designed a test environment
+that combines real-world tasks with deployed agentic systems to
+examine RQ1 and RQ2 (Section 3.2).
+3.1 Agentic AI Task Types and Existing Systems
+3.1.1 Task Types.To understand the landscape of agentic AI tasks
+and guide the design of our user study, we reviewed 12 benchmarks
+that cover a wide spectrum of real-world scenarios [ 15,34,49,76,82,
+85, 88–91, 99]. These benchmarks are grounded in user-generated
+platforms such as StackOverflow, Reddit, and other public-facing
+systems, where users frequently ask how to complete complex or
+ambiguous tasks. Each benchmark contains around 300 pieces of
+task data. From these benchmarks, we identified four broad ap-
+plication domains—Office, Daily Life, Virtual Environment, and
+Mixed Workflow—each encompassing several representative task
+types (Figure 2, left). These domains provided the basis for selecting
+tasks in our formative study. Despite advances in LLMs, current
+models such as GPT-4 or Claude 3.5 still struggle to reliably com-
+plete long-horizon tasks. Reported success rates for benchmarks
+like OSWorld [ 89], SpreadsheetBench [ 49], and TheAgentCompany
+[90] often fall between 30% and 60%, with failure modes including
+incorrect tool use, misinterpreted instructions, or skipped steps.
+This relatively high error rate underscores the need for human-in-
+the-loop oversight, where users monitor and intervene during task
+execution.
+3.1.2 Existing Systems.We tested tasks from the benchmarks men-
+tioned above in nine agentic systems [ 2,3,6,18,26,27,51,54,75].
+We also reviewed recent surveys on agent interface design [ 48,87,
+98]. Typically, these agents operate within remote desktop environ-
+ments, where the agent perceives its environment through periodic
+screenshots. The vision-language model (VLM) reasons about the
+current state and user instructions, and then performs primitive
+actions, such as mouse clicks and keyboard inputs. For instance,
+when the agent perceives a hotel booking website, it will enter
+the destination city on that website automatically, as shown in the
+middle of Figure"

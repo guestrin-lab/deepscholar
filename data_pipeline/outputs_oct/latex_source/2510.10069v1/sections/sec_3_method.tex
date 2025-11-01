@@ -1,0 +1,99 @@
+
+\section{\name: Pretraining Objective and Architecture}
+\label{sec:pretrain}
+
+\subsection{Overview and Design Goals}
+\label{subsec:overview}
+\name aims to learn synchronization-aware talking-face representations from unlabeled audio--visual streams.
+As illustrated in~\figref{fig:ovewview}(a), our approach couples MAE-style masked image/video modeling on the visual stream with a CLIP-style cross-modal contrastive alignment that treats time-aligned \textit{vocal-motion} and \textit{audio} tokens as positives and temporally misaligned pairs as negatives, driving both modalities into a shared embedding space and yielding token-level audio--visual stream synchronization (\S\ref{subsec:objectives}).
+Per frame, a ViT-based encoder exposes three prompt tokens that explicitly encode the essential factors of a talking-face frame—identity $\mathbf{z}^{\mathrm{id}}$, vocal motion $\mathbf{z}^{\mathrm{voc}}$, and ambient motion $\mathbf{z}^{\mathrm{amb}}$—and the decoder reconstructs frames via cross-attention conditioned on these prompts.
+
+
+\paragraph{Inputs and Notation.}
+Let $\mathbf{x}_{1:T}\in\mathbb{R}^{T\times C\times H\times W}$ be video frames and $\mathbf{a}\in\mathbb{R}^{N}$ mono audio at sampling rate $f_s$.
+Each frame is patchified into $N_p$ patches and embedded to $D$-dimensional tokens.
+For MAE-style masking, denote by $\mathcal{V}_t\subset\{1,\dots,N_p\}$ the indices of visible patches at time $t$ and by $\mathcal{M}_t$ the masked ones, with $|\mathcal{V}_t|=N_{\mathrm{vis}}$ and $\mathcal{V}_t\cup\mathcal{M}_t=\{1,\dots,N_p\}$.
+The per-frame visible patch tokens are $\mathbf{P}^{\mathrm{vis}}_t\in\mathbb{R}^{N_{\mathrm{vis}}\times D}$.
+Let $\mathbf{e}^{\mathrm{mask}}\in\mathbb{R}^{D}$ be a learnable mask token; a restoration operator places $\mathbf{P}^{\mathrm{vis}}_t$ and copies of $\mathbf{e}^{\mathrm{mask}}$ at indices $\mathcal{M}_t$ to form a length-$N_p$ sequence for decoding.
+Per frame, the encoder also outputs three prompt tokens,
+$\mathbf{z}^{\mathrm{id}}_t,\ \mathbf{z}^{\mathrm{amb}}_t,\ \mathbf{z}^{\mathrm{voc}}_t\in\mathbb{R}^{D}$.
+For audio, we employ a pretrained speech encoder with $L$ layers that is kept frozen during pretraining; let $\{\mathbf{H}^{(\ell)}\}_{\ell=1}^{L}$ denote the hidden-state sequences from all layers.
+To obtain frame-wise alignment with the video, we resample the input waveform so that the encoder emits $T$ tokens per utterance (one token per video frame) at every layer, yielding $\mathbf{A}^{(\ell)}=\{\mathbf{a}^{(\ell)}_t\}_{t=1}^{T}$.
+
+\subsection{Model Design}
+\label{subsec:arch}
+
+\paragraph{Two-Bypass Face-Aware Masking.}
+Each frame is processed by two masking \textit{bypasses}, and the visual encoder is invoked twice per iteration to consume the corresponding visible patches. 
+\textbf{Bypass 1 (Uniform)} applies a random uniform mask hiding $75\%$ of patches, leaving the visible set $\mathcal{V}^{(1)}_t$ and visible patch tokens $\mathbf{P}^{\mathrm{vis},(1)}_t\!\in\!\mathbb{R}^{N_{\mathrm{vis}}\times D}$. We use the \textit{identity} prompt $\mathbf{z}^{\mathrm{id}}_t$ from this pass together with these visible patch tokens for decoding; the \textit{vocal/ambient} prompts from this pass are ignored. 
+\textbf{Bypass 2 (Face-Preserving)} also masks $75\%$ of patches but retains facial regions with higher keep probability, forming $\mathcal{V}^{(2)}_t$. To suppress appearance leakage while preserving motion cues, we apply color/brightness/saturation perturbations on this view. We use the \textit{vocal-motion} and \textit{ambient-motion} prompts $\mathbf{z}^{\mathrm{voc}}_t,\mathbf{z}^{\mathrm{amb}}_t$ from this pass for decoding, while its visible patch tokens and identity prompt are ignored. In both passes the encoder consumes only visible patches. Before decoding, a learnable mask token is inserted at indices $\mathcal{M}^{(1)}_t$ (the complement of $\mathcal{V}^{(1)}_t$) to restore a length-$N_p$ sequence per frame, consistent with MAE.
+
+\input{depds/tab_avsync_vfhq}
+
+\paragraph{Visual Encoder and Prompt Tokens.}
+A ViT-style encoder applied to the visible patches outputs per-frame patch tokens (from Bypass 1) and three prompt tokens
+\[
+\mathbf{Z}^{\text{prompt}}_t=\big[\mathbf{z}^{\text{id}}_t,\ \mathbf{z}^{\text{amb}}_t,\ \mathbf{z}^{\text{voc}}_t\big]\in\mathbb{R}^{3\times D},
+\]
+where $\mathbf{z}^{\mathrm{id}}_t$ is taken from Bypass 1 and $\mathbf{z}^{\mathrm{voc}}_t,\mathbf{z}^{\mathrm{amb}}_t$ from Bypass 2 as defined above.
+
+\paragraph{Identity-Consistent Prompt Shuffling.}
+Within a mini-batch, to promote motion-invariant identity embeddings, we randomly swap $\mathbf{z}^{\mathrm{id}}$ among frames that share the same subject identity but exhibit different facial motions, weakening incidental coupling between identity prompts and short-term dynamics.
+
+\paragraph{Audio Features and Adapter.}
+A pretrained $L$-layer speech encoder (kept frozen) produces per-layer hidden sequences; we resample the input waveform so that each layer emits $T$ tokens (one per video frame), yielding aligned streams $\{\mathbf{a}^{(\ell)}_t\}_{t=1}^{T}$. To preserve both low-level acoustic detail and higher-level linguistic cues, we concatenate the aligned per-layer tokens along the feature dimension at each time step,
+\[
+\tilde{\mathbf{a}}_t=\big[\mathbf{a}^{(1)}_t \,\|\, \cdots \,\|\, \mathbf{a}^{(L)}_t\big],
+\]
+and pass them through an audio adapter that projects to the shared width $D$, producing $\mathbf{A}_t\in\mathbb{R}^{D}$. This design mitigates the bias of top encoder layers toward semantic content induced by ASR pretraining while retaining waveform-proximal information from earlier layers.
+
+\paragraph{Decoder with Prompt Cross-Attention.}
+We use an MAE-style decoder with $N_{\text{dec}}$ Transformer blocks. Its input at each frame is the restored token sequence formed by encoded visible patches from Bypass~1 plus mask tokens (with positional embeddings). Each block first applies self-attention over this full sequence (visible patches + mask tokens), and then cross-attends to the prompt tokens—identity, ambient, and a conditioning token $\mathbf{c}_t$. We perform two decoding passes per frame that share decoder weights: (i) a video-driven pass with $\mathbf{c}_t=\mathbf{z}^{\mathrm{voc}}_t$ producing $\hat{\mathbf{x}}^{\mathrm{voc}}_t$, and (ii) an audio-driven pass with $\mathbf{c}_t=\mathbf{A}_t$ producing $\hat{\mathbf{x}}^{\mathrm{aud}}_t$. Both passes reconstruct the same target frame $\mathbf{x}_t$, providing symmetric supervision that encourages the vocal-motion and audio tokens to encode consistent, alignable information. A linear head maps decoded tokens back to pixels.
+
+
+\subsection{Pretraining Objectives}
+\label{subsec:objectives}
+
+\paragraph{Pixel-Space Reconstruction (MSE).}
+We minimize per-frame mean squared error for the two decoding passes (video-driven and audio-driven; see \S\ref{subsec:arch}):
+\[
+\mathcal{L}_{\text{pix}}^{\text{voc}}=\tfrac{1}{T}\sum_{t=1}^{T}\!\big\|\hat{\mathbf{x}}^{\text{voc}}_t-\mathbf{x}_t\big\|_2^2,\qquad
+\mathcal{L}_{\text{pix}}^{\text{aud}}=\tfrac{1}{T}\sum_{t=1}^{T}\!\big\|\hat{\mathbf{x}}^{\text{aud}}_t-\mathbf{x}_t\big\|_2^2.
+\]
+
+\paragraph{Audio–Vocal Contrastive Alignment.}
+Unlike prior audio–visual synchronisation systems that cast the task as in-/out-of-sync \textit{binary} classification or as \textit{pairwise} contrastive matching, we align per-frame audio tokens $\mathbf{A}_t$ with vocal-motion tokens $\mathbf{v}_s=\mathbf{z}^{\mathrm{voc}}_s$ using a CLIP-style symmetric InfoNCE.
+Let $p_{t\to s}=\frac{\exp(\langle \mathbf{A}_t,\mathbf{v}_s\rangle/\tau)}{\sum_{u=1}^{T} \exp(\langle \mathbf{A}_t,\mathbf{v}_u\rangle/\tau)}$ be the softmax over vocal candidates for audio index $t$, and $P_t$ the positive set (aligned index and optional neighbors within $\pm k$, expanded by an audio self-similarity threshold).
+The loss is
+\[
+\mathcal{L}_{\mathrm{CL}}
+= -\frac{1}{2T} \sum_{t=1}^{T} \Big[
+\log \textstyle\sum_{s\in P_t} p_{t\to s}
+\;+\;
+\log \textstyle\sum_{s\in P_t} p_{s\to t}
+\Big],
+\]
+with temperature $\tau$.
+This preserves CLIP-style bidirectional alignment while allowing multiple positives per anchor.
+
+
+
+\paragraph{Cross-Covariance Decorrelation.}
+To reduce leakage across factor-specific embeddings, we penalize cross-covariance between centered tokens. For $\mathcal{P}=\{\mathrm{id},\,\mathrm{amb},\,\mathrm{voc}\}$:
+\[
+\mathcal{L}_{\text{cov}}
+=\frac{1}{D^2}\sum_{\{p,q\}\subset\mathcal{P}}
+\big\|\mathrm{Cov}\!\big(\mathbf{z}^{p},\mathbf{z}^{q}\big)\big\|_F^{2},
+\]
+where covariance is computed after centering along the batch/time axis.
+
+\paragraph{Total Objective.}
+The overall loss is
+\[
+\mathcal{L}
+= \lambda_{\text{pix}}\big(\mathcal{L}_{\text{pix}}^{\text{voc}} + \mathcal{L}_{\text{pix}}^{\text{aud}}\big)
++ \lambda_{\text{CL}}\,\mathcal{L}_{\text{CL}}
++ \lambda_{\text{cov}}\,\mathcal{L}_{\text{cov}}.
+\]
+
+\input{depds/tab_emotion_action_classification}

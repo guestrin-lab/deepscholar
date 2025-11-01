@@ -1,0 +1,461 @@
+\documentclass[sigconf]{acmart}
+%\documentclass[manuscript]{acmart}
+% \documentclass[manuscript,review,anonymous]{acmart}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyphenat}
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{comment}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.5}
+
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+\setcopyright{none}
+\copyrightyear{2024}
+\acmYear{2024}
+\acmDOI{XXXXXXX.XXXXXXX}
+
+\begin{document}
+
+\title{When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks}
+% other options: 
+% \title{Modeling Confirmation Frequency in Agentic AI: Balancing User Burden and Rollback Cost}
+
+\author{Jieyu Zhou}
+\affiliation{%
+  \institution{Georgia Institute of Technology}
+  \city{Atlanta}
+  \state{Georgia}
+  \country{USA}
+}
+\email{jzhou625@gatech.edu}
+
+\author{Aryan Roy}
+\affiliation{%
+  \institution{Georgia Institute of Technology}
+  \city{Atlanta}
+  \state{Georgia}
+  \country{USA}
+}
+\email{aroy389@gatech.edu}
+
+\author{Sneh Gupta}
+\affiliation{%
+  \institution{Georgia Institute of Technology}
+  \city{Atlanta}
+  \state{Georgia}
+  \country{USA}
+}
+\email{sgupta852@gatech.edu}
+
+\author{Daniel Weitekamp}
+\affiliation{%
+  \institution{Georgia Institute of Technology}
+  \city{Atlanta}
+  \state{Georgia}
+  \country{USA}
+}
+\email{dweitekamp3@gatech.edu}
+
+\author{Christopher J. MacLellan}
+\affiliation{%
+  \institution{Georgia Institute of Technology}
+  \city{Atlanta}
+  \state{Georgia}
+  \country{USA}
+}
+\email{cmaclell@gatech.edu}
+
+\begin{teaserfigure}
+  \centering
+  \includegraphics[width=\textwidth]{diagram.png}
+  \caption{Confirmation–Diagnosis–Correction–Redo (CDCR) Pattern. Based on the expected time of user interaction under the CDCR pattern, our model decides whether the agent should proceed autonomously or prompt the user to step in and supervise.}
+  \Description{Confirmation–Diagnosis–Correction–Redo (CDCR)}
+  \label{fig:CDCR}
+\end{teaserfigure}
+
+\begin{abstract}
+Existing AI agents typically execute multi-step tasks autonomously and only allow user confirmation at the end. During execution, users have little control, making the confirm-at-end approach brittle: a single error can cascade and force a complete restart. Confirming every step avoids such failures, but imposes tedious overhead. Balancing excessive interruptions against costly rollbacks remains an open challenge. We address this problem by modeling confirmation as a minimum time scheduling problem. We conducted a formative study with eight participants, which revealed a recurring \textit{Confirmation–Diagnosis–Correction–Redo (CDCR)} pattern in how users monitor errors. Based on this pattern, we developed a decision-theoretic model to determine time-efficient confirmation point placement. We then evaluated our approach using a within-subjects study where 48 participants monitored AI agents and repaired their mistakes while executing tasks. Results show that 81\% of participants preferred our intermediate confirmation approach over the confirm-at-end approach used by existing systems, and task completion time was reduced by 13.54\%. 
+\end{abstract}
+\maketitle
+
+
+\keywords{AI agents, mathematical model, error handling}
+
+
+
+
+
+
+\section{Introduction}
+With the advancement of Artificial Intelligence (AI), Agentic AI has emerged as a concept describing agents that assist humans in carrying out complex tasks \cite{durante2024agent, pallagani2024prospects, huang2024understanding, wang2024survey, yao2023react, sumers2023cognitive, schick2023toolformer, wei2022chain}. These AI agents have been deployed across diverse domains, including multi-modal devices \cite{rabbit2023, chang2024partnr}, web-based systems \cite{huq2023s,li2023using, li2017sugilite}, and game controls \cite{wang2023voyager,wang2023describe,lawley2023val}. Their rapid proliferation has reignited a long-standing HCI debate \cite{horvitz1999principles, shneiderman1997direct, lieberman1997autonomous, maes1995agents}: should agents operate under direct human supervision and control or should they operate in a mostly autonomous fashion?
+
+Most commercial AI agents today prioritize autonomy, executing tasks end-to-end with little to no user oversight \cite{openai2025agent, anthropic2024claude, manus2024}. Yet these agents remain highly error-prone, achieving only ~30\% accuracy on multi-step benchmarks \cite{ma2024spreadsheetbench, xie2024osworld, xu2024theagentcompanybenchmarkingllmagents}, largely due to their limited capacity for generalizable reasoning and planning \cite{stechly2024chain, valmeekam2024planning}. Errors are especially costly in long-horizon agentic tasks, which often span 30 steps and 10–30 minutes of execution \cite{hu2024dawn, bonatti2024windows}. A single mistake can cascade into complete task failure, forcing users to redo the entire process—doubling execution time and, through repeated API calls, adding both monetary costs \cite{kapoor2024ai, feng2024cocoa, zhang2025leveraging} and increasing the agent's carbon footprint \cite{patterson2022carbon, luccioni2023estimating}. This situation highlights the need to engage user inspections over agent execution.
+
+The timing of such inspections is essentially a tradeoff between autonomy and control. At one extreme, too much user control (e.g., the user confirming after every step) prevents error propagation but imposes substantial interaction overhead, reducing efficiency to the level of manual execution or even worse. At the other extreme, too much automation (e.g., the user only confirming at the end) reduces the burden on the user but increases the risks of errors and costs associated with re-executing the tasks. The challenge is deciding when user checks should occur to balance the efficiency of automation with the safeguards of user control.
+
+Prior HCI research has largely focused on \textbf{how} to provide user control, through visualizing the reasoning process, editing execution results, and providing error feedback \cite{arawjo2024chainforge, epperson2025interactive, kazemitabaar2024improving, feng2024cocoa, lam2022more, ashktorab2019resilient, li2020multi, levy2021assessing}. Few studies examine \textbf{when} such control should occur. A notable exception is Horvitz’s seminal work on expected utility models for single-event decisions \cite{horvitz1999principles}, but these approaches do not extend to long-horizon tasks, where sequential dependencies and cumulative costs shape overall outcomes.  
+
+In this paper, we address the open question of \textbf{when user checks should occur in long-horizon agentic tasks}. We first review representative agent benchmarks and deployed systems and present the results of a formative study we conducted with eight participants. The study revealed dissatisfaction with the confirm-at-end strategy used by existing agentic platforms. It also surfaced a recurring \textbf{Confirmation–Diagnosis–Correction–Redo (CDCR)} pattern employed by users to supervise agents. Building on these insights, we developed a decision-theoretic model that identifies periodic confirmation points that minimize total expected task completion time while ensuring task correctness. Finally, we directly validated our approach by comparing it to the confirm-at-end strategy using a within-subjects study with 48 participants. Results show that 81\% of participants (39 of 48) preferred our intermediate confirmation strategy over the confirm-at-end baseline. We also found that our strategy reduced the average task completion time by 13.54\% compared to the baseline. 
+
+This paper makes four key contributions: 
+
+1) A formative study identifying user expectations for alternative confirmation strategies compared to the current confirm-at-end approach, and revealing a recurring CDCR pattern;
+
+2) A decision-theoretic model for checkpoint placement that minimizes user interaction while ensuring correct task execution;
+
+3) An empirical evaluation with 48 participants demonstrating both strong user preference (81\%) for intermediate confirmation and a 13.54\% reduction in task completion time relative to the confirm-at-end baseline;
+
+4) A discussion framing our model not only as a confirmation scheduling tool but also as a design probe to surface potential directions for user-supervised systems.
+
+
+
+\section{Related Work}
+HCI research has primarily examined how to give users control, while reliability engineering has modeled when to intervene. We unify these perspectives by using mathematical models grounded in user behavior to determine when human control should occur in long-horizon agentic tasks.
+\subsection{Human Control in AI Agents}
+The tension between system autonomy and direct user control has been a recurring theme in HCI for decades \cite{horvitz1999principles, shneiderman1997direct, lieberman1997autonomous, maes1995agents}. Current AI agents are highly automated, integrating context, tools, and memory to solve complex real-world tasks \cite{thrun2002probabilistic}. Yet these reasoning and tool use systems are highly error-prone, yielding only ~30\% accuracy on 10-step tasks \cite{wei2022chain, dziri2023faith}. Errors propagate like a snowball—growing exponentially and causing downstream failures \cite{zhao2024retrieval, ji2023survey}. Agent self-correction is inconsistent and does not scale with task complexity \cite{kadavath2022language}. These challenges highlight the necessity of human control.
+
+To support such control, HCI researchers have proposed a wide range of tools for human involvement in agent planning and execution \cite{shao2024collaborative, das2024vime, zhao2024lightva, suh2024luminate, feng2024cocoa, lawley2023val, epperson2025interactive, kazemitabaar2024improving}. For instance, Cocoa builds on computational notebook interfaces to support co-planning and co-execution of research tasks \cite{feng2024cocoa}, AGDebugger enables pausing and editing agent behaviors in programming \cite{epperson2025interactive}, VAL lets users instruct agents to execute tasks in user-specified ways \cite{lawley2023val}, and Step-Phasewise decomposes complex analysis workflows for verification \cite{kazemitabaar2024improving}. These systems focus on how to give users control, but not when that control should be invoked in multi-step tasks.
+
+If we want to study "when", we inevitably need mathematical models. Beyond the agentic AI context, prior work has examined the timing of user engagement through mathematical models \cite{horvitz1999principles, cockburn2022probability, todi2021adapting, zhao2022bayesian}. For instance, \citet{horvitz1999principles} proposed expected-utility models for deciding whether to invoke services, and \citet{cockburn2022probability} showed that users’ probability-weighting biases shape when they engage or ignore assistive features. However, these works focus on single-event decisions and are not applicable to agentic AI, where tasks involve many interdependent steps. To capture the long-horizon nature of agent execution, we need to observe users’ sequential behaviors around errors and build mathematical models that identify the optimal moments for user confirmation from a global, system-level perspective.
+
+\subsection{Error Prevention and Recovery Models}
+Outside HCI, reliability engineering offers inspiration. Researchers have long developed mathematical models to optimize inspection intervals for complex systems such as railway tracks, drainage infrastructure, and manufacturing plants \cite{ten2013optimizing, iren2014cost, zhou2015preventive}. These studies show how inspection strategies affect whole-system performance, considering dependencies such as workforce allocation, spare parts, and interdependent subsystems \cite{dekker1997review, wang2002survey, de2020review}. The central challenge is to balance preventive maintenance (early inspections to prevent failures) with corrective maintenance (recovering after failures occur), minimizing long-run costs by trading off inspection labor and detection probabilities against repair and downtime losses \cite{assis2021dynamic, wang2012overview, barlow1960optimum, taghipour2012optimal}.
+For AI agents, the analogy is clear: deciding when to confirm execution steps likewise balances preventive checks with corrective recovery. But unlike engineering, the relevant cost is not purely economic—it is shaped by user experience, including confirmation burden and error recovery effort.
+
+HCI work on errors has largely focused on how to prevent or repair mistakes. Examples include encouraging users to issue longer or repeated commands for accuracy \cite{lam2022more}, designing conversations that make error recovery more resilient \cite{ashktorab2019resilient}, referring to third-party apps for additional information during repair \cite{li2020multi}, and studying whether error detection should be system- or user-initiated \cite{levy2021assessing}. These studies enrich our understanding of error handling, but they do not provide a mathematical account of when intervention should occur across multi-step tasks.
+
+In summary, while prior HCI work has richly explored how to give users control and how to prevent or repair errors, it has rarely asked when such intervention should occur across long-horizon tasks. Similarly, reliability engineering provides rigorous models of inspection timing, but they optimize purely for economic cost in physical systems. Our contribution is to bridge these two traditions: we introduce a mathematical perspective on the \textit{when} question in agentic AI, grounded not in labor or repair costs, but in the dynamics of user experience—balancing confirmation burden against recovery effort. This shift reframes human–agent interaction as a problem of scheduling when to switch initiative between agents acting and users verifying and correcting, opening new space for both theoretical modeling and practical design of adaptive confirmation strategies.
+
+
+
+\begin{figure*}
+  \centering
+  \includegraphics[width=1\linewidth]{task_type.png}
+  \caption{Representative Task Types and AI Agent Interface Example}
+  \Description{Left: Task taxonomy generated from 12 representative benchmarks. Right: Example of an AI agent interface.}
+  \label{fig:task type and interface}
+\end{figure*}
+
+\section{Grounding Confirmation Modeling in Agentic AI Contexts}
+Before building the model, we conducted a formative study to address two research questions:
+\begin{itemize}
+    \item RQ1: How do users monitor AI agents during task execution? Is there any consistency in user behavior patterns across different task types and interface designs?
+    \item RQ2: When should confirmation happen to support users in effectively monitoring AI agents?
+\end{itemize}
+To ensure that the observed user behaviors and the resulting modeling are grounded in realistic usage contexts, we first reviewed representative task benchmarks and existing AI agents (Section 3.1). Based on this review, we then designed a test environment that combines real-world tasks with deployed agentic systems to examine RQ1 and RQ2 (Section 3.2).
+
+\subsection{Agentic AI Task Types and Existing Systems}
+\subsubsection{Task Types}
+To understand the landscape of agentic AI tasks and guide the design of our user study, we reviewed 12 benchmarks that cover a wide spectrum of real-world scenarios \cite{xie2024osworld, valmeekam2023planbench, xie2024travelplanner, zhou2023webarena, xu2024theagentcompanybenchmarkingllmagents, ma2024spreadsheetbench, jing2024dsbench, yao2022webshop, wei2025browsecomp, wang2024zsc, chang2024partnr}. These benchmarks are grounded in user-generated platforms such as StackOverflow, Reddit, and other public-facing systems, where users frequently ask how to complete complex or ambiguous tasks. Each benchmark contains around 300 pieces of task data. From these benchmarks, we identified four broad application domains—Office, Daily Life, Virtual Environment, and Mixed Workflow—each encompassing several representative task types (Figure~\ref{fig:task type and interface}, left). These domains provided the basis for selecting tasks in our formative study. Despite advances in LLMs, current models such as GPT-4 or Claude 3.5 still struggle to reliably complete long-horizon tasks. Reported success rates for benchmarks like OSWorld \cite{xie2024osworld}, SpreadsheetBench \cite{ma2024spreadsheetbench}, and TheAgentCompany \cite{xu2024theagentcompanybenchmarkingllmagents} often fall between 30\% and 60\%, with failure modes including incorrect tool use, misinterpreted instructions, or skipped steps. This relatively high error rate underscores the need for human-in-the-loop oversight, where users monitor and intervene during task execution.
+
+\subsubsection{Existing Systems}
+We tested tasks from the benchmarks mentioned above in nine agentic systems \cite{openai2025agent, anthropic2024claude, manus2024, flowith2024, crewai2024, layla2024, pokeeai2024, genspark2024, browseruse2024}. We also reviewed recent surveys on agent interface design \cite{luera2024survey, zheng2022ux, weisz2024design}. Typically, these agents operate within remote desktop environments, where the agent perceives its environment through periodic screenshots. The vision-language model (VLM) reasons about the current state and user instructions, and then performs primitive actions, such as mouse clicks and keyboard inputs. For instance, when the agent perceives a hotel booking website, it will enter the destination city on that website automatically, as shown in the middle of Figure~\ref{fig:task type and interface}. Over multiple steps, the agent decomposes a high-level goal into a sequence of fine-grained interface operations.
+
+From the interaction perspective, we observed three common UI patterns across existing agents: (1) in some agents, each step is a clickable node linked to its corresponding screenshot \cite{manus2024, flowith2024, crewai2024, layla2024}; (2) in others, the agent’s activity or reasoning process is visually embedded within the screenshot, with a sliding progress bar to navigate through the log \cite{openai2025agent, anthropic2024claude, genspark2024}; and (3) some agents provide only screenshot playback without an activity log \cite{pokeeai2024, browseruse2024}. These UI patterns focus only on passively displaying the agent’s execution, but they do not proactively engage users to verify correctness. Given the low accuracy rates of current agents and the high cost of errors, confirmation mechanisms are exceedingly rare: most systems execute entire task sequences autonomously and pause only when they require missing information (e.g., payment credentials) \cite{openai2025agent}. Most errors (e.g., failed login, page not loading) are not detected in real time, and agents simply stop without notifying the user or recovering \cite{kadavath2022language}. These gaps motivated us to explore how to schedule intermediate confirmations in ways that ensure timely user intervention without introducing unnecessary overhead.
+
+
+\subsection{Designing the Formative Study Environment}
+Drawing from prior benchmarks and real-world agent deployments, we selected representative tasks to cover a broad spectrum of domains. By using real-world tasks and existing systems, we aim to replicate users’ authentic experiences, ensuring that subsequent model development would be grounded in realistic usage contexts.
+
+\subsubsection{Environment Setup}
+We selected five tasks to represent a broad spectrum of domains, including everyday activities, office workflows, and virtual environments. To cover the three UI patterns described above, we selected one representative agent for each pattern and randomly assigned tasks to these agents:
+\begin{itemize}
+    \item Agent 1 Manus \cite{manus2024} (node-based navigation) — (1) Travel planning: booking hotels, flights, taxis, and restaurants; (2) Shopping cart: adding ingredients for making pizza to an online shopping cart.
+    \item Agent 2 ChatGPT Agent \cite{openai2025agent} (embedded sequential navigation) — (3) Document processing: converting scanned invoices into a spreadsheet and emailing it to the reimbursement office; (4) Image editing: removing unrelated objects, changing backgrounds, and replacing objects in an image.
+    \item Agent 3 Browser Use \cite{browser_use2024} (screenshot-only playback) — (5) Video game play: navigating through different terrains, boiling ingredients, and plating meals in the game Overcooked.
+\end{itemize}
+This diversity of agents and tasks allows us to examine whether consistent patterns of user supervision behavior emerge across different UI designs and task types.
+
+\subsubsection{Procedure}
+We recruited eight participants for a 45-minute user study, structured in two phases. Each participant completed all five tasks, allowing us to compare how both task type and confirmation frequency influenced user behavior within the same individuals.
+
+Phase 1 — RQ1 (User Behavior): In Task 1, participants were instructed to check every step to familiarize themselves with the agent. In Tasks 2–5, they confirmed results only at the end of task execution. Participants were asked to think aloud, verbalizing their judgments about correctness and describing how they located errors in the sequence of steps. Phase 2 — RQ2 (Confirmation Preferences): We conducted a semi-structured interview to explore participants’ desired confirmation frequency, comparing their experiences with end-of-task versus step-by-step confirmation, and eliciting their ideal frequency. 
+
+All sessions were recorded and transcribed. We conducted a thematic analysis \cite{inbook, beyer1999contextual}, in which two researchers collaboratively coded the transcripts. We refined emerging themes through the lens of our research questions (RQ1 \& 2).
+
+
+
+\section{Formative Study Findings}
+
+\begin{comment}
+    change the order of rq1 and rq2
+\end{comment}
+Our thematic analysis of the formative study data identified a dominant Confirmation–Diagnosis–Correction–Redo (CDCR) pattern where participants dealt with AI agent errors by reviewing the execution history from beginning to end. This strategy was evident across diverse task types and UI designs. We also observed some exceptions to this pattern (RQ1). For RQ2, participants expressed a desire for confirmation strategies beyond the prevalent ``confirm-at-the-end'' norm, suggesting opportunities for intermediate checkpoints. These insights informed the framing of our confirmation frequency model (section 4.3).
+
+\subsection{Confirm-at-end is not enough}
+Seven out of eight participants expressed their dissatisfaction with the current confirm-at-end strategy. As P4 noted:
+\begin{quote}
+``I did not like confirming at the end. Because the results were so far off from what I originally intended, that was a waste of time to do. Looking through the trace to try and find the error, I see that it was having a lot of other problems. If it had stopped there, maybe I could have clarified what my intentions were when I said the thing. Instead of wasting its time and getting something that was so far off from what I actually wanted to get.  And if we could maybe confirm at least a little bit more frequently, I think that would really help my confidence in the agent, [and improve] my communication [with the agent].''
+\end{quote}
+These findings suggest the dominant ``confirm-at-the-end'' approach should be reconsidered. Introducing intermediate confirmations can improve efficiency by allowing users to ensure the agent stays on the right track. Confirming every step is impractical: ``If I have to check every step my agent is making, I'd rather do it myself. (P6)'' The challenge, therefore, is to strike a balance between the fixed time cost of reviewing every agent action and the expected time cost of needing to confirm task completion at the end and then possibly undertake a long post-hoc diagnostic and redo process if the agent failed. We discuss our model for balancing between these two extremes with checkpoint scheduling in the next section. 
+
+
+Scheduling confirmations requires consideration of two components: (1) the time costs for each part of the Confirmation\hyp{}Diagnosis\hyp{}Correction\hyp{}Redo (CDCR) cycle, including the time associated with waiting for the agent to generate actions, and (2) the agent's accuracy. We found that when accuracy was high, users were fine with less frequent confirmation. 
+
+
+\subsection{Common Usage Patterns}
+\subsubsection{Common Agent Errors} 
+The most frequent agent error in our formative study was a mismatch between the activity described by the agent (i.e., the action listed) and what was actually executed (i.e., the screenshot). For example, in the travel planning task, the activity list indicated ``click July 4th''as the start date, but the screenshot showed July 9th selected. Another frequent issue was that the agent did not always execute actions in full alignment with the user’s intended goal.
+
+\subsubsection{The CDCR Pattern}
+We identified a recurring Confirmation\hyp{}Diagnosis\hyp{}Correction\hyp{}Redo (CDCR) sequence (Figure \ref{fig:CDCR}). After the agent completes a task, participants typically \textit{confirm} that the final screenshot matches their expected result. If not, they first \textit{diagnose} the error by scanning the entire execution history, often skimming the activity list or sliding through the screenshot recording. Once they get the whole picture of the execution process, they scan the execution sequence step-by-step from the beginning, reviewing the activity descriptions, reasoning traces, and associated screenshots along the way. After locating the erroneous step, participants usually \textit{correct} the agent by telling it how to fix the mistake. In the final \textit{redo} stage, participants wait for the agent to replan from the erroneous step to the end based on their correction.
+
+\subsubsection{Exceptions to the CDCR pattern}
+We found that interface differences did not fundamentally change user behavior. However, variations in task type and user familiarity revealed several edge cases where this pattern did not hold. (1) Ambiguous confirmability: In some tasks, there was no clear ground truth for what counted as an error. For example, in hotel booking, the agent might choose a location that was slightly more expensive but offered better transportation access. While arguably suboptimal, this choice was not objectively wrong. (2) Non-linear diagnosis: Some users skipped intermediate steps during diagnosis. For example, P2, who was highly experienced with Overcooked, noticed the player placing soup on the wrong pad and bypassed the cooking phase, jumping directly to the serving phase. (3) Partial correction: When errors were minor and unlikely to affect subsequent planning, users preferred to download the result file and fix the error themselves rather than having the agent re-execute the task.
+
+\subsection{Implications for Model Scope and Applicability}
+
+
+Building on the recurring confirmation–diagnosis–correction–redo pattern, our model is grounded in three key assumptions:
+\begin{enumerate}
+    \item The task has a clear distinction between correct and incorrect outputs.
+    \item The user is not deeply familiar with the task, and thus needs to review from the beginning to understand the agent’s actions. 
+    \item Errors can propagate, and without timely correction, they affect subsequent similar actions.
+\end{enumerate}
+While factors such as task structure and user preference are important for real-world deployment, our current modeling abstracts away these user-specific and task-structural influences to focus on the core trade-off between confirmation cost and error diagnosis cost. This simplification positions our model within a broader landscape of supervision patterns, while leaving these additional dimensions for further investigation.
+
+Our intended application scenarios involve long, multi-step tasks with repeated sub-actions where each sub-action carries a non-trivial probability of error. For example, in image editing workflows involving repeated operations such as removing objects, changing backgrounds, and cropping images, each step is similar in structure but may still fail unpredictably. Our model aims to identify confirmation strategies that maximize efficiency in such contexts.
+
+\section{Modeling Confirmation as a Minimum Time Scheduling Problem}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{example_interval.png}
+    \caption{An example of the interval between the last verified state and the next confirmation point. The colors denote the correctness of the plan execution at that point, but this correctness is only observed when the user inspects them (denoted by solid circles). When the user finds an error in state $s_j$, they must go back to $s_i$ and check each state one at a time until they find the first error. This requires them to inspect $m-1$ states. Once the first error is identified, the agent then has to redo $j-m+1$ actions. Note, the dashed circles signify that the correctness of a state is not known until diagnosis.}
+    \label{fig:example-interval}
+\end{figure*}
+
+This section introduces a formal model of confirmation scheduling. Our goal is to determine \emph{when} the system should prompt the user to confirm correctness during a multi-step agentic task so as to minimize the user time needed to execute a whole task correctly. In other words, at each step, our system decides whether the agent should proceed autonomously or whether the user should be asked to step in and supervise. We proceed in three stages: (i) we define the environment (states, actions, transitions); (ii) we derive the expected time of a single confirmation interval using the \textsc{CDCR} decomposition; and (iii) we present a dynamic programming algorithm to identify the minimum time checkpoints. Finally, we describe how our model's parameters can be personalized.
+
+\subsection{Problem Formulation}
+We can formulate the scheduling of confirmations as a stochastic decision process:
+\[
+\mathcal{P} = (\mathcal{S}, \mathcal{A}, \mathcal{T}),
+\]
+where $\mathcal{S}$ is the state space, $\mathcal{A}$ is the action space, and $\mathcal{T}$ is the transition function. 
+
+\subsubsection{State space $\mathcal{S}$} Given an agent action sequence of length N, there will be $2 \times (N+1)$ states in the space. Among these, $2N$ states correspond to the points after each action has been executed, which we denote as $s_i = \texttt{correct}$ or $s_i = \texttt{incorrect}$ for $i\in {1,\dots,N}$. The correctness value of $s_i$ is determined by whether all actions up to step $i$ have been executed correctly by the agent.
+For example, if the system is in state $s_3=\texttt{correct}$, this means that the agent's first three actions have been executed correctly. In addition, there are two special states that are always correct: (1) an initial state $s_0$, representing the point before any actions have been executed, and (2) a terminal state $s_{\texttt{done}}$, indicating successful completion of the agent's entire action sequence.
+
+At any given point, it knows that all agent actions up to the last user-verified state are correct, but it does not know whether the states beyond this point are correct (see Figure~\ref{fig:example-interval}).
+
+
+\subsubsection{Action space $\mathcal{A}$.} In any given state $s_i$, the system can choose between one of two actions. It can either execute action $i+1$ from the agent's plan (\texttt{execute}) or request confirmation from the user (\texttt{verify}). Note that the system does not choose the agent's action (e.g., button clicks, scrolling, tool use), but only whether to proceed autonomously with execution or seek user verification. In this way, the system determines whether the agent or the user takes the lead. When the system is in state $s_0$ it can only choose to \texttt{execute} because this state is always correct by default, so confirmation is unnecessary. Similarly, when the system is in the final state $s_{N}$, it can only \texttt{verify} to transition to the terminal $s_{\texttt{done}}$ state because there are no more agent actions to execute.
+
+
+\subsubsection{Transition function $\mathcal{T}$.}
+The transition function depends on the two action options chosen by the system. We distinguish two cases:
+
+\textit{(1) Execute.} When the system chooses to $\texttt{execute}$ it will transition from one state to another according to the following transition probabilities:
+\begin{itemize}
+    \item $p(s_{i}=\texttt{correct}|s_{i-1}=\texttt{correct}, \texttt{execute}) = p_{a_i}$
+    \item $p(s_{i}=\texttt{incorrect}|s_{i-1}=\texttt{correct}, \texttt{execute}) = 1- p_{a_i}$
+    \item $p(s_{i}=\texttt{correct}|s_{i-1}=\texttt{incorrect}, \texttt{execute}) = 0$
+    \item $p(s_{i}=\texttt{incorrect}|s_{i-1}=\texttt{incorrect}, \texttt{execute}) = 1$
+\end{itemize}
+\noindent where $1 < i \leq N$ and $p_{a_i}$ corresponds to the probability that the agent will execute action $i$ from its plan correctly. These transitions also capture the cumulative probability of errors; i.e., once an agent makes a mistake, all subsequent states will be incorrect. Note that there is no \texttt{execute} transition out of the $s_N$ state. An important point here is that the correctness of all states after the last user verified state is not directly observable to the system; it becomes known only when the user inspects them. To compute the probability that any given state $s_i$ is correct, the system must weigh the transition from the previous state by its beliefs about the correctness of the prior state: 
+$p(s_i=\texttt{correct}) = p(s_{i-1}=\texttt{correct})p(s_i=\texttt{correct}|s_{i-1}=\texttt{correct}, \texttt{execute})$. By chaining over transitions, we can compute the probability that any state $j$ is correct given the last user verified state $i$, where $i < j$: $p(s_j=\texttt{correct}|s_i=\texttt{correct}) = \prod_{m=i+1}^j p_{a_m}$. Note, we do not need to consider actions before the last user verified step because we already know they are all correct.
+
+
+\textit{(2) Verify.} When the system chooses $\texttt{verify}$, the user inspects the current state $s_j$ and determines if it is \texttt{correct}.  
+\begin{itemize}
+    \item If $s_j=\texttt{correct}$ and $j<N$, then $p(s_m=\texttt{correct})$ is set to 1 for all $m < j$ and system remains in $s_j$.
+    % The system proceeds to decide on action $a_{i+1}$.  
+    \item If $s_j=\texttt{correct}$ and $j=N$, the system transitions to the terminal state $s_{\texttt{done}}$.
+    \item If $s_j=\texttt{incorrect}$, then the user goes back to the last verified state and starts inspecting each of the following states to diagnose where the first error state occurs. If the last state verified by the user was $s_i=\texttt{correct}$ and during diagnosis the user determines that the first incorrect state is $s_m=\texttt{incorrect}$, then the system sets $p(s_k=\texttt{correct}) = 1$ for all $i<k<m$ and transitions to state $s_{m-1}$ (e.g., see Figure \ref{fig:example-interval}). The probability that the first incorrect state will occur at state $s_m$ follows a geometric distribution:     $p(\text{first \texttt{incorrect} at }s_m|s_i=\texttt{correct}) = 
+    p(s_{i+1}=\texttt{correct}, \cdots, s_{m-1}=\texttt{correct}, s_m=\texttt{incorrect})
+    = \left(\prod_{k=i+1}^{m-1} p_{a_k}\right)\,(1-p_{a_m})$.
+\end{itemize}
+
+
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{dp_diagram.png}
+    \caption{Dynamic programming algorithm and results for an agent action sequence of length $N=5$ with action success probabilities $p=[0.7,0.7,0.9,0.85,0.85]$. 
+    %Costs are parameterized as $t_{\text{confirm}}[0:5]=1$, $t_{\text{diagnose}}[0:5]=1$, and $t_{\text{redo}}[0:5]=1$. 
+    Costs are parameterized as $t_{\text{confirm}}[k] = 1$, 
+$t_{\text{diagnose}}[k] = 1$, and $t_{\text{redo}}[k] = 1$, 
+for all $k \in \{0,\dots,N\}$.
+    Each cell $[\textit{start}, \textit{end}]$ specifies the expected user time to correctly execute the rest of the action sequence from $start$ to $N$, if the system has a verification checkpoint at state \textit{end}. 
+    White checkmarks indicate the $next\_ckpt$ locations for each $start$. The right-hand annotations summarize the resulting checkpoint policy; }
+    \label{fig:dp}
+\end{figure*}
+
+\subsection{Time Cost}
+The system measures cost in terms of \textit{user interaction time} (seconds), 
+following the Confirmation--Diagnosis--Correction--Redo (CDCR) pattern. 
+We first derive the expected time cost from step $i$ to its next confirmation point $j$. The interval begins at a state $s_i=\texttt{correct}$, which corresponds to the last state that the user has inspected and determined to be correct. The system then repeatedly chooses to
+\texttt{execute} actions until it reaches state $s_j$. At this point the system chooses to ask the user to \texttt{verify} the correctness of $s_j$.
+
+First, we denote the per-step time components in the CDCR pattern as follows:
+\begin{itemize}
+\item $t_{\text{confirm}}^i$: time for the user to confirm whether state $s_i$ is correct. 
+  Concretely, the user compares the screenshot of state with the agent’s activity list 
+  (i.e., the sequence of executed actions) to verify correctness.
+
+\item $t_{\text{diagnose}}^m$: the time required to inspect each intermediate state $s_m$ by looking at its screenshot and the description of the single agent action executed immediately before.\footnote{This is different from $t^i_{\text{confirm}}$, which requires evaluating a sequence of agent actions rather than a single agent action.}
+%    \item $t_{\text{diagnose}}$: the time required to inspect an intermediate state, via its screenshot and corresponding agent action description.
+
+  \item $t_{\text{correct}}^m$: time for the user to specify what went wrong with action $a_m$ and 
+  provide updated instructions to the agent to correct the mistake.
+
+  \item $t_{\text{redo}}^m$: time for the agent to re-execute the action $a_m$ after the correction.
+\end{itemize}
+
+If we know that the user has verified all the states up to $s_i$, then we can compute the expected time to go from $i$ to $N$ if the next checkpoint is at $j$, where $i<j \leq N$, as:
+
+
+\begin{align}
+T[i,j] &= t_{\text{confirm}}^{j}
++ p(s_j=\texttt{correct}\mid s_i=\texttt{correct}) \min_{k} T[j,k] \notag\\
+&\quad + \sum_{m=i+1}^{j} p(\text{first \texttt{incorrect} at } s_m\mid s_i=\texttt{correct})\notag\\
+&\quad
+\Bigl(
+  \sum_{k=i+1}^{m} t_{\text{diagnose}}^{k} + t_{\text{correct}}^{m}
+  + \sum_{k=m}^{j} t_{\text{redo}}^{k} + \min_{k} T[m-1,k]
+\Bigr)
+\end{align}
+
+
+
+
+
+The first term corresponds to the time it takes the user to confirm state $s_j$. The second term corresponds to the case where the state $s_j$ is correct, which occurs with probability $p(s_j=\texttt{correct}|s_i=\texttt{correct})$. If this happens, then the expected remaining time is recursively defined as the expected time needed to traverse from $j$ to $N$ when the system chooses the next checkpoint $k$ such that this time is minimized (denoted as $\min_k T[j,k]$). The third term corresponds to the cases where $s_j=\texttt{incorrect}$. If this happens, we sum over all the possible locations of the first error weighted by their probability. For each first incorrect state $s_m$, the  expected remaining time is composed of four parts: the time needed to diagnose the error, the time needed to correct the mistake, the time needed to redo the incorrect steps, and the expected time needed to go from $m$ to $N$ if the system chooses the next checkpoint $k$ such that this time is minimized.
+
+
+
+
+\subsection{Dynamic Programming Checkpoint Solver}
+
+
+Given the recurrent format of T[i, j], we developed a dynamic programming algorithm to efficiently identify the best verification locations that minimize the total user time, see Figure \ref{fig:dp}. 
+
+The algorithm starts at the end of the sequence, since there is always a verification at the end. It then works backwards populating the values of $T[:,:]$ according to the previously defined formula.\footnote{We drop $t_{\text{correct}}^m$ (the time needed for the user to instruct the agent on how to fix $a_m$) from the dynamic programming update because all errors need to be fixed no matter when verifications happen, so it turns out that dropping this term does not change the checkpoint locations.}  At each iteration, the algorithm computes the best next checkpoint for each starting location $i$, denoted as $next\_ckpt[i]$.
+
+The populated $next\_ckpt$ vector can be used to determine the best checkpoint locations. For a given starting location $i$ (which assumes $s_i=\texttt{correct}$), $next\_ckpt[i]$ specifies the location of the best next checkpoint. For the example in Figure \ref{fig:dp}, when starting at state 1, the best next checkpoint is at state 2, if starting at state 2, the best next checkpoint is at 3, and finally when starting at state 3, the next best checkpoint is at state 5.
+
+If the user determines that a state is incorrect during one of the checkpoint verifications, then they follow the CDCR procedure. This might result in them ending up in an earlier state. If the agent action sequence does not change, then the precomputed $T$ and $next\_ckpt$ can be reused without computation. If, however, the action sequence changes, then these need to be recomputed.
+
+
+\subsection{Modeling Personalization Capability}
+In our system, we have both agent-side and human-side quantities. On the agent side, evaluating agent performance is an active research area, with benchmarks reporting both task accuracy \cite{xie2024osworld, valmeekam2023planbench, xie2024travelplanner, zhou2023webarena, xu2024theagentcompanybenchmarkingllmagents, ma2024spreadsheetbench} and execution time \cite{zhang2025optimizing, zhang2025leveraging, liu2023llm, waytowich2024atari}. Accordingly, in our model, the step-level accuracy $p_{a_i}$ and the execution time $t_{\text{redo}}^k$ can be grounded in these benchmark results. For example, in image editing tasks, benchmarks report the success rate of invoking a given tool as well as the average time required to execute a single operation.
+
+On the human side, our framework allows both population-level and per-user parameterization of timing variables such as $t_{\text{confirm}}^k$ and $t_{\text{diagnose}}^k$. These quantities can capture hierarchical effects, with individual reaction times treated as adjustments to the population average and refined as more user data become available. In this paper, however, we focus on the population-level model and leave personalization to future work.
+
+
+\section{Model Verification Study Design}
+We compared two confirmation formats: intermediate confirmation, guided by our minimum time scheduling model, and confirm-at-end, the baseline in current AI agents. The study tested whether intermediate confirmation improves efficiency and user experience.
+
+\subsection{Simulated Environment}
+Real AI agents vary widely in execution time and outcome quality. We built a simulated environment that fixed execution time and accuracy for each task, allowing us to isolate confirmation frequency as the primary factor. The user interface used a clickable-node tracking design (shown in Figure~\ref{fig:env}), which participants in our formative study reported as helpful for navigation and understanding task progress. We selected three representative task domains: shopping cart management, image editing, and the Overcooked game. These cover three broad categories: daily life, work-related, and virtual tasks, while also differing substantially in execution time, tool usage, and workflow complexity. Error cases were drawn from real agent failures observed in prior experiments: in shopping, the agent failed to replace an out-of-stock item; in image editing, the agent applied an incorrect mask that prevented object removal; and in Overcooked, the agent grounded to the wrong ingredient dispenser (e.g., selecting the tomato instead of the onion).
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{env.png}
+    \caption{Example of the simulated shopping task interface with intermediate confirmation, the activity list on the left and the current action screenshot on the right, enabling users to compare and identify the first error.}
+    \label{fig:env}
+\end{figure*}
+
+\subsection{Within-Subjects Design}
+We employed a within-subjects design, where each participant completed two trials (intermediate and end) in all three domains. To control for potential biases, we introduced three layers of counterbalancing: task order, confirmation comparison order, and error location. 1) Task order. Each domain was treated as a block. We counterbalanced block order using a $3 \times 6$ Williams design, ensuring that each task domain appeared equally often in each position and that domain sequences were balanced across participants. 2) Confirmation strategy order. Within each block, the two confirmation formats for the same task were presented back-to-back. They were set to the same error location. To reduce familiarity effects, each trial followed the same structure but used different content (e.g., one shopping trial involved office supplies, another fitness items). Participants encountered different confirmation orders across the three blocks, and intermediate-first and end-first trials were balanced at the group level. 3) Error location. Error positions were sampled from early, middle, or late steps; shopping tasks included only early and late because these tasks were shorter. To prevent participants from anticipating that every trial would contain an error, we had each participant do one no-error trial. The no-error trial was implemented with fresh task content, assigned to one of the three task types, and counterbalanced across participants in both task type and confirmation format.
+
+
+\subsection{Procedure}
+The study began with a short tutorial explaining the agent background and confirmation methods. Each trial started with a task goal, and the Overcooked block included an additional introduction to the game rules. Each participant experienced 7 trials, including 2 (confirmation formats) * 3 (task types) + 1 no-error trial. After the trials, participants completed a post-study survey to capture participants' reflections on the confirmation strategies. The survey included open-ended questions pertaining to perceived task success, preferred confirmation style, and overall impressions of different confirmation strategies. It also included Likert-scale items assessing participants' perceptions of intermediate checkpoints (e.g., whether they saved time, reduced burden, or disrupted flow).
+
+
+\subsection{Participants}
+We recruited 48 participants from a university community (18 female, 30 male). Regarding LLM usage, 41 participants (85\%) reported using LLMs frequently (weekly or daily). In terms of familiarity with AI agents, $7$ (15\%) had never used them, $9$ (18\%) were beginners, $19$ (39\%) were intermediate users, and $13$ (28\%) were advanced users. Each session lasted about 15 minutes, and participants received \$5 compensation.
+
+
+\subsection{Variable Determination} 
+The confirmation frequency in our model is determined by four parameters: $t_{\text{confirm}}$, $t_{\text{diagnose}}$, $t_{\text{redo}}$, and the accuracy rate. In this study, each task domain is associated with its own set of parameters. (1) Confirmation and diagnosis times were estimated from a pilot study with random checkpoints. In the main study, these averages were used as fixed inputs, with recalibration performed every 5–10 participants to prevent drift. We deliberately avoided per-user online adaptation, since stable personalization requires long-horizon usage data beyond the scope of this lab setting. (2) Execution time was estimated through formative agent runs and prior literature \cite{zhang2025optimizing, zhang2025leveraging, liu2023llm, waytowich2024atari}. We set $t_{\text{redo}} = 20$s for shopping (dominated by network and screenshot analysis), $10$s for image editing (external tool calls), and $10$s for Overcooked (agent reasoning plus game state processing). (3) For accuracy, we set fixed per-step action correctness probabilities for each task domain, derived from formative agent runs: 
+$p_{\text{shopping}} = 87.5\%$, 
+$p_{\text{image editing}} = 91\%$, and 
+$p_{\text{overcooked}} = 93\%$. These values were applied uniformly across all steps within a task. 
+
+
+
+
+\section{Model Verification Results}
+In this section, we verify our model through both quantitative and qualitative analyses. While the quantitative results demonstrate what improvements intermediate confirmation achieves, the qualitative feedback explains why users value it and offers insights for future directions we discuss next.
+
+\subsection{Quantitative Results}
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{quan.png}
+    \caption{Average completion time under different confirmation strategies. Left: Intermediate confirmation reduced total time compared to end confirmation. Right: Effects vary by error location—large gains for early errors, minimal for mid, and slight cost for late errors. Error bars show 95\% CIs.}
+    \label{fig:qual}
+\end{figure*}
+
+Across all task domains, our model reduced the completion time of a full task trial (8--16 steps) by \textbf{13.54\%}, corresponding to a savings of 35.84 seconds per task, compared to the baseline (End Confirmation) condition, $t(143) = 5.52, p < 0.001$. The baseline condition with end confirmation required an average of 264.70 seconds (95\% CI [253.43, 275.98]), while intermediate confirmation using our model required 228.86 seconds (95\% CI [219.73, 237.99]). Breaking down by task domain, the reductions were \textbf{17.44\%} (47.60s) for Shopping ($t(47) = 5.25, p < 0.001$; our model mean = 225.33s, 95\% CI [212.78, 237.88]), \textbf{7.46\%} (17.41s) for Image Editing ($t(47) = 2.34, p = 0.024$; our model mean = 215.85s, 95\% CI [203.42, 228.28]), and \textbf{15.64\%} (49.03s) for Overcooked Cooking ($t(40) = 2.14, p = 0.044$; our model mean = 264.51s, 95\% CI [236.71, 292.30]). 
+
+The effect of confirmation frequency varied by error location. When errors occurred early, intermediate confirmation substantially reduced total time ($\approx 29\%$). For mid-task errors, the benefit was minimal ($\approx 2\%$), while for late errors, intermediate checkpoints slightly increased time ($+4.5\%$). This indicates that the value of intermediate confirmation is greatest for early error detection and diminishes as errors occur later in the task.
+
+Across all tasks, the average completion time was $246.78$s (95\% CI [236.58, 256.98]), consisting of $13\%$ ($32.08$s, 95\% CI [28.29, 32.95]) confirmation, $9\%$ ($21.85$s, 95\% CI [16.99, 26.74]) diagnosis, and $78\%$ ($195.55$s, 95\% CI [189.30, 201.79]) execution. Shifting from end to intermediate confirmation meant spending more time on confirmations, but this was offset by large savings in diagnosis ($-17\%$) and redo ($-22\%$). Moreover, the average time per confirmation decreased by $38\%$, as users only needed to consider the most recent steps rather than reasoning over the entire task history when verifying correctness. Intermediate confirmation reduced the mental tax of each checkpoint. 
+
+Beyond efficiency, reducing redo ($-22\%$) also cuts repeated LLM calls, lowering both financial costs and the energy footprint of unnecessary computation \cite{patterson2021carbon, luccioni2023estimating}. Although environmental impact is not our primary focus, this highlights an additional benefit: confirmation strategies that limit rework may also support more sustainable AI use.
+
+
+\subsection{Qualitative Findings}
+
+
+\subsubsection{Overall preference.} In our post-study survey, \textbf{81\%} of participants (39 of 48) preferred the modeled intermediate confirmation strategy, compared to 15\% (7 participants) who preferred end confirmation and 4\% (2 participants) with no preference (Fig.~\ref{fig:qual}, right). The Likert responses (Figure.~\ref{fig:qual}, left) further support this preference: most participants agreed that intermediate confirmation reduced errors (81\%), saved time (71\%), lowered cognitive burden (63\%), and helped prevent harmful errors (83\%). Notably, 77\% of participants disagreed that intermediate checkpoints disrupted their task flow.  As P18 noted, \textit{``I chose intermediate confirmation because it provides a balance between efficiency and reliability. By allowing the system to confirm at selected checkpoints, I can catch potential mistakes earlier instead of waiting until the very end, while still avoiding the constant interruptions of confirming every small step. This makes the process feel smoother but still safe.''} Overall, our modeled confirmation frequency achieved the intended goal of balancing user control with agent automation.
+
+
+\subsubsection{Impact of Diagnosis.}Although diagnosis time accounted for only a small portion of total completion time in the quantitative study, participants emphasized that it had a strong influence on their experience. When errors were revealed only at the end, users reported feeling disoriented, as they had to review all steps at once without clear guidance: \textit{``If I can only confirm at the end, I feel confused about how to deal with the result, because I don’t know which step to check.''} (P39) Timely checkpoints minimized the effort needed for diagnosis, making error handling less confusing and less mentally taxing for users.
+
+\subsubsection{Confirm at Early Stage.} The value of confirmations depends on the stage at which they occur. Based on our quantitative analysis, the largest time savings of intermediate confirmation arose when the agent made mistakes early in the task. The user survey further reinforced this finding from an experiential perspective, highlighting the importance of early-stage confirmation for both efficiency and usability. Each time a user and agent collaborate on a new task, the interaction is a dynamic process of gradually deepening mutual understanding: the agent gains a clearer understanding of the user’s needs, while the user gains a better sense of the agent’s performance and progressively builds trust in its automatic execution for that specific task. As P9 remarked:
+\begin{quote}
+``With an employee I haven't fully developed trust in yet, I would want to see intermediate steps in their work just to check that they've done it right. Perhaps if the employee has shown me that they can do the tasks correctly several times without errors, they can just show me their work at the end. I can't trust that it's going to do the task right all the way to the end quite yet, so I want it to show me that it has done the intermediate steps right before getting to a wrong final product.``   
+\end{quote}
+This perspective is also reflected in our model. We allow each step to have its own probability $p_{a_i}$, which can initially be set conservatively so that early-stage confirmations are more frequent. As users catch and correct early errors, $p_{a_i}$ increases, and the model dynamically decreases confirmation frequency. This adaptive behavior was not fully captured in our simulated environment. We will discuss in the next section how such dynamics could be more realistically incorporated.
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{qual.jpg}
+    \caption{Participant Likert scale scores for the questions asked in our post-study survey (Left).Preferred confirmation style(Right)}
+    \label{fig:qual}
+\end{figure*}
+
+\subsubsection{Subjective perception.} Participants’ preferences for confirmation strategy also reflected their perceptions of task importance and difficulty. For important tasks, they preferred more frequent checks (e.g., ``something elaborate like trip planning”), while for trivial tasks (e.g., ``adding groceries to my cart”), they preferred confirmation only at the end (P20). Perceived difficulty also mattered: users expected easier tasks to require fewer confirmations. However, user perceptions often diverged from reality. For tasks they considered simple, participants expected fewer confirmations, yet were frustrated when the agent still made errors. For example, agents frequently failed in the shopping cart task, but many users saw this task as trivial. Since our model calculates confirmation frequency from actual error rates, it correctly prescribed more frequent checkpoints. While efficient in theory, such frequent confirmations may feel disruptive when they conflict with user expectations. In the next section, we discuss how confirmation strategies can be better aligned with user perceptions in future systems.
+
+\section{Discussion}
+Our findings suggest that confirmation strategies should not be seen as a binary choice between user-driven supervision and agent-driven autonomy. Our decision-theoretic model strikes a mixed-initiative balance, where responsibility is flexibly shared between human and agent. To move toward this vision, we consider two complementary directions: (1) what else to model—expanding beyond efficiency to capture subjective costs and trust, and (2) how else to design—re-imagining confirmation as an interaction paradigm rather than a discrete interruption.
+
+\subsection{Beyond Efficiency: Subjective Costs and Trust}
+Our current model treats time as the only cost factor when determining the best confirmation points. However, in real-world applications, user decisions about when to confirm are influenced by broader considerations. As noted in Section 7.2.4, subjective perceptions play a critical role; here, we expand on this point by examining two key dimensions: real-world cost and user-perceived reliability.
+
+\subsubsection{Real-world cost} In our CDCR model, cost in the final redo stage is defined only from the agent's perspective (i.e., the time required for the agent to recover from an error). In practice, however, human users often bear additional costs that extend far beyond execution time. Errors may lead to financial loss (e.g., rescheduling fees for a wrong flight), emotional or social consequences (e.g., accidentally sending an email to the wrong recipient), or even irreversible risks (e.g., permanently deleting a file). Future research should explore how these human-centered costs affect confirmation strategies. For high-stakes actions, mandatory checkpoints should be enforced regardless of the system’s estimated accuracy. For general actions, the replanning term can be extended into a multi-dimensional cost function that balances a heterogeneous variety of costs, such as time, money, emotional costs, and risks. 
+%\begin{equation}
+%\pi^* = \text{argmin} \mathbb{E} [a*Time+b*Money+c*Emotion+d*Risk+...] 
+%\end{equation}
+
+Reliability engineering provides inspiration, with established methods for integrating economic trade-offs, workforce allocation, and interdependent subsystems into cost functions \cite{ten2013optimizing, iren2014cost, zhou2015preventive}, which could guide extensions of our model.
+
+\subsubsection{Perceived reliability} Users’ willingness to confirm is shaped not only by actual system accuracy but also by how reliable they believe the agent to be, based on their subjective experiences and agent framing \cite{lee2004trust, parasuraman2010complacency, shneiderman2020human}. For instance, positive framing can inflate perceived reliability and encourage overuse even when this harms performance \cite{cockburn2020framing, quinn2020loss, quinn2016bad}. Our own studies echoed these findings. First-time users who were unfamiliar with the agent tended to perceive it as less reliable, which naturally led them to confirm more frequently. Conversely, in tasks they considered simple, users expected that fewer confirmations would suffice. Yet this expectation often diverged from reality when the agent’s actual accuracy was lower than anticipated.
+
+Such mismatches highlight the need for balancing actual system accuracy with user perception. Our model is already equipped to support this: by assigning each action its own correctness probability $p_{a_i}$ based on past performance data, we can introduce a weighting scheme that blends objective error rates with subjective perceptions, ensuring that confirmation policies remain both efficient and aligned with user expectations.
+
+\subsection{Designing Confirmation as Interaction}
+To better balance user control with agent automation, confirmation should be treated not only as a scheduling problem but also as an interaction design challenge. From our study, we identify three insights that illustrate new ways of structuring this interaction.
+
+\subsubsection{Proactive engagement} In our two user studies, current agent UIs left users in a passive ``wait state'' during execution: with no meaningful hooks to monitor or steer the run, participants turned to other tasks and disengaged from supervision. This disengagement is risky and can lead to not only time and resources waste (discussed in our paper), but also harmful or unsafe actions (e.g., privacy breaches, opening phishing links, manipulative suggestions) \cite{alberts2024computers, bansal2024challenges, amodei2016concrete}. Current systems like GPT Agents \cite{openai2025agent} exemplify a reactive model, asking for clarification only when they cannot proceed, which is insufficient to prevent harmful actions. As agents become increasingly autonomous, effective mixed-initiative interaction requires what \citet{tennenhouse2000proactive} envisioned: moving humans from being ``in the loop'' to supervisory and policy-making roles. This shift—from human-centered to human-supervised design—requires agents to proactively solicit user supervision. Our model adds one dimension of proactivity by placing more checkpoints, but proactive supervision should extend beyond correctness to encompass broader forms of risk.
+
+\subsubsection{Goal Alignment} Our findings on error location highlight the importance of prevention. Errors introduced early often stem from poorly communicated goals rather than faulty execution \cite{bansal2024challenges}. While most HCI work emphasizes co-execution or error repair \cite{feng2024cocoa, arawjo2024chainforge, epperson2025interactive}, we identify a design opportunity in early-stage goal alignment. Before execution, agents could present a structured plan for user review, drawing on concepts from formal languages that use rigorous specifications to evaluate whether task goals are satisfied \cite{aeronautiques1998pddl, shivashankar2013hierarchical, nau2003shop2}. As noted in Section 7.2.3, our model assigns each agent action its own correctness probability $p_{a_i}$, which could be adapted to support such early-stage goal alignment interfaces, enabling more frequent and dynamic checkpoints.
+
+\subsubsection{Right amount of information} As tasks grow longer, participants in our study found confirmation increasingly difficult: extended linear logs made it hard to locate issues, leaving users disoriented. This highlights a core design question—what level of detail should agents expose for effective supervision? Current UIs that present step-by-step activity lists with screenshots are often too low-level, overwhelming users with detail without offering structure. Future interfaces should balance informativeness and abstraction, allowing users to monitor actions without being lost in execution traces. One promising direction is to summarize and restructure agent actions hierarchically, so that users can reason about plans at multiple levels of abstraction rather than scanning long linear logs. If such hierarchical structuring is adopted, our CDCR pattern remains intact, but diagnosis time may decrease in a logarithmic fashion—since users could locate errors by checking higher-level chunks first (e.g., binary or ternary splits) rather than scanning all low-level steps.
+
+
+\section{Conclusion}
+This paper introduced a decision-theoretic model for determining when users should confirm agent actions in long-horizon tasks. Building on insights from a formative study that surfaced the recurring CDCR pattern and dissatisfaction with confirm-at-end strategies, we conducted a controlled experiment with 48 participants and found that intermediate confirmation reduced task completion time by 13.54\% and was strongly preferred by 81\% of participants. Looking ahead, our findings suggest that confirmation should be framed not as a binary trade-off between autonomy and oversight, but as a mixed-initiative design opportunity, pointing to future work on integrating efficiency, trust, and interaction design to create more reliable and user-supervised agentic systems.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{sources.bib}
+\end{document}

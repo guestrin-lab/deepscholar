@@ -1,0 +1,269 @@
+
+
+
+
+\begin{table*}[t!]
+    % \setlength{\tabcolsep}{8pt}
+    \centering
+    \small
+    \caption{\textbf{Quantitative results on the validation split of Ref-YouTube-VOS and Ref-DAVIS17.} RefYT: Ref-YouTube-VOS, RefD: Ref-DAVIS, MeV: MeViS~\cite{ding2023mevis}, RefC: RefCOCO~\citep{mao2016generation,yu2016modeling},
+    ReS: ReasonSeg~\citep{lai2024lisa}, ReV: ReVOS~\citep{yan2024visa}, YT: YouTube-VOS 2019~\citep{xu2018youtube}, D: DAVIS17~\citep{perazzi2016benchmark}, O: Occluded VIS~\citep{qi2022occluded}, LV: Long-term VOS~\citep{hong2023lvos}, G: GOT-10K~\citep{huang2019got}, La: LaSOT~\citep{fan2019lasot}, T: TrackingNet~\citep{muller2018trackingnet}, B: BDD100K~\citep{yu2020bdd100k}, V: VIS19~\citep{yang2019video}, InT: InsTrack~\citep{zhu2023tracking}, VC: Video-ChatGPT~\citep{maaz2024video}, VD: large-scale video diffusion model~\citep{wang2023modelscope}.
+    % AVOS: Audio-VOS~\citep{pan2022wnet}, AVSB: AVSBench~\citep{zhou2022audio},
+    } 
+	\resizebox{1.01\textwidth}{!}{
+    
+    \begin{tabular}{l | c | c | c c c | c c c}
+    \toprule 
+    % \multirow{2}{*}{Method} & \multirow{2}{*}{Publication} & Referring and Video & \multicolumn{3}{c |}{Ref-YouTube-VOS} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+    %  & & Training Data & \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) &  \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+    \multirow{2}{*}{Method} & \multirow{2}{*}{Publication} & \multirow{2}{*}{Referring \& Video Training Data} & \multicolumn{3}{c |}{Ref-YouTube-VOS} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+     & &  & \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) &  \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+    % \midrule 
+    % CMSA~\citep{ye2019cross} & CVPR'19 & RefYT & 36.4 & 34.8 & 38.1 & 40.2 & 36.9 & 43.5 \\
+    % URVOS~\citep{seo2020urvos} & ECCV'20 & RefYT & 47.2 & 45.3 & 49.2 & 51.5 & 47.3 & 56.0 \\
+    % CMPC-V~\citep{CMPC} & TPAMI'21 & RefYT & 47.5 & 45.6 & 49.3 & - & - & - \\
+    % PMINet~\citep{PMINet} & arXiv'21 & RefYT & 53.0 & 51.5 & 54.5 & - & - & - \\
+    % YOFO~\citep{YOFO} & AAAI'22 & RefYT & 48.6 & 47.5 & 49.7 & 53.3 & 48.8 & 57.8\\
+    
+    % ReferFormer~\cite{wu2022language} & 2022 & & 56.0 & 54.8 & 57.3 & - & - & - \\
+    % \rowcolor[gray]{0.9} 
+    % SgMg~\cite{miao2023spectrum} & 2023 & & 58.9 & 57.7 & 60.0 & 56.7 & 53.3 & 60.0 \\
+
+    % LBDT~\citep{LBDT} & CVPR'22 & RefYT & 49.4 & 48.2 & 50.6 & 54.5 & - & - \\
+    % MLRL~\citep{MLRL} & CVPR'22 & RefYT & 49.7 & 48.4 & 51.0 & 52.8 & 50.0 & 55.4\\ 
+    \toprule
+    \multicolumn{9}{c}{Standard RVOS approaches} \\
+    \midrule
+    MTTR & CVPR'22 & RefYT & 55.3 & 54.0 & 56.6 & - & - & -\\ 
+    ReferFormer & CVPR'22 & RefC, RefYT & 62.9 & 61.3 & 64.6 & 61.1 & 58.1 & 64.1 \\
+    % MANet~\citep{MANet} & ACM MM'22 & RefYT & 55.6 & 54.8 & 56.5 & - & - & - \\
+    % LOCATER~\citep{liang2023local} & TPAMI'23 & RefYT & 56.5 & 54.8 & 58.1 & - & - & - \\ 
+    % VLT~\citep{ding2022vlt} & TPAMI'23 & RefC, RefYT & 63.8 & 61.9 & 65.6 & 61.6 & 58.9 & 64.3 \\
+    $\text{R}^2\text{-VOS}$ & ICCV'23 & RefC, RefYT & 61.3 & 59.6 & 63.1 & - & - & - \\
+    HTML & ICCV'23 & RefC, RefYT & 63.4 & 61.5 & 65.2 & 62.1 & 59.2 & 65.1 \\
+    OnlineRefer & ICCV'23 & RefC, RefYT & 63.5	& 61.6 & 65.5 & 64.8 & 61.6	& 67.7 \\    
+    SgMg & ICCV'23 & RefC, RefYT & 65.7 & 63.9 & 67.4 & 63.3 & 60.6 & 66.0 \\ 
+    TempCD & ICCV'23 & RefC, RefYT & 65.8 & 63.6 & 68.0 & 64.6 & 61.6 & 67.6 \\  
+    % SOC~\citep{luo2024soc} & NeurIPS'23 & RefC, RefYT & 67.3 & 65.3 & 69.3 & 65.8 & 62.5 & 69.1 \\
+    % SOC & NeurIPS'23 & RefC, RefYT & 66.0 & 64.1 & 67.9 & 64.2 & 61.0 & 67.4 \\
+    % LoSh & CVPR'24 & RefC, RefYT & 67.2 & 65.4 & 69.0 & 64.3 & 61.8 & 66.8 \\
+    % DsHmp & CVPR'24 & RefC, RefYT & 67.1 & 65.0 & 69.1 & 64.9 & 61.7 & 68.1 \\
+    RefSAM & arXiv'23 & RefC, RefYT & 62.1 & 60.9 & 63.3 & 69.5 & 65.9 & 73.2 \\
+    % EPCFormer~\cite{chen2023epcformer} & arXiv'23 & RefYT, AVOS & 65.0 & 62.9 & 67.2 & - & - & - \\    
+    % UniNEXT~\cite{yan2023universal} (arXiv) & 2023 & ViT-H & 70.1 & 67.6 & 72.7 & 72.5 & 68.2 & 76.8 \\
+    \midrule
+    % \multicolumn{9}{l}{Pre-training with RefCOCO/+/g \& larger backbone} \\
+    % \midrule
+    % \multicolumn{6}{l}{\textit{Large-scale Training}} \\
+    % \midrule
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% with pretraining
+    % \multirow{2}{*}{UniNEXT~\cite{yan2023universal}} & \multirow{2}{*}{CVPR'23} & RefC, RefYT, GOT, La, & \multirow{2}{*}{66.2} & \multirow{2}{*}{64.0} & \multirow{2}{*}{68.4} & \multirow{2}{*}{66.7} & \multirow{2}{*}{62.3} & \multirow{2}{*}{71.1} \\
+    %  & & TN, YT, BDD, VIS, OV &  &  &  &  &  &  \\
+    % \multirow{2}{*}{DEVA~\cite{cheng2023tracking}} & \multirow{2}{*}{ICCV'23} & RefC, RefYT,  & \multirow{2}{*}{66.0} & \multirow{2}{*}{-} & \multirow{2}{*}{-} & \multirow{2}{*}{66.3} & \multirow{2}{*}{-} & \multirow{2}{*}{-} \\
+    %  & & YT, DA, OV &  &  &  &  &  &  \\     
+    \multicolumn{9}{c}{Large-scale training approaches} \\
+    \midrule
+    UniNEXT & CVPR'23 & RefC, RefYT, G, La, T, YT, B, V, O & 66.2 & 64.0 & 68.4 & 66.7 & 62.3 & 71.1 \\
+    DEVA & ICCV'23 & RefC, RefYT, YT, D, O & 66.0 & - & - & 66.3 & - & - \\
+    UniRef & ICCV'23 & RefC, RefYT, RefD, YT, O, LV & \textbf{67.4} & \textbf{65.5} & \textbf{69.2} & 66.3 & 62.9 & 69.7 \\ 
+    TrackGPT-7B & arXiv'23 & RefC, RefYT, ReS, InT & 56.4 & 55.3 & 57.4 & 63.2 & 59.4 & 67.0 \\
+    LISA-7B & CVPR'24 & RefC, ReS & 50.2 & 49.7 & 50.6 & 58.4 & 54.9 & 61.9 \\
+    VISA-7B & ECCV'24 & RefC, ReS, ReV, RefVY, RefD, MeV, VC & 61.5 & 59.8 & 63.2 & 69.4 & 66.3 & 72.5 \\
+    VD-IT-2B & ECCV'24 & RefC, RefYT, VD & 66.5 & 64.4 & 68.5 & 69.4 & 66.2 & 72.6 \\    
+    VideoLISA-7B & NeurIPS'24 & RefC, ReS, RefYT, MeV, YT & 61.7 &  60.2 & 63.3 & 67.7  & 63.8 & 71.5 \\
+    \midrule
+    % MUTR~\cite{yan2024referred} & AAAI'24 & RefC, RefYT, AVSB & 68.4 & 66.4 & 70.4 & 68.0 & 64.8 & 71.3 \\ \midrule
+    \multicolumn{9}{c}{Efficient tuning approaches} \\
+    \midrule
+    WRVOS & arXiv'23 & RefYT (box + 1st-frame mask) & 46.6 & 45.6 & 47.6 & 47.3 & 44.6 & 50.0 \\
+    Grounded-SAM & arXiv'24 & RefC (box) & 62.3 & 61.0 & 63.6 & 65.2 & 62.3 & 68.0 \\
+     Grounded-SAM2 & - & RefC (box) & 64.8 & 62.5 & 67.0 & 66.2 & 62.6 & 69.7 \\ \midrule
+     \textbf{\nameshort~(Ours)} & - & RefC (box), \textbf{RefYT (box)} & 65.5 & 64.1 & 66.9 & \textbf{71.0} & \textbf{68.2} & \textbf{73.8} \\
+    \bottomrule 
+    \end{tabular}
+    }
+    \label{tab:quantitative}
+\end{table*}
+
+\vspace{1em}
+
+
+
+
+
+
+
+% \begin{table*}[t!]
+%     % \setlength{\tabcolsep}{8pt}
+%     \centering
+%     \small
+%     \caption{\textbf{Quantitative results on the validation split of Ref-YouTube-VOS and Ref-DAVIS17.} RefYT: Ref-YouTube-VOS, RefD: Ref-DAVIS, MeV: MeViS~\cite{ding2023mevis}, RefC: RefCOCO~\citep{mao2016generation,yu2016modeling},
+%     ReS: ReasonSeg~\citep{lai2024lisa}, ReV: ReVOS~\citep{yan2024visa}, YT: YouTube-VOS 2019~\citep{xu2018youtube}, D: DAVIS17~\citep{perazzi2016benchmark}, O: Occluded VIS~\citep{qi2022occluded}, LV: Long-term VOS~\citep{hong2023lvos}, G: GOT-10K~\citep{huang2019got}, La: LaSOT~\citep{fan2019lasot}, T: TrackingNet~\citep{muller2018trackingnet}, B: BDD100K~\citep{yu2020bdd100k}, V: VIS19~\citep{yang2019video}, InT: InsTrack~\citep{zhu2023tracking}, VC: Video-ChatGPT~\citep{maaz2024video}, VD: large-scale video diffusion model~\citep{wang2023modelscope}.
+%     % AVOS: Audio-VOS~\citep{pan2022wnet}, AVSB: AVSBench~\citep{zhou2022audio},
+%     }
+%     \vspace{2mm}
+% 	\resizebox{1.01\textwidth}{!}{
+    
+%     \begin{tabular}{l | c | c c c | c c c}
+%     \toprule 
+%     % \multirow{2}{*}{Method} & \multirow{2}{*}{Publication} & Referring and Video & \multicolumn{3}{c |}{Ref-YouTube-VOS} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+%     %  & & Training Data & \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) &  \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+%     \multirow{2}{*}{Method} & \multirow{2}{*}{Publication} & \multicolumn{3}{c |}{Ref-YouTube-VOS} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+%      & & \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) &  \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+     
+%     % \midrule 
+%     % CMSA~\citep{ye2019cross} & CVPR'19 & RefYT & 36.4 & 34.8 & 38.1 & 40.2 & 36.9 & 43.5 \\
+%     % URVOS~\citep{seo2020urvos} & ECCV'20 & RefYT & 47.2 & 45.3 & 49.2 & 51.5 & 47.3 & 56.0 \\
+%     % CMPC-V~\citep{CMPC} & TPAMI'21 & RefYT & 47.5 & 45.6 & 49.3 & - & - & - \\
+%     % PMINet~\citep{PMINet} & arXiv'21 & RefYT & 53.0 & 51.5 & 54.5 & - & - & - \\
+%     % YOFO~\citep{YOFO} & AAAI'22 & RefYT & 48.6 & 47.5 & 49.7 & 53.3 & 48.8 & 57.8\\
+    
+%     % ReferFormer~\cite{wu2022language} & 2022 & & 56.0 & 54.8 & 57.3 & - & - & - \\
+%     % \rowcolor[gray]{0.9} 
+%     % SgMg~\cite{miao2023spectrum} & 2023 & & 58.9 & 57.7 & 60.0 & 56.7 & 53.3 & 60.0 \\
+
+%     % LBDT~\citep{LBDT} & CVPR'22 & RefYT & 49.4 & 48.2 & 50.6 & 54.5 & - & - \\
+%     % MLRL~\citep{MLRL} & CVPR'22 & RefYT & 49.7 & 48.4 & 51.0 & 52.8 & 50.0 & 55.4\\ 
+%     % \toprule
+%     % \multicolumn{9}{c}{Standard RVOS approaches} \\
+%     \midrule
+%     MTTR & CVPR'22 & 55.3 & 54.0 & 56.6 & - & - & -\\ 
+%     ReferFormer & CVPR'22  & 62.9 & 61.3 & 64.6 & 61.1 & 58.1 & 64.1 \\
+%     % MANet~\citep{MANet} & ACM MM'22 & RefYT & 55.6 & 54.8 & 56.5 & - & - & - \\
+%     % LOCATER~\citep{liang2023local} & TPAMI'23 & RefYT & 56.5 & 54.8 & 58.1 & - & - & - \\ 
+%     % VLT~\citep{ding2022vlt} & TPAMI'23 & RefC, RefYT & 63.8 & 61.9 & 65.6 & 61.6 & 58.9 & 64.3 \\
+%     $\text{R}^2\text{-VOS}$ & ICCV'23 & 61.3 & 59.6 & 63.1 & - & - & - \\
+%     HTML & ICCV'23 & 63.4 & 61.5 & 65.2 & 62.1 & 59.2 & 65.1 \\
+%     OnlineRefer & ICCV'23 & 63.5	& 61.6 & 65.5 & 64.8 & 61.6	& 67.7 \\    
+%     SgMg & ICCV'23 & 65.7 & 63.9 & 67.4 & 63.3 & 60.6 & 66.0 \\ 
+%     TempCD & ICCV'23  & 65.8 & 63.6 & 68.0 & 64.6 & 61.6 & 67.6 \\  
+%     % SOC~\citep{luo2024soc} & NeurIPS'23 & RefC, RefYT & 67.3 & 65.3 & 69.3 & 65.8 & 62.5 & 69.1 \\
+%     % SOC & NeurIPS'23 & RefC, RefYT & 66.0 & 64.1 & 67.9 & 64.2 & 61.0 & 67.4 \\
+%     % LoSh & CVPR'24 & RefC, RefYT & 67.2 & 65.4 & 69.0 & 64.3 & 61.8 & 66.8 \\
+%     % DsHmp & CVPR'24 & RefC, RefYT & 67.1 & 65.0 & 69.1 & 64.9 & 61.7 & 68.1 \\
+%     RefSAM & arXiv'23 & 62.1 & 60.9 & 63.3 & 69.5 & 65.9 & 73.2 \\
+%     % EPCFormer~\cite{chen2023epcformer} & arXiv'23 & RefYT, AVOS & 65.0 & 62.9 & 67.2 & - & - & - \\    
+%     % UniNEXT~\cite{yan2023universal} (arXiv) & 2023 & ViT-H & 70.1 & 67.6 & 72.7 & 72.5 & 68.2 & 76.8 \\
+%     % \midrule
+%     % \multicolumn{9}{l}{Pre-training with RefCOCO/+/g \& larger backbone} \\
+%     % \midrule
+%     % \multicolumn{6}{l}{\textit{Large-scale Training}} \\
+%     % \midrule
+    
+    
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% with pretraining
+%     % \multirow{2}{*}{UniNEXT~\cite{yan2023universal}} & \multirow{2}{*}{CVPR'23} & RefC, RefYT, GOT, La, & \multirow{2}{*}{66.2} & \multirow{2}{*}{64.0} & \multirow{2}{*}{68.4} & \multirow{2}{*}{66.7} & \multirow{2}{*}{62.3} & \multirow{2}{*}{71.1} \\
+%     %  & & TN, YT, BDD, VIS, OV &  &  &  &  &  &  \\
+%     % \multirow{2}{*}{DEVA~\cite{cheng2023tracking}} & \multirow{2}{*}{ICCV'23} & RefC, RefYT,  & \multirow{2}{*}{66.0} & \multirow{2}{*}{-} & \multirow{2}{*}{-} & \multirow{2}{*}{66.3} & \multirow{2}{*}{-} & \multirow{2}{*}{-} \\
+%     %  & & YT, DA, OV &  &  &  &  &  &  \\     
+%     % \multicolumn{9}{c}{Large-scale training approaches} \\
+%     % \midrule
+%     % UniNEXT & CVPR'23 & RefC, RefYT, G, La, T, YT, B, V, O & 66.2 & 64.0 & 68.4 & 66.7 & 62.3 & 71.1 \\
+%     % DEVA & ICCV'23 & RefC, RefYT, YT, D, O & 66.0 & - & - & 66.3 & - & - \\
+%     % UniRef & ICCV'23 & RefC, RefYT, RefD, YT, O, LV & \textbf{67.4} & \textbf{65.5} & \textbf{69.2} & 66.3 & 62.9 & 69.7 \\ 
+%     % TrackGPT-7B & arXiv'23 & RefC, RefYT, ReS, InT & 56.4 & 55.3 & 57.4 & 63.2 & 59.4 & 67.0 \\
+%     % LISA-7B & CVPR'24 & RefC, ReS & 50.2 & 49.7 & 50.6 & 58.4 & 54.9 & 61.9 \\
+%     % VISA-7B & ECCV'24 & RefC, ReS, ReV, RefVY, RefD, MeV, VC & 61.5 & 59.8 & 63.2 & 69.4 & 66.3 & 72.5 \\
+%     % VD-IT-2B & ECCV'24 & RefC, RefYT, VD & 66.5 & 64.4 & 68.5 & 69.4 & 66.2 & 72.6 \\    
+%     % VideoLISA-7B & NeurIPS'24 & RefC, ReS, RefYT, MeV, YT & 61.7 &  60.2 & 63.3 & 67.7  & 63.8 & 71.5 \\
+%     % \midrule
+%     % MUTR~\cite{yan2024referred} & AAAI'24 & RefC, RefYT, AVSB & 68.4 & 66.4 & 70.4 & 68.0 & 64.8 & 71.3 \\ \midrule
+%     % \multicolumn{9}{c}{Efficient tuning approaches} \\
+%     % \midrule
+%     WRVOS & arXiv'23  & 46.6 & 45.6 & 47.6 & 47.3 & 44.6 & 50.0 \\
+%     Grounded-SAM & arXiv'24  & 62.3 & 61.0 & 63.6 & 65.2 & 62.3 & 68.0 \\
+%      Grounded-SAM2 & -  & 64.8 & 62.5 & 67.0 & 66.2 & 62.6 & 69.7 \\
+%      \midrule
+%      \nameshort~(Ours) & - & 65.5 & 64.1 & 66.9 & 71.0 & 68.2 & 73.8 \\
+%     \bottomrule 
+%     \end{tabular}
+%     }
+%     \label{tab:quantitative}
+% \end{table*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% Just for backup
+% \begin{table*}[t!]
+%     \setlength{\tabcolsep}{8pt}
+%     \centering
+%     \small
+%     \begin{tabular}{l | c | c | c c c | c c c}
+%     \toprule 
+%     \multirow{2}{*}{Method} & \multirow{2}{*}{Year} & \multirow{2}{*}{Backbone} & \multicolumn{3}{c |}{Ref-YouTube-VOS} & \multicolumn{3}{c}{Ref-DAVIS17} \\
+%      & &  & \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) &  \( \mathcal{J} \)\&\( \mathcal{F} \) & \( \mathcal{J} \) & \( \mathcal{F} \) \\
+%     \midrule 
+%     CMSA~\cite{ye2019cross} & 2019 & ResNet-50 & 36.4 & 34.8 & 38.1 & 40.2 & 36.9 & 43.5 \\
+%     URVOS~\cite{seo2020urvos} & 2020 & ResNet-50 & 47.2 & 45.3 & 49.2 & 51.5 & 47.3 & 56.0 \\
+%     CMPC-V~\cite{CMPC} & 2021 & I3D & 47.5 & 45.6 & 49.3 & - & - & - \\
+%     PMINet~\cite{PMINet} & 2021 & ResNeSt-101 & 53.0 & 51.5 & 54.5 & - & - & - \\
+%     YOFO~\cite{YOFO} & 2022 & ResNet-50 & 48.6 & 47.5 & 49.7 & 53.3 & 48.8 & 57.8\\
+%     LBDT~\cite{LBDT} & 2022 & ResNet-50 & 49.4 & 48.2 & 50.6 & 54.3 & - & - \\
+%     MLRL~\cite{MLRL} & 2022 & ResNet-50 & 49.7 & 48.4 & 51.0 & 52.8 & 50.0 & 55.4\\ 
+%     MTTR~\cite{MTTR} & 2022 & Video-Swin-T & 55.3 & 54.0 & 56.6 & - & - & -\\ 
+%     MANet~\cite{MANet} & 2022 & Video-Swin-T & 55.6 & 54.8 & 56.5 & - & - & - \\
+    
+%     ReferFormer~\cite{wu2022language} & 2022 & Video-Swin-T & 56.0 & 54.8 & 57.3 & - & - & - \\
+%     % \rowcolor[gray]{0.9} 
+%     LOCATER~\cite{liang2023local} & 2023 & Video-Swin-T & 56.5 & 54.8 & 58.1 & - & - & - \\ 
+   
+%     SgMg~\cite{miao2023spectrum} & 2023 & Video-Swin-T  & 58.9 & 57.7 & 60.0 & 56.7 & 53.3 & 60.0 \\
+%     $\text{R}^2\text{-VOS}$~\cite{li2023robust} & 2023 & Video-Swin-T & 61.3 & 59.6 & 63.1 & - & - & - \\
+%     HTML~\cite{han2023html} & 2023 & Video-Swin-B & 63.4 & 61.5 & 65.2 & 62.1 & 59.2 & 65.1 \\
+%     RefSAM~\cite{li2023refsam} & 2023 & \textcolor{red}{SAM} & 62.1 & 60.9 & 63.3 & 69.5 & 65.9 & 73.2 \\
+%     VLT~\cite{ding2022vlt} & 2023 & Video-Swin-B & 63.8 & 61.9 & 65.6 & 61.6 & 58.9 & 64.3 \\
+%     LoSh~\cite{yuan2024losh} & 2023 & Video-Swin-B & 64.2 & 62.5 & 66.0 & 62.5 & 59.5 & 65.4 \\
+%     OnlineRefer~\cite{wu2023onlinerefer} & 2023 & Swin-L & 63.5	& 61.6 & 65.5 & 64.8 & 61.6	& 67.7 \\
+%     EPCformer~\cite{chen2023epcformer} & 2023 & ViT-H & 65.0 & 62.9 & 67.2 & - & - & - \\
+%     TempCD~\cite{tang2023temporal} & 2023 & Video-Swin-B & 65.8 & 63.6 & 68.0 & 64.6 & 61.6 & 67.6 \\
+%     DEVA~\cite{cheng2023tracking} & 2023 & Swin-L & 66.0 & - & - & 66.3 & - & - \\
+%     UniNEXT~\cite{yan2023universal} (CVPR) & 2023 & ConvNext-L & 66.2 & 64.0 & 68.4 & 66.7 & 62.3 & 71.1 \\
+%     SOC~\cite{luo2024soc} & 2023 & Video-Swin-B  & 67.3 & 65.3 & 69.3 & 65.8 & 62.5 & 69.1 \\
+%     UniRef~\cite{wu2023segment} & 2023 & Swin-L & 67.4 & 65.5 & 69.2 & 66.3 & 62.9 & 69.7 \\
+%     MUTR~\cite{yan2024referred} & 2023 & Swin-L & 68.4 & 66.4 & 70.4 & 68.0 & 64.8 & 71.3 \\
+%     % UniNEXT~\cite{yan2023universal} (arXiv) & 2023 & ViT-H & 70.1 & 67.6 & 72.7 & 72.5 & 68.2 & 76.8 \\
+%     \midrule
+%     % \multicolumn{9}{l}{Pre-training with RefCOCO/+/g \& larger backbone} \\
+%     % \midrule
+%     \multicolumn{9}{l}{Larger-scale Training} \\
+%     \midrule
+    
+    
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% with pretraining
+%     ReferFormer~\cite{wu2022language} & 2022 & Video-Swin-T & 59.4 & 58.0 & 60.9 & 59.6 & 56.5 & 62.7  \\
+%     % \rowcolor[gray]{0.9} 
+%     SgMg~\cite{miao2023spectrum}  & 2023 & Video-Swin-T  & \textbf{62.0} & \textbf{60.4} & \textbf{63.5} & \textbf{61.9} & \textbf{59.0} & \textbf{64.8} \\ 
+    
+%     ReferFormer~\cite{wu2022language} & 2022 & Video-Swin-B & 62.9 & 61.3 & 64.6 & 61.1 & 58.1 & 64.1 \\
+%     % \rowcolor[gray]{0.9} 
+%     SgMg~\cite{miao2023spectrum}  & 2023 & Video-Swin-B  & \textbf{65.7} & \textbf{63.9} & \textbf{67.4} & \textbf{63.3} & \textbf{60.6} & \textbf{66.0} \\ 
+%     \bottomrule 
+%     \end{tabular}
+%     \caption{Quantitative comparison to state-of-the-art methods on the validation split of Ref-YouTube-VOS and Ref-DAVIS17.
+%     } \label{tab:quantitative}
+%     \end{table*}

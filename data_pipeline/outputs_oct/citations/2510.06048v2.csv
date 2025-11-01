@@ -1,0 +1,617 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,conneau2019cross,\cite{conneau2019cross},Cross-lingual Language Model Pretraining,http://arxiv.org/abs/1901.07291v1,"Recent studies have demonstrated the efficiency of generative pretraining for
+English natural language understanding. In this work, we extend this approach
+to multiple languages and show the effectiveness of cross-lingual pretraining.
+We propose two methods to learn cross-lingual language models (XLMs): one
+unsupervised that only relies on monolingual data, and one supervised that
+leverages parallel data with a new cross-lingual language model objective. We
+obtain state-of-the-art results on cross-lingual classification, unsupervised
+and supervised machine translation. On XNLI, our approach pushes the state of
+the art by an absolute gain of 4.9% accuracy. On unsupervised machine
+translation, we obtain 34.3 BLEU on WMT'16 German-English, improving the
+previous state of the art by more than 9 BLEU. On supervised machine
+translation, we obtain a new state of the art of 38.5 BLEU on WMT'16
+Romanian-English, outperforming the previous best approach by more than 4 BLEU.
+Our code and pretrained models will be made publicly available.","Conneau, Alexis and Lample, Guillaume",2019,,,,Advances in neural information processing systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,raffel2020exploring,\cite{raffel2020exploring},Exploring the limits of transfer learning with a unified text-to-text transformer,,,"Raffel, Colin and Shazeer, Noam and Roberts, Adam and Lee, Katherine and Narang, Sharan and Matena, Michael and Zhou, Yanqi and Li, Wei and Liu, Peter J",2020,,,,Journal of machine learning research
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,rae2021scaling,\cite{rae2021scaling},"Scaling Language Models: Methods, Analysis & Insights from Training
+  Gopher",http://arxiv.org/abs/2112.11446v2,"Language modelling provides a step towards intelligent communication systems
+by harnessing large repositories of written human knowledge to better predict
+and understand the world. In this paper, we present an analysis of
+Transformer-based language model performance across a wide range of model
+scales -- from models with tens of millions of parameters up to a 280 billion
+parameter model called Gopher. These models are evaluated on 152 diverse tasks,
+achieving state-of-the-art performance across the majority. Gains from scale
+are largest in areas such as reading comprehension, fact-checking, and the
+identification of toxic language, but logical and mathematical reasoning see
+less benefit. We provide a holistic analysis of the training dataset and
+model's behaviour, covering the intersection of model scale with bias and
+toxicity. Finally we discuss the application of language models to AI safety
+and the mitigation of downstream harms.","Rae, Jack W and Borgeaud, Sebastian and Cai, Trevor and Millican, Katie and Hoffmann, Jordan and Song, Francis and Aslanides, John and Henderson, Sarah and Ring, Roman and Young, Susannah and others",2021,,,,arXiv preprint arXiv:2112.11446
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,penedo2023refinedweb,\cite{penedo2023refinedweb},"The RefinedWeb Dataset for Falcon LLM: Outperforming Curated Corpora
+  with Web Data, and Web Data Only",http://arxiv.org/abs/2306.01116v1,"Large language models are commonly trained on a mixture of filtered web data
+and curated high-quality corpora, such as social media conversations, books, or
+technical papers. This curation process is believed to be necessary to produce
+performant models with broad zero-shot generalization abilities. However, as
+larger models requiring pretraining on trillions of tokens are considered, it
+is unclear how scalable is curation and whether we will run out of unique
+high-quality data soon. At variance with previous beliefs, we show that
+properly filtered and deduplicated web data alone can lead to powerful models;
+even significantly outperforming models from the state-of-the-art trained on
+The Pile. Despite extensive filtering, the high-quality data we extract from
+the web is still plentiful, and we are able to obtain five trillion tokens from
+CommonCrawl. We publicly release an extract of 600 billion tokens from our
+RefinedWeb dataset, and 1.3/7.5B parameters language models trained on it.","Penedo, Guilherme and Malartic, Quentin and Hesslow, Daniel and Cojocaru, Ruxandra and Cappelli, Alessandro and Alobeidli, Hamza and Pannier, Baptiste and Almazrouei, Ebtesam and Launay, Julien",2023,,,,arXiv preprint arXiv:2306.01116
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,lee2021deduplicating,\cite{lee2021deduplicating},Deduplicating Training Data Makes Language Models Better,http://arxiv.org/abs/2107.06499v2,"We find that existing language modeling datasets contain many near-duplicate
+examples and long repetitive substrings. As a result, over 1% of the unprompted
+output of language models trained on these datasets is copied verbatim from the
+training data. We develop two tools that allow us to deduplicate training
+datasets -- for example removing from C4 a single 61 word English sentence that
+is repeated over 60,000 times. Deduplication allows us to train models that
+emit memorized text ten times less frequently and require fewer train steps to
+achieve the same or better accuracy. We can also reduce train-test overlap,
+which affects over 4% of the validation set of standard datasets, thus allowing
+for more accurate evaluation. We release code for reproducing our work and
+performing dataset deduplication at
+https://github.com/google-research/deduplicate-text-datasets.","Lee, Katherine and Ippolito, Daphne and Nystrom, Andrew and Zhang, Chiyuan and Eck, Douglas and Callison-Burch, Chris and Carlini, Nicholas",2021,,,,arXiv preprint arXiv:2107.06499
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,sorscher2022beyond,\cite{sorscher2022beyond},Beyond neural scaling laws: beating power law scaling via data pruning,http://arxiv.org/abs/2206.14486v6,"Widely observed neural scaling laws, in which error falls off as a power of
+the training set size, model size, or both, have driven substantial performance
+improvements in deep learning. However, these improvements through scaling
+alone require considerable costs in compute and energy. Here we focus on the
+scaling of error with dataset size and show how in theory we can break beyond
+power law scaling and potentially even reduce it to exponential scaling instead
+if we have access to a high-quality data pruning metric that ranks the order in
+which training examples should be discarded to achieve any pruned dataset size.
+We then test this improved scaling prediction with pruned dataset size
+empirically, and indeed observe better than power law scaling in practice on
+ResNets trained on CIFAR-10, SVHN, and ImageNet. Next, given the importance of
+finding high-quality pruning metrics, we perform the first large-scale
+benchmarking study of ten different data pruning metrics on ImageNet. We find
+most existing high performing metrics scale poorly to ImageNet, while the best
+are computationally intensive and require labels for every image. We therefore
+developed a new simple, cheap and scalable self-supervised pruning metric that
+demonstrates comparable performance to the best supervised metrics. Overall,
+our work suggests that the discovery of good data-pruning metrics may provide a
+viable path forward to substantially improved neural scaling laws, thereby
+reducing the resource costs of modern deep learning.","Sorscher, Ben and Geirhos, Robert and Shekhar, Shashank and Ganguli, Surya and Morcos, Ari",2022,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,abbas2023semdedup,\cite{abbas2023semdedup},"SemDeDup: Data-efficient learning at web-scale through semantic
+  deduplication",http://arxiv.org/abs/2303.09540v3,"Progress in machine learning has been driven in large part by massive
+increases in data. However, large web-scale datasets such as LAION are largely
+uncurated beyond searches for exact duplicates, potentially leaving much
+redundancy. Here, we introduce SemDeDup, a method which leverages embeddings
+from pre-trained models to identify and remove semantic duplicates: data pairs
+which are semantically similar, but not exactly identical. Removing semantic
+duplicates preserves performance and speeds up learning. Analyzing a subset of
+LAION, we show that SemDeDup can remove 50% of the data with minimal
+performance loss, effectively halving training time. Moreover, performance
+increases out of distribution. Also, analyzing language models trained on C4, a
+partially curated dataset, we show that SemDeDup improves over prior approaches
+while providing efficiency gains. SemDeDup provides an example of how simple
+ways of leveraging quality embeddings can be used to make models learn faster
+with less data.","Abbas, Amro and Tirumala, Kushal and Simig, D{\'a}niel and Ganguli, Surya and Morcos, Ari S",2023,,,,arXiv preprint arXiv:2303.09540
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,tirumala2023d4,\cite{tirumala2023d4},"D4: Improving LLM Pretraining via Document De-Duplication and
+  Diversification",http://arxiv.org/abs/2308.12284v1,"Over recent years, an increasing amount of compute and data has been poured
+into training large language models (LLMs), usually by doing one-pass learning
+on as many tokens as possible randomly selected from large-scale web corpora.
+While training on ever-larger portions of the internet leads to consistent
+performance improvements, the size of these improvements diminishes with scale,
+and there has been little work exploring the effect of data selection on
+pre-training and downstream performance beyond simple de-duplication methods
+such as MinHash. Here, we show that careful data selection (on top of
+de-duplicated data) via pre-trained model embeddings can speed up training (20%
+efficiency gains) and improves average downstream accuracy on 16 NLP tasks (up
+to 2%) at the 6.7B model scale. Furthermore, we show that repeating data
+intelligently consistently outperforms baseline training (while repeating
+random data performs worse than baseline training). Our results indicate that
+clever data selection can significantly improve LLM pre-training, calls into
+question the common practice of training for a single epoch on as much data as
+possible, and demonstrates a path to keep improving our models past the limits
+of randomly sampling web data.","Tirumala, Kushal and Simig, Daniel and Aghajanyan, Armen and Morcos, Ari",2023,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,brown2020language,\cite{brown2020language},Language Models are Few-Shot Learners,http://arxiv.org/abs/2005.14165v4,"Recent work has demonstrated substantial gains on many NLP tasks and
+benchmarks by pre-training on a large corpus of text followed by fine-tuning on
+a specific task. While typically task-agnostic in architecture, this method
+still requires task-specific fine-tuning datasets of thousands or tens of
+thousands of examples. By contrast, humans can generally perform a new language
+task from only a few examples or from simple instructions - something which
+current NLP systems still largely struggle to do. Here we show that scaling up
+language models greatly improves task-agnostic, few-shot performance, sometimes
+even reaching competitiveness with prior state-of-the-art fine-tuning
+approaches. Specifically, we train GPT-3, an autoregressive language model with
+175 billion parameters, 10x more than any previous non-sparse language model,
+and test its performance in the few-shot setting. For all tasks, GPT-3 is
+applied without any gradient updates or fine-tuning, with tasks and few-shot
+demonstrations specified purely via text interaction with the model. GPT-3
+achieves strong performance on many NLP datasets, including translation,
+question-answering, and cloze tasks, as well as several tasks that require
+on-the-fly reasoning or domain adaptation, such as unscrambling words, using a
+novel word in a sentence, or performing 3-digit arithmetic. At the same time,
+we also identify some datasets where GPT-3's few-shot learning still struggles,
+as well as some datasets where GPT-3 faces methodological issues related to
+training on large web corpora. Finally, we find that GPT-3 can generate samples
+of news articles which human evaluators have difficulty distinguishing from
+articles written by humans. We discuss broader societal impacts of this finding
+and of GPT-3 in general.","Brown, Tom and Mann, Benjamin and Ryder, Nick and Subbiah, Melanie and Kaplan, Jared D and Dhariwal, Prafulla and Neelakantan, Arvind and Shyam, Pranav and Sastry, Girish and Askell, Amanda and Sandhini Agarwal and  Ariel Herbert-Voss and Gretchen Krueger and  Tom Henighan and  Rewon Child and  Aditya Ramesh and  Daniel M. Ziegler and Jeffrey Wu and  Clemens Winter and  Christopher Hesse and  Mark Chen and  Eric Sigler and  Mateusz Litwin and  Scott Gray and Benjamin Chess and  Jack Clark and  Christopher Berner and  Sam McCandlish and Alec Radford and  Ilya Sutskever and  Dario Amodei",2020,,,,Advances in neural information processing systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,du2022glam,\cite{du2022glam},GLaM: Efficient Scaling of Language Models with Mixture-of-Experts,http://arxiv.org/abs/2112.06905v2,"Scaling language models with more data, compute and parameters has driven
+significant progress in natural language processing. For example, thanks to
+scaling, GPT-3 was able to achieve strong results on in-context learning tasks.
+However, training these large dense models requires significant amounts of
+computing resources. In this paper, we propose and develop a family of language
+models named GLaM (Generalist Language Model), which uses a sparsely activated
+mixture-of-experts architecture to scale the model capacity while also
+incurring substantially less training cost compared to dense variants. The
+largest GLaM has 1.2 trillion parameters, which is approximately 7x larger than
+GPT-3. It consumes only 1/3 of the energy used to train GPT-3 and requires half
+of the computation flops for inference, while still achieving better overall
+zero-shot and one-shot performance across 29 NLP tasks.","Du, Nan and Huang, Yanping and Dai, Andrew M and Tong, Simon and Lepikhin, Dmitry and Xu, Yuanzhong and Krikun, Maxim and Zhou, Yanqi and Yu, Adams Wei and Firat, Orhan and  Barret Zoph and Liam Fedus and Maarten Bosma and Zongwei Zhou and Tao Wang and Yu Emma Wang and Kellie Webster and Marie Pellat and Kevin Robinson and Kathleen Meier-Hellstern and Toju Duke and Lucas Dixon and Kun Zhang and Quoc V Le and Yonghui Wu and Zhifeng Chen and Claire Cui",2022,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,gao2020pile,\cite{gao2020pile},The Pile: An 800GB Dataset of Diverse Text for Language Modeling,http://arxiv.org/abs/2101.00027v1,"Recent work has demonstrated that increased training dataset diversity
+improves general cross-domain knowledge and downstream generalization
+capability for large-scale language models. With this in mind, we present
+\textit{the Pile}: an 825 GiB English text corpus targeted at training
+large-scale language models. The Pile is constructed from 22 diverse
+high-quality subsets -- both existing and newly constructed -- many of which
+derive from academic or professional sources. Our evaluation of the untuned
+performance of GPT-2 and GPT-3 on the Pile shows that these models struggle on
+many of its components, such as academic writing. Conversely, models trained on
+the Pile improve significantly over both Raw CC and CC-100 on all components of
+the Pile, while improving performance on downstream evaluations. Through an
+in-depth exploratory analysis, we document potentially concerning aspects of
+the data for prospective users. We make publicly available the code used in its
+construction.","Gao, Leo and Biderman, Stella and Black, Sid and Golding, Laurence and Hoppe, Travis and Foster, Charles and Phang, Jason and He, Horace and Thite, Anish and Nabeshima, Noa and others",2020,,,,arXiv preprint arXiv:2101.00027
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,xie2023data,\cite{xie2023data},Data selection for language models via importance resampling,,,"Xie, Sang Michael and Santurkar, Shibani and Ma, Tengyu and Liang, Percy S",2023,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,chowdhery2023palm,\cite{chowdhery2023palm},PaLM: Scaling Language Modeling with Pathways,http://arxiv.org/abs/2204.02311v5,"Large language models have been shown to achieve remarkable performance
+across a variety of natural language tasks using few-shot learning, which
+drastically reduces the number of task-specific training examples needed to
+adapt the model to a particular application. To further our understanding of
+the impact of scale on few-shot learning, we trained a 540-billion parameter,
+densely activated, Transformer language model, which we call Pathways Language
+Model PaLM. We trained PaLM on 6144 TPU v4 chips using Pathways, a new ML
+system which enables highly efficient training across multiple TPU Pods. We
+demonstrate continued benefits of scaling by achieving state-of-the-art
+few-shot learning results on hundreds of language understanding and generation
+benchmarks. On a number of these tasks, PaLM 540B achieves breakthrough
+performance, outperforming the finetuned state-of-the-art on a suite of
+multi-step reasoning tasks, and outperforming average human performance on the
+recently released BIG-bench benchmark. A significant number of BIG-bench tasks
+showed discontinuous improvements from model scale, meaning that performance
+steeply increased as we scaled to our largest model. PaLM also has strong
+capabilities in multilingual tasks and source code generation, which we
+demonstrate on a wide array of benchmarks. We additionally provide a
+comprehensive analysis on bias and toxicity, and study the extent of training
+data memorization with respect to model scale. Finally, we discuss the ethical
+considerations related to large language models and discuss potential
+mitigation strategies.","Chowdhery, Aakanksha and Narang, Sharan and Devlin, Jacob and Bosma, Maarten and Mishra, Gaurav and Roberts, Adam and Barham, Paul and Chung, Hyung Won and Sutton, Charles and Gehrmann, Sebastian and others",2023,,,,Journal of Machine Learning Research
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,wenzek2019ccnet,\cite{wenzek2019ccnet},CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data,http://arxiv.org/abs/1911.00359v2,"Pre-training text representations have led to significant improvements in
+many areas of natural language processing. The quality of these models benefits
+greatly from the size of the pretraining corpora as long as its quality is
+preserved. In this paper, we describe an automatic pipeline to extract massive
+high-quality monolingual datasets from Common Crawl for a variety of languages.
+Our pipeline follows the data processing introduced in fastText (Mikolov et
+al., 2017; Grave et al., 2018), that deduplicates documents and identifies
+their language. We augment this pipeline with a filtering step to select
+documents that are close to high quality corpora like Wikipedia.","Wenzek, Guillaume and Lachaux, Marie-Anne and Conneau, Alexis and Chaudhary, Vishrav and Guzm{\'a}n, Francisco and Joulin, Armand and Grave, Edouard",2019,,,,arXiv preprint arXiv:1911.00359
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,wettig2024qurating,\cite{wettig2024qurating},QuRating: Selecting High-Quality Data for Training Language Models,http://arxiv.org/abs/2402.09739v3,"Selecting high-quality pre-training data is important for creating capable
+language models, but existing methods rely on simple heuristics. We introduce
+QuRating, a method for selecting pre-training data that can capture human
+intuitions about data quality. In this paper, we investigate four qualities -
+writing style, required expertise, facts & trivia, and educational value - and
+find that LLMs are able to discern these qualities, especially when making
+pairwise judgments of texts. We train a QuRater model to learn scalar ratings
+from pairwise judgments, and use it to annotate a 260B training corpus with
+quality ratings for each of the four criteria. In our experiments, we select
+30B tokens according to the different quality ratings and train 1.3B-parameter
+language models on the selected data. We find that it is important to balance
+quality and diversity. When we sample using quality ratings as logits over
+documents, our models obtain lower perplexity and stronger in-context learning
+performance than baselines. Our best model is based on educational value and
+performs similarly to a model trained with uniform sampling for 50% more steps.
+Beyond data selection, we use the quality ratings to construct a training
+curriculum which improves performance without changing the training dataset. We
+extensively analyze the quality ratings and discuss their characteristics,
+biases, and wider implications.","Wettig, Alexander and Gupta, Aatmik and Malik, Saumya and Chen, Danqi",2024,,,,arXiv preprint arXiv:2402.09739
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,maini2024rephrasing,\cite{maini2024rephrasing},"Rephrasing the Web: A Recipe for Compute and Data-Efficient Language
+  Modeling",http://arxiv.org/abs/2401.16380v1,"Large language models are trained on massive scrapes of the web, which are
+often unstructured, noisy, and poorly phrased. Current scaling laws show that
+learning from such data requires an abundance of both compute and data, which
+grows with the size of the model being trained. This is infeasible both because
+of the large compute costs and duration associated with pre-training, and the
+impending scarcity of high-quality data on the web. In this work, we propose
+Web Rephrase Augmented Pre-training ($\textbf{WRAP}$) that uses an
+off-the-shelf instruction-tuned model prompted to paraphrase documents on the
+web in specific styles such as ""like Wikipedia"" or in ""question-answer format""
+to jointly pre-train LLMs on real and synthetic rephrases. First, we show that
+using WRAP on the C4 dataset, which is naturally noisy, speeds up pre-training
+by $\sim3x$. At the same pre-training compute budget, it improves perplexity by
+more than 10% on average across different subsets of the Pile, and improves
+zero-shot question answer accuracy across 13 tasks by more than 2%. Second, we
+investigate the impact of the re-phrasing style on the performance of the
+model, offering insights into how the composition of the training data can
+impact the performance of LLMs in OOD settings. Our gains are attributed to the
+fact that re-phrased synthetic data has higher utility than just real data
+because it (i) incorporates style diversity that closely reflects downstream
+evaluation style, and (ii) has higher 'quality' than web-scraped data.","Maini, Pratyush and Seto, Skyler and Bai, He and Grangier, David and Zhang, Yizhe and Jaitly, Navdeep",2024,,,,arXiv preprint arXiv:2401.16380
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,oren2019distributionally,\cite{oren2019distributionally},Distributionally Robust Language Modeling,http://arxiv.org/abs/1909.02060v1,"Language models are generally trained on data spanning a wide range of topics
+(e.g., news, reviews, fiction), but they might be applied to an a priori
+unknown target distribution (e.g., restaurant reviews). In this paper, we first
+show that training on text outside the test distribution can degrade test
+performance when using standard maximum likelihood (MLE) training. To remedy
+this without the knowledge of the test distribution, we propose an approach
+which trains a model that performs well over a wide range of potential test
+distributions. In particular, we derive a new distributionally robust
+optimization (DRO) procedure which minimizes the loss of the model over the
+worst-case mixture of topics with sufficient overlap with the training
+distribution. Our approach, called topic conditional value at risk (topic
+CVaR), obtains a 5.5 point perplexity reduction over MLE when the language
+models are trained on a mixture of Yelp reviews and news and tested only on
+reviews.","Oren, Yonatan and Sagawa, Shiori and Hashimoto, Tatsunori B and Liang, Percy",2019,,,,arXiv preprint arXiv:1909.02060
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,sagawa2019distributionally,\cite{sagawa2019distributionally},Distributionally Robust Neural Networks,,,"Sagawa, Shiori and Koh, Pang Wei and Hashimoto, Tatsunori B and Liang, Percy",2019,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,xie2023doremi,\cite{xie2023doremi},DoReMi: Optimizing Data Mixtures Speeds Up Language Model Pretraining,http://arxiv.org/abs/2305.10429v4,"The mixture proportions of pretraining data domains (e.g., Wikipedia, books,
+web text) greatly affect language model (LM) performance. In this paper, we
+propose Domain Reweighting with Minimax Optimization (DoReMi), which first
+trains a small proxy model using group distributionally robust optimization
+(Group DRO) over domains to produce domain weights (mixture proportions)
+without knowledge of downstream tasks. We then resample a dataset with these
+domain weights and train a larger, full-sized model. In our experiments, we use
+DoReMi on a 280M-parameter proxy model to set the domain weights for training
+an 8B-parameter model (30x larger) more efficiently. On The Pile, DoReMi
+improves perplexity across all domains, even when it downweights a domain.
+DoReMi improves average few-shot downstream accuracy by 6.5% points over a
+baseline model trained using The Pile's default domain weights and reaches the
+baseline accuracy with 2.6x fewer training steps. On the GLaM dataset, DoReMi,
+which has no knowledge of downstream tasks, even matches the performance of
+using domain weights tuned on downstream tasks.","Xie, Sang Michael and Pham, Hieu and Dong, Xuanyi and Du, Nan and Liu, Hanxiao and Lu, Yifeng and Liang, Percy and Le, Quoc V and Ma, Tengyu and Yu, Adams Wei",2023,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,fan2023doge,\cite{fan2023doge},DoGE: Domain Reweighting with Generalization Estimation,http://arxiv.org/abs/2310.15393v2,"The coverage and composition of the pretraining data significantly impacts
+the generalization ability of Large Language Models (LLMs). Despite its
+importance, recent LLMs still rely on heuristics and trial and error to
+increase or reduce the influence of data-domains. We propose DOmain reweighting
+with Generalization Estimation (DoGE), which optimizes the probability of
+sampling from each domain (domain weights) in a principled way. Our approach is
+a two-stage process consisting of (i) training a proxy model to obtain domain
+weights using a bi-level optimization algorithm; (ii) training a larger base
+model by sampling training domains according to the learned domain weights. In
+our experiments, we extensively show how DoGE improves the generalization of
+the base model to any target data mixture. On the SlimPajama dataset, our base
+model gets better perplexity and few-shot reasoning accuracies across $6$ tasks
+compared to baseline methods. Moreover, aiming to generalize to out-of-domain
+target tasks, which is unseen in the pretraining corpus (OOD domain), DoGE can
+effectively identify inter-domain dependencies, and consistently achieves
+better test perplexity on the target domain.","Fan, Simin and Pagliardini, Matteo and Jaggi, Martin",2023,,,,arXiv preprint arXiv:2310.15393
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,albalak2023efficient,\cite{albalak2023efficient},Efficient Online Data Mixing For Language Model Pre-Training,http://arxiv.org/abs/2312.02406v2,"The data used to pretrain large language models has a decisive impact on a
+model's downstream performance, which has led to a large body of work on data
+selection methods that aim to automatically determine the most suitable data to
+use for pretraining. Existing data selection methods suffer from slow and
+computationally expensive processes, a problem amplified by the increasing size
+of models and of pretraining datasets. Data mixing, on the other hand, reduces
+the complexity of data selection by grouping data points together and
+determining sampling probabilities across entire groups. However, data mixing
+proportions are typically fixed before training and therefore cannot adapt to
+changing training dynamics. To address these limitations, we develop an
+efficient algorithm for Online Data Mixing (ODM) that combines elements from
+both data selection and data mixing. Based on multi-armed bandit algorithms,
+our online approach optimizes the data mixing proportions during training.
+Remarkably, our method trains a model that reaches the final perplexity of the
+next best method with 19\% fewer training iterations, and improves performance
+on the 5-shot MMLU benchmark by 1.9% relative accuracy, while adding negligible
+wall-clock time during pretraining.","Albalak, Alon and Pan, Liangming and Raffel, Colin and Wang, William Yang",2023,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,chen2024skill,\cite{chen2024skill},"Skill-it! A Data-Driven Skills Framework for Understanding and Training
+  Language Models",http://arxiv.org/abs/2307.14430v1,"The quality of training data impacts the performance of pre-trained large
+language models (LMs). Given a fixed budget of tokens, we study how to best
+select data that leads to good downstream model performance across tasks. We
+develop a new framework based on a simple hypothesis: just as humans acquire
+interdependent skills in a deliberate order, language models also follow a
+natural order when learning a set of skills from their training data. If such
+an order exists, it can be utilized for improved understanding of LMs and for
+data-efficient training. Using this intuition, our framework formalizes the
+notion of a skill and of an ordered set of skills in terms of the associated
+data. First, using both synthetic and real data, we demonstrate that these
+ordered skill sets exist, and that their existence enables more advanced skills
+to be learned with less data when we train on their prerequisite skills.
+Second, using our proposed framework, we introduce an online data sampling
+algorithm, Skill-It, over mixtures of skills for both continual pre-training
+and fine-tuning regimes, where the objective is to efficiently learn multiple
+skills in the former and an individual skill in the latter. On the LEGO
+synthetic in the continual pre-training setting, Skill-It obtains 36.5 points
+higher accuracy than random sampling. On the Natural Instructions dataset in
+the fine-tuning setting, Skill-It reduces the validation loss on the target
+skill by 13.6% versus training on data associated with the target skill itself.
+We apply our skills framework on the recent RedPajama dataset to continually
+pre-train a 3B-parameter LM, achieving higher accuracy on the LM Evaluation
+Harness with 1B tokens than the baseline approach of sampling uniformly over
+data sources with 3B tokens.","Chen, Mayee and Roberts, Nicholas and Bhatia, Kush and Wang, Jue and Zhang, Ce and Sala, Frederic and R{\'e}, Christopher",2024,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,hampel1974influence,\cite{hampel1974influence},The influence curve and its role in robust estimation,,,"Hampel, Frank R",1974,,,,Journal of the american statistical association
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,cook1977detection,\cite{cook1977detection},Detection of influential observation in linear regression,,,"Cook, R Dennis",1977,,,,Technometrics
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,ling1984residuals,\cite{ling1984residuals},Residuals and influence in regression,,,"Ling, Robert F",1984,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,koh2017understanding,\cite{koh2017understanding},Understanding Black-box Predictions via Influence Functions,http://arxiv.org/abs/1703.04730v3,"How can we explain the predictions of a black-box model? In this paper, we
+use influence functions -- a classic technique from robust statistics -- to
+trace a model's prediction through the learning algorithm and back to its
+training data, thereby identifying training points most responsible for a given
+prediction. To scale up influence functions to modern machine learning
+settings, we develop a simple, efficient implementation that requires only
+oracle access to gradients and Hessian-vector products. We show that even on
+non-convex and non-differentiable models where the theory breaks down,
+approximations to influence functions can still provide valuable information.
+On linear models and convolutional neural networks, we demonstrate that
+influence functions are useful for multiple purposes: understanding model
+behavior, debugging models, detecting dataset errors, and even creating
+visually-indistinguishable training-set attacks.","Koh, Pang Wei and Liang, Percy",2017,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,park2023trak,\cite{park2023trak},TRAK: Attributing Model Behavior at Scale,http://arxiv.org/abs/2303.14186v2,"The goal of data attribution is to trace model predictions back to training
+data. Despite a long line of work towards this goal, existing approaches to
+data attribution tend to force users to choose between computational
+tractability and efficacy. That is, computationally tractable methods can
+struggle with accurately attributing model predictions in non-convex settings
+(e.g., in the context of deep neural networks), while methods that are
+effective in such regimes require training thousands of models, which makes
+them impractical for large models or datasets.
+  In this work, we introduce TRAK (Tracing with the Randomly-projected After
+Kernel), a data attribution method that is both effective and computationally
+tractable for large-scale, differentiable models. In particular, by leveraging
+only a handful of trained models, TRAK can match the performance of attribution
+methods that require training thousands of models. We demonstrate the utility
+of TRAK across various modalities and scales: image classifiers trained on
+ImageNet, vision-language models (CLIP), and language models (BERT and mT5). We
+provide code for using TRAK (and reproducing our work) at
+https://github.com/MadryLab/trak .","Park, Sung Min and Georgiev, Kristian and Ilyas, Andrew and Leclerc, Guillaume and Madry, Aleksander",2023,,,,arXiv preprint arXiv:2303.14186
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,engstrom2024dsdm,\cite{engstrom2024dsdm},DsDm: Model-Aware Dataset Selection with Datamodels,http://arxiv.org/abs/2401.12926v1,"When selecting data for training large-scale models, standard practice is to
+filter for examples that match human notions of data quality. Such filtering
+yields qualitatively clean datapoints that intuitively should improve model
+behavior. However, in practice the opposite can often happen: we find that
+selecting according to similarity with ""high quality"" data sources may not
+increase (and can even hurt) performance compared to randomly selecting data.
+  To develop better methods for selecting data, we start by framing dataset
+selection as an optimization problem that we can directly solve for: given
+target tasks, a learning algorithm, and candidate data, select the subset that
+maximizes model performance. This framework thus avoids handpicked notions of
+data quality, and instead models explicitly how the learning process uses train
+datapoints to predict on the target tasks. Our resulting method greatly
+improves language model (LM) performance on both pre-specified tasks and
+previously unseen tasks. Specifically, choosing target tasks representative of
+standard LM problems and evaluating on diverse held-out benchmarks, our
+selected datasets provide a 2x compute multiplier over baseline methods.","Engstrom, Logan and Feldmann, Axel and Madry, Aleksander",2024,,,,arXiv preprint arXiv:2401.12926
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,yu2024mates,\cite{yu2024mates},"MATES: Model-Aware Data Selection for Efficient Pretraining with Data
+  Influence Models",http://arxiv.org/abs/2406.06046v2,"Pretraining data selection has the potential to improve language model
+pretraining efficiency by utilizing higher-quality data from massive web data
+corpora. Current data selection methods, which rely on either hand-crafted
+rules or larger reference models, are conducted statically and do not capture
+the evolving data preferences during pretraining. In this paper, we introduce
+model-aware data selection with data influence models (MATES), where a data
+influence model continuously adapts to the evolving data preferences of the
+pretraining model and then selects the data most effective for the current
+pretraining progress. Specifically, we collect oracle data influence by locally
+probing the pretraining model and fine-tune a small data influence model to
+approximate it accurately. The data influence model then predicts data
+influence over the whole pretraining corpus and selects the most influential
+data for the next pretraining stage. Experiments of pretraining 410M and 1B
+models on the C4 dataset demonstrate that MATES significantly outperforms
+random data selection on extensive downstream tasks. It doubles the gains
+achieved by the state-of-the-art data selection approach that leverages larger
+reference models and reduces the total FLOPs required to reach certain
+performances by half. Further analyses validate the effectiveness of the
+locally probed oracle data influence and the approximation with data influence
+models. Our code is open-sourced at https://github.com/cxcscmu/MATES.","Yu, Zichun and Das, Spandan and Xiong, Chenyan",2024,,,,arXiv preprint arXiv:2406.06046
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,bracken1973mathematical,\cite{bracken1973mathematical},Mathematical programs with optimization problems in the constraints,,,"Bracken, Jerome and McGill, James T",1973,,,,Operations Research
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,dempe2002foundations,\cite{dempe2002foundations},Foundations of bilevel programming,,,"Dempe, Stephan",2002,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,ghadimi2018approximation,\cite{ghadimi2018approximation},Approximation Methods for Bilevel Programming,http://arxiv.org/abs/1802.02246v1,"In this paper, we study a class of bilevel programming problem where the
+inner objective function is strongly convex. More specifically, under some mile
+assumptions on the partial derivatives of both inner and outer objective
+functions, we present an approximation algorithm for solving this class of
+problem and provide its finite-time convergence analysis under different
+convexity assumption on the outer objective function. We also present an
+accelerated variant of this method which improves the rate of convergence under
+convexity assumption. Furthermore, we generalize our results under stochastic
+setting where only noisy information of both objective functions is available.
+To the best of our knowledge, this is the first time that such (stochastic)
+approximation algorithms with established iteration complexity (sample
+complexity) are provided for bilevel programming.","Ghadimi, Saeed and Wang, Mengdi",2018,,,,arXiv preprint arXiv:1802.02246
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,hong2023two,\cite{hong2023two},A two-timescale stochastic algorithm framework for bilevel optimization: Complexity analysis and application to actor-critic,,,"Hong, Mingyi and Wai, Hoi-To and Wang, Zhaoran and Yang, Zhuoran",2023,,,,SIAM Journal on Optimization
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,ji2021bilevel,\cite{ji2021bilevel},Bilevel Optimization: Convergence Analysis and Enhanced Design,http://arxiv.org/abs/2010.07962v3,"Bilevel optimization has arisen as a powerful tool for many machine learning
+problems such as meta-learning, hyperparameter optimization, and reinforcement
+learning. In this paper, we investigate the nonconvex-strongly-convex bilevel
+optimization problem. For deterministic bilevel optimization, we provide a
+comprehensive convergence rate analysis for two popular algorithms respectively
+based on approximate implicit differentiation (AID) and iterative
+differentiation (ITD). For the AID-based method, we orderwisely improve the
+previous convergence rate analysis due to a more practical parameter selection
+as well as a warm start strategy, and for the ITD-based method we establish the
+first theoretical convergence rate. Our analysis also provides a quantitative
+comparison between ITD and AID based approaches. For stochastic bilevel
+optimization, we propose a novel algorithm named stocBiO, which features a
+sample-efficient hypergradient estimator using efficient Jacobian- and
+Hessian-vector product computations. We provide the convergence rate guarantee
+for stocBiO, and show that stocBiO outperforms the best known computational
+complexities orderwisely with respect to the condition number $\kappa$ and the
+target accuracy $\epsilon$. We further validate our theoretical results and
+demonstrate the efficiency of bilevel optimization algorithms by the
+experiments on meta-learning and hyperparameter optimization.","Ji, Kaiyi and Yang, Junjie and Liang, Yingbin",2021,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,kwon2023fully,\cite{kwon2023fully},A Fully First-Order Method for Stochastic Bilevel Optimization,http://arxiv.org/abs/2301.10945v1,"We consider stochastic unconstrained bilevel optimization problems when only
+the first-order gradient oracles are available. While numerous optimization
+methods have been proposed for tackling bilevel problems, existing methods
+either tend to require possibly expensive calculations regarding Hessians of
+lower-level objectives, or lack rigorous finite-time performance guarantees. In
+this work, we propose a Fully First-order Stochastic Approximation (F2SA)
+method, and study its non-asymptotic convergence properties. Specifically, we
+show that F2SA converges to an $\epsilon$-stationary solution of the bilevel
+problem after $\epsilon^{-7/2}, \epsilon^{-5/2}$, and $\epsilon^{-3/2}$
+iterations (each iteration using $O(1)$ samples) when stochastic noises are in
+both level objectives, only in the upper-level objective, and not present
+(deterministic settings), respectively. We further show that if we employ
+momentum-assisted gradient estimators, the iteration complexities can be
+improved to $\epsilon^{-5/2}, \epsilon^{-4/2}$, and $\epsilon^{-3/2}$,
+respectively. We demonstrate even superior practical performance of the
+proposed method over existing second-order based approaches on MNIST
+data-hypercleaning experiments.","Kwon, Jeongyeol and Kwon, Dohyun and Wright, Stephen and Nowak, Robert D",2023,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,dagreou2022framework,\cite{dagreou2022framework},"A framework for bilevel optimization that enables stochastic and global
+  variance reduction algorithms",http://arxiv.org/abs/2201.13409v4,"Bilevel optimization, the problem of minimizing a value function which
+involves the arg-minimum of another function, appears in many areas of machine
+learning. In a large scale empirical risk minimization setting where the number
+of samples is huge, it is crucial to develop stochastic methods, which only use
+a few samples at a time to progress. However, computing the gradient of the
+value function involves solving a linear system, which makes it difficult to
+derive unbiased stochastic estimates. To overcome this problem we introduce a
+novel framework, in which the solution of the inner problem, the solution of
+the linear system, and the main variable evolve at the same time. These
+directions are written as a sum, making it straightforward to derive unbiased
+estimates. The simplicity of our approach allows us to develop global variance
+reduction algorithms, where the dynamics of all variables is subject to
+variance reduction. We demonstrate that SABA, an adaptation of the celebrated
+SAGA algorithm in our framework, has $O(\frac1T)$ convergence rate, and that it
+achieves linear convergence under Polyak-Lojasciewicz assumption. This is the
+first stochastic algorithm for bilevel optimization that verifies either of
+these properties. Numerical experiments validate the usefulness of our method.","Dagr{\'e}ou, Mathieu and Ablin, Pierre and Vaiter, Samuel and Moreau, Thomas",2022,,,,arXiv preprint arXiv:2201.13409
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,chen2023bilevel1,\cite{chen2023bilevel1},On bilevel optimization without lower-level strong convexity,,,"Chen, Lesi and Xu, Jing and Zhang, Jingzhao",2023,,,,arXiv preprint arXiv:2301.00712
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,grazzi2022bilevel,\cite{grazzi2022bilevel},"Bilevel Optimization with a Lower-level Contraction: Optimal Sample
+  Complexity without Warm-start",http://arxiv.org/abs/2202.03397v4,"We analyse a general class of bilevel problems, in which the upper-level
+problem consists in the minimization of a smooth objective function and the
+lower-level problem is to find the fixed point of a smooth contraction map.
+This type of problems include instances of meta-learning, equilibrium models,
+hyperparameter optimization and data poisoning adversarial attacks. Several
+recent works have proposed algorithms which warm-start the lower-level problem,
+i.e.~they use the previous lower-level approximate solution as a staring point
+for the lower-level solver. This warm-start procedure allows one to improve the
+sample complexity in both the stochastic and deterministic settings, achieving
+in some cases the order-wise optimal sample complexity. However, there are
+situations, e.g., meta learning and equilibrium models, in which the warm-start
+procedure is not well-suited or ineffective. In this work we show that without
+warm-start, it is still possible to achieve order-wise (near) optimal sample
+complexity. In particular, we propose a simple method which uses (stochastic)
+fixed point iterations at the lower-level and projected inexact gradient
+descent at the upper-level, that reaches an $\epsilon$-stationary point using
+$O(\epsilon^{-2})$ and $\tilde{O}(\epsilon^{-1})$ samples for the stochastic
+and the deterministic setting, respectively. Finally, compared to methods using
+warm-start, our approach yields a simpler analysis that does not need to study
+the coupled interactions between the upper-level and lower-level iterates.","Grazzi, Riccardo and Pontil, Massimiliano and Salzo, Saverio",2022,,,,arXiv preprint arXiv:2202.03397
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,hao2024bilevel,\cite{hao2024bilevel},Bilevel Optimization under Unbounded Smoothness: A New Algorithm and Convergence Analysis,,,Jie Hao and Xiaochuan Gong and Mingrui Liu,2024,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,gong2024a,\cite{gong2024a},"A Nearly Optimal Single Loop Algorithm for Stochastic Bilevel
+  Optimization under Unbounded Smoothness",http://arxiv.org/abs/2412.20017v1,"This paper studies the problem of stochastic bilevel optimization where the
+upper-level function is nonconvex with potentially unbounded smoothness and the
+lower-level function is strongly convex. This problem is motivated by
+meta-learning applied to sequential data, such as text classification using
+recurrent neural networks, where the smoothness constant of the upper-level
+loss function scales linearly with the gradient norm and can be potentially
+unbounded. Existing algorithm crucially relies on the nested loop design, which
+requires significant tuning efforts and is not practical. In this paper, we
+address this issue by proposing a Single Loop bIlevel oPtimizer (SLIP). The
+proposed algorithm first updates the lower-level variable by a few steps of
+stochastic gradient descent, and then simultaneously updates the upper-level
+variable by normalized stochastic gradient descent with momentum and the
+lower-level variable by stochastic gradient descent. Under standard
+assumptions, we show that our algorithm finds an $\epsilon$-stationary point
+within $\widetilde{O}(1/\epsilon^4)$\footnote{Here $\widetilde{O}(\cdot)$
+compresses logarithmic factors of $1/\epsilon$ and $1/\delta$, where
+$\delta\in(0,1)$ denotes the failure probability.} oracle calls of stochastic
+gradient or Hessian-vector product, both in expectation and with high
+probability. This complexity result is nearly optimal up to logarithmic factors
+without mean-square smoothness of the stochastic gradient oracle. Our proof
+relies on (i) a refined characterization and control of the lower-level
+variable and (ii) establishing a novel connection between bilevel optimization
+and stochastic optimization under distributional drift. Our experiments on
+various tasks show that our algorithm significantly outperforms strong
+baselines in bilevel optimization.",Xiaochuan Gong and Jie Hao and Mingrui Liu,2024,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,finn2017model,\cite{finn2017model},Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks,http://arxiv.org/abs/1703.03400v3,"We propose an algorithm for meta-learning that is model-agnostic, in the
+sense that it is compatible with any model trained with gradient descent and
+applicable to a variety of different learning problems, including
+classification, regression, and reinforcement learning. The goal of
+meta-learning is to train a model on a variety of learning tasks, such that it
+can solve new learning tasks using only a small number of training samples. In
+our approach, the parameters of the model are explicitly trained such that a
+small number of gradient steps with a small amount of training data from a new
+task will produce good generalization performance on that task. In effect, our
+method trains the model to be easy to fine-tune. We demonstrate that this
+approach leads to state-of-the-art performance on two few-shot image
+classification benchmarks, produces good results on few-shot regression, and
+accelerates fine-tuning for policy gradient reinforcement learning with neural
+network policies.","Finn, Chelsea and Abbeel, Pieter and Levine, Sergey",2017,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,franceschi2018bilevel,\cite{franceschi2018bilevel},Bilevel Programming for Hyperparameter Optimization and Meta-Learning,http://arxiv.org/abs/1806.04910v2,"We introduce a framework based on bilevel programming that unifies
+gradient-based hyperparameter optimization and meta-learning. We show that an
+approximate version of the bilevel problem can be solved by taking into
+explicit account the optimization dynamics for the inner objective. Depending
+on the specific setting, the outer variables take either the meaning of
+hyperparameters in a supervised learning problem or parameters of a
+meta-learner. We provide sufficient conditions under which solutions of the
+approximate problem converge to those of the exact problem. We instantiate our
+approach for meta-learning in the case of deep learning where representation
+layers are treated as hyperparameters shared across a set of training episodes.
+In experiments, we confirm our theoretical findings, present encouraging
+results for few-shot learning and contrast the bilevel approach against
+classical approaches for learning-to-learn.","Franceschi, Luca and Frasconi, Paolo and Salzo, Saverio and Grazzi, Riccardo and Pontil, Massimiliano",2018,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,somayajula2023bi,\cite{somayajula2023bi},Bi-level Finetuning with Task-dependent Similarity Structure for Low-resource Training,,,"Somayajula, Sai Ashish and Jin, Lifeng and Song, Linfeng and Mi, Haitao and Yu, Dong",2023,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,grangier2023bilevel,\cite{grangier2023bilevel},Bilevel Optimization to Learn Training Distributions for Language Modeling under Domain Shift,,,"Grangier, David and Ablin, Pierre and Hannun, Awni",2023,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,borsos2020coresets,\cite{borsos2020coresets},Coresets via Bilevel Optimization for Continual Learning and Streaming,http://arxiv.org/abs/2006.03875v2,"Coresets are small data summaries that are sufficient for model training.
+They can be maintained online, enabling efficient handling of large data
+streams under resource constraints. However, existing constructions are limited
+to simple models such as k-means and logistic regression. In this work, we
+propose a novel coreset construction via cardinality-constrained bilevel
+optimization. We show how our framework can efficiently generate coresets for
+deep neural networks, and demonstrate its empirical benefits in continual
+learning and in streaming settings.","Borsos, Zal{\'a}n and Mutny, Mojmir and Krause, Andreas",2020,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,zhou2022probabilistic,\cite{zhou2022probabilistic},Probabilistic Bilevel Coreset Selection,http://arxiv.org/abs/2301.09880v1,"The goal of coreset selection in supervised learning is to produce a weighted
+subset of data, so that training only on the subset achieves similar
+performance as training on the entire dataset. Existing methods achieved
+promising results in resource-constrained scenarios such as continual learning
+and streaming. However, most of the existing algorithms are limited to
+traditional machine learning models. A few algorithms that can handle large
+models adopt greedy search approaches due to the difficulty in solving the
+discrete subset selection problem, which is computationally costly when coreset
+becomes larger and often produces suboptimal results. In this work, for the
+first time we propose a continuous probabilistic bilevel formulation of coreset
+selection by learning a probablistic weight for each training sample. The
+overall objective is posed as a bilevel optimization problem, where 1) the
+inner loop samples coresets and train the model to convergence and 2) the outer
+loop updates the sample probability progressively according to the model's
+performance. Importantly, we develop an efficient solver to the bilevel
+optimization problem via unbiased policy gradient without trouble of implicit
+differentiation. We provide the convergence property of our training procedure
+and demonstrate the superiority of our algorithm against various coreset
+selection methods in various tasks, especially in more challenging label-noise
+and class-imbalance scenarios.","Zhou, Xiao and Pi, Renjie and Zhang, Weizhong and Lin, Yong and Chen, Zonghao and Zhang, Tong",2022,,,,
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,hao2023bilevel1,\cite{hao2023bilevel1},Bilevel Coreset Selection in Continual Learning: A New Formulation and Algorithm,,,"Hao, Jie and Ji, Kaiyi and Liu, Mingrui",2023,,,,Advances in Neural Information Processing Systems
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,pan2024scalebio,\cite{pan2024scalebio},ScaleBiO: Scalable Bilevel Optimization for LLM Data Reweighting,http://arxiv.org/abs/2406.19976v2,"Bilevel optimization has shown its utility across various machine learning
+settings, yet most algorithms in practice require second-order information,
+making it challenging to scale them up. Only recently, a paradigm of
+first-order algorithms has emerged in the theoretical literature, capable of
+effectively addressing bilevel optimization problems. Nevertheless, the
+practical efficiency of this paradigm remains unverified, particularly in the
+context of large language models (LLMs). This paper introduces the first
+scalable instantiation of this paradigm called ScaleBiO, focusing on bilevel
+optimization for large-scale LLM data reweighting. By combining with a recently
+proposed memory-efficient training technique called LISA, our novel algorithm
+allows the paradigm to scale to $\sim$30B-sized LLMs on $8\times$H100 GPUs,
+marking the first successful application of bilevel optimization under
+practical scenarios for large-sized LLMs. Empirically, extensive experiments on
+data reweighting verify the effectiveness of ScaleBiO for different-scaled
+models, including Llama-3-8B, Gemma-2-9B, Qwen-2-7B, and Qwen-2.5-32B, where
+bilevel optimization succeeds in instruction-following and math reasoning
+tasks, outperforming several popular baselines, including uniform sampling,
+influence-aware data filtering, and reference-model-based sampling methods.
+Theoretically, ScaleBiO ensures the optimality of the learned data weights,
+along with a convergence guarantee matching the conventional first-order
+bilevel optimization paradigm on smooth and strongly convex objectives.","Pan, Rui and Zhang, Jipeng and Pan, Xingyuan and Pi, Renjie and Wang, Xiaoyu and Zhang, Tong",2024,,,,arXiv preprint arXiv:2406.19976
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,shen2024seal,\cite{shen2024seal},SEAL: Safety-enhanced Aligned LLM Fine-tuning via Bilevel Data Selection,http://arxiv.org/abs/2410.07471v2,"Fine-tuning on task-specific data to boost downstream performance is a
+crucial step for leveraging Large Language Models (LLMs). However, previous
+studies have demonstrated that fine-tuning the models on several adversarial
+samples or even benign data can greatly comprise the model's pre-equipped
+alignment and safety capabilities. In this work, we propose SEAL, a novel
+framework to enhance safety in LLM fine-tuning. SEAL learns a data ranker based
+on the bilevel optimization to up rank the safe and high-quality fine-tuning
+data and down rank the unsafe or low-quality ones. Models trained with SEAL
+demonstrate superior quality over multiple baselines, with 8.5% and 9.7% win
+rate increase compared to random selection respectively on Llama-3-8b-Instruct
+and Merlinite-7b models. Our code is available on github
+https://github.com/hanshen95/SEAL.","Shen, Han and Chen, Pin-Yu and Das, Payel and Chen, Tianyi",2024,,,,arXiv preprint arXiv:2410.07471
+BLISS: A Lightweight Bilevel Influence Scoring Method for Data Selection in Language Model Pretraining,http://arxiv.org/abs/2510.06048v2,hu2021lora,\cite{hu2021lora},LoRA: Low-Rank Adaptation of Large Language Models,http://arxiv.org/abs/2106.09685v2,"An important paradigm of natural language processing consists of large-scale
+pre-training on general domain data and adaptation to particular tasks or
+domains. As we pre-train larger models, full fine-tuning, which retrains all
+model parameters, becomes less feasible. Using GPT-3 175B as an example --
+deploying independent instances of fine-tuned models, each with 175B
+parameters, is prohibitively expensive. We propose Low-Rank Adaptation, or
+LoRA, which freezes the pre-trained model weights and injects trainable rank
+decomposition matrices into each layer of the Transformer architecture, greatly
+reducing the number of trainable parameters for downstream tasks. Compared to
+GPT-3 175B fine-tuned with Adam, LoRA can reduce the number of trainable
+parameters by 10,000 times and the GPU memory requirement by 3 times. LoRA
+performs on-par or better than fine-tuning in model quality on RoBERTa,
+DeBERTa, GPT-2, and GPT-3, despite having fewer trainable parameters, a higher
+training throughput, and, unlike adapters, no additional inference latency. We
+also provide an empirical investigation into rank-deficiency in language model
+adaptation, which sheds light on the efficacy of LoRA. We release a package
+that facilitates the integration of LoRA with PyTorch models and provide our
+implementations and model checkpoints for RoBERTa, DeBERTa, and GPT-2 at
+https://github.com/microsoft/LoRA.","Hu, Edward J and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu",2021,,,,arXiv preprint arXiv:2106.09685

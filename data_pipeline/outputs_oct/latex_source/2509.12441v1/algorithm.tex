@@ -1,0 +1,61 @@
+\section{The AutoPlan Algorithm}
+\label{sec:solution}
+
+% algorithm pseudo code
+% \begin{figure*}[!t]
+% 	\centering
+% 	\includegraphics[width=7in]{fig2.pdf}
+%     \captionsetup{justification=raggedright, singlelinecheck=false}
+% 	\caption{The workflow of the \emph{AutoPlan} algorithm.}
+% 	\label{fig:figure2}
+% \end{figure*}
+
+
+\begin{algorithm}[!h]
+\caption{The \emph{AutoPlan} Algorithm}
+\label{alg:algorithm1}
+    
+    \KwIn{
+    Region $\mathcal{A}$, feasible subregion $\mathcal{F}$, \\
+    \quad Existing BS set $\hat{\mathcal{B}} = \{(\hat{x}_m, \hat{y}_m)\}_{m=1}^M$,\\
+    \quad Measured RSRP $\hat{\mathbf{r}}$, simulated RSRP $\tilde{\mathbf{r}}(\boldsymbol{\Theta})$,\\
+    \quad Grid size $a$, RSRP threshold $r_{\text{th}}$,\\
+    \quad Number of new BSs $N$, training epochs $E$
+    }
+    
+    \KwOut{
+    Calibrated parameters $\boldsymbol{\Theta}^*$, new BS locations $\bar{\mathcal{B}} = \{(\bar{x}_n, \bar{y}_n)\}_{n=1}^N$
+    }
+    
+    \textbf{Stage 1: Digital radio twin calrbating}\;
+    Initialize $\boldsymbol{\Theta}$ randomly\;
+    \For{$t \gets 1$ \KwTo $E$}{
+        Compute simulated RSRP $\tilde{\mathbf{r}}(\boldsymbol{\Theta})$ using DRT\;
+        Compute loss $\mathcal{L}(\boldsymbol{\Theta})$ between $\hat{\mathbf{r}}$ and $\tilde{\mathbf{r}}(\boldsymbol{\Theta})$\;
+        Update parameters $\boldsymbol{\Theta}$\ according to (\ref{eq: eq8});
+    }
+    Set $\boldsymbol{\Theta}^* \gets \boldsymbol{\Theta}$\;
+    
+    \vspace{1mm}
+    \textbf{Stage 2: Automatic network planning}\;
+    Initialize $\bar{\mathcal{B}} \gets \emptyset$, observation set $\mathcal{D} \gets \emptyset$\;
+    
+    \For{$n \gets 1$ \KwTo $N$}{
+        Fit GP surrogate model to $\mathcal{D}$\;
+        Compute acquisition function $\alpha(\bar{b})$ using Expected Improvement ($\bar{b}=(\bar x,\bar y)$)\;
+        Select next BS: $\bar{b}^* \gets \arg\max\limits_{\bar{b} \in \mathcal{F} \setminus (\hat{\mathcal{B}} \cup \bar{\mathcal{B}})} \alpha(\bar{b})$\;
+        Evaluate $T(\hat{\mathcal{B}} \cup \bar{\mathcal{B}} \cup \{\bar{b}^*\})$ using calibrated DRT\;
+        Update: $\bar{\mathcal{B}} \gets \bar{\mathcal{B}} \cup \{\bar{b}^*\}$\;
+        Add $(\bar{b}^*, T)$ to $\mathcal{D}$\;
+    }
+
+\Return{$\boldsymbol{\Theta}^*$, $\bar{\mathcal{B}}$}
+\end{algorithm}
+
+
+In this section, we summarize the workflow of the \emph{AutoPlan} algorithm in Alg.~\ref{alg:algorithm1}.
+Overall, the algorithm takes the input of 3D terrain of the geographic region and the location of deployed base stations $\hat{\mathcal{B}}$, and generates the output of the location of the $N$ additional base stations. 
+In the stage of digital radio twinning, it observes the real-world RSRPs $\hat{\mathbf{r}}$ from crowdsourced mobile users, and updates the material of buildings.
+Specifically, it iteratively calculates the loss function by comparing the real-world RSRPs with the simulated RSRPs from the simulator, and performs multiple gradient descent steps.
+In the stage of network planning, it iteratively search the location of the next base station by 1) selecting a base station location (i.e., maximizing the EI acquisition function); 2) querying the DRT to obtain the network performance; and 3) updating the GP surrogate model with new observation.
+

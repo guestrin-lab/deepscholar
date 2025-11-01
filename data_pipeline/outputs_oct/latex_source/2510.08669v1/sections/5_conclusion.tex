@@ -1,0 +1,6 @@
+\section {Conclusion}
+\vspace{-3mm}
+% 不同于现有方法在“层”维度对特征做缓存优化，FreqCa 首次将加速视角转向“频域”，它将累积残差特征按频域分解为低频与高频分量，二者遵循截然不同的时序演化规律，并据此采用针对性策略低频保结构、高频精预测，既规避了跨层误差传播，又契合扩散过程的时序平滑性。FreqCa 揭示了从频域、结构与时序三个维度协同理解和建模特征的变化
+
+% 实验表明，这一设计不仅在 FLUX、Qwen-image 等主流生成模型上实现 >90% 显存压缩与 普遍6-7倍的几乎无损加速，更在图像编辑等下游任务中展现出卓越泛化能力。未来，针对模型输出的频域建模预测为资源受限场景下的高效生成提供通用范式。
+In this work, we presented \textbf{\textit{FreqCa}}, a frequency-aware feature caching framework that unifies the strengths of reuse- and forecast-based paradigms. By decomposing features into low- and high-frequency components, \textit{FreqCa} selectively reuses stable low-frequency features and accurately predicts dynamic high-frequency components, leading to a superior trade-off between acceleration and generation quality. Furthermore, by introducing Cumulative Residual Feature caching, we reduced the memory footprint to $\mathcal{O}(1)$, making frequency-aware caching practical even on consumer hardware. Extensive experiments across diverse diffusion models demonstrate that \textit{FreqCa} achieves 6–7$\times$ acceleration with negligible quality degradation, establishing a new SOTA in efficient diffusion inference. We believe \textit{FreqCa} opens up new possibilities for scalable, high-performance generative modeling and offers a general method for future research in frequency-aware acceleration techniques.

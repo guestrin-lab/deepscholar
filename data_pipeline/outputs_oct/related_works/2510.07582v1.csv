@@ -1,0 +1,208 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.07582v1,http://arxiv.org/abs/2510.07582v1,2025-10-08 22:01:00+00:00,"Type, Ability, and Effect Systems: Perspectives on Purity, Semantics, and Expressiveness","Programming benefits from a clear separation between pure, mathematical
+computation and impure, effectful interaction with the world. Existing
+approaches to enforce this separation include monads, type-and-effect systems,
+and capability systems. All share a tension between precision and usability,
+and each one has non-obvious strengths and weaknesses.
+  This paper aims to raise the bar in assessing such systems. First, we propose
+a semantic definition of purity, inspired by contextual equivalence, as a
+baseline independent of any specific typing discipline. Second, we propose that
+expressiveness should be measured by the degree of completeness, i.e., how many
+semantically pure terms can be typed as pure. Using this measure, we focus on
+minimal meaningful effect and capability systems and show that they are
+incomparable, i.e., neither subsumes the other in terms of expressiveness.
+  Based on this result, we propose a synthesis and show that type, ability, and
+effect systems combine their respective strengths while avoiding their
+weaknesses. As part of our formal model, we provide a logical relation to
+facilitate proofs of purity and other properties for a variety of effect typing
+disciplines.","\label{sec:related}
+
+
+
+
+
+
+
+
+
+\bfparagraph{Purity} 
+In object-oriented programming languages, 
+various definitions of purity have been proposed~\cite{stewart2014csse}, 
+among which the definition of \citet{DBLP:journals/sigsoft/LeavensBR06} has been widely adopted in Java.
+Under this definition, a location is modified when it exists in both the pre-state and post-state of an execution,
+but stores different values in these two states.
+This notion of observable purity has been adopted by Java analysis tools, including JPPA~\cite{DBLP:conf/vmcai/SalcianuR05}, ReIm and ReImInfer~\cite{DBLP:conf/oopsla/HuangMDE12,DBLP:conf/sigsoft/HuangM12},
+JPure~\cite{DBLP:conf/cc/Pearce11}, as well as by Scala purity checking, \eg, \cite{DBLP:conf/ecoop/RytzAO13}.
+
+Different from the above systems, Joe-E~\cite{DBLP:conf/ndss/MettlerWC10} defines pure methods as being side effect free and deterministic, 
+\ie, their outputs should depend only on their inputs. %
+This notation of purity is closer to the functional programming notion of purity.
+
+In this paper, we use the definition of a pure function aligning with the mathematical definition of a function. 
+That is, a pure function's behavior is entirely determined by its input argument, 
+and its output does not depend on an external runtime environment that may change.
+This definition is suitable for our purpose of equational reasoning. 
+
+\citet{DBLP:journals/jfp/Sabry98} proposes to define purity for the Haskell language based on parameter-passing independence, 
+\ie, different evaluation strategies (call-by-value, call-by-need, or call-by-name)
+lead to equivalent values modulo divergence and runtime errors.
+Our treatment of termination behavior differs from Sabry's approach. 
+His equivalence is defined modulo termination, so his definition of pure
+language describes Haskell more than Coq. 
+In the age of Coq, Agda~\cite{DBLP:conf/tphol/BoveDN09}, Lean~\cite{DBLP:conf/cade/Moura021}, and especially also Liquid Haskell~\cite{DBLP:phd/basesearch/Vazou16}, 
+we take the position that it is useful to tighten the definition and
+recognize nontermination as impurity in closer correspondence with
+logical consistency. 
+In the presence of possibly-infinite codata, 
+a syntactic guardedness checker is used to ensure productivity, \ie, even if a program generates an infinite amount of data, 
+each piece will be generated in finite time~\cite{DBLP:journals/jucs/ATurner04}.
+
+
+
+\bfparagraph{Type-and-Effect Systems} 
+Effect systems are introduced to integrate imperative operations into functional languages~\cite{gifford1986integrating,DBLP:conf/popl/LucassenG88},
+to track read and write effects on the heap~\cite{nielson1999type}, 
+to check purity~\cite{DBLP:conf/cc/Pearce11,DBLP:conf/ecoop/RytzAO13,DBLP:conf/icfp/RompfMO09} and exceptions~\cite{DBLP:conf/popl/PessauxL99,DBLP:journals/toplas/LeroyP00,java},
+and others. 
+\cite{DBLP:conf/tldi/MarinoM09} introduce a generic type-and-effect system that allow programmers to easily define new effects systems. 
+\citet{DBLP:journals/toplas/Gordon21} introduce a generic effect quantale framework
+that  can model the effects of a range of sequential effect systems. 
+In this work, we adopt a canonical binary effect system that distinguishes between computations that may induce observable effects and those that do not,
+serving the purpose of reasoning about purity.
+
+\bfparagraph{Algebraic Effects and Handlers} 
+Algebraic effects~\cite{DBLP:journals/acs/PlotkinP03} and handlers~\cite{DBLP:journals/corr/PlotkinP13} are a purely functional composable approaches to modeling effects,
+and inherit similar challenges in supporting effect polymorphism as those encountered in traditional effect systems.
+These challenges are evident in languages that support algebraic effects, 
+\eg, Koka~\cite{DBLP:conf/popl/Leijen17}, Helium~\cite{DBLP:journals/pacmpl/BiernackiPPS20}, the language in \citet{DBLP:conf/rta/HillerstromLAS17}'s work,
+and the system developed by \citet{DBLP:journals/pacmpl/ZhangM19}'s work.
+Frank~\cite{DBLP:conf/popl/LindleyMM17,DBLP:journals/jfp/ConventLMM20} reduces the annotation burden by leveraging ambient effects provided by the context, 
+but relies on desugaring them to traditional effect polymorphism. This mechanism is fragile, and may result in unclear error messages.
+\citet{DBLP:journals/pacmpl/TangWDHLL25,tang2025rowscapabilitiesmodaleffects} extend Frank's approach with multimodal type theory~\cite{DBLP:journals/lmcs/GratzerKNB21,694f77d247d34986bb82129b8d96206e} 
+in tracking modes for types and terms.
+
+\bfparagraph{Capabilities} 
+Capability systems~\cite{DBLP:conf/ecoop/CastegrenW16,DBLP:conf/ecoop/BoylandNR01} have been used to reason about program resources
+and external calls~\cite{drossopoulou2025reasoning},
+and to ensure unique access with borrowing~\cite{haller2010capabilities},
+Reference capabilities in Pony~\cite{DBLP:phd/ethos/Clebsch17} distinguish read and write capabilities.
+\citet{DBLP:conf/ecoop/Gordon19} articulates the use-mention distinction when designing capabilities and effect systems. 
+Our $\lambda_{ae}$-calculus uses ability to track ``mention'', and effects to track ``use''. 
+\citet{DBLP:conf/icfem/CraigPGA18} use capabilities to bound the effects that an expression can induce for a language with 
+a fixed set of global resources. Our systems can reason about dynamically allocated resources. 
+
+\citet{osvald2016gentrification} distinguish 1st- and 2nd-class values via privilege qualifiers,
+which can mediate access to different kinds of capabilities (\eg, read and write) with a fine-grained privilege lattice.
+Effekt~\cite{DBLP:journals/pacmpl/BrachthauserSO20} treats effects as capabilities and treat all functions as second-class values,
+which providing a lightweight of effect polymorphism, but impeding reasoning about purity.
+Our systems track resource via abilities in a coarse-grained way and can recognize pure computation, 
+which was not a goal of those prior systems.
+
+
+
+
+\bfparagraph{Tracking Variables in Types} 
+\citet{DBLP:journals/pacmpl/BaoWBJHR21} introduce reachability types to track aliasing and separation through reachability qualifiers.
+Their work has been extended to support polymorphism~\cite{DBLP:journals/pacmpl/WeiBJBR24},
+cyclic references~\cite{deng2025completecyclereachabilitytypes} and bidirectional typing~\cite{jia2024escape}.
+Our semantic model is adapted from \citet{bao2025logrel}'s work, but we focus on a simplified setting restricted to Boolean references. 
+In addition, \citet{bunting2025a} study contextual equivalence for \citet{DBLP:journals/pacmpl/BaoWBJHR21}'s system  
+using operational game semantics and present a full abstraction model based on a labelled transition system.
+In the future, we plan to extend our work to support fine-grained ability and effect tracking 
+for programs with higher-order stores by leveraging reachability qualifiers as in \citet{bao2025logrel}'s work.
+
+Capturing types~\cite{DBLP:journals/toplas/BoruchGruszeckiOLLB23,DBLP:journals/pacmpl/XuBO24} 
+integrate capability tracking and escape checking into Scala 3.
+Treating effects as capabilities provides a lightweight way to achieve effect polymorphism~\cite{DBLP:journals/pacmpl/BrachthauserSO20}.
+\citet{DBLP:conf/programming/XuO24} introduce reach capabilities to address the challenges when capture checking and mutable variables interact.
+Integrating mechanisms from our approach could potentially enable more precise purity checking for Scala.","\bfparagraph{Purity} 
+In object-oriented programming languages, 
+various definitions of purity have been proposed~\cite{stewart2014csse}, 
+among which the definition of \citet{DBLP:journals/sigsoft/LeavensBR06} has been widely adopted in Java.
+Under this definition, a location is modified when it exists in both the pre-state and post-state of an execution,
+but stores different values in these two states.
+This notion of observable purity has been adopted by Java analysis tools, including JPPA~\cite{DBLP:conf/vmcai/SalcianuR05}, ReIm and ReImInfer~\cite{DBLP:conf/oopsla/HuangMDE12,DBLP:conf/sigsoft/HuangM12},
+JPure~\cite{DBLP:conf/cc/Pearce11}, as well as by Scala purity checking, \eg, \cite{DBLP:conf/ecoop/RytzAO13}.
+
+Different from the above systems, Joe-E~\cite{DBLP:conf/ndss/MettlerWC10} defines pure methods as being side effect free and deterministic, 
+\ie, their outputs should depend only on their inputs. 
+This notation of purity is closer to the functional programming notion of purity.
+
+In this paper, we use the definition of a pure function aligning with the mathematical definition of a function. 
+That is, a pure function's behavior is entirely determined by its input argument, 
+and its output does not depend on an external runtime environment that may change.
+This definition is suitable for our purpose of equational reasoning. 
+
+\citet{DBLP:journals/jfp/Sabry98} proposes to define purity for the Haskell language based on parameter-passing independence, 
+\ie, different evaluation strategies (call-by-value, call-by-need, or call-by-name)
+lead to equivalent values modulo divergence and runtime errors.
+Our treatment of termination behavior differs from Sabry's approach. 
+His equivalence is defined modulo termination, so his definition of pure
+language describes Haskell more than Coq. 
+In the age of Coq, Agda~\cite{DBLP:conf/tphol/BoveDN09}, Lean~\cite{DBLP:conf/cade/Moura021}, and especially also Liquid Haskell~\cite{DBLP:phd/basesearch/Vazou16}, 
+we take the position that it is useful to tighten the definition and
+recognize nontermination as impurity in closer correspondence with
+logical consistency. 
+In the presence of possibly-infinite codata, 
+a syntactic guardedness checker is used to ensure productivity, \ie, even if a program generates an infinite amount of data, 
+each piece will be generated in finite time~\cite{DBLP:journals/jucs/ATurner04}.
+
+
+
+\bfparagraph{Type-and-Effect Systems} 
+Effect systems are introduced to integrate imperative operations into functional languages~\cite{gifford1986integrating,DBLP:conf/popl/LucassenG88},
+to track read and write effects on the heap~\cite{nielson1999type}, 
+to check purity~\cite{DBLP:conf/cc/Pearce11,DBLP:conf/ecoop/RytzAO13,DBLP:conf/icfp/RompfMO09} and exceptions~\cite{DBLP:conf/popl/PessauxL99,DBLP:journals/toplas/LeroyP00,java},
+and others. 
+\cite{DBLP:conf/tldi/MarinoM09} introduce a generic type-and-effect system that allow programmers to easily define new effects systems. 
+\citet{DBLP:journals/toplas/Gordon21} introduce a generic effect quantale framework
+that  can model the effects of a range of sequential effect systems. 
+In this work, we adopt a canonical binary effect system that distinguishes between computations that may induce observable effects and those that do not,
+serving the purpose of reasoning about purity.
+
+\bfparagraph{Algebraic Effects and Handlers} 
+Algebraic effects~\cite{DBLP:journals/acs/PlotkinP03} and handlers~\cite{DBLP:journals/corr/PlotkinP13} are a purely functional composable approaches to modeling effects,
+and inherit similar challenges in supporting effect polymorphism as those encountered in traditional effect systems.
+These challenges are evident in languages that support algebraic effects, 
+\eg, Koka~\cite{DBLP:conf/popl/Leijen17}, Helium~\cite{DBLP:journals/pacmpl/BiernackiPPS20}, the language in \citet{DBLP:conf/rta/HillerstromLAS17}'s work,
+and the system developed by \citet{DBLP:journals/pacmpl/ZhangM19}'s work.
+Frank~\cite{DBLP:conf/popl/LindleyMM17,DBLP:journals/jfp/ConventLMM20} reduces the annotation burden by leveraging ambient effects provided by the context, 
+but relies on desugaring them to traditional effect polymorphism. This mechanism is fragile, and may result in unclear error messages.
+\citet{DBLP:journals/pacmpl/TangWDHLL25,tang2025rowscapabilitiesmodaleffects} extend Frank's approach with multimodal type theory~\cite{DBLP:journals/lmcs/GratzerKNB21,694f77d247d34986bb82129b8d96206e} 
+in tracking modes for types and terms.
+
+\bfparagraph{Capabilities} 
+Capability systems~\cite{DBLP:conf/ecoop/CastegrenW16,DBLP:conf/ecoop/BoylandNR01} have been used to reason about program resources
+and external calls~\cite{drossopoulou2025reasoning},
+and to ensure unique access with borrowing~\cite{haller2010capabilities},
+Reference capabilities in Pony~\cite{DBLP:phd/ethos/Clebsch17} distinguish read and write capabilities.
+\citet{DBLP:conf/ecoop/Gordon19} articulates the use-mention distinction when designing capabilities and effect systems. 
+Our $\lambda_{ae}$-calculus uses ability to track ``mention'', and effects to track ``use''. 
+\citet{DBLP:conf/icfem/CraigPGA18} use capabilities to bound the effects that an expression can induce for a language with 
+a fixed set of global resources. Our systems can reason about dynamically allocated resources. 
+
+\citet{osvald2016gentrification} distinguish 1st- and 2nd-class values via privilege qualifiers,
+which can mediate access to different kinds of capabilities (\eg, read and write) with a fine-grained privilege lattice.
+Effekt~\cite{DBLP:journals/pacmpl/BrachthauserSO20} treats effects as capabilities and treat all functions as second-class values,
+which providing a lightweight of effect polymorphism, but impeding reasoning about purity.
+Our systems track resource via abilities in a coarse-grained way and can recognize pure computation, 
+which was not a goal of those prior systems.
+
+
+
+
+\bfparagraph{Tracking Variables in Types} 
+\citet{DBLP:journals/pacmpl/BaoWBJHR21} introduce reachability types to track aliasing and separation through reachability qualifiers.
+Their work has been extended to support polymorphism~\cite{DBLP:journals/pacmpl/WeiBJBR24},
+cyclic references~\cite{deng2025completecyclereachabilitytypes} and bidirectional typing~\cite{jia2024escape}.
+Our semantic model is adapted from \citet{bao2025logrel}'s work, but we focus on a simplified setting restricted to Boolean references. 
+In addition, \citet{bunting2025a} study contextual equivalence for \citet{DBLP:journals/pacmpl/BaoWBJHR21}'s system  
+using operational game semantics and present a full abstraction model based on a labelled transition system.
+In the future, we plan to extend our work to support fine-grained ability and effect tracking 
+for programs with higher-order stores by leveraging reachability qualifiers as in \citet{bao2025logrel}'s work.
+
+Capturing types~\cite{DBLP:journals/toplas/BoruchGruszeckiOLLB23,DBLP:journals/pacmpl/XuBO24} 
+integrate capability tracking and escape checking into Scala 3.
+Treating effects as capabilities provides a lightweight way to achieve effect polymorphism~\cite{DBLP:journals/pacmpl/BrachthauserSO20}.
+\citet{DBLP:conf/programming/XuO24} introduce reach capabilities to address the challenges when capture checking and mutable variables interact.
+Integrating mechanisms from our approach could potentially enable more precise purity checking for Scala.",N/A

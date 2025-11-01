@@ -1,0 +1,68 @@
+\section{Related Works}
+\label{sec:related}
+\vspace{-2mm}
+\subsection{Referring Image/Video Segmentation}
+% \textcolor{red}{2.2 Done}
+\vspace{-2mm}
+Referring image segmentation (RIS)~\citep{xu2023bridging, yang2022lavt, yu2023zero, liu2023polyformer} learns to segment the corresponding object in an image given a free-form text query. For example, PolyFormer~\citep{liu2023polyformer} re-formulates the RIS problem as a sequential polygon generation and then converts it to a segmentation mask. Also, PolyFormer further performs zero-shot transfer on the RVOS task to show its generalization ability for the video domain. However, the challenging issues for RVOS such as position and size variation, pose deformation, object occlusion, \etc, may limit the performance of RIS methods. 
+
+
+Referring Video Object Segmentation (RVOS)~\citep{wu2022language,han2023html,wu2023onlinerefer,miao2023spectrum,tang2023temporal,luo2024soc,wu2023segment} strives to segment the object described by a free-form sentence query across the entire video duration. 
+Recently, ReferFormer~\citep{wu2022language} views language as queries to pay attention to the referred object by adopting an encoder-decoder style in the transformer. However, this work only supports offline training and inference, limiting its usage in real-world scenarios. More recently, 
+% HTML~\citep{han2023html} exploits and designs a hybrid temporal-scale concept to enhance the model's ability to the temporal information across multiple video frames. However, HTML fails to improve the performance to become a more promising SOTA and could raise concerns about how to properly define temporal-scale. Besides, 
+OnlineRefer~\citep{wu2023onlinerefer} further proposes an online RVOS setting to deal with the issues about offline limits, which makes it more possible to adapt to real-world scenarios. 
+Nevertheless, most existing methods require end-to-end training for vision-language models, which could be computationally expensive and time-consuming. Moreover, the requirement of dense mask annotations for training impedes the scalability of those approaches.
+Instead, we propose to exploit foundation segmentation models without text- and temporal-aware prompting, which is trained without mask annotations and supports online settings. Very recently, several methods~\citep{zhu2023tracking,lai2024lisa,yan2024visa,bai2024onetoken} are proposed to leverage the knowledge learned in large language models to address RVOS. Nevertheless, the results of these LLM-based methods are still inferior to traditional ones.
+% Though the aforementioned RVOS works attempt to capture temporal information or the online setting, they are unable to cover all the above aspects simultaneously. Thus, our work can not only capture temporal-enriched information with our temporal-aware prompting but also support the online setting even without full per-frame mask supervision for training by exploiting the foundation segmentation model. 
+
+\vspace{-2mm}
+
+\subsection{Foundation Segmentation Models}
+% \textcolor{red}{2.1 DONE.}
+\vspace{-2mm}
+In recent years, foundation vision models have gained massive attention given their remarkable generalization capabilities on various downstream tasks. More recently, SAM~\citep{kirillov2023segment} has introduced a foundation model specifically tailored for segmentation tasks. SAM allows specific position prompts (\eg, points, boxes, \etc.) to demonstrate the zero-shot ability on the open vocabulary segmentation tasks with novel image distributions. Several works have studied the versatility of SAM, including remote sensing images~\citep{chen2024rsprompter, SAMRS}, medical image analysis~\citep{MedSAM, chen2023sam, wu2023medical, cheng2023sam}, and adaptation to video-based tracking task~\citep{cheng2023segment, yang2023track, sam-pt}, \etc.
+
+
+In addition to SAM, SegGPT~\citep{wang2023seggpt} and SEEM~\citep{zou2024segment} have also emerged as generalized foundation segmentation models, showcasing comparable concepts. SegGPT exploits the concept of an in-context learning scheme to treat the classic segmentation problems as an in-context coloring problem. With this design, SegGPT is able to focus on more contextual information when training. On the other hand, SEEM extends the versatility of a single segmentation model by broadening the range of tasks. Similar to SAM, SEEM also supports various prompts including points, boxes, masks, \etc. Specifically, SEEM proposes to align visual-semantic space to accommodate flexible multi-prompt input. However, both SegGPT and  SEEM are not directly feasible for our RVOS task due to no specific adaptation to the video domain or enhancement of tracking ability.
+
+
+% However, f
+For adaptation to tracking tasks with SAM, SAM-PT~\citep{sam-pt} 
+% only 
+designs a point-based prompt enhancement for the original SAM point prompt to support classic video object segmentation tasks, while neglecting the importance of text prompt for advanced referring video object segmentation. Another example SAM-Track~\citep{cheng2023segment} attempts to utilize SAM for segmentation and detection of objects while the DeAOT~\citep{yang2022decoupling} module captures the motion across frames for tracking the objects. On the other hand, SAM 2~\citep{ravi2024sam} introduces a memory attention mechanism on SAM to produce masklets for videos. Though it is possible to combine text-grounding detection models (\eg, Grounding DINO~\citep{liu2024grounding}) with SAM-Track to tackle RVOS, RefSAM~\citep{li2023refsam} has studied the possible concerns and indicates the unsatisfactory performance compared with current SOTAs in RVOS tasks. 
+% Therefore, o
+Different from the above, we propose
+% Our work attempts to incorporate the idea of 
+temporal-aware prompting with foundation segmentation models (\eg, SAM) to tackle RVOS problems.
+% overcome SOTAs for RVOS tasks.
+
+% Thus, our work can not only capture temporal-enriched information with our temporal-aware prompting but also support the online setting even without full per-frame mask supervision for training by exploiting the foundation segmentation model. 
+
+% can mention (SAM, SAM-based model, SEEM, SegGPT, …)  https://arxiv.org/abs/2307.00997
+% study: https://arxiv.org/pdf/2305.08196.pdf
+% seggpt: https://arxiv.org/pdf/2304.03284.pdf 
+% study 2.2: https://arxiv.org/pdf/2305.12659.pdf
+% \subsection{Referring Image/Video Segmentation}
+% \textcolor{red}{2.2 Done}
+% Referring image segmentation (RIS)~\citep{xu2023bridging, yang2022lavt, yu2023zero, liu2023polyformer} learns to segment the corresponding object in an image given a free-form text query. For example, PolyFormer~\citep{liu2023polyformer} re-formulates the RIS problem as a sequential polygon generation and then converts it to a segmentation mask. Also, PolyFormer further performs zero-shot transfer on the RVOS task to show its generalization ability for the video domain. However, the challenging issues for RVOS such as position and size variation, pose deformation, object occlusion, \etc, may limit the performance of the RIS proposed method. 
+
+% Referring video object segmentation (RVOS) strives to segment the object described by a free-form sentence query across the entire video duration. 
+% Recently, ReferFormer~\citep{wu2022language} views language as queries to pay attention to the referred object by adopting an encoder-decoder style in the transformer. However, this work only supports offline training and inference, limiting its usage in real-world scenarios. More recently, HTML~\citep{han2023html} exploits and designs a hybrid temporal-scale concept to enhance the model's ability to the temporal information across multiple video frames. However, HTML fails to improve the performance to become a more promising SOTA and could raise concerns about how to properly define temporal-scale. Besides, OnlineRefer~\citep{wu2023onlinerefer} further proposes an online RVOS setting to deal with the issues about offline limits, which makes it more possible to adapt to real-world scenarios. Though the aforementioned RVOS works attempt to capture temporal information or the online setting, they are unable to cover all the above aspects simultaneously. Thus, our work can not only capture temporal-enriched information with our temporal-aware prompting but also support the online setting even without full per-frame mask supervision for training by exploiting the foundation segmentation model. 
+
+
+
+
+
+% can take ICCV papers in the paper list as references. can mention Referformer, OnlineRefer, …
+
+% 寫到三頁尾巴
+
+
+
+% \subsection{Prompt Learning}
+
+% In natural language processing (NLP), prompting~(\cite{liu2023pre}) involves giving a text-based input such as a sentence or phrase to obtain desired responses from language models. Driven by the recent success of pre-trained vision-language models (\textit{e.g.}, CLIP~(\cite{radford2021learning})),
+% % such as CLIP~\citep{radford2021learning} and ALIGN~\citep{jia2021scaling}, 
+% there has been an increasing interest to identify proper prompts for computer vision tasks. Early work relies on prompt engineering to identify text templates (\textit{e.g.}, ``a photo of {}'') describing classes of interest to obtain underlying knowledge.
+% % the text encoder, and compare them with image features derived from the image encoder for classification. 
+% However, such a trial and error approach generally takes a large amount of time and effort and also requires expertise about the task. To tackle the problem, prompt learning methods~(\cite{zhou2022learning,zhou2022conditional,jia2022visual}) replace the manually-defined text prompts with a set of learnable context vectors preceding the class names to automate the prompting process. 

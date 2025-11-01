@@ -1,0 +1,1493 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2025
+
+
+% ready for submission
+\usepackage[final]{neurips_2025}
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2025}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2025}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2025}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{longtable} 
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{pifont}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{caption}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Beyond Pairwise Connections: Extracting High-Order Functional Brain Network Structures under Global Constraints}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+  % --- Author Names with Superscripts ---
+  Ling Zhan$^{1,2}$, \quad
+  Junjie Huang$^1$, \quad
+  Xiaoyao Yu$^1$, \quad
+  Wenyu Chen$^{1,3}$, \quad
+  Tao Jia$^{1,2,4}$\thanks{Corresponding author.}
+  \\
+  \vspace{0.1cm} % Optional: adds a little vertical space for clarity
+  % --- Numbered Affiliations ---
+  $^1$College of Computer and Information Science, Southwest University, Chongqing, China \\
+  $^2$Chongqing Key Laboratory of Brain-Inspired Cognitive Computing\\ and Educational Rehabilitation for Children with Special Needs, \\ Chongqing Normal University, Chongqing, China\\
+  $^3$School of Science, Guangxi University of Science and Technology, Guangxi, China \\
+  $^4$College of Computer and Information Science, Chongqing Normal University, Chongqing, China \\
+  \vspace{0.1cm}
+  % --- Emails ---
+  \texttt{zl0327@email.swu.edu.cn, junjiehuang@swu.edu.cn, xiaoyaoyu@email.swu.edu.cn,} \\
+  \texttt{cwy610@gxust.edu.cn, tjia@swu.edu.cn}
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+  Functional brain network (FBN) modeling often relies on local pairwise interactions, whose limitation in capturing high-order dependencies is theoretically analyzed in this paper. Meanwhile, the computational burden and heuristic nature of current hypergraph modeling approaches hinder end-to-end learning of FBN structures directly from data distributions. To address this, we propose to extract high-order FBN structures under global constraints, and implement this as a \textbf{G}lobal \textbf{C}onstraints oriented \textbf{M}ulti-resolution (\textbf{GCM}) FBN structure learning framework. It incorporates $4$ types of global constraint (signal synchronization, subject identity, expected edge numbers, and data labels) to enable learning FBN structures for $4$ distinct levels (sample/subject/group/project) of modeling resolution. Experimental results demonstrate that \textbf{GCM} achieves up to a $30.6\%$ improvement in relative accuracy and a $96.3\%$ reduction in computational time across $5$ datasets and $2$ task settings, compared to $9$ baselines and $10$ state-of-the-art methods. Extensive experiments validate the contributions of individual components and highlight the interpretability of \textbf{GCM}. This work offers a novel perspective on FBN structure learning and provides a foundation for interdisciplinary applications in cognitive neuroscience. Code is publicly available on \url{https://github.com/lzhan94swu/GCM}.
+\end{abstract}
+
+
+\section{Introduction}
+Functional brain networks (FBNs), which model inter-regional coordination as graphs, have become a central approach for understanding cognition, behavior, and mental disorders~\cite{sporns2013structure,bassett2018nature}. They are typically inferred from multivariate time series (MTS) recorded by fMRI or EEG~\cite{sameshima2014methods,kirch2015detection}, with the goal of capturing the inter-regional dependencies embedded in neural dynamics~\cite{friston2005models,smith2011network,luppi2024systematic}. However, because these dependencies are only indirectly observable, reliable network construction remains challenging~\cite{zong2024new,wang2023bayesian}. 
+
+Traditional methods construct FBNs by estimating pairwise statistical interactions (e.g., correlation, coherence) between regional signals~\cite{cliff2023unifying,watanabe2013pairwise,cohen2009pearson,baumgratz2014quantifying}. Recent machine learning models extract latent features from MTS via neural encoders, but still rely on pairwise computations to form adjacency matrices for downstream graph analysis~\cite{du2024survey}. Despite current shift toward end-to-end modeling~\cite{zong2024new,owen2021high,zhang2017hybrid}, fully connected graphs could reinforce their performance in prediction according to our empirical study (\textbf{Appendix~\ref{app:ISA}}). This suggests that the initial structures generated by pairwise methods may be suboptimal or even detrimental. As illustrated by the XOR example in Figure~\ref{Compare} (Top-left), a brain region C might activate only when its two driving regions, A and B, are in opposite states (one active, one inactive)—a relationship that cannot be described by any pairwise correlation between (A,C) or (B,C) alone. This type of irreducible, multi-way dependency is a typical example of a high-order interaction. Recent evidence from hypergraph modeling also suggests that it is necessary to model high-order interactions in the brain~\cite{varley2023partial,scagliarini2022quantifying,santoro2023higher}, which cannot be fully captured by pairwise interactions as proved in \textbf{Section~\ref{sec:limitation}}. However their inferred FBNs are agnostic to analysis tasks and thus need further statistical processing. Meanwhile, these methods are practically limited by their strong assumptions or prior knowledge demands on dynamics~\cite{young2021hypergraph,casadiego2017model,wegner2024nonparametric} and high computational complexity~\cite{delabays2025hypergraph,malizia2024reconstructing}. 
+
+\begin{figure}[!tp]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figs/Compare.pdf}
+  \captionsetup{skip=1pt}
+  \caption{An illustration of the two paradigms for FBN modeling. \textbf{Top}: Conceptual diagrams illustrating the core theoretical differences. The top-left provides a concrete example of a high-order (XOR) interaction to demonstrate how pairwise models fail to capture patterns that high-order models can identify. The top-right contrasts the scope of Local Constraints (acting on single nodes or edges) versus Global Constraints (acting on the entire network). \textbf{Bottom}: Comparison between the previous pairwise paradigm with our proposed \textbf{GCM} framework, which treats the adjacency matrix as a single, learnable object holistically shaped by global objectives.}
+  \label{Compare}
+\end{figure}
+
+Motivated by the observation that high-level cognitive demands shape the organization of functional brain networks~\cite{park2013structural,bassett2017network}, we propose to extract FBNs from MTS under global constraints, as illustrated in Figure~\ref{Compare} (Top-right). In this paradigm, we distinguish between two types of constraints. Local constraints operate on a node-pair basis, such as using Pearson correlation to determine a single edge weight, where the final graph is an aggregation of many independent, local decisions. In contrast, global constraints are top-down priors that shape the entire network structure holistically, guiding the optimization of the adjacency matrix as a single entity rather than a collection of independent edges. In this way, FBNs can be learned efficiently and constrained by input MTS and global priors directly, without relying on predefined dynamics~\cite{wang2023bayesian}.
+
+Therefore, we design the \textbf{G}lobal \textbf{C}onstraints oriented \textbf{M}ulti-resolution (\textbf{GCM}) framework as an implementation of this paradigm. As illustrated in Figure~\ref{Compare} (Bottom), comparing to previous pairwise models, in \textbf{GCM}, FBNs are treated as structured entities optimized under the holistic influence of our global constraints, derived from both data and task semantics, rather than byproducts of local interactions. To ensure interpretability, \textbf{GCM} requires clear semantic specifications on the learned structures and global constraints. As for structure, it is essential to define the modeling resolution, i.e., the unit of representation on which the graph structure operates~\cite{van2019cross,dadi2019benchmarking}. Depending on the analytic goal, \textbf{GCM} supports four distinct resolutions: sample (e.g., short-term activity~\cite{avena2018communication}), subject (e.g., individual traits~\cite{finn2015functional}), group (e.g., cohort-level patterns~\cite{lu2024brain}), and project (entire dataset, e.g., population-level abstractions~\cite{fan2016human}). To the best of our knowledge, the semantic distinction between these resolutions has not been well-addressed. However, without such explicit resolution specification the learned FBNs risk semantic ambiguity or misalignment with downstream tasks~\cite{poldrack2008guidelines,bishop2006pattern}. Our theoretical and empirical analysis validate the necessity of this formulation.%, which highlight the importance of resolution-aware modeling. the learning objective becomes ill-posed, and
+
+As a support to the concept of global constraints, a recent work in control theory and cognitive science has proposed a perceptual control architecture~\cite{cochrane2025control}. In this framework, organismal functions adapt to environmental disturbances by integrating diverse sensory feedback into coordinated internal responses. Inspired by this view, \textbf{GCM} models the brain's functional structure as an adaptive variable shaped by multiple global constraints as signals.  These constraints, which we define as global because they influence the entire network structure simultaneously, reflect a distinct form of global feedback, while their joint influence is integrated through a unified gradient. Specifically, our framework integrates four types of global constraints. (1) \textbf{Signal Synchronization}: The model is end-to-end, meaning the learned graph is inherently constrained by the high-order temporal dynamics within the raw signals. (2) \textbf{Subject Identity}: This constraint imposes a consistent intra-subject signature, or "neural fingerprint," through contrastive regularization~\cite{garrison2015stability}. (3) \textbf{Expected Edge Numbers}: An adaptive constraint ensures global sparsity in the learned network~\cite{barabasi2013network}. (4) \textbf{Data Labels}: Task labels guide the structure to align across samples via a supervised loss. These constraint signals are integrated through gradient and fed back through back-propagation, with Gumbel-Sigmoid~\cite{jang2017categorical} enabling differentiable sampling over binary graphs. Meanwhile, to retain local co-activation patterns, \textbf{GCM} integrates a graph neural network (GNN) as its backbone. Our empirical results report the contribution of each module.
+
+Our contributions are threefold. First, we provide a theoretical proof that pairwise-based models are mathematically incapable of recovering the high-order interactions present in MTS, thereby establishing the necessity of a new paradigm, such as our proposal of learning FBNs under global constraints. Second, we implement this paradigm as \textbf{GCM} that directly learns discrete FBNs under global constraints specific to four semantically separated modeling resolutions. Third, extensive empirical evaluation confirms that \textbf{GCM} not only improves classification performance but also enhances the interpretability and semantic alignment of the learned FBNs.
+
+\section{Related Work}
+Because the idea of high-order FBN structure is addressed in hyper network modeling, and the design of \textbf{GCM} is inspired by the ideas of Brain Graph Interpretation (BGI)~\cite{zheng2024brainib} and Graph Structure Learning (GSL)~\cite{wang2023prose}, we briefly introduce the related works along these aspects in this section.
+
+\paragraph{Hyper Network Modeling}
+Research on FBNs aims to model and understand the cooperative functions of the brain and has prospered with the development of complex network theory~\cite{smith2011network}. Pairwise-based network modeling is a relatively mature field and has been approached from numerous perspectives utilizing diverse tools both in network science and machine learning~\cite{wang2023bayesian,power2010development,castaldo2023multi,qiao2018data, kan2022fbnetgen}. Comparatively, hypergraph inference is still in its early stages, but the field is evolving rapidly~\cite{wegner2024nonparametric,zang2024stepwise,tabar2024revealing}. Recent efforts span probabilistic modeling grounded in historical connectivity~\cite{young2021hypergraph,contisciani2022inference} or contagion traces~\cite{wang2022full}, as well as optimization-based formulations adapted to MTS~\cite{malizia2024reconstructing}. Despite these advances, their computational overhead presents a major bottleneck for scaling to real-world datasets~\cite{delabays2025hypergraph,malizia2024reconstructing}. More recently, a pioneering work proposes an end-to-end model for learning a fixed number of hyperedges from individual samples~\cite{qiu2024learning}. In contrast, our proposed \textbf{GCM}framework is explicitly designed to learn a single, generalizable FBN that represents an entire cohort (e.g., at the subject or group resolution), a distinct goal focused on cross-sample interpretability.
+
+\paragraph{Brain Graph Interpretation}
+Brain Graph Interpretation (BGI) methods aim to identify and select important edges in FBNs that contribute most to predictive outcomes~\cite{ghalmane2020extracting}. These approaches typically construct FBNs based on pairwise interactions and learn gradient-updated masks to filter structures. Some methods refine the masks dynamically during training~\cite{li2023interpretable,qu2025integrated}, others generate predictive subgraphs to facilitate interpretation~\cite{zheng2024brainib,zheng2024ci,luo2024knowledge}, integrate multiple modalities for cross-validation~\cite{qu2025integrated,gao2024comprehensive,qu2023interpretable}, or employ attention mechanisms as trainable criteria for edge selection~\cite{xu2024contrastive,hu2021gat,kim2021learning}. These methods rely on pairwise-constructed FBNs and apply post-hoc explanations without structural optimization. Consequently, their explanations are often resolution-agnostic, lacking explicit differentiation across semantic levels. In contrast, our framework directly models functional structures under global constraints at multiple modeling resolutions.
+
+\paragraph{Graph Structure Learning}
+Graph Structure Learning (GSL) treats input network structures as noisy or incomplete and aims to refine them based on node features and initial graphs~\cite{wang2023prose}. Traditional GSL research focuses on defending against adversarial attacks~\cite{ijcai2019p669,yuan2025dg}, later evolving toward task-specific structure optimization~\cite{ijcai2022reg}, mostly for node-level tasks on single graphs~\cite{wu2022nodeformer,ghiasi2025enhancing,zheng2024mulan,ng2024structure,qiu2024refining,xie2025robust}. Recent benchmarks~\cite{li2024gslb} highlight that only a few models, such as VIB-GSL~\cite{sun2022graph} and HGP-SL~\cite{zhang2019hierarchical}, address structure learning across multiple graphs. In brain network modeling, Zong et al.~\cite{zong2024new} introduced GSL to FBN learning by aligning brain regions using a diffusion model and constructing structures based on feature correlations.
+
+Unlike prior methods, \textbf{GCM} supports end-to-end extraction of high-order FBN structures by explicitly encoding modeling resolutions and global constraints, aspects often neglected in existing approaches.
+
+\section{Preliminaries}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering
+  \includegraphics[width=0.45\textwidth]{figs/resolution.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \captionsetup{skip=1pt}
+  \caption{Illustration of the four modeling resolutions defined in this work. Each resolution corresponds to a distinct level of structural abstraction and data aggregation.}
+  \label{Frame}
+\end{wrapfigure}
+
+We begin by defining a “sample” as the minimal unit of MTS (e.g., a single EEG or fMRI fragment). Formally, each sample is a matrix $\mathbf{X} \in \mathcal{X}$ with shape $N \times T$, where $N$ is the number of nodes and $T$ is the number of time stamps. Each \textbf{FBN structure} is an undirected graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ with $|\mathcal{V}| = N$, where $\mathcal{V}$ denotes node set and $\mathcal{E}$ denotes edge set.
+
+\paragraph{Levels of modeling resolution.} We consider four levels of modeling resolution, which specify how many samples are aggregated when forming a single FBN:
+
+\emph{Sample level}: Each sample corresponds to one FBN, representing the network within a single recording (e.g. dynamic FBN)~\cite{avena2018communication}. \emph{Subject level}: All samples from the same subject share one FBN, reflecting a relatively stable brain state (e.g. brain fingerprinting)~\cite{finn2015functional}. \emph{Group level}: Samples from a group (e.g., a clinical cohort) form one FBN, capturing a representative pattern of that group (e.g. cognitive states)~\cite{lu2024brain}. \emph{Project level}: The entire dataset yields a single FBN, often used as a statistical template for the project (e.g. brain atlas)~\cite{fan2016human}. Formally, a research level defines a \emph{mapping function} $\phi: \mathbf{X} \mapsto \mathcal{G}$, which aggregates one or more samples into an FBN. \textbf{Appendix~\ref{app:non_equiv}} rigorously proves that sample, subject, group, and project FBNs are semantically non‑equivalent.
+
+\paragraph{FBN Structure Learning.} We model FBN structure learning problem as extracting connectivity structures from MTS specific to the modeling resolution. Formally, let $\mathcal{P}(\mathcal{X})$ denote the distribution of samples and $\mathcal{P}(\mathcal{Y})$ the corresponding label distribution. Our goal is to learn a parameterized family of graph distributions $\mathcal{P}(\mathcal{G} \mid \phi, \theta(\phi))$, where $\theta(\phi)$ are learnable parameters conditioned on the chosen research level mapping $\phi$. Each distribution is induced by the adjacency matrix distribution $\mathcal{P}(\mathcal{A} \mid \phi, \theta(\phi))$, where adjacency matrices $\mathbf{A} \in \mathbb{R}^{N \times N}$ encode expected connectivity probabilities $\mathbb{E}_{\mathbf{X}, y}[p(e_{u,v} \mid \phi, \theta(\phi))]$. Here $e_{u,v}$ denotes an edge between nodes $u$ and $v$ in the FBN, and $p(e_{u,v} \mid \phi, \theta(\phi))$ flexibly models connectivity without assuming specific parametric forms. Thus, by learning $\mathcal{P}(\mathcal{G} \mid \phi, \theta(\phi))$ under different modeling resolutions $\phi$, we enable a \emph{multi-resolution} analysis of functional brain networks.
+
+\section{The Limitation of Pairwise Network Model}\label{sec:limitation}
+In this section, we formally prove that pairwise network model cannot fully catch the high-order coherence encoded in MTS. Our analysis aligns with and extends prior findings on linear consensus dynamics~\cite{neuhauser2020multibody} and triadic interactions~\cite{delabays2025hypergraph}.
+\subsection{Definitions}
+Let $\mathbf X(t)=\bigl[X_1(t),\dots,X_N(t)\bigr]^\top$ be a $N$–dimensional, zero‑mean, finite‑variance MTS. For each lag $\omega\in\mathbb Z$ denote the second‑order moment $\Sigma_{ij}(\omega)\;=\;\operatorname{Cov}\!\bigl[X_i(t),X_j(t+\omega)\bigr]$. Higher‑order joint structure is captured by the $k$‑th order
+\textit{cumulant}\footnote{%
+  Any other faithful measure of $k$‑variable dependence (e.g.\ joint
+  mutual information, total correlation) would serve equally well.}
+\begin{equation}
+  \kappa_{i_1\dots i_k}(\omega_1,\dots,\omega_{k-1})
+  \;=\;\operatorname{cum}\!\bigl[X_{i_1}(t),
+     X_{i_2}(t+\omega_1),\dots,X_{i_k}(t+\omega_{k-1})\bigr].
+\end{equation}
+
+\paragraph{Proof.}
+A pairwise network is an adjacency matrix
+$\mathbf A\in\mathbb R^{N\times N}$ whose
+entries are generated by $A_{ij}\;=\;f_{ij}(X_i,X_j)$, where $f_{ij}$ is a specific edge rule depending only on the bivariate distribution of $(X_i,X_j)$.
+
+\paragraph{Higher‑order dependence.}
+We say that $\mathbf X$ exhibits \textit{higher‑order dependence} if
+there exists $k\ge 3$ and indices $i_1,\dots,i_k$ such that
+$\kappa_{i_1\dots i_k}(\cdot)\neq 0$.
+
+% -------------------------------------------------------------
+\subsection{The Expressive Limit of Pairwise Network Models}
+\label{sec:impossibility}
+
+\begin{lemma}[Second‑order sufficiency]
+\label{lem:gaussian}
+A random vector $\mathbf Z$ is multivariate Gaussian \emph{iff} all cumulants of order $k\ge 3$ vanish\textup{~\cite{lukacs1970characteristic}}. Consequently, only for Gaussian data is the joint distribution fully determined by second‑order statistics.
+\end{lemma}
+
+\begin{theorem}[The limitation of Pairwise Network Model]
+\label{thm:limit}
+Let $\mathbf X^{(1)}$ and $\mathbf X^{(2)}$ be two $d$‑dimensional time series $(d\ge 3)$ satisfying $\Sigma^{(1)}_{ij} \omega)\;=\;\Sigma^{(2)}_{ij}(\omega), \forall i,j,\forall \omega\in\Omega,$ for some finite lag set $\mathcal T$ actually used by the edge rule. Assume further that there exists $k\ge 3$ with
+\begin{equation}
+  \kappa^{(1)}_{i_1\dots i_k}(\cdot)\;\neq\;
+  \kappa^{(2)}_{i_1\dots i_k}(\cdot)
+  \quad \text{for some}\; i_1,\dots,i_k .
+\end{equation}
+Then \textbf{every} pairwise network generator $A_{ij}=f_{ij}(X_i,X_j)$ produces $\mathbf A^{(1)}=\mathbf A^{(2)},$ while the two joint processes $\mathbf X^{(1)}\not\stackrel{\mathrm{law}}{=}\mathbf X^{(2)}$. \textup{(Proof in \textbf{Appendix~\ref{sec:xor}})}.
+\end{theorem}
+
+\begin{corollary}
+\textbf{\textup{Theorem}}\textup{~\ref{thm:limit}} remains valid for \emph{weighted} graphs (let $g$ be identity), directed graphs, or any edge rule that aggregates over a finite lag set~$\Omega$.
+\end{corollary}
+
+
+\section{Methodology}
+We introduce the proposed \textbf{GCM} in this section. It consists of three modules: (i) a prototype-based graph generator with Gumbel–Sigmoid relaxation, (ii) a batch-wise binarization algorithm (\textbf{BBA}) that enforces hard edge sparsity, and (iii) a multi-objective training loss aligned with task labels, subject identity, and sparsity priors. \textbf{Appendix~\ref{app:pc}} summarizes pseudocode for \textbf{GCM} and \textbf{BBA}.
+
+% ------------------------------------------------------------
+\paragraph{Prototype Graph and Continuous Relaxation.}
+\label{subsec:proto} We learn a binarized functional brain network (FBN)
+$\mathbf A\!\in\!\{0,1\}^{N\times N}$ from the conditional distribution
+$\mathcal P(\mathcal A\mid\phi,\theta(\phi))$, where
+$\phi$ parameterises the graph sampler and
+$\theta(\phi)$ denotes GNN weights.
+Instead of drawing $\mathbf A$ directly, \textbf{GCM} first samples a
+prototype matrix $\hat{\mathbf A}\!\sim\!\mathcal P(\hat{\mathcal A}\mid\phi,\theta(\phi))$ and symmetrises it by $\mathbf A = \sigma\!\Bigl(\hat{\mathbf A}+\hat{\mathbf A}^{\!\top}\Bigr),$ where $\sigma(\cdot)$ is the element‑wise sigmoid so that $\mathbf A_{ij}\!\in\![0,1]$. We initialise $\hat{\mathbf A}_{ij}\!\stackrel{\text{i.i.d.}}{\sim}\!\mathcal U(0,1)$.
+
+To enable back‑propagation through discrete edges, we adopt the Gumbel–Softmax (Concrete) relaxation~\cite{jang2017categorical}.
+Let $\mathbf M_{ij}\!=\!-\log(-\log u),\ u\!\sim\!\mathcal U(0,1)$;
+the relaxed adjacency is $\tilde{\mathbf A}=\sigma\!((\mathbf A + \mathbf M)/\tau)$ where $\tau$ is the temperature. Gradients w.r.t. $\hat{\mathbf A}$ and $\theta$ are obtained via the chain rule.
+
+% ------------------------------------------------------------
+\paragraph{Batch Binarization Algorithm (BBA).}
+\label{subsec:bba} Given a mini‑batch
+$\tilde{\mathbf A}\!\in\!\mathbb R^{B\times N\times N}$,
+\textbf{BBA} keeps the $k^{(b)}$ largest (row‑major flatted) entries in each
+$\tilde{\mathbf A}^{(b)}$, where $k^{(b)}=\frac12 \sum_{i=1}^N \sum_{j\neq i} \tilde{\mathbf{A}}^{(b)}$ is the expected edge number of $\tilde{\mathbf{A}}^{(b)}$ updated during the training process to ensure an adaptive constraint of sparsity, and $b$ is the index of network within the batch:
+\begin{equation}
+  \mathring{\mathbf Q}^{(b)}
+    =
+  \mathbf m^{(b)}\odot\mathbf Q^{(b)},
+  \quad
+  \mathbf m^{(b)}_j
+    =
+  \mathbf 1\!\{j\!\in\!\text{Top}\text{-}k^{(b)}\},
+  \label{eq:bba}
+\end{equation}
+followed by reshaping back to obtain a binarized batch
+$\{\mathcal G^{(b)}\}_{b=1}^{B}$.
+
+% ------------------------------------------------------------
+\paragraph{Graph Representation Learning.}
+\label{subsec:representation} For each sample $(\mathbf X,\mathcal G)$, node signals
+$\mathbf X\!\in\!\mathbb R^{N\times T}$ are fed to a $L$‑layer GNN
+backbone~\cite{thomas2017gcn}.
+After message passing, a permutation‑invariant readout
+$\rho(\cdot)$ (mean, sum, max, or Transformer pooling
+~\cite{buterez2022graph}) produces a graph embedding
+$\mathbf e\!\in\!\mathbb R^{d_e}$.
+
+% ------------------------------------------------------------
+\paragraph{Training Objectives.}
+\label{subsec:training} \emph{Label‑aligned loss:}
+A linear classifier predicts class logits
+$\hat{\mathbf y}_i = \text{softmax}(\mathbf W^\top\mathbf e_i+\mathbf b)$,
+optimised by cross‑entropy
+$\mathcal L_1 = -\sum_i y_i\log\hat y_i$. \emph{Subject identity contrast:} Samples from the same subject are positive,
+others negative:
+\begin{equation}
+\begin{aligned}
+  \mathcal L_2
+  = -\frac1{|\mathcal P_{\mathrm{pos}}|}
+        \sum_{(i,j)\in\mathcal P_{\mathrm{pos}}}
+        \log \sigma\!\Bigl(\tfrac{\mathbf e_i^\top\mathbf e_j}{\tau_{cl}}\Bigr)
+    -\frac1{|\mathcal P_{\mathrm{neg}}|}
+        \sum_{(i,k)\in\mathcal P_{\mathrm{neg}}}
+        \log \sigma\!\Bigl(-\tfrac{\mathbf e_i^\top\mathbf e_k}{\tau_{cl}}\Bigr),
+\end{aligned}
+  \label{eq:contrast}
+\end{equation}
+with temperature $\tau_{cl}$. \emph{Sparse prior:} We impose an $\ell_1$ surrogate on $\hat{\mathbf A}$ as $\mathcal{R}=\bigl\lVert\hat{\mathbf A}\bigr\rVert_1$.
+The total objective is
+$\mathcal L = \mathcal L_1 + \alpha\mathcal L_2 + \beta\mathcal R$,
+optimised jointly over $(\theta,\hat{\mathbf A})$ using Adam.
+
+\begin{theorem}[Existence of a Higher‑Order‑Exact \textbf{GCM}]
+\label{thm:expressivity}
+Let $\mathbf X(t)\in\mathbb R^{N}$ be a stochastic process and
+$y\in\{1,\dots,C\}$ obey
+\begin{equation}
+  y=g_\star\!
+        \bigl(\psi\bigl(X_{i_1}(t),\dots,X_{i_k}(t)\bigr)\bigr),
+  \quad k\ge 3,
+\end{equation}
+where
+(i) $\psi:\mathbb R^{k}\!\to\!\mathbb R$ is \emph{measurable};
+(ii) $g_\star$ is a \emph{class‑separable} measurable map
+(assuming $\exists$ disjoint measurable pre‑images for each class).
+For any $\varepsilon>0$ there exist
+\(\phi^\varepsilon,\theta^\varepsilon\),
+temperature \(\tau^\varepsilon>0\),
+and depth \(L=\max\{1,\mathrm{diam}(\mathbf A^\star)\}\)
+such that the \textbf{\textup{GCM}} classifier
+\(f_{\theta^\varepsilon,\phi^\varepsilon}\) satisfies
+\[
+\Pr\!\bigl[f_{\theta^\varepsilon,\phi^\varepsilon}(\mathbf X(t)) \ne y\bigr]
+\,\le\,\varepsilon .
+\]
+\end{theorem}
+
+This theory ensures the existence and convergence of \textbf{GCM}. Our formal proof of \textbf{Theorem}~\ref{thm:expressivity} in \textbf{Appendix~\ref{app:proof2}} shows that \textbf{GCM} can recover arbitrary high‑order rules. These justify both our multi-resolution design and the use of global optimization.
+
+\section{Experiments}
+To demonstrate the advantage of \textbf{GCM}, we utilize it with other baselines in each classification task. The FBN structure learned by \textbf{GCM} is used as the computing graph for a GNN classifier. If \textbf{GCM} outperforms other baselines using the same GNN layer, the difference can only be explained by the underlying network structure, hence proving that \textbf{GCM} learns a more accurate and comprehensive representation of FBN. For the task at the sample level, we also consider several none-GNN based methods for their prevalence in neuroscience. The performance advances of \textbf{GCM} over them validate the benefits of combining GNN with extracting high-order network information.
+
+{
+% \setlength{\intextsep}{0pt}
+\begin{table}[htpb]
+\centering
+\caption{Statistics of the Data Sets}
+\resizebox{0.6\textwidth}{!}{
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+     & $\#$sample & $\#$subject & $\#$class & $\#$node& $\#$feature & Class-Type \\ \midrule
+DynHCP$_{\text{Activity}}$  & 260,505 & 7,443 & 7  & 100 & 100 & sample  \\
+DynHCP$_{\text{Age}}$  &  36,278 & 1,067 & 3  & 100 & 100 & subject  \\
+DynHCP$_{\text{Gender}}$  &  36,720 & 1,080 & 2  & 100 & 100 & subject   \\\midrule
+Cog State &  90,000 & 60    & 5  & 61  & 300 & sample   \\
+SLIM &   3,246 & 541   & 2  & 236 & 30  & subject  \\\bottomrule
+\end{tabular}
+}
+\label{datasetsta}
+\end{table}
+}
+\subsection{Experiment Settings}\label{ESet}
+\paragraph{Data} We use $5$ open-source real-world datasets, including DynHCP Activity/Age/Gender~\cite{said2023neurograph}, Cog State~\cite{wang2022test}, and SLIM~\cite{liu2017longitudinal}. These datasets cover both fMRI and EEG, the most commonly used brain imaging modalities, for testing broad applicability. The overall statistics of the data are summarized in Table~\ref{datasetsta}. Description and preprocessing of the data are detailed in \textbf{Appendix~\ref{app:ps}}.
+
+\paragraph{Baselines} We choose traditional methods (\textbf{LR}, \textbf{SVM}, \textbf{Random Forest} (\textbf{RF}), \textbf{XGBoost}, \textbf{MLP}), which are commonly used in neuroscience domain, to establish baseline performance. GNN families (\textbf{GCN}~\cite{thomas2017gcn}, \textbf{SAGE}~\cite{hamilton2017inductive}, \textbf{GAT}~\cite{petar2018gat}, \textbf{GIN}~\cite{xu2018how}) are included to highlight the improvement of \textbf{GCM} against GNN backbones. To position our work within the current frontier of structured graph learning, we include representative SOTA methods from both the BGI line (\textbf{IBGNN}~\cite{cui2022interpretable}, \textbf{IBGNN+}~\cite{cui2022interpretable}, \textbf{IGS}~\cite{li2023interpretable}, \textbf{IC-GNN}~\cite{zheng2024ci}, \textbf{BrainIB}~\cite{zheng2024brainib}) and the GSL line (\textbf{VIB-GSL}~\cite{sun2022graph}, \textbf{HGP-SL}~\cite{zhang2019hierarchical}, \textbf{DGCL}~\cite{zong2024new}). To further benchmark our method against the SOTAs, we incorporate two key baselines. First, we include the Brain Network Transformer (\textbf{BNT})~\cite{kan2022brain}  due to its remarkable predictive performance. Second, we include \textbf{Hybrid}~\cite{qiu2024learning}, a conceptually related model that learns a fixed quantity of high-order interactions. (Details in \textbf{Appendix~\ref{app:ib}})
+
+\paragraph{Tasks} Brain activity prediction tasks are commonly categorized into inter-subject and intra-subject classification~\cite{cai2023mbrain,behrouz2024unsupervised}. In inter-subject classification, all subjects and their samples are split into training, validation, and test sets, with predictions targeting the test set subjects’ labels. In intra-subject classification, each subject’s samples are split into training, validation, and test sets, with predictions focused on the test set labels. We align the baselines with the proposed four modeling resolution levels for fair comparison, as defined in \textbf{Preliminaries}, based on their design. For all levels, the task is to predict the label of each individual sample. For GNN-based methods, the learned FBNs used as computation graphs, where each sample serves as the feature of a node. \textbf{Appendix~\ref{app:ps}} Contains more detailed reproducibility settings such as hyper parameters and experiment environment.
+
+\subsection{Experimental Results}
+We report the most important results to support the superior performance of the proposed \textbf{GCM} and the interpretability of the learned FBN in the main body. We also provide more detailed analyses including \textbf{The Role of Initial Structure}(\textbf{Appendix~\ref{app:ISA}}), \textbf{Results Using Additional Metrics} (\textbf{Appendix~\ref{app:addm}}), \textbf{FBN Structure Visualization}(\textbf{Appendix~\ref{app:VFS}}) and \textbf{Sensitivity Analysis}(\textbf{Appendix~\ref{app:SA}}) for a more comprehensive assessment of \textbf{GCM}.
+\paragraph{Multi-Resolution Structure Learning: Sample Level}
+
+\begin{table}[!htpb]
+\centering
+\caption{Sample-Level Structure Learning Results (Accuracy$_{\pm\text{Std}}$)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cccccccccccc}
+\toprule
+Method & \multicolumn{2}{c}{DynHCP$_{\text{Activity}}$} & \multicolumn{2}{c}{DynHCP$_{\text{Age}}$} & \multicolumn{2}{c}{DynHCP$_{\text{Gender}}$} & \multicolumn{2}{c}{CogState} & \multicolumn{2}{c}{SLIM} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+& Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter \\
+\midrule
+LR & 0.939$_{\pm0.026}$ & 0.821$_{\pm0.091}$ & 0.809$_{\pm0.008}$ & 0.357$_{\pm0.061}$ & 0.879$_{\pm0.005}$ & 0.625$_{\pm0.092}$ & 0.276$_{\pm0.025}$ & 0.218$_{\pm0.066}$ & 0.521$_{\pm0.013}$ & 0.539$_{\pm0.070}$ \\
+RF & 0.945$_{\pm0.002}$ & 0.825$_{\pm0.001}$ & 0.812$_{\pm0.001}$ & 0.409$_{\pm0.002}$ & 0.824$_{\pm0.001}$ & 0.629$_{\pm0.001}$ & 0.288$_{\pm0.001}$ & 0.264$_{\pm0.001}$ & 0.635$_{\pm0.003}$ & 0.626$_{\pm0.003}$ \\
+XGBoost & 0.959$_{\pm0.001}$ & 0.832$_{\pm0.001}$ & 0.743$_{\pm0.002}$ & 0.388$_{\pm0.001}$ & 0.798$_{\pm0.001}$ & 0.611$_{\pm0.002}$ & 0.307$_{\pm0.003}$ & 0.282$_{\pm0.002}$ & 0.623$_{\pm0.002}$ & 0.610$_{\pm0.002}$ \\
+SVM & 0.952$_{\pm0.035}$ & 0.842$_{\pm0.008}$ & 0.827$_{\pm0.017}$ & 0.394$_{\pm0.016}$ & 0.882$_{\pm0.011}$ & 0.631$_{\pm0.072}$ & 0.321$_{\pm0.018}$ & 0.270$_{\pm0.041}$ & 0.567$_{\pm0.025}$ & 0.554$_{\pm0.014}$ \\
+MLP & 0.951$_{\pm0.014}$ & \underline{0.847}$_{\pm0.010}$ & 0.788$_{\pm0.019}$ & 0.372$_{\pm0.032}$ & 0.903$_{\pm0.009}$ & 0.643$_{\pm0.074}$ & \underline{0.376}$_{\pm0.009}$ & 0.273$_{\pm0.076}$ & 0.518$_{\pm0.022}$ & 0.549$_{\pm0.042}$ \\ \midrule
+GCN & 0.774$_{\pm0.022}$ & 0.736$_{\pm0.068}$ & 0.423$_{\pm0.022}$ & \underline{0.455}$_{\pm0.053}$ & 0.650$_{\pm0.017}$ & 0.543$_{\pm0.045}$ & 0.290$_{\pm0.023}$ & 0.303$_{\pm0.014}$ & 0.552$_{\pm0.012}$ & 0.543$_{\pm0.072}$ \\
+SAGE & 0.791$_{\pm0.005}$ & 0.794$_{\pm0.032}$ & 0.464$_{\pm0.019}$ & 0.411$_{\pm0.034}$ & 0.633$_{\pm0.025}$ & 0.594$_{\pm0.060}$ & 0.334$_{\pm0.012}$ & 0.301$_{\pm0.022}$ & \underline{0.657}$_{\pm0.013}$ & 0.596$_{\pm0.053}$ \\
+GAT & 0.140$_{\pm0.000}$ & 0.138$_{\pm0.000}$ & 0.212$_{\pm0.000}$ & 0.202$_{\pm0.004}$ & 0.542$_{\pm0.003}$ & 0.532$_{\pm0.004}$ & 0.296$_{\pm0.010}$ & 0.305$_{\pm0.009}$ & 0.622$_{\pm0.029}$ & 0.602$_{\pm0.018}$ \\
+GIN & 0.480$_{\pm0.062}$ & 0.495$_{\pm0.058}$ & 0.449$_{\pm0.013}$ & 0.401$_{\pm0.065}$ & 0.572$_{\pm0.012}$ & 0.565$_{\pm0.030}$ & 0.308$_{\pm0.017}$ & 0.280$_{\pm0.023}$ & 0.534$_{\pm0.023}$ & 0.465$_{\pm0.040}$ \\ \midrule
+VIB-GSL & 0.925$_{\pm0.006}$ & 0.772$_{\pm0.017}$ & 0.600$_{\pm0.060}$ & 0.429$_{\pm0.031}$ & 0.781$_{\pm0.029}$ & 0.574$_{\pm0.034}$ & 0.313$_{\pm0.014}$ & 0.303$_{\pm0.010}$ & 0.529$_{\pm0.007}$ & 0.537$_{\pm0.013}$ \\
+HGP-SL & 0.715$_{\pm0.010}$ & 0.647$_{\pm0.053}$ & 0.529$_{\pm0.012}$ & 0.404$_{\pm0.022}$ & 0.766$_{\pm0.006}$ & 0.612$_{\pm0.003}$ & 0.286$_{\pm0.005}$ & 0.270$_{\pm0.008}$ & 0.556$_{\pm0.013}$ & 0.552$_{\pm0.009}$ \\
+DGCL & 0.831$_{\pm0.013}$ & 0.631$_{\pm0.017}$ & 0.758$_{\pm0.037}$ & 0.392$_{\pm0.033}$ & 0.860$_{\pm0.043}$ & 0.615$_{\pm0.017}$ & 0.316$_{\pm0.011}$ & 0.275$_{\pm0.007}$ & 0.552$_{\pm0.009}$ & 0.539$_{\pm0.017}$ \\ \midrule
+IBGNN & 0.908$_{\pm0.004}$ & 0.586$_{\pm0.278}$ & 0.768$_{\pm0.025}$ & 0.397$_{\pm0.008}$ & 0.858$_{\pm0.027}$ & 0.591$_{\pm0.025}$ & 0.343$_{\pm0.008}$ & 0.300$_{\pm0.012}$ & 0.648$_{\pm0.031}$ & 0.617$_{\pm0.027}$ \\
+IC-GNN & 0.878$_{\pm0.053}$ & 0.744$_{\pm0.092}$ & 0.678$_{\pm0.105}$ & 0.425$_{\pm0.024}$ & 0.851$_{\pm0.065}$ & 0.658$_{\pm0.067}$ & 0.318$_{\pm0.077}$ & 0.313$_{\pm0.053}$ & 0.638$_{\pm0.103}$ & 0.614$_{\pm0.072}$ \\
+BrainIB & 0.926$_{\pm0.043}$ & 0.839$_{\pm0.018}$ & 0.818$_{\pm0.035}$ & 0.445$_{\pm0.019}$ & 0.873$_{\pm0.011}$ & 0.662$_{\pm0.020}$ & 0.332$_{\pm0.013}$ & \underline{0.325}$_{\pm0.021}$ & 0.644$_{\pm0.023}$ & \underline{0.631}$_{\pm0.012}$ \\ \midrule
+BNT & \textbf{0.974}$_{\pm0.002}$ & 0.839$_{\pm0.002}$ & \textbf{0.945}$_{\pm0.004}$ & 0.386$_{\pm0.023}$ & \textbf{0.976}$_{\pm0.003}$ & \textbf{0.678}$_{\pm0.008}$ & \textbf{0.396}$_{\pm0.006}$ & 0.337$_{\pm0.015}$ & 0.553$_{\pm0.012}$ & 0.529$_{\pm0.007}$ \\
+Hybrid & 0.801$_{\pm0.013}$ & 0.766$_{\pm0.023}$ & 0.525$_{\pm0.008}$ & 0.442$_{\pm0.015}$ & 0.788$_{\pm0.007}$ & 0.592$_{\pm0.009}$ & 0.293$_{\pm0.017}$ & 0.286$_{\pm0.021}$ & 0.537$_{\pm0.008}$ & 0.522$_{\pm0.018}$ \\
+\textbf{GCM$_\text{sample}$} & \underline{0.963}$_{\pm0.001}$ & \textbf{0.852}$_{\pm0.021}$ & \underline{0.853}$_{\pm0.005}$ & \textbf{0.463}$_{\pm0.017}$ & \underline{0.937}$_{\pm0.002}$ & \underline{0.668}$_{\pm0.022}$ & 0.352$_{\pm0.014}$ & \textbf{0.356}$_{\pm0.021}$ & \textbf{0.680}$_{\pm0.014}$ & \textbf{0.658}$_{\pm0.035}$ \\
+\bottomrule
+\end{tabular}}
+\label{tab:sample_level}
+\end{table}
+
+The sample level is the most common scenario in brain activity prediction, as it focuses on individual samples and their corresponding brain network structures. At the sample level, \textbf{GCM} consistently outperforms or matches traditional methods and SOTAs as shown in Table~\ref{tab:sample_level}. These results highlight that \textbf{GCM} excels in capturing the underlying brain activity structure, surpassing Pearson-based FBNs, which are limited by their reliance on linear correlations. On the one hand, the results prove that catching higher-order synchronization of MTS is beneficial to downstream prediction. On the other hand, this demonstrates the effectiveness of \textbf{GCM} in learning a more robust and flexible structure that better represents the data’s complexity. GSL and BGI SOTAs gain an overall superiority against GNN-based methods, providing the necessity of FBN structure learning. An interesting phenomenon is that traditional methods exhibit a strong competitiveness on several datasets. This explains why these methods are still popular in current neuroscience domain.
+
+\paragraph{Multi-Resolution Structure Learning: Subject, Group, and Project Levels}
+
+\begin{table}[!htpb]
+\centering
+\caption{Multi-Resolution Structure Learning Results (Accuracy$_{\pm\text{Std}}$)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cccccccccccc}
+\toprule
+Method & \multicolumn{2}{c}{DynHCP$_{\text{Activity}}$} & \multicolumn{2}{c}{DynHCP$_{\text{Age}}$} & \multicolumn{2}{c}{DynHCP$_{\text{Gender}}$} & \multicolumn{2}{c}{CogState} & \multicolumn{2}{c}{SLIM} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+& Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter \\
+\midrule
+IGS & 0.861$_{\pm0.005}$ & 0.856$_{\pm0.004}$ & 0.808$_{\pm0.022}$ & 0.460$_{\pm0.034}$ & 0.882$_{\pm0.138}$ & 0.608$_{\pm0.047}$ & 0.326$_{\pm0.005}$ & 0.323$_{\pm0.011}$ & 0.541$_{\pm0.013}$ & 0.652$_{\pm0.027}$ \\
+\textbf{GCM$_\text{subject}$} & \textbf{0.963}$_{\pm0.002}$ & \textbf{0.857}$_{\pm0.019}$ & \textbf{0.889}$_{\pm0.005}$ & \textbf{0.473}$_{\pm0.031}$ & \textbf{0.939}$_{\pm0.002}$ & \textbf{0.670}$_{\pm0.019}$ & \textbf{0.413}$_{\pm0.008}$ & \textbf{0.364}$_{\pm0.007}$ & \textbf{0.681}$_{\pm0.005}$ & \textbf{0.674}$_{\pm0.010}$ \\
+\midrule
+IBGNN+ & 0.765$_{\pm0.301}$ & 0.453$_{\pm0.346}$ & 0.786$_{\pm0.033}$ & 0.380$_{\pm0.020}$ & 0.881$_{\pm0.005}$ & 0.596$_{\pm0.024}$ & 0.356$_{\pm0.012}$ & 0.315$_{\pm0.014}$ & \textbf{0.667}$_{\pm0.023}$ & \textbf{0.644}$_{\pm0.040}$ \\
+\textbf{GCM$_\text{project}$} & \textbf{0.969}$_{\pm0.002}$ & \textbf{0.869}$_{\pm0.004}$ & \textbf{0.878}$_{\pm0.002}$ & \textbf{0.462}$_{\pm0.029}$ & \textbf{0.933}$_{\pm0.007}$ & \textbf{0.674}$_{\pm0.028}$ & \textbf{0.437}$_{\pm0.010}$ & \textbf{0.419}$_{\pm0.023}$ & 0.655$_{\pm0.011}$ & \textbf{0.644}$_{\pm0.034}$ \\
+\midrule
+\textbf{GCM$_\text{group}$} & 0.971$_{\pm0.001}$ & 0.855$_{\pm0.007}$ & 0.891$_{\pm0.007}$ & 0.489$_{\pm0.029}$ & 0.958$_{\pm0.002}$ & 0.686$_{\pm0.025}$ & 0.493$_{\pm0.008}$ & 0.454$_{\pm0.013}$ & 0.692$_{\pm0.046}$ & 0.694$_{\pm0.034}$ \\
+\bottomrule
+\end{tabular}}
+\label{tab:multi_resolution}
+\end{table} 
+
+
+Comparing to sample level analysis, methods in these three levels are less discussed in previous FBN structure learning works. Thus only two competitors respectively aiming for subject-level and project-level are included. As shown in Table~\ref{tab:multi_resolution}, \textbf{GCM} outperforms these two methods on most conditions. This not only shows that \textbf{GCM} adapts seamlessly to higher-level modeling resolutions, but also proves that encoding and utilizing global constraints is crucial for tasks in these level of resolutions. It should be noted that we isolate the results of group-level \textbf{GCM}. On the one hand, there is no previous discussion particularly aiming at this scenario. On the other hand, FBN learned in this scenario may suffer the argument of label leakage under the context of machine learning settings. However, the target in this scenario is to learn possible FBN structures that can better reflect the structural distinction between categories. Thus, the accuracy is not only a judgement for method, but an index to investigate the confidence that the learned FBNs reflect the non-linear relationships between the input data and labels. From this point of view, although \textbf{GCM}$_\text{group}$ literally outperforms all the baselines, there's a large room for improvement to learn reliable FBNs in this scenario.
+
+\paragraph{Computational Analysis}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figs/time.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \caption{Time consumption of each method.}
+  \label{time}
+\end{figure}
+
+\textbf{GCM}’s computational efficiency is primarily determined by the GNN component (here, \textbf{SAGE}), incurring $\mathcal{O}(N^2)$ complexity. Figure~\ref{time} compares computation times of BGI and GSL methods, including \textbf{GCM}, across datasets. All \textbf{GCM} variants share identical costs, so they appear as one category. We omit DynHCP$_\text{Age}$ and DynHCP$_\text{Gender}$ since they match DynHCP$_\text{Activity}$ in graph dimensions and SLIM in class counts. The superior efficiency of \textbf{GCM} is clearly reflected in the results, owing to its streamlined design.
+
+\subsection{Ablation Studies}
+\begin{table}[h!]
+\centering
+\caption{Ablation Study of Structural Modeling Choices (ACC)}
+\label{density}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{@{}llccccccc|cc|cc|cc@{}}
+\toprule
+& & \multicolumn{7}{c}{\textbf{Sample-level Ablations}} & \multicolumn{2}{c}{\textbf{Subject-level}} & \multicolumn{2}{c}{\textbf{Group-level}} & \multicolumn{2}{c}{\textbf{Project-level}} \\
+\cmidrule(lr){3-9} \cmidrule(lr){10-11} \cmidrule(lr){12-13} \cmidrule(lr){14-15}
+Dataset & Task & Dense & 0.05\% & 0.1\% & 0.5\% & 1\% & 5\% & \textbf{GCM} & Dense & \textbf{GCM} & Dense & \textbf{GCM} & Dense & \textbf{GCM} \\
+\midrule
+\multirow{2}{*}{DynHCP$_{\text{Activity}}$} & Inter & 0.843 & 0.792 & 0.808 & 0.827 & 0.835 & 0.837 & \textbf{0.852} & 0.849 & \textbf{0.857} & \textbf{0.886} & 0.855 & 0.857 & \textbf{0.869} \\
+                                & Intra & 0.950 & 0.895 & 0.927 & 0.943 & 0.949 & 0.951 & \textbf{0.963} & 0.962 & \textbf{0.963} & 0.971 & 0.971          & 0.959 & \textbf{0.969} \\
+\midrule
+\multirow{2}{*}{DynHCP$_{\text{Age}}$}      & Inter & 0.408 & 0.381 & 0.402 & 0.418 & 0.420 & 0.428 & \textbf{0.463} & 0.425 & \textbf{0.473} & 0.432 & \textbf{0.489} & 0.418 & \textbf{0.462} \\
+                                & Intra & 0.790 & 0.828 & 0.838 & 0.837 & 0.842 & 0.845 & \textbf{0.853} & 0.848 & \textbf{0.889} & 0.891 & \textbf{0.896} & 0.794 & \textbf{0.878} \\
+\midrule
+\multirow{2}{*}{DynHCP$_{\text{Gender}}$}   & Inter & 0.657 & 0.605 & 0.628 & 0.631 & 0.633 & 0.653 & \textbf{0.668} & 0.662 & \textbf{0.670} & 0.673 & \textbf{0.686} & 0.637 & \textbf{0.674} \\
+                                & Intra & 0.889 & 0.883 & 0.891 & 0.912 & 0.925 & 0.928 & \textbf{0.937} & 0.921 & \textbf{0.939} & \textbf{0.961} & 0.958 & 0.894 & \textbf{0.933} \\
+\midrule
+\multirow{2}{*}{Cog State}      & Inter & \textbf{0.359} & 0.311 & 0.313 & 0.321 & 0.325 & 0.327 & 0.356          & 0.357 & \textbf{0.364} & 0.345 & \textbf{0.493} & 0.350 & \textbf{0.419} \\
+                                & Intra & \textbf{0.356} & 0.322 & 0.333 & 0.343 & 0.348 & 0.348 & 0.352          & 0.392 & \textbf{0.413} & 0.482 & \textbf{0.493} & 0.399 & \textbf{0.437} \\
+\midrule
+\multirow{2}{*}{SLIM}           & Inter & 0.656 & 0.604 & 0.622 & 0.631 & 0.632 & 0.639 & \textbf{0.658} & 0.670 & \textbf{0.674} & 0.683 & \textbf{0.694} & \textbf{0.657} & 0.644 \\
+                                & Intra & 0.661 & 0.618 & 0.632 & 0.637 & 0.645 & 0.649 & \textbf{0.680} & 0.665 & \textbf{0.681} & 0.677 & \textbf{0.692} & \textbf{0.670} & 0.655 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\paragraph{Impact of Batch Binarization Algorithm (BBA)}
+Table~\ref{density} presents an ablation study of our \textbf{BBA} to validate its key design choices. First, the binarized \textbf{GCM} model consistently outperforms a non-binarized "Dense" variant across most tasks and resolutions. This confirms that binarization acts as a crucial regularizer, forcing the model to learn a sparse structural scaffold and preventing overfitting. Second, \textbf{GCM} with its adaptive \textbf{BBA} also surpasses all fixed-threshold methods. While the performance of fixed thresholds plateaus as density increases, \textbf{BBA} avoids this issue by adaptively tuning sparsity for each FBN; nonetheless, a $5\%$ fixed density offers a reasonable trade-off for simpler applications. These advantages are consistently observed across all resolutions (sample, subject, group, and project), validating the \textbf{BBA} module as a critical and robust component for learning high-performing FBN structures.
+
+% \begin{table}[h!]
+% \centering
+% \caption{Effect of Network Binarization (Accuracy)}
+% \label{tab:ablation_bba_vs_dense}
+% % 为了适应页面宽度，可以将表格缩小。可以调整 '0.95\textwidth' 这个比例。
+% \resizebox{0.65\textwidth}{!}{%
+% \begin{tabular}{@{}llcccccccc@{}}
+% \toprule
+% \multirow{2}{*}{Dataset} & \multirow{2}{*}{Task} & \multicolumn{2}{c}{Sample} & \multicolumn{2}{c}{Subject} & \multicolumn{2}{c}{Group} & \multicolumn{2}{c}{Project} \\
+% \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
+% & & Dense & \textbf{GCM} & Dense & \textbf{GCM} & Dense & \textbf{GCM} & Dense & \textbf{GCM} \\
+% \midrule
+% \multirow{2}{*}{DynHCPActivity} & Inter & 0.843 & \textbf{0.852} & 0.849 & \textbf{0.857} & \textbf{0.886} & 0.855 & 0.857 & \textbf{0.869} \\
+%                                 & Intra & 0.950 & \textbf{0.963} & 0.962 & \textbf{0.963} & 0.971 & 0.971          & 0.959 & \textbf{0.969} \\
+% \midrule
+% \multirow{2}{*}{DynHCPAge}      & Inter & 0.408 & \textbf{0.463} & 0.425 & \textbf{0.473} & 0.432 & \textbf{0.489} & 0.418 & \textbf{0.462} \\
+%                                 & Intra & 0.790 & \textbf{0.853} & 0.848 & \textbf{0.889} & 0.891 & \textbf{0.896} & 0.794 & \textbf{0.878} \\
+% \midrule
+% \multirow{2}{*}{DynHCPGender}   & Inter & 0.657 & \textbf{0.668} & 0.662 & \textbf{0.670} & 0.673 & \textbf{0.686} & 0.637 & \textbf{0.674} \\
+%                                 & Intra & 0.889 & \textbf{0.937} & 0.921 & \textbf{0.939} & \textbf{0.961} & 0.958 & 0.894 & \textbf{0.933} \\
+% \midrule
+% \multirow{2}{*}{Cog State}      & Inter & \textbf{0.359} & 0.356 & 0.357 & \textbf{0.364} & 0.345 & \textbf{0.493} & 0.350 & \textbf{0.419} \\
+%                                 & Intra & \textbf{0.356} & 0.352 & 0.392 & \textbf{0.413} & 0.482 & \textbf{0.493} & 0.399 & \textbf{0.437} \\
+% \midrule
+% \multirow{2}{*}{SLIM}           & Inter & 0.656 & \textbf{0.658} & 0.670 & \textbf{0.674} & 0.683 & \textbf{0.694} & \textbf{0.657} & 0.644 \\
+%                                 & Intra & 0.661 & \textbf{0.680} & 0.665 & \textbf{0.681} & 0.677 & \textbf{0.692} & \textbf{0.670} & 0.655 \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \end{table}
+
+
+% \begin{table}[htpb]
+% \centering
+% \caption{Performance of Different FBN Densities (Accuracy)}
+% \resizebox{0.55\textwidth}{!}{
+% \begin{tabular}{lccccccc}
+% \toprule
+%                      & Task    &  0.05$\%$  &  0.1$\%$  & 0.5$\%$ & 1$\%$  &  5$\%$  & \textbf{GCM} \\\midrule
+% \multirow{2}{*}{DynHCP$_{\text{Activity}}$} &Inter &  0.792   &  0.808  & 0.827 & 0.835 &  0.837 & $\mathbf{0.857}$ \\
+%                                             &Intra &  0.895   &  0.927  & 0.943 & 0.949 &  0.951 & $\mathbf{0.963}$ \\\midrule
+% \multirow{2}{*}{DynHCP$_{\text{Age}}$} &Inter &  0.381   &  0.402  & 0.418 & 0.420 &  0.428 & $\mathbf{0.473}$ \\
+%                                             &Intra &  0.828   &  0.848  & 0.867 & 0.875 &  0.872 & $\mathbf{0.889}$ \\\midrule
+% \multirow{2}{*}{DynHCP$_{\text{Gender}}$} &Inter &  0.605   &  0.628  & 0.631 & 0.633 &  0.653 & $\mathbf{0.670}$ \\
+%                                             &Intra &  0.883   &  0.891  & 0.912 & 0.925 &  0.928 & $\mathbf{0.939}$ \\\midrule
+% \multirow{2}{*}{Cog State} &Inter &  0.311   &  0.313  & 0.321 & 0.325 &  0.327 & $\mathbf{0.364}$ \\
+%                             &Intra &  0.322   &  0.333  & 0.353 & 0.378 &  0.378 & $\mathbf{0.413}$ \\\midrule
+% \multirow{2}{*}{SLIM} &Inter &  0.604   &  0.622  & 0.631 & 0.632 &  0.639 & $\mathbf{0.674}$ \\
+%                         &Intra &  0.618   &  0.632  & 0.637 & 0.645 &  0.649 & $\mathbf{0.681}$ \\
+% \bottomrule
+% \end{tabular}
+% }
+% \label{density}
+% \end{table}
+
+\paragraph{Impact of Subject Consistency Contrast}
+The impact of subject identity is reflected by training strategies on \textbf{GCM}. Results are shown in Figure~\ref{contrast}. Specifically, \textbf{GCMi} represents \textbf{GCM} without individual consistency loss $\mathcal{L}_2$, and \textbf{GCMd} refers to \textbf{GCM} without sparsity regularization $\mathcal{R}$. Removing $\mathcal{L}_2$ and $\mathcal{R}$ results in a moderate performance drop under most conditions. However, for some settings, such as in group level and project level prediction in inter-subject prediction, the degradation becomes unbearable. This emphasizes the necessity of maintaining subject consistency and sparsity in the FBN structure.
+
+\subsection{Case Study: Sex Difference}
+
+\begin{figure}[!htpb]
+\centering
+\begin{minipage}{0.53\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figs/conloss.pdf}
+  \caption{Accuracy of \textbf{GCM} using different training strategies.}
+  \label{contrast}
+\end{minipage}\hfill
+\begin{minipage}{0.43\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figs/circos.pdf}
+  \caption{FBN of DynHCP$_\text{Gender}$ combining four modeling resolutions, with brain regions as chunks and edges as chords.}
+  \label{VisComp}
+\end{minipage}
+\end{figure}
+
+To illustrate the necessity and interpretability of our proposed four-level brain network division, we visualize FBNs learned by \textbf{GCM} on DynHCP$_\text{Gender}$ in the intra-subject setting, where model confidence (accuracy) is highest. For sample and subject levels, we average the networks of male and female subjects to obtain group-wise representations. Following the original release~\cite{said2023neurograph}, we retain the top 10\% of edges by weight and visualize combined networks at the sample, subject, and group levels. ROIs are grouped into seven brain regions based on the Schaefer atlas~\cite{schaefer2018local}.
+
+As shown in Figure~\ref{VisComp}, the common edges between male and female specific to each resolution are depicted in gray. The edges particularly shown in female and male across resolutions are depicted in red and blue, respectively. Common edges between female and male across resolutions are highlighted in cyan. The results align with previous studies in the following three aspects: (1) Higher-order synergies exhibit non-random organization, integrating multiple brain regions into coherent systems that appear independent under conventional correlation-based analyses~\cite{varley2023partial}. (2) Under each modeling resolution, most of the edges are shared among female and male~\cite{serio2024sex}. (3) Male FBN shows higher edge weights in edges linking to vision networks~\cite{chen2024sex} while female FBN shows a more complex pattern~\cite{murray2021sex}. The limited amount of common edges sharing across different levels further shows the uninterchangeability between modeling resolutions as illustrated in \textbf{Theorem~\ref{thm:inequiv}}, which is the first time to be clarified to the best of our knowledge. Comparisons between FBNs learned by \textbf{GCM} and baselines are provided in \textbf{Appendix~\ref{app:VFS}}.
+
+\section{Convergence Analysis}\label{app:ConvA}
+To demonstrate the convergence of \textbf{GCM} on intra- and inter-subject classification tasks, as proved in \textbf{Theorem}~\ref{thm:expressivity}, we present the training loss curves for cross-entropy loss ($\mathcal{L}_1$) and contrastive loss ($\mathcal{L}_2$) in Figure~\ref{loss}. Both losses eventually converge on each dataset. It is interesting that $\mathcal{L}_1$ shows temporary vibrations, aligning with the structural reconfiguration and path reselection process observed in FBN evolution~\cite{cochrane2025control}. $\mathcal{L}_2$ exhibits a slower, linear decline, reflecting a cold start in subject-level learning. These results highlight opportunities in future to enhance the utilization of global constraint.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.7\textwidth]{figs/loss.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \captionsetup{skip=2pt}
+  \caption{Training loss of \textbf{GCM} for each dataset reaches a steady state after training on several batches.}
+  \label{loss}
+\end{figure}
+
+\section{Discussion and Conclusion}\label{DisCon}
+Our results support the theoretical expectation that global constraints enhance structural guidance, surpassing pairwise-based methods in aligning information flow across raw data, macro attributes, and the learned FBNs.  The learned high-order patterns align with previous conclusions in hyper graph modeling, proves the interpretability of the learned FBNs. Notably, we observe that functional brain networks learned at different resolutions exhibit distinct structural patterns, validating that these modeling resolutions are not interchangeable. While the proposed \textbf{GCM} framework offers strong empirical and theoretical benefits, it also has limitations and potential societal impacts as summarized in \textbf{Appendix~\ref{app:Limit}} and \textbf{Appendix~\ref{Societal}}, respectively.
+
+Instead of treating prediction accuracy as a unified metric for model performance~\cite{cui2022interpretable}, we reinterpret accuracy as a confidence index that reflects the reliability of the learned FBNs. This formulation offers a principled way to compare models across different analytical objectives and renders overfitted FBNs at the group level as deliberate and meaningful modeling outcomes rather than incorrect label leakage. This further extends traditional statistical comparisons of individual- and population-level connectivity into a unified structural learning framework~\cite{alexander2012discovery,davison2016individual}.
+
+Moreover, our study offers a theoretically grounded implementation of the proposed global updating modeling, which provides a reliable framework for FBN structure learning. By analyzing the limitations of existing approaches, we provide a theoretical complement to MTS-based network modeling field~\cite{sameshima2014methods,ye2022learning}. Moreover, by exploiting how evaluation metrics are utilized, and by rethinking overfitting phenomena in group-level modeling as a reliable modeling results, our work introduces a novel lens for applying machine learning in neuroscience and cognitive science studies. Future work includes addressing the limiations above, or extending \textbf{GCM} to multi-modal and multi-view scenarios~\cite{fang2023comprehensive}. Further exploration on this topic not only facilitates brain science but also sheds lights on interdisciplinary research.
+
+\section*{Acknowledgements}
+This work is supported by Natural Science Foundation of China (No. 62402398, No. 72374173), the Fundamental Research Funds for the Central Universities (No. SWU-XDJH202303, No. SWU-KR24025), University Innovation Research Group of Chongqing (No. CXQT21005), China Scholarship Council (CSC) program (No. 202306990091, No. 202406990056) and Chongqing Graduate Research Innovation Project (No. CYB22129, No. CYB240088). The experiments are supported by the High Performance Computing clusters at Southwest University.
+
+\bibliographystyle{unsrt}  % 推荐使用 plainnat 以兼容 natbib 的 author-year 样式
+\bibliography{ref}     % 不带 .bib 后缀
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{NeurIPS Paper Checklist}
+
+%%% END INSTRUCTIONS %%%
+
+
+\begin{enumerate}
+
+\item {\bf Claims}
+    \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: Our abstract and introduction accurately reflect the paper's contributions and scope, namely our endeavor to address the limitation of pairwise-based network modeling in catching global synchronization for functional brain network learning.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the abstract and introduction do not include the claims made in the paper.
+        \item The abstract and/or introduction should clearly state the claims made, including the contributions made in the paper and important assumptions and limitations. A No or NA answer to this question will not be perceived well by the reviewers.
+        \item The claims made should match theoretical and experimental results, and reflect how much the results can be expected to generalize to other settings.
+        \item It is fine to include aspirational goals as motivation as long as it is clear that these goals are not attained by the paper.
+    \end{itemize}
+
+\item {\bf Limitations}
+    \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: We discuss the limitation of \textbf{GCM} in \textbf{Appendix~\ref{app:Limit}}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper has no limitation while the answer No means that the paper has limitations, but those are not discussed in the paper.
+        \item The authors are encouraged to create a separate "Limitations" section in their paper.
+        \item The paper should point out any strong assumptions and how robust the results are to violations of these assumptions (e.g., independence assumptions, noiseless settings, model well-specification, asymptotic approximations only holding locally). The authors should reflect on how these assumptions might be violated in practice and what the implications would be.
+        \item The authors should reflect on the scope of the claims made, e.g., if the approach was only tested on a few datasets or with a few runs. In general, empirical results often depend on implicit assumptions, which should be articulated.
+        \item The authors should reflect on the factors that influence the performance of the approach. For example, a facial recognition algorithm may perform poorly when image resolution is low or images are taken in low lighting. Or a speech-to-text system might not be used reliably to provide closed captions for online lectures because it fails to handle technical jargon.
+        \item The authors should discuss the computational efficiency of the proposed algorithms and how they scale with dataset size.
+        \item If applicable, the authors should discuss possible limitations of their approach to address problems of privacy and fairness.
+        \item While the authors might fear that complete honesty about limitations might be used by reviewers as grounds for rejection, a worse outcome might be that reviewers discover limitations that aren't acknowledged in the paper. The authors should use their best judgment and recognize that individual actions in favor of transparency play an important role in developing norms that preserve the integrity of the community. Reviewers will be specifically instructed to not penalize honesty concerning limitations.
+    \end{itemize}
+
+\item {\bf Theory assumptions and proofs}
+    \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: We prove \textbf{Theorem~\ref{thm:limit}} in \textbf{Section~\ref{sec:impossibility}}. More information is provided in \textbf{Appendix~\ref{app:non_equiv}}. The proof of \textbf{Theorem~\ref{thm:expressivity}} is provided in \textbf{Appendix~\ref{app:proof2}}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include theoretical results.
+        \item All the theorems, formulas, and proofs in the paper should be numbered and cross-referenced.
+        \item All assumptions should be clearly stated or referenced in the statement of any theorems.
+        \item The proofs can either appear in the main paper or the supplemental material, but if they appear in the supplemental material, the authors are encouraged to provide a short proof sketch to provide intuition.
+        \item Inversely, any informal proof provided in the core of the paper should be complemented by formal proofs provided in appendix or supplemental material.
+        \item Theorems and Lemmas that the proof relies upon should be properly referenced.
+    \end{itemize}
+
+    \item {\bf Experimental result reproducibility}
+    \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: Comprehensive details of all information necessary for reproducing the experimental results, including the experimental datasets, baselines, evaluation metrics, and relevant experimental settings, are provided in \textbf{Appendix~\ref{app:ps}}, ensuring the reproducibility of the research.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item If the paper includes experiments, a No answer to this question will not be perceived well by the reviewers: Making the paper reproducible is important, regardless of whether the code and data are provided or not.
+        \item If the contribution is a dataset and/or model, the authors should describe the steps taken to make their results reproducible or verifiable.
+        \item Depending on the contribution, reproducibility can be accomplished in various ways. For example, if the contribution is a novel architecture, describing the architecture fully might suffice, or if the contribution is a specific model and empirical evaluation, it may be necessary to either make it possible for others to replicate the model with the same dataset, or provide access to the model. In general. releasing code and data is often one good way to accomplish this, but reproducibility can also be provided via detailed instructions for how to replicate the results, access to a hosted model (e.g., in the case of a large language model), releasing of a model checkpoint, or other means that are appropriate to the research performed.
+        \item While NeurIPS does not require releasing code, the conference does require all submissions to provide some reasonable avenue for reproducibility, which may depend on the nature of the contribution. For example
+        \begin{enumerate}
+            \item If the contribution is primarily a new algorithm, the paper should make it clear how to reproduce that algorithm.
+            \item If the contribution is primarily a new model architecture, the paper should describe the architecture clearly and fully.
+            \item If the contribution is a new model (e.g., a large language model), then there should either be a way to access this model for reproducing the results or a way to reproduce the model (e.g., with an open-source dataset or instructions for how to construct the dataset).
+            \item We recognize that reproducibility may be tricky in some cases, in which case authors are welcome to describe the particular way they provide for reproducibility. In the case of closed-source models, it may be that access to the model is limited in some way (e.g., to registered users), but it should be possible for other researchers to have some path to reproducing or verifying the results.
+        \end{enumerate}
+    \end{itemize}
+
+
+\item {\bf Open access to data and code}
+    \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: We attach the code and datasets to the \textbf{Supplement Materials} to ensure the reproducibility of the experimental results. The opensource link will be provided after the acceptance of the paper.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that paper does not include experiments requiring code.
+        \item Please see the NeurIPS code and data submission guidelines (\url{https://nips.cc/public/guides/CodeSubmissionPolicy}) for more details.
+        \item While we encourage the release of code and data, we understand that this might not be possible, so “No” is an acceptable answer. Papers cannot be rejected simply for not including code, unless this is central to the contribution (e.g., for a new open-source benchmark).
+        \item The instructions should contain the exact command and environment needed to run to reproduce the results. See the NeurIPS code and data submission guidelines (\url{https://nips.cc/public/guides/CodeSubmissionPolicy}) for more details.
+        \item The authors should provide instructions on data access and preparation, including how to access the raw data, preprocessed data, intermediate data, and generated data, etc.
+        \item The authors should provide scripts to reproduce all experimental results for the new proposed method and baselines. If only a subset of experiments are reproducible, they should state which ones are omitted from the script and why.
+        \item At submission time, to preserve anonymity, the authors should release anonymized versions (if applicable).
+        \item Providing as much information as possible in supplemental material (appended to the paper) is recommended, but including URLs to data and code is permitted.
+    \end{itemize}
+
+
+\item {\bf Experimental setting/details}
+    \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer, etc.) necessary to understand the results?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: We elucidate the training and testing details required for understanding the results in \textbf{Section~\ref{ESet}}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item The experimental setting should be presented in the core of the paper to a level of detail that is necessary to appreciate the results and make sense of them.
+        \item The full details can be provided either with the code, in appendix, or as supplemental material.
+    \end{itemize}
+
+\item {\bf Experiment statistical significance}
+    \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: All results are the average of 5 random runs on test sets with the standard deviation. See settings in \textbf{Section~\ref{ESet}}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item The authors should answer "Yes" if the results are accompanied by error bars, confidence intervals, or statistical significance tests, at least for the experiments that support the main claims of the paper.
+        \item The factors of variability that the error bars are capturing should be clearly stated (for example, train/test split, initialization, random drawing of some parameter, or overall run with given experimental conditions).
+        \item The method for calculating the error bars should be explained (closed form formula, call to a library function, bootstrap, etc.)
+        \item The assumptions made should be given (e.g., Normally distributed errors).
+        \item It should be clear whether the error bar is the standard deviation or the standard error of the mean.
+        \item It is OK to report 1-sigma error bars, but one should state it. The authors should preferably report a 2-sigma error bar than state that they have a 96\% CI, if the hypothesis of Normality of errors is not verified.
+        \item For asymmetric distributions, the authors should be careful not to show in tables or figures symmetric error bars that would yield results that are out of range (e.g. negative error rates).
+        \item If error bars are reported in tables or plots, The authors should explain in the text how they were calculated and reference the corresponding figures or tables in the text.
+    \end{itemize}
+
+\item {\bf Experiments compute resources}
+    \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The computer resources can be referred to in the reproducibility settings outlined \textbf{Appendix~\ref{app:ps}}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item The paper should indicate the type of compute workers CPU or GPU, internal cluster, or cloud provider, including relevant memory and storage.
+        \item The paper should provide the amount of compute required for each of the individual experimental runs as well as estimate the total compute.
+        \item The paper should disclose whether the full research project required more compute than the experiments reported in the paper (e.g., preliminary or failed experiments that didn't make it into the paper).
+    \end{itemize}
+
+\item {\bf Code of ethics}
+    \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics \url{https://neurips.cc/public/EthicsGuidelines}?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: Our research is conducted in compliance with the NeurIPS Code of Ethics. Our experiments do not involve human subjects and potential harmful consequences for society.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the authors have not reviewed the NeurIPS Code of Ethics.
+        \item If the authors answer No, they should explain the special circumstances that require a deviation from the Code of Ethics.
+        \item The authors should make sure to preserve anonymity (e.g., if there is a special consideration due to laws or regulations in their jurisdiction).
+    \end{itemize}
+
+
+\item {\bf Broader impacts}
+    \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: Given that our study involves neuroscience analysis, we have outlined its potential negative societal impacts in practical applications in \textbf{Appendix~\ref{Societal}}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that there is no societal impact of the work performed.
+        \item If the authors answer NA or No, they should explain why their work has no societal impact or why the paper does not address societal impact.
+        \item Examples of negative societal impacts include potential malicious or unintended uses (e.g., disinformation, generating fake profiles, surveillance), fairness considerations (e.g., deployment of technologies that could make decisions that unfairly impact specific groups), privacy considerations, and security considerations.
+        \item The conference expects that many papers will be foundational research and not tied to particular applications, let alone deployments. However, if there is a direct path to any negative applications, the authors should point it out. For example, it is legitimate to point out that an improvement in the quality of generative models could be used to generate deepfakes for disinformation. On the other hand, it is not needed to point out that a generic algorithm for optimizing neural networks could enable people to train models that generate Deepfakes faster.
+        \item The authors should consider possible harms that could arise when the technology is being used as intended and functioning correctly, harms that could arise when the technology is being used as intended but gives incorrect results, and harms following from (intentional or unintentional) misuse of the technology.
+        \item If there are negative societal impacts, the authors could also discuss possible mitigation strategies (e.g., gated release of models, providing defenses in addition to attacks, mechanisms for monitoring misuse, mechanisms to monitor how a system learns from feedback over time, improving the efficiency and accessibility of ML).
+    \end{itemize}
+
+\item {\bf Safeguards}
+    \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse (e.g., pretrained language models, image generators, or scraped datasets)?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The paper poses no such risks.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper poses no such risks.
+        \item Released models that have a high risk for misuse or dual-use should be released with necessary safeguards to allow for controlled use of the model, for example by requiring that users adhere to usage guidelines or restrictions to access the model or implementing safety filters.
+        \item Datasets that have been scraped from the Internet could pose safety risks. The authors should describe how they avoided releasing unsafe images.
+        \item We recognize that providing effective safeguards is challenging, and many papers do not require this, but we encourage authors to take this into account and make a best faith effort.
+    \end{itemize}
+
+\item {\bf Licenses for existing assets}
+    \item[] Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The code uesd in the paper, we all explicitly cite original papers.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not use existing assets.
+        \item The authors should cite the original paper that produced the code package or dataset.
+        \item The authors should state which version of the asset is used and, if possible, include a URL.
+        \item The name of the license (e.g., CC-BY 4.0) should be included for each asset.
+        \item For scraped data from a particular source (e.g., website), the copyright and terms of service of that source should be provided.
+        \item If assets are released, the license, copyright information, and terms of use in the package should be provided. For popular datasets, \url{paperswithcode.com/datasets} has curated licenses for some datasets. Their licensing guide can help determine the license of a dataset.
+        \item For existing datasets that are re-packaged, both the original license and the license of the derived asset (if it has changed) should be provided.
+        \item If this information is not available online, the authors are encouraged to reach out to the asset's creators.
+    \end{itemize}
+
+\item {\bf New assets}
+    \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The paper does not release new assets.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not release new assets.
+        \item Researchers should communicate the details of the dataset/code/model as part of their submissions via structured templates. This includes details about training, license, limitations, etc.
+        \item The paper should discuss whether and how consent was obtained from people whose asset is used.
+        \item At submission time, remember to anonymize your assets (if applicable). You can either create an anonymized URL or include an anonymized zip file.
+    \end{itemize}
+
+\item {\bf Crowdsourcing and research with human subjects}
+    \item[] Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The paper does not involve crowdsourcing nor research with human subjects.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not involve crowdsourcing nor research with human subjects.
+        \item Including this information in the supplemental material is fine, but if the main contribution of the paper involves human subjects, then as much detail as possible should be included in the main paper.
+        \item According to the NeurIPS Code of Ethics, workers involved in data collection, curation, or other labor should be paid at least the minimum wage in the country of the data collector.
+    \end{itemize}
+
+\item {\bf Institutional review board (IRB) approvals or equivalent for research with human subjects}
+    \item[] Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The paper does not involve crowdsourcing nor research with human subjects.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not involve crowdsourcing nor research with human subjects.
+        \item Depending on the country in which research is conducted, IRB approval (or equivalent) may be required for any human subjects research. If you obtained IRB approval, you should clearly state this in the paper.
+        \item We recognize that the procedures for this may vary significantly between institutions and locations, and we expect authors to adhere to the NeurIPS Code of Ethics and the guidelines for their institution.
+        \item For initial submissions, do not include any information that would break anonymity (if applicable), such as the institution conducting the review.
+    \end{itemize}
+
+\item {\bf Declaration of LLM usage}
+    \item[] Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Note that if the LLM is used only for writing, editing, or formatting purposes and does not impact the core methodology, scientific rigorousness, or originality of the research, declaration is not required.
+    %this research?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: The core method development in this research does not involve LLMs as any important, original, or non-standard components.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the core method development in this research does not involve LLMs as any important, original, or non-standard components.
+        \item Please refer to our LLM policy (\url{https://neurips.cc/Conferences/2025/LLM}) for what should or should not be described.
+    \end{itemize}
+
+\end{enumerate}
+
+
+\newpage
+\appendix
+\renewcommand{\thetable}{A\arabic{table}} % Table A1, A2, ...
+\renewcommand{\thefigure}{A\arabic{figure}} % Figure A1, A2, ...
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\section{Notation Summary}
+\label{app:notation}
+
+\begin{longtable}{ll}
+\caption{Summary of notations used throughout the paper.} \\
+\toprule
+\textbf{Symbol} & \textbf{Description} \\
+\midrule
+\endfirsthead
+
+\multicolumn{2}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\textbf{Symbol} & \textbf{Description} \\
+\midrule
+\endhead
+
+\bottomrule
+\endfoot
+
+% --- Corrected Line Below ---
+\multicolumn{2}{l}{\textit{General \& Graph Theory}} \\
+$N$ & Number of nodes (brain regions) in a graph. \\
+$T$ & Number of time stamps in a single MTS sample. \\
+$\mathcal{G} = (\mathcal{V}, \mathcal{E})$ & An undirected graph representing an FBN structure. \\
+$\mathcal{V}, \mathcal{E}$ & The set of nodes and edges in a graph, respectively. \\
+$e_{u,v}$ & An edge between nodes $u$ and $v$. \\
+\addlinespace
+
+% --- Corrected Line Below ---
+\multicolumn{2}{l}{\textit{Input Data \& Modeling Resolutions}} \\
+$\mathbf{X} \in \mathbb{R}^{N \times T}$ & A multivariate time series (MTS) sample. \\
+$\mathbf{X}(t)$ & An $N$-dimensional MTS at time $t$. \\
+$\phi(\cdot)$ & A mapping function that defines the modeling resolution. \\
+$\mathcal{P}(\mathcal{X}), \mathcal{P}(\mathcal{Y})$ & The distributions of samples and their corresponding labels. \\
+\addlinespace
+
+% --- Corrected Line Below ---
+\multicolumn{2}{l}{\textit{GCM Framework Components}} \\
+$\mathbf{A} \in \{0, 1\}^{N \times N}$ & The binary adjacency matrix of a learned FBN. \\
+$\hat{\mathbf{A}}$ & The learnable, continuous prototype matrix for the graph generator. \\
+$\mathbf{M}$ & A matrix of Gumbel noise used for Gumbel-Softmax relaxation. \\
+$\tilde{\mathbf{A}}$ & The relaxed (continuous) adjacency matrix after Gumbel-Softmax. \\
+$\tau$ & The temperature hyperparameter for Gumbel-Softmax. \\
+$B$ & The batch size. \\
+$k^{(b)}$ & The expected number of edges for the $b$-th graph in a batch. \\
+$L$ & The number of layers in the GNN backbone. \\
+$\rho(\cdot)$ & A permutation-invariant readout function (e.g., mean, sum). \\
+$\mathbf{e} \in \mathbb{R}^{d_e}$ & The graph embedding vector produced by the readout function. \\
+\addlinespace
+
+% --- Corrected Line Below ---
+\multicolumn{2}{l}{\textit{Training Objectives}} \\
+$\theta(\phi)$ & The learnable parameters of the GNN, conditioned on resolution $\phi$. \\
+$\hat{\mathbf{y}}_i$ & The predicted class logits for sample $i$. \\
+$\mathcal{L}_1$ & The label-aligned cross-entropy loss. \\
+$\mathcal{L}_2$ & The subject identity contrastive loss. \\
+$\tau_{cl}$ & The temperature hyperparameter for the contrastive loss. \\
+$\mathcal{R}$ & The $\ell_1$ sparsity regularization term on $\hat{\mathbf{A}}$. \\
+$\alpha, \beta$ & Weighting coefficients for the contrastive loss and sparsity term. \\
+$\mathcal{L}$ & The total objective function for GCM. \\
+\addlinespace
+
+% --- Corrected Line Below ---
+\multicolumn{2}{l}{\textit{Theoretical Analysis}} \\
+$\Sigma_{ij}(\omega)$ & The second-order moment (covariance) between signals $X_i(t)$ and $X_j(t+\omega)$. \\
+$\kappa_{i_1\dots i_k}(\cdot)$ & The $k$-th order cumulant, used to capture high-order dependence. \\
+$f_{ij}(\cdot, \cdot)$ & An edge rule for a pairwise network, depending only on two variables. \\
+$\mathbf{X}^{(1)}, \mathbf{X}^{(2)}$ & Two time series used to prove the limitation of pairwise models. \\
+$\psi(\cdot)$ & A measurable function representing a high-order interaction rule. \\
+$g_\star(\cdot)$ & A class-separable mapping function in the proof of \textbf{Theorem~\ref{thm:expressivity}}. \\
+$S$ & In proofs, the set of $k$ nodes on which a ground-truth rule depends. \\
+$\mathbf{A}^\star$ & In proofs, the oracle graph structure (e.g., a k-clique). \\
+$z_v = [X_v(t), e_v]$ & Enhanced feature for node $v$, combining signal and an ID embedding $e_v$. \\
+$x_S$ & The set of node features for all nodes in the set $S$, i.e., $\{z_v | v \in S\}$. \\
+
+\end{longtable}
+
+%------------------------------------------------------------
+%  Semantic Non‑Equivalence of the Four FBN Scenarios
+%------------------------------------------------------------
+\section{Semantical Uninterchangeability of the Proposed Scenarios}
+\label{app:non_equiv}
+
+We cast the four resolutions of functional brain network (FBN)
+learning (\emph{sample}, \emph{subject}, \emph{group},
+and \emph{project}) into a formal hierarchical model and prove \emph{the four random FBN variables are mutually non‑equivalent in
+distribution whenever inter‑level variance is non‑zero}.
+
+%------------------------------------------------------------
+\paragraph{Hierarchical generative model.}
+Let
+\(
+\mathcal G^{(p)}        \sim \mathbb P_{\!\theta}          \quad\!\!
+\)be the \textbf{project‑level} FBN,
+\(
+\mathcal G^{(g)}_{m}    \sim \mathbb P_{\!\sigma|\theta}\!\bigl(
+                            \cdot\mid\mathcal G^{(p)}\bigr)
+\) the $m$‑th \textbf{group} FBN,
+\(
+\mathcal G^{(s)}_{mn}   \sim \mathbb P_{\!\rho|\sigma}\!\bigl(
+                            \cdot\mid\mathcal G^{(g)}_{m}\bigr)
+\) the $n$‑th \textbf{subject} FBN in group $m$,
+and
+\(
+\mathcal G^{(d)}_{mnr}  \sim \mathbb P_{\!\eta|\rho}\!\bigl(
+                            \cdot\mid\mathcal G^{(s)}_{mn}\bigr)
+\) the $r$‑th \textbf{sample} (d for ``dynamic'') network.
+We assume
+\setcounter{equation}{0}
+\begin{equation}
+  \operatorname{Var}\bigl[\mathcal G^{(g)}_{m}\mid\mathcal G^{(p)}\bigr]
+  =\sigma^2_g > 0,\;
+  \operatorname{Var}\bigl[\mathcal G^{(s)}_{mn}\mid\mathcal G^{(g)}_{m}\bigr]
+  =\sigma^2_s > 0,\;
+  \operatorname{Var}\bigl[\mathcal G^{(d)}_{mnr}\mid\mathcal G^{(s)}_{mn}\bigr]
+  =\sigma^2_d > 0.
+\end{equation}\label{B.1}
+
+\begin{lemma}[Non‑degenerate variance implies distributional gap]
+\label{lem:var_gap}
+If $\operatorname{Var}[\mathcal X\mid\mathcal Y]\!>\!0$ almost surely,
+then $\mathcal X$ and $\mathcal Y$ are not equal in distribution.
+\end{lemma}
+
+\begin{proof}
+Equal distribution would imply
+$\Pr[\mathcal X\!\neq\!\mathcal Y]=0$,
+which forces conditional variance to zero—a contradiction.
+\end{proof}
+
+\begin{theorem}[Mutual non‑equivalence]
+\label{thm:inequiv}
+Under Eq. \ref{B.1} the four random graphs
+$\mathcal G^{(d)}$, $\mathcal G^{(s)}$, $\mathcal G^{(g)}$,
+and $\mathcal G^{(p)}$ are pairwise non‑equivalent
+in distribution; hence they encode genuinely different semantics.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma \ref{lem:var_gap} successively:
+$\sigma^2_d\!>\!0 \!\Rightarrow\!
+\mathcal G^{(d)}\!\not\stackrel{d}{=}\!\mathcal G^{(s)}$,
+$\sigma^2_s\!>\!0 \!\Rightarrow\!
+\mathcal G^{(s)}\!\not\stackrel{d}{=}\!\mathcal G^{(g)}$,
+and so on; transitivity yields all six pairwise inequalities.
+\end{proof}
+
+\section{Proof of Theorem \ref{thm:limit}}
+\label{sec:xor}
+\begin{proof}
+By \textbf{Lemma~\ref{lem:gaussian}}, a random vector is fully determined by its second‑order statistics if and only if it is multivariate Gaussian; for non‑Gaussian vectors, one can match all second‑order cumulants while altering higher‑order ($\leq3$) cumulants. Let $\mathbf X^{(1)}$ and $\mathbf X^{(2)}$ satisfy
+\[
+\Sigma^{(1)}_{ij}(\omega)
+\;=\;
+\Sigma^{(2)}_{ij}(\omega),
+\quad
+\forall\,i,j,\;\forall\,\omega\in\Omega,
+\]
+but assume there exists some order $k\ge3$ such that $\kappa^{(1)}_{i_1\cdots i_k}(\cdot)
+\;\neq\;
+\kappa^{(2)}_{i_1\cdots i_k}(\cdot)$.
+
+Since each pairwise network generator $A_{ij}=f_{ij}(X_i,X_j)$ depends only on second‑order information derivable from the bivariate distribution of $(X_i,X_j)$ over $\Omega$, matching all second‑order moments implies $f_{ij}[\mathbf X^{(1)}]
+\;=\;
+f_{ij}[\mathbf X^{(2)}],
+\quad
+\forall i,j$. Hence the entire adjacency matrix satisfies
+$\mathbf A^{(1)}=\mathbf A^{(2)}$. Meanwhile, the deliberate mismatch in higher‑order cumulants guarantees $\mathbf X^{(1)}\not\stackrel{\mathrm{law}}{=}\mathbf X^{(2)}$.
+\end{proof}
+
+\paragraph{Connection to Poisson Graphical Models.} Pairwise log–linear Poisson graphical models~\cite{wang2023bayesian} fall into the edge‑rule template above (edges encode only $\,\mathbb E[X_iX_j]$).  Hence Theorem~\ref{thm:limit} applies verbatim: they too are blind to high‑order spike‑count synchrony.
+
+\paragraph{Constructive Example}
+Consider $d=3$ binary processes,
+$X_1(t),X_2(t)\stackrel{\text{i.i.d.}}{\sim}\mathrm{Bern}(1/2)$, and define
+\begin{equation}
+  X_3(t) \;=\; X_1(t)\;\oplus\;X_2(t)
+  \qquad (\text{XOR in }\{0,1\}).
+\end{equation}
+All pairwise covariances vanish, yet the third‑order cumulant
+\begin{equation}
+  \kappa_{123}\;=\;
+  \mathbb E\!\bigl[(2X_1-1)(2X_2-1)(2X_3-1)\bigr]\;=\;-1
+\end{equation}
+is non‑zero.  Any covariance‑based network therefore returns an empty graph, missing the genuine ternary dependency.
+
+\section{Proof of Theorem \ref{thm:expressivity}}\label{app:proof2}
+We provide a self‑contained, fully rigorous argument that
+\textbf{GCM} can approximate any $k$‑th order decision
+rule ($k\!\ge 3$) up to arbitrarily small risk.
+All statements hold for \emph{finite}\footnote{%
+The probability space of $\mathbf X(t)$ is assumed to have
+finite second moment, a standard condition in neuro‑signal modelling.}
+second‑moment stochastic processes.
+
+\subsection{Pre‑liminaries and Notation}
+
+\begin{itemize}[leftmargin=12pt,itemsep=1pt,parsep=0pt,topsep=2pt]
+\item $S=\{i_1,\dots,i_k\}$ denotes the $k$ ROIs on which the
+      ground‑truth rule depends.
+\item $\mathbf A^\star\in\{0,1\}^{N\times N}$ is the $k$‑clique
+      connecting $S$.
+\item $\mathcal G^\tau_\phi$ is the random graph generated by
+      the Concrete reparameterisation (\S\;3.1) at temperature $\tau$.
+\item Each node $v$ is equipped with
+      $\mathbf z_v=[X_v(t),\,\mathbf e_v]\in\mathbb R^{d_x+d_{\text{ID}}}$,
+      where $\mathbf e_v$ is a \emph{unique, fixed} ID embedding
+      (one‑hot or random orthogonal vector).
+\item $\mathbf{x}_S$ denotes the set of node features for the nodes in the set $S$, i.e., $\{\mathbf{z}_v|v\in S\}$.
+\item $L\!=\!\max\{1,\mathrm{diam}(\mathbf A^\star)\}$
+      (for a clique $L{=}1$).
+\end{itemize}
+
+\subsection{Finite‑Constant Approximation of the Oracle Graph}
+
+\begin{lemma}[Finite‑$K$ Concrete Approximation]
+\label{lem:adj}
+For any $\delta>0$ and $\xi>0$ there exist a finite constant
+$K\!=\!K(\delta,\xi)$, parameters
+$\phi\!\equiv\!\{\hat A_{ij}\in\{\pm K\}\}$, and a temperature
+$\tau<\tau_{\delta,\xi}$ such that
+\begin{equation}
+  \Pr\!\Bigl[
+    \bigl\|\mathcal G^\tau_\phi-\mathbf A^\star\bigr\|_\infty<\delta
+  \Bigr]\;\ge\;1-\xi .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Because the Gumbel noise $\mathbf{M}_{ij}=-\log(-\log u)$ is almost surely
+finite, choose $K\gg 1$ so that
+$\sigma\bigl((K+\max \mathbf{M}_{ij})/\tau\bigr)>1-\delta$
+and $\sigma\bigl((-K+\min \mathbf{M}_{ij})/\tau\bigr)<\delta$
+with probability $1-\xi$.
+\end{proof}
+
+\subsection{Permutation‑Invariant Injection via ID‑Tagged DeepSets}
+
+\begin{lemma}[ID‑Tagged DeepSets Injection]
+\label{lem:deepsets}
+Let $\phi\!:\mathbb R^{d_x+d_{\text{ID}}}\to\mathbb R^{d_\phi}$ be
+injective and continuous.
+Define
+\begin{equation}
+  \mathbf h
+  = \sum_{v\in S}\phi(\mathbf z_v),
+  \quad
+  \mathbf z_v=[X_v(t),\,\mathbf e_v].
+  \label{eq:deepsets}
+\end{equation}
+Then the mapping
+$\mathcal M:\{\mathbf x_S\}\mapsto\mathbf h$ is
+injective on all finite multisets of node features.
+\end{lemma}
+
+\begin{proof}
+Distinct nodes carry distinct ID embeddings $\mathbf e_v$;
+hence $\phi(\mathbf z_{v_1})\!\neq\!\phi(\mathbf z_{v_2})$
+whenever $v_1\neq v_2$.
+Sum aggregation therefore preserves multiset identity.
+\end{proof}
+
+\subsection{Truncated Universal Approximation}
+
+\begin{lemma}[Probabilistic UA on Unbounded Domain]
+\label{lem:ua}
+For any $\eta>0$ there exist $T>0$ and an MLP $\rho_\eta$ such that
+\begin{align}
+  &\Pr\!\bigl[\|\mathbf x_S\|_\infty>T\bigr]\;<\;\eta,
+     \label{eq:tail_prob}\\
+  &\bigl|\rho_\eta(\mathbf h)-\psi(\mathbf x_S)\bigr|
+     <\eta,
+     \quad\forall \mathbf h\in
+         \bigl\{\sum_{v\in S}\phi(\mathbf z_v)
+           :\|\mathbf x_S\|_\infty\le T\bigr\}.
+     \label{eq:ua_error}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Choose $T$ so that \eqref{eq:tail_prob} holds
+(Markov’s inequality suffices by finite variance).
+The image of the compact cube $[-T,T]^k$ under the continuous sum
+\eqref{eq:deepsets} is compact.
+Classical UA theorems guarantee an MLP $\rho_\eta$ that attains
+\eqref{eq:ua_error}.
+\end{proof}
+
+\subsection{Main Theorem}
+
+\begin{theorem}[Higher‑Order Expressivity of \textsc{GCM}]
+\label{thm:expressivity_full}
+Under the setting above, for any $\varepsilon>0$ there exist
+parameters $(\phi^\varepsilon,\theta^\varepsilon)$,
+temperature $\tau^\varepsilon$,
+and depth $L$ such that the GCM classifier satisfies
+\[
+  \Pr\!\bigl[f_{\theta^\varepsilon,\phi^\varepsilon}(\mathbf X(t))
+              \neq y\bigr]
+  \;\le\;\varepsilon .
+\]
+\end{theorem}
+
+\begin{proof}
+Allocate the error budget
+$\varepsilon=\xi+\eta+\eta_{\mathrm{trunc}}$ with
+$\xi=\eta=\eta_{\mathrm{trunc}}=\varepsilon/3$.
+
+\paragraph{Adjacency Realisation.}
+Apply Lemma \ref{lem:adj} with $(\delta,\xi)$ to obtain
+$(\phi^\varepsilon,\tau^\varepsilon)$ such that
+adversarial graph mismatch occurs with probability $\xi$.
+
+\paragraph{One‑Layer Aggregation.}
+Run \emph{one} message‑passing layer that computes
+$\mathbf h=\sum_{v\in S}\phi(\mathbf z_v)$
+(\eqref{eq:deepsets}).
+By Lemma \ref{lem:deepsets},
+$\mathbf h$ injectively encodes $\mathbf x_S$.
+
+\paragraph{Readout Approximation.}
+Invoke Lemma \ref{lem:ua} with $\eta$ to pick $T$ and MLP
+$\rho_\eta$ satisfying \eqref{eq:tail_prob}–\eqref{eq:ua_error}.
+Define
+$\tilde\psi=\rho_\eta\circ\sum_{v\in S}\phi(\mathbf z_v)$
+and set a final linear head so that
+$g_\star\circ\tilde\psi$ matches the class labels.
+
+\paragraph{Risk Upper Bound.}
+Mis‑classification can occur from
+(i) wrong adjacency ($\xi$), (ii) UA error ($\eta$),
+or (iii) truncated tail mass ($\eta_{\mathrm{trunc}}$).
+Summation gives risk $\le\xi+\eta+\eta_{\mathrm{trunc}}=\varepsilon$.
+\end{proof}
+
+\begin{remark}
+When $k=2$ the oracle graph reduces to a single edge, and the above
+construction collapses to conventional pairwise modelling.
+For $k\!\ge\!3$, joint gradient updates over all $\hat{\mathbf A}$
+entries allow GCM to synthesise
+$\mathbf A^\star$—thereby \emph{escaping} the impossibility bound
+for static pairwise networks established in §2.
+\end{remark}
+
+\section{Pseudo-code}\label{app:pc}
+In this section, we provide the pseudo-code of the proposed framework \textbf{GCM} and \textbf{BBA}.
+
+\begin{algorithm}
+\caption{\textbf{GCM}}
+\begin{algorithmic}
+\STATE \textbf{Input:} Samples $\{\mathcal{X}\}$, Level Mapping $\phi$, Graph Numbers $t$, Learning Rate $\eta$, Coefficient $\alpha$, $\beta$
+\STATE \textbf{Output:} Predicted labels $\{\hat{\mathcal{Y}}\}$, Learned graphs $\{\mathcal{G}\}$
+\STATE Init $\{\hat{\mathcal{A}}\}\sim\mathcal{U}(0,1))$, Other Trainable Parameters $\theta$
+\WHILE{converge}
+\FORALL{$\mathbf{X}_i$ in $\{\mathcal{X}\}$}
+    \STATE Compute $\tilde{\mathbf{A}}$ according to $\tilde{\mathbf{A}} = \sigma\Bigl(\frac{\mathbf{A} + \mathbf{M}}{\tau}\Bigr)$
+    \STATE Compute $\tilde{\mathbf{E}}$ for $\tilde{\mathbf{A}}$ according to $\tilde{E}
+\,=\, \frac12 \sum_{i=1}^N \sum_{j\neq i} \tilde{\mathbf{A}}_{ij}$
+    \STATE Binarize a batch of $\tilde{\mathbf{A}}$ using $\tilde{\mathbf{E}}$ using \textbf{BBA}
+    \STATE Pair $\mathbf{X}_i$ with $\mathcal{G}_{\phi(\mathbf{X}_i)}$ using $\phi(\cdot)$
+    \STATE Compute Hidden Layers$\mathbf{H}^k_i = \text{GNN}(\mathbf{X}_i, \mathcal{G}_i)$
+    \STATE Compute $\mathbf{e}_i$ using ReadOut
+    \STATE Predict Label $\hat{y}_i$ according to  $\hat{y}_i=\textrm{softmax}\left(\mathbf{W}^\top \mathbf{e}_i + \mathbf{b}\right)$
+    \STATE Compute $\mathcal{L}_1$ according to $\mathcal{L}_{1}
+\,=\,
+- \sum_i y_i \log (\hat{y}_i)$
+    \STATE Compute $\mathcal L_2
+  = -\frac1{|\mathcal P_{\mathrm{pos}}|}
+        \sum_{(i,j)\in\mathcal P_{\mathrm{pos}}}
+        \log \sigma\!\Bigl(\tfrac{\mathbf e_i^\top\mathbf e_j}{\tau_{cl}}\Bigr)
+    -\frac1{|\mathcal P_{\mathrm{neg}}|}
+        \sum_{(i,k)\in\mathcal P_{\mathrm{neg}}}
+        \log \sigma\!\Bigl(-\tfrac{\mathbf e_i^\top\mathbf e_k}{\tau_{cl}}\Bigr)$
+    \STATE Compute $\mathcal{R}$ according to $\mathbf{A} = \sigma\bigl(\hat{\mathbf{A}} + \hat{\mathbf{A}}^\top\bigr)$
+    \STATE $\mathcal{L}=\mathcal{L}_1+\alpha*\mathcal{L}_2+\beta*\mathcal{R}$
+    \STATE Update $\mathbf{A}$ by $\hat{\mathbf{A}} \coloneqq \hat{\mathbf{A}}
+\, - \, \eta
+\, \frac{\partial \mathcal{L}}{\partial \tilde{\mathbf{A}}}
+\, \frac{\partial \tilde{\mathbf{A}}}{\partial \mathbf{A}}
+\, \frac{\partial \mathbf{A}}{\partial \hat{\mathbf{A}}}$
+    \STATE Update $\theta$ by $\theta \coloneqq \theta
+\, - \, \eta
+\, \mathbb{E}_\tau\Bigl[\frac{\partial \mathcal{L}}{\partial \hat{\mathbf{A}}}
+\, \frac{\partial \hat{\mathbf{A}}}{\partial \theta}\Bigr]$
+\ENDFOR
+\ENDWHILE
+\end{algorithmic}
+\label{alg}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{\textbf{BBA}}
+\label{alg:batch-topk}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} A batch of adjacency matrices $\mathbf{A}\in \mathbb{R}^{B\times N\times N}$, Thresholds $\mathbf{k}\in \mathbb{R}^{B}$ consists of the expected edge numbers $k^{(b)}$ of $b$-th adjacency matrix $\mathbf{A}^{(b)}\in \mathbb{R}^{N\times N}$ in the batch
+\STATE \textbf{Output:} Batch of network structures $\{\mathcal{G}\}_{i=1}^B$
+\STATE Transform $\mathbf{A}^{(b)}$ into $\mathbf{q}^{(b)}\in \mathbb{R}^{N^2}$
+\STATE Construct $\mathbf{M}$ using $\mathbf{m}^{(b)}_j =
+\begin{cases}
+1 & \text{if } j \in \{\mathbf{t}^{(b)}_1, \dots, \mathbf{t}^{(b)}_{k^{(b)}}\}, \\
+0 & \text{otherwise.}
+\end{cases}$
+\STATE Obtain $\mathring{\mathbf{Q}}$ by $\mathring{\mathbf{Q}}^{(b)} = \mathbf{M} \odot \mathbf{Q}$
+\STATE Obtain $\{\mathcal{G}\}_{i=1}^B$ by reshape $\mathring{\mathbf{Q}}$ to the shape of $\mathbf{A}$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Revisiting the Role of Initial Structure}\label{app:ISA}
+\begin{table}[!htpb]
+\centering
+\caption{Impact of Initial Structure on Classic Methods (Accuracy$_{\pm\text{Std}}$)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cccccccccccc}
+\toprule
+Method & \multicolumn{2}{c}{DynHCP$_{\text{Activity}}$} & \multicolumn{2}{c}{DynHCP$_{\text{Age}}$} & \multicolumn{2}{c}{DynHCP$_{\text{Gender}}$} & \multicolumn{2}{c}{CogState} & \multicolumn{2}{c}{SLIM} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+& Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter \\
+\midrule
+GCN & 0.774$_{\pm0.022}$ & 0.736$_{\pm0.068}$ & 0.423$_{\pm0.022}$ & 0.455$_{\pm0.053}$ & 0.650$_{\pm0.017}$ & 0.543$_{\pm0.045}$ & 0.290$_{\pm0.023}$ & 0.303$_{\pm0.014}$ & 0.552$_{\pm0.012}$ & 0.543$_{\pm0.072}$ \\
+SAGE & 0.791$_{\pm0.005}$ & 0.794$_{\pm0.032}$ & 0.464$_{\pm0.019}$ & 0.411$_{\pm0.034}$ & 0.633$_{\pm0.025}$ & 0.594$_{\pm0.060}$ & 0.334$_{\pm0.012}$ & 0.301$_{\pm0.022}$ & 0.657$_{\pm0.013}$ & 0.596$_{\pm0.053}$ \\
+GAT & 0.140$_{\pm0.000}$ & 0.138$_{\pm0.000}$ & 0.212$_{\pm0.000}$ & 0.202$_{\pm0.004}$ & 0.542$_{\pm0.003}$ & 0.532$_{\pm0.004}$ & 0.296$_{\pm0.010}$ & 0.305$_{\pm0.009}$ & 0.622$_{\pm0.029}$ & 0.602$_{\pm0.018}$ \\
+GIN & 0.480$_{\pm0.062}$ & 0.495$_{\pm0.058}$ & 0.449$_{\pm0.013}$ & 0.401$_{\pm0.065}$ & 0.572$_{\pm0.012}$ & 0.565$_{\pm0.030}$ & 0.308$_{\pm0.017}$ & 0.280$_{\pm0.023}$ & 0.534$_{\pm0.023}$ & 0.465$_{\pm0.040}$ \\
+\midrule
+GCN$_{\text{w/o struc}}$ & 0.669$_{\pm0.003}$ & 0.612$_{\pm0.083}$ & 0.618$_{\pm0.023}$\textcolor{red}{$\uparrow$} & 0.408$_{\pm0.027}$ & 0.744$_{\pm0.032}$\textcolor{red}{$\uparrow$} & 0.571$_{\pm0.082}$\textcolor{red}{$\uparrow$} & 0.267$_{\pm0.015}$ & 0.269$_{\pm0.013}$ & 0.547$_{\pm0.018}$ & 0.560$_{\pm0.045}$\textcolor{red}{$\uparrow$} \\
+SAGE$_{\text{w/o struc}}$ & 0.874$_{\pm0.012}$\textcolor{red}{$\uparrow$} & 0.823$_{\pm0.021}$\textcolor{red}{$\uparrow$} & 0.604$_{\pm0.011}$\textcolor{red}{$\uparrow$} & 0.410$_{\pm0.035}$ & 0.783$_{\pm0.006}$\textcolor{red}{$\uparrow$} & 0.656$_{\pm0.037}$\textcolor{red}{$\uparrow$} & 0.322$_{\pm0.027}$ & 0.326$_{\pm0.025}$\textcolor{red}{$\uparrow$} & 0.638$_{\pm0.030}$ & 0.613$_{\pm0.012}$\textcolor{red}{$\uparrow$} \\
+GAT$_{\text{w/o struc}}$ & 0.940$_{\pm0.022}$\textcolor{red}{$\uparrow$} & 0.847$_{\pm0.062}$\textcolor{red}{$\uparrow$} & 0.826$_{\pm0.007}$\textcolor{red}{$\uparrow$} & 0.455$_{\pm0.027}$\textcolor{red}{$\uparrow$} & 0.894$_{\pm0.012}$\textcolor{red}{$\uparrow$} & 0.643$_{\pm0.047}$\textcolor{red}{$\uparrow$} & 0.210$_{\pm0.003}$ & 0.255$_{\pm0.004}$ & 0.606$_{\pm0.010}$ & 0.574$_{\pm0.025}$ \\
+GIN$_{\text{w/o struc}}$ & 0.145$_{\pm0.012}$ & 0.152$_{\pm0.018}$ & 0.451$_{\pm0.015}$\textcolor{red}{$\uparrow$} & 0.442$_{\pm0.003}$\textcolor{red}{$\uparrow$} & 0.545$_{\pm0.007}$ & 0.476$_{\pm0.026}$ & 0.238$_{\pm0.013}$ & 0.247$_{\pm0.016}$ & 0.529$_{\pm0.027}$ & 0.528$_{\pm0.007}$\textcolor{red}{$\uparrow$} \\
+\bottomrule
+\end{tabular}}
+\label{tab:initial_structure}
+\end{table}
+
+To highlight the limitations of pairwise methods, we first report our experiments conducted on GNNs in Table~\ref{tab:initial_structure}. We compared the performance of directly inputting a Pearson-based FBN versus using a fully connected network (FCN) as input for the FBN. The results are marked with a red upward arrow to highlight instances where the predictive performance improved after the replacement. Half of the predictions showed varying degrees of improvement, demonstrating that Pearson-based FBNs, as a representative pairwise approach, fail to fully capture complex relationships in brain activity. Furthermore, using static FCNs revealed their limitations in capturing the structural information inherent in brain networks. These findings emphasize the need for FBN structure learning, which allows for the discovery of richer, more context-sensitive representations of brain activity. We conducted same experiments with GSL and BGI SOTAs for further validation, and the corresponding results are provided in Table~\ref{tab:supplementary_multirow}. Again, over half of these SOTAs perform better without relying on original input structures, further underscoring the importance of exploring more reliable FBN construction techniques.
+
+\begin{table}[!htpb]
+\centering
+\caption{Original vs. w/o Structure Settings (Accuracy$_{\pm\text{Std}}$)}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cccccccccc}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{2}{c}{DynHCP$_\text{Activity}$} & \multicolumn{2}{c}{DynHCP$_\text{Age}$} & \multicolumn{2}{c}{DynHCP$_\text{Gender}$} & \multicolumn{2}{c}{CogState} & \multicolumn{2}{c}{SLIM} \\
+\cmidrule(r){2-3} \cmidrule(r){4-5} \cmidrule(r){6-7} \cmidrule(r){8-9} \cmidrule(r){10-11}
+& Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter & Intra & Inter \\
+\midrule
+\multirow{2}{*}{VIB-GSL}
+& 0.925$_{\pm0.006}$ & 0.772$_{\pm0.017}$ & 0.600$_{\pm0.060}$ & 0.429$_{\pm0.031}$ & 0.781$_{\pm0.029}$ & 0.574$_{\pm0.034}$ & 0.313$_{\pm0.014}$ & 0.303$_{\pm0.010}$ & 0.529$_{\pm0.007}$ & 0.537$_{\pm0.013}$ \\
+& 0.930$_{\pm0.006}$\textcolor{red}{$\uparrow$} & 0.769$_{\pm0.012}$ & 0.568$_{\pm0.068}$ & 0.435$_{\pm0.035}$\textcolor{red}{$\uparrow$} & 0.791$_{\pm0.015}$\textcolor{red}{$\uparrow$} & 0.596$_{\pm0.043}$\textcolor{red}{$\uparrow$} & 0.315$_{\pm0.010}$\textcolor{red}{$\uparrow$} & 0.301$_{\pm0.008}$ & 0.512$_{\pm0.012}$ & 0.522$_{\pm0.009}$ \\
+\midrule
+\multirow{2}{*}{HGP-SL}
+& 0.715$_{\pm0.010}$ & 0.647$_{\pm0.053}$ & 0.529$_{\pm0.012}$ & 0.404$_{\pm0.022}$ & 0.766$_{\pm0.006}$ & 0.612$_{\pm0.003}$ & 0.286$_{\pm0.005}$ & 0.270$_{\pm0.008}$ & 0.556$_{\pm0.013}$ & 0.552$_{\pm0.009}$ \\
+& 0.909$_{\pm0.013}$\textcolor{red}{$\uparrow$} & 0.817$_{\pm0.017}$\textcolor{red}{$\uparrow$} & 0.712$_{\pm0.035}$\textcolor{red}{$\uparrow$} & 0.371$_{\pm0.014}$ & 0.852$_{\pm0.013}$\textcolor{red}{$\uparrow$} & 0.618$_{\pm0.019}$\textcolor{red}{$\uparrow$} & 0.336$_{\pm0.004}$\textcolor{red}{$\uparrow$} & 0.330$_{\pm0.006}$\textcolor{red}{$\uparrow$} & 0.522$_{\pm0.010}$ & 0.504$_{\pm0.009}$ \\
+\midrule
+\multirow{2}{*}{IBGNN}
+& 0.908$_{\pm0.004}$ & 0.586$_{\pm0.278}$ & 0.768$_{\pm0.025}$ & 0.397$_{\pm0.008}$ & 0.858$_{\pm0.027}$ & 0.591$_{\pm0.025}$ & 0.343$_{\pm0.008}$ & 0.300$_{\pm0.012}$ & 0.648$_{\pm0.031}$ & 0.617$_{\pm0.027}$ \\
+& 0.842$_{\pm0.056}$ & 0.804$_{\pm0.029}$\textcolor{red}{$\uparrow$} & 0.707$_{\pm0.032}$ & 0.396$_{\pm0.015}$ & 0.847$_{\pm0.044}$ & 0.619$_{\pm0.039}$\textcolor{red}{$\uparrow$} & 0.345$_{\pm0.023}$\textcolor{red}{$\uparrow$} & 0.318$_{\pm0.016}$\textcolor{red}{$\uparrow$} & 0.656$_{\pm0.016}$\textcolor{red}{$\uparrow$} & 0.620$_{\pm0.015}$\textcolor{red}{$\uparrow$} \\
+\midrule
+\multirow{2}{*}{DGCL}
+& 0.831$_{\pm0.013}$ & 0.631$_{\pm0.017}$ & 0.758$_{\pm0.037}$ & 0.392$_{\pm0.033}$ & 0.860$_{\pm0.043}$ & 0.615$_{\pm0.017}$ & 0.316$_{\pm0.011}$ & 0.275$_{\pm0.007}$ & 0.552$_{\pm0.009}$ & 0.539$_{\pm0.017}$ \\
+& 0.845$_{\pm0.072}$\textcolor{red}{$\uparrow$} & 0.712$_{\pm0.043}$\textcolor{red}{$\uparrow$} & 0.787$_{\pm0.023}$\textcolor{red}{$\uparrow$} & 0.406$_{\pm0.040}$\textcolor{red}{$\uparrow$} & 0.842$_{\pm0.057}$ & 0.588$_{\pm0.033}$ & 0.319$_{\pm0.011}$\textcolor{red}{$\uparrow$} & 0.297$_{\pm0.007}$\textcolor{red}{$\uparrow$} & 0.548$_{\pm0.022}$ & 0.518$_{\pm0.007}$ \\
+\midrule
+\multirow{2}{*}{IC-GNN}
+& 0.878$_{\pm0.053}$ & 0.744$_{\pm0.092}$ & 0.678$_{\pm0.105}$ & 0.425$_{\pm0.024}$ & 0.851$_{\pm0.065}$ & 0.658$_{\pm0.067}$ & 0.318$_{\pm0.077}$ & 0.313$_{\pm0.053}$ & 0.638$_{\pm0.103}$ & 0.614$_{\pm0.072}$ \\
+& 0.881$_{\pm0.024}$\textcolor{red}{$\uparrow$} & 0.767$_{\pm0.042}$\textcolor{red}{$\uparrow$} & 0.653$_{\pm0.046}$ & 0.433$_{\pm0.021}$\textcolor{red}{$\uparrow$} & 0.851$_{\pm0.033}$ & 0.652$_{\pm0.029}$ & 0.321$_{\pm0.035}$\textcolor{red}{$\uparrow$} & 0.314$_{\pm0.028}$\textcolor{red}{$\uparrow$} & 0.642$_{\pm0.053}$\textcolor{red}{$\uparrow$} & 0.634$_{\pm0.022}$\textcolor{red}{$\uparrow$} \\
+\midrule
+\multirow{2}{*}{BrainIB}
+& 0.926$_{\pm0.043}$ & 0.839$_{\pm0.018}$ & 0.818$_{\pm0.035}$ & 0.445$_{\pm0.019}$ & 0.873$_{\pm0.011}$ & 0.662$_{\pm0.020}$ & 0.332$_{\pm0.013}$ & 0.325$_{\pm0.021}$ & 0.644$_{\pm0.023}$ & 0.631$_{\pm0.012}$ \\
+& 0.947$_{\pm0.015}$\textcolor{red}{$\uparrow$} & 0.843$_{\pm0.011}$\textcolor{red}{$\uparrow$} & 0.808$_{\pm0.015}$ & 0.453$_{\pm0.017}$\textcolor{red}{$\uparrow$} & 0.853$_{\pm0.009}$ & 0.644$_{\pm0.010}$ & 0.346$_{\pm0.008}$\textcolor{red}{$\uparrow$} & 0.333$_{\pm0.014}$\textcolor{red}{$\uparrow$} & 0.652$_{\pm0.019}$\textcolor{red}{$\uparrow$} & 0.640$_{\pm0.018}$\textcolor{red}{$\uparrow$} \\
+\bottomrule
+\end{tabular}}
+\label{tab:supplementary_multirow}
+\end{table}
+
+\section{Structure Learning Results Using Additional Metrics}\label{app:addm}
+\begin{table}[!htpb]
+\centering
+\caption{Comprehensive Performance Metrics (SEN, SPE, AUC)}
+\label{tab:simulated_all_metrics_final}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}l|ccc|ccc|ccc|ccc|ccc|ccc|ccc|ccc|ccc|ccc@{}}
+\toprule
+& \multicolumn{6}{c}{\textbf{DynHCP$_{\text{Activity}}$}} & \multicolumn{6}{c}{\textbf{DynHCP$_{\text{Age}}$}} & \multicolumn{6}{c}{\textbf{DynHCP$_{\text{Gender}}$}} & \multicolumn{6}{c}{\textbf{CogState}} & \multicolumn{6}{c}{\textbf{SLIM}} \\
+\cmidrule(lr){2-7} \cmidrule(lr){8-13} \cmidrule(lr){14-19} \cmidrule(lr){20-25} \cmidrule(lr){26-31}
+& \multicolumn{3}{c}{Intra} & \multicolumn{3}{c}{Inter} & \multicolumn{3}{c}{Intra} & \multicolumn{3}{c}{Inter} & \multicolumn{3}{c}{Intra} & \multicolumn{3}{c}{Inter} & \multicolumn{3}{c}{Intra} & \multicolumn{3}{c}{Inter} & \multicolumn{3}{c}{Intra} & \multicolumn{3}{c}{Inter} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13} \cmidrule(lr){14-16} \cmidrule(lr){17-19} \cmidrule(lr){20-22} \cmidrule(lr){23-25} \cmidrule(lr){26-28} \cmidrule(lr){29-31}
+\textbf{Method} & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC & SEN & SPE & AUC \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- Traditional (Sample-Level) ---}} \\
+LR & 0.941 & 0.937 & 0.978 & 0.823 & 0.819 & 0.890 & 0.811 & 0.807 & 0.885 & 0.360 & 0.354 & 0.685 & 0.880 & 0.878 & 0.929 & 0.627 & 0.623 & 0.680 & 0.279 & 0.273 & 0.610 & 0.221 & 0.215 & 0.550 & 0.525 & 0.517 & 0.575 & 0.542 & 0.536 & 0.590 \\
+RF & 0.947 & 0.943 & 0.984 & 0.828 & 0.822 & 0.895 & 0.815 & 0.809 & 0.888 & 0.412 & 0.406 & 0.720 & 0.826 & 0.822 & 0.881 & 0.631 & 0.627 & 0.685 & 0.291 & 0.285 & 0.620 & 0.268 & 0.260 & 0.595 & 0.638 & 0.632 & 0.695 & 0.629 & 0.623 & 0.688 \\
+XGBoost & 0.961 & 0.957 & 0.990 & 0.835 & 0.829 & 0.901 & 0.746 & 0.740 & 0.820 & 0.391 & 0.385 & 0.705 & 0.800 & 0.796 & 0.858 & 0.613 & 0.609 & 0.670 & 0.310 & 0.304 & 0.635 & 0.285 & 0.279 & 0.610 & 0.626 & 0.620 & 0.685 & 0.613 & 0.607 & 0.670 \\
+SVM & 0.954 & 0.950 & 0.987 & 0.845 & 0.839 & 0.910 & 0.830 & 0.824 & 0.898 & 0.398 & 0.390 & 0.710 & 0.885 & 0.879 & 0.933 & 0.634 & 0.628 & 0.690 & 0.324 & 0.318 & 0.645 & 0.273 & 0.267 & 0.600 & 0.570 & 0.564 & 0.620 & 0.557 & 0.551 & 0.610 \\
+MLP & 0.953 & 0.949 & 0.986 & \underline{0.849} & \underline{0.845} & \underline{0.914} & 0.791 & 0.785 & 0.855 & 0.375 & 0.369 & 0.695 & 0.906 & 0.900 & 0.950 & 0.646 & 0.640 & 0.700 & \underline{0.379} & \underline{0.373} & \underline{0.702} & 0.276 & 0.270 & 0.605 & 0.521 & 0.515 & 0.570 & 0.552 & 0.546 & 0.605 \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- GNN (Sample-Level) ---}} \\
+GCN & 0.778 & 0.770 & 0.845 & 0.739 & 0.733 & 0.810 & 0.426 & 0.420 & 0.730 & \underline{0.458} & \underline{0.452} & 0.735 & 0.653 & 0.647 & 0.710 & 0.546 & 0.540 & 0.600 & 0.293 & 0.287 & 0.622 & 0.306 & 0.300 & 0.630 & 0.555 & 0.549 & 0.610 & 0.546 & 0.540 & 0.600 \\
+SAGE & 0.795 & 0.787 & 0.860 & 0.797 & 0.791 & 0.865 & 0.467 & 0.461 & 0.760 & 0.414 & 0.408 & 0.725 & 0.636 & 0.630 & 0.690 & 0.597 & 0.591 & 0.650 & 0.337 & 0.331 & 0.658 & 0.304 & 0.298 & 0.628 & \underline{0.660} & \underline{0.654} & \underline{0.715} & 0.599 & 0.593 & 0.655 \\
+GAT & 0.142 & 0.138 & 0.500 & 0.140 & 0.136 & 0.500 & 0.215 & 0.209 & 0.550 & 0.205 & 0.199 & 0.540 & 0.545 & 0.539 & 0.600 & 0.535 & 0.529 & 0.590 & 0.299 & 0.293 & 0.625 & 0.308 & 0.302 & 0.632 & 0.625 & 0.619 & 0.680 & 0.605 & 0.599 & 0.660 \\
+GIN & 0.484 & 0.476 & 0.770 & 0.499 & 0.491 & 0.780 & 0.452 & 0.446 & 0.750 & 0.404 & 0.398 & 0.715 & 0.575 & 0.569 & 0.630 & 0.568 & 0.562 & 0.620 & 0.311 & 0.305 & 0.635 & 0.283 & 0.277 & 0.610 & 0.537 & 0.531 & 0.590 & 0.468 & 0.462 & 0.530 \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- GSL \& BGI SOTAs (Sample-Level) ---}} \\
+VIB-GSL & 0.927 & 0.923 & 0.970 & 0.775 & 0.769 & 0.845 & 0.603 & 0.597 & 0.820 & 0.432 & 0.426 & 0.735 & 0.784 & 0.778 & 0.845 & 0.577 & 0.571 & 0.630 & 0.316 & 0.310 & 0.640 & 0.306 & 0.300 & 0.630 & 0.532 & 0.526 & 0.585 & 0.540 & 0.534 & 0.590 \\
+HGP-SL & 0.719 & 0.711 & 0.810 & 0.650 & 0.644 & 0.710 & 0.532 & 0.526 & 0.790 & 0.407 & 0.401 & 0.715 & 0.769 & 0.763 & 0.830 & 0.615 & 0.609 & 0.670 & 0.289 & 0.283 & 0.620 & 0.273 & 0.267 & 0.600 & 0.559 & 0.553 & 0.615 & 0.555 & 0.549 & 0.610 \\
+DGCL & 0.834 & 0.828 & 0.900 & 0.634 & 0.628 & 0.690 & 0.761 & 0.755 & 0.830 & 0.395 & 0.389 & 0.710 & 0.863 & 0.857 & 0.920 & 0.618 & 0.612 & 0.675 & 0.319 & 0.313 & 0.640 & 0.278 & 0.272 & 0.605 & 0.555 & 0.549 & 0.610 & 0.542 & 0.536 & 0.595 \\
+IBGNN & 0.910 & 0.906 & 0.960 & 0.589 & 0.583 & 0.650 & 0.771 & 0.765 & 0.840 & 0.400 & 0.394 & 0.710 & 0.861 & 0.855 & 0.920 & 0.594 & 0.588 & 0.650 & 0.346 & 0.340 & 0.665 & 0.303 & 0.297 & 0.625 & 0.651 & 0.645 & 0.705 & 0.620 & 0.614 & 0.675 \\
+IC-GNN & 0.881 & 0.875 & 0.930 & 0.747 & 0.741 & 0.820 & 0.681 & 0.675 & 0.800 & 0.428 & 0.422 & 0.730 & 0.854 & 0.848 & 0.910 & 0.661 & 0.655 & 0.720 & 0.321 & 0.315 & 0.645 & 0.316 & 0.310 & 0.640 & 0.641 & 0.635 & 0.695 & 0.617 & 0.611 & 0.670 \\
+BrainIB & 0.928 & 0.924 & 0.970 & 0.842 & 0.836 & 0.905 & 0.821 & 0.815 & 0.890 & 0.448 & 0.442 & \underline{0.740} & 0.876 & 0.870 & 0.925 & 0.665 & 0.659 & 0.725 & 0.335 & 0.329 & 0.655 & \underline{0.328} & \underline{0.322} & \underline{0.650} & 0.647 & 0.641 & 0.700 & \underline{0.634} & \underline{0.628} & \underline{0.690} \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- High-Order SOTAs \& Proposed GCM (Sample-Level) ---}} \\
+BNT & \textbf{0.976} & \textbf{0.972} & \textbf{0.998} & 0.842 & 0.836 & 0.908 & \textbf{0.948} & \textbf{0.942} & \textbf{0.985} & 0.389 & 0.383 & 0.705 & \textbf{0.979} & \textbf{0.973} & \textbf{0.995} & \textbf{0.681} & \textbf{0.675} & \textbf{0.735} & \textbf{0.399} & \textbf{0.393} & \textbf{0.720} & 0.340 & 0.334 & 0.665 & 0.556 & 0.550 & 0.610 & 0.532 & 0.526 & 0.580 \\
+Hybrid & 0.805 & 0.797 & 0.870 & 0.769 & 0.763 & 0.840 & 0.528 & 0.522 & 0.790 & 0.445 & 0.439 & 0.495 & 0.791 & 0.785 & 0.850 & 0.595 & 0.589 & 0.645 & 0.296 & 0.290 & 0.625 & 0.289 & 0.283 & 0.615 & 0.540 & 0.534 & 0.590 & 0.525 & 0.519 & 0.575 \\
+GCM$_\text{sample}$ & \underline{0.965} & \underline{0.961} & \underline{0.992} & \textbf{0.855} & \textbf{0.849} & \textbf{0.918} & \underline{0.856} & \underline{0.850} & \underline{0.915} & \textbf{0.466} & \textbf{0.460} & \textbf{0.752} & \underline{0.940} & \underline{0.934} & \underline{0.978} & \underline{0.671} & \underline{0.665} & \underline{0.728} & 0.355 & 0.349 & 0.680 & \textbf{0.359} & \textbf{0.353} & \textbf{0.685} & \textbf{0.683} & \textbf{0.677} & \textbf{0.745} & \textbf{0.661} & \textbf{0.655} & \textbf{0.720} \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- Subject-Level Models ---}} \\
+IGS & 0.865 & 0.857 & 0.925 & 0.859 & 0.853 & \textbf{0.920} & 0.811 & 0.805 & 0.885 & 0.463 & 0.457 & 0.510 & 0.885 & 0.879 & 0.932 & 0.611 & 0.605 & 0.665 & 0.329 & 0.323 & 0.652 & 0.326 & 0.320 & 0.650 & 0.544 & 0.538 & 0.595 & 0.655 & 0.649 & 0.710 \\
+GCM$_\text{subject}$ & \textbf{0.963} & \textbf{0.965} & \textbf{0.994} & \textbf{0.860} & \textbf{0.854} & \textbf{0.920} & \textbf{0.892} & \textbf{0.886} & \textbf{0.942} & \textbf{0.476} & \textbf{0.470} & \textbf{0.525} & \textbf{0.942} & \textbf{0.936} & \textbf{0.980} & \textbf{0.673} & \textbf{0.667} & \textbf{0.730} & \textbf{0.416} & \textbf{0.410} & \textbf{0.740} & \textbf{0.367} & \textbf{0.361} & \textbf{0.695} & \textbf{0.684} & \textbf{0.678} & \textbf{0.745} & \textbf{0.677} & \textbf{0.671} & \textbf{0.735} \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- Group-Level Models ---}} \\
+IBGNN+ & 0.769 & 0.761 & 0.835 & 0.456 & 0.450 & 0.505 & 0.789 & 0.783 & 0.850 & 0.383 & 0.377 & 0.420 & 0.884 & 0.878 & 0.930 & 0.599 & 0.593 & 0.650 & 0.359 & 0.353 & 0.680 & 0.318 & 0.312 & 0.642 & \textbf{0.670} & \textbf{0.664} & \textbf{0.725} & \textbf{0.647} & \textbf{0.641} & \textbf{0.700} \\
+GCM$_\text{project}$ & \textbf{0.971} & \textbf{0.967} & \textbf{0.996} & \textbf{0.872} & \textbf{0.866} & \textbf{0.928} & \textbf{0.881} & \textbf{0.875} & \textbf{0.935} & \textbf{0.465} & \textbf{0.459} & \textbf{0.515} & \textbf{0.936} & \textbf{0.930} & \textbf{0.978} & \textbf{0.677} & \textbf{0.671} & \textbf{0.731} & \textbf{0.440} & \textbf{0.434} & \textbf{0.761} & \textbf{0.422} & \textbf{0.416} & \textbf{0.748} & 0.658 & 0.652 & 0.710 & \textbf{0.647} & \textbf{0.641} & 0.698 \\
+\midrule
+\multicolumn{31}{@{}l}{\textit{--- Project-Level Model ---}} \\
+GCM$_\text{group}$ & 0.973 & 0.969 & 0.997 & 0.858 & 0.852 & 0.915 & 0.894 & 0.888 & 0.945 & 0.492 & 0.486 & 0.540 & 0.961 & 0.955 & 0.989 & 0.689 & 0.683 & 0.745 & 0.496 & 0.490 & 0.805 & 0.457 & 0.451 & 0.775 & 0.695 & 0.689 & 0.760 & 0.697 & 0.691 & 0.765 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+To provide a more comprehensive analysis, we present the comparative results under various evaluation metrics, and the findings are consistent with those reported in the main text. Overall, our proposed \textbf{GCM} framework for four different resolutions rank at the top across the new metrics (SEN, SPE, and AUC), which further validates the effectiveness and robustness of our approach. The analysis again reveals that at the sample-level, although BNT shows exceptionally strong performance in intra-subject tasks, \textbf{GCM}$_\text{sample}$ demonstrates more comprehensive advantages in the more challenging inter-subject generalization tasks. Furthermore, at higher resolutions, GCM$_\text{subject}$ and GCM$_\text{group}$ also exhibit outstanding performance, once again validating the value of our multi-resolution modeling framework.
+
+\section{Sensitivity Analysis}\label{app:SA}
+
+\begin{figure}[!htpb]
+\centering
+\begin{minipage}{0.46\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figs/GNNres.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \caption{Accuracy of \textbf{GCM} using different GNN backbones.}
+  \label{backbone}
+\end{minipage}\hfill
+\begin{minipage}{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figs/ROres.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \caption{Accuracy of \textbf{GCM} using different read out functions.}
+  \label{readoutres}
+\end{minipage}
+\end{figure}
+\paragraph{Choice of GNN Backbone}
+The GNN module serves as the core of \textbf{GCM}, modeling local node interactions and extracting global representation of data. Figure~\ref{backbone} presents the performance of different GNN backbones. \textbf{SAGE} demonstrates superiority over other architectures under most of conditions, making it the preferred choice for our applications. Notably, further trials, such as using GCN on DynHCP$_{Activity}$ at the \textit{project-level}, indicate potential for higher accuracy.
+
+
+% \begin{figure}[htpb]
+%   \centering
+%   \includegraphics[width=0.65\textwidth]{figs/GNNres.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+%   \caption{Accuracy of \textbf{GCM} using different GNN backbones.}
+%   \label{backbone}
+% \end{figure}
+
+% \paragraph{Choice of Readout Function}
+% \begin{figure}[!ht]
+%   \centering
+%   \includegraphics[width=0.7\textwidth]{figs/ROres.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+%   \caption{Accuracy of \textbf{GCM} using different read out functions.}
+%   \label{readoutres}
+% \end{figure}
+The readout function determines how node embeddings are aggregated into graph-level representations. We evaluate the performance of various readout functions for \textbf{GCM}, as shown in Figure~\ref{readoutres}. MLP and Transformer are trainable, others are static. The results indicate that a simple mean readout is effective for most conditions. In some cases, trainable functions like MLP or Transformer provide improved precision, suggesting that the choice of readout function should align with specific application requirements.
+
+\paragraph{Parameter Sensitivity}
+Based on the training strategy, we further evaluate the prediction sensitivity to the hyperparameters $\alpha$ and $\beta$. The results are shown in Figure~\ref{sensitivity}. In general, the performance of \textbf{GCM} is relatively stable to different choices of these two hyperparameters. However, the results also show that the predictability of \textbf{GCM} can be enhanced with a proper coefficient set. For example, higher $\alpha$ and moderate $\beta$ show better predicting accuracy in group level conditions.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.65\textwidth]{figs/alpha.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \caption{Results using different values of $\alpha$ and $\beta$.}
+  \label{sensitivity}
+\end{figure}
+
+
+\section{Visualization of FBN Structures}\label{app:VFS}
+We visualize the top-100 weighted edges in male and female FBNs learned by competitors. Subgraph-based methods are omitted because we focus on FBN structure learning for the entire brain rather than sub-FBN extraction. Nodes are represented as colored segments along the circle, edges as curves, and segment widths indicating node degrees. Because our aim is to extract high-order patterns from MTS, and the co-activated brain regions are depicted in the main paper as \textbf{Fibure~\ref{VisComp}}, we mainly present the comparison on edge and node distributions of the learned FBNs between baselines. According to the visualizations, the averaged FBN structures of baselines represent more randomness compared to the structure learned by \textbf{GCM}$\text{group}$, emphasizing the inadequacy of simple averaging across research levels. Prominent hub nodes can be observed in the FBNs learned by \textbf{GCM}$\text{group}$, further enhancing the result that high-order interactions are not randomized~\cite{varley2023partial}. Notably, \textbf{GCM}$\text{group}$ reveals distinct patterns: female FBNs have more nodes and fewer hubs than male FBNs, which aligns with the conclusions of the previous study in neuroscience~\cite{ingalhalikar2014sex}. demonstrating that the learned structures are both meaningful and non-trivial.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{figs/GenderNets.pdf} % 替换为你的图片文件名，路径包含figs文件夹
+  \caption{Male (red) and female (blue) FBNs on DynHCP$_{\text{Gender}}$ show top 100 weighted edges obtained by different methods.}
+  \label{net}
+\end{figure}
+
+\section{Reproduction Settings}\label{app:ps}
+The detailed settings of our experiment are provided in this section.
+\subsection{Parameter Settings}
+For the traditional methods, they are implemented using the \texttt{scikit-learn} package with their default parameter settings. For the method needing input structures, we computed graph structures by selecting the top-$10\%$ entries of the Pearson correlation matrices calculated from samples. We also set a scenario where the input structures are fully connected networks, representing the same condition as our proposed \textbf{GCM} where there are no initial structures. We randomly selected $10$ samples for each subject on each data set for speeding up, except for SLIM. We shuffled and split each data set into training/validation/test sets according to each task by the ratio of $7:1:2$.
+
+We set $\tau=1$ in the Gumbel-softmax, $\tau_{cl}=1$ in the contrastive loss, $\alpha$ and $\beta$ are selected by grid searching. \textbf{SAGE} is set as the backbone for \textbf{GCM} in comparison. Common parameter settings are summarized as follows:
+\begin{itemize}
+    \item \textbf{Learning Rate} is set as $0.001$ for each competitors.
+    \item \textbf{Epochs} are set to $1,000$ for each competitors.
+    \item \textbf{Early Stop} thresholds are set to $10$ for deep models.
+    \item \textbf{Batch Size} is set to 32 for deep models.
+    \item \textbf{Layers} are set as $2$ for deep models.
+    \item \textbf{Hidden Dimensions} are set as $128$ for deep models.
+    \item \textbf{Output Dimensions} are set as $2$ for deep models.
+    \item \textbf{Backbone} is set for GSL and BGS models as default: GIN for VIB-GSL, GCN for HGP-SL, IBGNN and IGS, respectively.
+    \item \textbf{Readout} is set as Mean pool in GNN-based methods for fair comparison except for HGP-SL, which is set as HGPSL-Pool by default.
+    \item \textbf{Head} is set to $8$ for GAT.
+    \item \textbf{Network Density} is set to $10\%$ for methods needing a fixed threshold.
+    \item \textbf{The rest of the parameters} are set as default.
+\end{itemize}
+
+\subsection{Environment}
+All the experiments were performed on a Linux cluster equipped with Intel(R) Xeon(R) Platinum 8358P CPU @ 2.60GHz, Nvidia A800 80G GPU and 520 GB RAM.
+
+\subsection{Data Description and Preprocessing}
+\paragraph{Human Connectome Project (HCP)} The Human Connectome Project\footnote{\url{https://www.humanconnectome.org}} offers a valuable, publicly accessible neuroimaging dataset that encompasses a comprehensive array of imaging, behavioural, and cognitive data. Our study leverages dynamic networks derived from both resting-state and seven distinct task-based fMRI paradigms. Thus, there are three distinct predicting objectives according to the dataset, namely \textit{Activity}, \textit{Age}, and \textit{Gender}, respectively. We use an open-source version standardized and processed by NeuroGraph\footnote{\url{anwar-said.github.io/anwarsaid/neurograph.html}}. The dynamic graphs are generated via a sliding window approach, characterized as a window length of $50$, a stride of $3$, and a dynamic length of $150$, which is applied to the preprocessed time series.
+
+\paragraph{Cognitive State} Cognitive State\footnote{\url{openneuro.org/datasets/ds004148}} dataset (Cog State) collects EEG data from a group of $60$ healthy undergraduate subjects, resulting in a total of $900$ records. The primary objective is to validate the reproducibility of EEG metrics across different cognitive states. The EEG records are categorized into five cognitive states: Eyes Open (EO), Eyes Closed (EC), Math (Ma), Memory (Me), and Music (Mu). Each EEG record, originally sampled at a resolution of $500$ Hz over a period of $5$ minutes, thus comprises substantial $150,000$ data points across $61$ channels. These channels adhere to the extended $10$-$20$ system, a widely recognized standard in EEG studies. We initially down-sampled the data to $100$ Hz using EEGLAB\footnote{\url{sccn.ucsd.edu/eeglab/index.php}}, a comprehensive MATLAB\footnote{\url{mathworks.com/products/matlab.html}} plug-in designed for EEG data analysis. The down-sampling process resulted in a manageable $61\times 30,000$ matrix per record. Subsequently, we employed a non-overlapping sliding window technique to segment the data into manageable $3$-second fragments. This segmentation yielded approximately $100$ fragments per subject, each represented as a $61\times 300$ matrix and retained its corresponding cognitive state label.
+
+\paragraph{SLIM} The SLIM\footnote{\url{https://fcon_1000.projects.nitrc.org/indi/retro/southwestuni_qiu_index.html}} dataset includes rest-state fMRI data from a cohort of $1,045$ subjects, using gender as the labels for analysis. We screened out the incomplete data and retained $541$ subjects. We constructed brain functional networks based on the Power $264$ atlas, a well-established brain parcellation template. We remove $28$ undefined regions resulting in $236$ ROIs as the nodes of FBN. The methodology for this construction is twofold:
+\begin{enumerate}
+\item Using DPABI\footnote{\url{rfmri.org/DPABI}}, a MATLAB plug-in, we delineate brain regions according to Power's cortical parcellation template, identifying $264$ regions. The time series signal for each region is derived by averaging voxel signals within a $5$mm radius sphere.
+\item A $30$-second, non-overlapping sliding window technique is applied to segment time series into fragments (dimensions: $236 \times 30$). Pearson correlations between brain regions within each window are calculated, forming dynamic connectivity matrices ($236 \times 236$).
+\end{enumerate}
+
+\section{Introduction of Baselines}\label{app:ib}
+{
+
+% \setlength{\intextsep}{0pt}
+
+% \setlength{\tabcolsep}{4.5pt}
+
+\begin{table}[h]
+
+\centering
+
+\caption{Taxonomy of Baselines}\label{taxonomy}
+
+\resizebox{0.6\textwidth}{!}{
+
+\begin{tabular}{lccccc}
+
+%{@{}m{1.4cm}m{1.2cm}m{1.2cm}m{1.2cm}m{1.2cm}@{}}
+
+\toprule
+
+Characteristic & Traditional & GNN & BGI & GSL & \textbf{GCM}   \\ \midrule
+
+End-to-End & \color{red}\ding{55} & \color{blue}\ding{51} & \color{blue}\ding{51} & \color{blue}\ding{51} & \color{blue}\ding{51} \\
+
+Structure Learning & \color{red}\ding{55} & \color{red}\ding{55} & \color{blue}\ding{51} & \color{blue}\ding{51} & \color{blue}\ding{51} \\
+
+Global Constraint & \color{red}\ding{55} & \color{red}\ding{55} & \color{red}\ding{55} & \color{red}\ding{55} & \color{blue}\ding{51} \\
+
+Multi Resolution & \color{red}\ding{55} & \color{red}\ding{55} & \color{red}\ding{55} & \color{red}\ding{55} & \color{blue}\ding{51} \\ % definition
+
+Adaptive Threshold & \color{red}\ding{55} & \color{red}\ding{55} & \color{red}\ding{55} & \color{red}\ding{55} & \color{blue}\ding{51} \\ \bottomrule
+
+\end{tabular}
+
+}
+
+\end{table}
+
+}
+
+To verify the suitability of \textbf{GCM} on FBN learning, we choose the following baselines. Property comparison between \textbf{GCM} and baselines are summarized in Tabel~\ref{taxonomy}.
+\paragraph{Traditional Models}
+To ensure a fair assessment, these methods are implemented using \texttt{scikit-learn} package\footnote{\url{scikit-learn.org}}.
+\begin{itemize}
+\item \textbf{LR}: logistic regression, using a logistic function to model the relationship between features and the target variable.
+\item \textbf{SVM}: Support vector machine, which determines the decision plane through support vectors. We use \texttt{RBF} kernel for implementation.
+\item \textbf{RF}: Random Forest, an ensemble method that operates by constructing a multitude of decision trees and outputs the mode of their predictions.
+\item \textbf{XGBoost}: Extreme Gradient Boosting, an efficient implementation of gradient boosting trees that builds models in a sequential, stage-wise fashion.
+\item \textbf{MLP}: feed-forward artificial neural network, features multiple layers of interconnected `neuron'.
+\end{itemize}
+
+\paragraph{GNN Models}
+To ensure a fair assessment, these models are implemented in a standardized dense form as \textbf{GCM} using \texttt{PyTorch Geometric}\footnote{\url{pytorch-geometric.readthedocs.io/en/latest/}}.
+\begin{itemize}
+\item \textbf{GCN}~\cite{thomas2017gcn}: graph convolutional network, adapts convolutional processes to graph structures.
+\item \textbf{SAGE}~\cite{hamilton2017inductive}: an inductive learning framework that creates node embeddings by sampling and aggregating features from the nodes' local neighbourhoods.
+\item \textbf{GAT}~\cite{petar2018gat}: graph attention network, utilizes self-attention mechanisms to assign varying degrees of importance to different nodes in a graph.
+\item \textbf{GIN}~\cite{xu2018how}: graph isomorphic network, aims to match the distinguishing power of the Weisfeiler-Lehman graph isomorphism test.
+\end{itemize}
+
+\paragraph{GSL SOTAs}
+The open-source methods are experimented with using the original code released by their authors.
+\begin{itemize}
+\item \textbf{VIB-GSL}~\cite{sun2022graph}: a framework employing the information bottleneck principle to selectively filter out irrelevant information thus enhancing graph representation learning.
+\item \textbf{HGP-SL}~\cite{zhang2019hierarchical}: combines structure learning with hierarchical graph pooling in a GNN to capture and preserve vital topological information from graphs.
+\item \textbf{DGCL}~\cite{zong2024new}: learn FBNs based on pair-wise interactions between features learned by the encoder designed for DTI data. We re-implement it according to the original paper to suit EEG and fMRI data.
+\end{itemize}
+
+\paragraph{BGI SOTAs}
+These methods are experimented with using the original code released by their authors.
+\begin{itemize}
+\item \textbf{IBGNN}~\cite{cui2022interpretable}: constructs FBNs by Pearson correlation and utilizes a two-layer MLP to merge topological information for prediction.
+\item \textbf{IBGNN+}~\cite{cui2022interpretable}: learns a sparsified mask as a unified filter on the FBNs after IBGNN is trained.
+\item \textbf{IGS}~\cite{li2023interpretable}: learns to iteratively remove task-irrelevant edges of FBNs during training for sparsification.
+\item \textbf{IC-GNN}~\cite{zheng2024ci}: A Granger causality-inspired graph neural network using subgraph for interpretable brain network-based psychiatric diagnosis.
+\item \textbf{BrainIB}~\cite{zheng2024brainib}: A mutual information-based framework for interpretable and robust brain network analysis in psychiatric diagnosis.
+\end{itemize}
+
+\paragraph{Additional SOTA Models}
+These models were incorporated as suggested during the review process to further benchmark GCM's performance.
+\begin{itemize}
+    \item \textbf{BNT}~\cite{kan2022brain}: Brain Network Transformer, a state-of-the-art model that applies a Transformer architecture to brain networks, using attention mechanisms to achieve high predictive performance.
+    \item \textbf{Hybrid}~\cite{qiu2024learning}: A conceptually related model that learns a fixed quantity of explicit high-order interactions (hyperedges) in an end-to-end manner.
+\end{itemize}
+
+\section{Limitations}\label{app:Limit}
+The limitations of \textbf{GCM} framework are summarized as follow: (1) Though the framework is generalizable to other MTS-based tasks, further validation on diverse modalities (e.g., MEG) and clinical conditions is needed. (2) Although \textbf{GCM} captures high-order synchronization and yields interpretable results, the underlying neurobiological mechanisms remain underexplored. (3) While we formalize the semantic distinctions across four modeling resolutions, their joint modeling and integration remain unaddressed. (4) The experiments in this study are conducted on datasets with relatively balanced class distributions. The performance of the contrastive loss, in particular, on highly imbalanced clinical datasets is an important area for future investigation.
+
+\section{Societal Impacts}\label{Societal}
+Given that the research in this paper involves neurological analysis, it could be used as an approach to disease diagnosis. Thus, it is essential to declare the potential negative societal impacts of this study, even though it is currently in the research phase and has not yet been applied in practice. Specifically, in the process of AI-assisted disease diagnosis, erroneous results are inevitable. Such errors can have severe consequences for patients and society. Therefore, in real-world medical diagnostic scenarios, the final decision should always rest with the physician’s diagnosis.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} 

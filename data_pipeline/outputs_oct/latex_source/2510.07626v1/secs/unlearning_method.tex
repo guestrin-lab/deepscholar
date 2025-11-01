@@ -1,0 +1,122 @@
+\section{A Review of Ten Stateful Unlearning Methods: Methodologies and Key Insights}
+
+Unlearning problem is generally specified with respect to a subset of data instances that must be erased, which we denote as the \textit{forget set} ($\Df$). 
+To maintain the usefulness of the model, one often introduces an additional collection of examples that should remain unaffected, referred to as the \textit{retain set} ($\Dr$). 
+Together, these two sets define the dual objectives of unlearning: enforcing removal of knowledge from $\Df$ while preserving performance on $\Dr$. 
+This trade-off can naturally be expressed as a regularized optimization framework \citep{liu2024rethinking,yao2023large,zhang2024negative}:
+\begin{align}
+\hspace*{-3mm}
+\begin{array}{l}
+ \displaystyle \minimize_{\boldsymbol{\theta}}   
+ \,\, \mathbb E_{(x, y) \in \Df} [ \ellf(y | x; \boldsymbol{\theta}) ]
+ + \lambda \, \mathbb E_{(x, y) \in \Dr} [ \ellr(y | x; \boldsymbol{\theta}) ] ,
+\end{array}
+\hspace*{-3mm}
+\label{eq:prob_LLM_MU}
+\end{align}
+Here, $\btheta$ denotes the parameters to be optimized during unlearning, $\lambda \geq 0$ acts as a regularization weight controlling the penalty for divergence caused by forgetting, and $\ellf$ and $\ellr$ correspond to the loss terms associated with forgetting and retaining, respectively, when generating $y$ conditioned on $x$.
+
+A considerable body of work has focused on designing and analyzing suitable forget and retain loss functions to address problem \eqref{eq:prob_LLM_MU} \citep{yao2023large, zhang2024negative, fan2024simplicity, fan2025towards, wang2025invariance, li2024wmdp, zou2024improving, gandikota2024erasing, sheshadri2024latent, tamirisa2024tamper, yuan2024closer, singh2025unlearning}. 
+According to the underlying principles of LLM unlearning, existing approaches can be broadly categorized into divergence-driven, representation-mismatch, and rejection-based methods.
+
+\paragraph{Divergence-driven methods.} 
+In this class of methods, the forget loss $\ellf$ is designed to progressively widen the gap between the prediction logits of the unlearned model and those of the original model on the forget set $\Df$. 
+For instance, gradient difference (\textbf{GradDiff}) \citep{yao2023large} achieves unlearning by applying gradient ascent on $\Df$. 
+Negative Preference Optimization (\textbf{NPO}) \citep{zhang2024negative} instead interprets forget samples as negative preferences in Direct Preference Optimization (DPO) \citep{rafailov2024direct}, thereby converting the unbounded gradient-ascent loss into a \textit{bounded loss}, as shown below:
+\begin{align}
+  & \hspace*{-2mm} \ell_{\mathrm{NPO}}(\boldsymbol{\theta}) =  \mathbb E_{(x,y) \in \Df} {\left [    - \frac{2}{\beta} \log \sigma  \left ( - \beta \log \left ( \frac{\pi_{\btheta} (y | x) }{\pi_{\mathrm{ref}} (y | x)}\right ) \right ) 
+    \right ]
+}.  \hspace*{-3mm} \label{eq:NPO_loss}
+\end{align}
+
+\textbf{SimNPO} \citep{fan2024simplicity} was the first to highlight the issue of reference-model bias in NPO and modified $\ellf$ to 
+$- \frac{2}{\beta} \log \sigma \left ( - \frac{\beta}{|y|}\log  \pi_{\btheta} (y | x) \right )$. 
+Building upon this, \citet{fan2025towards} and \citet{wang2025invariance} further improved the robustness of NPO by incorporating Sharpness-Aware Minimization (SAM) \citep{foret2021sharpnessaware} and Invariant Risk Minimization (IRM) \citep{arjovsky2019invariant}.
+
+\paragraph{Representation-mismatch methods.} 
+This family of approaches enforces forgetting by directly altering the internal representations of the unlearned model on $\Df$. 
+A representative example is Representation Mismatch Unlearning (\textbf{RMU}), where the hidden states of the unlearned model $M_{\boldsymbol{\theta}_\text{u}}$ are mapped to a uniformly random vector $\mathbf{u}$, as defined in \eqref{eq:RMU_loss}:
+
+\begin{align}
+  & \hspace*{-2mm} 
+  \ell_{\mathrm{RMU}}(\boldsymbol{\theta}) = 
+  \mathbb E_{(x,y) \in \Df} \left[
+    \frac{1}{\ell_{\mathrm{RMU}}}
+    \sum_{\text{token } t \in x} 
+    || {M_{\boldsymbol{\theta}_\text{u}}(t) - c \cdot \mathbf{u}||}_2^2 
+  \right].
+  \label{eq:RMU_loss}
+\end{align}
+
+Representation Rerouting (\textbf{RR}) \citep{zou2024improving} further reduces the similarity between the unlearned model $M_{\boldsymbol{\theta}_\text{u}}$ and the original model $M_{\boldsymbol{\theta}_\text{o}}$. 
+Other works, such as \citet{sheshadri2024latent} and \citet{tamirisa2024tamper}, combine RMU with adversarial training or meta-learning strategies to improve robustness.
+
+\paragraph{Rejection-based methods.}
+Rejection-based techniques aim to minimize the probability that the unlearned model produces outputs for inputs in $\Df$, encouraging the model to respond with a rejection instead. 
+For instance, the I Don't Know (\textbf{IDK}) strategy \citep{maini2024tofu} implements this objective using the following loss:
+\begin{align}
+  & \hspace*{-2mm} \ell_{\mathrm{IDK}}(\boldsymbol{\theta}) =  \mathbb E_{(x \in \Df, y \in \mathcal{D}_\text{IDK})} \left [ - \log \pi_{\btheta}(y | x) \right ] .
+  \hspace*{-3mm} \label{eq:IDK_loss}
+\end{align}
+
+\input{tabs/unlearn_method}
+
+Extensions such as \textbf{IDK+AP }\citep{yuan2024closer} replace $\ellr$ with a preference-based loss on $\Dr$ similar to NPO, while \citet{singh2025unlearning} propose minimizing the Jensen–Shannon divergence between the output distribution on $\Df$ and the rejection distribution. 
+Erasing via Language Modeling (\textbf{ELM}) \citep{gandikota2024erasing} minimizes the discrepancy between $\pi_{\btheta_\text{u}}(y|x)$ and $\pi_{\btheta_\text{0}}(y|c, x)$, where $c$ is a predefined prefix such as \textit{``As a novice in bioweapons''}.
+
+In \textbf{Table\,\ref{tab:unlearn_method}}, we provide a summary of twelve representative unlearning methods and indicate whether they incorporate a robust design. 
+The evaluation is organized along three key dimensions: unlearning effectiveness (UE), utility (UT), and robustness evaluation (RE). 
+For UE and UT, the reported metrics are further divided according to the evaluation protocol into multiple-choice question (MCQ) and open question-answer (Open-QA) settings. 
+For RE, we distinguish between model-level attacks (e.g., in-domain relearning \citep{hu2024jogging,fan2025towards} and out-of-domain fine-tuning \citep{wang2025invariance}) and input-level attacks (e.g., jailbreaking \citep{lucki2024adversarial}). 
+The letters denote the benchmarks used in the corresponding studies, such as W for WMDP \citep{li2024wmdp}. 
+As shown in the table, WMDP emerges as one of the most frequently adopted benchmarks, and therefore our subsequent experiments will primarily focus on WMDP.
+
+
+
+% \begin{table}[h!]
+% \centering
+% \caption{}
+% \renewcommand{\arraystretch}{1.25}
+% \vspace{2mm}
+% \resizebox{0.55\textwidth}{!}{% % Increased resizebox width slightly to accommodate the new column
+% \begin{tabular}{c|c|c|cc|cc|cc|c}
+% \toprule[1pt]
+% \toprule
+% \multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Reference}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Robust\\Design\end{tabular}}} & \multicolumn{2}{c|}{\textbf{UE}} & \multicolumn{2}{c|}{\textbf{UT}} & \multicolumn{2}{c|}{\textbf{RE}} & \multirow{2}{*}{\textbf{Benchmark}} \\
+% \cline{4-9}
+% & & & \textbf{MCQ} & \textbf{Gen} & \textbf{MCQ} & \textbf{Gen} & \textbf{Model} & \textbf{Input} & \\
+% \midrule
+% \rowcolor{LightCyan!50}
+% \multicolumn{10}{c}{\textbf{\textit{Divergence-driven}}} \\
+% \midrule
+% \rowcolor{gray!20}
+% \textbf{GradDiff} & \citet{yao2023large} & \xmark & & P & & P & & & PKU-SafeRLHF \\
+% \textbf{NPO} & \citet{zhang2024negative} & \xmark & & T & & T & & & TOFU \\
+% \rowcolor{gray!20}
+% \textbf{SimNPO} & \citet{fan2024simplicity} & \xmark & W & T/M & W & T/M & T & & WMDP/TOFU/MUSE \\
+% \textbf{NPO+SAM} & \citet{fan2025towards} & \cmark & W & M & W & M & W/M & W & WMDP/MUSE \\
+% \rowcolor{gray!20}
+% \textbf{NPO+IRM} & \citet{wang2025invariance} & \cmark & W & M & W & M & W/M & & WMDP/MUSE \\
+% \midrule
+% \rowcolor{LightCyan!50}
+% \multicolumn{10}{c}{\textbf{\textit{Representation-mismatch}}} \\
+% \midrule
+% \textbf{RMU} & \citet{li2024wmdp} & \xmark & W & & W & & & W & WMDP \\
+% \rowcolor{gray!20}
+% \textbf{RR} & \citet{zou2024improving} & \xmark & C & & C & C & & C & Circuit Breaker \\
+% \textbf{ELM} & \citet{gandikota2024erasing} & \xmark & W/H & & W/H & W/H & & W & WMDP/WHP \\
+% \rowcolor{gray!20}
+% \textbf{RMU+LAT} & \citet{sheshadri2024latent} & \cmark & W/H & & W/H & W & W & H & WMDP/WHP \\
+% \textbf{TAR} & \citet{tamirisa2024tamper} & \cmark & W & & W & & W & & WMDP \\
+% \midrule
+% \rowcolor{LightCyan!50}
+% \multicolumn{10}{c}{\textbf{\textit{Rejection-based}}} \\
+% \midrule
+% \rowcolor{gray!20}
+% \textbf{IDK+AP} & \citet{yuan2024closer} & \xmark & & T & T & T & & & TOFU \\
+% \textbf{JensUn} & \citet{singh2025unlearning} & \xmark & L/R & L/R & L/R & R & L & & LKF/RWKU \\
+% \bottomrule
+% \bottomrule[1pt]
+% \end{tabular}
+% }
+% \end{table}

@@ -1,0 +1,108 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.16772v1,http://arxiv.org/abs/2509.16772v1,2025-09-20 18:38:54+00:00,"AI Knows Best? The Paradox of Expertise, AI-Reliance, and Performance in Educational Tutoring Decision-Making Tasks","We present an empirical study of how both experienced tutors and non-tutors
+judge the correctness of tutor praise responses under different Artificial
+Intelligence (AI)-assisted interfaces, types of explanation (textual
+explanations vs. inline highlighting). We first fine-tuned several Large
+Language Models (LLMs) to produce binary correctness labels and explanations,
+achieving up to 88% accuracy and 0.92 F1 score with GPT-4. We then let the
+GPT-4 models assist 95 participants in tutoring decision-making tasks by
+offering different types of explanations. Our findings show that although
+human-AI collaboration outperforms humans alone in evaluating tutor responses,
+it remains less accurate than AI alone. Moreover, we find that non-tutors tend
+to follow the AI's advice more consistently, which boosts their overall
+accuracy on the task: especially when the AI is correct. In contrast,
+experienced tutors often override the AI's correct suggestions and thus miss
+out on potential gains from the AI's generally high baseline accuracy. Further
+analysis reveals that explanations in text reasoning will increase
+over-reliance and reduce underreliance, while inline highlighting does not.
+Moreover, neither explanation style actually has a significant effect on
+performance and costs participants more time to complete the task, instead of
+saving time. Our findings reveal a tension between expertise, explanation
+design, and efficiency in AI-assisted decision-making, highlighting the need
+for balanced approaches that foster more effective human-AI collaboration.","% \subsection{AI-Assisted Decision Making}
+
+Prior research on AI-assisted decision-making has produced mixed results, underscoring that its benefits depend on contextual factors. On the one hand, studies indicated that humans are sometimes misled by AI when it makes errors, especially if explanations are overly complex or fail to clarify uncertainties \cite{vasconcelos2023explanations,buccinca2021trust,dietvorst2015algorithm}. On the other hand, well-designed explanations can bolster users’ ability to judge the correctness of AI outputs. For instance, \cite{morrison2023evaluating} found that causal explanations help participants recognize AI unreliability when the AI is wrong, reducing blind reliance. However, if the AI’s decision is correct but the explanation is flawed, most participants do not immediately doubt the overall judgment; rather, they attempt to reconcile the erroneous explanation. Notably, visually misleading cues often carry greater persuasive power than textual errors, and combining incorrect visual and textual explanations can create a “double misdirection” effect \cite{morrison2023evaluating}. If, however, visual and textual explanations conflict, participants are more likely to question the AI’s decision.
+
+Despite these challenges, well-designed AI systems can complement human decision-makers, achieving performance that neither humans nor AI alone can match \cite{bansal2021does}. Yet, research also shows that humans frequently either over-rely on AI even when it is wrong or under-rely on it even when AI is correct, often missing the “appropriate reliance” that leverages AI's suggestion when it is correct and rejecting it when it errs \cite{vereschak2021evaluate,vasconcelos2023explanations,buccinca2021trust,dietvorst2015algorithm}. Even when human-AI teams outperform humans working by themselves, they often fail to exceed AI-only performance. 
+% One key to mitigating these issues is enhancing AI explainability.
+One key to boosting human-AI collaboration performance is enhancing AI explainability.
+For example, explanation designs that integrate the AI’s reasoning within the question interface (e.g., inline highlights) reduce cognitive load and help users better assess correctness \cite{bansal2021does,vasconcelos2023explanations}. Additionally, users’ reliance on AI may vary according to their task expertise. For instance, \cite{morrison2023impact} find that non-experts who are less equipped to gauge correctness are more susceptible to over-reliance.
+
+In this study, we aim to explore how different explanation methods, particularly highlighting and text explanations, can help improve human-AI performance in evaluating the effectiveness of tutoring feedback.
+
+
+\subsection{Evaluate Tutor Giving Effective Praise with AI}
+
+According to prior work~\cite{thomas2023tutor}, giving effective praise involves genuine and timely acknowledgment of a student’s specific strengths, avoiding overused expressions that lose impact. Rather than saying “good job,” effective praise highlights the student’s accomplishment by connecting it to effort rather than inherent ability. Clear, truthful, and immediate praise fosters greater motivation, resilience, and engagement. Prior work has employed AI to classify tutor responses like using a BERT-based Named Entity Recognition (NER) model to classify the effective praise~\cite{lin2023using} and obtained up to 73\% accuracy and 0.81 in F1 score. They found that the model worked well for effort-related praise but it struggled with outcomes-based praise because of the lack of training data.
+
+We believe that leveraging Large Language Models (LLMs) can effectively address the challenge of insufficient data. As highlighted in the report of \cite{openai2023gpt4}, LLMs have undergone comprehensive training with vast datasets, enabling them to execute various tasks proficiently. We only need to provide a task description and a few examples \cite{brown2020language}, and LLMs can effectively judge whether the tutor's response meets the standards of effective praise. Yet, the random process of text generation \cite{holtzman2019curious} makes verifying LLM outputs difficult. As a result, designing explanation methods that clarify the AI’s decision-making is essential for enabling educators to interpret—and, when necessary, override—LLM judgments.
+% modern Large Language Models (LLMs) \cite{openai2023gpt4} leverage vast pre-trained knowledge and can perform similar classification tasks with minimal examples \cite{brown2020language}. Yet, the unpredictability of text generation \cite{holtzman2019curious} makes verifying LLM outputs difficult. As a result, designing explanation methods that clarify the AI’s decision-making is essential for enabling educators to interpret—and, when necessary, override—LLM judgments.
+
+% Previous studies have made significant efforts to use AI to annotate tutor responses regarding giving effective praise. 
+% For example, a recent study \cite{lin2023using} employed a BERT-based Named Entity Recognition (NER) model to differentiate whether a tutor’s praise focused on effort or outcome. They manually annotated hundreds of tutor responses for training and evaluation, finding that BERT achieved promising accuracy in detecting effort-based praise but struggled with outcome-oriented praise. The authors suggest that augmenting the training dataset could address this performance gap, indicating the potential for further improvements in NER for this domain \cite{lin2023using}.
+% However, we believe that leveraging Large Language Models (LLMs) can effectively address the challenge of insufficient data. As highlighted in the report of \cite{openai2023gpt4}, LLMs have undergone comprehensive training with vast datasets, enabling them to execute various tasks proficiently. We only need to provide a task description and a few examples \cite{brown2020language}, and LLMs can effectively judge whether the tutor's response meets the standards of Effective Praise.
+% However, the drawback of using LLMs is the difficulty in automating verification because this new task lacks existing datasets, and generating Natural Language Generation outputs is somehow random \cite{holtzman2019curious}, making it challenging to ensure the correctness every time. Therefore, we need to enhance the explainability of LLMs' output so that even if LLMs produce incorrect decisions, users can still identify them instead of blindly following AI's actions.","Prior research on AI-assisted decision-making has produced mixed results, underscoring that its benefits depend on contextual factors. On the one hand, studies indicated that humans are sometimes misled by AI when it makes errors, especially if explanations are overly complex or fail to clarify uncertainties \cite{vasconcelos2023explanations,buccinca2021trust,dietvorst2015algorithm}. On the other hand, well-designed explanations can bolster users’ ability to judge the correctness of AI outputs. For instance, \cite{morrison2023evaluating} found that causal explanations help participants recognize AI unreliability when the AI is wrong, reducing blind reliance. However, if the AI’s decision is correct but the explanation is flawed, most participants do not immediately doubt the overall judgment; rather, they attempt to reconcile the erroneous explanation. Notably, visually misleading cues often carry greater persuasive power than textual errors, and combining incorrect visual and textual explanations can create a “double misdirection” effect \cite{morrison2023evaluating}. If, however, visual and textual explanations conflict, participants are more likely to question the AI’s decision.
+
+Despite these challenges, well-designed AI systems can complement human decision-makers, achieving performance that neither humans nor AI alone can match \cite{bansal2021does}. Yet, research also shows that humans frequently either over-rely on AI even when it is wrong or under-rely on it even when AI is correct, often missing the “appropriate reliance” that leverages AI's suggestion when it is correct and rejecting it when it errs \cite{vereschak2021evaluate,vasconcelos2023explanations,buccinca2021trust,dietvorst2015algorithm}. Even when human-AI teams outperform humans working by themselves, they often fail to exceed AI-only performance. 
+
+One key to boosting human-AI collaboration performance is enhancing AI explainability.
+For example, explanation designs that integrate the AI’s reasoning within the question interface (e.g., inline highlights) reduce cognitive load and help users better assess correctness \cite{bansal2021does,vasconcelos2023explanations}. Additionally, users’ reliance on AI may vary according to their task expertise. For instance, \cite{morrison2023impact} find that non-experts who are less equipped to gauge correctness are more susceptible to over-reliance.
+
+In this study, we aim to explore how different explanation methods, particularly highlighting and text explanations, can help improve human-AI performance in evaluating the effectiveness of tutoring feedback.
+
+
+\subsection{Evaluate Tutor Giving Effective Praise with AI}
+
+According to prior work~\cite{thomas2023tutor}, giving effective praise involves genuine and timely acknowledgment of a student’s specific strengths, avoiding overused expressions that lose impact. Rather than saying “good job,” effective praise highlights the student’s accomplishment by connecting it to effort rather than inherent ability. Clear, truthful, and immediate praise fosters greater motivation, resilience, and engagement. Prior work has employed AI to classify tutor responses like using a BERT-based Named Entity Recognition (NER) model to classify the effective praise~\cite{lin2023using} and obtained up to 73\
+
+We believe that leveraging Large Language Models (LLMs) can effectively address the challenge of insufficient data. As highlighted in the report of \cite{openai2023gpt4}, LLMs have undergone comprehensive training with vast datasets, enabling them to execute various tasks proficiently. We only need to provide a task description and a few examples \cite{brown2020language}, and LLMs can effectively judge whether the tutor's response meets the standards of effective praise. Yet, the random process of text generation \cite{holtzman2019curious} makes verifying LLM outputs difficult. As a result, designing explanation methods that clarify the AI’s decision-making is essential for enabling educators to interpret—and, when necessary, override—LLM judgments.","Prior research on AI-assisted decision-making has produced mixed results, under-
+scoring that its benefits depend on contextual factors. On the one hand, studies
+indicated that humans are sometimes misled by AI when it makes errors, espe-
+cially if explanations are overly complex or fail to clarify uncertainties [18,4,6].
+On the other hand, well-designed explanations can bolster users’ ability to judge
+the correctness of AI outputs. For instance, [13] found that causal explanations
+help participants recognize AI unreliability when the AI is wrong, reducing blind
+AI Knows Best? The Paradox of Expertise, AI-Reliance, and Performance 3
+reliance. However, if the AI’s decision is correct but the explanation is flawed,
+most participants do not immediately doubt the overall judgment; rather, they
+attempt to reconcile the erroneous explanation. Notably, visually misleading cues
+often carry greater persuasive power than textual errors, and combining incor-
+rect visual and textual explanations can create a “double misdirection” effect
+[13]. If, however, visual and textual explanations conflict, participants are more
+likely to question the AI’s decision.
+Despite these challenges, well-designed AI systems can complement human
+decision-makers, achieving performance that neither humans nor AI alone can
+match [2]. Yet, research also shows that humans frequently either over-rely on
+AI even when it is wrong or under-rely on it even when AI is correct, often miss-
+ing the “appropriate reliance” that leverages AI’s suggestion when it is correct
+and rejecting it when it errs [19,18,4,6]. Even when human-AI teams outperform
+humans working by themselves, they often fail to exceed AI-only performance.
+One key to boosting human-AI collaboration performance is enhancing AI ex-
+plainability. For example, explanation designs that integrate the AI’s reasoning
+within the question interface (e.g., inline highlights) reduce cognitive load and
+help users better assess correctness [2,18]. Additionally, users’ reliance on AI may
+vary according to their task expertise. For instance, [14] find that non-experts
+who are less equipped to gauge correctness are more susceptible to over-reliance.
+In this study, we aim to explore how different explanation methods, partic-
+ularly highlighting and text explanations, can help improve human-AI perfor-
+mance in evaluating the effectiveness of tutoring feedback.
+2.1 Evaluate Tutor Giving Effective Praise with AI
+According to prior work [17], giving effective praise involves genuine and timely
+acknowledgment of a student’s specific strengths, avoiding overused expressions
+that lose impact. Rather than saying “good job,” effective praise highlights the
+student’s accomplishment by connecting it to effort rather than inherent ability.
+Clear, truthful, and immediate praise fosters greater motivation, resilience, and
+engagement. Prior work has employed AI to classify tutor responses like using
+a BERT-based Named Entity Recognition (NER) model to classify the effec-
+tive praise [12] and obtained up to 73% accuracy and 0.81 in F1 score. They
+found that the model worked well for effort-related praise but it struggled with
+outcomes-based praise because of the lack of training data.
+We believe that leveraging Large Language Models (LLMs) can effectively
+address the challenge of insufficient data. As highlighted in the report of [15],
+LLMs have undergone comprehensive training with vast datasets, enabling them
+to execute various tasks proficiently. We only need to provide a task description
+and a few examples [3], and LLMs can effectively judge whether the tutor’s re-
+sponse meets the standards of effective praise. Yet, the random process of text
+generation [9] makes verifying LLM outputs difficult. As a result, designing ex-
+planation methods that clarify the AI’s decision-making is essential for enabling
+educators to interpret—and, when necessary, override—LLM judgments."

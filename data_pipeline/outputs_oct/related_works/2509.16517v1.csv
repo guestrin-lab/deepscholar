@@ -1,0 +1,56 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2509.16517v1,http://arxiv.org/abs/2509.16517v1,2025-09-20 03:47:49+00:00,Seeing Culture: A Benchmark for Visual Reasoning and Grounding,"Multimodal vision-language models (VLMs) have made substantial progress in
+various tasks that require a combined understanding of visual and textual
+content, particularly in cultural understanding tasks, with the emergence of
+new cultural datasets. However, these datasets frequently fall short of
+providing cultural reasoning while underrepresenting many cultures. In this
+paper, we introduce the Seeing Culture Benchmark (SCB), focusing on cultural
+reasoning with a novel approach that requires VLMs to reason on culturally rich
+images in two stages: i) selecting the correct visual option with
+multiple-choice visual question answering (VQA), and ii) segmenting the
+relevant cultural artifact as evidence of reasoning. Visual options in the
+first stage are systematically organized into three types: those originating
+from the same country, those from different countries, or a mixed group.
+Notably, all options are derived from a singular category for each type.
+Progression to the second stage occurs only after a correct visual option is
+chosen. The SCB benchmark comprises 1,065 images that capture 138 cultural
+artifacts across five categories from seven Southeast Asia countries, whose
+diverse cultures are often overlooked, accompanied by 3,178 questions, of which
+1,093 are unique and meticulously curated by human annotators. Our evaluation
+of various VLMs reveals the complexities involved in cross-modal cultural
+reasoning and highlights the disparity between visual reasoning and spatial
+grounding in culturally nuanced scenarios. The SCB serves as a crucial
+benchmark for identifying these shortcomings, thereby guiding future
+developments in the field of cultural reasoning.
+https://github.com/buraksatar/SeeingCulture","\subsection{Benchmarks for Cultural Understanding}
+
+The domain has seen the emergence of various recent multicultural vision-language datasets and benchmarks that incorporate explicit cultural taxonomies and tailored tasks (e.g., culture-aware VQA, grounding, and captioning), as shown in Table \ref{tab:dataset_comparison}. For example, Crossmodal-3600 \cite{thapliyal-etal-2022-crossmodal3600}, MOSAIC \cite{IPAS_mosaic_2025}, and MosAIC \cite{bai-etal-2025-power_MosAIC} are primarily centered on image captioning tasks. In contrast, while SEA-VL \cite{cahyawijaya2025crowdsourcecrawlgeneratecreating_SEA-VL} includes an image captioning component, its predominant emphasis is on image generation, similar to the approach taken by MosAIG \cite{bhalerao2025multiagentmultimodalmodelsmulticultural_mosaig}. 
+% VQA
+Numerous studies examine VQA in various settings. For example, MTVQA \cite{tang2024mtvqa}, CulturalVQA \cite{nayak-etal-2024-benchmarking_CulturalVQA}, and a part of CVLUE \cite{Wang_CVLUE_2025} have open-ended questions, while CROPE \cite{nikandrou_2025_crope} employs binary (True/False) questions. More relevant to our work, GD-VCR \cite{yin2021broaden_GDVCR}, CVQA \cite{mogrovejo2024cvqa}, a part of CultureVerse \cite{liu2025culturevlm}, and a part of GIMMICK \cite{schneider2025gimmickgloballyinclusive} feature multiple-choice questions within the framework of cultural understanding. Unlike these studies that utilize textual options, our research incorporates visual alternatives. It is essential to note that we present SCB in a single row, whereas the results of some other studies are reported separately according to specific tasks. Our evaluation, however, combines two tasks, unlike the others, which evaluate each task separately. 
+% Visual Grounding
+Besides, GlobalRG \cite{bhatia-etal-2024-local_GlobalRG} and a part of CVLUE \cite{Wang_CVLUE_2025} address the visual grounding of cultural artifacts using bounding boxes (BB), relying on straightforward prompts that include the keyword concept. In contrast, our research tackles questions that necessitate reasoning and employs a semantic segmentation mask that emphasizes fine-grained details. 
+
+\subsection{Benchmarks for Cultural Reasoning}
+
+Cultural reasoning is a critical aspect that distinguishes mere cultural understanding from deeper cognitive engagement with cultural contexts. From this perspective, various studies bridge the gap in the VQA task. For instance, MaRVL \cite{liu-etal-2021-visually_MaRVL} is the first dataset to focus on cultural reasoning; however, its objective is limited to determining the truth value of specific image captions.
+SEA-VQA \cite{2024_seavqa}, K-Viscuit \cite{corr_kviscuit}, and a few parts of CultureVerse \cite{liu2025culturevlm} and GIMMICK \cite{schneider2025gimmickgloballyinclusive} focus on cultural reasoning through multiple-choice VQA. 
+However, the multiple-choice responses in these studies are textual, and the questions are generated by AI, subsequently refined by human annotators, as seen in other related works. Additionally, unlike our study, these datasets lack a defined framework for selecting complex images, as discussed in Section \ref{create_image}.
+Only FoodieQA \cite{li-etal-2024-foodieqa} offers visual options similar to our research and features human-constructed questions; however, it has a limited scope, focusing exclusively on Chinese cuisine. Moreover, the concept of visual grounding, which involves extracting evidence from an image to substantiate reasoning, has not been previously examined.","\subsection{Benchmarks for Cultural Understanding}
+
+The domain has seen the emergence of various recent multicultural vision-language datasets and benchmarks that incorporate explicit cultural taxonomies and tailored tasks (e.g., culture-aware VQA, grounding, and captioning), as shown in Table \ref{tab:dataset_comparison}. For example, Crossmodal-3600 \cite{thapliyal-etal-2022-crossmodal3600}, MOSAIC \cite{IPAS_mosaic_2025}, and MosAIC \cite{bai-etal-2025-power_MosAIC} are primarily centered on image captioning tasks. In contrast, while SEA-VL \cite{cahyawijaya2025crowdsourcecrawlgeneratecreating_SEA-VL} includes an image captioning component, its predominant emphasis is on image generation, similar to the approach taken by MosAIG \cite{bhalerao2025multiagentmultimodalmodelsmulticultural_mosaig}. 
+
+Numerous studies examine VQA in various settings. For example, MTVQA \cite{tang2024mtvqa}, CulturalVQA \cite{nayak-etal-2024-benchmarking_CulturalVQA}, and a part of CVLUE \cite{Wang_CVLUE_2025} have open-ended questions, while CROPE \cite{nikandrou_2025_crope} employs binary (True/False) questions. More relevant to our work, GD-VCR \cite{yin2021broaden_GDVCR}, CVQA \cite{mogrovejo2024cvqa}, a part of CultureVerse \cite{liu2025culturevlm}, and a part of GIMMICK \cite{schneider2025gimmickgloballyinclusive} feature multiple-choice questions within the framework of cultural understanding. Unlike these studies that utilize textual options, our research incorporates visual alternatives. It is essential to note that we present SCB in a single row, whereas the results of some other studies are reported separately according to specific tasks. Our evaluation, however, combines two tasks, unlike the others, which evaluate each task separately. 
+
+Besides, GlobalRG \cite{bhatia-etal-2024-local_GlobalRG} and a part of CVLUE \cite{Wang_CVLUE_2025} address the visual grounding of cultural artifacts using bounding boxes (BB), relying on straightforward prompts that include the keyword concept. In contrast, our research tackles questions that necessitate reasoning and employs a semantic segmentation mask that emphasizes fine-grained details. 
+
+\subsection{Benchmarks for Cultural Reasoning}
+
+Cultural reasoning is a critical aspect that distinguishes mere cultural understanding from deeper cognitive engagement with cultural contexts. From this perspective, various studies bridge the gap in the VQA task. For instance, MaRVL \cite{liu-etal-2021-visually_MaRVL} is the first dataset to focus on cultural reasoning; however, its objective is limited to determining the truth value of specific image captions.
+SEA-VQA \cite{2024_seavqa}, K-Viscuit \cite{corr_kviscuit}, and a few parts of CultureVerse \cite{liu2025culturevlm} and GIMMICK \cite{schneider2025gimmickgloballyinclusive} focus on cultural reasoning through multiple-choice VQA. 
+However, the multiple-choice responses in these studies are textual, and the questions are generated by AI, subsequently refined by human annotators, as seen in other related works. Additionally, unlike our study, these datasets lack a defined framework for selecting complex images, as discussed in Section \ref{create_image}.
+Only FoodieQA \cite{li-etal-2024-foodieqa} offers visual options similar to our research and features human-constructed questions; however, it has a limited scope, focusing exclusively on Chinese cuisine. Moreover, the concept of visual grounding, which involves extracting evidence from an image to substantiate reasoning, has not been previously examined.","2.1 Benchmarks for Cultural Understanding
+The domain has seen the emergence of various
+recent multicultural vision-language datasets and
+benchmarks that incorporate explicit cultural tax-
+onomies and tailored tasks (e.g., culture-aware
+VQA, grounding, and captioning), as shown inTable"

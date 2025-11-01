@@ -1,0 +1,53 @@
+\section{Formative Study: Design Requirements}
+\label{sec:design}
+In Phase 1, we conducted a formative study involving interviews with knowledge workers to understand the challenges they face and their perceptions about using VR for workplace well-being. The study helped us identify design requirements for a VR app.
+\smallskip
+
+\noindent\textbf{Participants.} We recruited 10 knowledge workers (PD1-PD10) through professional networks. Participants included researchers and developers specializing in gaming, XR, and AI. They were aged 25-44 years, balanced across gender (5 male, 5 female), employed full-time, and varied in their work hours (6-10 hours daily). All participants regularly engaged in well-being activities (e.g., walking, meditation) and had prior VR experience. The study was approved by the ethics board of our institution. 
+\smallskip
+
+\noindent\textbf{Procedure.} Each participant completed a demographic survey prior to the semi-structured interviews. Interviews lasted 30-40 minutes and took place either online or in person, depending on participant preference. The interview protocol was informed by prior literature on workplace well-being and VR-based interventions, particularly work exploring strategies in digital health and relaxation-focused design in VR \cite{Riches2023Virtual, adhyaru2022virtual, Naylor2019Augmented}.
+\smallskip
+
+\noindent\textbf{Data Collection and Analysis.} 
+Interviews were recorded, transcribed using \url{rev.com}, and reviewed for accuracy. We used thematic analysis for its flexibility in exploring user perspectives \cite{braun_using_2006}. We began with repeated reading and annotation to develop codes (e.g., \textit{coping mechanisms, interaction style: unstructured, personalization}). The codes were iteratively grouped into themes through discussions and synthesized into six design requirements (DRs).
+\smallskip
+
+
+\noindent\textbf{Design Requirements.} Participants described common well-being challenges at work, particularly physical inactivity and mental stress. Long hours at a desk often led to muscle soreness, headaches, and fatigue. PD3 noted, \textit{``I have to sit at the computer most of the time, and it’s kind of challenging,''} while PD5 shared, \textit{``I feel completely exhausted from work, and I don’t have the energy to do exercises.''} Poor ergonomics and the pressure to meet deadlines often made it difficult to take breaks or move around. Mental health concerns were also common, including stress, irritability, and difficulty relaxing after work. As PD6 put it, \textit{``Sometimes I get irritated, which affects my overall day, and I also need a lot of time to relax when I get home.''} These accounts point to the need for a flexible VR tool that can support a range of well-being needs, both physical and mental, informing our first design requirement:
+
+\begin{itemize} \vspace{-0.2cm} \item[] \textbf{DR1: Support a range of well-being needs.} The tool should offer targeted support for physical (e.g., muscle tension, back pain) and mental (e.g., stress, overthinking) challenges through activities like guided breathing or stretching tailored to the user’s current state. \end{itemize}
+
+\begin{figure*}[t!]
+  \centering
+
+  \includegraphics[width=.94\textwidth, height=4cm]{figures/userjourney.png} 
+\caption {User Journey. (1) The user puts on the headset during work. (2) An AI agent, Loomi, greets them, asks what’s troubling them and suggests two activity-environment pairings. (3) Users can follow the suggestion or choose their own activity (stretching, meditation, or exploration) and environment (forest, snow, beach, or abstract). (4) Users are teleported to the chosen environment to begin the activity.}  
+\label{fig:interaction}
+
+\end{figure*}
+
+\vspace{-0.2cm} When describing preferred VR activities, participants expressed interest in both structured, guided sessions and unstructured, self-directed experiences. Some favored structured approaches with features like progression levels (PD1, PD2), posture feedback through an avatar (PD4), or breath control guidance (PD3).  Others valued free-form or self-directed experiences to contrast the often structured nature of work (PD4, PD6). Participants envisioned environments they can explore in their own way. PD8 explained \textit{``you make yourself, get out of your comfort zone, you're not gonna say 'I need to do this', but say I'm gonna do whatever random thing I want in the moment.''} Ultimately, the ability to select between both structured and unstructured options was seen as a valuable feature from participants like PD7 \textit{``the option to either follow a guided session or just sit quietly [...] and look around.''} We captured this in our second design requirement: 
+
+\begin{itemize}
+\vspace{-0.2cm} \item[] \textbf{DR2: (Un)structured activity options.} Offer both guided (structured) sessions with instructions and free-form (unstructured) environments for self-directed activities. 
+\end{itemize}
+
+
+\vspace{-0.2cm} Participants were clear about how they wanted to use VR during the workday: short, focused sessions that fit between tasks. PD7 explained, \textit{``A quick 10-minute session between tasks would be ideal, enough to recharge but doesn’t disrupt my day.''} Rather than building VR into a fixed routine, most preferred using it as needed. PD6 said, \textit{``It should fit into my day without feeling like an extra task; it needs to flow with my routine.''} Several had negative experiences with well-being tools that required tracking or daily engagement, which quickly became tedious. PD1 preferred a more reactive approach: \textit{``When stress levels are up, I'd need breathing exercises. If I have pain in the back, I'd need [...] a light exercise.''} Participants also favored low-effort activities that did not require changing clothes or sweating, rather than physically demanding ones as proposed by previous literature \cite{haliburton_vr-hiking_2023}. As PD5 put it, \textit{``I feel exhausted from work, and I don’t have the energy to do exercises.''} Such preferences point to a need for quick and easy-to-start experiences that provide immediate relief without requiring sustained effort or habit-building, leading to our third design requirement: 
+
+\begin{itemize}
+    \vspace{-0.2cm} \item[] \textbf{DR3: Short and focused sessions with minimal disruption.} Ensure that sessions can be initiated quickly (e.g., 10-minute breaks) and provide immediate benefits without demanding excessive energy or commitment.
+\end{itemize}
+
+\vspace{-0.2cm} VR was seen as a way to mentally escape the office when physical breaks were not feasible. PD6 said, \textit{``If I could put on a headset and leave to a completely different environment for a few minutes, that would make a big difference.''} Preferred environments included natural settings like beaches (PD1, PD3), forests (PD4, PD6, PD8), and snow (PD4, PD7), as well as more abstract or minimal spaces (PD10). Participants emphasized choosing environments based on their mood or stress level. PD3 explained, \textit{``I would want something tailored to me, something that actually helps with my specific stressors, not just a generic relaxing landscape.''}  Stylized spaces were favored over hyper-realistic ones. PD9 noted, \textit{``Cartoonish, creative environments that let you explore or do unexpected activities would be much more engaging than just sitting at my desk.''} The appeal was not in how ``real'' a space looked but in how it felt and helped them disconnect from work, leading to two complementary design requirements:
+
+\begin{itemize}
+    \vspace{-0.2cm} \item[] \textbf{DR4: Diversity of environments.} Provide a wide selection of environments (e.g., natural, abstract) that users can choose from based on their current mood or context. Prioritize stylized aesthetics over realism to enhance emotional immersion.
+
+    \vspace{-0.2cm} \item[] \textbf{DR5: Multipurpose VR environments.} Design environments that can support different types of activities (e.g., breathing or stretching), allowing users to decide what to do and where to do it based on their immediate needs.
+\end{itemize}
+
+\vspace{-0.2cm} Several participants emphasized the importance of personalization. Needs and stress levels varied, and participants wanted the tool to adapt accordingly (PD1, PD3, PD6, PD8, PD10). PD6 explained, \textit{``When I'm too stressed, I need someone to remind me how to calm down. More options to tell you what you could do would be good, depending on the situation.''} PD10 similarly suggested \textit{`` having personalized instructions for each user.''} For PD3, VR's strength was not in offering generic content, \textit{``like viewing a landscape,''} but in serving as \textit{``a problem solver to help me when I am going through things like panic attacks.''} Personalized suggestions were seen as key to making VR feel useful rather than generic.
+
+\begin{itemize} \vspace{-0.2cm} \item[] \textbf{DR6: Personalized and context-aware recommendations.} Support users with suggestions that adapt to individual preferences, needs, and stress levels, offering relevant activities in response to their current situation. \end{itemize}

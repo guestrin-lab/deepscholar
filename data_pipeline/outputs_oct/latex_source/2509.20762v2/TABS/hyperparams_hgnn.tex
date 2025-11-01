@@ -1,0 +1,19 @@
+\begingroup
+\setlength{\tabcolsep}{6pt}
+\begin{table*}[t]
+    \centering
+    \caption{The fine-tuned hyperparameters of HGNN.}
+    \label{tab:hyperparams_hgnn}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|ccccccccccccc}
+\hline
+\textbf{Dataset} & \multicolumn{1}{l}{\texttt{coAA}} & \multicolumn{1}{l}{\texttt{coDB}} & \multicolumn{1}{l}{\texttt{coSM}} & \texttt{qaBI} & \texttt{qaPH} & \texttt{qaMA} & \texttt{qaST} & \texttt{emEN} & \texttt{emEU} & \texttt{emER} & \texttt{soME} & \texttt{soRE} & \texttt{moML} \bigstrut\\
+\hline
+Learning rate & 0.001 & 0.001 & 0.0001 & 0.001 & 0.001 & 0.0001 & 0.001 & 0.001 & 0.001 & 0.0001 & 0.001 & 0.001 & 0.001 \bigstrut[t]\\
+Batch size & 256   & 64    & 128   & 128   & 64    & 64    & 128   & 64    & 64    & 128   & 64    & 64    & 64 \\
+Number of layers & 2     & 2     & 2     & 1     & 2     & 2     & 1     & 1     & 1     & 2     & 1     & 1     & 1 \bigstrut[b]\\
+\hline
+\end{tabular}%
+\end{adjustbox}
+\end{table*}
+\endgroup

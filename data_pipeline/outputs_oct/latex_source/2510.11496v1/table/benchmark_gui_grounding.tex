@@ -1,0 +1,20 @@
+\begin{table*}[h]
+\centering
+\small
+\footnotesize
+% \resizebox{\textwidth}{!}
+{\fontsize{8}{10}\selectfont 
+\setlength\tabcolsep{4pt}
+\begin{tabular}{l|ccc|ccc|ccc}
+\toprule
+\textbf{Method} & GPT-4o & Gemini 2.0 & Claude & Aguvis-72B & Qwen2.5-VL-72B & UI-TARS-72B & InternVL3-8B & -38B & -72B\\ 
+\midrule
+ScreenSpot & 18.1 & 84.0 & 83.0 & \textbf{89.2} & 87.1 & 88.4 & 79.5 & 85.6 & 88.7 \\ 
+ScreenSpot-V2 & $-$ & $-$ & $-$ & $-$ & $-$ & 90.3 & 81.4 & 88.3 & \textbf{90.9} \\  
+% ScreenSpot Pro & - & - & 17.1 & 23.6 & 38.1 & \textbf{43.6} &  & 13.1 & 20.4 & 26.3 \\  
+\bottomrule
+\end{tabular}
+}
+\caption{\textbf{Performance of InternVL3 and other models on GUI grounding benchmarks.}}
+\label{tab:gui_grounding}
+\end{table*}

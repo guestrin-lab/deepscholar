@@ -1,0 +1,148 @@
+arxiv_id,arxiv_link,publication_date,title,abstract,raw_latex_related_works,clean_latex_related_works,pdf_related_works
+2510.02566v1,http://arxiv.org/abs/2510.02566v1,2025-10-02 21:01:11+00:00,PhysHMR: Learning Humanoid Control Policies from Vision for Physically Plausible Human Motion Reconstruction,"Reconstructing physically plausible human motion from monocular videos
+remains a challenging problem in computer vision and graphics. Existing methods
+primarily focus on kinematics-based pose estimation, often leading to
+unrealistic results due to the lack of physical constraints. To address such
+artifacts, prior methods have typically relied on physics-based post-processing
+following the initial kinematics-based motion estimation. However, this
+two-stage design introduces error accumulation, ultimately limiting the overall
+reconstruction quality. In this paper, we present PhysHMR, a unified framework
+that directly learns a visual-to-action policy for humanoid control in a
+physics-based simulator, enabling motion reconstruction that is both physically
+grounded and visually aligned with the input video. A key component of our
+approach is the pixel-as-ray strategy, which lifts 2D keypoints into 3D spatial
+rays and transforms them into global space. These rays are incorporated as
+policy inputs, providing robust global pose guidance without depending on noisy
+3D root predictions. This soft global grounding, combined with local visual
+features from a pretrained encoder, allows the policy to reason over both
+detailed pose and global positioning. To overcome the sample inefficiency of
+reinforcement learning, we further introduce a distillation scheme that
+transfers motion knowledge from a mocap-trained expert to the
+vision-conditioned policy, which is then refined using physically motivated
+reinforcement learning rewards. Extensive experiments demonstrate that PhysHMR
+produces high-fidelity, physically plausible motion across diverse scenarios,
+outperforming prior approaches in both visual accuracy and physical realism.","\begin{figure*}[t]
+    \centering
+\includegraphics[width=0.9\linewidth]{Figs/pipeline_final.pdf}
+\caption{
+Overview of our pipeline. A visual-to-action policy reconstructs physically plausible motion from monocular videos. Training efficiency is improved by combining reinforcement learning and knowledge distillation. Global motion is guided using a \textit{pixel-as-ray} module that lifts 2D keypoints into 3D rays.
+}
+  \Description{pipeline}
+    \label{fig:pipeline}
+\end{figure*}
+\subsection{Kinematics-Based Human Mesh Recovery}
+Parametric human models~\cite{SMPL:2015, STAR:2020, SMPL-X:2019, 50649} have been widely adopted to reconstruct human motion from monocular video. 
+% These models represent the human body using low-dimensional pose and shape parameters, allowing motion reconstruction to be formulated as estimating a sequence of such parameters across video frames. 
+Early works~\cite{10.1007/978-3-319-46454-1_34, Arnab_CVPR_2019, MuVS:3DV:2017, xiang2019monocular} focus on fitting these models to individual image frames. 
+More recently, regression-based approaches, which leverage large-scale datasets, have gained attention for their ability to achieve general-purpose human mesh recovery~\cite{goel2023humans, cai2023smplerx, yin2025smplest}. 
+To account for dynamic camera movements, data-driven methods have been extended to estimate per-frame camera poses~\cite{TRACE, WHAM, yuan2022glamr}. Additionally, SLAM (Simultaneous Localization and Mapping) techniques have proven effective for robust camera motion estimation, further enhancing human motion recovery in complex scenarios~\cite{TRAM}.
+HuMoR~\cite{rempe2021humor} learns a generative motion prior that improves temporal consistency and robustness in pose estimation.
+Despite these advances in human mesh recovery, purely kinematic methods often exhibit artifacts like foot sliding, ground penetration, and momentum inconsistency.
+% Despite advances in human mesh recovery both per-frame and in global coordinates, these methods often suffer from artifacts such as foot sliding, ground penetration, and momentum inconsistency due to their purely kinematic formulation.
+
+To address such artifacts, prior works have used physical priors as an auxiliary supervision to encourage plausible dynamics. PhysPT~\cite{zhang2024physpt} proposes a neural module that refines kinematic motion using differentiable Euler-Lagrange losses to enforce rigid-body dynamics. IPMAN~\cite{tripathi2023intuitivephysics} incorporates intuitive physics cues through loss functions into monocular pose estimation, but remains a kinematics-based approach without enforcing full physical dynamics.
+% PhysPT \cite{zhang2024physpt} proposes a neural refinement module that takes a kinematically reconstructed motion sequence as input and outputs a physically corrected version. The module is trained using differentiable loss terms derived from the Euler-Lagrange equations to enforce rigid-body dynamics.
+D\&D~\cite{li2022dnd} refines kinematic motion by estimating external forces and applying analytical physical computation to enforce consistency with Newtonian dynamics. 
+While these methods improve physical realism to some extent, they operate as post-hoc refinement on kinematic reconstructions, making it difficult to recover from the ambiguity in the kinematics-based human mesh recovery stage. Moreover, the physical consistency is enforced through neural approximations rather than explicit physical simulation, leaving the overall pipeline fundamentally kinematics-based and decoupled from physical control. 
+
+\subsection{Physics-based Human Motion Imitation}
+Physics simulation platforms~\cite{makoviychuk2021isaac, todorov2012mujoco}, combined with reinforcement learning, have enabled physically grounded control of simulated characters, producing highly realistic human motion~\cite{2018-TOG-deepMimic, wang2024skillmimic, AMP, 2022-TOG-ASE, dou2022case, tessler2023calm}. 
+PPR~\cite{yang2023ppr} leverages physics priors for plausible video-based reconstruction, and differentiable dynamics models~\cite{gartner2022diffphy} integrate physics into end-to-end optimization. By training policies on large-scale motion capture datasets~\cite{AMASS:ICCV:2019, peng2021neural, kobayashi2023motion}, many works have demonstrated high-fidelity motion imitation through learned control policies~\cite{wagener2022mocapact, Luo2022EmbodiedSH, luo2024universal, Luo2023PerpetualHC, tessler2024maskedmimic, peng2018sfv, winkler2022questsim}. PhysCap~\cite{shimada2020physcap} constrains monocular capture with real-time physical simulation. However, these policies are trained to track clean 3D motion references, struggling to generalize when such data is unavailable. PHC~\cite{Luo2023PerpetualHC} estimates 3D keypoints from video as motion references, but its two-stage design decouples control from visual input, often leading to jitter and unnatural motion. 
+
+
+Moreover, prior methods rely heavily on reinforcement learning, which typically suffers from low sample efficiency. Hence, they struggle to fully exploit rich visual information and instead depend primarily on sparse, deterministic inputs such as 3D keypoints or kinematics-based representations. 
+simXR~\cite{Luo_2024_CVPR} employs a distillation-only scheme in a VR setting to train vision-to-action policies. While this avoids the need for reinforcement learning, it lacks robustness due to limited data and the absence of exploration. In contrast, our joint PPO+Distillation training substantially improves stability and generalization, demonstrating clear advantages over a pure distillation approach.
+
+Learning vision-conditioned policies for human motion reconstruction that directly aligns with visual evidence remains a largely underexplored challenge.","\subsection{Kinematics-Based Human Mesh Recovery}
+Parametric human models~\cite{SMPL:2015, STAR:2020, SMPL-X:2019, 50649} have been widely adopted to reconstruct human motion from monocular video. 
+
+Early works~\cite{10.1007/978-3-319-46454-1_34, Arnab_CVPR_2019, MuVS:3DV:2017, xiang2019monocular} focus on fitting these models to individual image frames. 
+More recently, regression-based approaches, which leverage large-scale datasets, have gained attention for their ability to achieve general-purpose human mesh recovery~\cite{goel2023humans, cai2023smplerx, yin2025smplest}. 
+To account for dynamic camera movements, data-driven methods have been extended to estimate per-frame camera poses~\cite{TRACE, WHAM, yuan2022glamr}. Additionally, SLAM (Simultaneous Localization and Mapping) techniques have proven effective for robust camera motion estimation, further enhancing human motion recovery in complex scenarios~\cite{TRAM}.
+HuMoR~\cite{rempe2021humor} learns a generative motion prior that improves temporal consistency and robustness in pose estimation.
+Despite these advances in human mesh recovery, purely kinematic methods often exhibit artifacts like foot sliding, ground penetration, and momentum inconsistency.
+
+
+To address such artifacts, prior works have used physical priors as an auxiliary supervision to encourage plausible dynamics. PhysPT~\cite{zhang2024physpt} proposes a neural module that refines kinematic motion using differentiable Euler-Lagrange losses to enforce rigid-body dynamics. IPMAN~\cite{tripathi2023intuitivephysics} incorporates intuitive physics cues through loss functions into monocular pose estimation, but remains a kinematics-based approach without enforcing full physical dynamics.
+
+D\&D~\cite{li2022dnd} refines kinematic motion by estimating external forces and applying analytical physical computation to enforce consistency with Newtonian dynamics. 
+While these methods improve physical realism to some extent, they operate as post-hoc refinement on kinematic reconstructions, making it difficult to recover from the ambiguity in the kinematics-based human mesh recovery stage. Moreover, the physical consistency is enforced through neural approximations rather than explicit physical simulation, leaving the overall pipeline fundamentally kinematics-based and decoupled from physical control. 
+
+\subsection{Physics-based Human Motion Imitation}
+Physics simulation platforms~\cite{makoviychuk2021isaac, todorov2012mujoco}, combined with reinforcement learning, have enabled physically grounded control of simulated characters, producing highly realistic human motion~\cite{2018-TOG-deepMimic, wang2024skillmimic, AMP, 2022-TOG-ASE, dou2022case, tessler2023calm}. 
+PPR~\cite{yang2023ppr} leverages physics priors for plausible video-based reconstruction, and differentiable dynamics models~\cite{gartner2022diffphy} integrate physics into end-to-end optimization. By training policies on large-scale motion capture datasets~\cite{AMASS:ICCV:2019, peng2021neural, kobayashi2023motion}, many works have demonstrated high-fidelity motion imitation through learned control policies~\cite{wagener2022mocapact, Luo2022EmbodiedSH, luo2024universal, Luo2023PerpetualHC, tessler2024maskedmimic, peng2018sfv, winkler2022questsim}. PhysCap~\cite{shimada2020physcap} constrains monocular capture with real-time physical simulation. However, these policies are trained to track clean 3D motion references, struggling to generalize when such data is unavailable. PHC~\cite{Luo2023PerpetualHC} estimates 3D keypoints from video as motion references, but its two-stage design decouples control from visual input, often leading to jitter and unnatural motion. 
+
+
+Moreover, prior methods rely heavily on reinforcement learning, which typically suffers from low sample efficiency. Hence, they struggle to fully exploit rich visual information and instead depend primarily on sparse, deterministic inputs such as 3D keypoints or kinematics-based representations. 
+simXR~\cite{Luo_2024_CVPR} employs a distillation-only scheme in a VR setting to train vision-to-action policies. While this avoids the need for reinforcement learning, it lacks robustness due to limited data and the absence of exploration. In contrast, our joint PPO+Distillation training substantially improves stability and generalization, demonstrating clear advantages over a pure distillation approach.
+
+Learning vision-conditioned policies for human motion reconstruction that directly aligns with visual evidence remains a largely underexplored challenge.","2.1 Kinematics-Based Human Mesh Recovery
+Parametric human models [Loper et al .2015; Osman et al .2020;
+Pavlakos et al .2019; Xu et al .2020] have been widely adopted to re-
+construct human motion from monocular video. Early works [Arnab
+et al.2019; Bogo et al .2016; Huang et al .2017; Xiang et al .2019]
+focus on fitting these models to individual image frames. More
+recently, regression-based approaches, which leverage large-scale
+datasets, have gained attention for their ability to achieve general-
+purpose human mesh recovery [Cai et al .2023; Goel et al .2023;
+Yin et al .2025]. To account for dynamic camera movements, data-
+driven methods have been extended to estimate per-frame camera
+poses [Shin et al .2024; Sun et al .2023; Yuan et al .2022]. Addition-
+ally, SLAM (Simultaneous Localization and Mapping) techniques
+have proven effective for robust camera motion estimation, further
+enhancing human motion recovery in complex scenarios [Wang
+et al.2024a]. HuMoR [Rempe et al .2021] learns a generative motion
+prior that improves temporal consistency and robustness in pose
+estimation. Despite these advances in human mesh recovery, purely
+kinematic methods often exhibit artifacts like foot sliding, ground
+penetration, and momentum inconsistency.
+To address such artifacts, prior works have used physical pri-
+ors as an auxiliary supervision to encourage plausible dynamics.
+PhysPT [Zhang et al .2024b] proposes a neural module that re-
+fines kinematic motion using differentiable Euler-Lagrange losses to
+enforce rigid-body dynamics. IPMAN [Tripathi et al .2023] incorpo-
+rates intuitive physics cues through loss functions into monocular
+pose estimation, but remains a kinematics-based approach with-
+out enforcing full physical dynamics. D&D [Li et al. 2022a] refines
+kinematic motion by estimating external forces and applying analyt-
+ical physical computation to enforce consistency with Newtonian
+dynamics. While these methods improve physical realism to some
+extent, they operate as post-hoc refinement on kinematic recon-
+structions, making it difficult to recover from the ambiguity in the
+kinematics-based human mesh recovery stage. Moreover, the physi-
+cal consistency is enforced through neural approximations rather
+than explicit physical simulation, leaving the overall pipeline fun-
+damentally kinematics-based and decoupled from physical control.
+2.2 Physics-based Human Motion Imitation
+Physics simulation platforms [Makoviychuk et al .2021; Todorov
+et al.2012], combined with reinforcement learning, have enabled
+physically grounded control of simulated characters, producing
+highly realistic human motion [Dou et al .2023; Peng et al .2018a,
+2022, 2021a; Tessler et al .2023; Wang et al .2024b]. PPR [Yang et al .
+2023] leverages physics priors for plausible video-based reconstruc-
+tion, and differentiable dynamics models [Gärtner et al .2022] in-
+tegrate physics into end-to-end optimization. By training policies
+on large-scale motion capture datasets [Kobayashi et al .2023; Mah-
+mood et al .2019; Peng et al .2021b], many works have demonstrated
+high-fidelity motion imitation through learned control policies [Luo
+et al.2024b, 2023, 2022; Peng et al .2018b; Tessler et al .2024; Wa-
+gener et al .2022; Winkler et al .2022a]. PhysCap [Shimada et al .
+2020] constrains monocular capture with real-time physical simula-
+tion. However, these policies are trained to track clean 3D motionreferences, struggling to generalize when such data is unavailable.
+PHC [Luo et al .2023] estimates 3D keypoints from video as motion
+references, but its two-stage design decouples control from visual
+input, often leading to jitter and unnatural motion.
+Moreover, prior methods rely heavily on reinforcement learn-
+ing, which typically suffers from low sample efficiency. Hence, they
+struggle to fully exploit rich visual information and instead depend
+primarily on sparse, deterministic inputs such as 3D keypoints or
+kinematics-based representations. simXR [Luo et al .2024a] employs
+a distillation-only scheme in a VR setting to train vision-to-action
+policies. While this avoids the need for reinforcement learning, it
+lacks robustness due to limited data and the absence of exploration.
+In contrast, our joint PPO+Distillation training substantially im-
+proves stability and generalization, demonstrating clear advantages
+over a pure distillation approach.
+Learning vision-conditioned policies for human motion recon-
+struction that directly aligns with visual evidence remains a largely
+underexplored challenge."

@@ -1,0 +1,68 @@
+% \section{Introduction}
+% \fix{finish}\cz{Story: Excel is popular but complex, rely on tutorial. Current tutorials are hand-crafted, not scalable. Motivate us to auto-generate ... With LLM and Agent, this may become feasible, but still challenging because ... To solve these challenges, we xxx}
+
+% Excel offers a wide range of functionalities and is a extensively used across various domains, including finance, analytics, and science research~\cite{chan1996use, hacker2017financial, powell2019business}.
+% While numerous online tutorials exist, they are typically authored by professionals or domain experts, resulting in high labor costs and limited coverage of frequently asked questions (FAQs). Moreover, as software continues to evolve, these tutorials require ongoing manual maintenance. Without such maintenance, operational details may become outdated or inconsistent, and accompanying screenshots may no longer reflect the current interface. This significantly increases the cost of tutorial development and upkeep. Given the critical role of tutorials and the limitations of manual creation in terms of scalability and coverage, there is a pressing need for a fully automated framework capable of generating tutorials directly from tasks.
+
+
+% To reduce the manual effort required for producing high-quality tutorials, prior work has proposed techniques for semi-automated tutorial generation. Several approaches aim to automatically create tutorials based on expert demonstrations~\cite{chi2012mixt, grabler2009generating} or existing user manuals~\cite{liu2024having, zhong2021helpviz}. These methods primarily focus on augmenting pre-existing instructional content—for example, transforming user manuals into instructional videos—to enhance understanding and improve visualization. However, all of these approaches rely on solutions provided by experts, making it impossible to generate tutorials in a fully end-to-end manner.
+
+
+% Recent advances in Large Language Models (LLMs) and agent systems have made the vision of automated tutorial generation increasingly feasible. For example, sheet agents can automate a wide range of spreadsheet operations. However, their reliance on code execution renders the process opaque to end users, failing to provide a UI-based learning pathway. Similarly, Computer-Using Agents (CUAs) can automatically plan application-level tasks and simulate human interactions to complete them. Yet, applying CUAs to Excel remains challenging due to the application’s densely structured interface and the fine-grained nature of its operations (e.g., cells, borders, and other components). Generating tutorials from task descriptions further compounds this difficulty, as it requires not only task planning and execution but also material collection and tutorial construction. To date, no existing LLM or agent framework can support this end-to-end process.
+
+
+% In this work, we aim to generate comprehensive procedural steps for Excel with documents and videos automatically. Documents present a sequence of steps, each accompanied by textual descriptions and, in some cases, one or more images~\cite{zhong2021helpviz}. Demonstration videos are recorded by professionals and feature audio narration~\cite{torrey2007pages,tuncer2020pause}, which further benefit viewers who prefer auditory guidance while observing actions~\cite{tuncer2020pause}. Different formats offer distinct learning benefits: documents are efficient for quickly skimming a procedure, and videos are effective for demonstrating the exact execution of a task, especially when presented in a step-by-step manner~\cite{chi2012mixt,truong2021automatic,zhu2021gif}. 
+
+% We first formalize the task of Excel tutorial generation: create step-by-step tutorials with documents and videos, given an Excel task. 
+% To comprehensively evaluate the effectiveness of our methods, we build a dataset comprising 1,559 real-world Excel tasks covering 28 categories of operation types and 17 categories of target objects. Compared with existing Excel manipulation datasets, our dataset includes Excel-level tasks that are absent in prior work and offers broader coverage of spreadsheet-level tasks.
+% On this foundation, we present the first automated Excel tutorial framework that executes Excel tasks and produces both instruction documents and videos. Our framework consists of three core modules: (1) task instantiation, (2) automatic trajectory collection, and (3) tutorial generation. Specifically, in the task instantiation module, queries from collected datasets are rewritten to be clear tasks in Excel and each task will be matched with a suitable Excel file for tutorial generation as no execution files are available in the original datasets.
+% Then, the sequence of actions is generated in the automatic trajectory collection module, simulating the behavior of human experts. The Execution Agent determines each subsequent step based on the current screenshot and the history of prior actions. Finally, instructional documents and videos are created based on the action sequence in the Tutorial Generation module.
+% For each step, the system generates a concise, user-friendly title and description, linked with the corresponding screenshots and action video. 
+
+
+% To comprehensively evaluate the quality of generated instructional documents and videos, We adopts both human experts rates and MLLMs as judges with an evaluation protocol that scores the candidate tutorials on complementary criteria (see \autoref{sec:eval_metrics}). The experiment results show that our method can produce high-quality instruction documents and videos that effectively guide users in completing their tasks.
+% The main contributions of this work are as follows:
+% \begin{itemize}
+%     \item We propose a novel pipeline for automatically generating Excel tutorials from task descriptions. To the best of our knowledge, this is the first work that enables tutorial creation solely based on task inputs.
+%     \item We propose an Execution Agent (ExeAgent), which produces and executes the operation sequences required to complete Excel tasks. The success rate of task executor hits 39.58\% success rate, surpassing existing state-of-the-art approaches.
+%     \item We propose a diverse and representative dataset consist of Excel tasks from multiple sources and generate tutorials across various types. The resulting tutorials covers a wide range of operation categories and target users, meeting learning needs in different scenarios while maintaining accuracy and practicality. Notably, our approach eliminates manual labor, requiring only one-twentieth of the time cost compared to expert-authored tutorials. %\cz{Save how many effort?}
+%     \item We design a systematic set of evaluation metrics and conducted human evaluations. The results indicate that our method generates high-quality instructional content and effectively guides users in completing Excel-related tasks.
+% \end{itemize}
+
+% \fix{finish}\cz{1. Auto generate pipeline, 2. design xx agent, better successful rate 3. with real data, auto generate xxx video and tutorial 4. Human evaluation suggests that xxx, and save xxx effort.}
+\section{Introduction}
+
+Excel provides a comprehensive set of functionalities and is extensively adopted across domains such as finance, analytics, and scientific research~\cite{chan1996use,hacker2017financial,powell2019business}. 
+Its versatility makes it a critical tool for data management, statistical analysis, and visualization. 
+At the same time, this richness of features creates significant learning barriers, as many users struggle to identify the appropriate operations or to integrate multiple functions effectively~\cite{carroll1990nurnberg,ko2007information}. 
+To mitigate these challenges, tutorials have long served as an essential support mechanism, guiding users through common tasks and enabling more effective utilization of Excel’s capabilities.
+However, existing tutorials are predominantly authored by domain experts, which entails substantial labor costs and restricts coverage across the diverse range of tasks users encounter~\cite{grossman2010toolclips}.
+Moreover, as software evolves, these tutorials must be continuously updated: outdated screenshots, obsolete descriptions, and inconsistent workflows reduce their instructional value~\cite{liu2024having}. 
+This dependence on manual authoring highlights the need for a scalable, automated approach to tutorial generation.
+
+Prior research has explored semi-automated methods for tutorial creation. 
+Some approaches generate tutorials based on expert demonstrations~\cite{chi2012mixt,grabler2009generating}, while others transform existing manuals into instructional videos or annotated guides~\cite{liu2024having,zhong2021helpviz}. 
+Although these methods improve efficiency, they fundamentally rely on curated expert solutions, preventing a fully end-to-end pipeline. 
+Recent advances in large language models (LLMs) and agent systems make automated tutorial generation increasingly feasible~\cite{zhang2024ufo,liu2025infigui}. 
+Spreadsheet agents can already automate a variety of operations~\cite{li2023sheetcopilot}, but their code-driven execution remains opaque to end users, offering limited pedagogical benefit. 
+Similarly, Computer-Using Agents (CUAs) ~\cite{openai2025computer,zhang2025ufo2} demonstrate the ability to plan application-level tasks through simulated human interactions. 
+However, applying such systems to Excel is uniquely challenging due to its densely structured interface and fine-grained operations (e.g., cell editing, formulas, and borders). 
+Generating tutorials from task descriptions adds an additional layer of difficulty: the system must not only plan and execute tasks but also collect execution traces, screenshots, and contextual information suitable for tutorial construction. 
+To date, no existing work addresses this end-to-end requirement.
+
+In this paper, we present the first framework for automatically generating Excel tutorials directly from natural language task descriptions. Our framework first instantiates the task. Then the Execution Agent plans and executes the solution in Excel, and collects the intermediate artifacts required for tutorial construction. These artifacts are subsequently transformed into step-by-step instructional documents and narrated video demonstrations. 
+Different tutorial formats offer complementary learning benefits: documents allow for efficient skimming of procedures, while videos provide clear demonstrations of fine-grained execution steps and are particularly useful for users who prefer visual or auditory guidance~\cite{torrey2007pages}. 
+
+To support development and evaluation, we curate a dataset of 1,559 real-world Excel tasks spanning 28 operations and 17 target object categories. 
+This dataset covers Excel-level tasks absent from prior work and enables comprehensive tutorial generation at scale. 
+We further design a systematic evaluation protocol that combines human expert judgments with LLM-based assessments. 
+Experimental results show that our framework improves execution success rates by 8.5\% over state-of-the-art baselines. 
+Moreover, the generated tutorials demonstrate superior readability and instructional effectiveness, often approaching or surpassing expert-authored materials, while reducing authoring costs to one-twentieth of manual effort. 
+Our main contributions are as follows:
+\begin{itemize}
+    \item We propose the first end-to-end framework for generating Excel tutorials directly from natural language task descriptions, producing both instructional documents and video demonstrations. 
+    \item We introduce an Execution Agent that plans and executes Excel tasks while collecting intermediate artifacts for tutorial generation, achieving a task execution success rate of 39.58\% and surpassing state-of-the-art baselines. 
+    \item A diverse dataset of 1,559 real-world Excel tasks is curated, covering a wide range of operations  and target object categories to enable scalable and representative tutorial generation. 
+    \item A systematic evaluation protocol is designed with both human and LLM-based judges, demonstrating that the generated tutorials are effective, readable, and substantially reduce manual labor costs. 
+\end{itemize}
+

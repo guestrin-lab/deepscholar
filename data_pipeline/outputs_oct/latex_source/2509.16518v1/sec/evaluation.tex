@@ -1,0 +1,115 @@
+
+\section{Results}
+\label{sec:results}
+
+
+\subsection{Methodology}
+\label{sec:methodology}
+
+\textbf{Video Diffusion Model.} We evaluate \X using the following open source, widely available video models to generate the videos:
+\begin{itemize}
+    \item Wan 2.1~\cite{wan} 1.3B, 14B, 480p and 720p models, at 81 frames.
+    \item HunyuanVideo 720p~\cite{hunyuanvideo} at 720p. 81 frames.
+\end{itemize}
+
+All experiments are conducted using bfloat16 precision. We implement CUDA kernels for \X with the aid of device primitives from ThunderKittens~\cite{thunderkittens} for a H100 GPU. To evaluate the quality of the videos generated, we use the VBench~\cite{vbench} VLM benchmarking scores, alongside visual comparisons of frames from the generated videos. We test two configurations of \X: one using the caching strategy to determine the mask (\X-cached), and the other using the pooling strategy (\X-pooling). For the \X-cached strategy, the threshold is set to $0.5/N$, where $N$ is the number of embedding vectors in the latent space representation of the video. The attention mask is cached once every $15$ DiT iterations. We compare \X with two prior works that use block sparse attention to leverage sparsity in attention scores in DiTs: Radial Attention~\cite{radialattn} and SparseVideoGen~\cite{sparsevideogen}. SparseVideoGen~\cite{sparsevideogen} uses a local-global attention computation strategy (windowed attention) across spatio templaral tokens. Radial attention uses a static attention mask that leads to an exponentially decaying compute density along the antidiagonal of the attention map.
+
+\subsection{End-to-end Speedup}
+\label{sec:e2espeedup}
+
+Fig.~\ref{fig:e2e_normalized} shows the end-to-end time required to generate the video, normalized to baseline. We observe that \X is able to achieve an average speedup of $1.48\times$ and up to $1.65\times$. 
+\X achieves a speedup as a result of accelerating the attention computation time during training. Fig.~\ref{fig:attn_normalized} shows the average runtime needed to compute the attention of every layer, normalized to the PyTorch implementation baseline. For the attention computation, \X achieves a speedup of $1.93\times$ on average, up to $2.38\times$. \X achieves a higher speedup when generating videos at 720p.
+Our approach achieves a higher speedup of $1.2\times$ compared to SparseVideoGen~\cite{sparsevideogen} and $1.22\times$ compared to RadialAttention~\cite{radialattn}. The observed speedup comes from skipping a larger fraction of attention scores. However, this advantage diminishes at higher video resolutions (720p compared to 480p). This is because, in self-attention, interactions between blocks of embeddings that correspond to distant regions of the video are typically zero. As the resolution increases, each embedding vector covers a smaller region of the input, leading to a greater number of embeddings. This increases the proportion of zero-valued attention scores, which block-sparse attention can skip. Consequently, while more scores are skipped, the relative speedup achieved by \X decreases.
+
+
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=0 90 0 80, clip, width=\linewidth]{figs2/e2enorm_speedup.pdf}
+    \caption{Normalized end-to-end speedup in seconds for video generation.}
+    \label{fig:e2e_normalized}
+\end{figure}
+
+\begin{figure}[!htb]
+    \includegraphics[trim=0 90 0 90, clip, width=\linewidth]{figs2/attnnorm_speedup.pdf}
+    \caption{Normalized attention computation speedup compared to baseline.}
+    \label{fig:attn_normalized}
+\end{figure}
+
+  
+
+% \begin{figure}[!htb]
+%     \centering
+%     \begin{subfigure}{0.5\textwidth}
+%         \includegraphics[width=\linewidth]{figs2/e2enorm_speedup.pdf}
+%         \caption{Normalized end-to-end speedup in seconds for video generation.}
+%         \label{fig:e2e_normalized}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}{0.5\textwidth}
+%         \includegraphics[width=\linewidth]{figs2/attnnorm_speedup.pdf}
+%         \caption{Normalized attention computation speedup compared to baseline.}
+%         \label{fig:attn_normalized}
+%     \end{subfigure}
+%     \caption{Normalized performance comparison for video generation.}
+%     \label{fig:normalized_comparison}
+% \end{figure}
+
+
+\subsection{Qualitative Analysis}
+\label{sec:qualitative_analysis}
+
+
+Table~\ref{tab:vbench} shows the VBench~\cite{vbench} video benchmarking results when compared to the baseline. We observe that \X achieves negligible degradation in quality when compared to the baseline.
+
+\input{tables/vbench_limited}
+
+Figs.~\ref{fig:hunyuanvideo}, \ref{fig:wan1_3b} and \ref{fig:wan14b} show the visual representation of the produced video compared to the original (the top row of each set of videos represents the baseline video) for the HunyuanVideo model, Wan 1.3B model, and the Wan 14B model, respectively. We find that across all the prompts tested here, \X can recover the original video with no quality degradation. \X also retains the generated video style and does not significantly shift the distribution captured by the underlying model. 
+
+
+
+
+
+\subsection{Ablation Study}
+\label{sec:ablation}
+
+Fig.~\ref{fig:ablation} depicts the average attention computation time for video generation as the threshold parameter is varied. We sweep the threshold parameter from $0.1/N$ to $1/N$, where $N$ is the number of embedding vectors in the latent space representation of the video. A higher threshold enables skipping a larger amount of computation, thereby leading to a speedup.  
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figs2/ablation.pdf}
+    \caption{Normalized video generation time at different thresholds applied to \X-cached.}
+    \label{fig:ablation}
+\end{figure}
+
+
+
+\begin{figure*}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figs2/hunyuan.pdf}
+    \caption{Samples of videos generated using baseline HunyuanVideo model, and \X-HunyuanVideo (The baseline generates first row, second row generated using \X)}
+    \label{fig:hunyuanvideo}
+\end{figure*}
+
+
+
+
+\begin{figure*}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figs2/wan1_3b.pdf}
+    \caption{Samples of videos generated using baseline Wan-1.3B model, and \X-Wan1.3B. (First row is generated by the baseline, second row is generated using \X)}
+    \label{fig:wan1_3b}
+\end{figure*}
+
+
+
+
+
+\begin{figure*}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figs2/wan14b.pdf}
+    \caption{Samples of videos generated using baseline Wan-14B model, and \X-Wan14B (First row is generated by the baseline, second row is generated by \X)}
+    \label{fig:wan14b}
+\end{figure*}
+
+

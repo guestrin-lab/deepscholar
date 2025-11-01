@@ -1,0 +1,222 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,mitash2023armbench,\cite{mitash2023armbench},ARMBench: An Object-centric Benchmark Dataset for Robotic Manipulation,http://arxiv.org/abs/2303.16382v1,"This paper introduces Amazon Robotic Manipulation Benchmark (ARMBench), a
+large-scale, object-centric benchmark dataset for robotic manipulation in the
+context of a warehouse. Automation of operations in modern warehouses requires
+a robotic manipulator to deal with a wide variety of objects, unstructured
+storage, and dynamically changing inventory. Such settings pose challenges in
+perceiving the identity, physical characteristics, and state of objects during
+manipulation. Existing datasets for robotic manipulation consider a limited set
+of objects or utilize 3D models to generate synthetic scenes with limitation in
+capturing the variety of object properties, clutter, and interactions. We
+present a large-scale dataset collected in an Amazon warehouse using a robotic
+manipulator performing object singulation from containers with heterogeneous
+contents. ARMBench contains images, videos, and metadata that corresponds to
+235K+ pick-and-place activities on 190K+ unique objects. The data is captured
+at different stages of manipulation, i.e., pre-pick, during transfer, and after
+placement. Benchmark tasks are proposed by virtue of high-quality annotations
+and baseline performance evaluation are presented on three visual perception
+challenges, namely 1) object segmentation in clutter, 2) object identification,
+and 3) defect detection. ARMBench can be accessed at http://armbench.com","Mitash, Chaitanya and Wang, Fan and Lu, Shiyang and Terhuja, Vikedo and Garaas, Tyler and Polido, Felipe and Nambi, Manikantan",2023,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,Tabernik2019JIM,\cite{Tabernik2019JIM},Segmentation-Based Deep-Learning Approach for Surface-Defect Detection,http://arxiv.org/abs/1903.08536v3,"Automated surface-anomaly detection using machine learning has become an
+interesting and promising area of research, with a very high and direct impact
+on the application domain of visual inspection. Deep-learning methods have
+become the most suitable approaches for this task. They allow the inspection
+system to learn to detect the surface anomaly by simply showing it a number of
+exemplar images. This paper presents a segmentation-based deep-learning
+architecture that is designed for the detection and segmentation of surface
+anomalies and is demonstrated on a specific domain of surface-crack detection.
+The design of the architecture enables the model to be trained using a small
+number of samples, which is an important requirement for practical
+applications. The proposed model is compared with the related deep-learning
+methods, including the state-of-the-art commercial software, showing that the
+proposed approach outperforms the related methods on the specific domain of
+surface-crack detection. The large number of experiments also shed light on the
+required precision of the annotation, the number of required training samples
+and on the required computational cost. Experiments are performed on a newly
+created dataset based on a real-world quality control case and demonstrates
+that the proposed approach is able to learn on a small number of defected
+surfaces, using only approximately 25-30 defective training samples, instead of
+hundreds or thousands, which is usually the case in deep-learning applications.
+This makes the deep-learning method practical for use in industry where the
+number of available defective samples is limited. The dataset is also made
+publicly available to encourage the development and evaluation of new methods
+for surface-defect detection.","Tabernik, Domen and {\v{S}}ela, Samo and Skvar{\v{c}}, Jure and 
+  Sko{\v{c}}aj, Danijel",2019,May,,10.1007/s10845-019-01476-x,Journal of Intelligent Manufacturing
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,mishra21-vt-adl,\cite{mishra21-vt-adl},{VT-ADL}: A Vision Transformer Network for Image Anomaly Detection and Localization,,,"Mishra, Pankaj and Verk, Riccardo and Fornasier, Daniele and Piciarelli, Claudio and Foresti, Gian Luca",2021,June,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,bergmann_mvtec_2021,\cite{bergmann_mvtec_2021},The {MVTec} {Anomaly} {Detection} {Dataset}: {A} {Comprehensive} {Real}-{World} {Dataset} for {Unsupervised} {Anomaly} {Detection},,,"Bergmann, Paul and Batzner, Kilian and Fauser, Michael and Sattlegger, David and Steger, Carsten",2021,,http://link.springer.com/10.1007/s11263-020-01400-4,10.1007/s11263-020-01400-4,International Journal of Computer Vision
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,zou2022spot,\cite{zou2022spot},"SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection
+  and Segmentation",http://arxiv.org/abs/2207.14315v1,"Visual anomaly detection is commonly used in industrial quality inspection.
+In this paper, we present a new dataset as well as a new self-supervised
+learning method for ImageNet pre-training to improve anomaly detection and
+segmentation in 1-class and 2-class 5/10/high-shot training setups. We release
+the Visual Anomaly (VisA) Dataset consisting of 10,821 high-resolution color
+images (9,621 normal and 1,200 anomalous samples) covering 12 objects in 3
+domains, making it the largest industrial anomaly detection dataset to date.
+Both image and pixel-level labels are provided. We also propose a new
+self-supervised framework - SPot-the-difference (SPD) - which can regularize
+contrastive self-supervised pre-training, such as SimSiam, MoCo and SimCLR, to
+be more suitable for anomaly detection tasks. Our experiments on VisA and
+MVTec-AD dataset show that SPD consistently improves these contrastive
+pre-training baselines and even the supervised pre-training. For example, SPD
+improves Area Under the Precision-Recall curve (AU-PR) for anomaly segmentation
+by 5.9% and 6.8% over SimSiam and supervised pre-training respectively in the
+2-class high-shot regime. We open-source the project at
+http://github.com/amazon-research/spot-diff .","Zou, Yang and Jeong, Jongheon and Pemula, Latha and Zhang, Dongqing and Dabeer, Onkar",2022,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,rubio_multi-class_2019,\cite{rubio_multi-class_2019},Multi-class structural damage segmentation using fully convolutional networks,,,"Rubio, Juan Jose and Kashiwa, Takahiro and Laiteerapong, Teera and Deng, Wenlong and Nagai, Kohei and Escalera, Sergio and Nakayama, Kotaro and Matsuo, Yutaka and Prendinger, Helmut",2019,,https://www.sciencedirect.com/science/article/pii/S0166361518308911,10.1016/j.compind.2019.08.002,Computers in Industry
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,shi_improvement_2021,\cite{shi_improvement_2021},Improvement of {Damage} {Segmentation} {Based} on {Pixel}-{Level} {Data} {Balance} {Using} {VGG}-{Unet},,,"Shi, Jiyuan and Dang, Ji and Cui, Mida and Zuo, Rongzhi and Shimizu, Kazuhiro and Tsunoda, Akira and Suzuki, Yasuhiro",2021,,,10.3390/app11020518,Applied Sciences
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,zhang_vehicle-damage-detection_2020,\cite{zhang_vehicle-damage-detection_2020},Vehicle-{Damage}-{Detection} {Segmentation} {Algorithm} {Based} on {Improved} {Mask} {RCNN},,,"Zhang, Qinghui and Chang, Xianing and Bian, Shanfeng Bian",2020,,,10.1109/ACCESS.2020.2964055,IEEE Access
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,kong_multi-task_2021,\cite{kong_multi-task_2021},Multi-{Task} {Classification} and {Segmentation} for {Explicable} {Capsule} {Endoscopy} {Diagnostics},,,"Kong, Zishang and He, Min and Luo, Qianjiang and Huang, Xiansong and Wei, Pengxu and Cheng, Yalu and Chen, Luyang and Liang, Yongsheng and Lu, Yanchang and Li, Xi and Chen, Jie",2021,,https://www.frontiersin.org/article/10.3389/fmolb.2021.614277,,Frontiers in Molecular Biosciences
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,han2022adbench,\cite{han2022adbench},ADBench: Anomaly Detection Benchmark,http://arxiv.org/abs/2206.09426v2,"Given a long list of anomaly detection algorithms developed in the last few
+decades, how do they perform with regard to (i) varying levels of supervision,
+(ii) different types of anomalies, and (iii) noisy and corrupted data? In this
+work, we answer these key questions by conducting (to our best knowledge) the
+most comprehensive anomaly detection benchmark with 30 algorithms on 57
+benchmark datasets, named ADBench. Our extensive experiments (98,436 in total)
+identify meaningful insights into the role of supervision and anomaly types,
+and unlock future directions for researchers in algorithm selection and design.
+With ADBench, researchers can easily conduct comprehensive and fair evaluations
+for newly proposed methods on the datasets (including our contributed ones from
+natural language and computer vision domains) against the existing baselines.
+To foster accessibility and reproducibility, we fully open-source ADBench and
+the corresponding results.","Han, Songqiao and Hu, Xiyang and Huang, Hailiang and Jiang, Minqi and Zhao, Yue",2022,,,,Advances in Neural Information Processing Systems
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,akcay2022anomalib,\cite{akcay2022anomalib},Anomalib: A Deep Learning Library for Anomaly Detection,http://arxiv.org/abs/2202.08341v1,"This paper introduces anomalib, a novel library for unsupervised anomaly
+detection and localization. With reproducibility and modularity in mind, this
+open-source library provides algorithms from the literature and a set of tools
+to design custom anomaly detection algorithms via a plug-and-play approach.
+Anomalib comprises state-of-the-art anomaly detection algorithms that achieve
+top performance on the benchmarks and that can be used off-the-shelf. In
+addition, the library provides components to design custom algorithms that
+could be tailored towards specific needs. Additional tools, including
+experiment trackers, visualizers, and hyper-parameter optimizers, make it
+simple to design and implement anomaly detection models. The library also
+supports OpenVINO model optimization and quantization for real-time deployment.
+Overall, anomalib is an extensive library for the design, implementation, and
+deployment of unsupervised anomaly detection models from data to the edge.","Akcay, Samet and Ameln, Dick and Vaidya, Ashwin and Lakshmanan, Barath and Ahuja, Nilesh and Genc, Utku",2022,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,yao2024gladbetterreconstructionglobal,\cite{yao2024gladbetterreconstructionglobal},"GLAD: Towards Better Reconstruction with Global and Local Adaptive
+  Diffusion Models for Unsupervised Anomaly Detection",http://arxiv.org/abs/2406.07487v3,"Diffusion models have shown superior performance on unsupervised anomaly
+detection tasks. Since trained with normal data only, diffusion models tend to
+reconstruct normal counterparts of test images with certain noises added.
+However, these methods treat all potential anomalies equally, which may cause
+two main problems. From the global perspective, the difficulty of
+reconstructing images with different anomalies is uneven. Therefore, instead of
+utilizing the same setting for all samples, we propose to predict a particular
+denoising step for each sample by evaluating the difference between image
+contents and the priors extracted from diffusion models. From the local
+perspective, reconstructing abnormal regions differs from normal areas even in
+the same image. Theoretically, the diffusion model predicts a noise for each
+step, typically following a standard Gaussian distribution. However, due to the
+difference between the anomaly and its potential normal counterpart, the
+predicted noise in abnormal regions will inevitably deviate from the standard
+Gaussian distribution. To this end, we propose introducing synthetic abnormal
+samples in training to encourage the diffusion models to break through the
+limitation of standard Gaussian distribution, and a spatial-adaptive feature
+fusion scheme is utilized during inference. With the above modifications, we
+propose a global and local adaptive diffusion model (abbreviated to GLAD) for
+unsupervised anomaly detection, which introduces appealing flexibility and
+achieves anomaly-free reconstruction while retaining as much normal information
+as possible. Extensive experiments are conducted on three commonly used anomaly
+detection datasets (MVTec-AD, MPDD, and VisA) and a printed circuit board
+dataset (PCB-Bank) we integrated, showing the effectiveness of the proposed
+method.",Hang Yao and Ming Liu and Haolin Wang and Zhicun Yin and Zifei Yan and Xiaopeng Hong and Wangmeng Zuo,2024,,https://arxiv.org/abs/2406.07487,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,ruff2018deep,\cite{ruff2018deep},Explainable Deep One-Class Classification,http://arxiv.org/abs/2007.01760v3,"Deep one-class classification variants for anomaly detection learn a mapping
+that concentrates nominal samples in feature space causing anomalies to be
+mapped away. Because this transformation is highly non-linear, finding
+interpretations poses a significant challenge. In this paper we present an
+explainable deep one-class classification method, Fully Convolutional Data
+Description (FCDD), where the mapped samples are themselves also an explanation
+heatmap. FCDD yields competitive detection performance and provides reasonable
+explanations on common anomaly detection benchmarks with CIFAR-10 and ImageNet.
+On MVTec-AD, a recent manufacturing dataset offering ground-truth anomaly maps,
+FCDD sets a new state of the art in the unsupervised setting. Our method can
+incorporate ground-truth anomaly maps during training and using even a few of
+these (~5) improves performance significantly. Finally, using FCDD's
+explanations we demonstrate the vulnerability of deep one-class classification
+models to spurious image features such as image watermarks.","Ruff, Lukas and Vandermeulen, Robert and Goernitz, Nico and Deecke, Lucas and Siddiqui, Shoaib Ahmed and Binder, Alexander and M{\""u}ller, Emmanuel and Kloft, Marius",2018,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,yi2020patch,\cite{yi2020patch},Patch SVDD: Patch-level SVDD for Anomaly Detection and Segmentation,http://arxiv.org/abs/2006.16067v2,"In this paper, we address the problem of image anomaly detection and
+segmentation. Anomaly detection involves making a binary decision as to whether
+an input image contains an anomaly, and anomaly segmentation aims to locate the
+anomaly on the pixel level. Support vector data description (SVDD) is a
+long-standing algorithm used for an anomaly detection, and we extend its deep
+learning variant to the patch-based method using self-supervised learning. This
+extension enables anomaly segmentation and improves detection performance. As a
+result, anomaly detection and segmentation performances measured in AUROC on
+MVTec AD dataset increased by 9.8% and 7.0%, respectively, compared to the
+previous state-of-the-art methods. Our results indicate the efficacy of the
+proposed method and its potential for industrial application. Detailed analysis
+of the proposed method offers insights regarding its behavior, and the code is
+available online.","Yi, Jihun and Yoon, Sungroh",2020,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,bergmann2018improving,\cite{bergmann2018improving},"Improving Unsupervised Defect Segmentation by Applying Structural
+  Similarity to Autoencoders",http://arxiv.org/abs/1807.02011v3,"Convolutional autoencoders have emerged as popular methods for unsupervised
+defect segmentation on image data. Most commonly, this task is performed by
+thresholding a pixel-wise reconstruction error based on an $\ell^p$ distance.
+This procedure, however, leads to large residuals whenever the reconstruction
+encompasses slight localization inaccuracies around edges. It also fails to
+reveal defective regions that have been visually altered when intensity values
+stay roughly consistent. We show that these problems prevent these approaches
+from being applied to complex real-world scenarios and that it cannot be easily
+avoided by employing more elaborate architectures such as variational or
+feature matching autoencoders. We propose to use a perceptual loss function
+based on structural similarity which examines inter-dependencies between local
+image regions, taking into account luminance, contrast and structural
+information, instead of simply comparing single pixel values. It achieves
+significant performance gains on a challenging real-world dataset of
+nanofibrous materials and a novel dataset of two woven fabrics over the state
+of the art approaches for unsupervised defect segmentation that use pixel-wise
+reconstruction error metrics.","Bergmann, Paul and L{\""o}we, Sindy and Fauser, Michael and Sattlegger, David and Steger, Carsten",2018,,,,arXiv preprint arXiv:1807.02011
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,akcay2019ganomaly,\cite{akcay2019ganomaly},GANomaly: Semi-Supervised Anomaly Detection via Adversarial Training,http://arxiv.org/abs/1805.06725v3,"Anomaly detection is a classical problem in computer vision, namely the
+determination of the normal from the abnormal when datasets are highly biased
+towards one class (normal) due to the insufficient sample size of the other
+class (abnormal). While this can be addressed as a supervised learning problem,
+a significantly more challenging problem is that of detecting the
+unknown/unseen anomaly case that takes us instead into the space of a
+one-class, semi-supervised learning paradigm. We introduce such a novel anomaly
+detection model, by using a conditional generative adversarial network that
+jointly learns the generation of high-dimensional image space and the inference
+of latent space. Employing encoder-decoder-encoder sub-networks in the
+generator network enables the model to map the input image to a lower dimension
+vector, which is then used to reconstruct the generated output image. The use
+of the additional encoder network maps this generated image to its latent
+representation. Minimizing the distance between these images and the latent
+vectors during training aids in learning the data distribution for the normal
+samples. As a result, a larger distance metric from this learned data
+distribution at inference time is indicative of an outlier from that
+distribution - an anomaly. Experimentation over several benchmark datasets,
+from varying domains, shows the model efficacy and superiority over previous
+state-of-the-art approaches.","Akcay, Samet and Atapour-Abarghouei, Amir and Breckon, Toby P",2019,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,schlegl2019f,\cite{schlegl2019f},f-AnoGAN: Fast unsupervised anomaly detection with generative adversarial networks,,,"Schlegl, Thomas and Seeb{\""o}ck, Philipp and Waldstein, Sebastian M and Langs, Georg and Schmidt-Erfurth, Ursula",2019,,,,Medical image analysis
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,jeong2023winclip,\cite{jeong2023winclip},Winclip: Zero-/few-shot anomaly classification and segmentation,,,"Jeong, Jongheon and Zou, Yang and Kim, Taewan and Zhang, Dongqing and Ravichandran, Avinash and Dabeer, Onkar",2023,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,roth2022towards,\cite{roth2022towards},Towards Total Recall in Industrial Anomaly Detection,http://arxiv.org/abs/2106.08265v2,"Being able to spot defective parts is a critical component in large-scale
+industrial manufacturing. A particular challenge that we address in this work
+is the cold-start problem: fit a model using nominal (non-defective) example
+images only. While handcrafted solutions per class are possible, the goal is to
+build systems that work well simultaneously on many different tasks
+automatically. The best performing approaches combine embeddings from ImageNet
+models with an outlier detection model. In this paper, we extend on this line
+of work and propose \textbf{PatchCore}, which uses a maximally representative
+memory bank of nominal patch-features. PatchCore offers competitive inference
+times while achieving state-of-the-art performance for both detection and
+localization. On the challenging, widely used MVTec AD benchmark PatchCore
+achieves an image-level anomaly detection AUROC score of up to $99.6\%$, more
+than halving the error compared to the next best competitor. We further report
+competitive results on two additional datasets and also find competitive
+results in the few samples regime.\freefootnote{$^*$ Work done during a
+research internship at Amazon AWS.} Code:
+github.com/amazon-research/patchcore-inspection.","Roth, Karsten and Pemula, Latha and Zepeda, Joaquin and Sch{\""o}lkopf, Bernhard and Brox, Thomas and Gehler, Peter",2022,,,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,jiang2025mmad,\cite{jiang2025mmad},{MMAD}: {A} {C}omprehensive {B}enchmark for {M}ultimodal {L}arge {L}anguage {M}odels in {I}ndustrial {A}nomaly {D}etection,,,Xi Jiang and Jian Li and Hanqiu Deng and Yong Liu and Bin-Bin Gao and Yifeng Zhou and Jialin Li and Chengjie Wang and Feng Zheng,2025,,https://arxiv.org/abs/2410.09453,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,claude-model-card,\cite{claude-model-card},"The Claude 3 Model Family: Opus, Sonnet, Haiku",,,Anthropic,2024,,https://assets.anthropic.com/m/61e7d27f8c8f5919/original/Claude-3-Model-Card.pdf,,
+Kaputt: A Large-Scale Dataset for Visual Defect Detection,http://arxiv.org/abs/2510.05903v1,agrawal2024pixtral12b,\cite{agrawal2024pixtral12b},Pixtral 12B,http://arxiv.org/abs/2410.07073v2,"We introduce Pixtral-12B, a 12--billion-parameter multimodal language model.
+Pixtral-12B is trained to understand both natural images and documents,
+achieving leading performance on various multimodal benchmarks, surpassing a
+number of larger models. Unlike many open-source models, Pixtral is also a
+cutting-edge text model for its size, and does not compromise on natural
+language performance to excel in multimodal tasks. Pixtral uses a new vision
+encoder trained from scratch, which allows it to ingest images at their natural
+resolution and aspect ratio. This gives users flexibility on the number of
+tokens used to process an image. Pixtral is also able to process any number of
+images in its long context window of 128K tokens. Pixtral 12B substanially
+outperforms other open models of similar sizes (Llama-3.2 11B \& Qwen-2-VL 7B).
+It also outperforms much larger open models like Llama-3.2 90B while being 7x
+smaller. We further contribute an open-source benchmark, MM-MT-Bench, for
+evaluating vision-language models in practical scenarios, and provide detailed
+analysis and code for standardized evaluation protocols for multimodal LLMs.
+Pixtral-12B is released under Apache 2.0 license.",Pravesh Agrawal and Szymon Antoniak and Emma Bou Hanna and Baptiste Bout and Devendra Chaplot and Jessica Chudnovsky and Diogo Costa and Baudouin De Monicault and Saurabh Garg and Theophile Gervet and Soham Ghosh and Amélie Héliou and Paul Jacob and Albert Q. Jiang and Kartik Khandelwal and Timothée Lacroix and Guillaume Lample and Diego Las Casas and Thibaut Lavril and Teven Le Scao and Andy Lo and William Marshall and Louis Martin and Arthur Mensch and Pavankumar Muddireddy and Valera Nemychnikova and Marie Pellat and Patrick Von Platen and Nikhil Raghuraman and Baptiste Rozière and Alexandre Sablayrolles and Lucile Saulnier and Romain Sauvestre and Wendy Shang and Roman Soletskyi and Lawrence Stewart and Pierre Stock and Joachim Studnia and Sandeep Subramanian and Sagar Vaze and Thomas Wang and Sophia Yang,2024,,https://arxiv.org/abs/2410.07073,,

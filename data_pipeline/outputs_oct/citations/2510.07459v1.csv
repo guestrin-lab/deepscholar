@@ -1,0 +1,368 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,jacobs1991adaptive,\cite{jacobs1991adaptive},Adaptive mixtures of local experts,,,"Jacobs, Robert A and Jordan, Michael I and Nowlan, Steven J and Hinton, Geoffrey E",1991,,,,Neural computation
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,shazeer2017outrageously,\cite{shazeer2017outrageously},"Outrageously Large Neural Networks: The Sparsely-Gated
+  Mixture-of-Experts Layer",http://arxiv.org/abs/1701.06538v1,"The capacity of a neural network to absorb information is limited by its
+number of parameters. Conditional computation, where parts of the network are
+active on a per-example basis, has been proposed in theory as a way of
+dramatically increasing model capacity without a proportional increase in
+computation. In practice, however, there are significant algorithmic and
+performance challenges. In this work, we address these challenges and finally
+realize the promise of conditional computation, achieving greater than 1000x
+improvements in model capacity with only minor losses in computational
+efficiency on modern GPU clusters. We introduce a Sparsely-Gated
+Mixture-of-Experts layer (MoE), consisting of up to thousands of feed-forward
+sub-networks. A trainable gating network determines a sparse combination of
+these experts to use for each example. We apply the MoE to the tasks of
+language modeling and machine translation, where model capacity is critical for
+absorbing the vast quantities of knowledge available in the training corpora.
+We present model architectures in which a MoE with up to 137 billion parameters
+is applied convolutionally between stacked LSTM layers. On large language
+modeling and machine translation benchmarks, these models achieve significantly
+better results than state-of-the-art at lower computational cost.","Shazeer, Noam and Mirhoseini, Azalia and Maziarz, Krzysztof and Davis, Andy and Le, Quoc V. and Hinton, Geoffrey and Dean, Jeffrey",2017,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,fedus2022switch,\cite{fedus2022switch},"Switch Transformers: Scaling to Trillion Parameter Models with Simple
+  and Efficient Sparsity",http://arxiv.org/abs/2101.03961v3,"In deep learning, models typically reuse the same parameters for all inputs.
+Mixture of Experts (MoE) defies this and instead selects different parameters
+for each incoming example. The result is a sparsely-activated model -- with
+outrageous numbers of parameters -- but a constant computational cost. However,
+despite several notable successes of MoE, widespread adoption has been hindered
+by complexity, communication costs and training instability -- we address these
+with the Switch Transformer. We simplify the MoE routing algorithm and design
+intuitive improved models with reduced communication and computational costs.
+Our proposed training techniques help wrangle the instabilities and we show
+large sparse models may be trained, for the first time, with lower precision
+(bfloat16) formats. We design models based off T5-Base and T5-Large to obtain
+up to 7x increases in pre-training speed with the same computational resources.
+These improvements extend into multilingual settings where we measure gains
+over the mT5-Base version across all 101 languages. Finally, we advance the
+current scale of language models by pre-training up to trillion parameter
+models on the ""Colossal Clean Crawled Corpus"" and achieve a 4x speedup over the
+T5-XXL model.","Fedus, William and Zoph, Barret and Shazeer, Noam",2022,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,lepikhin2020gshard,\cite{lepikhin2020gshard},"GShard: Scaling Giant Models with Conditional Computation and Automatic
+  Sharding",http://arxiv.org/abs/2006.16668v1,"Neural network scaling has been critical for improving the model quality in
+many real-world machine learning applications with vast amounts of training
+data and compute. Although this trend of scaling is affirmed to be a sure-fire
+approach for better model quality, there are challenges on the path such as the
+computation cost, ease of programming, and efficient implementation on parallel
+devices. GShard is a module composed of a set of lightweight annotation APIs
+and an extension to the XLA compiler. It provides an elegant way to express a
+wide range of parallel computation patterns with minimal changes to the
+existing model code. GShard enabled us to scale up multilingual neural machine
+translation Transformer model with Sparsely-Gated Mixture-of-Experts beyond 600
+billion parameters using automatic sharding. We demonstrate that such a giant
+model can efficiently be trained on 2048 TPU v3 accelerators in 4 days to
+achieve far superior quality for translation from 100 languages to English
+compared to the prior art.","Lepikhin, Dmitry and Lee, HyoukJoong and Xu, Yuanzhong and Chen, Dehao and Firat, Orhan and Huang, Yanping and Krikun, Maxim and Shazeer, Noam and Chen, Zhifeng",2020,,,,arXiv preprint arXiv:2006.16668
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,jiang2024mixtral,\cite{jiang2024mixtral},Mixtral of Experts,http://arxiv.org/abs/2401.04088v1,"We introduce Mixtral 8x7B, a Sparse Mixture of Experts (SMoE) language model.
+Mixtral has the same architecture as Mistral 7B, with the difference that each
+layer is composed of 8 feedforward blocks (i.e. experts). For every token, at
+each layer, a router network selects two experts to process the current state
+and combine their outputs. Even though each token only sees two experts, the
+selected experts can be different at each timestep. As a result, each token has
+access to 47B parameters, but only uses 13B active parameters during inference.
+Mixtral was trained with a context size of 32k tokens and it outperforms or
+matches Llama 2 70B and GPT-3.5 across all evaluated benchmarks. In particular,
+Mixtral vastly outperforms Llama 2 70B on mathematics, code generation, and
+multilingual benchmarks. We also provide a model fine-tuned to follow
+instructions, Mixtral 8x7B - Instruct, that surpasses GPT-3.5 Turbo,
+Claude-2.1, Gemini Pro, and Llama 2 70B - chat model on human benchmarks. Both
+the base and instruct models are released under the Apache 2.0 license.","Jiang, Albert Q and Sablayrolles, Alexandre and Roux, Antoine and Mensch, Arthur and Savary, Blanche and Bamford, Chris and Chaplot, Devendra Singh and Casas, Diego de las and Hanna, Emma Bou and Bressand, Florian and others",2024,,,,arXiv preprint arXiv:2401.04088
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,dai2024deepseekmoe,\cite{dai2024deepseekmoe},"DeepSeekMoE: Towards Ultimate Expert Specialization in
+  Mixture-of-Experts Language Models",http://arxiv.org/abs/2401.06066v1,"In the era of large language models, Mixture-of-Experts (MoE) is a promising
+architecture for managing computational costs when scaling up model parameters.
+However, conventional MoE architectures like GShard, which activate the top-$K$
+out of $N$ experts, face challenges in ensuring expert specialization, i.e.
+each expert acquires non-overlapping and focused knowledge. In response, we
+propose the DeepSeekMoE architecture towards ultimate expert specialization. It
+involves two principal strategies: (1) finely segmenting the experts into $mN$
+ones and activating $mK$ from them, allowing for a more flexible combination of
+activated experts; (2) isolating $K_s$ experts as shared ones, aiming at
+capturing common knowledge and mitigating redundancy in routed experts.
+Starting from a modest scale with 2B parameters, we demonstrate that
+DeepSeekMoE 2B achieves comparable performance with GShard 2.9B, which has 1.5
+times the expert parameters and computation. In addition, DeepSeekMoE 2B nearly
+approaches the performance of its dense counterpart with the same number of
+total parameters, which set the upper bound of MoE models. Subsequently, we
+scale up DeepSeekMoE to 16B parameters and show that it achieves comparable
+performance with LLaMA2 7B, with only about 40% of computations. Further, our
+preliminary efforts to scale up DeepSeekMoE to 145B parameters consistently
+validate its substantial advantages over the GShard architecture, and show its
+performance comparable with DeepSeek 67B, using only 28.5% (maybe even 18.2%)
+of computations.","Dai, Damai and Deng, Chengqi and Zhao, Chenggang and Xu, RX and Gao, Huazuo and Chen, Deli and Li, Jiashi and Zeng, Wangding and Yu, Xingkai and Wu, Yu and others",2024,,,,arXiv preprint arXiv:2401.06066
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,pavlitska2025moeuncertainty,\cite{pavlitska2025moeuncertainty},"Extracting Uncertainty Estimates from Mixtures of Experts for Semantic
+  Segmentation",http://arxiv.org/abs/2509.04816v1,"Estimating accurate and well-calibrated predictive uncertainty is important
+for enhancing the reliability of computer vision models, especially in
+safety-critical applications like traffic scene perception. While ensemble
+methods are commonly used to quantify uncertainty by combining multiple models,
+a mixture of experts (MoE) offers an efficient alternative by leveraging a
+gating network to dynamically weight expert predictions based on the input.
+Building on the promising use of MoEs for semantic segmentation in our previous
+works, we show that well-calibrated predictive uncertainty estimates can be
+extracted from MoEs without architectural modifications. We investigate three
+methods to extract predictive uncertainty estimates: predictive entropy, mutual
+information, and expert variance. We evaluate these methods for an MoE with two
+experts trained on a semantical split of the A2D2 dataset. Our results show
+that MoEs yield more reliable uncertainty estimates than ensembles in terms of
+conditional correctness metrics under out-of-distribution (OOD) data.
+Additionally, we evaluate routing uncertainty computed via gate entropy and
+find that simple gating mechanisms lead to better calibration of routing
+uncertainty estimates than more complex classwise gates. Finally, our
+experiments on the Cityscapes dataset suggest that increasing the number of
+experts can further enhance uncertainty calibration. Our code is available at
+https://github.com/KASTEL-MobilityLab/mixtures-of-experts/.","Pavlitska, Inna and Maillard, Adrien and Matejek, Brian and Lucic, Mario and Houlsby, Neil",2025,,,,arXiv preprint arXiv:2509.04816
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,zhang2023mofme,\cite{zhang2023mofme},"Efficient Deweather Mixture-of-Experts with Uncertainty-aware
+  Feature-wise Linear Modulation",http://arxiv.org/abs/2312.16610v1,"The Mixture-of-Experts (MoE) approach has demonstrated outstanding
+scalability in multi-task learning including low-level upstream tasks such as
+concurrent removal of multiple adverse weather effects. However, the
+conventional MoE architecture with parallel Feed Forward Network (FFN) experts
+leads to significant parameter and computational overheads that hinder its
+efficient deployment. In addition, the naive MoE linear router is suboptimal in
+assigning task-specific features to multiple experts which limits its further
+scalability. In this work, we propose an efficient MoE architecture with weight
+sharing across the experts. Inspired by the idea of linear feature modulation
+(FM), our architecture implicitly instantiates multiple experts via learnable
+activation modulations on a single shared expert block. The proposed Feature
+Modulated Expert (FME) serves as a building block for the novel
+Mixture-of-Feature-Modulation-Experts (MoFME) architecture, which can scale up
+the number of experts with low overhead. We further propose an
+Uncertainty-aware Router (UaR) to assign task-specific features to different FM
+modules with well-calibrated weights. This enables MoFME to effectively learn
+diverse expert functions for multiple tasks. The conducted experiments on the
+multi-deweather task show that our MoFME outperforms the baselines in the image
+restoration quality by 0.1-0.2 dB and achieves SOTA-compatible performance
+while saving more than 72% of parameters and 39% inference time over the
+conventional MoE counterpart. Experiments on the downstream segmentation and
+classification tasks further demonstrate the generalizability of MoFME to real
+open-world applications.","Zhang, Yunbo and Chen, Yanhua and Li, Mingyang and Gao, Yujing and Zhang, Zhiqiang",2023,,,,arXiv preprint arXiv:2312.16610
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,gal2016dropout,\cite{gal2016dropout},"Dropout as a Bayesian Approximation: Representing Model Uncertainty in
+  Deep Learning",http://arxiv.org/abs/1506.02142v6,"Deep learning tools have gained tremendous attention in applied machine
+learning. However such tools for regression and classification do not capture
+model uncertainty. In comparison, Bayesian models offer a mathematically
+grounded framework to reason about model uncertainty, but usually come with a
+prohibitive computational cost. In this paper we develop a new theoretical
+framework casting dropout training in deep neural networks (NNs) as approximate
+Bayesian inference in deep Gaussian processes. A direct result of this theory
+gives us tools to model uncertainty with dropout NNs -- extracting information
+from existing models that has been thrown away so far. This mitigates the
+problem of representing uncertainty in deep learning without sacrificing either
+computational complexity or test accuracy. We perform an extensive study of the
+properties of dropout's uncertainty. Various network architectures and
+non-linearities are assessed on tasks of regression and classification, using
+MNIST as an example. We show a considerable improvement in predictive
+log-likelihood and RMSE compared to existing state-of-the-art methods, and
+finish by using dropout's uncertainty in deep reinforcement learning.","Gal, Yarin and Ghahramani, Zoubin",2016,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,lakshminarayanan2017simple,\cite{lakshminarayanan2017simple},"Simple and Scalable Predictive Uncertainty Estimation using Deep
+  Ensembles",http://arxiv.org/abs/1612.01474v3,"Deep neural networks (NNs) are powerful black box predictors that have
+recently achieved impressive performance on a wide spectrum of tasks.
+Quantifying predictive uncertainty in NNs is a challenging and yet unsolved
+problem. Bayesian NNs, which learn a distribution over weights, are currently
+the state-of-the-art for estimating predictive uncertainty; however these
+require significant modifications to the training procedure and are
+computationally expensive compared to standard (non-Bayesian) NNs. We propose
+an alternative to Bayesian NNs that is simple to implement, readily
+parallelizable, requires very little hyperparameter tuning, and yields high
+quality predictive uncertainty estimates. Through a series of experiments on
+classification and regression benchmarks, we demonstrate that our method
+produces well-calibrated uncertainty estimates which are as good or better than
+approximate Bayesian NNs. To assess robustness to dataset shift, we evaluate
+the predictive uncertainty on test examples from known and unknown
+distributions, and show that our method is able to express higher uncertainty
+on out-of-distribution examples. We demonstrate the scalability of our method
+by evaluating predictive uncertainty estimates on ImageNet.","Lakshminarayanan, Balaji and Pritzel, Alexander and Blundell, Charles",2017,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,kuleshov2018accurate,\cite{kuleshov2018accurate},Accurate Uncertainties for Deep Learning Using Calibrated Regression,http://arxiv.org/abs/1807.00263v1,"Methods for reasoning under uncertainty are a key building block of accurate
+and reliable machine learning systems. Bayesian methods provide a general
+framework to quantify uncertainty. However, because of model misspecification
+and the use of approximate inference, Bayesian uncertainty estimates are often
+inaccurate -- for example, a 90% credible interval may not contain the true
+outcome 90% of the time. Here, we propose a simple procedure for calibrating
+any regression algorithm; when applied to Bayesian and probabilistic models, it
+is guaranteed to produce calibrated uncertainty estimates given enough data.
+Our procedure is inspired by Platt scaling and extends previous work on
+classification. We evaluate this approach on Bayesian linear regression,
+feedforward, and recurrent neural networks, and find that it consistently
+outputs well-calibrated credible intervals while improving performance on time
+series forecasting and model-based reinforcement learning tasks.","Kuleshov, Volodymyr and Fenner, Nathan and Ermon, Stefano",2018,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,vovk2005algorithmic,\cite{vovk2005algorithmic},Algorithmic Learning in a Random World,,,"Vovk, Vladimir and Gammerman, Alexander and Shafer, Glenn",2005,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,romano2019conformalized,\cite{romano2019conformalized},Conformalized Quantile Regression,http://arxiv.org/abs/1905.03222v1,"Conformal prediction is a technique for constructing prediction intervals
+that attain valid coverage in finite samples, without making distributional
+assumptions. Despite this appeal, existing conformal methods can be
+unnecessarily conservative because they form intervals of constant or weakly
+varying length across the input space. In this paper we propose a new method
+that is fully adaptive to heteroscedasticity. It combines conformal prediction
+with classical quantile regression, inheriting the advantages of both. We
+establish a theoretical guarantee of valid coverage, supplemented by extensive
+experiments on popular regression datasets. We compare the efficiency of
+conformalized quantile regression to other conformal methods, showing that our
+method tends to produce shorter intervals.","Romano, Yaniv and Patterson, Evan and Candes, Emmanuel",2019,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,Yuqietal-2023-PatchTST,\cite{Yuqietal-2023-PatchTST},A Time Series is Worth 64 Words: Long-term Forecasting with Transformers,http://arxiv.org/abs/2211.14730v2,"We propose an efficient design of Transformer-based models for multivariate
+time series forecasting and self-supervised representation learning. It is
+based on two key components: (i) segmentation of time series into
+subseries-level patches which are served as input tokens to Transformer; (ii)
+channel-independence where each channel contains a single univariate time
+series that shares the same embedding and Transformer weights across all the
+series. Patching design naturally has three-fold benefit: local semantic
+information is retained in the embedding; computation and memory usage of the
+attention maps are quadratically reduced given the same look-back window; and
+the model can attend longer history. Our channel-independent patch time series
+Transformer (PatchTST) can improve the long-term forecasting accuracy
+significantly when compared with that of SOTA Transformer-based models. We also
+apply our model to self-supervised pre-training tasks and attain excellent
+fine-tuning performance, which outperforms supervised training on large
+datasets. Transferring of masked pre-trained representation on one dataset to
+others also produces SOTA forecasting accuracy. Code is available at:
+https://github.com/yuqinie98/PatchTST.","Nie, Yuqi and
+               H. Nguyen, Nam and
+               Sinthong, Phanwadee and 
+               Kalagnanam, Jayant",2023,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,autoformer,\cite{autoformer},"Autoformer: Decomposition Transformers with Auto-Correlation for
+  Long-Term Series Forecasting",http://arxiv.org/abs/2106.13008v5,"Extending the forecasting time is a critical demand for real applications,
+such as extreme weather early warning and long-term energy consumption
+planning. This paper studies the long-term forecasting problem of time series.
+Prior Transformer-based models adopt various self-attention mechanisms to
+discover the long-range dependencies. However, intricate temporal patterns of
+the long-term future prohibit the model from finding reliable dependencies.
+Also, Transformers have to adopt the sparse versions of point-wise
+self-attentions for long series efficiency, resulting in the information
+utilization bottleneck. Going beyond Transformers, we design Autoformer as a
+novel decomposition architecture with an Auto-Correlation mechanism. We break
+with the pre-processing convention of series decomposition and renovate it as a
+basic inner block of deep models. This design empowers Autoformer with
+progressive decomposition capacities for complex time series. Further, inspired
+by the stochastic process theory, we design the Auto-Correlation mechanism
+based on the series periodicity, which conducts the dependencies discovery and
+representation aggregation at the sub-series level. Auto-Correlation
+outperforms self-attention in both efficiency and accuracy. In long-term
+forecasting, Autoformer yields state-of-the-art accuracy, with a 38% relative
+improvement on six benchmarks, covering five practical applications: energy,
+traffic, economics, weather and disease. Code is available at this repository:
+\url{https://github.com/thuml/Autoformer}.","Wu, Haixu and Xu, Jiehui and Wang, Jianmin and Long, Mingsheng",2021,,,,Advances in neural information processing systems
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,reformer,\cite{reformer},Reformer: The Efficient Transformer,http://arxiv.org/abs/2001.04451v2,"Large Transformer models routinely achieve state-of-the-art results on a
+number of tasks but training these models can be prohibitively costly,
+especially on long sequences. We introduce two techniques to improve the
+efficiency of Transformers. For one, we replace dot-product attention by one
+that uses locality-sensitive hashing, changing its complexity from O($L^2$) to
+O($L\log L$), where $L$ is the length of the sequence. Furthermore, we use
+reversible residual layers instead of the standard residuals, which allows
+storing activations only once in the training process instead of $N$ times,
+where $N$ is the number of layers. The resulting model, the Reformer, performs
+on par with Transformer models while being much more memory-efficient and much
+faster on long sequences.","Kitaev, Nikita and Kaiser, {\L}ukasz and Levskaya, Anselm",2020,,,,arXiv preprint arXiv:2001.04451
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,wang2024timemixer,\cite{wang2024timemixer},TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting,http://arxiv.org/abs/2405.14616v1,"Time series forecasting is widely used in extensive applications, such as
+traffic planning and weather forecasting. However, real-world time series
+usually present intricate temporal variations, making forecasting extremely
+challenging. Going beyond the mainstream paradigms of plain decomposition and
+multiperiodicity analysis, we analyze temporal variations in a novel view of
+multiscale-mixing, which is based on an intuitive but important observation
+that time series present distinct patterns in different sampling scales. The
+microscopic and the macroscopic information are reflected in fine and coarse
+scales respectively, and thereby complex variations can be inherently
+disentangled. Based on this observation, we propose TimeMixer as a fully
+MLP-based architecture with Past-Decomposable-Mixing (PDM) and
+Future-Multipredictor-Mixing (FMM) blocks to take full advantage of
+disentangled multiscale series in both past extraction and future prediction
+phases. Concretely, PDM applies the decomposition to multiscale series and
+further mixes the decomposed seasonal and trend components in fine-to-coarse
+and coarse-to-fine directions separately, which successively aggregates the
+microscopic seasonal and macroscopic trend information. FMM further ensembles
+multiple predictors to utilize complementary forecasting capabilities in
+multiscale observations. Consequently, TimeMixer is able to achieve consistent
+state-of-the-art performances in both long-term and short-term forecasting
+tasks with favorable run-time efficiency.","Wang, Shiyu and Wu, Haixu and Shi, Xiaoming and Hu, Tengge and Luo, Huakun and Ma, Lintao and Zhang, James Y and Zhou, Jun",2024,,,,arXiv preprint arXiv:2405.14616
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,dlinear,\cite{dlinear},Are Transformers Effective for Time Series Forecasting?,http://arxiv.org/abs/2205.13504v3,"Recently, there has been a surge of Transformer-based solutions for the
+long-term time series forecasting (LTSF) task. Despite the growing performance
+over the past few years, we question the validity of this line of research in
+this work. Specifically, Transformers is arguably the most successful solution
+to extract the semantic correlations among the elements in a long sequence.
+However, in time series modeling, we are to extract the temporal relations in
+an ordered set of continuous points. While employing positional encoding and
+using tokens to embed sub-series in Transformers facilitate preserving some
+ordering information, the nature of the \emph{permutation-invariant}
+self-attention mechanism inevitably results in temporal information loss. To
+validate our claim, we introduce a set of embarrassingly simple one-layer
+linear models named LTSF-Linear for comparison. Experimental results on nine
+real-life datasets show that LTSF-Linear surprisingly outperforms existing
+sophisticated Transformer-based LTSF models in all cases, and often by a large
+margin. Moreover, we conduct comprehensive empirical studies to explore the
+impacts of various design elements of LTSF models on their temporal relation
+extraction capability. We hope this surprising finding opens up new research
+directions for the LTSF task. We also advocate revisiting the validity of
+Transformer-based solutions for other time series analysis tasks (e.g., anomaly
+detection) in the future. Code is available at:
+\url{https://github.com/cure-lab/LTSF-Linear}.","Zeng, Ailing and Chen, Muxi and Zhang, Lei and Xu, Qiang",2023,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,wu2023timesnet,\cite{wu2023timesnet},"TimesNet: Temporal 2D-Variation Modeling for General Time Series
+  Analysis",http://arxiv.org/abs/2210.02186v3,"Time series analysis is of immense importance in extensive applications, such
+as weather forecasting, anomaly detection, and action recognition. This paper
+focuses on temporal variation modeling, which is the common key problem of
+extensive analysis tasks. Previous methods attempt to accomplish this directly
+from the 1D time series, which is extremely challenging due to the intricate
+temporal patterns. Based on the observation of multi-periodicity in time
+series, we ravel out the complex temporal variations into the multiple
+intraperiod- and interperiod-variations. To tackle the limitations of 1D time
+series in representation capability, we extend the analysis of temporal
+variations into the 2D space by transforming the 1D time series into a set of
+2D tensors based on multiple periods. This transformation can embed the
+intraperiod- and interperiod-variations into the columns and rows of the 2D
+tensors respectively, making the 2D-variations to be easily modeled by 2D
+kernels. Technically, we propose the TimesNet with TimesBlock as a task-general
+backbone for time series analysis. TimesBlock can discover the
+multi-periodicity adaptively and extract the complex temporal variations from
+transformed 2D tensors by a parameter-efficient inception block. Our proposed
+TimesNet achieves consistent state-of-the-art in five mainstream time series
+analysis tasks, including short- and long-term forecasting, imputation,
+classification, and anomaly detection. Code is available at this repository:
+https://github.com/thuml/TimesNet.",Haixu Wu and Tengge Hu and Yong Liu and Hang Zhou and Jianmin Wang and Mingsheng Long,2023,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,wang2024deep,\cite{wang2024deep},Deep Learning for Multivariate Time Series Imputation: A Survey,,,"Wang, Jun and Du, Wenjie and Cao, Wei and Zhang, Keli and Wang, Wenjia and Liang, Yuxuan and Wen, Qingsong",2024,,,,arXiv preprint arXiv:2402.04059
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,time_series_survey,\cite{time_series_survey},Time-series forecasting with deep learning: a survey,,,"Lim, Bryan and Zohren, Stefan",2021,,,,Philosophical Transactions of the Royal Society A
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,xwang2024deep,\cite{xwang2024deep},Deep Time Series Models: A Comprehensive Survey and Benchmark,http://arxiv.org/abs/2407.13278v2,"Time series, characterized by a sequence of data points organized in a
+discrete-time order, are ubiquitous in real-world scenarios. Unlike other data
+modalities, time series present unique challenges due to their intricate and
+dynamic nature, including the entanglement of nonlinear patterns and
+time-variant trends. Analyzing such data is of great significance in practical
+applications and has been extensively studied for centuries. Recent years have
+witnessed remarkable breakthroughs in the time series community, with
+techniques shifting from traditional statistical methods to contemporary deep
+learning models. In this paper, we delve into the design of deep time series
+models across various analysis tasks and review the existing literature from
+two perspectives: basic modules and model architectures. Further, we develop
+and release Time Series Library (TSLib) as a fair benchmark of deep time series
+models for diverse analysis tasks. TSLib implements 30 prominent models, covers
+30 datasets from different domains, and supports five prevalent analysis tasks.
+Based on TSLib, we thoroughly evaluate 13 advanced deep time series models
+across diverse tasks. Empirical results indicate that models with specific
+structures are well-suited for distinct analytical tasks, providing insights
+for research and adoption of deep time series models. Code and datasets are
+available at https://github.com/thuml/Time-Series-Library.","Wang, Yuxuan and Wu, Haixu and Dong, Jiaxiang and Liu, Yong and Long, Mingsheng and Wang, Jianmin",2024,,,,arXiv preprint arXiv:2407.13278
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,cini2025corel,\cite{cini2025corel},Relational Conformal Prediction for Correlated Time Series,http://arxiv.org/abs/2502.09443v2,"We address the problem of uncertainty quantification in time series
+forecasting by exploiting observations at correlated sequences. Relational deep
+learning methods leveraging graph representations are among the most effective
+tools for obtaining point estimates from spatiotemporal data and correlated
+time series. However, the problem of exploiting relational structures to
+estimate the uncertainty of such predictions has been largely overlooked in the
+same context. To this end, we propose a novel distribution-free approach based
+on the conformal prediction framework and quantile regression. Despite the
+recent applications of conformal prediction to sequential data, existing
+methods operate independently on each target time series and do not account for
+relationships among them when constructing the prediction interval. We fill
+this void by introducing a novel conformal prediction method based on graph
+deep learning operators. Our approach, named Conformal Relational Prediction
+(CoRel), does not require the relational structure (graph) to be known a priori
+and can be applied on top of any pre-trained predictor. Additionally, CoRel
+includes an adaptive component to handle non-exchangeable data and changes in
+the input time series. Our approach provides accurate coverage and achieves
+state-of-the-art uncertainty quantification in relevant benchmarks.","Cini, Andrea and Bogunovic, Ilija and Pavez, Eduardo and Cand{\`e}s, Emmanuel J.",2025,,,,
+MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting,http://arxiv.org/abs/2510.07459v1,wu2025eci,\cite{wu2025eci},Error-quantified Conformal Inference for Time Series,http://arxiv.org/abs/2502.00818v2,"Uncertainty quantification in time series prediction is challenging due to
+the temporal dependence and distribution shift on sequential data. Conformal
+inference provides a pivotal and flexible instrument for assessing the
+uncertainty of machine learning models through prediction sets. Recently, a
+series of online conformal inference methods updated thresholds of prediction
+sets by performing online gradient descent on a sequence of quantile loss
+functions. A drawback of such methods is that they only use the information of
+revealed non-conformity scores via miscoverage indicators but ignore error
+quantification, namely the distance between the non-conformity score and the
+current threshold. To accurately leverage the dynamic of miscoverage error, we
+propose \textit{Error-quantified Conformal Inference} (ECI) by smoothing the
+quantile loss function. ECI introduces a continuous and adaptive feedback scale
+with the miscoverage error, rather than simple binary feedback in existing
+methods. We establish a long-term coverage guarantee for ECI under arbitrary
+dependence and distribution shift. The extensive experimental results show that
+ECI can achieve valid miscoverage control and output tighter prediction sets
+than other baselines.","Wu, Junxi and Lin, Yilin and Vovk, Vladimir and Chen, Changyou",2025,,,,

@@ -1,0 +1,40 @@
+\begin{table}[htbp] % r=右侧, 宽度可调
+\centering
+\caption{\small Quantization performance of NPO and RMU is reported on MUSE Books and WMDP. UE and UT are assessed using KnowMem on $\Df$ and KnowMem on $\Dr$ for MUSE Books, and by $\mathrm{UE}_\text{MCQ}$ (Accuracy) and $\mathrm{UT}_\text{MCQ}$ (MMLU) for WMDP. Results are provided for full precision, 8-bit, and 4-bit models.}
+\label{tab:quantization_results}
+\vspace*{2mm}
+\resizebox{0.5\linewidth}{!}{
+\begin{tabular}{c ccc ccc}
+\toprule[1pt]
+\toprule
+\rowcolor{LightCyan!50}
+\multicolumn{7}{c}{\textbf{MUSE}} \\
+\midrule
+\multirow{2}{*}{\textbf{Method}} &
+\multicolumn{3}{c}{\textbf{KnowMem on $\Df$ ($\downarrow$)}} &
+\multicolumn{3}{c}{\textbf{KnowMem on $\Dr$ ($\uparrow$)}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+& \textbf{Full} & \textbf{8 Bit} & \textbf{4 Bit} & \textbf{Full} & \textbf{8 Bit} & \textbf{4 Bit} \\
+\midrule
+\rowcolor{gray!10}
+NPO &  2.10 &  2.12 & 30.30 & 55.31 & 52.89 & 48.79 \\
+RMU & 24.44 & 24.06 &  8.16 & 59.55 & 55.80 & 25.84 \\
+\midrule
+\rowcolor{LightCyan!50}
+\multicolumn{7}{c}{\textbf{WMDP}} \\
+\midrule
+\multirow{2}{*}{\textbf{Method}} &
+\multicolumn{3}{c}{\textbf{$\mathrm{UE}_\text{MCQ}$ (Accuracy $\downarrow$)}} &
+\multicolumn{3}{c}{\textbf{$\mathrm{UT}_\text{MCQ}$ (MMLU $\uparrow$)}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+& \textbf{Full} & \textbf{8 Bit} & \textbf{4 Bit} & \textbf{Full} & \textbf{8 Bit} & \textbf{4 Bit} \\
+\midrule
+\rowcolor{gray!10}
+NPO & 0.28 & 0.28 & 0.28 & 0.46 & 0.46 & 0.46 \\
+RMU & 0.27 & 0.27 & 0.26 & 0.6 & 0.59 & 0.56 \\
+\bottomrule
+\bottomrule[1pt]
+\end{tabular}
+}
+% \vspace*{-3mm}
+\end{table}

@@ -1,0 +1,30 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,gnkrk23,\cite{gnkrk23},In silico evolution of autoinhibitory domains for a PD-L1 antagonist using deep learning models,,,O. J. Goudy and A. Nallathambi and T. Kinjo and N. Z. Randolph and B. Kuhlman,2023,,,,Proc. Natl. Acad. Sci. U. S. A.
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,apco21,\cite{apco21},De novo protein design by deep network hallucination,,,I. Anishchenko and S. J. Pellock and T. M. Chidyausiku and others,2021,,,,Nature
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,e23,\cite{e23},"Progress at protein structure prediction, as seen in CASP15",,,A. Elofsson,2023,,,,Current Opinion in Structural Biology
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,mdbabb23,\cite{mdbabb23},Peptide-binding specificity prediction using fine-tuned protein structure prediction networks,,,A. Motmaen and J. Dauparas and M. Baek and M. H. Abedi and D. Baker and P. Bradley,2023,,,,Proc. Natl. Acad. Sci. U. S. A.
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,dcso24,\cite{dcso24},"Fast, accurate ranking of engineered proteins by target-binding propensity using structure modeling",,,X. Ding and X. Chen and E. Sullivan and others,2024,,,,Molecular Therapy
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,dhbo24,\cite{dhbo24},MProt-DPO: Breaking the ExaFLOPS Barrier for Multimodal Protein Design Workflows with Direct Preference Optimization,,,G. Dharuman and K. Hippe and A. Brace and others,2024,,,,
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,laro23,\cite{laro23},Evolutionary-scale prediction of atomic-level protein structure with a language model,,,Z. Lin and H. Akin and R. Rao and others,2023,,,,Science
+Adaptive Protein Design Protocols and Middleware,http://arxiv.org/abs/2510.06396v1,rsmo24,\cite{rsmo24},"Direct Preference Optimization: Your Language Model is Secretly a Reward
+  Model",http://arxiv.org/abs/2305.18290v3,"While large-scale unsupervised language models (LMs) learn broad world
+knowledge and some reasoning skills, achieving precise control of their
+behavior is difficult due to the completely unsupervised nature of their
+training. Existing methods for gaining such steerability collect human labels
+of the relative quality of model generations and fine-tune the unsupervised LM
+to align with these preferences, often with reinforcement learning from human
+feedback (RLHF). However, RLHF is a complex and often unstable procedure, first
+fitting a reward model that reflects the human preferences, and then
+fine-tuning the large unsupervised LM using reinforcement learning to maximize
+this estimated reward without drifting too far from the original model. In this
+paper we introduce a new parameterization of the reward model in RLHF that
+enables extraction of the corresponding optimal policy in closed form, allowing
+us to solve the standard RLHF problem with only a simple classification loss.
+The resulting algorithm, which we call Direct Preference Optimization (DPO), is
+stable, performant, and computationally lightweight, eliminating the need for
+sampling from the LM during fine-tuning or performing significant
+hyperparameter tuning. Our experiments show that DPO can fine-tune LMs to align
+with human preferences as well as or better than existing methods. Notably,
+fine-tuning with DPO exceeds PPO-based RLHF in ability to control sentiment of
+generations, and matches or improves response quality in summarization and
+single-turn dialogue while being substantially simpler to implement and train.",R. Rafailov and A. Sharma and E. Mitchell and others,2024,,,,

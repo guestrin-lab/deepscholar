@@ -1,0 +1,41 @@
+
+\begin{table*}[!thb]
+\centering
+\caption{\textbf{Overall Comparison of Models on Python Coding}. 
+% The model name in \textbf{bold} indicates the top performer, while an \underline{underline} signifies the leading model within a similar parameter size group.
+}
+% \vspace{-2mm}
+\label{tab:main_results}
+\resizebox{\linewidth}{!}{
+\tablestyle{10pt}{1.2}
+\begin{tabular}{l|ccccc}
+\toprule
+\textbf{Models} & \textbf{MMLU} & \textbf{CMMLU} & \textbf{C-Eval} & \textbf{AGIEval} & \textbf{GAOKAO-Bench} \\
+& \textit{4-shot} & \textit{4-shot} & \textit{5-shot} & \textit{variable shots} & \textit{0-shot}\\
+\hline
+% \multicolumn{7}{c}{\purplecolor{\textit{\ding{72} $> 20$B}}} \\
+\multicolumn{6}{c}{\purplecolor{\textit{ API Models}}} \\
+GPT-3.5 &   \\
+% GPT-4 & \textbf{76.3} & \textbf{82.9 }& \textbf{69.8} & \textbf{56.6} & \textbf{59.0} & \textbf{68.9} \\
+% \hline
+\multicolumn{6}{c}{\greencolor{\textit{  $\leq 7$B Models}}} \\
+Llama2-7B-Chat &  \\
+Gemma-7B-IT & \\
+ChatGLM3-6B &   \\
+InternLM2-Chat-Math-7B &  \\
+Mistral-7B-Instruct-v0.2 & \\
+Baichuan2-7B-Chat & \\
+Qwen-1.5-7B-Chat &  \\
+\midrule
+InternLM2-Chat-7B &  \\
+% \hline
+\multicolumn{6}{c}{\bluecolor{\textit{ $13\sim 20$B Models}}} \\
+Llama2-13B-Chat~\cite{touvron2023llama}           &\\
+Mixtral-8x7B-instruct-v0.1 &\\
+Qwen1.5-14B-Chat           &   \\
+Baichuan2-13B-Chat         &   \\
+\midrule
+InternLM2-Chat-20B         &   \\
+\bottomrule
+\end{tabular}}
+\end{table*}

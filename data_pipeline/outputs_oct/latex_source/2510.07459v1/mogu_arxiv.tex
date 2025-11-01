@@ -1,0 +1,134 @@
+
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2025
+
+
+% ready for submission
+%\usepackage{neurips_2025}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+\usepackage[preprint]{neurips_2025}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2025}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2025}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{amsmath}
+% \usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{float}
+
+% for figures 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+% \usepackage{soul}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{amsmath}
+% \usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{float}
+
+% for figures 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+% \usepackage{soul}
+\usepackage{xcolor}
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\title{MoGU: Mixture-of-Gaussians with Uncertainty-based Gating for Time Series Forecasting}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+%\author{Yoli Shavit \qquad \qquad  Jacob Goldberger \\
+%Faculty of Engineering, Bar Ilan University \\ Ramat-Gan, Israel\\
+%{\tt\small \{yoli.shavit,jacob.goldberger\}@biu.ac.il}}
+
+\author{Yoli Shavit  \& Jacob Goldberger\\
+Faculty of Engineering\\
+Bar Ilan University\\
+Ramat-Gan, Israel \\
+\texttt{\{yoli.shavit,jacob.goldberger\}@biu.ac.il} 
+}
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+We introduce Mixture-of-Gaussians with Uncertainty-based Gating (MoGU), a novel Mixture-of-Experts (MoE) framework designed for regression tasks and applied to time series forecasting. Unlike conventional MoEs that provide only point estimates, MoGU models each expert's output as a Gaussian distribution. This allows it to directly quantify both the forecast (the mean) and its inherent uncertainty (variance). MoGU's core innovation is its uncertainty-based gating mechanism, which replaces the traditional input-based gating network by using each expert's estimated variance to determine its contribution to the final prediction. Evaluated across diverse time series forecasting benchmarks, MoGU consistently outperforms single-expert models and traditional MoE setups. It also provides well-quantified, informative uncertainties that directly correlate with prediction errors, enhancing forecast reliability. Our code is available from: \url{https://github.com/yolish/moe_unc_tsf}.
+    %Mixture-of-Experts (MoE) is an architectural paradigm that adaptively combines predictions from multiple neural modules, typically sharing a common architecture, via a learned gating mechanism. Whether experts predict in the target or latent domain, they conventionally output point estimates, fundamentally lacking direct quantification of their inherent uncertainty. This limitation extends to the overall MoE architecture, hindering interpretability and informed decision-making in critical applications. In this work, we propose Mixture-of-Gaussians with Uncertainty-based Gating (MoGU): a novel framework for MoE architectures, which directly quantifies uncertainty for both individual experts and the aggregated MoE model, and leverages expert uncertainty to inform the gating mechanism. Focusing on regression tasks, we model each expert's prediction as a random variable drawn from a normal distribution. Here, the expert not only predicts the mean (the predicted label) but also estimates its own variance (uncertainty). Instead of relying on a separate gating function, as in deterministic MoE architectures, our method directly derives each expert's relative contribution by leveraging its inherent uncertainty. We evaluate our approach using time series forecasting as the primary domain, given its diverse applications and benchmarks. Our method  outperforms the MoE setting across various forecasting benchmarks and expert architectures, while providing informative and well-quantified uncertainties, which correlate with prediction errors. Our code is available from: \url{https://anonymous.4open.science/r/moe_unc_tsf-65E1}
+\end{abstract}
+
+
+\input{Chapters/introduction}
+\input{Chapters/related_work}
+\input{Chapters/method}
+\input{Chapters/experiments}
+%\input{Chapters/limitations_and_future_work}
+\input{Chapters/conclusion}
+
+\bibliographystyle{iclr2026_conference}
+\bibliography{moe_uncertainty_tsf}
+
+\appendix
+\input{Chapters/appendix_arxiv}
+\end{document}

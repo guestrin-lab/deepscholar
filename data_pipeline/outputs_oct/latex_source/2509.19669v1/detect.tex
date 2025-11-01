@@ -1,0 +1,208 @@
+\section{Classifying Cloud Game Contexts from Real-time Network Traffic}\label{sec:detect}
+Driven by the insights into packet group characteristics and flow volumetric profiles across game titles and player activity stages in \S\ref{sec:dissect}, we develop our traffic analysis method (\S\ref{sec:method_overview}) to classify cloud game contexts for network operators in real time, including two classification processes that use statistical machine learning models to classify game titles (\S\ref{sec:classify_game_title}) and player activity stages (\S\ref{sec:classify_game_stage}). 
+The classification performance of our method is extensively evaluated in our lab using ground-truth sessions (\S\ref{sec:evaluation}) before deployment in the wild. 
+
+
+\subsection{Methodology Overview}\label{sec:method_overview}
+
+Our network traffic analysis method (overviewed in Fig.~\ref{fig:pipeline}) is designed to process real-time network traffic through an operational network to classify the gameplay contexts of cloud game streaming flows. 
+
+Upon receiving real-time packet streams, the cloud gaming packet filter module selects only packets belonging to cloud game streaming flows for further processing and classification. We use adapted state-of-the-art cloud game streaming flow detection signatures \cite{lyu_network_2024,shirmarz_from_2024,graff_efficient_2023} that achieve 100\% accuracy from our lab validation in detecting RTP flows of four major cloud gaming platforms including NVIDIA's GeForce NOW, Microsoft's Xbox Cloud Gaming, Amazon Luna, and Sony's PS5 Cloud Streaming.
+
+The packet streams of game streaming flows are then forwarded to three parallel processes. The bottom one, in the gray region of Fig.~\ref{fig:pipeline}, continuously measures objective QoE metrics, including game streaming frame rate, game streaming lag, and graphic resolution from flow QoS attributes using an established method by prior work \cite{lyu_network_2024}. The process highlighted in the light blue region detects game titles, while the one shown in the orange region continuously measures player activity stages and infers gameplay activity patterns. These two processes are novel in this work and will be discussed in detail. 
+
+The first novel process analyzes the packet streams that belong to the first \textit{N} seconds of a game streaming flow to classify the respective game title being played, leveraging the packet group characteristics during the game launching stages. As will be discussed in \S\ref{sec:classify_game_title}, we select \textit{N = 5} for a balanced classification accuracy and responsiveness. The key technical components in this module including statistical attributes and classification models, will be elaborated soon in \S\ref{sec:classify_game_title}.
+
+Driven by the insights of flow volumetric patterns across player activity stages from game launch to idle, active or passive, our second novel process (orange box in Fig.~\ref{fig:pipeline}) analyzes packet streams of both upstream and downstream directions in each game streaming flow to continuously label player activity stage. As will be discussed in \S\ref{sec:classify_game_stage}, upon receiving a sufficient number of past states and their transitions, this module will make a confident inference on the gameplay activity pattern of the session, which will be useful for estimating the QoE demands of a game streaming session when an inference result from the game title classification module does not fall into the known catalog. In our implementation, we operate both modules independently in parallel at their respective granularities, with the objective of cross-validating the classification results for each candidate game streaming session.
+
+As the output of our method, the gameplay contexts will be correlated with state-of-the-art objective QoE metrics and/or network QoS attributes per streaming session, so that network operators can calibrate their measurement of user experience (which we refer to as effective QoE) to identify issues caused by network conditions rather than less demanding game titles and player activities. Later in \S\ref{sec:effective_qoe}, we will show an example of such context-based calibration deployed for our partnered network operator, which corrects mislabeled poor game streaming user experience due to low frame rate and throughput in less demanding scenarios.
+
+
+\subsection{Classifying Game Titles}\label{sec:classify_game_title}
+
+The game title classification process, as shown in the blue region of Fig.~\ref{fig:pipeline}, classifies the game title of a streaming session based on the first few seconds of its downstream packets delivering the game launch content. 
+In \S\ref{sec:dissect_game_titles}, by analyzing the arrival time slots and payload sizes, we have empirically clustered three groups of \textbf{downstream} packets, namely full, steady, and sparse that arrive in the game launch stages. This drives our development of the game title classification process, which uses well-trained machine learning models on statistical attributes formulated per time slot from the three unique packet groups. Its key technical components are discussed below.
+
+
+\subsubsection{Labeling downstream packet groups}\label{sec:label_packet_groups}
+The downstream packets during the first \textbf{\textit{N}} seconds of each game streaming session will first be categorized into one of the three packet groups (\ie full, steady and sparse) by their relative payload sizes in the respective arrival time slot of \textbf{\textit{T}} seconds.
+If \textit{T} is properly configured, the ``full'' packets that have the maximum payload size (\eg 1432 bytes) will consistently arrive in all time slots, as shown in Fig.~\ref{fig:packet_patterns}.
+Additionally, in a \textit{T}-second time slot, packets that are not labeled as ``full'' will be labeled as either ``steady'' or ``sparse'' using a majority-voting method based on their payload sizes, with a tunable parameter \textbf{\textit{V}} that specifies the numerical range of the payload size variation for a packet compared to its adjacent packets. Specifically, a packet having a payload size within $\pm$\textit{V} difference than its neighbors within the time slot is identified as steady, otherwise sparse. This is driven by our findings in \S\ref{sec:dissect_game_titles} that each discrete time slot (\eg hundreds of milliseconds to tens of seconds) can contain steady packets densely located in one or several narrow bands of payload sizes; and/or sparse packets following a random distribution for their payload sizes. 
+As will be discussed in \S\ref{sec:evaluate_title}, in our implementation, the packet group labeler achieves its best performance with the value of \textit{V} set to 10\% after evaluating a range of options from 1\% to 20\%.
+
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/packet_group_attributes_new.pdf}
+    \vspace{-3mm}
+    \caption{Formulating attributes from the full, steady and sparse packet groups per time slot.}
+    \label{fig:packet_group_attributes}
+\end{figure}
+
+\subsubsection{Attributes of packet groups per time slot}\label{sec:title_attr}
+Packets labeled full, steady, or sparse are then used to generate statistical attributes per packet group for the respective \textit{T}-second time slot.
+Fig.~\ref{fig:packet_group_attributes} visually depicts the formulation of our per-time-slot attributes describing statistical representations of packet count, payload size, and inter-arrival time for the packets within the ``full'', ``steady'', or ``sparse'' group.
+For example, the attribute annotated as \textit{full\_ct\_sum[0]} shows the total count of packets in the ``full'' group during the first \textit{T}-second time slot of this game launching stage. As will be discussed in \S\ref{sec:evaluation}, in our implementation, we process the first 5 seconds of packets in a 1-second time slot to achieve good classification performance.
+
+
+\subsubsection{Classification model}\label{sec:title_model}
+For each game streaming session, the attributes generated from all \textit{T}-second time slots for the first \textit{N} seconds will be processed in a batched manner by our classification model. The model will predict a (popular) game title that exists in our pre-trained dataset or the ``unknown'' type if a confident result cannot be made. In \S\ref{sec:evaluation}, we discuss our evaluation of the classifier trained with common machine learning algorithms, with the best-performing random-forest classifier selected in our implementation.
+
+We acknowledge that flow classification for network operators is often expected to be as early as possible for subsequent network operational tasks \cite{babaria_fastflow_2025,piet_ggfast_2023}. In this work, our game title classification takes only a few seconds (\ie 5 seconds in our implementation) from the game launch stage, allowing the network operator to seamlessly start subsequent measurement tasks and/or prioritize game streaming flows of high-demanding games prior to the start of actual gameplay.
+
+
+\subsection{Classifying Player Activity Stages and Inferring Gameplay Activity Patterns} \label{sec:classify_game_stage}
+The second novel process in our method, as outlined in the yellow region of Fig.~\ref{fig:pipeline}, continuously classifies the player activity stages of a game streaming session using its bidirectional volumetric attributes and infers the activity pattern of this gameplay from the transition pattern of the classified player activity stages.
+
+
+\subsubsection{Classifying player activity stages}\label{sec:classify_engagement_status}
+This process first classifies and tracks the player activity stages as active, passive, or idle over time by processing the bidirectional packet streams of the cloud game streaming session. Standard volumetric attributes for a game streaming session, including packet rate and throughput in both upstream and downstream directions, are computed per time slot of \textit{\textbf{I}} second, \eg one second in our implementation after balancing classification responsiveness and accuracy.
+
+As discussed in \S\ref{sec:dissect_engagement_status}, each game streaming session can exhibit different absolute value ranges of their volumetric attributes across the three player activity stages, while their relative volumetric levels remain consistent regardless of the actual game titles and streaming configurations. Therefore, in each \textit{\textbf{I}}-second classification time slot, the four volumetric attributes are converted to the relative fraction compared to their peak value (above a threshold dynamically decided during the game launch) observed from previous slots.
+
+To eliminate the effect of noisy attribute values caused by unexpected short behavior for a certain type of player activity stage, such as accidental mouse movement (\ie high upstream throughput) when spectating teammates (\ie passive stage), which will lead to a classification result as active for this slot rather than the correct passive stage, the volumetric attributes are processed by exponential moving average (EMA) to consider the attribute values from the past slots as shown in Equation~\ref{eq:EMA}. The weight of the current stage $\alpha$ is selected as 0.4 from the range of (0,1) for the best accuracy, as will be evaluated soon in \S\ref{sec:evaluation}.
+
+\begin{equation}
+\text{attr}_t = \alpha \cdot \text{attr}_t + (1 - \alpha) \cdot \text{attr}_{t-1}
+\label{eq:EMA}
+\end{equation}
+
+A well-trained machine learning classifier developed using the Random Forest algorithm then consumes preprocessed volumetric attributes in their EMA-smoothed relative values to classify player activity stages as idle, passive, or active for each slot accordingly.
+
+\subsubsection{Inferring gameplay activity pattern} \label{sec:classify_activity_pattern}
+As discussed in \S\ref{sec:cg_process}, depending on the game titles, cloud game sessions exhibit two distinctive patterns for their gameplay activities, namely ``continuous-play'' and ``spectate-and-play''. 
+If the fine-grained game title cannot be confidently classified for a game streaming session, our method can provide network operators with visibility into the gameplay activity pattern, revealing coarse-grained profiles and network demands for the respective game streaming sessions.
+
+As quantitatively shown in Fig.~\ref{fig:analyze_stage_transition}, the two types of gameplay activity patterns hold different proportions of player activity stages and transition probabilities between these stages.
+Therefore, our inference model captures the stochastic transition behaviors between player activity stages in a gameplay for classification.
+
+As shown in the process in Fig.~\ref{fig:pipeline}, the continuously classified player activity stages are also received by the stage transition modeler. In our implementation, for each game streaming session, we use a 3x3 matrix with each cell representing the occurrence of transition per slot from one stage to another or retaining itself. The inference model (\eg using random forest algorithm) makes a prediction based on the nine values of the matrix normalized to their probabilities across time slots within the monitored duration when its confidence level is above a threshold (\eg 75\%) tuned for balanced prediction responsiveness and accuracy. 
+
+\subsection{Parameter and Model Evaluation}\label{sec:evaluation}
+After having a comprehensive understanding of our network traffic analysis method for cloud gameplay context classification as depicted in Fig.~\ref{fig:pipeline}, we now evaluate the options for inference models and key parameters in the pipeline, as well as its overall classification performance for game titles, player activity stages and gameplay activity patterns. The lab evaluation uses our ground-truth dataset (described in \S\ref{sec:dataset}). Similar to prior works \cite{babaria_fastflow_2025,wang_data_2024,jiang_netdiffusion_2024} in traffic classification, we augment our dataset for larger sample sizes using variation-based statistical techniques, \ie by synthesizing packet data with randomly varied sizes and arrival times based on the original ground-truth data, especially for classes with fewer samples. We now present evaluation results for key design choices in developing the game title and player activity stage classification processes.
+
+
+\subsubsection{Evaluating game title classification}\label{sec:evaluate_title}
+As discussed in \S\ref{sec:classify_game_title}, the game title classification uses three tunable parameters \textbf{\textit{N}}, \textbf{\textit{T}} and \textbf{\textit{V}}, along with a machine learning classifier, which were selected for our implemented system after lab evaluations. 
+
+\begin{figure}[t!]
+    \centering
+    \subfigure[0.1-second time slot.]{
+        \includegraphics[width=0.475\columnwidth]{figures/game_title_tuning_time_slot_100ms.pdf}
+        \label{fig:game_title_tuning_time_slot_100ms}
+    }
+    \subfigure[0.5-second time slot.]{
+        \includegraphics[width=0.475\columnwidth]{figures/game_title_tuning_time_slot_500ms.pdf}
+        \label{fig:game_title_tuning_time_slot_500ms}
+    }
+    \subfigure[1-second time slot.]{
+        \includegraphics[width=0.475\columnwidth]{figures/game_title_tuning_time_slot_1000ms.pdf}
+        \label{fig:game_title_tuning_time_slot_1000ms}
+    }
+    \subfigure[2-second time slot.]{
+        \includegraphics[width=0.475\columnwidth]{figures/game_title_tuning_time_slot_2000ms.pdf}
+        \label{fig:game_title_tuning_time_slot_2000ms}
+    }
+    \vspace{-3mm}
+    \caption{Accuracy of game title classification using attributes computed from packets from the first 1 to 60 seconds of game launch with time slot sizes as (a) 0.1 seconds, (b) 0.5 seconds, (c) 1 second, and (d) 2 seconds.}
+    \label{fig:game_title_tuning_time_slot}
+\end{figure}
+
+\textbf{Time window \textit{N} and time slot \textit{T}:}
+Our attributes are calculated from the packet statistics per time slot \textbf{\textit{T}} within the first \textbf{\textit{N}} seconds of the game launch stage. A sufficiently large time window \textit{N} allows more identical packet statistics to be captured by the attributes. Similarly, a properly selected time slot \textit{T} helps the attributes better profile the statistical features while minimizing the impact of mild delays and packet loss that can be diluted in a sufficiently large time slot. Therefore, we tune the best-performing classification models (processes to be discussed later) for different options of \textit{T} and \textit{N}, with their accuracy for five representative game titles provided in Fig.~\ref{fig:game_title_tuning_time_slot}.
+It is clear that the classification accuracy follows an increasing trend for both \textit{T} and \textit{N} until a certain value, \ie 3 seconds for \textit{T} and 1 second for \textit{N} with over 95\% accuracy on average, which are the suitable options to be used in our system implementation. Notably, we use the downstream packets from the first five (instead of three) seconds of a game streaming session to accommodate possible packet arrival delays in the game launch stage.
+It is worth noting that the implemented values of the tunable parameters \textit{N} and \textit{T} are selected based on our lab dataset without additionally introduced latency or packet loss. We acknowledge that different values can be selected for extended datasets with varying network conditions, which is beyond our current scope.
+
+\textbf{Payload size variation \textit{V} for packet group labeling: }
+While full packets can be simply labeled by those having maximum payload size, to precisely distinguish steady and sparse packets for game title classification, we tune the parameter \textit{V} used in our majority-voting algorithm as discussed in \S\ref{sec:label_packet_groups}, which represents the range of payload size variation allowed among adjacent steady packets in a time slot.
+Since sessions of a certain game title show consistent packet patterns, we randomly pick one representative session from each of the thirteen games and visually inspect the labeled packet groups using \textbf{\textit{V}} between 1\% and 20\%.
+From our evaluation results, we conclude that a high range of allowed variation (\ie 15\% and 20\%) leads to sparse packets being mistakenly labeled as steady packets, while low variation (\ie 1\% and 5\%) mislabels certain steady packets with only slight discrepancy as sparse packets.
+The observation is consistent across all thirteen games, therefore, we use \textit{V} of 10\% in our implementation, which yields the best labeling results.
+
+\begin{table}[t!]
+    \centering
+        \caption{Game title classification accuracy of the best-performing classifier using our specialized packet-group-based attributes vs standard flow volumetric attributes.}
+        \vspace{-3mm}
+    \resizebox{\columnwidth}{!}{
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textbf{Game title}                               & \textbf{Accur. (pkt. group)} & \textbf{Accur. (flow vol.)} \\ \hline
+    {\color[HTML]{3531FF} \textbf{Baldur's Gate 3}}   & 96.9\%                                & 82.1\%                                    \\ \hline
+    {\color[HTML]{3531FF} \textbf{Cyberpunk 2077}}    & 94.9\%                                & 81.5\%                                    \\ \hline
+    {\color[HTML]{3531FF} \textbf{Genshin Impact}}    & 98.0\%                                & 89.8\%                                    \\ \hline
+    {\color[HTML]{3531FF} \textbf{Honkai: Star Rail}} & 94.4\%                                & 85.9\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{Call of Duty}}      & 95.2\%                                & 80.5\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{CSGO}}          & 97.5\%                                & 81.8\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{Destiny 2}}         & 94.1\%                                & 86.0\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{DOTA 2}}            & 92.7\%                                & 84.9\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{Fortnite}}          & 97.3\%                                & 91.5\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{Hearthstone}}       & 94.8\%                                & 88.0\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{Overwatch 2}}       & 95.6\%                                & 85.4\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{R6: Siege}}         & 94.3\%                                & 83.7\%                                    \\ \hline
+    {\color[HTML]{6200C9} \textbf{Rocket League}}     & 92.8\%                                & 83.5\%                                    \\ \hline
+    \end{tabular}
+    }
+    \label{tab:evaluate_title}
+\end{table}
+
+\begin{figure}[t!]
+	\includegraphics[width=\columnwidth]{figures/game_title_feature_importance_permutation.pdf}
+	\vspace{-8mm}
+\caption{Importance of the 51 attributes in classifying game titles by the best-performing Random Forest model. Each of them is color-coded by its packet group (full, steady, or sparse) and pattern-coded by the metric (count, size, or inter-arrival time).}
+\label{fig:game_title_feature_importance}
+\end{figure}
+
+\textbf{Machine learning classifier:}
+To select a suitable machine learning model as our game title classifier, we fine-tune and evaluate three commonly used machine learning algorithms, namely margin-based Support Vector Machine (SVM), distance-based K-Nearest Neighbors (KNN), and Random Forest (RF).
+After fine-tuning the hyperparameters of each algorithm -- such as the regularization and kernel type for SVM, the number of neighbors and distance metric for KNN, and the number of trees and maximum tree depth for random forest -- the classifier that achieves the best overall accuracy (\ie over 95\%) in classifying all game titles is selected, with its accuracy for each game title provided in the second column of Table~\ref{tab:evaluate_title}. 
+The details of our hyperparameter tuning and model evaluation are provided in Appendix \S\ref{sec:additional_title_eval}.
+
+We evaluate the importance of the attributes consumed by the selected random forest classifier using the permutation importance metric \cite{breiman_random_2001}, which measures the drop in the accuracy of the model when the values of an evaluated attribute are shuffled randomly. As visually shown in Fig.~\ref{fig:game_title_feature_importance}, 43 attributes exhibit certain predictive powers in classifying game titles, while the other eight attributes, including seven for the full packet group and one for the steady group, have little significance with their measured importance being 0. Unsurprisingly, the eight attributes describe less varying statistics among game titles, such as the mean packet sizes of the full packet group, which can be excluded in the classification pipeline to optimize the processing cost \cite{wan_cato_2025}.
+
+For comparison, we also trained classifiers that take the two standard flow volumetric attributes (\ie packet rate and throughput) per time interval rather than our well-articulated attributes from the three packet groups. Not surprisingly, the accuracy drops significantly (\eg more than 10\%) for each game title, as shown in the rightmost column of Table~\ref{tab:evaluate_title}. 
+We have observed that most misclassified game steaming sessions have label confidence less than 40\%. Therefore, in our implementation, sessions with low-confidence results are labeled as ``unknown'' game title, suggesting that network operators should include more game titles in their databases if they wish, or refer to the coarse-grained gameplay activity patterns for those streaming sessions.
+
+
+\begin{figure}[t!]
+\vspace{-2mm}
+    \centering
+    \subfigure[0.1-second time slot.]{
+        \includegraphics[width=0.47\columnwidth]{figures/alpha_accuracy_time_slot_100ms.pdf}
+        \label{fig:alpha_accuracy_time_slot_100ms}
+    }
+    \subfigure[0.5-second time slot.]{
+        \includegraphics[width=0.47\columnwidth]{figures/alpha_accuracy_time_slot_500ms.pdf}
+        \label{fig:alpha_accuracy_time_slot_500ms}
+    }
+    \subfigure[1-second time slot.]{
+        \includegraphics[width=0.47\columnwidth]{figures/alpha_accuracy_time_slot_1000ms.pdf}
+        \label{fig:alpha_accuracy_time_slot_1000ms}
+    }
+    \subfigure[2-second time slot.]{
+        \includegraphics[width=0.47\columnwidth]{figures/alpha_accuracy_time_slot_2000ms.pdf}
+        \label{fig:alpha_accuracy_time_slot_2000ms}
+    }
+    \vspace{-3mm}
+    \caption{Accuracy of player activity stage classification using current stage weights between 0.1 and 1 with time slot sizes of (a) 0.1 seconds, (b) 0.5 seconds, (c) 1 second, and (d) 2 seconds.}
+    \label{fig:alpha_accuracy_time_slot}
+    \vspace{-5mm}
+\end{figure}
+
+\subsubsection{Evaluating player activity stage classification and gameplay activity pattern inference}\label{sec:evaluate_stage}
+Our second process (\S\ref{sec:classify_game_stage}) continuously classifies the player activity stage and infers the gameplay activity pattern of a streaming session. We now discuss the selection of key options, including the time slot \textit{\textbf{I}} for player activity stage classification, the weight of the current activity stage \textit{\textbf{$\alpha$}}, the confidence threshold for outputting gameplay activity pattern inference results, and the machine learning classification models.
+
+\textbf{Time slot \textit{I} and current stage weight $\alpha$:}
+In the process that continuously classifies the player activity stage in a cloud game session, as discussed in \S\ref{sec:classify_engagement_status}, the intermediate labels are produced per \textit{I}-second time slot and smoothed by an exponential moving average (EMA) function with the weight of the current stage as $\alpha$. Therefore, we evaluate the accuracy produced by our best-performing classifiers that use different options of the two parameters, with representative results shown in Fig.~\ref{fig:alpha_accuracy_time_slot}. We can see in Fig.~\ref{fig:alpha_accuracy_time_slot_1000ms} that classification accuracy reaches its best performance with a 1-second time slot, as a small time slot can be overly granular to capture identical volumetric characteristics of the respective player activity stage, while a large time slot can be mixed with multiple stages. Regarding the current stage weight $\alpha$, a value between 0.5 and 0.6 has the best overall performance. In our implementation, we use a 1-second time slot with an $\alpha$ value of 0.5 to achieve classification robustness to short noises in streaming volumetric profiles.
+
+\textbf{Confidence threshold for gameplay activity pattern inference:}
+In our second process, we continuously infer the gameplay activity pattern based on the stage transition/retention rates upon each newly classified stage at a time slot, until the confidence level of the inferred pattern exceeds a certain threshold.
+To balance accuracy (by using more data from more time slots) and responsiveness (\ie shorter inference time), we evaluate the per-session average accuracy and time needed to generate a confident inference result above confidence thresholds from 0\% up to 95\% for continuous-play and spectate-and-play games, respectively, using the optimal settings for other parameters.
+By using very low confidence thresholds (\eg 0\% to 40\%), the model tends to generate results very early (\eg 1 to 30 seconds) but they are highly inaccurate (\ie less than 50\% accuracy).
+On the other hand, overly high thresholds (\eg 95\%) may lead to inference results not being generated until close to the end of sessions, which are not useful for real-time monitoring and performance boost.
+Therefore, we choose 75\% as the confidence threshold since it produces results with around 90\% accuracy for both types of games while only needing five minutes on average, at which time the player has just begun the gameplay.
+
+\textbf{Machine learning classifiers:} In this process, we have developed two machine learning models to classify the player activity stage in a cloud game session using bidirectional volumetric attributes of the streaming session and to infer the overall gameplay activity pattern. We follow a similar process as described in \S\ref{sec:evaluate_title}, evaluating commonly used machine learning algorithms and their hyperparameters to select the best-performing models. 
+To classify player activity stages using volumetric attributes, both throughput and packet rate demonstrate similar importance. The downstream attributes contribute more to the classification of the idle stage, while the upstream attributes are more important for the active and passive stages.
+To classify gameplay activity patterns using the stage transition behaviors, the attributes that capture transitions from active to idle stages and from idle to passive stages are the most important ones. The details of our model and attribute evaluation are provided in Appendix \S\ref{sec:additional_pattern_eval}.
+The accuracies of the best-performing models for both classification tasks are provided in Table~\ref{tab:activity_stage}. We observe that decent accuracy (\eg mostly over 95\%) is achieved for all classification labels in both player activity stages (\ie active, passive and idle) and gameplay activity pattern types (\ie continuous-play and spectate-and-play), meeting the requirement for the field deployment in our partnered ISP network as discussed next.

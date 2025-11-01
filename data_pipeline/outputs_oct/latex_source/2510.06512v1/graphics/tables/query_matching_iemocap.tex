@@ -1,0 +1,76 @@
+\begin{table}[ht]
+\centering
+\caption{LogSTOP with HuBERT outperforms LALMs on the QMTP-speech dataset, both overall and on each query. We report balanced accuracies on 1650 matching and 1650 non-matching sequences of lengths 5-30. The best performing method is highlighted in \textbf{bold} and the second best is \underline{underlined}. 
+% Average accuracies across 3 runs are reported for the LALMs.
+}
+
+\vspace{0.1in}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+\textbf{Query} & \textbf{Qwen-Audio-Chat} & \textbf{Qwen2-Audio-7B-Instruct} & \textbf{LogSTOP} \\
+\midrule
+Eventually p1 & \underline{0.75} & 0.72 & \textbf{0.94} \\
+Always p1 & \underline{0.67} & 0.66 & \textbf{0.87} \\
+p1 Until p2 & \underline{0.69} & 0.53 & \textbf{0.9} \\
+\midrule
+Always p1 or Eventually p2 & 0.58 & \underline{0.64} & \textbf{0.77} \\
+\midrule
+Not p1 Until p2 & \underline{0.77} & 0.72 & \textbf{0.8} \\
+p1 Until Not p2 & 0.64 & \underline{0.7} & \textbf{0.8} \\
+\midrule
+p1 Until Always p2 & 0.52 & \underline{0.53} & \textbf{0.82} \\
+Eventually Always p1 & \underline{0.75} & 0.74 & \textbf{0.92} \\
+Always Eventually p1 & \underline{0.69} & 0.5 & \textbf{0.76} \\
+\midrule
+(Not p1) Until Eventually p2 & \underline{0.68} & 0.55 & \textbf{0.76} \\
+(Not p1) Until Always p2 & \underline{0.59} & 0.49 & \textbf{0.79} \\
+\midrule
+Overall & \underline{0.68} & 0.63 & \textbf{0.84} \\
+\bottomrule
+\end{tabular}
+}
+% \vspace{-0.2in}
+\label{tab:results_iemocap}
+\end{table}
+
+% % logs_iemocap_len-20_sm-2_downsample_all_test/iemocap/hubert
+% \begin{table}[H]
+% \centering
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{|c|c|c|c|c|c|}
+% \toprule
+% Query & Qwen-Audio-Chat & Qwen2-Audio-7B-Instruct & Spatial Rob. & LogCSTOP \\
+% \midrule
+% Eventually p1 & 69.0 & 67.0 & \textbf{97.0} & 95.0 \\
+% % Eventually p1 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% Always p1 & 64.0 & 66.0 & 77.0 & \textbf{87.0} \\
+% % Always p1 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% p1 Until p2 & 70.0 & 61.0 & \textbf{91.0} & \textbf{91.0} \\
+% % p1 Until p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% % Always p1 and Eventually p2 & - & - & - & - \\
+% % Always p1 and Eventually p2 & - / 50 & - / 50 & - / 50 & - / 50 \\
+% Always p1 or Eventually p2 & 66.0 & 57.0 & \textbf{92.0} & 91.0 \\
+% % Always p1 or Eventually p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% Not p1 Until p2 & 72.0 & 73.0 & \textbf{84.0} & 83.0 \\
+% % Not p1 Until p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% p1 Until Not p2 & 54.0 & 66.0 & \textbf{82.0} & 81.0 \\
+% % p1 Until Not p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% % Always (p1 and p2) & - & - & - & - \\
+% % Always (p1 and p2) & - / 50 & - / 50 & - / 50 & - / 50 \\
+% p1 Until Always p2 & 45.0 & 39.0 & 65.0 & \textbf{88.0} \\
+% % p1 Until Always p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% (Not p1) Until Eventually p2 & 57.0 & 37.0 & \textbf{89.0} & 64.0 \\
+% % (Not p1) Until Eventually p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% (Not p1) Until Always p2 & 59.0 & 49.0 & 73.0 & \textbf{94.0} \\
+% % (Not p1) Until Always p2 & 50 / 50 & 50 / 50 & 50 / 50 & 50 / 50 \\
+% \midrule
+% Average & 61.78 & 57.22 & 83.33 & \textbf{86.0} \\
+% % Total & 450 / 550 & 450 / 550 & 450 / 550 & 450 / 550 \\
+% \bottomrule
+% \end{tabular}
+% }
+% \vspace{0.1in}
+% \caption{LogCSTOP performs better than ALMs and Spatial robustness on audio-query matching for identifying temporal emotion patterns in the IEMOCAP dataset. Balanced accuracies are reported over a total of 450 positive and 550 negative sequences of lengths 10-20. A downsampling-smoothing window \(w = 2\) is used for LogCSTOP.}
+% \label{tab:results_iemocap}
+% \end{table}

@@ -1,0 +1,42 @@
+% Requires: \usepackage{booktabs} \usepackage{adjustbox} \usepackage{multirow}
+\begin{table}[t]
+  \centering
+  \caption{Ablations on \textbf{Hallo3} (audio--visual stream synchronization).
+  Higher is better for Acc and R-Precision; lower is better for Offset.}
+  \label{tab:abl_sync_hallo3}
+  \setlength{\tabcolsep}{6pt}
+  \small
+  \begin{adjustbox}{max width=\linewidth,center}
+    \begin{tabular}{@{} l
+                        cc  cc  cc  ccc @{}}
+      \toprule
+      \multirow{2}{*}{Variant} &
+        \multicolumn{2}{c}{K = 1} &
+        \multicolumn{2}{c}{K = 5} &
+        \multicolumn{2}{c}{K = 15} &
+        \multicolumn{3}{c}{R-precision (32)} \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-10}
+      & Acc $\uparrow$ (\%) & Offset $\downarrow$
+      & Acc $\uparrow$ (\%) & Offset $\downarrow$
+      & Acc $\uparrow$ (\%) & Offset $\downarrow$
+      & Top1 $\uparrow$ & Top2 $\uparrow$ & Top3 $\uparrow$ \\
+      \midrule
+      \multicolumn{10}{@{}l}{\textit{(A) Two-Bypass Face-Aware Masking}} \\
+      A1\; Uniform-only (single view)            &  9.34 & 7.18 & 12.68 & 6.22 & 18.57 & 5.36 &  2.83 &  5.14 &  7.92 \\
+      A2\; Face-aware-only (single view)         & 45.63 & 3.45 & 61.07 & 2.37 & 75.88 & 1.27 & 33.45 & 52.81 & 66.19 \\
+      A3\; Two-bypass w/o photometric            & 49.62 & 3.02 & 65.91 & 2.03 & 79.87 & 1.05 & 37.54 & 57.89 & 70.86 \\
+      \midrule
+      \multicolumn{10}{@{}l}{\textit{(B) Audio Feature Adaptation}} \\
+      B1\; Last-layer only                       & 42.68 & 3.62 & 58.34 & 2.51 & 73.45 & 1.36 & 30.92 & 49.87 & 63.11 \\
+      \midrule
+      \multicolumn{10}{@{}l}{\textit{(C) Decoder Cross-Attention}} \\
+      C1\; No cross-attention                    & 48.27 & 3.10 & 64.31 & 2.09 & 78.44 & 1.09 & 36.21 & 56.48 & 69.32 \\
+      \midrule
+      \textbf{Ours}                   & \textbf{52.53} & \textbf{2.66} &
+                                                   \textbf{68.41} & \textbf{1.73} &
+                                                   \textbf{82.27} & \textbf{0.93} &
+                                                   \textbf{40.18} & \textbf{61.48} & \textbf{73.49} \\
+      \bottomrule
+    \end{tabular}
+  \end{adjustbox}
+\end{table}

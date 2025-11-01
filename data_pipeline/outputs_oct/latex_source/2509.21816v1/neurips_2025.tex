@@ -1,0 +1,135 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2025
+
+% The authors should use one of these tracks.
+% Before accepting by the NeurIPS conference, select one of the options below.
+% 0. "default" for submission
+\usepackage[main, final]{neurips_2025}
+% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
+% 1. "main" option is used for the Main Track
+%  \usepackage[main]{neurips_2025}
+% 2. "position" option is used for the Position Paper Track
+%  \usepackage[position]{neurips_2025}
+% 3. "dandb" option is used for the Datasets & Benchmarks Track
+ % \usepackage[dandb]{neurips_2025}
+% 4. "creativeai" option is used for the Creative AI Track
+%  \usepackage[creativeai]{neurips_2025}
+% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop]{neurips_2025}
+% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop]{neurips_2025}
+
+% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
+% 1. Main Track
+ % \usepackage[main, final]{neurips_2025}
+% 2. Position Paper Track
+%  \usepackage[position, final]{neurips_2025}
+% 3. Datasets & Benchmarks Track
+ % \usepackage[dandb, final]{neurips_2025}
+% 4. Creative AI Track
+%  \usepackage[creativeai, final]{neurips_2025}
+% 5. Workshop with single-blind reviewing
+%  \usepackage[sglblindworkshop, final]{neurips_2025}
+% 6. Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop, final]{neurips_2025}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
+% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
+% \workshoptitle{WORKSHOP TITLE}
+
+% "preprint" option is used for arXiv or other preprint submissions
+ % \usepackage[preprint]{neurips_2025}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2025}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{graphicx}
+% \usepackage{subcaption}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+% \usepackage{caption}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage{makecell}
+\usepackage{authblk}
+
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.17}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
+
+
+
+\author{%
+\textbf{Yuhang Xie}$^1$,
+\textbf{Jian Mu}$^2$,
+\textbf{Xiaojun Ma}$^3$,
+\textbf{Chaoyun Zhang}$^3$,
+\textbf{Lu Wang}$^3$,
+\textbf{Mengyu Zhou}$^3$,
+\textbf{Mugeng Liu}$^1$,
+\textbf{Si Qin}$^3$,
+\textbf{Qingwei Lin}$^3$,
+\textbf{Saravan Rajmohan}$^3$,
+\textbf{Shi Han}$^3$,
+\textbf{Dongmei Zhang}$^3$
+}
+
+\vspace{-2pt}
+
+\affil{%
+$^1$Peking University \quad
+$^2$Nanjing University \quad
+$^3$Microsoft
+}
+
+\affil{\texttt{yuhangxie@stu.pku.edu.cn}, \texttt{lmg@pku.edu.cn}, 
+\texttt{mujian@smail.nju.edu.cn}, 
+\texttt{\{xiaojunma, chaoyun.zhang, wlu, Mengyu.Zhou, Si.Qin, qlin, saravan.rajmohan, shihan, dongmeiz\}@microsoft.com}}
+
+
+
+\newcommand{\our}{Our framework}
+\newcommand\figcaption{\def\@captype{figure}\caption}
+\newcommand\tabcaption{\def\@captype{table}\caption}
+
+\begin{document}
+
+\title{No More Manual Guides: Automatic  and Scalable Generation of High-Quality Excel Tutorials}
+
+\maketitle
+
+%No More Manual Guides: Automatic  and Scalable Generation of High-Quality Excel Tutorials
+%Beyond Manual Authoring: Scalable Generation of High-Quality Excel Tutorials
+
+\input{sections_arxiv/00_abstract}
+\input{sections_arxiv/01_introduction}
+\input{sections_arxiv/02_related_work}
+\input{sections_arxiv/03_approach}
+\input{sections_arxiv/04_experiements}
+% \input{sections/05_results}
+\input{sections_arxiv/06_discussion}
+\input{sections_arxiv/07_conclusion}
+
+\bibliographystyle{plainnat}   % 或者 neurips_2025 指定的样式
+\bibliography{main}
+
+\end{document}

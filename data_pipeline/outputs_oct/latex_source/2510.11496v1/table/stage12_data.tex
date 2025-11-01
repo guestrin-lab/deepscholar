@@ -1,0 +1,33 @@
+\begin{table}[t]
+    \scriptsize
+    \centering
+    \renewcommand\arraystretch{1.0} % Line spacing
+    \setlength{\tabcolsep}{1.1mm}    % table col width
+    \begin{tabular}{l|cc|cc|cc}
+          & \multicolumn{2}{c|}{characteristics} & \multicolumn{2}{c|}{stage 1}  & \multicolumn{2}{c}{stage 2} \\
+         \multirow{-2}{*}{dataset} & language & original & cleaned & remain  & cleaned & remain \\
+         \hline
+         LAION-en~\cite{schuhmann2022laion5b}  & \multirow{6}{*}{English} & 2.3B & 1.94B & 84.3\% &  91M & 4.0\% \\
+         LAION-COCO~\cite{schuhmann2022laioncoco}  &  & 663M     & 550M   & 83.0\% & 550M & 83.0\% \\
+         COYO~\cite{byeon2022coyo}        &  & 747M     & 535M   & 71.6\% & 200M & 26.8\% \\
+         CC12M~\cite{changpinyo2021cc12m}       &  & 12.4M      & 11.1M  & 89.5\% & 11.1M  & 89.5\% \\
+         CC3M~\cite{sharma2018cc3m}        &  & 3.0M       & 2.6M   & 86.7\% & 2.6M   & 86.7\%  \\
+         SBU~\cite{ordonez2011sbu}
+         &  & 1.0M & 1.0M & 100\% & 1.0M & 100\% \\
+         
+         \rowcolor{gray!15}
+         Wukong~\cite{gu2022wukong}& \multirow{1}{*}{Chinese} & 100M  & 69.4M & 69.4\% & 69.4M & 69.4\% \\
+         
+         LAION-multi~\cite{schuhmann2022laion5b} & \multirow{1}{*}{Multi} & 2.2B  & 1.87B & 85.0\% & 100M & 4.5\%\\
+         \hline
+          Total      &  Multi & 6.03B     & 4.98B    & 82.6\% & 1.03B & 17.0\%\\
+    \end{tabular}
+    \vspace{-0.5em}
+    \caption{\textbf{Details of the training data for \modelname in stage 1 and stage 2.}
+    Among them, LAION-en~\cite{schuhmann2022laion5b}, LAION-multi~\cite{schuhmann2022laion5b}, COYO~\cite{byeon2022coyo}, and Wukong~\cite{gu2022wukong} are web-scale image-text pairs data.
+    LAION-COCO~\cite{schuhmann2022laioncoco} is a synthetic dataset with high-quality captions from LAION-en. CC12M~\cite{changpinyo2021cc12m}, CC3M~\cite{sharma2018cc3m}, SBU~\cite{ordonez2011sbu} are academic caption datasets. ``Multi" means multilingual.
+    } 
+    \vspace{-0.5em}
+    \label{tab:stage1_data}
+    % \vspace{-0.5em}
+\end{table}

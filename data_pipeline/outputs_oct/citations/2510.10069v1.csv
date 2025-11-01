@@ -1,0 +1,239 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,l3net,\cite{l3net},"Look, Listen and Learn",http://arxiv.org/abs/1705.08168v2,"We consider the question: what can be learnt by looking at and listening to a
+large number of unlabelled videos? There is a valuable, but so far untapped,
+source of information contained in the video itself -- the correspondence
+between the visual and the audio streams, and we introduce a novel
+""Audio-Visual Correspondence"" learning task that makes use of this. Training
+visual and audio networks from scratch, without any additional supervision
+other than the raw unconstrained videos themselves, is shown to successfully
+solve this task, and, more interestingly, result in good visual and audio
+representations. These features set the new state-of-the-art on two sound
+classification benchmarks, and perform on par with the state-of-the-art
+self-supervised approaches on ImageNet classification. We also demonstrate that
+the network is able to localize objects in both modalities, as well as perform
+fine-grained recognition tasks.","Arandjelovic, Relja and Zisserman, Andrew",2017,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,avts,\cite{avts},Learning Representations from Audio-Visual Spatial Alignment,http://arxiv.org/abs/2011.01819v1,"We introduce a novel self-supervised pretext task for learning
+representations from audio-visual content. Prior work on audio-visual
+representation learning leverages correspondences at the video level.
+Approaches based on audio-visual correspondence (AVC) predict whether audio and
+video clips originate from the same or different video instances. Audio-visual
+temporal synchronization (AVTS) further discriminates negative pairs originated
+from the same video instance but at different moments in time. While these
+approaches learn high-quality representations for downstream tasks such as
+action recognition, their training objectives disregard spatial cues naturally
+occurring in audio and visual signals. To learn from these spatial cues, we
+tasked a network to perform contrastive audio-visual spatial alignment of
+360{\deg} video and spatial audio. The ability to perform spatial alignment is
+enhanced by reasoning over the full spatial content of the 360{\deg} video
+using a transformer architecture to combine representations from multiple
+viewpoints. The advantages of the proposed pretext task are demonstrated on a
+variety of audio and visual downstream tasks, including audio-visual
+correspondence, spatial alignment, action recognition, and video semantic
+segmentation.","Morgado, Pedro and Li, Yi and Nvasconcelos, Nuno",2020,,,,Advances in Neural Information Processing Systems
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,syncnet,\cite{syncnet},Out of time: automated lip sync in the wild,,,"Chung, Joon Son and Zisserman, Andrew",2016,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,vocalist,\cite{vocalist},VocaLiST: An Audio-Visual Synchronisation Model for Lips and Voices,http://arxiv.org/abs/2204.02090v2,"In this paper, we address the problem of lip-voice synchronisation in videos
+containing human face and voice. Our approach is based on determining if the
+lips motion and the voice in a video are synchronised or not, depending on
+their audio-visual correspondence score. We propose an audio-visual cross-modal
+transformer-based model that outperforms several baseline models in the
+audio-visual synchronisation task on the standard lip-reading speech benchmark
+dataset LRS2. While the existing methods focus mainly on lip synchronisation in
+speech videos, we also consider the special case of the singing voice. The
+singing voice is a more challenging use case for synchronisation due to
+sustained vowel sounds. We also investigate the relevance of lip
+synchronisation models trained on speech datasets in the context of singing
+voice. Finally, we use the frozen visual features learned by our lip
+synchronisation model in the singing voice separation task to outperform a
+baseline audio-visual model which was trained end-to-end. The demos, source
+code, and the pre-trained models are available on
+https://ipcv.github.io/VocaLiST/","Kadandale, Venkatesh S and Montesinos, Juan F and Haro, Gloria",2022,,,,arXiv preprint arXiv:2204.02090
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,clip,\cite{clip},Learning Transferable Visual Models From Natural Language Supervision,http://arxiv.org/abs/2103.00020v1,"State-of-the-art computer vision systems are trained to predict a fixed set
+of predetermined object categories. This restricted form of supervision limits
+their generality and usability since additional labeled data is needed to
+specify any other visual concept. Learning directly from raw text about images
+is a promising alternative which leverages a much broader source of
+supervision. We demonstrate that the simple pre-training task of predicting
+which caption goes with which image is an efficient and scalable way to learn
+SOTA image representations from scratch on a dataset of 400 million (image,
+text) pairs collected from the internet. After pre-training, natural language
+is used to reference learned visual concepts (or describe new ones) enabling
+zero-shot transfer of the model to downstream tasks. We study the performance
+of this approach by benchmarking on over 30 different existing computer vision
+datasets, spanning tasks such as OCR, action recognition in videos,
+geo-localization, and many types of fine-grained object classification. The
+model transfers non-trivially to most tasks and is often competitive with a
+fully supervised baseline without the need for any dataset specific training.
+For instance, we match the accuracy of the original ResNet-50 on ImageNet
+zero-shot without needing to use any of the 1.28 million training examples it
+was trained on. We release our code and pre-trained model weights at
+https://github.com/OpenAI/CLIP.","Radford, Alec and Kim, Jong Wook and Hallacy, Chris and Ramesh, Aditya and Goh, Gabriel and Agarwal, Sandhini and Sastry, Girish and Askell, Amanda and Mishkin, Pamela and Clark, Jack and others",2021,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,mae,\cite{mae},Masked Autoencoders Are Scalable Vision Learners,http://arxiv.org/abs/2111.06377v3,"This paper shows that masked autoencoders (MAE) are scalable self-supervised
+learners for computer vision. Our MAE approach is simple: we mask random
+patches of the input image and reconstruct the missing pixels. It is based on
+two core designs. First, we develop an asymmetric encoder-decoder architecture,
+with an encoder that operates only on the visible subset of patches (without
+mask tokens), along with a lightweight decoder that reconstructs the original
+image from the latent representation and mask tokens. Second, we find that
+masking a high proportion of the input image, e.g., 75%, yields a nontrivial
+and meaningful self-supervisory task. Coupling these two designs enables us to
+train large models efficiently and effectively: we accelerate training (by 3x
+or more) and improve accuracy. Our scalable approach allows for learning
+high-capacity models that generalize well: e.g., a vanilla ViT-Huge model
+achieves the best accuracy (87.8%) among methods that use only ImageNet-1K
+data. Transfer performance in downstream tasks outperforms supervised
+pre-training and shows promising scaling behavior.","He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Doll{\'a}r, Piotr and Girshick, Ross",2022,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,videomae,\cite{videomae},"VideoMAE: Masked Autoencoders are Data-Efficient Learners for
+  Self-Supervised Video Pre-Training",http://arxiv.org/abs/2203.12602v3,"Pre-training video transformers on extra large-scale datasets is generally
+required to achieve premier performance on relatively small datasets. In this
+paper, we show that video masked autoencoders (VideoMAE) are data-efficient
+learners for self-supervised video pre-training (SSVP). We are inspired by the
+recent ImageMAE and propose customized video tube masking with an extremely
+high ratio. This simple design makes video reconstruction a more challenging
+self-supervision task, thus encouraging extracting more effective video
+representations during this pre-training process. We obtain three important
+findings on SSVP: (1) An extremely high proportion of masking ratio (i.e., 90%
+to 95%) still yields favorable performance of VideoMAE. The temporally
+redundant video content enables a higher masking ratio than that of images. (2)
+VideoMAE achieves impressive results on very small datasets (i.e., around 3k-4k
+videos) without using any extra data. (3) VideoMAE shows that data quality is
+more important than data quantity for SSVP. Domain shift between pre-training
+and target datasets is an important issue. Notably, our VideoMAE with the
+vanilla ViT can achieve 87.4% on Kinetics-400, 75.4% on Something-Something V2,
+91.3% on UCF101, and 62.6% on HMDB51, without using any extra data. Code is
+available at https://github.com/MCG-NJU/VideoMAE.","Tong, Zhan and Song, Yibing and Wang, Jue and Wang, Limin",2022,,,,Advances in neural information processing systems
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,marlin,\cite{marlin},MARLIN: Masked Autoencoder for facial video Representation LearnINg,http://arxiv.org/abs/2211.06627v3,"This paper proposes a self-supervised approach to learn universal facial
+representations from videos, that can transfer across a variety of facial
+analysis tasks such as Facial Attribute Recognition (FAR), Facial Expression
+Recognition (FER), DeepFake Detection (DFD), and Lip Synchronization (LS). Our
+proposed framework, named MARLIN, is a facial video masked autoencoder, that
+learns highly robust and generic facial embeddings from abundantly available
+non-annotated web crawled facial videos. As a challenging auxiliary task,
+MARLIN reconstructs the spatio-temporal details of the face from the densely
+masked facial regions which mainly include eyes, nose, mouth, lips, and skin to
+capture local and global aspects that in turn help in encoding generic and
+transferable features. Through a variety of experiments on diverse downstream
+tasks, we demonstrate MARLIN to be an excellent facial video encoder as well as
+feature extractor, that performs consistently well across a variety of
+downstream tasks including FAR (1.13% gain over supervised benchmark), FER
+(2.64% gain over unsupervised benchmark), DFD (1.86% gain over unsupervised
+benchmark), LS (29.36% gain for Frechet Inception Distance), and even in low
+data regime. Our code and models are available at
+https://github.com/ControlNet/MARLIN .","Cai, Zhixi and Ghosh, Shreya and Stefanov, Kalin and Dhall, Abhinav and Cai, Jianfei and Rezatofighi, Hamid and Haffari, Reza and Hayat, Munawar",2023,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,mae_dfer,\cite{mae_dfer},Mae-dfer: Efficient masked autoencoder for self-supervised dynamic facial expression recognition,,,"Sun, Licai and Lian, Zheng and Liu, Bin and Tao, Jianhua",2023,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,autoavsr,\cite{autoavsr},Auto-avsr: Audio-visual speech recognition with automatic labels,,,"Ma, Pingchuan and Haliassos, Alexandros and Fernandez-Lopez, Adriana and Chen, Honglie and Petridis, Stavros and Pantic, Maja",2023,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,wav2lip,\cite{wav2lip},"A Lip Sync Expert Is All You Need for Speech to Lip Generation In The
+  Wild",http://arxiv.org/abs/2008.10010v1,"In this work, we investigate the problem of lip-syncing a talking face video
+of an arbitrary identity to match a target speech segment. Current works excel
+at producing accurate lip movements on a static image or videos of specific
+people seen during the training phase. However, they fail to accurately morph
+the lip movements of arbitrary identities in dynamic, unconstrained talking
+face videos, resulting in significant parts of the video being out-of-sync with
+the new audio. We identify key reasons pertaining to this and hence resolve
+them by learning from a powerful lip-sync discriminator. Next, we propose new,
+rigorous evaluation benchmarks and metrics to accurately measure lip
+synchronization in unconstrained videos. Extensive quantitative evaluations on
+our challenging benchmarks show that the lip-sync accuracy of the videos
+generated by our Wav2Lip model is almost as good as real synced videos. We
+provide a demo video clearly showing the substantial impact of our Wav2Lip
+model and evaluation benchmarks on our website:
+\url{cvit.iiit.ac.in/research/projects/cvit-projects/a-lip-sync-expert-is-all-you-need-for-speech-to-lip-generation-in-the-wild}.
+The code and models are released at this GitHub repository:
+\url{github.com/Rudrabha/Wav2Lip}. You can also try out the interactive demo at
+this link: \url{bhaasha.iiit.ac.in/lipsync}.","Prajwal, KR and Mukhopadhyay, Rudrabha and Namboodiri, Vinay P and Jawahar, CV",2020,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,latentsync,\cite{latentsync},"LatentSync: Taming Audio-Conditioned Latent Diffusion Models for Lip
+  Sync with SyncNet Supervision",http://arxiv.org/abs/2412.09262v2,"End-to-end audio-conditioned latent diffusion models (LDMs) have been widely
+adopted for audio-driven portrait animation, demonstrating their effectiveness
+in generating lifelike and high-resolution talking videos. However, direct
+application of audio-conditioned LDMs to lip-synchronization (lip-sync) tasks
+results in suboptimal lip-sync accuracy. Through an in-depth analysis, we
+identified the underlying cause as the ""shortcut learning problem"", wherein the
+model predominantly learns visual-visual shortcuts while neglecting the
+critical audio-visual correlations. To address this issue, we explored
+different approaches for integrating SyncNet supervision into audio-conditioned
+LDMs to explicitly enforce the learning of audio-visual correlations. Since the
+performance of SyncNet directly influences the lip-sync accuracy of the
+supervised model, the training of a well-converged SyncNet becomes crucial. We
+conducted the first comprehensive empirical studies to identify key factors
+affecting SyncNet convergence. Based on our analysis, we introduce
+StableSyncNet, with an architecture designed for stable convergence. Our
+StableSyncNet achieved a significant improvement in accuracy, increasing from
+91% to 94% on the HDTF test set. Additionally, we introduce a novel Temporal
+Representation Alignment (TREPA) mechanism to enhance temporal consistency in
+the generated videos. Experimental results show that our method surpasses
+state-of-the-art lip-sync approaches across various evaluation metrics on the
+HDTF and VoxCeleb2 datasets.","Li, Chunyu and Zhang, Chao and Xu, Weikai and Lin, Jingyu and Xie, Jinghui and Feng, Weiguo and Peng, Bingyue and Chen, Cunjian and Xing, Weiwei",2024,,,,arXiv preprint arXiv:2412.09262
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,musetalk,\cite{musetalk},"MuseTalk: Real-Time High-Fidelity Video Dubbing via Spatio-Temporal
+  Sampling",http://arxiv.org/abs/2410.10122v3,"Real-time video dubbing that preserves identity consistency while achieving
+accurate lip synchronization remains a critical challenge. Existing approaches
+face a trilemma: diffusion-based methods achieve high visual fidelity but
+suffer from prohibitive computational costs, while GAN-based solutions
+sacrifice lip-sync accuracy or dental details for real-time performance. We
+present MuseTalk, a novel two-stage training framework that resolves this
+trade-off through latent space optimization and spatio-temporal data sampling
+strategy. Our key innovations include: (1) During the Facial Abstract
+Pretraining stage, we propose Informative Frame Sampling to temporally align
+reference-source pose pairs, eliminating redundant feature interference while
+preserving identity cues. (2) In the Lip-Sync Adversarial Finetuning stage, we
+employ Dynamic Margin Sampling to spatially select the most suitable
+lip-movement-promoting regions, balancing audio-visual synchronization and
+dental clarity. (3) MuseTalk establishes an effective audio-visual feature
+fusion framework in the latent space, delivering 30 FPS output at 256*256
+resolution on an NVIDIA V100 GPU. Extensive experiments demonstrate that
+MuseTalk outperforms state-of-the-art methods in visual fidelity while
+achieving comparable lip-sync accuracy. %The codes and models will be made
+publicly available upon acceptance. The code is made available at
+\href{https://github.com/TMElyralab/MuseTalk}{https://github.com/TMElyralab/MuseTalk}","Zhang, Yue and Zhong, Zhizhou and Liu, Minhao and Chen, Zhaokang and Wu, Bin and Zeng, Yubin and Zhan, Chao and He, Yingjie and Huang, Junxin and Zhou, Wenjiang",2024,,,,arXiv preprint arXiv:2410.10122
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,dit,\cite{dit},Scalable Diffusion Models with Transformers,http://arxiv.org/abs/2212.09748v2,"We explore a new class of diffusion models based on the transformer
+architecture. We train latent diffusion models of images, replacing the
+commonly-used U-Net backbone with a transformer that operates on latent
+patches. We analyze the scalability of our Diffusion Transformers (DiTs)
+through the lens of forward pass complexity as measured by Gflops. We find that
+DiTs with higher Gflops -- through increased transformer depth/width or
+increased number of input tokens -- consistently have lower FID. In addition to
+possessing good scalability properties, our largest DiT-XL/2 models outperform
+all prior diffusion models on the class-conditional ImageNet 512x512 and
+256x256 benchmarks, achieving a state-of-the-art FID of 2.27 on the latter.","Peebles, William and Xie, Saining",2023,,,,
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,wan,\cite{wan},Wan: Open and Advanced Large-Scale Video Generative Models,http://arxiv.org/abs/2503.20314v2,"This report presents Wan, a comprehensive and open suite of video foundation
+models designed to push the boundaries of video generation. Built upon the
+mainstream diffusion transformer paradigm, Wan achieves significant
+advancements in generative capabilities through a series of innovations,
+including our novel VAE, scalable pre-training strategies, large-scale data
+curation, and automated evaluation metrics. These contributions collectively
+enhance the model's performance and versatility. Specifically, Wan is
+characterized by four key features: Leading Performance: The 14B model of Wan,
+trained on a vast dataset comprising billions of images and videos,
+demonstrates the scaling laws of video generation with respect to both data and
+model size. It consistently outperforms the existing open-source models as well
+as state-of-the-art commercial solutions across multiple internal and external
+benchmarks, demonstrating a clear and significant performance superiority.
+Comprehensiveness: Wan offers two capable models, i.e., 1.3B and 14B
+parameters, for efficiency and effectiveness respectively. It also covers
+multiple downstream applications, including image-to-video, instruction-guided
+video editing, and personal video generation, encompassing up to eight tasks.
+Consumer-Grade Efficiency: The 1.3B model demonstrates exceptional resource
+efficiency, requiring only 8.19 GB VRAM, making it compatible with a wide range
+of consumer-grade GPUs. Openness: We open-source the entire series of Wan,
+including source code and all models, with the goal of fostering the growth of
+the video generation community. This openness seeks to significantly expand the
+creative possibilities of video production in the industry and provide academia
+with high-quality video foundation models. All the code and models are
+available at https://github.com/Wan-Video/Wan2.1.","Wan, Team and Wang, Ang and Ai, Baole and Wen, Bin and Mao, Chaojie and Xie, Chen-Wei and Chen, Di and Yu, Feiwu and Zhao, Haiming and Yang, Jianxiao and others",2025,,,,arXiv preprint arXiv:2503.20314
+SyncLipMAE: Contrastive Masked Pretraining for Audio-Visual Talking-Face Representation,http://arxiv.org/abs/2510.10069v1,vace,\cite{vace},VACE: All-in-One Video Creation and Editing,http://arxiv.org/abs/2503.07598v2,"Diffusion Transformer has demonstrated powerful capability and scalability in
+generating high-quality images and videos. Further pursuing the unification of
+generation and editing tasks has yielded significant progress in the domain of
+image content creation. However, due to the intrinsic demands for consistency
+across both temporal and spatial dynamics, achieving a unified approach for
+video synthesis remains challenging. We introduce VACE, which enables users to
+perform Video tasks within an All-in-one framework for Creation and Editing.
+These tasks include reference-to-video generation, video-to-video editing, and
+masked video-to-video editing. Specifically, we effectively integrate the
+requirements of various tasks by organizing video task inputs, such as editing,
+reference, and masking, into a unified interface referred to as the Video
+Condition Unit (VCU). Furthermore, by utilizing a Context Adapter structure, we
+inject different task concepts into the model using formalized representations
+of temporal and spatial dimensions, allowing it to handle arbitrary video
+synthesis tasks flexibly. Extensive experiments demonstrate that the unified
+model of VACE achieves performance on par with task-specific models across
+various subtasks. Simultaneously, it enables diverse applications through
+versatile task combinations. Project page:
+https://ali-vilab.github.io/VACE-Page/.","Jiang, Zeyinzi and Han, Zhen and Mao, Chaojie and Zhang, Jingfeng and Pan, Yulin and Liu, Yu",2025,,,,arXiv preprint arXiv:2503.07598

@@ -1,0 +1,92 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,yao2023react,\cite{yao2023react},ReAct: Synergizing Reasoning and Acting in Language Models,http://arxiv.org/abs/2210.03629v3,"While large language models (LLMs) have demonstrated impressive capabilities
+across tasks in language understanding and interactive decision making, their
+abilities for reasoning (e.g. chain-of-thought prompting) and acting (e.g.
+action plan generation) have primarily been studied as separate topics. In this
+paper, we explore the use of LLMs to generate both reasoning traces and
+task-specific actions in an interleaved manner, allowing for greater synergy
+between the two: reasoning traces help the model induce, track, and update
+action plans as well as handle exceptions, while actions allow it to interface
+with external sources, such as knowledge bases or environments, to gather
+additional information. We apply our approach, named ReAct, to a diverse set of
+language and decision making tasks and demonstrate its effectiveness over
+state-of-the-art baselines, as well as improved human interpretability and
+trustworthiness over methods without reasoning or acting components.
+Concretely, on question answering (HotpotQA) and fact verification (Fever),
+ReAct overcomes issues of hallucination and error propagation prevalent in
+chain-of-thought reasoning by interacting with a simple Wikipedia API, and
+generates human-like task-solving trajectories that are more interpretable than
+baselines without reasoning traces. On two interactive decision making
+benchmarks (ALFWorld and WebShop), ReAct outperforms imitation and
+reinforcement learning methods by an absolute success rate of 34% and 10%
+respectively, while being prompted with only one or two in-context examples.
+Project site with code: https://react-lm.github.io","Yao, Shunyu and Zhao, Jeffrey and Yu, Dian and Shafran, Izhak and Narasimhan, Karthik and Cao, Yuan",2023,,,,arXiv preprint arXiv:2210.03629
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,patania2025perspact,\cite{patania2025perspact},Persp{A}ct: Enhancing {LLM} Situated Collaboration Skills through Perspective Taking and Active Vision,,,"Patania, Sabrina and Annese, Luca and Pellegrini, Anita and Ognibene, Dimitri and Serino, Silvia and Lambiase, Anna and Pallonetto, Luca and Rossi, Silvia and Colombani, Simone and Foulsham, Tom and Ruggeri, Azzurra",2025,,,,
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,selman1980growth,\cite{selman1980growth},The growth of interpersonal understanding: Developmental and clinical analyses,,,"Selman, Robert L",1980,,,,
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,selman1971taking,\cite{selman1971taking},Taking another's perspective: Role-taking development in early childhood,,,"Selman, Robert L.",1971,,,,Child Development
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,ricard1999personal,\cite{ricard1999personal},Personal pronouns and perspective taking in toddlers,,,"Ricard, Marcelle and Girouard, Pascale C. and Décarie, Thérèse Gouin",1999,,,10.1017/S0305000999003967,Journal of Child Language
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,nematzadeh2018evaluating,\cite{nematzadeh2018evaluating},Evaluating Theory of Mind in Question Answering,http://arxiv.org/abs/1808.09352v1,"We propose a new dataset for evaluating question answering models with
+respect to their capacity to reason about beliefs. Our tasks are inspired by
+theory-of-mind experiments that examine whether children are able to reason
+about the beliefs of others, in particular when those beliefs differ from
+reality. We evaluate a number of recent neural models with memory augmentation.
+We find that all fail on our tasks, which require keeping track of inconsistent
+states of the world; moreover, the models' accuracy decreases notably when
+random sentences are introduced to the tasks at test.","Nematzadeh, Aida and Burns, Kaylee and Grant, Erin and Gopnik, Alison and Griffiths, Thomas L",2018,,,,arXiv preprint arXiv:1808.09352
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,rashkin2018modeling,\cite{rashkin2018modeling},Modeling Naive Psychology of Characters in Simple Commonsense Stories,http://arxiv.org/abs/1805.06533v1,"Understanding a narrative requires reading between the lines and reasoning
+about the unspoken but obvious implications about events and people's mental
+states - a capability that is trivial for humans but remarkably hard for
+machines. To facilitate research addressing this challenge, we introduce a new
+annotation framework to explain naive psychology of story characters as
+fully-specified chains of mental states with respect to motivations and
+emotional reactions. Our work presents a new large-scale dataset with rich
+low-level annotations and establishes baseline performance on several new
+tasks, suggesting avenues for future research.","Rashkin, Hannah and Bosselut, Antoine and Sap, Maarten and Knight, Kevin and Choi, Yejin",2018,,,,arXiv preprint arXiv:1805.06533
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,chen2024tombench,\cite{chen2024tombench},ToMBench: Benchmarking Theory of Mind in Large Language Models,http://arxiv.org/abs/2402.15052v2,"Theory of Mind (ToM) is the cognitive capability to perceive and ascribe
+mental states to oneself and others. Recent research has sparked a debate over
+whether large language models (LLMs) exhibit a form of ToM. However, existing
+ToM evaluations are hindered by challenges such as constrained scope,
+subjective judgment, and unintended contamination, yielding inadequate
+assessments. To address this gap, we introduce ToMBench with three key
+characteristics: a systematic evaluation framework encompassing 8 tasks and 31
+abilities in social cognition, a multiple-choice question format to support
+automated and unbiased evaluation, and a build-from-scratch bilingual inventory
+to strictly avoid data leakage. Based on ToMBench, we conduct extensive
+experiments to evaluate the ToM performance of 10 popular LLMs across tasks and
+abilities. We find that even the most advanced LLMs like GPT-4 lag behind human
+performance by over 10% points, indicating that LLMs have not achieved a
+human-level theory of mind yet. Our aim with ToMBench is to enable an efficient
+and effective evaluation of LLMs' ToM capabilities, thereby facilitating the
+development of LLMs with inherent social intelligence.","Chen, Zhuang and Wu, Jincenzi and Zhou, Jinfeng and Wen, Bosi and Bi, Guanqun and Jiang, Gongyao and Cao, Yaru and Hu, Mengting and Lai, Yunghwei and Xiong, Zexuan and others",2024,,,,arXiv preprint arXiv:2402.15052
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,wang2025rethinking,\cite{wang2025rethinking},"Rethinking Theory of Mind Benchmarks for LLMs: Towards A User-Centered
+  Perspective",http://arxiv.org/abs/2504.10839v1,"The last couple of years have witnessed emerging research that appropriates
+Theory-of-Mind (ToM) tasks designed for humans to benchmark LLM's ToM
+capabilities as an indication of LLM's social intelligence. However, this
+approach has a number of limitations. Drawing on existing psychology and AI
+literature, we summarize the theoretical, methodological, and evaluation
+limitations by pointing out that certain issues are inherently present in the
+original ToM tasks used to evaluate human's ToM, which continues to persist and
+exacerbated when appropriated to benchmark LLM's ToM. Taking a human-computer
+interaction (HCI) perspective, these limitations prompt us to rethink the
+definition and criteria of ToM in ToM benchmarks in a more dynamic,
+interactional approach that accounts for user preferences, needs, and
+experiences with LLMs in such evaluations. We conclude by outlining potential
+opportunities and challenges towards this direction.","Wang, Qiaosi and Zhou, Xuhui and Sap, Maarten and Forlizzi, Jodi and Shen, Hong",2025,,,,arXiv preprint arXiv:2504.10839
+Growing Perspectives: Modelling Embodied Perspective Taking and Inner Narrative Development Using Large Language Models,http://arxiv.org/abs/2509.11868v1,zhou2023sotopia,\cite{zhou2023sotopia},"SOTOPIA: Interactive Evaluation for Social Intelligence in Language
+  Agents",http://arxiv.org/abs/2310.11667v2,"Humans are social beings; we pursue social goals in our daily interactions,
+which is a crucial aspect of social intelligence. Yet, AI systems' abilities in
+this realm remain elusive. We present SOTOPIA, an open-ended environment to
+simulate complex social interactions between artificial agents and evaluate
+their social intelligence. In our environment, agents role-play and interact
+under a wide variety of scenarios; they coordinate, collaborate, exchange, and
+compete with each other to achieve complex social goals. We simulate the
+role-play interaction between LLM-based agents and humans within this task
+space and evaluate their performance with a holistic evaluation framework
+called SOTOPIA-Eval. With SOTOPIA, we find significant differences between
+these models in terms of their social intelligence, and we identify a subset of
+SOTOPIA scenarios, SOTOPIA-hard, that is generally challenging for all models.
+We find that on this subset, GPT-4 achieves a significantly lower goal
+completion rate than humans and struggles to exhibit social commonsense
+reasoning and strategic communication skills. These findings demonstrate
+SOTOPIA's promise as a general platform for research on evaluating and
+improving social intelligence in artificial agents.","Zhou, Xuhui and Zhu, Hao and Mathur, Leena and Zhang, Ruohong and Yu, Haofei and Qi, Zhengyang and Morency, Louis-Philippe and Bisk, Yonatan and Fried, Daniel and Neubig, Graham and others",2023,,,,arXiv preprint arXiv:2310.11667

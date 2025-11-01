@@ -1,0 +1,523 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,sohl2015deep,\cite{sohl2015deep},Deep Unsupervised Learning using Nonequilibrium Thermodynamics,http://arxiv.org/abs/1503.03585v8,"A central problem in machine learning involves modeling complex data-sets
+using highly flexible families of probability distributions in which learning,
+sampling, inference, and evaluation are still analytically or computationally
+tractable. Here, we develop an approach that simultaneously achieves both
+flexibility and tractability. The essential idea, inspired by non-equilibrium
+statistical physics, is to systematically and slowly destroy structure in a
+data distribution through an iterative forward diffusion process. We then learn
+a reverse diffusion process that restores structure in data, yielding a highly
+flexible and tractable generative model of the data. This approach allows us to
+rapidly learn, sample from, and evaluate probabilities in deep generative
+models with thousands of layers or time steps, as well as to compute
+conditional and posterior probabilities under the learned model. We
+additionally release an open source reference implementation of the algorithm.","Sohl-Dickstein, Jascha and Weiss, Eric and Maheswaranathan, Niru and Ganguli, Surya",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,ho2020DDPM,\cite{ho2020DDPM},Denoising Diffusion Probabilistic Models,http://arxiv.org/abs/2006.11239v2,"We present high quality image synthesis results using diffusion probabilistic
+models, a class of latent variable models inspired by considerations from
+nonequilibrium thermodynamics. Our best results are obtained by training on a
+weighted variational bound designed according to a novel connection between
+diffusion probabilistic models and denoising score matching with Langevin
+dynamics, and our models naturally admit a progressive lossy decompression
+scheme that can be interpreted as a generalization of autoregressive decoding.
+On the unconditional CIFAR10 dataset, we obtain an Inception score of 9.46 and
+a state-of-the-art FID score of 3.17. On 256x256 LSUN, we obtain sample quality
+similar to ProgressiveGAN. Our implementation is available at
+https://github.com/hojonathanho/diffusion","Ho, Jonathan and Jain, Ajay and Abbeel, Pieter",,,,,Advances in neural information processing systems
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,ronneberger2015unet,\cite{ronneberger2015unet},U-net: Convolutional networks for biomedical image segmentation,,,"Ronneberger, Olaf and Fischer, Philipp and Brox, Thomas",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,peebles2023dit,\cite{peebles2023dit},Scalable Diffusion Models with Transformers,http://arxiv.org/abs/2212.09748v2,"We explore a new class of diffusion models based on the transformer
+architecture. We train latent diffusion models of images, replacing the
+commonly-used U-Net backbone with a transformer that operates on latent
+patches. We analyze the scalability of our Diffusion Transformers (DiTs)
+through the lens of forward pass complexity as measured by Gflops. We find that
+DiTs with higher Gflops -- through increased transformer depth/width or
+increased number of input tokens -- consistently have lower FID. In addition to
+possessing good scalability properties, our largest DiT-XL/2 models outperform
+all prior diffusion models on the class-conditional ImageNet 512x512 and
+256x256 benchmarks, achieving a state-of-the-art FID of 2.27 on the latter.","Peebles, William and Xie, Saining",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,opensora,\cite{opensora},Open-Sora: Democratizing Efficient Video Production for All,,,Zangwei Zheng and Xiangyu Peng and Tianji Yang and Chenhui Shen and Shenggui Li and Hongxin Liu and Yukun Zhou and Tianyi Li and Yang You,,March,https://github.com/hpcaitech/Open-Sora,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,yang2025cogvideox,\cite{yang2025cogvideox},CogVideoX: Text-to-Video Diffusion Models with An Expert Transformer,http://arxiv.org/abs/2408.06072v3,"We present CogVideoX, a large-scale text-to-video generation model based on
+diffusion transformer, which can generate 10-second continuous videos aligned
+with text prompt, with a frame rate of 16 fps and resolution of 768 * 1360
+pixels. Previous video generation models often had limited movement and short
+durations, and is difficult to generate videos with coherent narratives based
+on text. We propose several designs to address these issues. First, we propose
+a 3D Variational Autoencoder (VAE) to compress videos along both spatial and
+temporal dimensions, to improve both compression rate and video fidelity.
+Second, to improve the text-video alignment, we propose an expert transformer
+with the expert adaptive LayerNorm to facilitate the deep fusion between the
+two modalities. Third, by employing a progressive training and multi-resolution
+frame pack technique, CogVideoX is adept at producing coherent, long-duration,
+different shape videos characterized by significant motions. In addition, we
+develop an effective text-video data processing pipeline that includes various
+data preprocessing strategies and a video captioning method, greatly
+contributing to the generation quality and semantic alignment. Results show
+that CogVideoX demonstrates state-of-the-art performance across both multiple
+machine metrics and human evaluations. The model weight of both 3D Causal VAE,
+Video caption model and CogVideoX are publicly available at
+https://github.com/THUDM/CogVideo.",Zhuoyi Yang and Jiayan Teng and Wendi Zheng and Ming Ding and Shiyu Huang and Jiazheng Xu and Yuanming Yang and Wenyi Hong and Xiaohan Zhang and Guanyu Feng and Da Yin and Xiaotao Gu and Yuxuan.Zhang and Weihan Wang and Yean Cheng and Bin Xu and Yuxiao Dong and Jie Tang,2025,,https://openreview.net/forum?id=LQzN6TRFg9,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,songDDIM,\cite{songDDIM},Denoising Diffusion Implicit Models,http://arxiv.org/abs/2010.02502v4,"Denoising diffusion probabilistic models (DDPMs) have achieved high quality
+image generation without adversarial training, yet they require simulating a
+Markov chain for many steps to produce a sample. To accelerate sampling, we
+present denoising diffusion implicit models (DDIMs), a more efficient class of
+iterative implicit probabilistic models with the same training procedure as
+DDPMs. In DDPMs, the generative process is defined as the reverse of a
+Markovian diffusion process. We construct a class of non-Markovian diffusion
+processes that lead to the same training objective, but whose reverse process
+can be much faster to sample from. We empirically demonstrate that DDIMs can
+produce high quality samples $10 \times$ to $50 \times$ faster in terms of
+wall-clock time compared to DDPMs, allow us to trade off computation for sample
+quality, and can perform semantically meaningful image interpolation directly
+in the latent space.","Song, Jiaming and Meng, Chenlin and Ermon, Stefano",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,lu2022dpm,\cite{lu2022dpm},Dpm-solver: A fast ode solver for diffusion probabilistic model sampling in around 10 steps,,,"Lu, Cheng and Zhou, Yuhao and Bao, Fan and Chen, Jianfei and Li, Chongxuan and Zhu, Jun",,,,,Advances in Neural Information Processing Systems
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,lu2022dpm++,\cite{lu2022dpm++},"DPM-Solver++: Fast Solver for Guided Sampling of Diffusion Probabilistic
+  Models",http://arxiv.org/abs/2211.01095v3,"Diffusion probabilistic models (DPMs) have achieved impressive success in
+high-resolution image synthesis, especially in recent large-scale text-to-image
+generation applications. An essential technique for improving the sample
+quality of DPMs is guided sampling, which usually needs a large guidance scale
+to obtain the best sample quality. The commonly-used fast sampler for guided
+sampling is DDIM, a first-order diffusion ODE solver that generally needs 100
+to 250 steps for high-quality samples. Although recent works propose dedicated
+high-order solvers and achieve a further speedup for sampling without guidance,
+their effectiveness for guided sampling has not been well-tested before. In
+this work, we demonstrate that previous high-order fast samplers suffer from
+instability issues, and they even become slower than DDIM when the guidance
+scale grows large. To further speed up guided sampling, we propose
+DPM-Solver++, a high-order solver for the guided sampling of DPMs. DPM-Solver++
+solves the diffusion ODE with the data prediction model and adopts thresholding
+methods to keep the solution matches training data distribution. We further
+propose a multistep variant of DPM-Solver++ to address the instability issue by
+reducing the effective step size. Experiments show that DPM-Solver++ can
+generate high-quality samples within only 15 to 20 steps for guided sampling by
+pixel-space and latent-space DPMs.","Lu, Cheng and Zhou, Yuhao and Bao, Fan and Chen, Jianfei and Li, Chongxuan and Zhu, Jun",,,,,arXiv preprint arXiv:2211.01095
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,zheng2023dpmsolvervF,\cite{zheng2023dpmsolvervF},"DPM-Solver-v3: Improved Diffusion ODE Solver with Empirical Model
+  Statistics",http://arxiv.org/abs/2310.13268v3,"Diffusion probabilistic models (DPMs) have exhibited excellent performance
+for high-fidelity image generation while suffering from inefficient sampling.
+Recent works accelerate the sampling procedure by proposing fast ODE solvers
+that leverage the specific ODE form of DPMs. However, they highly rely on
+specific parameterization during inference (such as noise/data prediction),
+which might not be the optimal choice. In this work, we propose a novel
+formulation towards the optimal parameterization during sampling that minimizes
+the first-order discretization error of the ODE solution. Based on such
+formulation, we propose DPM-Solver-v3, a new fast ODE solver for DPMs by
+introducing several coefficients efficiently computed on the pretrained model,
+which we call empirical model statistics. We further incorporate multistep
+methods and a predictor-corrector framework, and propose some techniques for
+improving sample quality at small numbers of function evaluations (NFE) or
+large guidance scales. Experiments show that DPM-Solver-v3 achieves
+consistently better or comparable performance in both unconditional and
+conditional sampling with both pixel-space and latent-space DPMs, especially in
+5$\sim$10 NFEs. We achieve FIDs of 12.21 (5 NFE), 2.51 (10 NFE) on
+unconditional CIFAR10, and MSE of 0.55 (5 NFE, 7.5 guidance scale) on Stable
+Diffusion, bringing a speed-up of 15%$\sim$30% compared to previous
+state-of-the-art training-free methods. Code is available at
+https://github.com/thu-ml/DPM-Solver-v3.",Kaiwen Zheng and Cheng Lu and Jianfei Chen and Jun Zhu,2023,,https://openreview.net/forum?id=9fWKExmKa0,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,salimans2022progressive,\cite{salimans2022progressive},Progressive Distillation for Fast Sampling of Diffusion Models,http://arxiv.org/abs/2202.00512v2,"Diffusion models have recently shown great promise for generative modeling,
+outperforming GANs on perceptual quality and autoregressive models at density
+estimation. A remaining downside is their slow sampling time: generating high
+quality samples takes many hundreds or thousands of model evaluations. Here we
+make two contributions to help eliminate this downside: First, we present new
+parameterizations of diffusion models that provide increased stability when
+using few sampling steps. Second, we present a method to distill a trained
+deterministic diffusion sampler, using many steps, into a new diffusion model
+that takes half as many sampling steps. We then keep progressively applying
+this distillation procedure to our model, halving the number of required
+sampling steps each time. On standard image generation benchmarks like
+CIFAR-10, ImageNet, and LSUN, we start out with state-of-the-art samplers
+taking as many as 8192 steps, and are able to distill down to models taking as
+few as 4 steps without losing much perceptual quality; achieving, for example,
+a FID of 3.0 on CIFAR-10 in 4 steps. Finally, we show that the full progressive
+distillation procedure does not take more time than it takes to train the
+original model, thus representing an efficient solution for generative modeling
+using diffusion at both train and test time.","Salimans, Tim and Ho, Jonathan",,,,,arXiv preprint arXiv:2202.00512
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,meng2022on,\cite{meng2022on},On Distillation of Guided Diffusion Models,http://arxiv.org/abs/2210.03142v3,"Classifier-free guided diffusion models have recently been shown to be highly
+effective at high-resolution image generation, and they have been widely used
+in large-scale diffusion frameworks including DALLE-2, Stable Diffusion and
+Imagen. However, a downside of classifier-free guided diffusion models is that
+they are computationally expensive at inference time since they require
+evaluating two diffusion models, a class-conditional model and an unconditional
+model, tens to hundreds of times. To deal with this limitation, we propose an
+approach to distilling classifier-free guided diffusion models into models that
+are fast to sample from: Given a pre-trained classifier-free guided model, we
+first learn a single model to match the output of the combined conditional and
+unconditional models, and then we progressively distill that model to a
+diffusion model that requires much fewer sampling steps. For standard diffusion
+models trained on the pixel-space, our approach is able to generate images
+visually comparable to that of the original model using as few as 4 sampling
+steps on ImageNet 64x64 and CIFAR-10, achieving FID/IS scores comparable to
+that of the original model while being up to 256 times faster to sample from.
+For diffusion models trained on the latent-space (e.g., Stable Diffusion), our
+approach is able to generate high-fidelity images using as few as 1 to 4
+denoising steps, accelerating inference by at least 10-fold compared to
+existing methods on ImageNet 256x256 and LAION datasets. We further demonstrate
+the effectiveness of our approach on text-guided image editing and inpainting,
+where our distilled model is able to generate high-quality results using as few
+as 2-4 denoising steps.",Chenlin Meng and Ruiqi Gao and Diederik P Kingma and Stefano Ermon and Jonathan Ho and Tim Salimans,2022,,https://openreview.net/forum?id=6QHpSQt6VR-,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,refitiedflow,\cite{refitiedflow},"Flow Straight and Fast: Learning to Generate and Transfer Data with
+  Rectified Flow",http://arxiv.org/abs/2209.03003v1,"We present rectified flow, a surprisingly simple approach to learning
+(neural) ordinary differential equation (ODE) models to transport between two
+empirically observed distributions \pi_0 and \pi_1, hence providing a unified
+solution to generative modeling and domain transfer, among various other tasks
+involving distribution transport. The idea of rectified flow is to learn the
+ODE to follow the straight paths connecting the points drawn from \pi_0 and
+\pi_1 as much as possible. This is achieved by solving a straightforward
+nonlinear least squares optimization problem, which can be easily scaled to
+large models without introducing extra parameters beyond standard supervised
+learning. The straight paths are special and preferred because they are the
+shortest paths between two points, and can be simulated exactly without time
+discretization and hence yield computationally efficient models. We show that
+the procedure of learning a rectified flow from data, called rectification,
+turns an arbitrary coupling of \pi_0 and \pi_1 to a new deterministic coupling
+with provably non-increasing convex transport costs. In addition, recursively
+applying rectification allows us to obtain a sequence of flows with
+increasingly straight paths, which can be simulated accurately with coarse time
+discretization in the inference phase. In empirical studies, we show that
+rectified flow performs superbly on image generation, image-to-image
+translation, and domain adaptation. In particular, on image generation and
+translation, our method yields nearly straight flows that give high quality
+results even with a single Euler discretization step.","Liu, Xingchao and Gong, Chengyue and others",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,song2023consistency,\cite{song2023consistency},Consistency Models,http://arxiv.org/abs/2303.01469v2,"Diffusion models have significantly advanced the fields of image, audio, and
+video generation, but they depend on an iterative sampling process that causes
+slow generation. To overcome this limitation, we propose consistency models, a
+new family of models that generate high quality samples by directly mapping
+noise to data. They support fast one-step generation by design, while still
+allowing multistep sampling to trade compute for sample quality. They also
+support zero-shot data editing, such as image inpainting, colorization, and
+super-resolution, without requiring explicit training on these tasks.
+Consistency models can be trained either by distilling pre-trained diffusion
+models, or as standalone generative models altogether. Through extensive
+experiments, we demonstrate that they outperform existing distillation
+techniques for diffusion models in one- and few-step sampling, achieving the
+new state-of-the-art FID of 3.55 on CIFAR-10 and 6.20 on ImageNet 64x64 for
+one-step generation. When trained in isolation, consistency models become a new
+family of generative models that can outperform existing one-step,
+non-adversarial generative models on standard benchmarks such as CIFAR-10,
+ImageNet 64x64 and LSUN 256x256.","Song, Yang and Dhariwal, Prafulla and Chen, Mark and Sutskever, Ilya",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,structural_pruning_diffusion,\cite{structural_pruning_diffusion},Structural Pruning for Diffusion Models,http://arxiv.org/abs/2305.10924v3,"Generative modeling has recently undergone remarkable advancements, primarily
+propelled by the transformative implications of Diffusion Probabilistic Models
+(DPMs). The impressive capability of these models, however, often entails
+significant computational overhead during both training and inference. To
+tackle this challenge, we present Diff-Pruning, an efficient compression method
+tailored for learning lightweight diffusion models from pre-existing ones,
+without the need for extensive re-training. The essence of Diff-Pruning is
+encapsulated in a Taylor expansion over pruned timesteps, a process that
+disregards non-contributory diffusion steps and ensembles informative gradients
+to identify important weights. Our empirical assessment, undertaken across
+several datasets highlights two primary benefits of our proposed method: 1)
+Efficiency: it enables approximately a 50\% reduction in FLOPs at a mere 10\%
+to 20\% of the original training expenditure; 2) Consistency: the pruned
+diffusion models inherently preserve generative behavior congruent with their
+pre-trained models. Code is available at
+\url{https://github.com/VainF/Diff-Pruning}.","Fang, Gongfan and Ma, Xinyin and Wang, Xinchao",,,,,arXiv preprint arXiv:2305.10924
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,zhu2024dipgo,\cite{zhu2024dipgo},DiP-GO: A Diffusion Pruner via Few-step Gradient Optimization,,,Haowei Zhu and Dehua Tang and Ji Liu and Mingjie Lu and Jintu Zheng and Jinzhang Peng and Dong Li and Yu Wang and Fan Jiang and Lu Tian and Spandan Tiwari and Ashish Sirasao and Jun-Hai Yong and Bin Wang and Emad Barsoum,2024,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,10377259,\cite{10377259},Q-Diffusion: Quantizing Diffusion Models,http://arxiv.org/abs/2302.04304v3,"Diffusion models have achieved great success in image synthesis through
+iterative noise estimation using deep neural networks. However, the slow
+inference, high memory consumption, and computation intensity of the noise
+estimation model hinder the efficient adoption of diffusion models. Although
+post-training quantization (PTQ) is considered a go-to compression method for
+other tasks, it does not work out-of-the-box on diffusion models. We propose a
+novel PTQ method specifically tailored towards the unique multi-timestep
+pipeline and model architecture of the diffusion models, which compresses the
+noise estimation network to accelerate the generation process. We identify the
+key difficulty of diffusion model quantization as the changing output
+distributions of noise estimation networks over multiple time steps and the
+bimodal activation distribution of the shortcut layers within the noise
+estimation network. We tackle these challenges with timestep-aware calibration
+and split shortcut quantization in this work. Experimental results show that
+our proposed method is able to quantize full-precision unconditional diffusion
+models into 4-bit while maintaining comparable performance (small FID change of
+at most 2.34 compared to >100 for traditional PTQ) in a training-free manner.
+Our approach can also be applied to text-guided image generation, where we can
+run stable diffusion in 4-bit weights with high generation quality for the
+first time.","Li, Xiuyu and Liu, Yijiang and Lian, Long and Yang, Huanrui and Dong, Zhen and Kang, Daniel and Zhang, Shanghang and Keutzer, Kurt",2023,,,10.1109/ICCV51070.2023.01608,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,shang2023post,\cite{shang2023post},Post-training Quantization on Diffusion Models,http://arxiv.org/abs/2211.15736v3,"Denoising diffusion (score-based) generative models have recently achieved
+significant accomplishments in generating realistic and diverse data. These
+approaches define a forward diffusion process for transforming data into noise
+and a backward denoising process for sampling data from noise. Unfortunately,
+the generation process of current denoising diffusion models is notoriously
+slow due to the lengthy iterative noise estimations, which rely on cumbersome
+neural networks. It prevents the diffusion models from being widely deployed,
+especially on edge devices. Previous works accelerate the generation process of
+diffusion model (DM) via finding shorter yet effective sampling trajectories.
+However, they overlook the cost of noise estimation with a heavy network in
+every iteration. In this work, we accelerate generation from the perspective of
+compressing the noise estimation network. Due to the difficulty of retraining
+DMs, we exclude mainstream training-aware compression paradigms and introduce
+post-training quantization (PTQ) into DM acceleration. However, the output
+distributions of noise estimation networks change with time-step, making
+previous PTQ methods fail in DMs since they are designed for single-time step
+scenarios. To devise a DM-specific PTQ method, we explore PTQ on DM in three
+aspects: quantized operations, calibration dataset, and calibration metric. We
+summarize and use several observations derived from all-inclusive
+investigations to formulate our method, which especially targets the unique
+multi-time-step structure of DMs. Experimentally, our method can directly
+quantize full-precision DMs into 8-bit models while maintaining or even
+improving their performance in a training-free manner. Importantly, our method
+can serve as a plug-and-play module on other fast-sampling methods, e.g., DDIM.
+The code is available at https://github.com/42Shawn/PTQ4DM .","Shang, Yuzhang and Yuan, Zhihang and Xie, Bin and Wu, Bingzhe and Yan, Yan",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,kim2025ditto,\cite{kim2025ditto},Ditto: Accelerating Diffusion Model via Temporal Value Similarity,http://arxiv.org/abs/2501.11211v1,"Diffusion models achieve superior performance in image generation tasks.
+However, it incurs significant computation overheads due to its iterative
+structure. To address these overheads, we analyze this iterative structure and
+observe that adjacent time steps in diffusion models exhibit high value
+similarity, leading to narrower differences between consecutive time steps. We
+adapt these characteristics to a quantized diffusion model and reveal that the
+majority of these differences can be represented with reduced bit-width, and
+even zero. Based on our observations, we propose the Ditto algorithm, a
+difference processing algorithm that leverages temporal similarity with
+quantization to enhance the efficiency of diffusion models. By exploiting the
+narrower differences and the distributive property of layer operations, it
+performs full bit-width operations for the initial time step and processes
+subsequent steps with temporal differences. In addition, Ditto execution flow
+optimization is designed to mitigate the memory overhead of temporal difference
+processing, further boosting the efficiency of the Ditto algorithm. We also
+design the Ditto hardware, a specialized hardware accelerator, fully exploiting
+the dynamic characteristics of the proposed algorithm. As a result, the Ditto
+hardware achieves up to 1.5x speedup and 17.74% energy saving compared to other
+accelerators.",Sungbin Kim and Hyunwuk Lee and Wonho Cho and Mincheol Park and Won Woo Ro,2025,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,bolya2023tomesd,\cite{bolya2023tomesd},Token Merging for Fast Stable Diffusion,http://arxiv.org/abs/2303.17604v1,"The landscape of image generation has been forever changed by open vocabulary
+diffusion models. However, at their core these models use transformers, which
+makes generation slow. Better implementations to increase the throughput of
+these transformers have emerged, but they still evaluate the entire model. In
+this paper, we instead speed up diffusion models by exploiting natural
+redundancy in generated images by merging redundant tokens. After making some
+diffusion-specific improvements to Token Merging (ToMe), our ToMe for Stable
+Diffusion can reduce the number of tokens in an existing Stable Diffusion model
+by up to 60% while still producing high quality images without any extra
+training. In the process, we speed up image generation by up to 2x and reduce
+memory consumption by up to 5.6x. Furthermore, this speed-up stacks with
+efficient implementations such as xFormers, minimally impacting quality while
+being up to 5.4x faster for large images. Code is available at
+https://github.com/dbolya/tomesd.","Bolya, Daniel and Hoffman, Judy",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,kim2024tofu,\cite{kim2024tofu},Token Fusion: Bridging the Gap between Token Pruning and Token Merging,http://arxiv.org/abs/2312.01026v1,"Vision Transformers (ViTs) have emerged as powerful backbones in computer
+vision, outperforming many traditional CNNs. However, their computational
+overhead, largely attributed to the self-attention mechanism, makes deployment
+on resource-constrained edge devices challenging. Multiple solutions rely on
+token pruning or token merging. In this paper, we introduce ""Token Fusion""
+(ToFu), a method that amalgamates the benefits of both token pruning and token
+merging. Token pruning proves advantageous when the model exhibits sensitivity
+to input interpolations, while token merging is effective when the model
+manifests close to linear responses to inputs. We combine this to propose a new
+scheme called Token Fusion. Moreover, we tackle the limitations of average
+merging, which doesn't preserve the intrinsic feature norm, resulting in
+distributional shifts. To mitigate this, we introduce MLERP merging, a variant
+of the SLERP technique, tailored to merge multiple tokens while maintaining the
+norm distribution. ToFu is versatile, applicable to ViTs with or without
+additional training. Our empirical evaluations indicate that ToFu establishes
+new benchmarks in both classification and image generation tasks concerning
+computational efficiency and model accuracy.","Kim, Minchul and Gao, Shangqian and Hsu, Yen-Chang and Shen, Yilin and Jin, Hongxia",,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,zhang2024tokenpruningcachingbetter,\cite{zhang2024tokenpruningcachingbetter},"Token Pruning for Caching Better: 9 Times Acceleration on Stable
+  Diffusion for Free",http://arxiv.org/abs/2501.00375v1,"Stable Diffusion has achieved remarkable success in the field of
+text-to-image generation, with its powerful generative capabilities and diverse
+generation results making a lasting impact. However, its iterative denoising
+introduces high computational costs and slows generation speed, limiting
+broader adoption. The community has made numerous efforts to reduce this
+computational burden, with methods like feature caching attracting attention
+due to their effectiveness and simplicity. Nonetheless, simply reusing features
+computed at previous timesteps causes the features across adjacent timesteps to
+become similar, reducing the dynamics of features over time and ultimately
+compromising the quality of generated images. In this paper, we introduce a
+dynamics-aware token pruning (DaTo) approach that addresses the limitations of
+feature caching. DaTo selectively prunes tokens with lower dynamics, allowing
+only high-dynamic tokens to participate in self-attention layers, thereby
+extending feature dynamics across timesteps. DaTo combines feature caching with
+token pruning in a training-free manner, achieving both temporal and token-wise
+information reuse. Applied to Stable Diffusion on the ImageNet, our approach
+delivered a 9$\times$ speedup while reducing FID by 0.33, indicating enhanced
+image quality. On the COCO-30k, we observed a 7$\times$ acceleration coupled
+with a notable FID reduction of 2.17.",Evelyn Zhang and Bang Xiao and Jiayi Tang and Qianli Ma and Chang Zou and Xuefei Ning and Xuming Hu and Linfeng Zhang,2024,,https://arxiv.org/abs/2501.00375,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,zhang2025sito,\cite{zhang2025sito},Training-Free and Hardware-Friendly Acceleration for Diffusion Models via Similarity-based Token Pruning,,,"Zhang, Evelyn and Tang, Jiayi and Ning, Xuefei and Zhang, Linfeng",2025,,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,li2024snapfusion,\cite{li2024snapfusion},"SnapFusion: Text-to-Image Diffusion Model on Mobile Devices within Two
+  Seconds",http://arxiv.org/abs/2306.00980v3,"Text-to-image diffusion models can create stunning images from natural
+language descriptions that rival the work of professional artists and
+photographers. However, these models are large, with complex network
+architectures and tens of denoising iterations, making them computationally
+expensive and slow to run. As a result, high-end GPUs and cloud-based inference
+are required to run diffusion models at scale. This is costly and has privacy
+implications, especially when user data is sent to a third party. To overcome
+these challenges, we present a generic approach that, for the first time,
+unlocks running text-to-image diffusion models on mobile devices in less than
+$2$ seconds. We achieve so by introducing efficient network architecture and
+improving step distillation. Specifically, we propose an efficient UNet by
+identifying the redundancy of the original model and reducing the computation
+of the image decoder via data distillation. Further, we enhance the step
+distillation by exploring training strategies and introducing regularization
+from classifier-free guidance. Our extensive experiments on MS-COCO show that
+our model with $8$ denoising steps achieves better FID and CLIP scores than
+Stable Diffusion v$1.5$ with $50$ steps. Our work democratizes content creation
+by bringing powerful text-to-image diffusion models to the hands of users.","Li, Yanyu and Wang, Huan and Jin, Qing and Hu, Ju and Chemerys, Pavlo and Fu, Yun and Wang, Yanzhi and Tulyakov, Sergey and Ren, Jian",,,,,Advances in Neural Information Processing Systems
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,liu2025regionadaptivesamplingdiffusiontransformers,\cite{liu2025regionadaptivesamplingdiffusiontransformers},Region-Adaptive Sampling for Diffusion Transformers,http://arxiv.org/abs/2502.10389v1,"Diffusion models (DMs) have become the leading choice for generative tasks
+across diverse domains. However, their reliance on multiple sequential forward
+passes significantly limits real-time performance. Previous acceleration
+methods have primarily focused on reducing the number of sampling steps or
+reusing intermediate results, failing to leverage variations across spatial
+regions within the image due to the constraints of convolutional U-Net
+structures. By harnessing the flexibility of Diffusion Transformers (DiTs) in
+handling variable number of tokens, we introduce RAS, a novel, training-free
+sampling strategy that dynamically assigns different sampling ratios to regions
+within an image based on the focus of the DiT model. Our key observation is
+that during each sampling step, the model concentrates on semantically
+meaningful regions, and these areas of focus exhibit strong continuity across
+consecutive steps. Leveraging this insight, RAS updates only the regions
+currently in focus, while other regions are updated using cached noise from the
+previous step. The model's focus is determined based on the output from the
+preceding step, capitalizing on the temporal consistency we observed. We
+evaluate RAS on Stable Diffusion 3 and Lumina-Next-T2I, achieving speedups up
+to 2.36x and 2.51x, respectively, with minimal degradation in generation
+quality. Additionally, a user study reveals that RAS delivers comparable
+qualities under human evaluation while achieving a 1.6x speedup. Our approach
+makes a significant step towards more efficient diffusion transformers,
+enhancing their potential for real-time applications.",Ziming Liu and Yifan Yang and Chengruidong Zhang and Yiqi Zhang and Lili Qiu and Yang You and Yuqing Yang,2025,,https://arxiv.org/abs/2502.10389,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,qiu2025acceleratingdiffusiontransformererroroptimized,\cite{qiu2025acceleratingdiffusiontransformererroroptimized},Accelerating Diffusion Transformer via Error-Optimized Cache,http://arxiv.org/abs/2501.19243v3,"Diffusion Transformer (DiT) is a crucial method for content generation.
+However, it needs a lot of time to sample. Many studies have attempted to use
+caching to reduce the time consumption of sampling. Existing caching methods
+accelerate generation by reusing DiT features from the previous time step and
+skipping calculations in the next, but they tend to locate and cache low-error
+modules without focusing on reducing caching-induced errors, resulting in a
+sharp decline in generated content quality when increasing caching intensity.
+To solve this problem, we propose the \textbf{E}rror-\textbf{O}ptimized
+\textbf{C}ache (\textbf{EOC}). This method introduces three key improvements:
+\textbf{(1)} Prior knowledge extraction: Extract and process the caching
+differences; \textbf{(2)} A judgment method for cache optimization: Determine
+whether certain caching steps need to be optimized; \textbf{(3)} Cache
+optimization: reduce caching errors. Experiments show that this algorithm
+significantly reduces the error accumulation caused by caching, especially
+excessive caching. On the ImageNet dataset, without substantially increasing
+the computational load, this method improves the FID of the generated images
+when the rule-based model FORA has a caching level of \textbf{75}\%,
+\textbf{50}\%, and \textbf{25}\%, and the training-based model
+Learning-to-cache has a caching level of \textbf{22}\%. Specifically, the FID
+values change from 30.454 to 21.690 (\textbf{28.8}\%), from 6.857 to 5.821
+(\textbf{15.1}\%), from 3.870 to 3.692 (\textbf{4.6}\%), and from 3.539 to
+3.451 (\textbf{2.5}\%) respectively. Code is available at
+https://github.com/qiujx0520/EOC_MM2025.git.",Junxiang Qiu and Shuo Wang and Jinda Lu and Lin Liu and Houcheng Jiang and Yanbin Hao,2025,,https://arxiv.org/abs/2501.19243,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,chenIncrementCalibrated2025,\cite{chenIncrementCalibrated2025},"Accelerating Diffusion Transformer via Increment-Calibrated Caching with
+  Channel-Aware Singular Value Decomposition",http://arxiv.org/abs/2505.05829v1,"Diffusion transformer (DiT) models have achieved remarkable success in image
+generation, thanks for their exceptional generative capabilities and
+scalability. Nonetheless, the iterative nature of diffusion models (DMs)
+results in high computation complexity, posing challenges for deployment.
+Although existing cache-based acceleration methods try to utilize the inherent
+temporal similarity to skip redundant computations of DiT, the lack of
+correction may induce potential quality degradation. In this paper, we propose
+increment-calibrated caching, a training-free method for DiT acceleration,
+where the calibration parameters are generated from the pre-trained model
+itself with low-rank approximation. To deal with the possible correction
+failure arising from outlier activations, we introduce channel-aware Singular
+Value Decomposition (SVD), which further strengthens the calibration effect.
+Experimental results show that our method always achieve better performance
+than existing naive caching methods with a similar computation resource budget.
+When compared with 35-step DDIM, our method eliminates more than 45%
+computation and improves IS by 12 at the cost of less than 0.06 FID increase.
+Code is available at https://github.com/ccccczzy/icc.","Chen, Zhiyuan and Li, Keyi and Jia, Yifan and Ye, Le and Ma, Yufei",2025,,,10.48550/arXiv.2505.05829,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,chuOmniCache2025,\cite{chuOmniCache2025},"OmniCache: A Trajectory-Oriented Global Perspective on Training-Free
+  Cache Reuse for Diffusion Transformer Models",http://arxiv.org/abs/2508.16212v2,"Diffusion models have emerged as a powerful paradigm for generative tasks
+such as image synthesis and video generation, with Transformer architectures
+further enhancing performance. However, the high computational cost of
+diffusion Transformers-stemming from a large number of sampling steps and
+complex per-step computations-presents significant challenges for real-time
+deployment. In this paper, we introduce OmniCache, a training-free acceleration
+method that exploits the global redundancy inherent in the denoising process.
+Unlike existing methods that determine caching strategies based on inter-step
+similarities and tend to prioritize reusing later sampling steps, our approach
+originates from the sampling perspective of DIT models. We systematically
+analyze the model's sampling trajectories and strategically distribute cache
+reuse across the entire sampling process. This global perspective enables more
+effective utilization of cached computations throughout the diffusion
+trajectory, rather than concentrating reuse within limited segments of the
+sampling procedure. In addition, during cache reuse, we dynamically estimate
+the corresponding noise and filter it out to reduce its impact on the sampling
+direction. Extensive experiments demonstrate that our approach accelerates the
+sampling process while maintaining competitive generative quality, offering a
+promising and practical solution for efficient deployment of diffusion-based
+generative models.","Chu, Huanpeng and Wu, Wei and Fen, Guanyu and Zhang, Yutao",2025,,,10.48550/arXiv.2508.16212,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,zhengFoCa2025,\cite{zhengFoCa2025},"Forecast then Calibrate: Feature Caching as ODE for Efficient Diffusion
+  Transformers",http://arxiv.org/abs/2508.16211v1,"Diffusion Transformers (DiTs) have demonstrated exceptional performance in
+high-fidelity image and video generation. To reduce their substantial
+computational costs, feature caching techniques have been proposed to
+accelerate inference by reusing hidden representations from previous timesteps.
+However, current methods often struggle to maintain generation quality at high
+acceleration ratios, where prediction errors increase sharply due to the
+inherent instability of long-step forecasting. In this work, we adopt an
+ordinary differential equation (ODE) perspective on the hidden-feature
+sequence, modeling layer representations along the trajectory as a feature-ODE.
+We attribute the degradation of existing caching strategies to their inability
+to robustly integrate historical features under large skipping intervals. To
+address this, we propose FoCa (Forecast-then-Calibrate), which treats feature
+caching as a feature-ODE solving problem. Extensive experiments on image
+synthesis, video generation, and super-resolution tasks demonstrate the
+effectiveness of FoCa, especially under aggressive acceleration. Without
+additional training, FoCa achieves near-lossless speedups of 5.50 times on
+FLUX, 6.45 times on HunyuanVideo, 3.17 times on Inf-DiT, and maintains high
+quality with a 4.53 times speedup on DiT.","Zheng, Shikang and Feng, Liang and Wang, Xinyu and Zhou, Qinming and Cai, Peiliang and Zou, Chang and Liu, Jiacheng and Lin, Yuqi and Chen, Junjie and Ma, Yue and Zhang, Linfeng",2025,,,10.48550/arXiv.2508.16211,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,fengHiCache2025,\cite{fengHiCache2025},"HiCache: Training-free Acceleration of Diffusion Models via Hermite
+  Polynomial-based Feature Caching",http://arxiv.org/abs/2508.16984v1,"Diffusion models have achieved remarkable success in content generation but
+suffer from prohibitive computational costs due to iterative sampling. While
+recent feature caching methods tend to accelerate inference through temporal
+extrapolation, these methods still suffer from server quality loss due to the
+failure in modeling the complex dynamics of feature evolution. To solve this
+problem, this paper presents HiCache, a training-free acceleration framework
+that fundamentally improves feature prediction by aligning mathematical tools
+with empirical properties. Our key insight is that feature derivative
+approximations in Diffusion Transformers exhibit multivariate Gaussian
+characteristics, motivating the use of Hermite polynomials-the potentially
+theoretically optimal basis for Gaussian-correlated processes. Besides, We
+further introduce a dual-scaling mechanism that ensures numerical stability
+while preserving predictive accuracy. Extensive experiments demonstrate
+HiCache's superiority: achieving 6.24x speedup on FLUX.1-dev while exceeding
+baseline quality, maintaining strong performance across text-to-image, video
+generation, and super-resolution tasks. Core implementation is provided in the
+appendix, with complete code to be released upon acceptance.","Feng, Liang and Zheng, Shikang and Liu, Jiacheng and Lin, Yuqi and Zhou, Qinming and Cai, Peiliang and Wang, Xinyu and Chen, Junjie and Zou, Chang and Ma, Yue and Zhang, Linfeng",2025,,,10.48550/arXiv.2508.16984,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,Liu2025SpeCa,\cite{Liu2025SpeCa},"SpeCa: Accelerating Diffusion Transformers with Speculative Feature
+  Caching",http://arxiv.org/abs/2509.11628v1,"Diffusion models have revolutionized high-fidelity image and video synthesis,
+yet their computational demands remain prohibitive for real-time applications.
+These models face two fundamental challenges: strict temporal dependencies
+preventing parallelization, and computationally intensive forward passes
+required at each denoising step. Drawing inspiration from speculative decoding
+in large language models, we present SpeCa, a novel 'Forecast-then-verify'
+acceleration framework that effectively addresses both limitations. SpeCa's
+core innovation lies in introducing Speculative Sampling to diffusion models,
+predicting intermediate features for subsequent timesteps based on fully
+computed reference timesteps. Our approach implements a parameter-free
+verification mechanism that efficiently evaluates prediction reliability,
+enabling real-time decisions to accept or reject each prediction while
+incurring negligible computational overhead. Furthermore, SpeCa introduces
+sample-adaptive computation allocation that dynamically modulates resources
+based on generation complexity, allocating reduced computation for simpler
+samples while preserving intensive processing for complex instances.
+Experiments demonstrate 6.34x acceleration on FLUX with minimal quality
+degradation (5.5% drop), 7.3x speedup on DiT while preserving generation
+fidelity, and 79.84% VBench score at 6.1x acceleration for HunyuanVideo. The
+verification mechanism incurs minimal overhead (1.67%-3.5% of full inference
+costs), establishing a new paradigm for efficient diffusion model inference
+while maintaining generation quality even at aggressive acceleration ratios.
+Our codes have been released in Github:
+\textbf{https://github.com/Shenyi-Z/Cache4Diffusion}","Liu, Jiacheng and Zou, Chang and Lyu, Yuanhuiyi and Li, Kaixin and Wang, Shaobo and Zhang, Linfeng",2025,October,,,
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,zhao2024PAB,\cite{zhao2024PAB},Real-Time Video Generation with Pyramid Attention Broadcast,http://arxiv.org/abs/2408.12588v3,"We present Pyramid Attention Broadcast (PAB), a real-time, high quality and
+training-free approach for DiT-based video generation. Our method is founded on
+the observation that attention difference in the diffusion process exhibits a
+U-shaped pattern, indicating significant redundancy. We mitigate this by
+broadcasting attention outputs to subsequent steps in a pyramid style. It
+applies different broadcast strategies to each attention based on their
+variance for best efficiency. We further introduce broadcast sequence parallel
+for more efficient distributed inference. PAB demonstrates up to 10.5x speedup
+across three models compared to baselines, achieving real-time generation for
+up to 720p videos. We anticipate that our simple yet effective method will
+serve as a robust baseline and facilitate future research and application for
+video generation.","Zhao, Xuanlei and Jin, Xiaolong and Wang, Kai and You, Yang",,,,,arXiv preprint arXiv:2408.12588
+FreqCa: Accelerating Diffusion Models via Frequency-Aware Caching,http://arxiv.org/abs/2510.08669v1,lvFasterCacheTrainingFreeVideo2025,\cite{lvFasterCacheTrainingFreeVideo2025},"FasterCache: Training-Free Video Diffusion Model Acceleration with High
+  Quality",http://arxiv.org/abs/2410.19355v2,"In this paper, we present \textbf{\textit{FasterCache}}, a novel
+training-free strategy designed to accelerate the inference of video diffusion
+models with high-quality generation. By analyzing existing cache-based methods,
+we observe that \textit{directly reusing adjacent-step features degrades video
+quality due to the loss of subtle variations}. We further perform a pioneering
+investigation of the acceleration potential of classifier-free guidance (CFG)
+and reveal significant redundancy between conditional and unconditional
+features within the same timestep. Capitalizing on these observations, we
+introduce FasterCache to substantially accelerate diffusion-based video
+generation. Our key contributions include a dynamic feature reuse strategy that
+preserves both feature distinction and temporal continuity, and CFG-Cache which
+optimizes the reuse of conditional and unconditional outputs to further enhance
+inference speed without compromising video quality. We empirically evaluate
+FasterCache on recent video diffusion models. Experimental results show that
+FasterCache can significantly accelerate video generation (\eg 1.67$\times$
+speedup on Vchitect-2.0) while keeping video quality comparable to the
+baseline, and consistently outperform existing methods in both inference speed
+and video quality.","Lv, Zhengyao and Si, Chenyang and Song, Junhao and Yang, Zhenyu and Qiao, Yu and Liu, Ziwei and Wong, Kwan-Yee K.",2025,,,10.48550/arXiv.2410.19355,

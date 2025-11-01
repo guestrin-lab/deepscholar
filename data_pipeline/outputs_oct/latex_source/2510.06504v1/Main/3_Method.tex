@@ -1,0 +1,131 @@
+\vspace{-2mm}
+\section{Method}
+
+\begin{figure}
+\vspace{-7mm}
+\centering
+\begin{overpic}[width=0.95\linewidth]{Figs/fig_pipeline_vertical}
+\end{overpic}
+
+\caption{Overview of the proposed frameworks. (a) \textbf{\namesyn}: sample interaction and single-person descriptions via an LLM, generate a single-person motion from a motion prior~\citep{guo2024momask}, then compose the second agent with a reaction model conditioned on the two-person prompt and the motion prior. (b) \textbf{\namegen}: an $N$-block generator with word-level conditioning and motion–motion interaction. Each block cross-attends motion tokens to CLIP word tokens~\citep{radford2021learning}, followed by self-attention and inter-agent cross-attention to model individual motion and interactions.}
+
+
+\vspace{-5mm}
+\label{fig:fig_pipeline}
+\end{figure}
+
+\paragraph{Problem Formulation.} Given a text prompt $c_t$, the task of  \textit{human-human interaction generation from text} involves generating a two-person interaction sequence $\mathbf{X} = [\mathbf{x}_1, \mathbf{x}_2] \in \mathbb{R}^{2 \times T \times N \times 3}$ that is both semantically and spatially coherent and faithful to the original text prompt, where $\mathbf{x}_i$ denotes the i-th person's motion sequence, $T$ is the sequence length in frames and $N$ is the number of joints. Following standard practice in single human and interaction generation \citep{guo2022generating, liang2024intergen, ponce2024in2in}, we use a extended representation formulated as: $\mathbf{x}_{i}^{(t)} = [\mathbf{j}^p_g, \mathbf{j}^v_g, \mathbf{j}^r, \mathbf{c}_f]$, where motion state of the $i$-th person at time $t$, $\mathbf{x}_{i}^{(t)}$, is defined as a collection of global joint positions $\mathbf{j}^p_g \in \mathbb{R}^{3N}$, velocities $\mathbf{j}^v_g \in \mathbb{R}^{3N}$ in the world frame, 6D representation of local rotations $\mathbf{j}^r \in \mathbb{R}^{6N}$ in the root frame, and binary foot-ground contact $\mathbf{c}_f \in \mathbb{R}^4$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{\namesyn: Generative Two-person Motion Composition}
+\vspace{-0.5mm}
+\subsubsection{Data Generation from Single-Person Motion and Language Priors}
+\vspace{-0.5mm}
+
+
+
+To address the limited diversity of existing two-person motion datasets, we propose a modular pipeline, \namesyn, that synthesizes realistic two-person interactions by sampling coherent two-person and single-person motion descriptions and composing individual motion sequences generated from the descriptions. Specifically, we first use an LLM \citep{liu2024deepseek} to annotate the text descriptions in InterHuman~\citep{liang2024intergen}, classifying them into a discrete space of coarse-grained \emph{themes} (e.g. greeting, dancing, conflict) and fine-grained \emph{tags} (e.g. excited, synchronized, disarm) that further describes the interaction. By systematically combining plausible theme–tag combinations, we can generate interaction descriptions that remain stylistically consistent with InterHuman but span a broader range of behaviors by sampling from the LLM in the joint theme-tag space: $c_t \sim \mathcal{T}_{\text{LLM}}(\text{theme}, \text{tags})$.  Then, given a generated interaction text $c_t$, we decompose it into two role-specific sub-descriptions $(c_t^1, c_t^2)$ using an additional LLM prompt. Each $c_t^i$ describes the motion of person $i$ independent of the other, while taking the context information into account. Please refer to Fig.~\ref{fig:fig_pipeline}~(a) for an illustration. We use $(c_t^1, c_t^2)$ to generate corresponding single-person motions $(\mathbf{x}_1, \mathbf{x}_2)$ via a pre-trained single-person text-to-motion generator MoMask~\citep{guo2024momask} trained on single-person motion datasets~\citep{guo2022generating}, enabling it to generate motions beyond the single-person motion distribution of InterHuman~\citep{liang2024intergen}.
+
+
+
+To model dependencies between the interactants, we train a conditional diffusion model $\mathcal{D}_\theta$ that synthesizes the second agent’s motion $\mathbf{x}_2$ given the first agent’s motion $\mathbf{x}_1$ and the shared interaction description $c_t$. Formally, we model the conditional distribution $p_\theta(\mathbf{x}_2 \mid \mathbf{x}_1, c_t)$ using a denoising diffusion probabilistic model (DDPM) with an 8-layer Transformer architecture. At training time, $\mathcal{D}_\theta$ aims to recover an interaction sequence $(\mathbf{x}_1, \mathbf{x}_2)$ sampled from InterHuman~\citep{liang2024intergen} from one ground-truth and one noised interactant $(\mathbf{x}_1, \mathbf{x}_2')$. During inference, we sample $\mathbf{x}_1$ using MoMask then generate $\mathbf{x}_2$ using $\mathcal{D}_\theta$ conditioned on $\mathbf{x}_1$, producing a complete interaction $(\mathbf{x}_1, \mathbf{x}_2)$ that is semantically aligned with $c_t$ and physically coordinated. 
+
+This compositional approach significantly enlarges the diversity of two-person interactions compared to existing datasets, as it decouples single-person motion priors and recombines them under guided conditions. Unlike direct generation approaches, which must learn joint coordination from sparse data, our formulation leverages both rich single-person priors and role-specific semantics to scaffold plausible and varied interactions from structured textual prompts. In addition, the inference-based nature of our data composition process allows it to be extremely scalable and cost-efficient compared to the traditional MoCap-based data collection process.
+\vspace{-0.5mm}
+
+\subsubsection{High-Quality and Diverse Data Filtering.} 
+\vspace{-0.5mm}
+
+To ensure the quality and diversity of the synthesized two-person motions, we propose a two-stage filtering pipeline that considers text-motion alignment and distributional regularization. We first train a contrastive encoder using the  InterHuman~\citep{liang2024intergen} two-person interaction dataset to project both text and motion into a shared embedding space. Specifically, we freeze a pretrained text encoder (CLIP~\citep{radford2021learning}) with a trainable Transformer~\citep{vaswani2017attention} feature extractor head $f_{head}$, and learn a motion encoder $f_\phi$ based on the Transformer architecture. The training objective is a symmetric cross-entropy (CE) loss over cosine similarities between normalized embeddings. A held-out subset of the InterHuman dataset is reserved to provide a reference embedding distribution for diversity filtering.
+
+After training, we apply the encoder to the synthetic dataset $\mathcal{D}_{\text{syn}} = \{(\mathbf{x}, c_t)\}$ and compute the cosine similarity between each motion and its paired text. We discard samples with similarity scores below a threshold $\delta = 0.58$, empirically chosen based on performance on a validation split. This step eliminates low-quality or semantically misaligned samples.
+
+To further enforce motion diversity and promote high-quality samples that are underrepresented in the original two-person dataset, we perform a distributional filtering step using the two-person motion embeddings from the held-out InterHuman subset $\mathcal{E}_{\text{real}} = \{f_\phi(\mathbf{x}_r)\}$ as reference. For each synthetic motion embedding $f_\phi(\mathbf{x})$, we compute its Euclidean distance to the $k$ nearest neighbors in $\mathcal{E}_{\text{real}}$, and retain only those whose average distance falls within a predefined annulus: $r_{\text{min}} \leq d(f_\phi(\mathbf{x}), \mathcal{E}_{\text{real}}) \leq r_{\text{max}}$. This preserves synthesized motions that are novel (outside the inner radius $r_{\text{min}}$) but not far from the real data distribution (inside the outer radius $r_{\text{max}}$).
+
+This dual-stage filtering framework ensures that the final synthetic dataset exhibits both semantic fidelity and distributional diversity. Detailed analysis of the effects of $\delta$, $r_{\text{min}}$, and $r_{\text{max}}$ is in Sec.~\ref{sec:filtering_ablation}.
+
+\subsection{\namegen: Fine-grained Interaction Modeling}
+
+
+
+
+
+\subsubsection{Word-level Attention Modeling of Language and Interaction Dynamics}
+
+
+
+
+Having diversified our training distribution with synthetic data, we now address the issue of insufficient granularity in two-person text semantics modeling. To tackle the issue and improve semantic alignment between natural language and generated motion, we design a cross-attention-based word-level text-motion conditioning architecture that injects fine-grained text information throughout the generation process. Unlike prior methods that inject a sentence-level embedding into motion tokens via AdaLN~\citep{liang2024intergen,javed2024intermask,ponce2024in2in} or sentence-level cross-attention~\citep{tanaka2023role}, our architecture allows each motion token to dynamically attend to individual word-level tokens, preserving the nuanced motion semantics and spatial-temporal alignment cues in semantic-rich interaction prompts.
+
+Formally, given a tokenized interaction description $c_t = \{w_1, \dots, w_L\}$, we extract word-level embeddings $\mathbf{T} = \{\mathbf{t}^{(1)}, \dots, \mathbf{t}^{(L)}\}$ using a frozen CLIP text encoder.
+
+The architecture is composed of alternating processing modules, each consisting of two types: 1) \textbf{Word-level Conditioning Module $\mathcal{M}_w$:} A Transformer block with cross-attention between a single agent’s motion tokens $\mathbf{x}_i$ and the full text embedding sequence $\mathbf{T}$, enabling each motion token to focus on semantically relevant parts of the prompt. This block preserves temporal resolution and injects lexical cues aligned with event structure. 2) \textbf{Motion-Motion Interaction Module $\mathcal{M}_m$:} A two-stage module where motion tokens $\mathbf{x}_i$ first perform self-attention over their own sequence (intra-agent context), followed by cross-attention over the other agent’s motion tokens $\mathbf{x}_{j}$ ($j \neq i$), which models inter-agent physical and temporal dependencies such as push-pull or synchronization. Please see Fig.~\ref{fig:fig_pipeline}~(b) for an illustration.
+
+Each update step consists of a word-level conditioning module followed by a motion-motion interaction module; these two modules together form a full block that is applied in an alternating fashion: first to one agent, conditioning on the text and the other agent’s motion, and then to the other agent in the next step. Leveraging the symmetry of two-person interactions, the blocks $\mathcal{B}_w$ and $\mathcal{B}_m$ are shared across agents, ensuring architectural symmetry and parameter efficiency. The alternating structure allows each agent to respond adaptively to both the linguistic description and the dynamic behavior of their partner, while preserving causal and temporal coherence.
+
+
+
+
+
+
+
+
+
+Overall, the network design enables high-fidelity generation that is both semantically grounded and interaction-aware, allowing nuanced conditioning through the word-level representation and fostering motion patterns that are faithful to the described scenario.
+
+
+\subsubsection{Adaptive Interaction Supervision}
+
+We use the standard velocity loss $\mathcal{L}_{\text{vel}}$, foot contact loss $\mathcal{L}_{\text{foot}}$, bone-length loss $\mathcal{L}_{\text{BL}}$, and relative orientation loss $\mathcal{L}_{\text{RO}}$. For these objective functions, refer to InterGen~\citep{liang2024intergen} for details. 
+
+In addition to the above objective functions, we designed a new objective $\mathcal{L}_{\text{AdaInteract}}$ to enhance the generation of plausible interaction semantics, a crucial element of text-to-interaction generation. Motivated by the insight that joint pairs that are closer to each other carry more importance in the interaction semantics, we propose a novel adaptive interaction loss that supervises the pairwise distances between human-human joint pairs with an adaptive weighting:
+\begin{equation}
+    \mathcal{L}_{\text{AdaInteract}} = \sum_{i=1}^N\sum_{j=1}^N\frac{1}{d_{ij} + \epsilon}\|d_{ij} - \hat d_{ij}\|_2
+\end{equation}
+Where $d_{ij}$, $\hat d_{ij}$ are the ground-truth and predicted distances between the joints $i$ and $j$ respectively, and $\epsilon=0.1$ is an empirically set constant. By putting more emphasis on spatially proximate inter-agent joint pairs, our adaptive interaction objective function provides strong guidance for the model to adhere to the interaction semantics.
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

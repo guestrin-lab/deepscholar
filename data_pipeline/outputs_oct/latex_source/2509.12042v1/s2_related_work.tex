@@ -1,0 +1,36 @@
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Retrieval-Augmented Generation (RAG)}
+
+Retrieval-Augmented Generation (RAG)~\cite{lewis2021retrievalaugmentedgenerationknowledgeintensivenlp} augments language models by fetching relevant context from external corpora, reducing the need for full-model fine-tuning~\cite{guu2020retrievalaugmented, ram2023}. Advanced variants such as Self-RAG~\cite{selfrag2023} and Adaptive RAG~\cite{adaptive2023} improve coordination between retrievers and generators but still use fixed-size chunks. This makes it hard to preserve document structure and can introduce drift in long documents, as seen in long-form QA benchmarks like ELI5~\cite{fan-etal-2019-eli5}. Recent work addresses context-length limits with longer-context models (e.g., Transformer-XL~\cite{dai2019transformerxlattentivelanguagemodels}), retrieval-aware chunking~\cite{zhong2025mixofgranularityoptimizechunkinggranularity}, and studies of position bias~\cite{liu2023lostmiddlelanguagemodels}. These efforts mainly target input length and do not solve structured retrieval in financial domains.
+
+\subsection{Hierarchical and Graph-Based Retrieval}
+
+Hierarchical methods such as RAPTOR~\cite{raptor} and HiQA~\cite{chen2024hiqa} represent documents as trees and retrieve recursively from higher-level summaries. Graph-based systems, including GraphRAG~\cite{edge2024localglobalgraphrag} and LightRAG~\cite{guo2024lightragsimplefastretrievalaugmented}, model relations between entities and sections to support multi-hop reasoning. In particular, GraphRAG builds local–global graphs over LLM-extracted entities and community summaries and retrieves via community-level traversal, while LightRAG performs dual-level query decomposition with lightweight neighborhood expansion over section-aligned segments. Longtriever~\cite{yang-etal-2023-longtriever} targets long-context retrieval by combining local and global semantics at the block level. These graph approaches differ from retrieval that uses section hierarchies (e.g., SEC Items), so we include GraphRAG as a representative graph baseline for community-level traversal. Many graph/tree systems also depend on LLM-generated summaries, which may hallucinate content~\cite{maynez2020faithfulnessfactualityabstractivesummarization, li2023extracting}.
+
+\subsection{Financial NLP and Domain-Specific Retrieval}
+
+Financial NLP supports applications such as sentiment analysis~\cite{zhang2023financialsentiment, wang2024mana}, event prediction~\cite{li2024investorbench, wang2024modeling}, and hybrid QA~\cite{chen2021finqa, zhu2021tatqaquestionansweringbenchmark}, often using domain-adapted models like FinBERT-QA~\cite{finbertqa} and FinGPT~\cite{yang2023fingpt}. These models improve semantic understanding but usually assume that relevant context is provided and therefore lack retrieval. DocFinQA~\cite{docfinQA} evaluates QA over full filings but relies on an oracle retriever, leaving retrieval design unaddressed. As a result, prior work does not fully model retrieval architectures that reflect hierarchical layouts, domain terminology, and section-specific semantics. FinGEAR addresses this gap by treating structure-aware retrieval as a core objective in financial document understanding.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{pre_retrieval.pdf}
+\vspace{-0.8em}
+\caption{Pre-retrieval. From parsed 10-K filings, FinGEAR performs structure extraction and lexicon mapping (FLAM). FLAM clusters domain terms and assigns Item weights; topic clustering builds a Summary Tree and a mirrored Question Tree for each Item.}
+\label{fig:pre_retrieval}
+\vspace{-0.5em}
+\end{figure*}
+
+\subsection{Guided and Interpretable Retrieval for Financial Documents}
+
+In high-stakes settings like finance, retrieval should be both relevant and interpretable because results support regulatory or analytical decisions~\cite{yu2024defense}. Flat, dense-only pipelines can obscure why passages were selected. Structured methods (hierarchical and graph-based) reviewed above improve traceability by encoding document structure and relations, and they typically outperform flat chunking in both quality and transparency. However, most remain domain-agnostic. For 10-Ks, where a standardized section layout and stable terminology are available, integrating domain signals (e.g., a finance lexicon and disclosure Item hierarchy) can further align retrieval with analyst intent. FinGEAR follows this principle by combining lexicon-guided global navigation with Item-aligned hierarchical indexing, providing interpretable, section-aware evidence selection tailored to financial disclosures.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{in_retrieval.pdf}
+\vspace{-1.2em}
+\caption{In-retrieval. FLAM allocates the budget across Items (Within-Group). Within each Item, the Summary and Question Trees are traversed (Within-Item). Candidates are jointly reranked and merged across Items. Example query: CET1 ratio in 2008.}
+\label{fig:in_retrieval}
+\vspace{-0.8em}
+\end{figure*}

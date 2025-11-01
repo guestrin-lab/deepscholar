@@ -1,0 +1,15 @@
+\section{Related Work}
+
+\noindent{\textbf{Temporal Logic for video and audio understanding. }}
+\citet{yang2023specification} and \citet{Choi2024TowardsNV} (NSVS-TL) use the probabilistic model checker STORM to verify temporal properties over object detections in videos, using LTL and PCTL to represent properties respectively. 
+
+\noindent{\textbf{Benchmarks for video and audio understanding. }}
+Benchmarks for video understanding such as Video-MME~\citep{videomme}, RexTIME~\citep{chen2024rextime}, Next-qa~\citep{nextqa}, QVHighlights~\citep{qvhighlights}, TemporalBench~\citep{cai2024temporalbench} and TempCompass~\citep{liu2024tempcompass} include tasks that require temporal understanding of events in videos. Similarly, audio understanding datasets such as MMAU~\citep{sakshi2024mmau} and CompA~\citep{ghosh2023compa} evaluate temporal tasks such as detecting the order of two events. 
+These tasks are fundamentally different from the QMTP benchmark which focuses on more fine-grained temporal properties. 
+
+\noindent{\textbf{Video retrieval with temporal queries. }} 
+Popular text-to-video retrieval datasets such as 
+Activity Net Captions~\citep{krishna2017dense} and DiDeMo~\citep{didemo} focus on temporal segments within minute-long videos.
+Our TP2VR benchmark focuses on fine-grained temporal queries over short events in videos, with many-to-many mapping between queries and videos.
+
+Popular text-video retrieval methods include CLIP4Clip~\citep{luo2021clip4clip}, TS2-Net~\citep{liu2022ts2},~\citep{Bain21}, which employ training to improve embeddings for retrieval, and zero-shot methods such as mPLUG~\citep{li2022mplug} and ELIOT~\citep{liu-etal-2025-eliot}. Since we use off-the-shelf models with LogSTOP for retrieval, we only include the latter for comparison.

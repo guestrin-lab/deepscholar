@@ -1,0 +1,603 @@
+
+
+
+@string{conf_qce = "IEEE Int. Conf. Quantum Computing and Engineering (QCE)"}
+
+
+@string{conf_vis = "Proc. IEEE Visualization (VIS)"}
+@string{symp_infovis = "IEEE Symp. Information Visualization (InfoVis)"}
+@string{symp_vast = "IEEE Symp. Visual Analytics Science And Technology (VAST)"}
+@string{conf_eurovis = "Eurographics / IEEE VGTC Conference on Visualization (EuroVis)"}
+@string{conf_pacvis = "IEEE Pacific Visualization Symposium (PacificVis)"}
+@string{conf_chi = "ACM Conf. Human Factors in Computing Systems (CHI)"}
+@string{conf_chi_ea = "Extended Abstacts of ACM Conf. Human Factors in Computing Systems"}
+@string{conf_gi = "Proc. Graphics Interface (GI)"}
+@string{conf_gd = "Symp. Graph Drawing (GD)"}
+@string{conf_iv = "Proc. Int. Conf. Information Visualisation (IV)"}
+@string{symp_vl = "IEEE Symp. Visual Languages (VL)"}
+@string{symp_vlhcc = "IEEE Symp. Visual Languages and Human-Centric Computing (VL/HCC)"}
+@string{symp_softvis = "ACM Symp. Software Visualization (SoftVis)"}
+@string{symp_sui = "ACM Symp. Spatial User Interaction (SUI)"}
+@string{symp_ismar = "IEEE International Symposium on Mixed and Augmented Reality (ISMAR)"}
+
+@string{conf_uist = "ACM Symp. User Interface Software and Technology (UIST)"}
+@string{conf_avi = "Proc. Advanced Visual Interfaces (AVI)"}
+
+@string{jour_tog = "ACM Transactions on Graphics (TOG)"}
+@string{jour_tochi = "ACM Transactions on Computer-Human Interaction (TOCHI)"}
+@string{jour_tvcg = "IEEE Transactions on Visualization and Computer Graphics (TVCG)"}
+@string{jour_cga = "IEEE Computer Graphics and Applications (CG\&A)"}
+@string{jour_cgf = "Computer Graphics Forum"}
+@string{jour_cacm = "Communications of the ACM (CACM)"}
+
+% =============== general quantum computing
+
+@book{nielsen2010,
+  title={Quantum computation and quantum information},
+  author={Nielsen, Michael A. and Chuang, Isaac L.},
+  year={2010},
+  publisher={Cambridge University Press}
+}
+
+% ================= general infovis
+
+@book{munzner2014book,
+  author={Munzner, Tamara},
+  title={Visualization Analysis and Design},
+  year={2014},
+  publisher={CRC press}
+}
+
+
+
+@inproceedings{borgo2013,
+  author={Borgo, Rita and Kehrer, Johannes and Chung, David HS and Maguire, Eamonn and Laramee, Robert S and Hauser, Helwig and Ward, Matthew and Chen, Min},
+  title={Glyph-based Visualization: Foundations, Design Guidelines, Techniques and Applications},
+  booktitle={Eurographics STARs (State of the Art Reports)},
+  pages={39--63},
+  year={2013}
+}
+
+% ================= use of matrix layouts in visualization
+
+% the original SPLOM paper
+% 10.1080/00949657508810123
+@article{hartigan1975,
+  author = {John A. Hartigan},
+  title = {Printer Graphics for Clustering},
+  journal = {Journal of Statistical Computation and Simulation},
+  year = 1975,
+  volume = 4,
+  number = 3,
+  pages = {187--213},
+}
+
+% doi: 10.1109/INFOVIS.2005.14
+@inproceedings{wilkinson2005,
+  author = {Leland Wilkinson and Anushka Anand and Robert Grossman},
+  title = {Graph-Theoretic Scagnostics},
+  booktitle = symp_infovis,
+  year = 2005,
+}
+
+% ScatterDice
+@article{elmqvist2008scatterdice,
+  author={Elmqvist, Niklas and Dragicevic, Pierre and Fekete, Jean-Daniel},
+  title={Rolling the dice: Multidimensional visual exploration using scatterplot matrix navigation},
+  journal=jour_tvcg,
+  volume={14},
+  number={6},
+  year=2008,
+  pages={1141--1148},
+}
+
+%  organization={Wiley Online Library}
+@inproceedings{bezerianos2010graphdice,
+  author={Bezerianos, Anastasia and Chevalier, Fanny and Dragicevic, Pierre and Elmqvist, Niklas and Fekete, Jean-Daniel},
+  title={{GraphDice}: A system for exploring multivariate social networks},
+  booktitle=jour_cgf,
+  volume={29},
+  number={3},
+  year=2010,
+  pages={863--872}
+}
+
+% Im, J., McGuffin, M., Leung, R. (2013) "GPLOM: the generalized plot matrix for visualizing multidimensional multivariate data." IEEE Transactions on Visualization and Computer Graphics 19, no. 12 (2013): 2606-2614.
+%  volume={19},
+%  number={12},
+%  pages={2606--2614},
+@article{im2013gplom,
+  title={{GPLOM}: the generalized plot matrix for visualizing multidimensional multivariate data},
+  author={Im, Jean-Fran{\c{c}}ois and McGuffin, Michael J and Leung, Rock},
+  journal=jour_tvcg,
+  year={2013}
+}
+
+@inproceedings{zhao2015matrixwave,
+  author={Zhao, Jian and Liu, Zhicheng and Dontcheva, Mira and Hertzmann, Aaron and Wilson, Alan},
+  title={{MatrixWave}: Visual comparison of event sequence data},
+  booktitle=conf_chi,
+  year=2015,
+  pages={259--268}
+}
+
+% ================= coordinated views
+
+% related work to cite about coordinated highlighting:
+
+
+% http://people.cs.vt.edu/~north/
+% http://www.cs.umd.edu/hcil/snap/
+@phdthesis{north2000thesis,
+  author={Christopher L. North},
+  title={A User Interface for Coordinating Visualizations based on Relational Schemata: Snap-Together Visualization},
+  school={Department of Computer Science, Department, University of Maryland},
+  address={College Park, Maryland},
+  year=2000
+}
+
+% cited by roberts2007 and by wangbaldonado2000
+%  booktitle = {Proceedings of Advanced Visual Interfaces (AVI)},
+% http://doi.acm.org/10.1145/345513.345282
+@inproceedings{north2000,
+  author = {Chris North and Ben Shneiderman},
+  title = {Snap-Together Visualization: A User Interface for Coordinating Visualizations via Relational Schemata},
+  booktitle=conf_avi,
+  year = 2000,
+  pages = {128--135},
+}
+
+% http://doi.acm.org/10.1145/345513.345271
+%  booktitle = {Proceedings of Advanced Visual Interfaces (AVI)},
+%  pages = {110--119},
+@inproceedings{wangbaldonado2000,
+  author = {Wang Baldonado, Michelle Q. and Allison Woodruff and Allan Kuchinsky},
+  title = {Guidelines for Using Multiple Views in Information Visualization},
+  booktitle = conf_avi,
+  year = 2000,
+}
+
+
+% http://dx.doi.org/10.1109/CMV.2007.20
+%  booktitle={Coordinated and Multiple Views in Exploratory Visualization (CMV)},
+@inproceedings{roberts2007,
+  author = {Jonathan C. Roberts},
+  title={State of the Art: Coordinated \& Multiple Views in Exploratory Visualization},
+  booktitle={CMV},
+  pages={61--71},
+  year=2007,
+}
+
+% not cited that much
+% Scherr, Maximilian. "Multiple and coordinated views in information visualization" Trends in Information Visualization 38 (2008): 33.
+
+% cites wangbaldonado2000, roberts2007, and Scherr (2008)
+@inproceedings{tan2023,
+  author={Tan, Shaocong and Lai, Chufan and Zhang, Xiaolong Luke and Yuan, Xiaoru},
+  title={An empirical guide for visualization consistency in multiple coordinated views},
+  booktitle=conf_pacvis,
+  year=2023,
+  pages={31--40},
+}
+
+
+% =============== algorithms
+
+@misc{mcguffin2025tutorial,
+  author={Michael J. McGuffin and Jean-Marc Robert and Kazuki Ikeda},
+  title={How to Write a Simulator for Quantum Circuits from Scratch: A Tutorial},
+  note={https://arxiv.org/abs/2506.08142},
+  year={2025}
+}
+
+% McGuffin, M. (2025), "muqcs.js", open source circuit simulator, over 2000 lines of code, https://github.com/MJMcGuffin/muqcs.js 
+%  note={https://github.com/MJMcGuffin/muqcs.js},
+@misc{mcguffin2025muqcs,
+  author={Michael J. McGuffin},
+  title={Muqcs.js: {McGuffin's} Useless Quantum Circuit Simulator},
+  eprint={https://github.com/MJMcGuffin/muqcs.js},
+  note={https://github.com/MJMcGuffin/muqcs.js},
+  year=2025
+}
+
+@misc{mcguffin2025muqcscraft,
+  author={Michael J. McGuffin},
+  title={{MuqcsCraft}: A web-based graphical simulator and visualizer for quantum circuits},
+  eprint={https://github.com/MJMcGuffin/MuqcsCraft},
+  note={https://github.com/MJMcGuffin/MuqcsCraft},
+  year=2025
+}
+
+
+@book{viamontes2009qcsim,
+  author={Viamontes, George F. and Markov, Igor L. and Hayes, John P.},
+  title={Quantum Circuit Simulation},
+  year={2009},
+  publisher={Springer}
+}
+
+%  number={01},
+%  pages={1750005},
+@article{maziero2017computing,
+  author={Maziero, Jonas},
+  title={Computing partial traces and reduced density matrices},
+  journal={International Journal of Modern Physics C},
+  volume={28},
+  year={2017},
+  publisher={World Scientific},
+  doi = {10.1142/S012918311750005X},
+}
+
+% =============== reordering
+
+% http://matrixreordering.dbvis.de/
+%  publisher = {The Eurographics Association and John Wiley & Sons Ltd.},
+%  ISSN = {1467-8659},
+%  DOI = {10.1111/cgf.12935}
+@article{behrisch2016,
+  author = {Behrisch, Michael and Bach, Benjamin and Riche, Nathalie Henry and Schreck, Tobias and Fekete, Jean-Daniel},
+  title = {Matrix Reordering Methods for Table and Network Visualization},
+  journal = {Computer Graphics Forum},
+  year = 2016,
+  note = {http://matrixreordering.dbvis.de/}
+}
+
+
+% =============== entanglement
+
+%  number={1\&2},
+@article{plenio2007introduction,
+  title={An introduction to entanglement measures},
+  author={Plenio, Martin B and Virmani, Shashank},
+  journal={Quantum Information and Computation},
+  volume={7},
+  pages={1--51},
+  year={2007},
+  publisher={Rinton Press}
+}
+
+
+@article{horodecki2009quantum,
+  title={Quantum entanglement},
+  author={Horodecki, Ryszard and Horodecki, Pawe{\l} and Horodecki, Micha{\l} and Horodecki, Karol},
+  journal={Reviews of modern physics},
+  volume={81},
+  number={2},
+  pages={865--942},
+  year={2009},
+  publisher={APS},
+  doi={10.1103/RevModPhys.81.865}
+}
+
+@article{guhne2009entanglement,
+  title={Entanglement detection},
+  author={G{\"u}hne, Otfried and T{\'o}th, G{\'e}za},
+  journal={Physics Reports},
+  volume={474},
+  number={1-6},
+  pages={1--75},
+  year={2009},
+  publisher={Elsevier},
+  doi={10.1016/j.physrep.2009.02.004}
+}
+
+
+% concurrence
+% https://scholar.google.com/scholar?q=coffmann+kundu+wootters+Distributed+entanglement
+@article{coffman2000distributed,
+  title={Distributed entanglement},
+  author={Coffman, Valerie and Kundu, Joydip and Wootters, William K},
+  journal={Physical Review A},
+  volume={61},
+  number={5},
+  pages={052306},
+  year={2000},
+  publisher={APS},
+  doi={10.1103/PhysRevA.61.052306}
+}
+
+
+% =============== vis of quantum circuits
+
+% IBM (2024), "IBM Quantum Composer", web-based circuit simulator, accessed 2024, 
+% Notes by a designer : https://www.sanasharma.com/composer , https://www.linkedin.com/in/sanjana-sharma/
+% Patent: Sharma, Sanjana Arun, Anna Obikane, Francisco José Cabrera Hernández, and Jay M. Gambetta. "Development and analysis of quantum computing programs." U.S. Patent 11,586,966, issued February 21, 2023. https://patentimages.storage.googleapis.com/7d/fe/05/be324a15cc5471/US11586966B2.pdf 
+% Unreleased feature (?) to visualize the density matrix: https://www.youtube.com/watch?v=PSr0AwgdsiY
+% Previous URLs:
+%     https://quantum-computing.ibm.com/composer
+%     https://quantum.ibm.com/composer
+@misc{ibm2023composer,
+  author={IBM},
+  title={{IBM} Quantum Composer},
+  eprint={https://quantum.cloud.ibm.com/composer},
+  note={https://quantum.cloud.ibm.com/composer},
+  year=2023
+}
+
+@misc{gidney2020quirk,
+  author={Craig Gidney},
+  title={Quirk},
+  eprint={https://algassert.com/quirk},
+  note={https://algassert.com/quirk},
+  year=2020
+}
+
+% Wen, Z., Liu, Y., Tan, S., Chen, J., Zhu, M., Han, D., Yin, J., Xu, M., Chen, W. (2023) "Quantivine: A visualization approach for large-scale quantum circuit representation and analysis." IEEE Transactions on Visualization and Computer Graphics, 11 pages.
+@article{wen2023quantivine,
+  title={Quantivine: A visualization approach for large-scale quantum circuit representation and analysis},
+  author={Wen, Zhen and Liu, Yihan and Tan, Siwei and Chen, Jieyi and Zhu, Minfeng and Han, Dongming and Yin, Jianwei and Xu, Mingliang and Chen, Wei},
+  journal=jour_tvcg,
+  year={2023},
+}
+
+% Siyuan, L., Hao, J., Sun, L. (2018) "Quflow: Visualizing parameter flow in quantum circuits for understanding quantum computation." Proceedings of IEEE Scientific Visualization Conference (SciVis) 2018, pp. 37-41.
+@inproceedings{lin2018quflow,
+  title={{QuFlow}: Visualizing parameter flow in quantum circuits for understanding quantum computation},
+  author={Lin, Siyuan and Hao, Jiang and Sun, Lingyun},
+  booktitle={IEEE Scientific Visualization Conference (SciVis)},
+  pages={37--41},
+  year={2018},
+}
+
+% Lamy, J. (2019) "Dynamic software visualization of quantum algorithms with rainbow boxes." Proceedings of International Conference on Information Visualization Theory and Applications (IVAPP) 2019. 10 pages.
+@inproceedings{lamy2019rainbow,
+  title={Dynamic software visualization of quantum algorithms with rainbow boxes},
+  author={Lamy, Jean-Baptiste},
+  booktitle={International Conference on Information Visualization Theory and Applications (IVAPP)},
+  year={2019}
+}
+
+% https://quantumeyes.github.io/   TODO check that the URL shows up in the references
+% Ruan, S., Guan, Q., Griffin, P., Mao, Y., Wang, Y. (2023) "QuantumEyes: Towards better interpretability of quantum circuits." IEEE Transactions on Visualization and Computer Graphics (2023), 13 pages.
+@article{ruan2023quantumeyes,
+  title={{QuantumEyes}: Towards better interpretability of quantum circuits},
+  author={Ruan, Shaolun and Guan, Qiang and Griffin, Paul and Mao, Ying and Wang, Yong},
+  journal=jour_tvcg,
+  year={2023},
+  note={https://quantumeyes.github.io/}
+}
+
+% Williams, Milan Marie
+% 2021
+% QCVis: A Quantum Circuit Visualization and Education Platform for Novices
+% Bachelor's thesis, Harvard College
+% https://nrs.harvard.edu/URN-3:HUL.INSTREPOS:37368560 
+% https://dash.harvard.edu/handle/1/37368560 
+
+% =============== geometry of quantum computing and variants of the Bloch sphere
+
+
+@book{bengtsson2017geometry,
+  title={Geometry of quantum states: an introduction to quantum entanglement},
+  author={Bengtsson, Ingemar and {\.Z}yczkowski, Karol},
+  year={2017},
+  publisher={Cambridge University Press},
+  edition={2}
+}
+
+% contains no pictures
+@article{mosseri2001,
+  author={Mosseri, R{\'e}my and Dandoloff, Rossen},
+  title={Geometry of entangled states, Bloch spheres and Hopf fibrations},
+  journal={Journal of Physics A: Mathematical and General},
+  volume={34},
+  number={47},
+  pages={10243},
+  year={2001},
+  publisher={IOP Publishing}
+}
+
+% contains no pictures
+@inproceedings{havel2004,
+  author={Havel, Timothy F and Doran, Chris JL},
+  title={A Bloch-sphere-type model for two qubits in the geometric algebra of a 6D Euclidean vector space},
+  booktitle={Quantum Information and Computation II},
+  volume={5436},
+  pages={93--106},
+  year={2004},
+  organization={SPIE}
+}
+
+% cites mosseri2001
+@article{gamel2016,
+  author={Gamel, Omar},
+  title={Entangled Bloch spheres: Bloch matrix and two-qubit state space},
+  journal={Physical Review A},
+  volume={93},
+  number={6},
+  pages={062320},
+  year={2016},
+  publisher={APS}
+}
+
+@article{wie2020,
+  title={Two-qubit Bloch sphere},
+  author={Wie, Chu-Ryang},
+  journal={Physics},
+  volume={2},
+  number={3},
+  pages={383--396},
+  year={2020}
+}
+
+% https://arxiv.org/abs/2212.03448
+@article{chang2024,
+  author={Chang, Li-Heng Henry and Roccaforte, Shea and Xu, Ziyu and Cadden-Zimansky, Paul},
+  title={Geometric visualizations of single and entangled qubits},
+  journal={American Journal of Physics},
+  volume={92},
+  number={7},
+  pages={528--537},
+  year={2024},
+  publisher={AIP Publishing}
+}
+
+@inproceedings{altepeter2009,
+  title={Multiple-qubit quantum state visualization},
+  author={Altepeter, Joseph B and Jeffrey, Evan R and Medic, Milja and Kumar, Prem},
+  booktitle={Conf. Lasers and Electro-Optics and Int. Quantum Electronics Conf. (CLEO/IQEC)},
+  pages={1--2},
+  year={2009},
+  organization={IEEE}
+}
+
+@article{makela2010,
+  title={N-qubit states as points on the Bloch sphere},
+  author={M{\"a}kel{\"a}, H and Messina, Antonino},
+  journal={Physica Scripta},
+  volume={2010},
+  number={T140},
+  pages={014054},
+  year={2010},
+  publisher={IOP Publishing}
+}
+
+% https://arxiv.org/abs/2305.07596
+@article{bley2024,
+  author={Jonas Bley and Eva Rexigel and Alda Arias and Nikolas Longen and Lars Krupp and Maximilian Kiefer-Emmanouilidis and Paul Lukowicz and Anna Donhauser and Stefan K{\"u}chemann and Jochen Kuhn and Artur Widera},
+  title={Visualizing entanglement in multiqubit systems},
+  journal={Physical Review Research},
+  volume={6},
+  number={2},
+  pages={023077},
+  year={2024},
+  publisher={APS}
+}
+
+% https://arxiv.org/abs/2501.13990
+@misc{aharonov2025,
+  author={Aharonov, Yakir and Shushi, Tomer},
+  title={A visual representation of the properties of pre-and post-selected entangled systems},
+  note={https://arxiv.org/abs/2501.13990},
+  year={2025}
+}
+
+
+@inproceedings{ruan2023venus,
+  title={{VENUS}: A geometrical representation for quantum state visualization},
+  author={Ruan, Shaolun and Yuan, Ribo and Guan, Qiang and Lin, Yanna and Mao, Ying and Jiang, Weiwen and Wang, Zhepeng and Xu, Wei and Wang, Yong},
+  booktitle={Computer Graphics Forum},
+  volume={42},
+  number={3},
+  pages={247--258},
+  year={2023}
+}
+
+
+% =============== general vis + quantum computing
+
+% Caroppo, S., Da Lozzo, G., Di Battista, G. (2024). Quantum Graph Drawing. In: Uehara, R., Yamanaka, K., Yen, HC. (eds) WALCOM: Algorithms and Computation. WALCOM 2024. Lecture Notes in Computer Science, vol 14549, pp. 32-46. Springer.
+
+
+% https://github.com/graphstatevis/app
+% https://graphstatevis.github.io/app
+% https://graphvis.uber.space/
+@inproceedings{miller2021,
+  title={{GraphStateVis}: Interactive visual analysis of qubit graph states and their stabilizer groups},
+  author={Miller, Matthias and Miller, Daniel},
+  booktitle=conf_qce,
+  year={2021},
+  pages={378--384},
+  eprint={https://github.com/graphstatevis/app},
+  note={https://github.com/graphstatevis/app},
+}
+
+
+@inproceedings{arawjo2022,
+  author={Arawjo, Ian and DeArmas, Anthony and Roberts, Michael and Basu, Shrutarshi and Parikh, Tapan},
+  title={Notational programming for notebook environments: A case study with quantum circuits},
+  booktitle=conf_uist,
+  pages={1--20},
+  year={2022}
+}
+
+% quantomatic
+@inproceedings{kissinger2015quantomatic,
+  author={Kissinger, Aleks and Zamdzhiev, Vladimir},
+  title={Quantomatic: A proof assistant for diagrammatic reasoning},
+  booktitle={CADE-25: 25th International Conference on Automated Deduction},
+  pages={326--336},
+  year={2015},
+  organization={Springer}
+}
+
+% https://scholar.google.com/scholar?q=ruan+VACSEN%3A+A+visualization+approach+for+noise+awareness+in+quantum+computing
+@article{ruan2023vacsen,
+  author={Ruan, Shaolun and Wang, Yong and Jiang, Weiwen and Mao, Ying and Guan, Qiang},
+  title={{VACSEN}: A visualization approach for noise awareness in quantum computing},
+  journal=jour_tvcg,
+  volume={29},
+  number={1},
+  pages={462--472},
+  year={2023}
+}
+
+@inproceedings{norrie2024qgrover,
+  author={Norrie, Samantha and Estey, Anthony and M{\"u}ller, Hausi and Stege, Ulrike},
+  title={{QGrover}: Teaching Grover's Algorithm Through Visual Exploration},
+  booktitle=conf_qce,
+  volume={3},
+  pages={17--24},
+  year={2024}
+}
+
+@inproceedings{tao2017shorvis,
+  author={Tao, Zewei and Pan, Yun and Chen, Anying and Wang, Licheng},
+  title={{ShorVis}: A comprehensive case study of quantum computing visualization},
+  booktitle={Int. Conf. Virtual Reality and Visualization (ICVRV)},
+  pages={360--365},
+  year={2017},
+  organization={IEEE}
+}
+
+@article{ruan2024violet,
+  author={Ruan, Shaolun and Liang, Zhiding and Guan, Qiang and Griffin, Paul and Wen, Xiaolin and Lin, Yanna and Wang, Yong},
+  title={{VIOLET}: Visual analytics for explainable quantum neural networks},
+  journal=jour_tvcg,
+  volume={30},
+  number={6},
+  pages={2862--2874},
+  year={2024}
+}
+
+@misc{rudolph2021orqviz,
+  author={Rudolph, Manuel S and Sim, Sukin and Raza, Asad and Stechly, Michal and McClean, Jarrod R and Anschuetz, Eric R and Serrano, Luis and Perdomo-Ortiz, Alejandro},
+  title={{ORQVIZ}: Visualizing high-dimensional landscapes in variational quantum algorithms},
+  note={https://arxiv.org/abs/2111.04695},
+  year={2021}
+}
+
+% ===============
+
+% converting arbitrary multi-qubit unitary gate to multi-controlled single-qubit unitary gates
+% Quantum Shannon Decomposition (QSD)
+% Cosine-Sine Decomposition (CSD)
+% block-ZXZ decomposition
+
+@article{shende2006,
+  author={Shende, VV and Bullock, SS and Markov, IL},
+  title={Synthesis of quantum-logic circuits},
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+  volume={25},
+  number={6},
+  pages={1000--1010},
+  year={2006},
+}
+
+@article{mottonen2004,
+  author={M{\"o}tt{\"o}nen, Mikko and Vartiainen, Juha J and Bergholm, Ville and Salomaa, Martti M},
+  title={Quantum circuits for general multiqubit gates},
+  journal={Physical review letters},
+  volume={93},
+  number={13},
+  pages={130502},
+  year={2004},
+  publisher={APS}
+}
+
+
+% =============== misc
+
+% \url{https://arxiv.org/abs/2502.00202}
+% Hyeok Kim, Mingyoung J. Jeng, Kaitlin N. Smith
+% Toward Human-Quantum Computer Interaction: Interface Techniques for Usable Quantum Computing

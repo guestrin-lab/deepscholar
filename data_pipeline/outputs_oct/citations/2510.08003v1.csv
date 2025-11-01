@@ -1,0 +1,327 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,jia2021scaling,\cite{jia2021scaling},Scaling up visual and vision-language representation learning with noisy text supervision,,,"Jia, Chao and Yang, Yinfei and Xia, Ye and Chen, Yi-Ting and Parekh, Zarana and Pham, Hieu and Le, Quoc and Sung, Yun-Hsuan and Li, Zhen and Duerig, Tom",2021,,,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Li2023BLIP2BL,\cite{Li2023BLIP2BL},BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models,,,Junnan Li and Dongxu Li and Silvio Savarese and Steven C. H. Hoi,2023,,https://api.semanticscholar.org/CorpusID:256390509,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Levy2023DataRA,\cite{Levy2023DataRA},Data Roaming and Quality Assessment for Composed Image Retrieval,http://arxiv.org/abs/2303.09429v2,"The task of Composed Image Retrieval (CoIR) involves queries that combine
+image and text modalities, allowing users to express their intent more
+effectively. However, current CoIR datasets are orders of magnitude smaller
+compared to other vision and language (V&L) datasets. Additionally, some of
+these datasets have noticeable issues, such as queries containing redundant
+modalities. To address these shortcomings, we introduce the Large Scale
+Composed Image Retrieval (LaSCo) dataset, a new CoIR dataset which is ten times
+larger than existing ones. Pre-training on our LaSCo, shows a noteworthy
+improvement in performance, even in zero-shot. Furthermore, we propose a new
+approach for analyzing CoIR datasets and methods, which detects modality
+redundancy or necessity, in queries. We also introduce a new CoIR baseline, the
+Cross-Attention driven Shift Encoder (CASE). This baseline allows for early
+fusion of modalities using a cross-attention module and employs an additional
+auxiliary task during training. Our experiments demonstrate that this new
+baseline outperforms the current state-of-the-art methods on established
+benchmarks like FashionIQ and CIRR.",Matan Levy and Rami Ben-Ari and Nir Darshan and Dani Lischinski,2023,,https://api.semanticscholar.org/CorpusID:257557363,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Liu2023CandidateSR,\cite{Liu2023CandidateSR},"Candidate Set Re-ranking for Composed Image Retrieval with Dual
+  Multi-modal Encoder",http://arxiv.org/abs/2305.16304v3,"Composed image retrieval aims to find an image that best matches a given
+multi-modal user query consisting of a reference image and text pair. Existing
+methods commonly pre-compute image embeddings over the entire corpus and
+compare these to a reference image embedding modified by the query text at test
+time. Such a pipeline is very efficient at test time since fast vector
+distances can be used to evaluate candidates, but modifying the reference image
+embedding guided only by a short textual description can be difficult,
+especially independent of potential candidates. An alternative approach is to
+allow interactions between the query and every possible candidate, i.e.,
+reference-text-candidate triplets, and pick the best from the entire set.
+Though this approach is more discriminative, for large-scale datasets the
+computational cost is prohibitive since pre-computation of candidate embeddings
+is no longer possible. We propose to combine the merits of both schemes using a
+two-stage model. Our first stage adopts the conventional vector distancing
+metric and performs a fast pruning among candidates. Meanwhile, our second
+stage employs a dual-encoder architecture, which effectively attends to the
+input triplet of reference-text-candidate and re-ranks the candidates. Both
+stages utilize a vision-and-language pre-trained network, which has proven
+beneficial for various downstream tasks. Our method consistently outperforms
+state-of-the-art approaches on standard benchmarks for the task. Our
+implementation is available at
+https://github.com/Cuberick-Orion/Candidate-Reranking-CIR.",Zheyuan Liu and Weixuan Sun and Damien Teney and Stephen Gould,2023,,https://api.semanticscholar.org/CorpusID:258888242,,Trans. Mach. Learn. Res.
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Anwaar2020CompositionalLO,\cite{Anwaar2020CompositionalLO},Compositional Learning of Image-Text Query for Image Retrieval,http://arxiv.org/abs/2006.11149v3,"In this paper, we investigate the problem of retrieving images from a
+database based on a multi-modal (image-text) query. Specifically, the query
+text prompts some modification in the query image and the task is to retrieve
+images with the desired modifications. For instance, a user of an E-Commerce
+platform is interested in buying a dress, which should look similar to her
+friend's dress, but the dress should be of white color with a ribbon sash. In
+this case, we would like the algorithm to retrieve some dresses with desired
+modifications in the query dress. We propose an autoencoder based model,
+ComposeAE, to learn the composition of image and text query for retrieving
+images. We adopt a deep metric learning approach and learn a metric that pushes
+composition of source image and text query closer to the target images. We also
+propose a rotational symmetry constraint on the optimization problem. Our
+approach is able to outperform the state-of-the-art method TIRG \cite{TIRG} on
+three benchmark datasets, namely: MIT-States, Fashion200k and Fashion IQ. In
+order to ensure fair comparison, we introduce strong baselines by enhancing
+TIRG method. To ensure reproducibility of the results, we publish our code
+here: \url{https://github.com/ecom-research/ComposeAE}.",Muhammad Umer Anwaar and Egor Labintcev and Martin Kleinsteuber,2020,,https://api.semanticscholar.org/CorpusID:219955754,,2021 IEEE Winter Conference on Applications of Computer Vision (WACV)
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Chen_2020_CVPR,\cite{Chen_2020_CVPR},"Image Search with Text Feedback by Additive Attention Compositional
+  Learning",http://arxiv.org/abs/2203.03809v1,"Effective image retrieval with text feedback stands to impact a range of
+real-world applications, such as e-commerce. Given a source image and text
+feedback that describes the desired modifications to that image, the goal is to
+retrieve the target images that resemble the source yet satisfy the given
+modifications by composing a multi-modal (image-text) query. We propose a novel
+solution to this problem, Additive Attention Compositional Learning (AACL),
+that uses a multi-modal transformer-based architecture and effectively models
+the image-text contexts. Specifically, we propose a novel image-text
+composition module based on additive attention that can be seamlessly plugged
+into deep neural networks. We also introduce a new challenging benchmark
+derived from the Shopping100k dataset. AACL is evaluated on three large-scale
+datasets (FashionIQ, Fashion200k, and Shopping100k), each with strong
+baselines. Extensive experiments show that AACL achieves new state-of-the-art
+results on all three datasets.","Chen, Yanbei and Gong, Shaogang and Bazzani, Loris",2020,June,,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,bai2023sentence,\cite{bai2023sentence},Sentence-level Prompts Benefit Composed Image Retrieval,http://arxiv.org/abs/2310.05473v1,"Composed image retrieval (CIR) is the task of retrieving specific images by
+using a query that involves both a reference image and a relative caption. Most
+existing CIR models adopt the late-fusion strategy to combine visual and
+language features. Besides, several approaches have also been suggested to
+generate a pseudo-word token from the reference image, which is further
+integrated into the relative caption for CIR. However, these pseudo-word-based
+prompting methods have limitations when target image encompasses complex
+changes on reference image, e.g., object removal and attribute modification. In
+this work, we demonstrate that learning an appropriate sentence-level prompt
+for the relative caption (SPRC) is sufficient for achieving effective composed
+image retrieval. Instead of relying on pseudo-word-based prompts, we propose to
+leverage pretrained V-L models, e.g., BLIP-2, to generate sentence-level
+prompts. By concatenating the learned sentence-level prompt with the relative
+caption, one can readily use existing text-based image retrieval models to
+enhance CIR performance. Furthermore, we introduce both image-text contrastive
+loss and text prompt alignment loss to enforce the learning of suitable
+sentence-level prompts. Experiments show that our proposed method performs
+favorably against the state-of-the-art CIR methods on the Fashion-IQ and CIRR
+datasets. The source code and pretrained model are publicly available at
+https://github.com/chunmeifeng/SPRC","Bai, Yang and Xu, Xinxing and Liu, Yong and Khan, Salman and Khan, Fahad and Zuo, Wangmeng and Goh, Rick Siow Mong and Feng, Chun-Mei",2023,,,,arXiv preprint arXiv:2310.05473
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,gal2022image,\cite{gal2022image},"An Image is Worth One Word: Personalizing Text-to-Image Generation using
+  Textual Inversion",http://arxiv.org/abs/2208.01618v1,"Text-to-image models offer unprecedented freedom to guide creation through
+natural language. Yet, it is unclear how such freedom can be exercised to
+generate images of specific unique concepts, modify their appearance, or
+compose them in new roles and novel scenes. In other words, we ask: how can we
+use language-guided models to turn our cat into a painting, or imagine a new
+product based on our favorite toy? Here we present a simple approach that
+allows such creative freedom. Using only 3-5 images of a user-provided concept,
+like an object or a style, we learn to represent it through new ""words"" in the
+embedding space of a frozen text-to-image model. These ""words"" can be composed
+into natural language sentences, guiding personalized creation in an intuitive
+way. Notably, we find evidence that a single word embedding is sufficient for
+capturing unique and varied concepts. We compare our approach to a wide range
+of baselines, and demonstrate that it can more faithfully portray the concepts
+across a range of applications and tasks.
+  Our code, data and new words will be available at:
+https://textual-inversion.github.io","Gal, Rinon and Alaluf, Yuval and Atzmon, Yuval and Patashnik, Or and Bermano, Amit H and Chechik, Gal and Cohen-Or, Daniel",2022,,,,arXiv preprint arXiv:2208.01618
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,saito2023pic2word,\cite{saito2023pic2word},"Pic2Word: Mapping Pictures to Words for Zero-shot Composed Image
+  Retrieval",http://arxiv.org/abs/2302.03084v2,"In Composed Image Retrieval (CIR), a user combines a query image with text to
+describe their intended target. Existing methods rely on supervised learning of
+CIR models using labeled triplets consisting of the query image, text
+specification, and the target image. Labeling such triplets is expensive and
+hinders broad applicability of CIR. In this work, we propose to study an
+important task, Zero-Shot Composed Image Retrieval (ZS-CIR), whose goal is to
+build a CIR model without requiring labeled triplets for training. To this end,
+we propose a novel method, called Pic2Word, that requires only weakly labeled
+image-caption pairs and unlabeled image datasets to train. Unlike existing
+supervised CIR models, our model trained on weakly labeled or unlabeled
+datasets shows strong generalization across diverse ZS-CIR tasks, e.g.,
+attribute editing, object composition, and domain conversion. Our approach
+outperforms several supervised CIR methods on the common CIR benchmark, CIRR
+and Fashion-IQ. Code will be made publicly available at
+https://github.com/google-research/composed_image_retrieval.","Saito, Kuniaki and Sohn, Kihyuk and Zhang, Xiang and Li, Chun-Liang and Lee, Chen-Yu and Saenko, Kate and Pfister, Tomas",2023,,,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Tang2023ContextI2WMI,\cite{Tang2023ContextI2WMI},Context-I2W: Mapping Images to Context-dependent Words for Accurate Zero-Shot Composed Image Retrieval,,,Yuanmin Tang and J. Yu and Keke Gai and Jiamin Zhuang and Gang Xiong and Yue Hu and Qi Wu,2023,,,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,sun2025leveraging,\cite{sun2025leveraging},Leveraging large vision-language model as user intent-aware encoder for composed image retrieval,,,"Sun, Zelong and Jing, Dong and Yang, Guoxing and Fei, Nanyi and Lu, Zhiwu",2025,,,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,chiang2023vicuna,\cite{chiang2023vicuna},Vicuna: An open-source chatbot impressing gpt-4 with 90\,,,"Chiang, Wei-Lin and Li, Zhuohan and Lin, Zi and Sheng, Ying and Wu, Zhanghao and Zhang, Hao and Zheng, Lianmin and Zhuang, Siyuan and Zhuang, Yonghao and Gonzalez, Joseph E and others",2023,,,,See https://vicuna. lmsys. org (accessed 14 April 2023)
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,touvron2023llama,\cite{touvron2023llama},LLaMA: Open and Efficient Foundation Language Models,http://arxiv.org/abs/2302.13971v1,"We introduce LLaMA, a collection of foundation language models ranging from
+7B to 65B parameters. We train our models on trillions of tokens, and show that
+it is possible to train state-of-the-art models using publicly available
+datasets exclusively, without resorting to proprietary and inaccessible
+datasets. In particular, LLaMA-13B outperforms GPT-3 (175B) on most benchmarks,
+and LLaMA-65B is competitive with the best models, Chinchilla-70B and
+PaLM-540B. We release all our models to the research community.","Touvron, Hugo and Lavril, Thibaut and Izacard, Gautier and Martinet, Xavier and Lachaux, Marie-Anne and Lacroix, Timoth{\'e}e and Rozi{\`e}re, Baptiste and Goyal, Naman and Hambro, Eric and Azhar, Faisal and others",2023,,,,arXiv preprint arXiv:2302.13971
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,zheng2023judging,\cite{zheng2023judging},Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena,http://arxiv.org/abs/2306.05685v4,"Evaluating large language model (LLM) based chat assistants is challenging
+due to their broad capabilities and the inadequacy of existing benchmarks in
+measuring human preferences. To address this, we explore using strong LLMs as
+judges to evaluate these models on more open-ended questions. We examine the
+usage and limitations of LLM-as-a-judge, including position, verbosity, and
+self-enhancement biases, as well as limited reasoning ability, and propose
+solutions to mitigate some of them. We then verify the agreement between LLM
+judges and human preferences by introducing two benchmarks: MT-bench, a
+multi-turn question set; and Chatbot Arena, a crowdsourced battle platform. Our
+results reveal that strong LLM judges like GPT-4 can match both controlled and
+crowdsourced human preferences well, achieving over 80% agreement, the same
+level of agreement between humans. Hence, LLM-as-a-judge is a scalable and
+explainable way to approximate human preferences, which are otherwise very
+expensive to obtain. Additionally, we show our benchmark and traditional
+benchmarks complement each other by evaluating several variants of LLaMA and
+Vicuna. The MT-bench questions, 3K expert votes, and 30K conversations with
+human preferences are publicly available at
+https://github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge.","Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric and others",2023,,,,Advances in Neural Information Processing Systems
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,team2023internlm,\cite{team2023internlm},Internlm: A multilingual language model with progressively enhanced capabilities,,,"Team, InternLM",2023,,,,2023-01-06)[2023-09-27]. https://github. com/InternLM/InternLM
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,openai2023gpt,\cite{openai2023gpt},Gpt-4 technical report. arxiv 2303.08774,,,"OpenAI, R",2023,,,,View in Article
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,meta2024introducing,\cite{meta2024introducing},Introducing meta llama 3: The most capable openly available llm to date,,,"Meta, AI",2024,,,,Meta AI
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,bi2024deepseek,\cite{bi2024deepseek},DeepSeek LLM: Scaling Open-Source Language Models with Longtermism,http://arxiv.org/abs/2401.02954v1,"The rapid development of open-source large language models (LLMs) has been
+truly remarkable. However, the scaling law described in previous literature
+presents varying conclusions, which casts a dark cloud over scaling LLMs. We
+delve into the study of scaling laws and present our distinctive findings that
+facilitate scaling of large scale models in two commonly used open-source
+configurations, 7B and 67B. Guided by the scaling laws, we introduce DeepSeek
+LLM, a project dedicated to advancing open-source language models with a
+long-term perspective. To support the pre-training phase, we have developed a
+dataset that currently consists of 2 trillion tokens and is continuously
+expanding. We further conduct supervised fine-tuning (SFT) and Direct
+Preference Optimization (DPO) on DeepSeek LLM Base models, resulting in the
+creation of DeepSeek Chat models. Our evaluation results demonstrate that
+DeepSeek LLM 67B surpasses LLaMA-2 70B on various benchmarks, particularly in
+the domains of code, mathematics, and reasoning. Furthermore, open-ended
+evaluations reveal that DeepSeek LLM 67B Chat exhibits superior performance
+compared to GPT-3.5.","Bi, Xiao and Chen, Deli and Chen, Guanting and Chen, Shanhuang and Dai, Damai and Deng, Chengqi and Ding, Honghui and Dong, Kai and Du, Qiushi and Fu, Zhe and others",2024,,,,arXiv preprint arXiv:2401.02954
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,yang2024qwen2,\cite{yang2024qwen2},Qwen2 Technical Report,http://arxiv.org/abs/2407.10671v4,"This report introduces the Qwen2 series, the latest addition to our large
+language models and large multimodal models. We release a comprehensive suite
+of foundational and instruction-tuned language models, encompassing a parameter
+range from 0.5 to 72 billion, featuring dense models and a Mixture-of-Experts
+model. Qwen2 surpasses most prior open-weight models, including its predecessor
+Qwen1.5, and exhibits competitive performance relative to proprietary models
+across diverse benchmarks on language understanding, generation, multilingual
+proficiency, coding, mathematics, and reasoning.
+  The flagship model, Qwen2-72B, showcases remarkable performance: 84.2 on
+MMLU, 37.9 on GPQA, 64.6 on HumanEval, 89.5 on GSM8K, and 82.4 on BBH as a base
+language model. The instruction-tuned variant, Qwen2-72B-Instruct, attains 9.1
+on MT-Bench, 48.1 on Arena-Hard, and 35.7 on LiveCodeBench. Moreover, Qwen2
+demonstrates robust multilingual capabilities, proficient in approximately 30
+languages, spanning English, Chinese, Spanish, French, German, Arabic, Russian,
+Korean, Japanese, Thai, Vietnamese, and more, underscoring its versatility and
+global reach.
+  To foster community innovation and accessibility, we have made the Qwen2
+model weights openly available on Hugging Face and ModelScope, and the
+supplementary materials including example code on GitHub. These platforms also
+include resources for quantization, fine-tuning, and deployment, facilitating a
+wide range of applications and research endeavors.","Yang, An and Yang, Baosong and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Zhou, Chang and Li, Chengpeng and Li, Chengyuan and Liu, Dayiheng and Huang, Fei and others",2024,,,,arXiv preprint arXiv:2407.10671
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,liu2023visual,\cite{liu2023visual},Visual Instruction Tuning,http://arxiv.org/abs/2304.08485v2,"Instruction tuning large language models (LLMs) using machine-generated
+instruction-following data has improved zero-shot capabilities on new tasks,
+but the idea is less explored in the multimodal field. In this paper, we
+present the first attempt to use language-only GPT-4 to generate multimodal
+language-image instruction-following data. By instruction tuning on such
+generated data, we introduce LLaVA: Large Language and Vision Assistant, an
+end-to-end trained large multimodal model that connects a vision encoder and
+LLM for general-purpose visual and language understanding.Our early experiments
+show that LLaVA demonstrates impressive multimodel chat abilities, sometimes
+exhibiting the behaviors of multimodal GPT-4 on unseen images/instructions, and
+yields a 85.1% relative score compared with GPT-4 on a synthetic multimodal
+instruction-following dataset. When fine-tuned on Science QA, the synergy of
+LLaVA and GPT-4 achieves a new state-of-the-art accuracy of 92.53%. We make
+GPT-4 generated visual instruction tuning data, our model and code base
+publicly available.","Liu, Haotian and Li, Chunyuan and Wu, Qingyang and Lee, Yong Jae",2023,,,,Advances in neural information processing systems
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,bai2023qwen,\cite{bai2023qwen},Qwen-vl: A frontier large vision-language model with versatile abilities,,,"Bai, Jinze and Bai, Shuai and Yang, Shusheng and Wang, Shijie and Tan, Sinan and Wang, Peng and Lin, Junyang and Zhou, Chang and Zhou, Jingren",2023,,,,arXiv preprint arXiv:2308.12966
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,zhu2023minigpt,\cite{zhu2023minigpt},Minigpt-4: Enhancing vision-language understanding with advanced large language models,,,"Zhu, Deyao and Chen, Jun and Shen, Xiaoqian and Li, Xiang and Elhoseiny, Mohamed",2023,,,,arXiv preprint arXiv:2304.10592
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,lu2024deepseek,\cite{lu2024deepseek},Deepseek-vl: towards real-world vision-language understanding,,,"Lu, Haoyu and Liu, Wen and Zhang, Bo and Wang, Bingxuan and Dong, Kai and Liu, Bo and Sun, Jingxiang and Ren, Tongzheng and Li, Zhuoshu and Yang, Hao and others",2024,,,,arXiv preprint arXiv:2403.05525
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,liu2024oryx,\cite{liu2024oryx},"Oryx MLLM: On-Demand Spatial-Temporal Understanding at Arbitrary
+  Resolution",http://arxiv.org/abs/2409.12961v4,"Visual data comes in various forms, ranging from small icons of just a few
+pixels to long videos spanning hours. Existing multi-modal LLMs usually
+standardize these diverse visual inputs to a fixed resolution for visual
+encoders and yield similar numbers of tokens for LLMs. This approach is
+non-optimal for multimodal understanding and inefficient for processing inputs
+with long and short visual contents. To solve the problem, we propose Oryx, a
+unified multimodal architecture for the spatial-temporal understanding of
+images, videos, and multi-view 3D scenes. Oryx offers an on-demand solution to
+seamlessly and efficiently process visual inputs with arbitrary spatial sizes
+and temporal lengths through two core innovations: 1) a pre-trained OryxViT
+model that can encode images at any resolution into LLM-friendly visual
+representations; 2) a dynamic compressor module that supports 1x to 16x
+compression on visual tokens by request. These design features enable Oryx to
+accommodate extremely long visual contexts, such as videos, with lower
+resolution and high compression while maintaining high recognition precision
+for tasks like document understanding with native resolution and no
+compression. Beyond the architectural improvements, enhanced data curation and
+specialized training on long-context retrieval and spatial-aware data help Oryx
+achieve strong capabilities in image, video, and 3D multimodal understanding
+simultaneously. Our work is open-sourced at https://github.com/Oryx-mllm/Oryx.","Liu, Zuyan and Dong, Yuhao and Liu, Ziwei and Hu, Winston and Lu, Jiwen and Rao, Yongming",2024,,,,arXiv preprint arXiv:2409.12961
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,li2024mini,\cite{li2024mini},Mini-gemini: Mining the potential of multi-modality vision language models,,,"Li, Yanwei and Zhang, Yuechen and Wang, Chengyao and Zhong, Zhisheng and Chen, Yixin and Chu, Ruihang and Liu, Shaoteng and Jia, Jiaya",2024,,,,arXiv preprint arXiv:2403.18814
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Lai2023LISARS,\cite{Lai2023LISARS},LISA: Reasoning Segmentation via Large Language Model,http://arxiv.org/abs/2308.00692v3,"Although perception systems have made remarkable advancements in recent
+years, they still rely on explicit human instruction or pre-defined categories
+to identify the target objects before executing visual recognition tasks. Such
+systems cannot actively reason and comprehend implicit user intention. In this
+work, we propose a new segmentation task -- reasoning segmentation. The task is
+designed to output a segmentation mask given a complex and implicit query text.
+Furthermore, we establish a benchmark comprising over one thousand
+image-instruction-mask data samples, incorporating intricate reasoning and
+world knowledge for evaluation purposes. Finally, we present LISA: large
+Language Instructed Segmentation Assistant, which inherits the language
+generation capabilities of multimodal Large Language Models (LLMs) while also
+possessing the ability to produce segmentation masks. We expand the original
+vocabulary with a <SEG> token and propose the embedding-as-mask paradigm to
+unlock the segmentation capability. Remarkably, LISA can handle cases involving
+complex reasoning and world knowledge. Also, it demonstrates robust zero-shot
+capability when trained exclusively on reasoning-free datasets. In addition,
+fine-tuning the model with merely 239 reasoning segmentation data samples
+results in further performance enhancement. Both quantitative and qualitative
+experiments show our method effectively unlocks new reasoning segmentation
+capabilities for multimodal LLMs. Code, models, and data are available at
+https://github.com/dvlab-research/LISA.",Xin Lai and Zhuotao Tian and Yukang Chen and Yanwei Li and Yuhui Yuan and Shu Liu and Jiaya Jia,2023,,https://api.semanticscholar.org/CorpusID:260351258,,2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Lin2025HRSegHV,\cite{Lin2025HRSegHV},"HRSeg: High-Resolution Visual Perception and Enhancement for Reasoning
+  Segmentation",http://arxiv.org/abs/2507.12883v2,"The reasoning segmentation task involves segmenting objects within an image
+by interpreting implicit user instructions, which may encompass subtleties such
+as contextual cues and open-world knowledge. Despite significant advancements
+made by existing approaches, they remain constrained by low perceptual
+resolution, as visual encoders are typically pre-trained at lower resolutions.
+Furthermore, simply interpolating the positional embeddings of visual encoders
+to enhance perceptual resolution yields only marginal performance improvements
+while incurring substantial computational costs. To address this, we propose
+HRSeg, an efficient model with high-resolution fine-grained perception. It
+features two key innovations: High-Resolution Perception (HRP) and
+High-Resolution Enhancement (HRE). The HRP module processes high-resolution
+images through cropping, integrating local and global features for
+multi-granularity quality. The HRE module enhances mask features by integrating
+fine-grained information from high-resolution images, refining their alignment
+with text features for precise segmentation. Extensive ablation studies
+validate the effectiveness of our modules, while comprehensive experiments on
+multiple benchmark datasets demonstrate HRSeg's superior performance.",Weihuang Lin and Yiwei Ma and Xiaoshuai Sun and Shuting He and Jiayi Ji and Liujuan Cao and Rongrong Ji,2025,,https://api.semanticscholar.org/CorpusID:280283455,,ArXiv
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Qiao2024PrismAF,\cite{Qiao2024PrismAF},Prism: A Framework for Decoupling and Assessing the Capabilities of VLMs,http://arxiv.org/abs/2406.14544v1,"Vision Language Models (VLMs) demonstrate remarkable proficiency in
+addressing a wide array of visual questions, which requires strong perception
+and reasoning faculties. Assessing these two competencies independently is
+crucial for model refinement, despite the inherent difficulty due to the
+intertwined nature of seeing and reasoning in existing VLMs. To tackle this
+issue, we present Prism, an innovative framework designed to disentangle the
+perception and reasoning processes involved in visual question solving. Prism
+comprises two distinct stages: a perception stage that utilizes a VLM to
+extract and articulate visual information in textual form, and a reasoning
+stage that formulates responses based on the extracted visual information using
+a Large Language Model (LLM). This modular design enables the systematic
+comparison and assessment of both proprietary and open-source VLM for their
+perception and reasoning strengths. Our analytical framework provides several
+valuable insights, underscoring Prism's potential as a cost-effective solution
+for vision-language tasks. By combining a streamlined VLM focused on perception
+with a powerful LLM tailored for reasoning, Prism achieves superior results in
+general vision-language tasks while substantially cutting down on training and
+operational expenses. Quantitative evaluations show that Prism, when configured
+with a vanilla 2B LLaVA and freely accessible GPT-3.5, delivers performance on
+par with VLMs $10 \times$ larger on the rigorous multimodal benchmark MMStar.
+The project is released at: https://github.com/SparksJoe/Prism.",Yu Qiao and Haodong Duan and Xinyu Fang and Junming Yang and Lin Chen and Songyang Zhang and Jiaqi Wang and Dahua Lin and Kai Chen,2024,,https://api.semanticscholar.org/CorpusID:270620510,,ArXiv
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Cesista2024MultimodalSG,\cite{Cesista2024MultimodalSG},"Multimodal Structured Generation: CVPR's 2nd MMFM Challenge Technical
+  Report",http://arxiv.org/abs/2406.11403v2,"Multimodal Foundation Models (MMFMs) have demonstrated strong performance in
+both computer vision and natural language processing tasks. However, their
+performance diminishes in tasks that require a high degree of integration
+between these modalities, such as document understanding. Moreover, finetuning
+these models and deploying them requires significantly more compute and more
+engineering effort than unimodal models. In this work, we present Multimodal
+Structured Generation, a framework that forces (frozen) MMFMs to produce
+outputs in a strictly structured format by applying hard constraints directly
+to the output logits. This approach not only ensures that the model generates
+parseable outputs that downstream APIs can easily ingest but also allows us to
+force the model to reason before answering, which significantly boosts
+performance without the need for expensive fine-tuning. We demonstrate the
+effectiveness of our method through competitive results in the CVPR 2nd MMFM
+Challenge, highlighting that carefully designed lightweight engineering can
+outperform expensive and complicated modeling approaches. All of our scripts,
+deployment steps, and evaluation results can be accessed in
+https://github.com/leloykun/MMFM-Challenge",Franz Louis Cesista,2024,,https://api.semanticscholar.org/CorpusID:270558908,,ArXiv
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Chu2023NavigateTE,\cite{Chu2023NavigateTE},"Navigate through Enigmatic Labyrinth A Survey of Chain of Thought
+  Reasoning: Advances, Frontiers and Future",http://arxiv.org/abs/2309.15402v3,"Reasoning, a fundamental cognitive process integral to human intelligence,
+has garnered substantial interest within artificial intelligence. Notably,
+recent studies have revealed that chain-of-thought prompting significantly
+enhances LLM's reasoning capabilities, which attracts widespread attention from
+both academics and industry. In this paper, we systematically investigate
+relevant research, summarizing advanced methods through a meticulous taxonomy
+that offers novel perspectives. Moreover, we delve into the current frontiers
+and delineate the challenges and future directions, thereby shedding light on
+future research. Furthermore, we engage in a discussion about open questions.
+We hope this paper serves as an introduction for beginners and fosters future
+research. Resources have been made publicly available at
+https://github.com/zchuz/CoT-Reasoning-Survey",Zheng Chu and Jingchang Chen and Qianglong Chen and Weijiang Yu and Tao He and Haotian Wang and Weihua Peng and Ming Liu and Bing Qin and Ting Liu,2023,,https://api.semanticscholar.org/CorpusID:263153015,,
+CIR-CoT: Towards Interpretable Composed Image Retrieval via End-to-End Chain-of-Thought Reasoning,http://arxiv.org/abs/2510.08003v1,Xu2024LLaVACoTLV,\cite{Xu2024LLaVACoTLV},LLaVA-CoT: Let Vision Language Models Reason Step-by-Step,,,Guowei Xu and Peng Jin and Hao Li and Yibing Song and Lichao Sun and Li Yuan,2024,,https://api.semanticscholar.org/CorpusID:274116688,,ArXiv

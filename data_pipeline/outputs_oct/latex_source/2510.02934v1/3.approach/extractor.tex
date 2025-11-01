@@ -1,0 +1,50 @@
+\subsection{Internal Representation Extractor}
+\label{sec:extractor}
+
+
+This module collects internal representations produced during code generation as inputs for subsequent components of \tool.
+%
+However, the comprehensive set of $L \times m$ internal representations for the entire code sequence $c$ length $m$, $\mathcal{H} = \{ h_{l,s} \mid l \in [1, L],\ s \in [1, m] \}$ is computationally expensive to process and potentially noisy for code correctness assessment. 
+%
+Moreover, as illustrated in our empirical study, not all tokens and layers contribute equally to the correctness assessment,  depending on both the model and the generation context.
+%
+A naive approach using all representations would therefore be inefficient and could degrade performance.
+
+
+To improve computational efficiency without sacrificing predictive performance, \textit{Internal Representation Extractor} adopts a sampling-based strategy that extracts a compact yet expressive subset of states $\mathcal{H}^* \subset \mathcal{H}$. This is achieved via a two-pronged strategy that selects representations based on their token and layer positions.
+
+\textbf{Token Position Sampling}. 
+%
+For token sampling, rather than uniformly sampling tokens or relying on fixed intervals, we adopt a \textit{boundary-aware token selection heuristic} guided by both the structural and semantic considerations.  Specifically, we select four \textit{structurally and semantically significant} positions: the \texttt{first} and \texttt{last tokens} of the entire generated sequence, and the \texttt{first} and \texttt{last code tokens} that mark the actual code snippet. 
+%
+The \texttt{first} and \texttt{last} tokens often reflect the model's overall generation context, as well as its uncertainty or confidence~\cite{yin2024characterizing, snyder2024early}. 
+%
+Meanwhile, the \texttt{first} and \texttt{last} code tokens typically carry essential information related to syntax, control flow, and output structure~\cite{openia}.
+
+In practice, token positions can also be selected using other strategies such as syntax-aware analysis, rule-based heuristics, or model-specific indicators. However, we employ this boundary-aware heuristic for several reasons. 
+First, prior studies have shown that boundary tokens often carry stronger correctness-related signals than interior positions~\cite{snyder2024early}.
+%
+Second, this strategy yields a fixed number of token positions regardless of the sequence length, which varies significantly across tasks. This consistency simplifies downstream processing and model training. 
+%
+Third, the heuristic is lightweight, model-agnostic, and adaptable to different code formats.
+
+
+
+
+\textbf{Layer Sampling}. 
+%
+To avoid redundantly extracting hidden states from all $L$ layers, we apply a uniform sampling strategy over layers.
+Specifically, we sample layers at a fixed interval $k$, starting from the first layer. That is, we select layers at positions $l \in \{1, 1 + k, \dots, 1 + \lfloor \frac{L-1}{k}\rfloor . k\}$.
+% $l = 1 + i.k$ where $i \in \{0, 1, \dots, \lfloor \frac{L-1}{k} \rfloor\}$. 
+This results in a total of $L^*$ = $\lfloor \frac{L}{k} \rfloor$ sampled layers. This sampling balances the trade-off between representation diversity and computational complexity.
+
+%discussion and justification
+By restricting the extraction to a compact set of $L^*$ layers and four token positions, we obtain a compact yet expressive set of internal states $\mathcal{H}^* \subset \mathcal{H}$. $\mathcal{H}^*$ serves as input to the subsequent selector module, which identifies the most informative states for final prediction.
+%
+Although token and layer sampling may introduce the risk of omitting potentially useful internal states, our empirical results in Sec.~\ref{sec:impact_sampling} demonstrate that this strategy achieves strong predictive performance while substantially reducing computational overhead. These findings validate the effectiveness and efficiency of our sampling approach in practice.
+
+
+
+
+
+

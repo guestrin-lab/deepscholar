@@ -1,0 +1,14 @@
+\section{Limitations}
+\label{sec:limitations}
+
+While our approach effectively generates precise and detailed expressions, some limitations remain. First, the adopted parametric representation lacks semantic interpretability. As a result, expression manipulation typically relies on extracting parameters from reference images, which may be limiting for certain applications. Second, the accuracy of expression reproduction is inherently dependent on the quality of the 3D reconstruction method used to extract blendshape parameters~\cite{smirk_2024_CVPR}, which although state-of-the-art might still be imperfect and introduce occasional errors. Finally, expression editing with the \textbf{Reference Adapter} can sometimes be inconsistent. As shown in \cref{fig:failure_cases} (top), there are instances where the base model accurately transfers the target expression, but the reference-driven variant fails to do so. This is due to the \textbf{Reference Adapter} often tending to ``copy-paste'' the reference image, despite our use of cross-paired video data for training. This behavior can be mitigated at test time by adjusting the scaling factor $\lambda$ of the LoRA layers, which modulates the influence of the reference image. As shown in \cref{fig:failure_cases} (bottom), reducing $\lambda$ improves expression fidelity at the cost of slight deviations in background or pose from the reference image.
+\\
+\noindent \textbf{Note on social impact.} We acknowledge the ethical implications of our work, as technologies for controllable face generation may be misused to produce deceptive or unoriginal facial imagery, particularly when capable of altering expressions. While our goal is to advance research in positive domains such as accessibility and creative storytelling, we recognize these risks and emphasize the importance of ethical standards and investment in countermeasures like synthetic content detection.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\linewidth]{figures/failure_cases_compressed.pdf}
+\caption{\textbf{Top:} Example of failure case where the base model successfully reproduces the target expression, but the reference-driven variant struggles due to over-reliance on the source image. \textbf{Bottom:} Reducing the LoRA scaling factor $\lambda$ of the Reference Adapter alleviates this by trading off pose and background consistency for improved expression fidelity.}
+\label{fig:failure_cases}
+\end{figure}
+

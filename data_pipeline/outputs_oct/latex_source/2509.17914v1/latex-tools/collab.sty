@@ -1,0 +1,199 @@
+% SMTODO: add some priority options to the tags ;)
+
+%% Change log:
+%%  0.3 - start managing collab.sty in a git repo
+%%  0.2 - add sectioninfo etc to allow annotation of the outline/ToC
+
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{collab}[2017/10/01 0.3 Stefan Marr]
+
+\RequirePackage{ifthen}
+\RequirePackage[normalem]{ulem} % for \sout
+\RequirePackage[svgnames]{xcolor}
+\RequirePackage{xspace}
+\RequirePackage{comment}
+
+\newboolean{showedits}
+\setboolean{showedits}{true}  % toggle to show or hide edits
+\newboolean{showcomments}
+\setboolean{showcomments}{true}% toggle to show or hide edits
+
+\DeclareOption{hideall}{%  add option to disable comments
+  \setboolean{showedits}{false}%
+  \setboolean{showcomments}{false}%
+}
+\DeclareOption{hideedits}{%  add option to disable comments
+  \setboolean{showedits}{false}%
+}
+\DeclareOption{hidecomments}{%  add option to disable comments
+  \setboolean{showcomments}{false}%
+}
+
+\ProcessOptions\relax	% actually apply options that were suplied to package
+
+% Based on code 'borrowed' from some colaborative work with Camillo Bruni
+
+
+\newcommand{\ra}{\ensuremath{\rightarrow}\xspace}
+
+
+\ifthenelse{\boolean{showedits}}
+{
+	\newcommand{\spelling}[1]{\textcolor{red}{\uwave{#1}}}   % please rephrase
+	\newcommand{\rephrase}[1]{\textcolor{red}{\uwave{#1}}}   % please rephrase
+	\newcommand{\ugh}[1]{\textcolor{red}{\uwave{#1}}}   % please rephrase
+	\newcommand{\ins}[1]{\textcolor{blue}{\uline{#1}}}  % please insert
+	\newcommand{\del}[1]{\textcolor{red}{\sout{#1}}}    % please delete
+	\newcommand{\chg}[3][]{%
+            \textcolor{red}{\sout{#2}} {\ra}
+            \textcolor{blue}{\uline{#3}}}               % please change
+  \newcommand{\wip}[1]{\textcolor{orange}{\textbf{\uwave{#1}}}}   % work in progress
+}{
+	\newcommand{\spelling}[1]{#1}
+	\newcommand{\rephrase}[1]{#1}
+	\newcommand{\ugh}[1]{#1}
+	\newcommand{\ins}[1]{}
+	\newcommand{\del}[1]{#1}
+	\newcommand{\chg}[3][]{}
+  \newcommand{\wip}[1]{#1}
+}
+
+% ============================================================================
+% Put edit comments in a really ugly standout display
+%\usepackage{ifthen}
+
+
+\newcommand{\yellowbox}[1]{
+        \fcolorbox{gray}{yellow}{\bfseries\sffamily\scriptsize#1}}
+\newcommand{\triangles}[1]{{
+        \sffamily\small$\blacktriangleright$\textit{#1}$\blacktriangleleft$}}
+
+\ifthenelse{\boolean{showcomments}}
+%{\newcommand{\nb}[2]{{\yellowbox{#1}\triangles{#2}}}
+{\newcommand{\nbc}[3]{
+ {\colorbox{#3}{\bfseries\sffamily\scriptsize\textcolor{white}{#1}}}
+ %{\textcolor{#3}{\sf\small$\blacktriangleright$\textit{#2}$\blacktriangleleft$}}}}
+ {\textcolor{#3}{\sffamily\small\textit{#2}}}}}
+{\newcommand{\nbc}[3]{}
+}
+
+\newcommand{\nb}[2]{\nbc{#1}{#2}{orange}}
+\newcommand{\here}{\yellowbox{$\Rightarrow$ CONTINUE HERE $\Leftarrow$}}
+\newcommand\rev[2]{\nb{TODO (rev #1)}{#2}} % reviewer comments
+\newcommand\fix[1]{\nb{FIX}{#1}}
+
+\makeatletter
+%% LNCS already has a \note macro
+\@ifundefined{note}{%
+\newcommand\todo[1]{\nb{TODO}{#1}}%
+}{}
+\@ifundefined{note}{%
+\ifthenelse{\boolean{showcomments}}
+{
+    \newenvironment{note}{%
+        \obeyspaces\obeylines\ttfamily\frenchspacing\@vobeyspaces}{}%
+}{
+    \excludecomment{note}%
+}
+}{}
+\makeatother
+
+
+
+\newcommand\todoref[1]{\nb{Add REF}{#1}}
+\newcommand\DONE[1]{\nbc{DONE}{#1}{gray}}
+\newcommand\REM[1]{\nbc{Remember}{#1}{red}}
+
+\def\collabAuthor#1#2#3{%
+	%Defines three new comments
+	%for example
+	%\collabAuthor{sm}{orange}{Stefan Marr}
+	% results in \sm[1], \smtodo[1], \smdone[1]
+  \expandafter\newcommand\expandafter{\csname #1\endcsname}[1]{%
+    \nbc{\MakeUppercase{#1}}{##1}{#2}}%
+
+  \expandafter\newcommand\expandafter{\csname #1todo\endcsname}[1]{%
+    \nbc{\MakeUppercase{#1} TODO}{##1}{#2}}%
+
+  \expandafter\newcommand\expandafter{\csname #1done\endcsname}[1]{%
+    \nbc{\MakeUppercase{#1} DONE}{##1}{gray}}%
+
+  \expandafter\newcommand\expandafter{\csname #1note\endcsname}[1]{%
+    \nbc{\MakeUppercase{#1} Note}{##1}{gray}}%
+
+  \expandafter\newcommand\expandafter{\csname #1Q\endcsname}[1]{%
+    \nbc{\MakeUppercase{#1} Q:}{##1}{ForestGreen}}%
+}
+% remember: http://tex.stackexchange.com/questions/451/when-to-use-edef-noexpand-and-expandafter
+
+
+%% Trying to add notes to the TOC  --------------------------------
+%% Source: http://tex.stackexchange.com/questions/10188/table-of-contents-with-additional-description-of-entries
+
+\makeatletter
+% Basically the same as for `\l@section` etc, just `\@nodottedtocline` instead of `\@dottedtcline`:
+\newcommand*\l@chapterinfo{\@nodottedtocline{0}{0.0em}{1.5em}}
+\newcommand*\l@sectioninfo{\@nodottedtocline{1}{1.5em}{2.3em}}
+\newcommand*\l@subsectioninfo{\@nodottedtocline{2}{3.8em}{3.2em}}
+\newcommand*\l@subsubsectioninfo{\@nodottedtocline{3}{7.0em}{4.1em}}
+\newcommand*\l@paragraphinfo{\@nodottedtocline{4}{10em}{5em}}
+\newcommand*\l@subparagraphinfo{\@nodottedtocline{5}{12em}{6em}}
+
+% Copied from the book class macro `\@dottedtocline`. Removed the dots and page number
+\def\@nodottedtocline#1#2#3#4#5{%
+  \ifnum #1>\c@tocdepth \else
+    \vskip \z@ \@plus.2\p@
+    {\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+     \parindent #2\relax\@afterindenttrue
+     \interlinepenalty\@M
+     \leavevmode
+     \@tempdima #3\relax
+     \advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+     {#4}\nobreak
+     \leaders\hbox{$\m@th
+        \mkern \@dotsep mu\hbox{\,}\mkern \@dotsep
+        mu$}\hfill
+     \nobreak
+     \hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor }%
+     \par}%
+  \fi}
+
+\makeatother
+
+\def\chapterinfo#1{%
+    \addcontentsline{toc}{chapterinfo}{%  this goes into the ToC
+    \noexpand\numberline{}\scriptsize{\textit{#1}}}%
+    \nbc{Sum}{#1}{teal}  % this goes into the body text
+}
+\def\sectioninfo#1{%
+    \addcontentsline{toc}{sectioninfo}{%
+    \noexpand\numberline{}\scriptsize{\textit{#1}}}%
+    \nbc{Sum}{#1}{teal}
+}
+\def\subsectioninfo#1{%
+    \addcontentsline{toc}{subsectioninfo}{%
+    \noexpand\numberline{}\scriptsize{\textit{#1}}}%
+    \nbc{Sum}{#1}{teal}
+}
+\def\subsubsectioninfo#1{%
+    \addcontentsline{toc}{subsubsectioninfo}{%
+    \noexpand\numberline{}\scriptsize{\textit{#1}}}%
+    \nbc{Sum}{#1}{teal}
+}
+%% END: Trying to add notes to the TOC  ---------------------------
+
+
+
+
+
+% author macros --------------------------------------------------------------
+%\collabAuthor{cb}{red}{Camillo Bruni}
+%\collabAuthor{sm}{orange}{Stefan Marr}
+
+
+%\newcommand\cb[1]{\nbc{CB}{#1}{red}}    % Camillo Bruni
+%\newcommand\sm[1]{\nbc{SM}{#1}{orange}} % Stefan Marr 
+%\newcommand\td[1]{\nbc{TD}{#1}{olive}}  % Theo D'Hondt 
+%\newcommand\tc[1]{\nbc{TC}{#1}{blue}}   % Tom van Cutsem 
+%\newcommand\md[1]{\nbc{MD}{#1}{violet}} % Marcus Denker 
+

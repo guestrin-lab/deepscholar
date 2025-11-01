@@ -1,0 +1,34 @@
+
+\begin{table}[t]
+  \centering
+  \caption{Lip synchronisation on \textbf{VFHQ}.}
+  \label{tab:sync_vfhq}
+  \setlength{\tabcolsep}{5pt} % 可微调列间距
+  \small
+  \begin{adjustbox}{max width=\linewidth}
+    {\rowcolors{2}{gray!10}{white}%
+     \begin{tabular}{@{} l
+                         cc  cc  cc  ccc @{}}
+       \toprule
+       \multirow{2}{*}{Method} &
+         \multicolumn{2}{c}{K = 1} &
+         \multicolumn{2}{c}{K = 5} &
+         \multicolumn{2}{c}{K = 15} &
+         \multicolumn{3}{c}{R-precision (32)} \\
+       \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-10}
+       & Acc $\uparrow$ (\%) & Offset $\downarrow$
+         & Acc $\uparrow$ (\%) & Offset $\downarrow$
+         & Acc $\uparrow$ (\%) & Offset $\downarrow$
+         & Top1 $\uparrow$ & Top2 $\uparrow$ & Top3 $\uparrow$ \\
+       \midrule
+       SyncNet\,-5           & 22.16 & 5.14 & 26.47 & 4.34 & 31.09 & 3.29  & 9.40  & 16.91 & 23.09 \\
+       VocaLiST\,-5          & 21.76 & 5.14 & 24.34 & 4.57 & 29.23 & 3.62  & 10.18 & 16.56 & 21.98 \\
+       StableSyncNet\,-16    & 32.40 & \textbf{3.17} & 33.06 & 3.07 & 35.43 & 2.90  & 23.54 & 37.65 & 46.77 \\
+       \addlinespace[2pt]
+       \textbf{\name\ -1 (ours)} & \textbf{38.58} & 3.80 & \textbf{48.95} &
+         \textbf{3.06} & \textbf{61.78} & \textbf{2.16} &
+         \textbf{35.52} & \textbf{52.98} & \textbf{63.37} \\
+       \bottomrule
+     \end{tabular}}
+  \end{adjustbox}
+\end{table}

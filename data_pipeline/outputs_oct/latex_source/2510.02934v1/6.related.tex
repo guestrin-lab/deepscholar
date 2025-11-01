@@ -1,0 +1,45 @@
+\section{Related Work}
+
+\textbf{LLM-based code generation.}
+LLMs, known for their powerful capabilities in contextual understanding and response generation, have been widely applied across various domains, including natural language processing~\cite{zhang2025systematic, li2024flexkbqa, wei2023empirical, zhang2025teleclass}, vision-language integration~\cite{zhang2024vision, chen2024vitamin}, and software engineering (SE) tasks~\cite{zheng2025towards, wang2025can, chen2024chatunitest, zhang2023repocoder, rambo}. 
+In the context of SE, code LLMs, such as  \deepseek~\cite{deepseek-coder}, \codellama~\cite{codellama}, and \magiccoder~\cite{magicoder}, which have been pre-trained or fine-tuned on large-scale code corpora, have demonstrated remarkable success in a wide range of tasks, e.g. code generation~\cite{rambo, zhang2023repocoder, mu2024clarifygpt}, test generation~\cite{chen2024chatunitest, wang2024hits}, code summarization~\cite{sun2024source}, and program repair~\cite{jin2023inferfix}, etc.
+These models are increasingly integrated into modern development environments via tools like GitHub Copilot~\cite{github_copilot} and CodeGeeX2~\cite{codegeex2}, where they assist developers in generating boilerplate code, completing functions, or writing test cases. 
+Despite their impressive performance, a key challenge remains, the hallucination problem~\cite{zhang2025llm, liu2024exploring, liu2023your, wang2025towards}, where LLMs generate code that is syntactically valid but semantically incorrect, insecure, or unexecutable. Such hallucinations compromise the reliability of LLM-generated code and raise concerns about correctness, security, and trustworthiness. 
+Mitigating such issues remains an open problem and is essential for ensuring the reliable and effective adoption of code LLMs in real-world software projects.  
+
+
+
+\textbf{LLM's hallucination detection.} Various approaches~\cite{ llmcheck, inside, inner-working,  manakul2023selfcheckgpt, huang2025survey} have been proposed to detect hallucinations in LLMs. These approaches can be broadly categorized into black-box and white-box approaches, depending on whether they rely on the model's input-output behaviors or leverage its internal computations.
+
+\textbf{\textit{Black-box}} approaches~\cite{manakul2023selfcheckgpt, farquhar2024detecting, zhang2024self, zhang2024knowhalu, zhou2021detecting} detect hallucinations by relying solely on the input-output behavior of the models. A common strategy is \textit{uncertainty estimation}, based on a hypothesis that responses with higher model confidence are more likely to be correct~\cite{manakul2023selfcheckgpt, farquhar2024detecting, huang2023look}.
+For instance, SelfCheckGPT~\cite{manakul2023selfcheckgpt} estimates model confidence by sampling multiple responses to the same query and measuring their semantic consistency. If the responses are consistent across samples, the output is considered to be reliable; otherwise, it is likely hallucinated.
+Another research direction focuses on \textit{fact-checking}, where the generated outputs are validated against factual sources. These sources can be drawn from the model's internal knowledge~\cite{zhang2024self} or external corpora~\cite{zhang2024knowhalu, augenstein2024factuality, hu2024knowledge}. Additionally, some other black-box methods formulate hallucination detection as a \textit{classification task}, training a downstream classifier on features extracted from the generated outputs to distinguish hallucinated from faithful outputs~\cite{zhou2021detecting}.
+
+On the other hand, \textbf{\textit{white-box}} approaches leverage the model's internal computations, such as \textit{hidden states}, \textit{activations}, \textit{attention maps}, to determine unreliable or hallucinated responses~\cite{inner-working, probing}. 
+For example, Azaria~\etal~\cite{internal-state} train a classifier on the hidden activations to estimate the truthfulness of the generated statements. Similarly, INSIDE~\cite{inside} and FactoScope~\cite{factoscope}
+analyze internal states to assess semantic consistency and factual reliability.
+
+
+Our work follows the while-box paradigm by leveraging internal representations for hallucination detection. However, unlike prior studies~\cite{internal-state-2, inside, llmcheck, internal-state} that focus on unstructured Natural Language Generation (NLG) tasks, where correctness is often subjective by relying on human judgment or based on external factual knowledge, \tool target \textit{code correctness}, where correctness is objectively defined by syntax, semantics, and functional behaviors. 
+Due to the nature of NLG tasks, previous works~\cite{inside, internal-state} mainly evaluate hallucination through semantic consistency or factual alignment among model responses. 
+However, these techniques are not directly applicable to code.
+In the context of code generation, a task may have multiple correct solutions that differ in implementation details or algorithms. As a result, inconsistency across generated responses does not necessarily imply incorrectness. 
+To address this gap, \tool is specifically designed for assessing code correctness using internal representations.
+
+
+\textbf{Code correctness assessment.}
+Ensuring source code quality is a fundamental objective in the SE process. Traditional approaches for detecting program issues often rely heavily on handcrafted features and static analysis techniques~\cite{croft2021empirical}.
+With the emergence of deep learning, pre-trained models such as CodeBERT~\cite{codebert}, GraphBERT~\cite{zhang2020graph}, and CodeT5~\cite{codet5} have been widely adopted due to their ability to capture rich contextual and semantic information from source code. 
+These models support automatic feature extraction from different code representations such as raw code, program slices, or code property graphs, enabling bug and vulnerability detection across different levels of granularity, from coarse-grained levels, i.e., files or methods, to fine-grained~\cite{ivdetect, COSTA, velvet, linevd, linevul}, i.e., slices and statements. 
+For instance, IVDetect~\cite{ivdetect} employs a graph-based neural network to detect vulnerabilities at the function level and uses interpretable models to further localize vulnerable statements. LineVul~\cite{linevul} and LineVD~\cite{linevd} leverage CodeBERT to encode code representations and have demonstrated superior performance over IVDetect in fine-grained vulnerability detection.
+
+
+Recently, the quality of code generated by LLMs has gained significant attention due to the increasing reliance on AI-generated code in real-world applications. Several empirical studies have revealed the potential risks of bugs and security issues associated with LLM-generated code~\cite{lost-at-c, empirical-study-2, llm-gen-code-emp-study, calibration, vulnerabilities-copilot}. 
+Multiple studies~\cite{huang2023look, llm-security-guard, autosafecoder} have been proposed for guaranteeing the quality of code generated by LLMs.
+Huang \etal~\cite{huang2023look} propose a technique of uncertainty analysis to measure LLMs' confidence in generated outputs, which could aid in identifying potentially unreliable code.  
+Furthermore, 
+multi-agent frameworks such as AutoSafeCoder~\cite{autosafecoder} enhance LLM-based code generation by integrating static analysis and fuzz testing. Similarly, LLMSecGuard~\cite{llm-security-guard} combines the capabilities of static analyzers and LLMs to improve code security, demonstrating the benefits of hybrid approaches in mitigating vulnerabilities and strengthening code robustness.
+
+\openia~\cite{openia} demonstrates that the internal states of LLMs encode valuable signals related to code correctness and can be leveraged to detect incorrect code. This work is closely related to ours, as both adopt a white-box approach. However, the key difference between \tool and \openia lies in the mechanism for selecting informative internal representations. 
+\openia assumes that the hidden states of the last generated tokens at the last layer encapsulate the most comprehensive information and therefore uses them directly for correctness assessment. 
+Instead of selecting a fixed representation that could lead to suboptimal performance across models, \tool proposes a model-agnostic approach that dynamically selects the most informative representations across multiple layers and token positions. This flexibility enables \tool to better adapt to different model architectures.

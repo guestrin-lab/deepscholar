@@ -1,0 +1,1099 @@
+%File: anonymous-submission-latex-2026.tex
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[draft]{aaai2026}  % DO NOT CHANGE THIS
+\usepackage{times}  % DO NOT CHANGE THIS
+\usepackage{helvet}  % DO NOT CHANGE THIS
+\usepackage{courier}  % DO NOT CHANGE THIS
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\setlength{\pdfpagewidth}{8.5in} % DO NOT CHANGE THIS
+\setlength{\pdfpageheight}{11in} % DO NOT CHANGE THIS
+%
+% These are recommended to typeset algorithms but not required. See the subsubsection on algorithms. Remove them if you don't have algorithms in your paper.
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{comment}
+\usepackage{svg}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{cleveref}
+\usepackage{booktabs}
+
+%
+% These are are recommended to typeset listings but not required. See the subsubsection on listing. Remove this block if you don't have listings in your paper.
+\usepackage{newfloat}
+\usepackage{listings}
+\DeclareCaptionStyle{ruled}{labelfont=normalfont,labelsep=colon,strut=off} % DO NOT CHANGE THIS
+\lstset{%
+	basicstyle={\footnotesize\ttfamily},% footnotesize acceptable for monospace
+	numbers=left,numberstyle=\footnotesize,xleftmargin=2em,% show line numbers, remove this entire line if you don't want the numbers.
+	aboveskip=0pt,belowskip=0pt,%
+	showstringspaces=false,tabsize=2,breaklines=true}
+\floatstyle{ruled}
+\newfloat{listing}{tb}{lst}{}
+\floatname{listing}{Listing}
+%
+% Keep the \pdfinfo as shown here. There's no need
+% for you to add the /Title and /Author tags.
+\pdfinfo{
+/TemplateVersion (2026.1)
+}
+
+% DISALLOWED PACKAGES
+% \usepackage{authblk} -- This package is specifically forbidden
+% \usepackage{balance} -- This package is specifically forbidden
+% \usepackage{color (if used in text)
+% \usepackage{CJK} -- This package is specifically forbidden
+% \usepackage{float} -- This package is specifically forbidden
+% \usepackage{flushend} -- This package is specifically forbidden
+% \usepackage{fontenc} -- This package is specifically forbidden
+% \usepackage{fullpage} -- This package is specifically forbidden
+% \usepackage{geometry} -- This package is specifically forbidden
+% \usepackage{grffile} -- This package is specifically forbidden
+% \usepackage{hyperref} -- This package is specifically forbidden
+% \usepackage{navigator} -- This package is specifically forbidden
+% (or any other package that embeds links such as navigator or hyperref)
+% \indentfirst} -- This package is specifically forbidden
+% \layout} -- This package is specifically forbidden
+% \multicol} -- This package is specifically forbidden
+% \nameref} -- This package is specifically forbidden
+% \usepackage{savetrees} -- This package is specifically forbidden
+% \usepackage{setspace} -- This package is specifically forbidden
+% \usepackage{stfloats} -- This package is specifically forbidden
+% \usepackage{tabu} -- This package is specifically forbidden
+% \usepackage{titlesec} -- This package is specifically forbidden
+% \usepackage{tocbibind} -- This package is specifically forbidden
+% \usepackage{ulem} -- This package is specifically forbidden
+% \usepackage{wrapfig} -- This package is specifically forbidden
+% DISALLOWED COMMANDS
+% \nocopyright -- Your paper will not be published if you use this command
+% \addtolength -- This command may not be used
+% \balance -- This command may not be used
+% \baselinestretch -- Your paper will not be published if you use this command
+% \clearpage -- No page breaks of any kind may be used for the final version of your paper
+% \columnsep -- This command may not be used
+% \newpage -- No page breaks of any kind may be used for the final version of your paper
+% \pagebreak -- No page breaks of any kind may be used for the final version of your paperr
+% \pagestyle -- This command may not be used
+% \tiny -- This is not an acceptable font size.
+% \vspace{- -- No negative value may be used in proximity of a caption, figure, table, section, subsection, subsubsection, or reference
+% \vskip{- -- No negative value may be used to alter spacing above or below a caption, figure, table, section, subsection, subsubsection, or reference
+\usepackage{todonotes}
+\setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+
+% The file aaai2026.sty is the style file for AAAI Press
+% proceedings, working notes, and technical reports.
+%
+
+% Title
+
+% Your title must be in mixed case, not sentence case.
+% That means all verbs (including short verbs like be, is, using,and go),
+% nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
+% articles, conjunctions, and prepositions are lower case unless they
+% directly follow a colon or long dash
+%\title{Proactive Human-AI Handover Improves User Satisfaction: Evidence from Chess}
+%\title{Modeling the Effects of Switching Between Guidance and Delegation on Human-AI Collaboration Satisfaction in Chess}
+%\title{The Role of Mode Switching Between Guidance and Delegation in Human-AI Chess Collaboration}
+\title{Understanding Mode Switching in Human-AI Collaboration: Behavioral Insights and Predictive Modeling}
+\author{
+    %Authors
+    % All authors must be in the same font size and format.
+    Avinash Ajit Nargund\equalcontrib\textsuperscript{\rm 1},
+    Arthur Caetano\equalcontrib\textsuperscript{\rm 1},
+    Kevin Yang\textsuperscript{\rm 1},
+    Rose Yiwei Liu\textsuperscript{\rm 2},
+    Philip Tezaur\textsuperscript{\rm 1},
+    Kriteen Shrestha\textsuperscript{\rm 1},
+    Qisen Pan\textsuperscript{\rm 1},
+    Tobias Höllerer\textsuperscript{\rm 1},
+    Misha Sra\textsuperscript{\rm 1}
+}
+\affiliations{
+    %Afiliations
+    \textsuperscript{\rm 1}University of California, Santa Barbara \\
+    \textsuperscript{\rm 2} Washington University, Saint Louis
+    % If you have multiple authors and multiple affiliations
+    % use superscripts in text and roman font to identify them.
+    % For example,
+
+    % Sunil Issar\textsuperscript{\rm 2},
+    % J. Scott Penberthy\textsuperscript{\rm 3},
+    % George Ferguson\textsuperscript{\rm 4},
+    % Hans Guesgen\textsuperscript{\rm 5}
+    % Note that the comma should be placed after the superscript
+
+ 
+    % email address must be in roman text type, not monospace or sans serif
+    % proceedings-questions@aaai.org
+%
+% See more examples next
+}
+
+%Example, Single Author, ->> remove \iffalse,\fi and place them surrounding AAAI title to use it
+\iffalse
+\title{My Publication Title --- Single Author}
+\author {
+    Author Name
+}
+\affiliations{
+    Affiliation\\
+    Affiliation Line 2\\
+    name@example.com
+}
+\fi
+
+\iffalse
+%Example, Multiple Authors, ->> remove \iffalse,\fi and place them surrounding AAAI title to use it
+\title{My Publication Title --- Multiple Authors}
+\author {
+    % Authors
+    First Author Name\textsuperscript{\rm 1},
+    Second Author Name\textsuperscript{\rm 2},
+    Third Author Name\textsuperscript{\rm 1}
+}
+\affiliations {
+    % Affiliations
+    \textsuperscript{\rm 1}Affiliation 1\\
+    \textsuperscript{\rm 2}Affiliation 2\\
+    firstAuthor@affiliation1.com, secondAuthor@affilation2.com, thirdAuthor@affiliation1.com
+}
+\fi
+
+
+% REMOVE THIS: bibentry
+% This is only needed to show inline citations in the guidelines document. You should not need it and can safely delete it.
+\usepackage{bibentry}
+% END REMOVE bibentry
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+%v1
+%Human-AI interaction (HAI) systems often involve a tradeoff between guidance, where the AI provides recommendations, and delegation, where the AI executes tasks autonomously. While mixed-initiative frameworks aim to balance these modes, most existing systems adapt autonomy using task-based heuristics or inferred user goals without modeling how users actually prefer to switch between modes during real-time collaboration. In this work, we investigate revealed user preferences for switching between guidance and delegation using the Hand-and-Brain chess paradigm. In our study, eight participants collaborated with an AI teammate across over 400 decision points, selecting whether to guide or delegate on each move under time constraints. We analyzed how contextual factors such as perceived difficulty, perceived AI ability, and AI performance shaped switching behavior, and trained a lightweight random forest model to predict user preferences. Our findings offer empirical insights into dynamic control preferences and provide a behavioral modeling foundation for autonomy-adaptive systems. This work contributes both a reusable experimental paradigm and a predictive model that can help HAI systems align with user agency and task dynamics in sequential, real-time environments.
+
+%v2 July 25 230 words
+% V2 LONG\\
+% Effective human-AI collaboration requires users to fluidly adjust how control is shared, sometimes relying on AI for autonomous action (delegation), and at other times using it for decision support (guidance). However, most systems assume fixed interaction modes or use simple heuristics to trigger handovers, failing to capture the nuanced, evolving nature of user preferences. In this work, we model when and why users choose to switch between delegation and guidance during sequential decision-making with an AI teammate. We introduce a modified hand-and-brain chess paradigm in which users explicitly choose their control mode before each move, allowing us to capture over 400 switching decisions across eight participants. We combine behavioral, gaze, and emotion-tracking data with qualitative insights from post-task interviews to identify key contextual factors influencing switching, including perceived risk, cognitive effort, and trust. Using these features, we train a predictive model to forecast switching behavior at 3-second intervals during each decision episode. Our results show that switching behavior is both predictable and meaningfully shaped by the user's internal state and task context. Thematically grounded observations such as meta-decision overhead, intention misalignment, and perceived degradation of AI performance offer further insight into the cognitive dynamics behind control Switch. We discuss implications for the design of autonomy-adaptive systems that anticipate user needs, reduce friction in shared control, and support more effective collaboration in high-stakes domains.
+
+%v3 July 25 shorter
+% V3 SHORTER\\
+% Human-AI collaboration often requires users to switch between guidance, where the AI offers suggestions and delegation, where the AI acts autonomously. Yet most systems assume fixed control strategies or rely on simple heuristics for switching, failing to account for the evolving context and user intent. In this work, we model real-time switching behavior between guidance and delegation during sequential decision-making with an AI teammate. Using a modified hand-and-brain chess paradigm, we collected over 400 mode-switching decisions from eight participants, along with gaze, emotion, and behavioral data. We combine behavioral, gaze, and emotion-tracking data with qualitative insights from post-task interviews to identify key contextual factors influencing switching, including perceived risk, cognitive effort, and trust. Using these features, we train a predictive model that anticipates switching decisions at 3-second intervals, showing that user transitions in control mode can be inferred from behavioral and contextual signals. Our findings highlight the cognitive and affective factors behind control Switch and inform the design of autonomy-adaptive systems that support flexible, user-aligned collaboration in high-stakes domains.
+
+%V4 Levels of control\\
+
+%Human-AI collaboration often is broadly available to end users in two modes: guidance, where the AI offers suggestions, and delegation, where the AI acts autonomously.  Systems that integrate both modes may not be well aligned with evolution of human preference for switching between modes based on perceived level of control during a single task. In this work, we investigate how people dynamically switch between higher vs lower level of control within a sequential decision-making task. Using a modified hand-and-brain chess setup, we collected over 400 control-mode switching decisions from eight participants, along with gaze, perceived subtask difficulty, and emotion data. Participants either select the chess piece and AI chooses its move (brain condition) or the AI chooses the piece and the participant selects its move (hand condition). Through post-game qualitative interviews and reflexive thematic analysis, we identify key themes and factors that influence switching, including AI ability, decision complexity, and perceived control. We complement these findings with a lightweight predictive model that demonstrates mode switching can be anticipated from behavioral and task-specific signals. This has the potential to offer a richer basis for designing shared autonomy systems that support dynamic, subtask-level control Switch. 
+
+%V5 (uploaded to AAAI)
+% Human–AI collaboration is typically offered in one of two modes that differ in the user's level of control: guidance, where the AI provides suggestions and the human makes the final decision, and delegation, where the AI acts autonomously within user-defined constraints. Systems that integrate both modes such as those used in aviation autopilot, robotic surgery, or driving assistance may not account for how user preferences shift within a task in response to factors like evolving trust, decision complexity, and perceived control. 
+% In this work, we investigate how users dynamically switch between higher and lower levels of control during a sequential decision-making task. Using a hand-and-brain chess setup, participants either selected a piece and the AI decided how it moved (brain condition), or the AI selected a piece and the participant decided how it moved (hand condition), on each turn. We collected over 400 mode-switching decisions from eight participants, along with gaze, emotional state, and subtask difficulty data.
+% Through post-game interview analysis, we identify qualitative factors that influence switching, including perceived AI ability, decision complexity, and level of control.  
+% We complement these factors with a lightweight model that predicts switching between the levels of control from behavioral and task-specific signals, showing that real-time user preferences can serve as a complementary input alongside system-driven mode-switching mechanisms currently used in domains such as aviation, surgery, and driving. The combined behavioral and modeling insights can help inform the design of shared autonomy systems that need dynamic, subtask-level control Switch aligned with user intent and evolving task demands.
+
+%%%%V6 (edited version of V5, if updating is allowed)
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%While human-AI collaboration systems often offer distinct modes of control such as AI guidance or full delegation, they often overlook how user preferences for control dynamically shift within a task. Systems integrating both modes, as seen in aviation autopilot, robotic surgery, or driving assistance, may not adequately account for these real-time shifts in response to factors like evolving trust, decision complexity, and perceived control.
+%In this work, we investigate how users dynamically switch between higher and lower levels of control during a sequential decision-making task. Using a novel human-AI hand-and-brain chess setup, participants dynamically chose between ``brain mode'' (where the human selected a piece, exercising higher-level control) and ``hand mode'' (where the AI selected a piece and the human made the move, exercising lower-level control) on each turn. We collected over 400 mode-switching decisions from eight novice to advanced participants, along with gaze, emotional state, and subtask difficulty data.
+%Through qualitative analysis of post-game interviews, we identified key factors influencing switching, including perceived AI ability, decision complexity, and personal control preferences. Complementing these insights, we developed a lightweight predictive model that accurately anticipates control switches (F1 score = $0.65$) using behavioral and task-specific signals. This shows that real-time user preferences can serve as a complementary input alongside static, system-driven mode-switching mechanisms currently prevalent in domains like aviation, surgery, and driving. The combined behavioral and modeling insights can help inform the design of human-aligned shared autonomy systems that negotiate control at a dynamic, subtask level, adapting to user intent and evolving task demands.
+
+%v7 : adding statistical analysis results to v5
+Human–AI collaboration is typically offered in one of two of user control levels: guidance, where the AI provides suggestions and the human makes the final decision, and delegation, where the AI acts autonomously within user-defined constraints. Systems that integrate both modes, common in robotic surgery or driving assistance, often overlook shifts in user preferences within a task in response to factors like evolving trust, decision complexity, and perceived control. 
+In this work, we investigate how users dynamically switch between higher and lower levels of control during a sequential decision-making task. Using a hand-and-brain chess setup, participants either selected a piece and the AI decided how it moved (brain mode), or the AI selected a piece and the participant decided how it moved (hand mode). We collected over 400 mode-switching decisions from eight participants, along with gaze, emotional state, and subtask difficulty data.
+Statistical analysis revealed significant differences in gaze patterns and subtask complexity prior to a switch and in the quality of the subsequent move. Based on these results, we engineered behavioral and task-specific features to train a lightweight model that predicted control level switches ($F1 = 0.65$). The model performance suggests that real-time behavioral signals can serve as a complementary input alongside system-driven mode-switching mechanisms currently used.
+We complement our quantitative results with qualitative factors that influence switching including perceived AI ability, decision complexity, and level of control, identified from post-game interview analysis. The combined behavioral and modeling insights can help inform the design of shared autonomy systems that need dynamic, subtask-level control switches aligned with user intent and evolving task demands.
+
+%Together, these findings offer a richer foundation for designing shared autonomy systems that support dynamic, subtask-level control Switch aligned with user behavior.
+
+
+%Our results reveal interpretable strategies and biases in human-AI collaboration and can help inform the design of adaptive systems that have evolving user intent and task context.
+
+
+
+
+
+%%%NOTES
+% Levels of delegability >> four levels in literature (human-only, human-assists but AI takes final decision (brain), AI-assists but human takes final decision (hand)
+
+% Which mode - hand/brain
+% Which piece/object - brain 
+% Which move/action - hand
+
+% Hand >> 
+% Brain >> people think of this as having more control (piece selection) - 
+\end{abstract}
+
+% Uncomment the following to link to your code, datasets, an extended version or similar.
+% You must keep this block between (not within) the abstract and the main body of the paper.
+% \begin{links}
+%     \link{Code}{https://aaai.org/example/code}
+%     \link{Datasets}{https://aaai.org/example/datasets}
+%     \link{Extended version}{https://aaai.org/example/extended-version}
+% \end{links}
+
+%\section{Introduction}
+% new flow : 
+% Human-AI collaboration occurs along a spectrum of shared control. 
+% There are human-in-the-loop and machine-in-the-loop designs. 
+% HIL : human gets assistance from the AI but remains in control of the final decision. We call this guidance mode
+% MIL : human sets some constraints and allocates the task to the machine. We call this delegation mode
+% For an AI to be considered as a natural teammate it should make changes in the control in a “natural” way. Current solutions train AI to modify the shared control based on factors such as estimated competence, theory of mind etc. 
+% But AI-driven changes to the shared control can “mess” with the human and usually are not aligned with the human preferences. 
+% Sota human preferences works : use stated preferences on “dummy” tasks
+% Our work : revealed preferences ; strategic setting; sequential decision-making; 
+% We eval our data by (a) building a prediction model (b) factor analysis to show the ctx factors we considered are linked to the 4 factors used in literature. (c) correlation??
+
+%With advances in artificial intelligence, AI agents are increasingly being used to support human decision-making across diverse domains. Human-AI Interaction (HAI) leverages the complementary strengths of humans and AI and has shown potential to surpass the capabilities of either human or AI alone in certain tasks \cite{vaccaro2024combinations}. This collaboration typically occurs along a spectrum of shared autonomy \cite{salikutluk_evaluation_2024}, with two prominent modes being \textit{delegation}, where humans establish constraints and specifications while AI agents execute decisions and actions autonomously, and \textit{guidance}, where AI systems provide insights and recommendations while humans retain ultimate decision-making authority. Delegation offers efficiency gains by reducing human workload and can enhance performance in domains where AI capabilities now match or exceed human expertise \cite{hemmer2023human}. The guidance mode allows humans to utilize their unique strengths such as common-sense reasoning, strategic planning, and the integration of ethical, moral, and emotional considerations along with AI's analytical insights for improved decision-making \cite{klein2017sources,leitao2022human, lubars2019}.
+
+
+%A key design decision in human-AI systems is how to implement guidance and delegation. Systems that implement only a one of these modes fail to take advantage of the full spectrum of benefits HAI can offer and may compromise human agency by forcing users into interaction patterns they may not prefer. In contrast, systems that support both guidance and delegation are better positioned to offer the unique advantages of each interaction modality. 
+
+% HUMAN DECIDES
+% Alternatively, human-driven approaches allow users to manually switch the level of autonomy depending on their preferences or perceived needs \cite{}, preserving user agency.
+% %
+% However, this flexibility introduces a complex meta-decision: when to seek guidance and when to delegate. This can impose a significant cognitive overhead especially in dynamic, high-stakes environments involving sequential decisions, time pressure or incomplete information about the AI. The cumulative effort involved in making this decision may impact performance on the primary task~\cite{that paper showing the key decision factors of delegation}.
+
+
+% Ideally, human-AI systems should offer guidance and afford delegation while offloading the meta-decision from users.
+
+%In complex multi-decision scenarios in dynamic environments, the guidance-delegation meta-decision overhead compounds, further compromising users' performance in the main decision. \todo{Avinash : intro the task space; seq decisions, time pressure, complete info}
+
+% AGENT-DRIVEN
+%Effective human-AI collaboration requires agents that can anticipate and adapt to teammate needs~\cite{mcneese2018}. Mixed-initiative teaming, which allows control to shift dynamically between the human and AI agent, has been the main paradigm explored to achieve flexible and adaptive interaction ~\cite{horvitz1999, bradshaw2004}. Often, mixed-initiative interactions are realized through agents that employ decision-theoretic autonomy adaptation strategies based on expected costs, benefits and uncertainties of potential actions~\cite{amershi2019guidelines}. % Particularly, the principle of inferring ideal actions considering costs, benefits and uncertainties proposed in~\cite{horvitz1999} has been operationalized through adaptive agents. 
+
+%In these approaches, the AI dynamically modulates its autonomy based on factors such as task priority~\cite{fiore2016}, its confidence in task execution~\cite{roehr2010using, rabby2022learning} or inferred user goals~\cite{tomm papers} and competence~\cite{salikutluk_evaluation_2024} with primary objective of improving task performance~\cite{hauptman2024}. While these strategies can reduce user burden, agent-driven changes to autonomy may misalign with user expectations or preferences, potentially leading to confusion or reduced trust in the AI agent~\cite{tambe2000, hauptman_adapt_2023}. Thus, it is critical to develop agents that adapt autonomy considering human preferences~\cite{hauptman2024}.
+
+%current sota
+%To address this gap, prior studies~\cite{lubars2019, cvetkovic_task_2022, jin2024three} have collected user preferences via surveys that examine how factors such as trust , perceived risk, motivation, and perceived task difficulty influence the preferred level of autonomy. However, these studies rely on stated preferences, which may not accurately reflect user choices in realistic or high-stakes settings~\cite{de2021stated}. Also, in these studies, the users made decisions in isolation without having to experience the consequences of their choices. 
+
+% our work
+%To analyze ecologically valid human preferences for shared autonomy, we conducted a study involving seven participants paired with an AI of similar skill level in a strategic, time-constrained task requiring sequential decision-making. Through a combination of qualitative and quantitative data, we examined how contextual factors such as time pressure, AI performance and perceived task difficulty influence user preferences for shared control.  Finally, we trained a machine learning model to predict user preferences for shared control. We believe that integrating such models into human-AI systems could lead to more effective collaboration.
+
+% GAP IN HUMAN DECISION MODELING
+% While prior work has explored the influence of user agency on performance, the contextual factors that influence the user’s desired level of control are underexplored. Modeling these factors is key to developing effective mixed-initiative systems in which AI partners proactively adapt their level of autonomy to align with the user needs minimizing their cognitive load and improving efficiency of the collaboration. 
+
+% We propose a data-driven, human-aligned handover method that predicts a user’s preferred mode of collaboration, delegation or guidance, based on contextual and behavioral signals. This approach enables agents to pause the execution of delegated tasks and proactively offer guidance when the context suggests the human may prefer more agency. When the context evolves to a scenario where delegation is likely preferred, the agent proactively offers to resume autonomous task execution. Our method balances automation and control by aligning with human choice priors.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% New Intro %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+Artificial intelligence (AI) systems are increasingly integrated into human decision-making in critical domains like medicine, autonomous driving, and finance. These fields often involve sequential decision-making, where each choice shapes subsequent actions and outcomes. Despite the growing use of AI tools to support human decision-making, their integration into effective collaborative workflows remains challenging. A recent meta-analysis by ~\citet{vaccaro2024combinations} found that human-AI teams often perform worse than the better of the two working alone, particularly in decision-making tasks. This performance gap is often attributed to rigid control-sharing approaches that make it difficult for users to fluidly shift their level of control, a critical factor in sequential decision-making \cite{chiou2021mixed, amershi2019guidelines}.
+%state of the world
+%Artificial intelligence (AI) systems are increasingly embedded in human decision-making across domains such as medicine, autonomous driving, and finance. 
+%These real-world applications are often characterized by sequential decision-making, with outcomes that impact future decisions taken within the system. 
+%Artificial intelligence (AI) systems are increasingly embedded in human decision-making across domains such as medicine, autonomous driving, and finance. These domains often involve sequential decision-making, where each decision influences future actions and outcomes. While AI tools are being introduced to assist human decision-making, their integration into collaborative workflows remains challenging. A recent meta-analysis found that human–AI teams frequently underperform relative to the better of the two working alone, particularly in decision-making tasks, raising concerns about the effectiveness of current integration strategies~\cite{vaccaro2024combinations}.  This performance gap has been linked to inflexible control-sharing approaches that prevent users from easily shifting between higher and lower levels of control, especially important in sequential decision-making tasks \cite{chiou2021mixed, amershi2019guidelines}.
+
+%This performance gap has been linked to rigid control-sharing schemas that prevent users from fluidly shifting roles or regaining initiative as needed, critical in sequential decision-making~\cite{chiou2021mixed, amershi2019guidelines}.% Therefore, flexible control sharing strategies are fundamental to achieving performance complementarity in human-AI systems.
+
+%limitations in the state of the world
+%Current coordination strategies typically fall into two categories: static configurations and agent-driven adaptations. Linear, hierarchical, and policy-based schemes statically defined by designers or users~\cite{de2008mixed} lack the flexibility to adapt to evolving decision-making scenarios and inherit human biases in control allocation~\cite{pinski2023, fugener_cognitive_2022, glickman2025human}. Agent-driven adaptations rely on internal system metrics such as task priority, confidence, or inferred user goals and competence to autonomously modulate control~\cite{amershi2019guidelines, rabby2022learning, salikutluk_evaluation_2024}, which may conflict with user expectations, causing friction or loss of trust~\cite{tambe2000, hauptman_adapt_2023}. Mixed-initiative approaches~\cite{bradshaw2003dimensions} aim to support control transitions dynamically, but few are grounded in empirical evidence about when and why users actually initiate or accept changes in control.
+
+
+Current human-AI coordination strategies primarily fall into two categories: static configurations and agent-driven adaptations. Linear, hierarchical, and policy-based schemes statically defined by designers or users~\cite{de2008mixed} lack the flexibility to adapt to evolving decision-making scenarios and inherit human biases in control allocation~\cite{pinski2023, fugener_cognitive_2022, glickman2025human}. Agent-driven adaptations rely on internal system metrics such as task priority, confidence, or inferred user goals and competence to autonomously modulate control~\cite{amershi2019guidelines, rabby2022learning, salikutluk_evaluation_2024}, which may conflict with user expectations, causing friction or loss of trust~\cite{tambe2000, hauptman_adapt_2023}. While mixed-initiative approaches \cite{bradshaw2003dimensions} are designed to support dynamic control transitions, few are grounded in empirical evidence regarding when and why users actually require or accept these changes.
+
+
+
+%Moreover, these systems rarely account for how user preferences for control evolve over time within a task.
+
+% how limitations have been addressed 
+%To conceptualize human-AI control, prior work has introduced a range of frameworks.~\citet{parasuraman2000model} proposed a ten-level autonomy scale ranging from full manual to full autonomous control.~\citet{wickens2010stages} expanded this by highlighting that autonomy can vary across stages of information processing, such as sensing, interpreting, deciding, and acting. ~\citet{lubars2019} introduced a task delegability framework that situates human-AI interaction along a continuum from user-led to AI-led control. While useful for classifying control relationships, these frameworks offer limited guidance on \textit{how} transitions between levels should occur over time. Mixed-initiative approaches~\cite{bradshaw2003dimensions} aim to support such transitions dynamically, but few are grounded in empirical evidence about when and why users actually initiate or accept changes in control.
+
+%To enable human-AI systems that combine the shared control flexibility needed in evolving decision-making
+
+%how we address limitations 
+We address this gap by modeling how users shift control during a shared task, using behavioral and task-based signals. While prior work has focused on delegation at the task level via static or agent-driven schemes~\cite{lubars2019, amershi2019guidelines}, we examine how users dynamically switch control modes within a task. Building on the delegability framework of~\citet{lubars2019}, our setup requires humans to decide between object-level and action-level control, allowing us to capture real-time shifts in user preferences. This approach extends research on trust and cognitive bias in human–AI collaboration~\cite{gurney2023role} by offering a behavioral account of control switches over the course of a task. % as the task progresses.
+
+%specifics of how we address limitations
+%To study the control dynamics, we adapted the hand-and-brain chess format\footnote{\url{https://www.chess.com/terms/hand-and-brain-chess}} into a human–AI collaboration task. On each turn, participants had to decide between two AI roles: selecting the piece type (brain mode) or selecting the move (hand mode). In brain mode, users retained higher-level control by choosing the piece type (e.g., knight), while in hand mode, they ceded piece selection to the AI but chose its move, effectively distinguishing the level of control offered by the brain and hand modes. This setup enabled users to fluidly negotiate control over time, yielding over 400 switching decisions across eight participants.%, ranging from novice to advanced players.
+
+
+
+To study control level dynamics, we adapted the hand-and-brain chess format\footnote{\url{https://www.chess.com/terms/hand-and-brain-chess}} into a human–AI collaboration task in which users switched between higher and lower levels of control. On each turn, participants chose either brain mode, retaining higher-level control by selecting the piece type (e.g., knight), or hand mode, where they exercised lower-level control by choosing the move after the AI selected the piece. This setup enabled users to fluidly switch control modes over time, yielding over 400 switching decisions across eight participants.
+
+
+
+%what we learned
+To understand the dynamic control decisions and to identify underlying behavioral patterns, we developed a lightweight predictive model that combines behavioral signals (e.g., gaze, emotion), task features (e.g., time, position complexity). The model's ability to predict switching based on interpretable features and the themes identified from expert-led post-game interviews offered insights into when control shifts are likely and what factors may be influencing them. Our results can inform theories of shared control and guide the design of future adaptive AI systems that respond to user state and task context in real-time.
+
+%%%ALTERNATIVE to ABOVE
+%To understand dynamic control decisions, we developed a lightweight predictive model that combines behavioral signals (e.g., gaze, facial expression) and task features (e.g., time, move complexity) to anticipate when users are likely to switch between the two levels of control. Post-game interviews were used to validate and contextualize our feature choices, helping ensure the model captured meaningful aspects of user decision-making. By relying on interpretable signals, our approach offers both predictive utility and conceptual insight, supporting emerging theories of shared control and informing the design of adaptive AI systems that respond to user state and task context in real time.
+
+
+
+
+
+%%%%%%%%%%%%%%%%% NOTES %%%%%%%%%%%%%%%%%%%%%
+% Method that includes behavioral + quant data in the context of levels of control, that could be expanded to more or less or  levels of control. 
+
+% Prior work: when ai makes changes to its level of autonomy based on its own signals it misaligns with the user. Can our model do better.  
+
+% Diagnostics, proactive AI help, 
+
+% Main contirbution: understanding
+
+% Add the drop in turn quality right after the switch and how being able to predict the switch can help the AI optimize for this drop and minimize  the fallout. AI can help meta-decision overhead. 
+
+% In complex tasks, maybe the AI can proactively offer help and then recede into the background during times of less complexity or be available in a more reactive more, offering help when asked. 
+
+% Predicting control switches at the subtask level can help understand how and when people want to delegate versus retain control in real-time. This can help uncover the latent factors like cognitive load, uncertainty, or trust that drive dynamic coordination with AI (as seen in prior work, at the task level). It moves us beyond static control allocation models and support the creation of more nuanced theories of human-AI teaming. Also understanding switching behavior provides a way design adaptive systems that can align with user preferences and cognitive states as tasks unfold.
+
+% Knowing when a user is likely to switch can guide proactive system behavior. For instance, an AI could offer suggestions or take initiative when a switch is likely but not yet made, provide confidence cues or explanations to prevent unhelpful delegation, trigger safety checks or override options when frequent switching signals confusion or disengagement.
+
+% Predictive switching models can therefore enable smarter interface adaptation, such as anticipatory support, interruptibility management, or real-time trust calibration plus handle the fallout from cost of switching which leads to sub-optimal behavior. 
+
+% By incorporating behavioral and contextual signals (like gaze, surprise, task complexity), our model supports personalization at the moment-by-moment level. Instead of one-size-fits-all autonomy policies, systems could tailor control handovers to individual users and situations. This can help support the development of AI systems that respect user preferences while optimizing performance, especially in safety-critical or cognitively demanding settings.
+
+% The switching prediction model could also serve as an evaluation tool, i.e., if users feel comfortable to switch freely or feel pushed by AI or by the task, what types of moments exists where users always stick to one control level which can indicate rigidity or mistrust or other biases. Should the AI be designed to encourage switching behavior or not? 
+
+
+% Switching has a cost - AI can proactively try to reduce the cost or even prevent the switch, because the switch can be interpreted as a need for help or control. 
+
+
+% Predicting switching behavior may help the design of proactive AI-based DSS. 
+
+% The features explain the human behavior to a certain extent and make other things harder to model. the qualitative analysis can help explain the rest of the decision. 
+
+% The goal of our work is to help understand how to design better aligned AI-supported DSS. The model's ability to predict the human's behavior allows us to use that knowledge in the design of newer systems that can be personalized to a user, in similar tasks. 
+
+
+% Overall, this can help the design of personalized AI-supported sequential decision-making systems.  
+
+%To support broader impact, we structured our dataset to separate general behavioral signals from chess-specific features and complemented the quantitative data with qualitative insights from expert-led interviews. These elements together reveal how users manage initiative at a subtask level and offer a transferable foundation for designing autonomy-adaptive systems in domains such as medicine, transportation, and other sequential decision-making tasks.
+
+
+\section{Related Work}
+
+We situate our work at the intersection of mixed-initiative interaction, user preferences for control, and adaptive autonomy, drawing on research that informs how human–AI systems manage control sharing over time.
+
+\subsection{Mixed-Initiative Systems}
+Mixed-initiative systems aim to balance control between humans and AI by dynamically adjusting autonomy in response to task demands and user behavior~\cite{horvitz1999, bradshaw2004}. They emphasize agent-driven adaptation based on internal indicators like task criticality or inferred user ability~\cite{fiore2016, salikutluk_evaluation_2024, hauptman2024}, but such strategies may misalign with user preferences, leading to issues with transparency, predictability, and coordination~\cite{tambe2000, hauptman_adapt_2023}.
+
+Two common collaboration models reflect this tradeoff. In \textbf{machine-in-the-loop} systems, users maintain control while receiving AI suggestions, an approach commonly adopted in domains like healthcare, legal decision-making, writing, and software development~\cite{clark2018, green2019, kleinberg2018, roemmele_creative_2015, gero_sparks_2022, yuan_wordcraft_2022}. This mode is often preferred in contexts requiring fairness, transparency, or subjective judgment~\cite{lubars2019}, though outcomes may be skewed by a user's algorithm aversion or overreliance~\cite{bockstedt2025, jones2023people, klingbeil2024trust}.
+
+In contrast, \textbf{human-in-the-loop} systems delegate task execution to the AI, with humans monitoring or refining outputs, an approach explored in tasks like image generation and portfolio optimization~\cite{wu_adaptive_2018, ganzilla2022, buckley2021regulating}. While efficient, users often delegate sub-optimally due to poor mental models, trust asymmetries, or biases~\cite{pinski2023, fugener_cognitive_2022, milewski1997}. Survey studies highlight additional influences such as task difficulty, risk, and motivation~\cite{lubars2019}.
+
+Most prior work has focused on static or hypothetical preferences. Few studies have investigated how control preferences evolve dynamically during real-time human–AI collaboration. Our work addresses this gap by modeling control switching behavior using data from hand-and-brain chess.
+
+\subsection{User Preferences}
+A growing body of work explores the factors that shape delegation preferences, often through surveys and hypothetical scenarios~\cite{lubars2019, cvetkovic_task_2022, jin2024three, svikhnushina2023expectation}. Trust consistently emerges as a key predictor of delegation behavior, alongside task difficulty, motivation, and perceived risk~\cite{lubars2019, cvetkovic_task_2022}.
+%
+Recent longitudinal studies show increasing willingness to delegate as AI capabilities improve. \citet{jin2024three} report that users are more inclined to delegate difficult tasks, especially when trust and motivation are high. Similar patterns are seen in daily interactions with digital assistants~\cite{svikhnushina2023expectation}.
+%
+Beyond these factors, cognitive framing also shapes collaboration behavior. \citet{gurney2023role} find that biases such as risk aversion and automation over-reliance affect user effort and performance. These findings underscore the need to study preferences in behaviorally realistic settings.
+
+However, most prior work captures stated preferences, which may not reflect real-time decision-making in dynamic contexts~\cite{viney2002discrete, de2021stated}. Our study addresses this limitation by observing revealed preferences in a live, sequential decision-making task.
+
+\subsection{User Modeling and Autonomy Adaptation}
+
+Adaptive autonomy typically involves AI-driven control modulation based on system-level indicators like confidence or workload~\cite{amershi2019guidelines, roehr2010using, hauptman2024}. While effective for efficiency, such methods often lack explicit models of user control preferences, and rarely incorporate real-time behavioral signals.
+
+In parallel, user modeling work has focused on predicting trust or intent in interactive systems~\cite{guo2022building, sun2017collaborative, kraus2021modelling}, but these models are generally static and do not address moment-to-moment shifts in control needs. Recent work by \citet{gurney2023role} highlights how framing effects shape trust and reliance, further emphasizing the need for user-centered adaptation.
+%
+Building on the four-level delegability framework by \citet{lubars2019}, our setup isolates a decision boundary between object-level and action-level control, enabling the capture of fine-grained control preferences within a task. This extends prior work that primarily focused on task-level autonomy choices.
+
+\begin{comment}
+By combining real-time behavioral signals with a predictive model, our study offers a new perspective on control adaptation at the subtask level. Most autonomy-adaptive systems rely on internal AI metrics such as confidence, workload, or task priority to adjust control levels~\cite{amershi2019guidelines, roehr2010using, hauptman2024}, with limited modeling of real-time user preferences. Related work in user modeling has focused on predicting trust or intent~\cite{guo2022building, sun2017collaborative, kraus2021modelling}, but such models are typically static and lack behavioral grounding in moment-to-moment decision-making.
+
+Our work complements these approaches by combining behavioral and task-level data to model subtask-level control preferences in a live setting. Building on the four-level delegability framework~\cite{lubars2019}, we isolate a real-time decision boundary between object- and action-level control. This enables lightweight prediction of control shifts and supports the design of systems that adapt not only to task structure, but to evolving user state.
+\end{comment}
+
+
+\begin{comment}
+We situate our work at the intersection of mixed-initiative interaction, user preferences for control, and adaptive autonomy, drawing on prior research that informs how human–AI systems manage control sharing over time.
+
+\subsection{Mixed-initiative Systems}
+Mixed-initiative systems aim to balance control between humans and AI agents by dynamically adjusting autonomy in response to task demands and user behavior \cite{horvitz1999, bradshaw2004}. Prior work in this area has largely focused on agent-driven adaptation, where the AI modulates control using internal indicators such as task criticality, inferred human ability, or environmental cues \cite{fiore2016, salikutluk_evaluation_2024, hauptman2024}. These approaches prioritize task efficiency or system-side objectives, but may not align with evolving user preferences, raising challenges for transparency, predictability, and effective coordination in human–AI teams \cite{tambe2000, hauptman_adapt_2023}.
+
+Within this broader space, two collaboration models are commonly deployed. The \textbf{machine-in-the-loop} model emphasizes user agency, with the AI providing suggestions while the human remains in control. This is an approach commonly adopted in domains like healthcare, legal decision-making, writing, and software development \cite{clark2018, green2019, kleinberg2018, roemmele_creative_2015, gero_sparks_2022, yuan_wordcraft_2022}. Users often prefer this ``guidance'' mode in contexts where transparency, fairness, or subjective judgment is critical \cite{lubars2019}, though human biases such as algorithm aversion or overreliance on AI can distort outcomes \cite{bockstedt2025, jones2023people, klingbeil2024trust}.
+
+Conversely, the \textbf{human-in-the-loop} model delegates execution to the AI, with humans overseeing or refining outputs as needed, an approach used in image generation, object detection, and portfolio optimization \cite{wu_adaptive_2018, ganzilla2022, buckley2021regulating}. While this ``delegation'' mode promises efficiency, users often delegate sub-optimally due to poor mental models of the AI, trust asymmetries, or cognitive biases \cite{pinski2023, fugener_cognitive_2022, milewski1997}. Recent survey-based work has also identified task difficulty, motivation, and perceived risk as additional influences on delegation behavior \cite{cvetkovic_task_2022, lubars2019}.
+
+While prior work has explored when users prefer lower or higher levels of control in static or hypothetical contexts, few studies have investigated how user preferences evolve dynamically during real-time human-AI collaboration. Our work addresses this gap by modeling switching behavior during a task, using data from hand-and-brain chess.
+
+\subsection{User Preferences}
+A growing body of research has examined the human factors that influence delegation preferences in human-AI interaction, often through survey-based methods and hypothetical scenarios \cite{lubars2019, cvetkovic_task_2022, jin2024three, svikhnushina2023expectation}. These studies have found that trust consistently emerges as a predictor of delegation behavior, alongside perceived task difficulty, motivation, and risk \cite{lubars2019, cvetkovic_task_2022}.
+
+Recent longitudinal findings suggest that user preferences are shifting as AI becomes more capable and accessible.~\citet{jin2024three} report a rise in user willingness to delegate, especially for tasks perceived as difficult, with trust and task-dependent motivation noted as important factors. Similar trends appear in everyday interactions with digital assistants, where users are more likely to delegate when they expect usefulness and trust the system \cite{svikhnushina2023expectation}.
+
+Beyond factors like trust and risk, cognitive framing also plays a significant role in shaping human-AI collaboration behavior \cite{olszewski2024designinghumanaisystemsanthropomorphism}.~\citet{gurney2023role} showed that users exhibit framing-driven biases such as risk aversion and automation over-reliance that affect both their effort and performance when working with AI. These findings highlight the need to study user preferences in dynamic, behaviorally realistic settings.
+
+However, most of the above work relies on stated preferences, where participants self-report their intentions in abstract or hypothetical contexts. Prior research in behavioral science shows that such preferences may not align with real-time decisions in high-stakes or time-sensitive environments \cite{viney2002discrete, de2021stated}. Our work addresses this gap by capturing revealed preferences through live decisions in a sequential decision-making task. 
+
+\subsection{User Modeling and Autonomy Adaptation}
+
+Adaptive autonomy often involves modulating AI control based on internal system variables such as self-confidence, workload estimates, or inferred human intent \cite{amershi2019guidelines, roehr2010using, hauptman2024}. While these approaches improve task efficiency, they typically lack explicit models of user control preferences and rarely incorporate real-time behavioral data under cognitive and temporal constraints. Separately, user modeling research has explored predicting trust or intent in interactive systems \cite{guo2022building,sun2017collaborative, kraus2021modelling}, but these models are generally static and do not account for dynamic shifts in user control needs.
+
+More recently, \citet{gurney2023role} demonstrated how framing effects can bias user reliance on AI teammates, highlighting the critical role of cognitive biases and affective influences in shaping trust and control behavior. Our work extends this understanding by providing a behavioral account of real-time control negotiation at a finer temporal and functional granularity.
+%
+Building on the four-level delegability framework by \citet{lubars2019}, which captures user preferences across tasks via surveys, our setup isolates a decision boundary between object-level and action-level control. This allows us to capture real-time user preferences for control within a shared task, moving beyond prior studies that primarily focus on coarse, task-level autonomy decisions. %Whereas previous work investigates whether users delegate entire tasks, our approach illuminates how users dynamically negotiate control within subtasks as they unfold.
+
+By combining real-time behavioral insights with a predictive model, our study offers a novel understanding of control adaptation at the subtask level. This framing has the potential to support the design of autonomy-adaptive systems that respond not only to task outcomes, but also to evolving user strategies, trust dynamics, and control preferences in cognitively demanding collaboration.
+
+
+% A common approach to adaptive autonomy involves modulating control based on internal system variables such as confidence, workload estimates, or inferred human intent \cite{amershi2019guidelines, roehr2010using, hauptman2024}. While these approaches improve task efficiency, they rarely incorporate explicit models of user control preferences. Separately, work in user modeling has explored how to predict trust, intent, or skill in interactive systems, often using one-time estimates or offline labels \cite{chakraborti2018, reddy2018shared}. However, these models are typically static and not trained on behavioral switching data collected under cognitive and temporal constraints. Recent work by Gurney et al.~\cite{gurney2023} explores how cognitive biases like framing and anchoring affect user behavior and performance when collaborating with an AI teammate, highlighting the importance of designing experimental paradigms that capture realistic human responses in AI-supported decision-making.
+
+% Our work extends prior research by investigating how users choose between two collaboration modes, guidance and delegation, during a sequential, time-constrained task. These modes correspond to the shared-control levels explored in prior preference studies \cite{lubars2019, cvetkovic_task_2022}, but we focus on revealed preferences by observing mode-switching behavior with real-time task consequences. Unlike prior work that captures static or hypothetical preferences, we analyze how factors such as time pressure, task complexity, and perceived AI performance shape control decisions as they unfold. By pairing these behavioral insights with a trained predictive model, our work contributes both an empirical understanding of control preference dynamics and a foundation for designing autonomy-adaptive HAI systems.
+% our work
+%Our work extends this line of research by investigating choices between two collaboration modes, guidance and delegation. These modes correspond to the shared-control levels explored in prior work~\cite{lubars2019, cvetkovic_task_2022}. While existing literature primarily focuses on examining stated preferences in static, context-free scenarios we capture the revealed preferences by observing user choices that have real-time consequences for the execution of a task. We analyze collaboration mode selection in a strategic, sequential decision-making scenario, focusing on factors such as user cognitive state, time pressure and task complexity.
+
+% \section{Methodology}
+
+% To investigate the human preferences for delegation and guidance and the factors that influence these choices, we conducted a human-subject experiment. The study required participants to play a modified version of hand-and-brain chess. In this section we explain our rationale for using chess to observe these behaviors and the provide details of the user study. 
+
+% \subsection{Hand-and-Brain Chess}
+ 
+% Chess is a popular game of strategic depth and complexity which has served as a long-standing benchmark for evaluating artificial intelligence~\cite{mcilroy2020maia, zhang2024}. As a perfect-information game where both players have complete visibility into the game's history, it provides the ideal environment for studying decision-making. While traditionally played as a two-player adversarial game aimed at maximizing individual payoff and reaching a Nash equilibrium, several team-based variants such as bughouse, tag-team and hand-and-brain chess have emerged. 
+% In hand-and-brain chess, two players collaborate with the ``brain'' selecting the type of piece to move while the ``hand'' decides the specific move to execute.  This structure closely resembles the two primary modes of human-AI collaboration we examine, delegation and guidance. Specifically, it mirrors scenarios in which the AI either offers guidance with human maintaining control over the execution or assumes the role of decision-making authority within the user-defined constraints. To study these dynamics, we develop a modified version of hand-and-brain chess in which one of the teammates is an AI. Also, unlike typical hand-and-brain chess, where the roles of ``hand'' and ``brain'' are decided prior to the start and remain unchanged throughout the game, our version gives the user the agency to assign these roles at each move. This setup allows us to systematically explore user preferences for guidance vs delegation in sequential, time-pressured strategic decision-making task. 
+\end{comment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%  New methodology %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Methodology}
+To investigate how contextual factors influence a user's decision to hand over control to an AI, we conducted a human-subjects experiment using hand-and-brain chess.
+%To investigate human preferences for retaining or handing over control to AI as well as the contextual factors that shape these decisions, we conducted a human-subjects experiment using hand-and-brain chess. %This section outlines our rationale for choosing this task environment and describes the study design in detail.
+
+\subsection{Hand-and-Brain Chess}
+%Chess is a well-established domain for studying strategic decision-making and has long served as a benchmark for evaluating artificial intelligence~\cite{mcilroy2020maia, zhang2024}. As a perfect-information game with no hidden state, it enables precise observation of choice behavior over time. We adapted the ``hand-and-brain'' chess variant, in which two players collaborate: the ``brain'' selects a piece type, and the ``hand'' selects and executes a legal move with that piece. This division of labor mirrors the two modes of human-AI collaboration from prior work: \textit{guidance}, where AI suggests but humans decide, and \textit{delegation}, where AI decides and the human executes within constraints. 
+
+%Unlike the traditional setup where roles are fixed, our version allows the human to dynamically assign roles on each turn. This design enables us to study real-time preferences for guidance versus delegation during sequential, time-pressured decision-making.
+
+To study dynamic decision-making under varying levels of human-AI control, we adapted the standard hand-and-brain chess format, which typically pre-defines control modes. In our modified setup, participants chose their control mode at the start of each turn. In the brain mode, participants exercised higher-level control by selecting a piece type, and the AI then executed a valid move for that piece type. Conversely, in the hand mode, the AI selected a piece type, and the participant exercised lower-level control by making a legal move with that piece type. This design effectively separates control into two distinct subtasks: object-type selection and action execution. As shown in Figure~\ref{fig:task}, each turn involves a fine-grained control handover, allowing us to examine how users shift between strategic and tactical roles in response to changing cognitive and contextual demands. %As illustrated in Figure~\ref{fig:task}, each turn, thus, represents a fine-grained handover decision, enabling us to examine how users dynamically shift between strategic and tactical roles in response to evolving cognitive and contextual demands.
+
+% \subsection{Materials}
+
+% \subsubsection{Browser Extension}
+% We developed a custom Google Chrome extension that integrated with the Chess.com web interface to enable participants to play our modified version of hand-and-brain chess (see Figure~\ref{fig:extension}). The extension's interface allowed the participant, on each turn, to assume the role of ``brain'' or ``hand.'' If the participant chose ``brain’’, they selected a piece to move, and the AI teammate then determined the specific move for that piece, which the participant was required to execute on the board. Conversely, if the participant chose the ``hand’’ role, the AI teammate first recommended a piece type, and the participant was then responsible for deciding on and executing a legal move with that specific piece. Participants were constrained by the AI's choice in their chosen role, i.e. participants were not allowed to make a different move than the one decided by the AI hand or move a different piece type than the one recommended by the AI brain. The interface also permitted participants to digitally record candidate moves they were considering before committing to a role for that turn.
+
+% % On the backend, the extension communicated with a dedicated server that hosted the Maia chess engine~\cite{}, which served as the AI teammate. 
+% In addition to managing the gameplay logic, the extension functioned as our data collection instrument, logging all user interactions and cursor positions. The system was designed to comply with Chess.com's Terms of Use, and the research accounts used in the study were officially marked by Chess.com to prevent suspension for fair play violation.
+
+
+\subsection{Materials}
+
+\subsubsection{Browser Extension}
+We implemented the experiment using a custom Chrome extension integrated with the Chess.com interface. %In addition to choosing between ``brain'' or ``hand'', participants could also log candidate moves before selecting the AI's role. 
+%Apart from managing game logic, 
+The extension recorded all user interactions and cursor positions. The browser extension connected via HTTP to a local chess engine to enable the use of an AI teammate. To ensure adherence with Chess.com's Terms of Use \footnote{https://www.chess.com/legal/user-agreement} and prevent any fair play violations, the extension was restricted to operate only on special research accounts provided by the platform.
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/blurred_interface_pic.png}
+%     \caption{The front-end interface of the browser extension we developed, which enables study participants to play a modified hand-and-brain chess with an AI teammate.}
+%     \label{fig:extension}
+% \end{figure}
+
+% \subsubsection{AI Teammate}
+% We chose Maia chess engine~\cite{mcilroy2020maia} as the AI teammate. We picked Maia over other open-source chess engines such as LCZero\footnote{https://lczero.org/} or Stockfish 17\footnote{https://stockfishchess.org/} as Maia is trained to predict human moves rather than the objective best moves and makes human-like errors~\cite{mcilroy2020maia}. Using Maia created a realistic collaborative dynamic where the participant could not blindly trust their AI partner. This incentivized them to continuously assess contextual factors such as position complexity, time remaining and recent performance of the AI partner before deciding between ``hand'' or ``brain''. Using Maia chess allowed us to elicit and measure meaningful shifts in delegation preferences based on changing game context. 
+
+% The browser extension communicated with the Maia chess engine, hosted on a dedicated server, via an HTTP connection.
+
+% \subsubsection{Gaze Tracker}
+% We tracked the user’s gaze during gameplay using the Beam Eye Tracker~\cite{},  a software solution available through Steam. It tracks the user’s eye and head rotation using the images captured from a standard webcam. We utilize Beam Eye Tracker’s Python SDK to log the user’s gaze movements and head rotation at 10 fps.
+
+% \subsubsection{Facial Recording}
+% We will utilize a webcam with an integrated microphone, positioned on top of the monitor facing participants, to record their facial expressions and speech during gameplay. These recordings will be used to analyze verbal and non-verbal interactions, emotional responses, and cognitive engagement. Additionally, post-processing of the facial recordings will allow us to extract head orientation data to further assess participants' attentional focus and engagement throughout the study.
+
+% \subsection{Participants}
+% We recruited N participants from a local chess clubs (M=7,F=1,NB=) with ages ranging from 18 to 29 years old.
+% To ensure similar skill levels across participants, we selected participants with blitz rating on a popular online chess platform within the range of 400 to 2000. These ratings are representative of novice and intermediary players.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%  Alternative to above to reduce redundancy with hand-and-brain section %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsubsection{AI Teammate}
+%We used the Maia chess engine~\cite{mcilroy2020maia} as the AI teammate. Unlike engines such as LCZero\footnote{\url{https://lczero.org/}} or Stockfish 17\footnote{\url{https://stockfishchess.org/}}, which optimize for objective best moves, Maia is trained to predict human moves and produces human-like errors, to help enhance interpretability of AI's decisions. This also made it well-suited for our study, as it created a realistic collaborative dynamic where participants could not blindly rely on the AI's decisions. Instead, they had to assess contextual cues such as board complexity, remaining time, and recent AI performance before choosing a mode. This setup enabled us to observe meaningful shifts in mode preference in response to changing task conditions.
+
+We used the Maia chess engine~\cite{mcilroy2020maia} as the AI teammate for all the participants, playing at a fixed rating of 1500 Elo, which corresponds to an intermediate-level club player. Unlike engines such as Leela Chess Zero~\cite{LeelaChessZero} or Stockfish 17~\cite{Stockfish}, which aim for optimal play, Maia is trained to predict human moves and makes human-like errors, improving the interpretability of its decisions and fostering a more realistic collaborative dynamic. For this reason, participants could not blindly trust the AI, but instead had to consider factors such as the complexity of the position on the board and recent AI behavior when choosing a control mode.% This setup created the conditions to observe shifts in mode preference in response to evolving task conditions.
+
+\subsubsection{Gaze Tracking}
+User gaze was tracked using Beam Eye Tracker\footnote{\url{https://beam.eyeware.tech/get-beam/}}, a software solution that uses webcam input to estimate eye and head movements. We logged gaze position and head orientation at 30 fps via Beam’s Python SDK.
+
+\subsubsection{Facial Recording}
+We recorded participant facial expressions using a webcam positioned above the monitor. These recordings were used to capture emotional response.% and cognitive engagement.% Post-processing of the video also provided additional head orientation data to complement gaze tracking.
+
+\subsection{Participants}
+%We recruited eight participants (7 male, 1 female, 18-29 years) from a local chess club. Participants had blitz (5 minutes or less per game) ratings between 400 and 2200 on chess.com, a range that included novice to advanced club players.
+% We recruited eight participants (7 male, 1 female, ages 18–29) from a local chess club, with blitz ratings (5 minutes or less per game) on chess.com between 400 to 2200 (novice to advanced club level). As blitz is one of the most popular online chess modalities, blitz ratings offer a common rating metric that is often most updated than other chess modalities.
+
+We recruited eight participants (7 male, 1 female; ages 18–29) from a local chess club. We assessed participant skill level using their blitz rating on Chess.com, as this time control is the most popular on the platform and offers a current and reliable indicator of their skill\footnote{\url{https://www.chess.com/terms/blitz-chess}}. Participant ratings ranged from 400 to 2200 Elo, ranging from novices to advanced club‑level players. Although there is a gender imbalance in participants, it matches the broader gender skew in club-level chess populations~\cite{arnold2024checking}.
+
+
+%\subsection{Data}
+%Add pre and post study questionnaires with citations here. Any other data that was collected also goes here.
+
+
+% \subsubsection{Collaboration Modes}
+% In the \textit{brain} condition, participants selected the piece type and the AI executed the move. In the \textit{hand} condition, the AI selected the piece type, and the participant chose and executed a legal move. To clearly distinguish these roles in our analysis, we refer to them in terms of the level of control retained by the human: \textit{higher-level control} (piece selection) and \textit{lower-level control} (move selection). While these modes loosely resemble the shared autonomy concepts of delegation and guidance, the structure of decision-making in our task—split across abstraction levels—warrants this alternative terminology. This framing allows us to examine how users switch between more strategic versus more tactical control across different phases of the task.
+
+
+% \subsection{Procedure}
+
+% After providing informed consent, participants completed a demographic form and a pre-study questionnaire assessing their decision-making style. Following this, each participant's gaze was calibrated using the Beam eye-tracking system's standard routine to record eye movements during the subsequent tasks.
+
+% The study consisted of two primary phases. In both the phases, all participants played our modified version of hand-and-brain chess with the White pieces and were paired with the same AI teammate, a Maia chess engine in their rating range. The participants were unaware of which AI engine was their teammate. In the AI Hand condition, participants acted as the brain, selecting the piece type while the AI executed the move. In the AI Brain condition, they acted as the hand, making a legal move with a piece type chosen by the AI. The two phases were : 
+
+% \subsubsection{1. Calibration Phase} In this phase the participants were presented with four chess positions that had been evaluated as balanced by the Stockfish 17\footnote{\url{https://github.com/official-stockfish/Stockfish/tree/sf_17}} engine (evaluation $\simeq 0.0$). These positions were selected from four distinct stages of a chess game (opening, early middlegame, late middlegame, and endgame) and were presented in a counter-balanced order across participants. For each position, participants had one minute for analysis before making five moves under a time control of three minutes plus a two-second increment per move. This allowed participants to get familiar with the interface while building a mental model of their AI teammate.
+
+% \subsubsection{2. Gameplay Phase} Next, each human-AI team played a complete game against a chess.com bot. The bot's difficulty was calibrated to match the participant's chess.com blitz rating. The time control for this game was 10 minutes with a 5-second increment per move.
+
+% After the game against the bot, participants took part in a semi-structured interview with a researcher. They were prompted to narrate the game, identify moments they considered critical, and discuss why they chose to act as the ``brain'' (selecting the piece to move) versus the ``hand'' (executing the move). The session concluded with participants completing surveys designed to measure teammate trust and perceptions of team dynamics.
+
+\subsection{Procedure}
+
+%After providing informed consent (protocol \#anonymous), participants completed a demographic questionnaire and a pre-study survey assessing how frequently they played hand-and-brain chess and their preferred role (hand/brain) when paired with a teammate of a lower ($>$ 100 points), similar ($\pm$ 100 points), or higher ($>$ 100 points) rating compared to their own rating. Next, we calibrated eye-tracking using Beam's standard routine to ensure reliable gaze data collection during gameplay.
+
+After providing informed consent (protocol \#anonymous), participants completed a demographic survey and indicated their preferred role (hand/brain) when paired with teammates of lower, similar, or higher rating. We then calibrated eye-tracking using Beam's standard routine to ensure reliable gaze data during gameplay.
+
+The study consisted of two phases. In both phases, participants played hand-and-brain chess as the White pieces and partnered with the same AI teammate (Maia~\cite{mcilroy2020maia}) whose strength was fixed at 1500 Elo. Each participant played against a Chess.com bot at a rating as close as possible to their blitz rating. Participants were informed of the rating of the Chess.com bot they would face. However, they were only told that their teammate was an AI; its underlying engine and skill level were undisclosed.
+
+%At each turn, participants evaluated the board and chose between playing as ``hand'' or ``brain.'' When choosing ``hand,'' the AI teammate selected a piece type, and the participant made a legal move with that piece type (\cref{fig:task}a). Symmetrically, when playing as ``brain'', participants selected a piece type among the options available on the board, and the AI teammate performed the valid movement(\ref{fig:task}b).
+
+%\subsubsection{Phase I: Tutorial}  
+Participants started by playing four chess positions selected to represent different stages of the game (opening, two middlegame positions, and endgame) with evaluations near $0.0$ by Stockfish 17~\cite{Stockfish}. For each position, participants had one minute to analyze before playing five turns of our modified hand-and-brain chess. This familiarized them with the interface and helped them form an initial mental model of the AI teammate.%For each position, they were given one minute to analyze the position, following which they played our hand-and-brain chess for five turns. This phase familiarized participants with the interface and enabled them to build an initial mental model of their AI teammate.
+
+%\subsubsection{Phase II: Task}  
+After the four initial familiarization positions, each participant played a full game with the AI teammate, which played at a fixed rating of 1500 Elo.
+Throughout the full game, we recorded participant facial expressions, eye-gaze, time elapsed, board state, moves, and hand-brain choices.
+
+After the game, participants completed a semi-structured interview with one of the researchers who is a titled player. They were asked to narrate the game, identify key decision moments, and explain their choices to act as the ``brain'' or the ``hand'' at specific moments. To conclude the study, participants completed post-study questionnaires assessing teammate trust and perceived team dynamics. Our post-study surveys combined items from instruments including the Trust in Autonomous Systems (TIAS)~\cite{jian2000foundations} and Cohesion and Satisfaction scales from~\citet{bushe1995appreciative}, with customized questions on strategic alignment in the team (e.g., ``How often were you surprised by your teammate's choices?'', ``How often did you think your teammate's choice was a mistake?''). Full surveys are available in Supplementary.
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/decision.pdf}
+    \caption{Hand-and-Brain Chess: At each turn, participants chose to act as either the Hand or the Brain after evaluating the board. (a) In the Hand mode, the AI selected the piece type, and the participant made a legal move with a piece of that type. (b) In the Brain mode, the participant selected the piece type, and the AI executed a legal move. (c) Participants switched between these two modes over time, based on factors that our model uses to predict switching behavior.
+}
+    \label{fig:task}
+\end{figure*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%  QUAL RESULTS SECTION BEGIN %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \section{Data Analysis \& Results}
+
+%EXPLANATION 
+% human decision making depends on their knowledge, emotions and current internal state; we need mixed-methods to analyze and explain patterns in human decision-making
+
+
+\begin{comment}
+%%%
+\section{Factors of Delegation-Guidance Decision} \label{sec:themes}
+Because quantitative measures may not capture the influence of implicit biases and other subjective factors on human decision-making~\cite{}, we analyzed the video recordings of the semi-structured interviews using reflexive thematic analysis~\cite{} to uncover patterns in participants' delegation-guidance decisions.
+
+Following the guidelines in Braun \& Clark et al.~\cite{}, two researchers first familiarized themselves with the interview recordings (four each) and selected statements articulating decision-making rationales. Next, they labeled the selected statements with ``when'' and ``why'' codes. The two researchers independently clustered these codes into candidate themes, compared and reconciled their interpretations, and produced a unified thematic set. The resulting themes are reported as follows.
+
+\subsection{Delegation-Guidance Strategies}
+
+\subsubsection{Delegation over Guidance in Critical Conditions}
+Participants often decided to delegate to AI when they identified a critical move among a large number of other, less critical possibilities. For example, when a piece was under attack in the middle of the game, participants delegated a move involving that piece to their AI teammate. This choice reflected a belief that the AI might overlook the threat amid numerous alternatives; by constraining the AI to the piece in danger, participants ensured that at least some defensive move would occur, even if the exact destination square was less important. By delegating to AI, users effectively pruned the tree of possible moves at the top levels, significantly constraining the downstream possibilities. Overall, participants prioritized avoiding a known risk over pursuing a potentially superior but uncertain alternative.
+
+\subsection{Perception of Teammate Performance}
+
+% \subsubsection{Common blunders}
+
+\subsubsection{Shuffling} A common undesired behavior we observed was piece shuffling. When participants had a course of action in mind and decided for brain, sometimes the AI teammate did not behave in alignment with that plan execution. When repeating the decision for brain followed by the same piece type, the AI teammate sometimes moved the piece again to an undesired position or eventually back to the original position.
+
+\subsubsection{Sabotaging} P1 stated the AI teammate played at a higher rating at the early game than in the late game, suggesting that after a certain move, the teammate started to sabotage the game. This perception is an artifact of the underlying chess engine used in our AI teammate, Maia~\cite{mcilroy2020maia}, which learn primarily from human data, not optimal play. Endgame positions are naturally less common across most player levels, so the training data becomes sparse in those phases. This sparsity limits the models’ ability to generalize and predict human moves accurately late in the game, where humans themselves make fewer consistent decisions.
+
+
+offer the AI teammate 
+
+%``GM Hikaru Nakamura stated that as the brain playing with a weaker hand, he often picks sub-optimal moves he finds more suitable for his hand partner Nakamura (2021)''~\cite{hamade2024designing}
+
+\subsubsection{P1}
+\begin{enumerate}
+    \item \textbf{Hand}
+    \begin{enumerate}
+        \item \textbf{When:} the player found many possible movements
+        \item \textbf{Why:} the teammate will either select a piece the player have already thought how to move or at least try the best possible move given the piece type.
+    \end{enumerate}
+    \item \textbf{Brain:} 
+    \begin{enumerate}
+        \item \textbf{When}: when there is a critical defensive movement (e.g., under check, or a valuable piece is under attack)
+    \end{enumerate}
+    \begin{enumerate}
+        \item \textbf{Why:} by selecting the type of the piece under attack, players can ensure it will be moved to avoid the attack.
+    \end{enumerate}
+    
+\end{enumerate}
+
+\subsubsection{P2}
+\begin{enumerate}
+    \item \textbf{Hand:}
+    \begin{enumerate}
+        \item \textbf{When}: In the opening. when time-pressured.  
+        \item  \textbf{Why}: to maintain flexibility. reduce the search space
+    \end{enumerate}
+    \item \textbf{Brain}:
+    \begin{enumerate}
+        \item \textbf{When}: generally preferred. 
+        \item \textbf{Why}: narrow down the options. minimize risk
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{P3}
+\begin{enumerate}
+    \item \textbf{Hand:}
+    \begin{enumerate}
+        \item \textbf{When}: opening; tricky position with lot of options
+        \item \textbf{Why}: choosing brain in the past didn't work out well
+    \end{enumerate}
+    \item \textbf{Brain:}
+    \begin{enumerate}
+        \item \textbf{When}: tense positions
+        \item \textbf{Why}: didn't want to be the one to blunder. to make a certain move
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{P4}
+\begin{enumerate}
+    \item \textbf{Hand:} 
+    \begin{enumerate}
+        \item \textbf{When}: player's rating is significantly lower than the AI teammate
+        \item \textbf{Why}: Benefit from the high level guidance.
+    \end{enumerate}
+    \item \textbf{Brain:} 
+    \begin{enumerate}
+        \item \textbf{When}: Almost every time.
+        \item \textbf{Why}: User believed that there was less room for error in this mode.
+    \end{enumerate}
+    
+\end{enumerate}
+
+\subsubsection{P5}
+\begin{enumerate}
+    \item \textbf{Hand}:
+    \begin{enumerate}
+        \item \textbf{When}: obvious moves. simple position. opening
+        \item \textbf{Why}: probed -- just to see what the teammate would do
+    \end{enumerate}
+    \item \textbf{Brain}:
+    \begin{enumerate}
+        \item \textbf{When}: Important positions. only moves. when not sure what to do
+        \item \textbf{Why}: little more control  
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{P6} How can I make AI do what I want?
+\begin{enumerate}
+    \item \textbf{Hand:}
+    \begin{enumerate}
+        \item When: Whenever there was not an specific movement to be made. Taken as the standard choice by P6.
+        \item Why: Participant believed that they would be able to at least mitigate the losses in case of a blunder of the AI teammate. 
+        
+        Additionally, being able to delegate the decisions to the teammate alleviated Participant' workload in selecting a good movement during the calibration phase specially, when the board state didn't evolve progressively but was presented in a specific position.
+
+        Participant did not necessarily expected a better outcome than would have been possible if they selected the piece, but were motivated to select this option due to the lower cognitive effort it enables.
+    \end{enumerate}
+    \item \textbf{Brain:} 
+    \begin{enumerate}
+        \item \textbf{When}: There was a concrete movement available.
+        \item \textbf{Why}: Hoped that the AI team mate would be able to find the movement they had in mind.
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{P7}
+\begin{enumerate}
+    \item \textbf{Hand}:
+    \begin{enumerate}
+        \item \textbf{When}: When they were a lot of options available or not sure what to do or when there was an obvious option
+        \item \textbf{Why}: Thought AI was at the same skill level but thought faster so used it to reduce the search space
+    \end{enumerate}
+    \item \textbf{Brain}:
+    \begin{enumerate}
+        \item \textbf{When}: In tense positions
+        \item \textbf{Why}: Just to make sure
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{P8}
+\begin{enumerate}
+    \item \textbf{Hand}:
+    \begin{enumerate}
+        \item \textbf{When}:lot of options in the position; opening
+        \item  \textbf{Why}: could not decide what to do or calculate
+    \end{enumerate}
+    \item \textbf{Brain}:
+    \begin{enumerate}
+        \item \textbf{When}:
+        \item  \textbf{Why}: 
+    \end{enumerate}
+\end{enumerate}
+
+
+
+\subsection{Psychological and Cognitive Factors}
+
+\subsubsection{Frustration} participants felt frustrated by the additional work to create a strong move associated to an unexpected piece suggestion when playing hand.
+
+\subsubsection{Meta-decision overhead} participants (p6) reported spending additional time selecting the collaboration mode and bridging their ideal movement with a potential noon cooperative teammate.
+\end{comment}
+\subsection{Pre-study Questionnaires}
+
+Responses from the pre-study questionnaire showed that the participants had limited familiarity with hand-and-brain chess, as most reported playing it infrequently ($\mu = 1.25$ on a 7-point Likert scale, where 1 = rarely and 7 = often). 
+Stated preferences for roles in hand-and-brain chess depended on the relative rating of their hypothetical teammates. Seven of the eight participants stated they would prefer to play as ``brain'' when teamed with a partner with a similar rating (within 100 points). When the hypothetical rating gap was larger, preferences were evenly split between the two roles. Observed in-game behavior matched stated preferences for only three participants. This discrepancy, as noted in prior work~\cite{de2021stated}, highlights the value of examining revealed rather than self-reported preferences in shared control settings.
+%We compared these stated preferences with actual observed in-game preferences and found that only three participants behaved as initially stated. This mismatch between stated and observed preferences is well documented in the literature~\cite{de2021stated} and restates the importance of studying revealed preferences in shared control.
+
+\subsection{Post-study Questionnaires}
+Of the 8 games played with the AI teammate, participants recorded 5 wins, 0 losses, and 3 draws.  The shortest game lasted 19 moves, while the longest extended to 115 moves. In terms of duration, the quickest game took 3 min and 46 s, and the longest lasted 24 min and 24 s.
+To evaluate the subjective quality of the participant-AI partnership, we used post-study questionnaires to assess teammate alignment, trust, cohesion and satisfaction. Each factor was measured using multi-item, 7-point Likert scales, and a composite score (out of 6) was computed for each by averaging the individual item scores. 
+
+\subsubsection{Alignment} Participants rated the overall alignment with their AI teammate's moves as neutral ($\mu = 3.03; \sigma = 0.84$). However, perceived alignment was influenced by the game's outcome. Participants who won their game reported higher alignment scores ($\mu=3.35$) compared to those who did not ($\mu=2.50$).
+
+\subsubsection{Trust} The overall trust score ($\mu = 2.87; \sigma = 1.6$) indicates a lack of trust in the AI teammate across both novices and advanced chess players. Participants who won their game, on average, trusted their teammate more ($3.53$) than those who did not win ($1.77$ ). %Their responses are shown in Figure~\ref{}. 
+
+\subsubsection{Cohesion} The overall team cohesion score was low ($\mu = 2.66; \sigma = 1.2$), with participants who won their game reporting higher scores ($\mu = 3.17$) than those who did not ($\mu = 1.8$). This indicates that participants did not perceive their team as a well-aligned unit. 
+
+\subsubsection{Satisfaction} The overall satisfaction score was low ($\mu = 2.59; \sigma = 1.38$), indicating that all the participants were dissatisfied with their AI teammate. Participants explained, \emph{``As I had a better position, I think it [the teammate] started to make worse and worse moves''} (P1). The satisfaction reported by participants who won their game was slightly higher ($\mu_{won} = 3.15$ vs $\mu_{draw} = 1.66$).
+
+\subsection{Quantitative Analysis}\label{sec:quant_analysis}
+
+To construct a dataset for statistical analysis, we first time-synchronized the facial recordings, raw gaze data, and participant interaction logs, including moves and collaboration mode selections. We then estimated the participant's emotional state using Deep Face~\cite{serengil2024lightface} on every 10th frame of the facial video recording and aligned these estimates temporally with the corresponding control mode decisions and turns. DeepFace~\cite{serengil2024lightface} outputs a probability distribution over seven emotion categories. From this distribution, we extracted the probability of surprise, after the opponent's turn, as it was the most relevant to estimating the participant's response to the turn. Surprise is often defined as a reaction to disconfirmed expectations, when an outcome deviates from what is likely or expected \cite{meyer1997toward, teigen2003surprises, gross2014impact}. However, alternative accounts suggest that surprise may also reflect a breakdown in sense-making, where the level of surprise corresponds to the difficulty of integrating new information into an existing mental model~\cite{maguire2011making}. In the context of our task, both perspectives are relevant. Unexpected opponent decisions may have surprised participants either because they defy prior expectations or because they disrupt ongoing strategy formulation. %Given its link to cognitive reappraisal and its observable facial expressions, surprise offers us a useful signal for modeling participant state in our task.
+
+
+
+%Surprise is directly tied to a user's cognitive response to unexpected game events such as blunders, strong moves or shifts in evaluation ~\cite{maguire2011making, itti2009bayesian}, and may have influenced the participant's choice of mode. 
+
+We processed the dataset to extract data associated with the turns that required participants to consider several possible moves from multiple pieces. We excluded two types of moves, the first move of the game, as it lacks a prior context and moves made in a decisively won or lost position. Such positions were identified by either a significant material imbalance (e.g., King and Queen vs King) or extreme evaluations (e.g., +10, which indicates that the white side has an advantage equivalent to an extra queen and pawn) from Stockfish 17, where the mode choice would be trivial, as it would not change the outcome. This filtering removed 36 turns, resulting in a final dataset of 381 control mode selections (192 hand and 189 brain selections; 133 switches, 248 non-switches) for analysis. Using this dataset, we examined three factors. First, we assessed whether players exhibit different gaze patterns before they switch control modes compared to when they do not. Next, we examined how positional complexity and player emotion, specifically surprise, affect one's decision to switch modes. Finally, we analyzed how switching modes influences the objective quality of the move played in the turn.
+
+\subsubsection{Gaze Patterns before Mode Switching}
+
+%Gaze behavior can provide insight into participant attention allocation and cognitive state during decision-making~\cite{}. 
+
+Gaze behavior has been used to infer attention allocation~\cite{rayner1998eye,just1980theory} and is also recognized as a marker of cognitive state, including task difficulty and decision-making effort~\cite{marshall2007identifying,goldberg1999computer}. Therefore, in the context of human-AI collaboration, we hypothesized that gaze patterns would differ when participants switched control modes compared to when they did not, reflecting increased deliberation or cognitive conflict preceding a mode change. A Mann-Whitney U test confirmed this, revealing that mode-switching was associated with significantly greater gaze dispersion along the vertical length of the board ($ \mu_{switch} = 696.91$ px, $\mu_{no\_switch} = 619.94$ px;$ U = 17193.5, p = 0.01$) and higher gaze entropy ($\mu_{switch} = 5.37, \mu_{no\_switch} = 4.98; U = 17904, p = 0.001$). However, the ratio of gaze dwell time to thinking time (the duration from the opponent's last turn to the participant picking the control mode) was not significantly different ($\mu_{switch} = 0.38, \mu_{no\_switch} = 0.36; U = 15666.5, p = 0.42$).
+
+
+% Pre Raw Gaze raw\_y\_dispersion
+% MannwhitneyuResult(statistic=np.float64(17193.5), pvalue=np.float64(0.01617357468387941))
+% Pre Gaze Entropy
+% MannwhitneyuResult(statistic=np.float64(17904.0), pvalue=np.float64(0.001611262968341402))
+% Pre Dwell Time Ratio
+% MannwhitneyuResult(statistic=np.float64(15666.5), pvalue=np.float64(0.4266064088406488))
+
+% % mean values
+% Pre Raw Gaze raw\_y\_dispersion
+% NS 619.949581956185
+% S 696.9172103560413
+% Pre Gaze Entropy
+% NS 4.980144202757905
+% S 5.371907032704353
+% Pre Dwell Time Ratio
+% NS 0.3689963871906674
+% S 0.3809127775940606
+
+\subsubsection{Influence of Position Complexity on Mode Switching}
+We used chess fragility score~\cite{barthelemy2025fragility} to quantify the complexity and critical nature of the positions that occurred during the study. Fragility score ranges from 0 to 1, with higher values indicating more decisive positions in a game. It is a robust metric that remains consistent across games with different openings and players of various skill levels~\cite{barthelemy2025fragility}. We hypothesized that participants would be more likely to switch control modes in more fragile positions. A Mann-Whitney U test confirmed this, revealing that positions preceding a mode switch had significantly higher fragility scores ($\mu_{\text{switch}} = 0.052$) than those where control remained the same between two subsequent turns ($\mu_{\text{no switch}} = 0.044$), with $U = 18384.0, p = 0.04$.%($U = 18384.0, p=0.04$).
+
+
+\subsubsection{Influence of Surprise on Mode Switching}
+To investigate the role of surprise in mode switching, we computed the average surprise probability in the time window between the end of the opponent's turn and the participant's selection of control mode. While participants exhibited slightly higher levels of surprise prior to a switch ($\mu_{switch} = 0.2933; \mu_{no\_switch} = 0.2344$), a Mann-Whitney U test indicated that this difference was not statistically significant ($U = 18428.5$, $p = 0.055$).
+
+\subsubsection{Impact of Switching on Position Evaluation}
+To determine the effect of mode switching on turn quality, we analyzed the change in position evaluation measured in terms of centipawns\footnote{https://www.chess.com/blog/raync910/average-centipawn-loss-chess-acpl}, using the Stockfish 17 chess engine. A Mann-Whitney U test revealed that the act of switching was associated with a statistically significant decrease in move quality ($\mu_{switch} = -42.78; \mu_{no\_switch} = -33.22; U = 13798.5, p = 0.008$). Here, more negative values reflect objectively worse moves. However, a subsequent analysis showed no significant difference in evaluation change when the user switched to ``brain'' or ``hand'' mode ($ U = 2247.0, p = 0.85$).
+
+\subsection{Control Mode Switching Prediction}
+
+From the dataset used for the quantitative analysis, we further excluded data from participant P2 due to unreliable gaze data. This resulted in a final dataset of 361 mode selections (128 switches) from the remaining 7 games. Using this dataset, we engineered a set of hand-crafted features informed by the quantitative analysis (Section \ref{sec:quant_analysis}) to train a LightGBM~\cite{ke2017lightgbm} model for predicting collaboration mode switches. %Below, we describe the feature generation process and provide details about the model training.
+
+% We also remove data points when one of the players is completely winning using the Stockfish evaluations. 
+% Why? through our analysis of the study video recordings and post-game interviews we noticed that users did not think about the modes when they were in a completely winning position (e.g., King and Queen vs King position)
+% add final statistics : this resulted in 361 switching decision in the final = 233 not switches, 128 switches.
+
+
+% \subsection{Feature Engineering}
+% We engineered features using gaze, emotion, time usage, and chess-specific position data. The time-related and domain-specific features were informed by thematic analysis of our qualitative findings (Section \ref{sec:themes}). Based on exploratory data analysis and participant interviews, we grouped features into three categories:
+% \begin{enumerate}
+%     \item \textbf{Global Features}: Capturing cumulative metrics from the beginning of the game up to the current move, such as total time used and the number of mistakes made.
+%     \item \textbf{Local Features}: Derived from the preceding \textit{k} (3,5) moves, these include statistics of gaze and fixation positions, changes in estimated emotional state, and changes in board position.
+%     \item \textbf{Current Move Features}: Including gaze distribution, emotion estimates, and time spent deliberating the current hand/brain decision. 
+% \end{enumerate}
+
+% The full list of features used is summarized in Table~\ref{}.
+% To account for the temporal nature of decisions, we generated samples every 3 seconds during each move. For moves where the hand/brain decision took more than 3 seconds, we created multiple data samples (at 3-second intervals), labeling each with the final choice. 
+
+% \subsection{Model} The dataset was split into training (80\%) and test (20\%) sets. To preserve temporal dependencies, the split was performed by randomly assigning contiguous chunks of 3 to 5 consecutive moves from each game to either the training or test set.
+% An XGBoost classifier was trained to predict the hand/brain decision at each 3-second interval using the engineered features. Model hyperparameters and performance metrics are detailed in Tables~\ref{} and~\ref{}.
+
+
+\subsubsection{Feature Engineering}
+We engineered features from gaze, emotional states, and game state data. The emotion-based and domain-specific features were guided by our quantitative findings. We grouped features into two categories:
+
+\begin{enumerate}
+\setlength{\itemsep}{0em}
+
+    %\item \textbf{Global Features}: Cumulative metrics from the beginning of the game up to the current move, such as total time elapsed, number of moves played, number of AI errors or inaccuracies (based on engine evaluations), and cumulative switching frequency.
+
+    \item \textbf{Local Features}: Statistics computed over the preceding \textit{k} moves (we tested $k = 3$ and $k = 5$), including changes in gaze dispersion, fixation counts, estimated probability of surprise, differences in objective engine evaluation of the positions, and fragility of the positions.
+
+    \item \textbf{Current Move Features}: Features computed over the current thinking window, such as average gaze entropy and facial expression metrics, time spent deliberating the control mode decision, and position evaluation.
+\end{enumerate}
+
+% The complete list of features is provided in Appendix Table~\ref{}.  
+% To account for the temporal dynamics of decision-making, we generated feature samples at one-second intervals during each move. For moves lasting longer than one second, multiple samples were generated (e.g., at 1s, 2s, 3s), each labeled with the final decision (hand or brain) for that move. Each of the samples represents an unique instance of the user state at a specific moment.  This allows the model to learn how evolving behavioral and contextual signals during deliberation relate to the user's eventual control choice. Further, this allows the model to learn how to differentiate a quick decision from a long, deliberate decision even though they resulted in the same choice.
+% alt paragraph
+To capture the temporal dynamics of decision-making, we generated feature samples at one-second intervals for each turn. For turns lasting longer than one second, multiple samples were created (e.g., at 1s, 2s, 3s), each labeled with the final decision for that move (hand or brain). This not only increased the amount of training data but also simulated the model's deployment scenario, where predictions are made continuously by accumulating information as the user is thinking. Each sample represents the user's behavioral and contextual state at a specific moment in time, with the time elapsed since the start of the participant's turn, explicitly included as a feature. Structuring the data this way allowed the model to learn how decision-relevant signals evolved over time and how these temporal patterns related to the eventual control mode choice. While the samples from a given turn are temporally correlated and share the same label, this structure is consistent with real-time inference conditions. %The use of time as an input feature further enables the model to distinguish between rapid, reactive decisions and slower, deliberative ones, even when they result in the same outcome.
+
+We split the dataset into training ($70\%$) and test ($30\%$) sets, preserving temporal coherence by randomly assigning segments of 3–5 consecutive turns from each game to one set. This approach helped prevent data leakage.
+
+
+\subsubsection{Model}
+ 
+We trained a LightGBM~\cite{ke2017lightgbm} classifier to predict if the participant would switch the control mode at each one-second interval using the engineered features (see supplementary). To help the model capture time-based patterns in the data, we employed a custom loss function based on focal loss~\cite{lin2017focal}, to penalize incorrect predictions more heavily when they occur later in the participant's decision window. This encourages the model to consider the recently accumulated data instead of using only the local features and also to converge to the correct label as the information available increases. Specifically, we used an exponentially scaled version of the time-elapsed feature, normalized using min-max scaling, to compute per-sample weights that scale the gradient and Hessian terms during training. Hyperparameters were tuned using a validation set. Performance metrics, including accuracy, F1 score, and feature importance rankings, are reported in Supplementary. %Tabless~\ref{tab:results} and~\ref{}.
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+Features Used                  & Accuracy (\%) & F1-score \\ \midrule
+\textbf{With} task-specific features    & 64.7          & 0.63     \\
+\textbf{Without} task-specific features & 60.5          & 0.65     \\ \bottomrule
+\end{tabular}
+\caption{Comparison of model performance with and without task-specific features. The other features are behavioral, such as gaze and emotional state.}
+\label{tab:results}
+\end{table}
+
+\begin{comment}
+
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+         Features Used & Accuracy (\%) & F1-score\\ [0.5ex]
+         \hline \hline
+         With task-specific features &  64.7 & 0.63 \\
+         \hline
+         Without task-specific features & 60.5 & 0.65\\
+        \hline
+    \end{tabular}
+    \caption{Comparison of model performance with and without task-specific features. The other features are behavioral, such as gaze and emotional state.}
+    \label{tab:results}
+\end{table}
+    
+\end{comment}
+
+\begin{comment}
+
+\subsection{Qualitative Analysis of Switching Behavior}
+
+To complement our quantitative analysis, we conducted a thematic analysis of post-game interviews to understand participant reasoning behind switching between high level of control (brain) and lower level of control (hand) throughout the game. Participants narrated critical decisions and explained why they chose to retain or relinquish control at various moments. From this analysis, we identified five recurring behavioral themes:
+
+\begin{itemize}
+    \item \textbf{Cognitive Offloading (T1)}: Participants often delegated higher-level decision-making to the AI by choosing hand, in complex or cognitively demanding situations such as early-game uncertainty, high branching factors, or mental fatigue. In these cases, participants described using the AI to narrow the search space, reduce mental workload, or generate ideas.
+    
+    \item \textbf{Critical Control (T2)}: In high-stakes or defensive situations, such as when a key piece was under threat or a blunder could be costly, participants preferred to act as the brain. This allowed them to retain control over the strategic direction or to force a specific piece type to be moved.
+
+    \item \textbf{Learning AI Behavior (T3)}: Several participants used role switching to probe or calibrate their understanding of the AI teammate's capability. This included choosing roles to see how the AI would respond or to test whether it would execute a move the participant had in mind.
+
+    \item \textbf{Phase-Based Strategy (T4)}: Participants applied temporal heuristics in switching strategies, often delegating during the opening phase to offload routine decisions, and switching to guidance in the middlegame or tense positions where judgment mattered more. % link to Arthurs preference analysis
+
+    \item \textbf{Relative Skill Framing (T5)}: Control-mode choice was sometimes shaped by the participant's perceived skill gap relative to the AI teammate. For example, participants who viewed the AI as stronger tended to delegate more, while others preferred to maintain control in situations where they lacked trust in the AI's judgment.
+\end{itemize}
+
+These themes reinforce the idea that switching behavior is shaped not only by board state or task difficulty, but also by internal cognitive states as represented by gaze or facial expressions, user-AI trust calibration, and dynamic assessments of role fit. %The diversity of these rationales provides empirical grounding for the contextual features we use in our predictive model (e.g., game phase, time remaining, recent AI success, and piece value under threat).
+Questionnaire Data: The game outcome likely impacted .... (for each avg score being reported)
+\end{comment}
+
+\subsection{Thematic Analysis of Interview Data}
+
+%%%%%% We need a sentence or two here that connects the quantitative, model and qualitative cascade, the reason why these sections are ordered the way they are. A way to explain things that just data doesn't explain. %%%%%%
+
+Because quantitative measures may not fully capture the influence of implicit biases, trust, and other subjective factors on human decision-making, we analyzed the semi-structured interview recordings using reflexive thematic analysis~\cite{braun2006using}. This approach allowed us to identify recurring patterns in how participants described their control mode switching decisions.
+
+Following guidelines by~\citet{braun2006using}, two researchers independently reviewed the interview recordings (four each) and extracted statements related to participant decision-making rationales. These statements were labeled with ``when'' and ``why'' codes to distinguish conditions and motivations for control mode choices. The researchers then independently clustered the codes into candidate themes, compared and reconciled their interpretations, and produced a unified set of three themes.
+
+
+%\subsubsection{Strategic Use of Control Based on Position Complexity.} 
+%Participants consistently chose between hand and brain modes based on the perceived complexity and urgency of the position. Hand mode was often preferred when there were many possible options or the player was unsure what to do, allowing the AI to narrow the decision space (P1, P3, P7, P8). In contrast, brain mode was favored in tense or critical situations such as being in check or needing to defend a valuable piece where participants wanted to retain control (P1, P3, P5, P7).
+
+%\subsubsection{Complexity and Risk.}
+%Participants often selected control modes based on the perceived complexity or risk of the current position. Hand mode was commonly used in situations with many possible options or during the opening phase, allowing the AI to help reduce the search space and offload decision-making (P1, P3, P7, P8). Brain mode was preferred in tense or high-stakes positions such as when defending a valuable piece or avoiding a blunder where participants wanted to ensure a specific piece would be moved or to minimize the chance of error (P1, P2, P3, P5, P7). These choices reflect how users dynamically assess both cognitive load and potential consequences when deciding whether to delegate control.
+
+
+%\subsubsection{Cognitive Load.} 
+%Several participants described using hand mode to reduce mental effort, particularly during the opening phase or when the board was visually or cognitively overwhelming (P2, P3, P5, P6, P8). Brain mode, on the other hand, was selected when participants had a concrete move in mind or felt the need for greater control over the position (P3, P5, P6). P6 explicitly noted that hand mode helped offload decision-making when the board state was presented without progression, indicating the mode's role in managing cognitive burden.
+
+\subsubsection{T1: Managing Complexity and Risk.}
+A factor of switching behavior was the need to manage mental effort in the face of complex or high-stakes decisions. Participants frequently selected hand mode when faced with many options, during openings, or when unsure what to do. These were situations where delegating to the AI helped reduce effort or narrow the decision space (P1-P3, P5-P8). In contrast, brain mode was preferred in situations such as when defending a valuable piece or trying to avoid a blunder.   Participants wanted to retain greater control or ensure a specific piece was moved (P1-P3, P5, P7). These choices reflect how users dynamically weighed effort, trust, and situational urgency when deciding which control mode to use.
+
+
+\subsubsection{T2: Trust and Perceived AI Competence.} 
+Participant trust in their AI teammate may have shaped their control choices. Some relied on the AI to handle ambiguity or speed up decisions in complex situations (P2, P6, P7), while others preferred to retain control after negative experiences with AI decisions (P3, P5). 
+%Trust was not fixed through the game. It evolved based on the AI's recent performance as gauged by the participant, perceived competence, and the stakes of the current position.
+Trust evolved throughout the game, influenced by the participant's move-by-move assessments of the AI's performance along with perceived competence and the stakes of the current position.
+
+%\subsubsection{Control for Risk Mitigation.} 
+%Brain mode was often used as a safeguard in high-risk moments. Participants described using it to avoid potential blunders, particularly when the consequences of a poor move were high (P2, P3, P5). Hand mode, by contrast, was more acceptable in low-risk or obvious positions where the outcome of the AI's move was unlikely to be consequential (P5, P6).
+
+\subsubsection{T3: Meta-Level Control Strategies.} 
+Some participants developed consistent heuristics or meta-strategies for mode selection. For example, P2 preferred brain mode to minimize risk, while P6 defaulted to hand mode unless they had a specific move in mind. This suggests that users were not only responding to momentary context but also forming higher-level strategies for managing control over time.
+
+
+%\section{Discussion}
+
+% NEW DISCUSSION POINTS
+%%% switching results in worse performance. AI can be mindful of that, and adapting to an upcoming switch. That's why we need to predict the swithc. SO we are seeing motivation in our data. %%%%%
+
+%%%%% From RW: "These studies have found that trust consistently emerges as a critical predictor of delegation behavior, alongside perceived task difficulty, motivation, and risk." Our work is showing that users switch during perceived task difficulty. 
+
+%% humans chose not to reveal intent by not logging candidate moves
+
+% END NEW DISCUSSION POINTS
+
+% \subsubsection{Perceived Control and Flexibility}: The participants felt that the delegation mode give them more control whereas the guidance mode offered them flexibility. This aligns with prior work which states that initiation of action contributes positively towards a user's sense of agency. Participants chose guidance more often in the early stages of the game where the piece type is not so important as the number of piece movements is low so users could maintain flexibility of the opening that would be played. 
+
+% \subsubsection{Mode selection patterns and biases}: Despite the availability of both control modes, users did not switch between them frequently during the task. Mode transition probabilities revealed low switching behavior, indicating a strong tendency toward behavioral inertia. This effect was particularly evident in participants such as P1 and P5, who remained in guidance mode for extended sequences (11 and 7 moves, respectively) at the end of their games, even when switching could have yielded better outcomes. One possible explanation is the presence of \textit{cognitive switching costs}, the mental effort required to disengage from a current workflow, evaluate an alternative mode, and adapt to a new collaboration mode. Prior work has shown that such cognitive overhead can discourage users from dynamically adjusting strategies, especially in time-pressured or cognitively demanding contexts~\cite{monsell2003task}. This behavior also aligns with the principle of satisficing~\cite{simon1956rational}, where users do not actively seek the optimal strategy but instead settle for one that meets a perceived threshold of adequacy. In this case, participants may have judged that their current mode was “good enough” to complete the task and therefore lacked sufficient motivation to explore alternative control options.
+
+% \subsubsection{Trust dynamics}: Participant’s trust in the AI agent was shaped by both alignment and misalignment with their own strategies. The increase in trust from aligned suggestions is consistent with confirmation bias, where individuals are more likely to interpret agreement as validation of their own beliefs or decisions. In this context, the AI's agreement may have reinforced the confidence of the participant in their strategies and, by extension, their perception of the agent's competence. Interestingly, misalignment did not consistently reduce trust. In several cases, participants reported believing that the AI had a superior plan when its piece or move selection diverged from their own. This response likely stems from a preconceived belief in the AI’s superior capabilities in chess, a domain where AI has long outperformed human experts. Such a belief may have established a high baseline of trust, causing participants to defer to the AI’s decisions, assuming the presence of deeper, non-obvious reasoning rather than critically evaluating its choices. This behavior reflects a form of deference to perceived expertise~\cite{}, and may also be influenced by automation bias~\cite{}, wherein individuals overly rely on automated systems, particularly in high-skill or high-stakes domains.
+
+% \subsubsection{Cognitive Biases}
+
+% Our findings complement and extend prior work on human-AI teaming, particularly Gurney et al. \cite{gurney2023role}, who demonstrated that cognitive biases such as framing and anchoring shape human effort and performance when working with an AI helper. While their work emphasized aggregate outcomes and shifts in behavior under experimental manipulations, our study focuses on decision-level dynamics, specifically, how users choose between guidance and delegation in real time. Several themes we identified, such as cognitive offloading and perceived AI competence, reinforce patterns seen in their loss-frame participants who over-relied on AI. However, our work reveals additional dimensions, including phase-based strategies, active attempts to probe the AI's behavior, and moment-to-moment adjustments in control preferences. These insights highlight not just when users deviate from rational norms, but how they strategically navigate control in mixed-initiative contexts. Together, these two perspectives offer a more comprehensive picture of human-AI interaction, supporting future systems that are both bias-aware and responsive to evolving user intent.
+\begin{comment}
+\subsubsection{Perceived Control and Flexibility}  
+Participants perceived the brain mode, which gave them control over choosing the type of piece, as offering them greater control than the hand mode where they chose the move of an AI picked piece type. This aligns with prior research showing that initiating a selection enhances a user's sense of agency \cite{}. In the early stages of the game, users often selected hand, suggesting that in low-stakes or low-complexity contexts, users are comfortable relinquishing direct control as long as their broader strategic direction remains unconstrained.
+
+\subsubsection{Mode Selection Patterns and Behavioral Inertia}  
+Despite the availability of both control modes, participants did not frequently switch between them. Transition probabilities showed low mode-switching behavior, with some participants (e.g., P1 and P5) remaining in the same mode for extended sequences ( $\geq 5$ moves), even when switching might have yielded better outcomes. One plausible explanation is the presence of \textit{cognitive switching costs}, the mental overhead of disengaging from a current workflow, evaluating alternatives, and adapting to a new control mode. Prior work has shown that such costs can discourage strategic adjustment, especially under time pressure or cognitive load~\cite{monsell2003task}. This tendency also aligns with the principle of \textit{satisficing}~\cite{simon1956rational}, wherein users adopt a ``good enough'' strategy rather than continuously seeking optimality.
+
+\subsubsection{Trust Dynamics}  
+Trust in the AI teammate was shaped by both alignment and misalignment with the participant's own strategies. Agreement often reinforced confidence in the AI's competence, a pattern consistent with confirmation bias, where agreement is interpreted as validation of one's own beliefs. Interestingly, misalignment did not always reduce trust. Several participants reported deferring to the AI when it made unexpected decisions, attributing this to a belief in the AI's superior planning ability. This response reflects deference to perceived expertise and is consistent with \textit{automation bias}~\cite{parasuraman1997humans}, where users over-rely on automated systems, particularly in domains like chess where AI superiority is well-established.
+
+\subsubsection{Cognitive Biases and Strategic Adaptation}  
+Our findings complement and extend prior work on human-AI teaming, particularly~\citet{gurney2023role}, who demonstrated how cognitive biases such as framing and anchoring influence performance and effort in collaborative decision-making with AI \cite{nourani2024user}. While their work focuses on aggregated behavioral shifts under experimental manipulations, our study captures real-time decision-level dynamics—how users strategically choose between guidance and delegation in response to evolving context. Shared themes such as cognitive offloading and deference to AI competence echo their findings, especially in cases of over-reliance. However, we also reveal additional patterns, including phase-based heuristics, low switching rates due to inertia, and active probing of the AI's capabilities. Together, these perspectives provide a more nuanced understanding of how users both exploit and adapt to AI capabilities in mixed-initiative interaction. This has implications for future systems that aim to balance autonomy and human agency by being both bias-aware and dynamically responsive to user preferences.
+
+\subsection{Psychological and Cognitive Factors}
+
+Beyond the core behavioral themes identified in our qualitative analysis, we observed several psychological and cognitive dynamics that further illuminate participant interaction patterns and challenges.
+
+\subsubsection{Frustration from Misaligned Suggestions}
+Participants expressed frustration when operating in the guidance mode (AI as brain), particularly when the AI suggested a piece type that disrupted their intended plan. This often required participants to reframe their thinking mid-turn or salvage a weaker tactical idea using the suggested piece type. The additional cognitive effort to generate a coherent strategy under these constraints echoes findings on the cognitive cost of plan repair and conflict resolution in mixed-initiative systems~\cite{johnson2014repairing, clark1996using}. Such friction may lead to reduced trust or disengagement.
+
+\subsubsection{Meta-Decision Overhead}
+Some participants reported that selecting a collaboration mode on every turn introduced a form of decision fatigue. For instance, P6 noted that deciding between hand and brain and mentally simulating the outcome for each mode, added an extra layer of cognitive load. This ``meta-decision'' overhead aligns with prior work on the costs of task-switching and decision complexity~\cite{monsell2003task, payne1993adaptive}, and may help explain the observed behavioral inertia and reluctance to switch modes dynamically.
+
+\subsubsection{Intention Misalignment and Shuffling Behavior}
+We also observed cases of intention misalignment, where participants selected brain mode expecting a move aligned with their plan, but the AI moved the piece to an unexpected or ineffective square. In some cases, the same piece was moved repeatedly, resulting in a form of ``shuffling.'' Such miscoordination reflects a lack of common ground~\cite{clark1996using, bradshaw2003dimensions} and highlights the need for more transparent AI intent signaling during shared control.
+
+\subsubsection{Perceived Degradation of AI Performance}
+Several participants formed impressions about the AI's performance quality over the course of the game. P1, for example, described the AI as ``sabotaging'' the game in the late stages, despite strong early play. While no actual degradation occurred, this perception likely stems from the nature of the Maia engine~\cite{mcilroy2020maia}, which is trained on human games and could perform less reliably in endgame scenarios with certain piece configurations due to sparse data. This perceived inconsistency is consistent with findings from automation bias literature, where users defer to systems they perceive as expert, yet reduce trust abruptly after a few failures~\cite{parasuraman1997humans, dzindolet2003role}.
+
+\end{comment}
+
+%%from questionnaire data
+
+\section{Discussion}
+In this section, we analyze our data in conjunction with participant interview responses to better understand what factors shaped their in-task decisions.
+
+\subsubsection{Low Perceived Cohesion and Satisfaction.}
+
+Post-study questionnaire data revealed consistently low ratings for trust, team cohesion, and satisfaction, even among participants whose skill level matched the AI teammate. Despite occasionally delegating to the AI, participants did not feel they were part of a cohesive team. Interviews and gameplay logs point to several reasons: misalignment in move intent, lack of feedback or adaptation from the AI, the cognitive fatigue from repeated control mode selection, and the final game outcome. Unlike human teammates, the AI offered no reasoning about its strategy or moves, likely contributing to a sense of disconnect. These findings indicate that competent performance alone may be insufficient for effective human-AI collaboration. AI systems must also foster a sense of shared purpose and responsiveness.
+
+
+\subsubsection{Balancing Agency and Effort in Dynamic Control}
+Participants did not treat control mode selection as a fixed strategy, but adapted it in response to evolving task conditions, mental effort, and perceived risk. However, switching modes each turn imposed a cognitive burden, requiring not only board evaluation but also simulating potential outcomes under different control modes. This meta-decision overhead may have contributed to behavioral inertia, resonating with prior work on task-switching costs~\cite{monsell2003task}. While users valued flexibility, it was often underutilized. These observations suggest that dynamic control is most effective when the cost of switching is minimized by surfacing switching opportunities without overwhelming users.
+
+\subsubsection{Behavioral Signals of Switching Intent}
+Quantitative analysis of gaze, task complexity, and emotional state provided additional insight into the conditions under which participants reconsidered control mode. Switching was preceded by greater gaze dispersion and higher gaze entropy, suggesting increased deliberation or cognitive conflict. Participants were also more likely to switch in complex or fragile positions, where the cost of an incorrect move may have felt higher. While facial expressions of surprise did not significantly predict switching, the trend may indicate a possible role for unexpected game events in prompting control reevaluation. These behavioral markers present some insight into participant internal decision-making processes and may serve as useful signals for designing real-time, adaptive interfaces that support fluid control switch.
+
+\subsubsection{Trust Calibration and Misalignment Recovery}
+Control decisions were shaped by both task context and evolving perceptions of the AI teammate's reliability. Interestingly, occasional misalignments did not always erode trust as some participants interpreted unexpected moves as signs of superior insight (consistent with automation bias~\cite{goddard2012automation}), while others described frustration when the AI disrupted their internal plans or engaged in non-strategic behavior (e.g., piece shuffling). Alignment ratings reported in post-study questionnaires support this mixed picture, suggesting that perceived coordination varied across participants and was shaped in part by game outcome. These dynamics highlight the need for systems that support real-time trust calibration, through transparency cues or by querying the AI's rationale during ambiguous moments.
+
+\subsubsection{User-Driven Control Switch}
+Our findings shift the focus from system-driven to user-driven control switches. Rather than relying on static delegation schemes or agent-driven adaptations~\cite{amershi2019guidelines}, participants made subtask-level decisions shaped by factors such as effort, trust, and perceived task complexity, which are often tacit and difficult to observe directly. By combining behavioral traces with post-hoc rationales, we offer an initial perspective on how shifts in initiative may reflect a user's evolving assessments of the AI's competence and their own goals. This highlights the potential of a multimodal approach to modeling shared autonomy that prioritizes behavioral signals over task-specific representations. Our lightweight predictive model demonstrates the feasibility of anticipating control shifts from real-time behavioral data.
+
+%This points toward a more lightweight, cross-domain approach to modeling shared autonomy through behavioral signals, rather than detailed task-specific representations. A lightweight predictive model trained on these features further supports this perspective, highlighting the feasibility of anticipating initiative shifts from interpretable, real-time behavioral signals.
+
+
+
+% WIP
+%Our study presents a novel approach for modeling shared autonomy in sequential decision-making. As demonstrated in our qualitative analysis, participants' collaboration decisions were rooted in tacit knowledge, skilled intuition, and evolving internal models of the task, teammate, and opponent. Human behavioral signals offer a window into this complex internal decision-making process. In that sense, human behavior serves as an embedding of a complex task dynamic. Different from prior work that focused on directly modeling systemic and environmental factors to understand shared autonomy, our model demonstrated the feasibility of using behavioral signals to predict shared autonomy changes. Our approach can reduce the need to explicitly model task-specific factors, which can drastically change across applications and reduce cross-domain transferability.
+% hardly matched by direct modeling of task-specific aspects.
+
+
+\section{Design Implications}
+Building on our findings, we propose three design implications to inform the development of future human–AI collaboration systems that support adaptive control switching.
+
+\subsubsection{Infer Control Preferences from Behavioral Signals}
+Control mode choices were influenced by task complexity and internal states such as effort and uncertainty. Our analysis shows that behavioral cues such as gaze entropy, dispersed attention, and longer deliberation, often preceded control switching. These findings, supported by a lightweight predictive model, suggest the feasibility of inferring switching intent from real-time user signals. Future interfaces could incorporate such cues to identify when users are likely to benefit from adjusting control, enabling timely, context-sensitive support.
+
+\subsubsection{Reduce Meta-Decision Overhead}
+Despite having flexibility, participants rarely changed control modes during the game. This suggests a need to reduce the cognitive burden of switching, which may stem from the dual task of evaluating both the board position and the appropriate collaboration mode. Interfaces might help reduce this burden through dynamic defaults, suggestions, or prompts that preserve user agency while minimizing friction in control Switch during high-complexity situations.
+
+\subsubsection{Leverage Partial Delegation Models}
+Our system's split control structure of delegating either object selection or action execution to the AI teammate, provided participants with a nuanced way to manage initiative. Similar decompositions in domains like medical triage or collaborative planning could let users retain strategic oversight while offloading specific sub-tasks. Designing interfaces that allow this level of flexible partial delegation could help align system initiative with user intent in real-time.
+
+% Our findings point to design opportunities for adaptive human-AI systems that support or may benefit from dynamic control Switch. First, user mode choices were influenced by both situational complexity and internal states such as cognitive load or uncertainty. This suggests that systems should infer control preferences not just from task context, but also from behavioral cues such as gaze patterns or hesitation. Rather than rigid control policies, designers should consider interfaces that flexibly support subtask-level switching, with minimal cognitive overhead or incurring a switching cost. 
+
+% Second, participants rarely switched modes mid-game, even when doing so might have been beneficial. This highlights a need to reduce meta-decision effort, for example, by surfacing lightweight control suggestions or offering dynamic defaults that align with inferred intent. Importantly, such interventions would need to preserve user agency and avoid undermining trust, particularly in high-stakes contexts.
+
+% Finally, the granular control structure used in our study by splitting decision between object selection and action execution, offers a template for more flexible mixed-initiative design. In domains like medical triage or collaborative planning, similar decompositions could allow users to retain strategic oversight while offloading low-level actions, or vice versa. By modeling and anticipating these preferences, systems can better align initiative with user goals and task demands in real time.
+
+
+
+\begin{comment}
+Our findings have implications for the design of adaptive human-AI systems. First, the observed variability in role preferences, shaped by game phase, perceived cognitive load, and evolving trust, suggests that static control policies are insufficient. Instead, systems should support real-time inference of user control preferences using contextual and behavioral signals, such as those modeled in our work. These inferences could enable proactive control handovers, adaptive prompting, or Switch strategies that respect user agency while optimizing performance.
+
+Second, observations of meta-decision overhead and behavioral inertia highlight the need to reduce the cognitive cost of switching control modes. This could include surfacing intelligent defaults, delaying delegation prompts until moments of uncertainty, or incrementally escalating guidance before full control transfer. Likewise, frustration arising from misaligned intent—such as the AI ``shuffling'' pieces contrary to the user's plan calls for richer mutual modeling. Future systems should aim to infer not only user preferences but also intended strategies, enabling more interpretable and plan-aware delegation.
+
+Third, the fluctuations in trust tied to perceived AI competence suggest that user modeling should treat trust as dynamic and context-sensitive. Systems may need to adjust explanation strategies, transparency, or level of initiative based on inferred shifts in user confidence or engagement.
+
+Finally, our experimental setup combining decision-time labeling, behavioral monitoring, and revealed preferences offers a reusable framework for studying control Switch in other sequential, high-pressure domains such as medical triage, cyber defense, and collaborative planning. Integrating predictive models like ours into real-time systems could support more seamless, trust-sensitive collaboration by aligning system initiative with evolving user intent.
+
+NOTE: if ppl offload their thinking to AI during complexity does this align with the brain on chatgpt paper?
+
+\subsection{Granular Autonomy and Mixed-Initiative Design}
+Our work extends prior approaches to autonomy adaptation by modeling human preferences not just at the task level, but at a more granular level of control. While earlier studies (e.g., \cite{lubars2019, gurney2023role}) examine whether to delegate entire tasks to AI, our setup captures how users negotiate initiative within tasks, specifically, in terms of object selection versus action execution. This finer-grained modeling offers a richer basis for designing shared autonomy systems that support dynamic, subtask-level control Switch. By operationalizing and predicting these choices, our study contributes to more responsive, user-aligned mixed-initiative systems in domains where decisions unfold over multiple levels of abstraction.
+\end{comment}
+
+\section{Limitations and Future Work}
+
+While our study offers insights into dynamic control Switch in human–AI collaboration, several limitations should be noted. First, the small sample size and limited number of switching events per participant limit the generalizability and predictive strength of our model. Second, although we incorporated behavioral and contextual features, the model does not account for factors like evolving gameplay strategy or individual trust calibration, which likely influence switching decisions.
+%
+Future work could extend our model with more participant data and apply it to other sequential decision-making domains under pressure, such as clinical triage or trading. Testing interventions, such as adaptive mode suggestions or intent-aligned feedback, could assess how behavioral predictions can be translated into real-time support for trust-aware collaboration. Future work could also explore temporally-aware models that capture how user state evolves during deliberation. Finally, longer-term studies could investigate how control strategies, trust dynamics, and perceptions of alignment change as users gain experience with specific AI partners.
+
+
+
+\section{Conclusion}
+
+This work investigates how humans choose between two levels of control when collaborating with an AI teammate in a sequential decision-making task. Using a modified hand-and-brain chess paradigm, we combine behavioral and task-level signals with a lightweight predictive model to anticipate control switching at the subtask level. Our findings show that decisions to switch are shaped by complexity, effort, and evolving perceptions of the AI's alignment and reliability. By highlighting behavioral markers of control Switch and demonstrating the feasibility of real-time prediction, this work can contribute to the design of future autonomy-adaptive systems that support flexible, trust-aware and user-aligned collaboration.% aligned with user state and task context.
+
+% \appendix
+% \section{APPENDIX}
+% \label{sec:appendix-extras}
+
+\section{Acknowledgments}
+% move to ack
+\subsubsection{Chess.com Collaboration Disclaimer}: anonymized
+
+%This study is conducted in collaboration with Chess.com, which has kindly provided research accounts marked to ensure they are not terminated for cheating. This collaboration does not imply any financial interest or sponsorship, and the researchers have no financial ties to Chess.com. Furthermore, all research activities comply with Chess.com’s Terms of Use, and no actions taken during the study violate their platform policies. The use of Chess.com’s resources is solely for academic research purposes, and the findings of this study remain independent of Chess.com’s influence. Chess.com does not have any type of authorship or editorial control over this research and does not receive any additional benefit from this study.
+
+
+\bibliography{
+    bib/main,
+    bib/thematic_analysis,
+    bib/adaptive_autonomy,
+    bib/ai,
+    bib/design_with_ai,
+    bib/chess
+}
+
+\end{document}

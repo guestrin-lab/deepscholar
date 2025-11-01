@@ -1,0 +1,292 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,chen2016dcan,\cite{chen2016dcan},DCAN: Deep Contour-Aware Networks for Accurate Gland Segmentation,http://arxiv.org/abs/1604.02677v1,"The morphology of glands has been used routinely by pathologists to assess
+the malignancy degree of adenocarcinomas. Accurate segmentation of glands from
+histology images is a crucial step to obtain reliable morphological statistics
+for quantitative diagnosis. In this paper, we proposed an efficient deep
+contour-aware network (DCAN) to solve this challenging problem under a unified
+multi-task learning framework. In the proposed network, multi-level contextual
+features from the hierarchical architecture are explored with auxiliary
+supervision for accurate gland segmentation. When incorporated with multi-task
+regularization during the training, the discriminative capability of
+intermediate features can be further improved. Moreover, our network can not
+only output accurate probability maps of glands, but also depict clear contours
+simultaneously for separating clustered objects, which further boosts the gland
+segmentation performance. This unified framework can be efficient when applied
+to large-scale histopathological data without resorting to additional steps to
+generate contours based on low-level cues for post-separating. Our method won
+the 2015 MICCAI Gland Segmentation Challenge out of 13 competitive teams,
+surpassing all the other methods by a significant margin.","Chen, Hao and Qi, Xiaojuan and Yu, Lequan and Heng, Pheng-Ann",2016,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,graham2019mild,\cite{graham2019mild},{MILD-Net}: Minimal information loss dilated network for gland instance segmentation in colon histology images,,,"Graham, Simon and Chen, Hao and Gamper, Jevgenij and Dou, Qi and Heng, Pheng-Ann and Snead, David and Tsang, Yee Wah and Rajpoot, Nasir",2019,,,,Medical Image Analysis
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,zhou2019cia,\cite{zhou2019cia},{CIA-Net}: Robust nuclei instance segmentation with contour-aware information aggregation,,,"Zhou, Yanning and Onder, Omer Fahri and Dou, Qi and Tsougenis, Efstratios and Chen, Hao and Heng, Pheng-Ann",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,ronneberger2015u,\cite{ronneberger2015u},{U-Net}: Convolutional networks for biomedical image segmentation,,,"Ronneberger, Olaf and Fischer, Philipp and Brox, Thomas",2015,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,isensee2021nnu,\cite{isensee2021nnu},{nnU-Net}: A self-configuring method for deep learning-based biomedical image segmentation,,,"Isensee, Fabian and Jaeger, Paul F and Kohl, Simon AA and Petersen, Jens and Maier-Hein, Klaus H",2021,,,,Nature Methods
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,liang2019cascade,\cite{liang2019cascade},"Cascade Decoder: A Universal Decoding Method for Biomedical Image
+  Segmentation",http://arxiv.org/abs/1901.04949v1,"The Encoder-Decoder architecture is a main stream deep learning model for
+biomedical image segmentation. The encoder fully compresses the input and
+generates encoded features, and the decoder then produces dense predictions
+using encoded features. However, decoders are still under-explored in such
+architectures. In this paper, we comprehensively study the state-of-the-art
+Encoder-Decoder architectures, and propose a new universal decoder, called
+cascade decoder, to improve semantic segmentation accuracy. Our cascade decoder
+can be embedded into existing networks and trained altogether in an end-to-end
+fashion. The cascade decoder structure aims to conduct more effective decoding
+of hierarchically encoded features and is more compatible with common encoders
+than the known decoders. We replace the decoders of state-of-the-art models
+with our cascade decoder for several challenging biomedical image segmentation
+tasks, and the considerable improvements achieved demonstrate the efficacy of
+our new decoding method.","Liang, Peixian and Chen, Jianxu and Zheng, Hao and Yang, Lin and Zhang, Yizhe and Chen, Danny Z",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,graham2019hover,\cite{graham2019hover},{Hover-Net}: Simultaneous segmentation and classification of nuclei in multi-tissue histology images,,,"Graham, Simon and Vu, Quoc Dang and Raza, Shan E Ahmed and Azam, Ayesha and Tsang, Yee Wah and Kwak, Jin Tae and Rajpoot, Nasir",2019,,,,Medical Image Analysis
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,horst2024cellvit,\cite{horst2024cellvit},"CellViT: Vision Transformers for Precise Cell Segmentation and
+  Classification",http://arxiv.org/abs/2306.15350v2,"Nuclei detection and segmentation in hematoxylin and eosin-stained (H&E)
+tissue images are important clinical tasks and crucial for a wide range of
+applications. However, it is a challenging task due to nuclei variances in
+staining and size, overlapping boundaries, and nuclei clustering. While
+convolutional neural networks have been extensively used for this task, we
+explore the potential of Transformer-based networks in this domain. Therefore,
+we introduce a new method for automated instance segmentation of cell nuclei in
+digitized tissue samples using a deep learning architecture based on Vision
+Transformer called CellViT. CellViT is trained and evaluated on the PanNuke
+dataset, which is one of the most challenging nuclei instance segmentation
+datasets, consisting of nearly 200,000 annotated Nuclei into 5 clinically
+important classes in 19 tissue types. We demonstrate the superiority of
+large-scale in-domain and out-of-domain pre-trained Vision Transformers by
+leveraging the recently published Segment Anything Model and a ViT-encoder
+pre-trained on 104 million histological image patches - achieving
+state-of-the-art nuclei detection and instance segmentation performance on the
+PanNuke dataset with a mean panoptic quality of 0.50 and an F1-detection score
+of 0.83. The code is publicly available at https://github.com/TIO-IKIM/CellViT","H{\""o}rst, Fabian and Rempe, Moritz and Heine, Lukas and Seibold, Constantin and Keyl, Julius and Baldini, Giulia and Ugurel, Selma and Siveke, Jens and Gr{\""u}nwald, Barbara and Egger, Jan and others",2024,,,,Medical Image Analysis
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,schmidt2018cell,\cite{schmidt2018cell},Cell Detection with Star-convex Polygons,http://arxiv.org/abs/1806.03535v2,"Automatic detection and segmentation of cells and nuclei in microscopy images
+is important for many biological applications. Recent successful learning-based
+approaches include per-pixel cell segmentation with subsequent pixel grouping,
+or localization of bounding boxes with subsequent shape refinement. In
+situations of crowded cells, these can be prone to segmentation errors, such as
+falsely merging bordering cells or suppressing valid cell instances due to the
+poor approximation with bounding boxes. To overcome these issues, we propose to
+localize cell nuclei via star-convex polygons, which are a much better shape
+representation as compared to bounding boxes and thus do not need shape
+refinement. To that end, we train a convolutional neural network that predicts
+for every pixel a polygon for the cell instance at that position. We
+demonstrate the merits of our approach on two synthetic datasets and one
+challenging dataset of diverse fluorescence microscopy images.","Schmidt, Uwe and Weigert, Martin and Broaddus, Coleman and Myers, Gene",2018,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,stringer2021cellpose,\cite{stringer2021cellpose},Cellpose: A generalist algorithm for cellular segmentation,,,"Stringer, Carsen and Wang, Tim and Michaelos, Michalis and Pachitariu, Marius",2021,,,,Nature Methods
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,payer2019segmenting,\cite{payer2019segmenting},Segmenting and tracking cell instances with cosine embeddings and recurrent hourglass networks,,,"Payer, Christian and {\v{S}}tern, Darko and Feiner, Marlies and Bischof, Horst and Urschler, Martin",2019,,,,Medical Image Analysis
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,zhao2021faster,\cite{zhao2021faster},Faster {Mean-shift}: {GPU}-accelerated clustering for cosine embedding-based cell segmentation and tracking,,,"Zhao, Mengyang and Jha, Aadarsh and Liu, Quan and Millis, Bryan A and Mahadevan-Jansen, Anita and Lu, Le and Landman, Bennett A and Tyska, Matthew J and Huo, Yuankai",2021,,,,Medical Image Analysis
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,lalit2022embedseg,\cite{lalit2022embedseg},{EmbedSeg}: Embedding-based Instance Segmentation for Biomedical Microscopy Data,,,"Lalit, Manan and Tomancak, Pavel and Jug, Florian",2022,,,,Medical Image Analysis
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,goldsborough2024instanseg,\cite{goldsborough2024instanseg},"InstanSeg: an embedding-based instance segmentation algorithm optimized
+  for accurate, efficient and portable cell segmentation",http://arxiv.org/abs/2408.15954v1,"Cell and nucleus segmentation are fundamental tasks for quantitative bioimage
+analysis. Despite progress in recent years, biologists and other domain experts
+still require novel algorithms to handle increasingly large and complex
+real-world datasets. These algorithms must not only achieve state-of-the-art
+accuracy, but also be optimized for efficiency, portability and
+user-friendliness. Here, we introduce InstanSeg: a novel embedding-based
+instance segmentation pipeline designed to identify cells and nuclei in
+microscopy images. Using six public cell segmentation datasets, we demonstrate
+that InstanSeg can significantly improve accuracy when compared to the most
+widely used alternative methods, while reducing the processing time by at least
+60%. Furthermore, InstanSeg is designed to be fully serializable as TorchScript
+and supports GPU acceleration on a range of hardware. We provide an open-source
+implementation of InstanSeg in Python, in addition to a user-friendly,
+interactive QuPath extension for inference written in Java. Our code and
+pre-trained models are available at https://github.com/instanseg/instanseg .","Goldsborough, Thibaut and Philps, Ben and O'Callaghan, Alan and Inglis, Fiona and Leplat, Leo and Filby, Andrew and Bilen, Hakan and Bankhead, Peter",2024,,,,arXiv preprint arXiv:2408.15954
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,wang2024mudslide,\cite{wang2024mudslide},Mudslide: A Universal Nuclear Instance Segmentation Method,,,"Wang, Jun",2024,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,goldsborough2024novel,\cite{goldsborough2024novel},A novel channel invariant architecture for the segmentation of cells and nuclei in multiplexed images using {InstanSeg},,,"Goldsborough, Thibaut and O'Callaghan, Alan and Inglis, Fiona and Leplat, Leo and Filby, Andrew and Bilen, Hakan and Bankhead, Peter",2024,,,,bioRxiv
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,he2017mask,\cite{he2017mask},Mask {R-CNN},,,"He, Kaiming and Gkioxari, Georgia and Doll{\'a}r, Piotr and Girshick, Ross",2017,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,liu2018path,\cite{liu2018path},Path Aggregation Network for Instance Segmentation,http://arxiv.org/abs/1803.01534v4,"The way that information propagates in neural networks is of great
+importance. In this paper, we propose Path Aggregation Network (PANet) aiming
+at boosting information flow in proposal-based instance segmentation framework.
+Specifically, we enhance the entire feature hierarchy with accurate
+localization signals in lower layers by bottom-up path augmentation, which
+shortens the information path between lower layers and topmost feature. We
+present adaptive feature pooling, which links feature grid and all feature
+levels to make useful information in each feature level propagate directly to
+following proposal subnetworks. A complementary branch capturing different
+views for each proposal is created to further improve mask prediction. These
+improvements are simple to implement, with subtle extra computational overhead.
+Our PANet reaches the 1st place in the COCO 2017 Challenge Instance
+Segmentation task and the 2nd place in Object Detection task without
+large-batch training. It is also state-of-the-art on MVD and Cityscapes. Code
+is available at https://github.com/ShuLiu1993/PANet","Liu, Shu and Qi, Lu and Qin, Haifang and Shi, Jianping and Jia, Jiaya",2018,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,chen2019hybrid,\cite{chen2019hybrid},Hybrid Task Cascade for Instance Segmentation,http://arxiv.org/abs/1901.07518v2,"Cascade is a classic yet powerful architecture that has boosted performance
+on various tasks. However, how to introduce cascade to instance segmentation
+remains an open question. A simple combination of Cascade R-CNN and Mask R-CNN
+only brings limited gain. In exploring a more effective approach, we find that
+the key to a successful instance segmentation cascade is to fully leverage the
+reciprocal relationship between detection and segmentation. In this work, we
+propose a new framework, Hybrid Task Cascade (HTC), which differs in two
+important aspects: (1) instead of performing cascaded refinement on these two
+tasks separately, it interweaves them for a joint multi-stage processing; (2)
+it adopts a fully convolutional branch to provide spatial context, which can
+help distinguishing hard foreground from cluttered background. Overall, this
+framework can learn more discriminative features progressively while
+integrating complementary features together in each stage. Without bells and
+whistles, a single HTC obtains 38.4 and 1.5 improvement over a strong Cascade
+Mask R-CNN baseline on MSCOCO dataset. Moreover, our overall system achieves
+48.6 mask AP on the test-challenge split, ranking 1st in the COCO 2018
+Challenge Object Detection Task. Code is available at:
+https://github.com/open-mmlab/mmdetection.","Chen, Kai and Pang, Jiangmiao and Wang, Jiaqi and Xiong, Yu and Li, Xiaoxiao and Sun, Shuyang and Feng, Wansen and Liu, Ziwei and Shi, Jianping and Ouyang, Wanli and others",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,huang2019mask,\cite{huang2019mask},Mask scoring {R-CNN},,,"Huang, Zhaojin and Huang, Lichao and Gong, Yongchao and Huang, Chang and Wang, Xinggang",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,cai2019cascade,\cite{cai2019cascade},{Cascade R-CNN}: High quality object detection and instance segmentation,,,"Cai, Zhaowei and Vasconcelos, Nuno",2019,,,,IEEE Transactions on Pattern Analysis and Machine Intelligence
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,tang2021look,\cite{tang2021look},"Look Closer to Segment Better: Boundary Patch Refinement for Instance
+  Segmentation",http://arxiv.org/abs/2104.05239v1,"Tremendous efforts have been made on instance segmentation but the mask
+quality is still not satisfactory. The boundaries of predicted instance masks
+are usually imprecise due to the low spatial resolution of feature maps and the
+imbalance problem caused by the extremely low proportion of boundary pixels. To
+address these issues, we propose a conceptually simple yet effective
+post-processing refinement framework to improve the boundary quality based on
+the results of any instance segmentation model, termed BPR. Following the idea
+of looking closer to segment boundaries better, we extract and refine a series
+of small boundary patches along the predicted instance boundaries. The
+refinement is accomplished by a boundary patch refinement network at higher
+resolution. The proposed BPR framework yields significant improvements over the
+Mask R-CNN baseline on Cityscapes benchmark, especially on the boundary-aware
+metrics. Moreover, by applying the BPR framework to the PolyTransform + SegFix
+baseline, we reached 1st place on the Cityscapes leaderboard.","Tang, Chufeng and Chen, Hang and Li, Xiao and Li, Jianmin and Zhang, Zhaoxiang and Hu, Xiaolin",2021,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,pang2024cellotype,\cite{pang2024cellotype},{CelloType}: A unified model for segmentation and classification of tissue images,,,"Pang, Minxing and Roy, Tarun Kanti and Wu, Xiaodong and Tan, Kai",2024,,,,Nature Methods
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,meyer1994topographic,\cite{meyer1994topographic},Topographic distance and watershed lines,,,"Meyer, Fernand",1994,,,,Signal Processing
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,caselles1997geodesic,\cite{caselles1997geodesic},Geodesic active contours,,,"Caselles, Vicent and Kimmel, Ron and Sapiro, Guillermo",1997,,,,International Journal of Computer Vision
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,lux2019dic,\cite{lux2019dic},{DIC} image segmentation of dense cell populations by combining deep learning and watershed,,,"Lux, Filip and Matula, Petr",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,eschweiler2019cnn,\cite{eschweiler2019cnn},"CNN-based Preprocessing to Optimize Watershed-based Cell Segmentation in
+  3D Confocal Microscopy Images",http://arxiv.org/abs/1810.06933v1,"The quantitative analysis of cellular membranes helps understanding
+developmental processes at the cellular level. Particularly 3D microscopic
+image data offers valuable insights into cell dynamics, but error-free
+automatic segmentation remains challenging due to the huge amount of data
+generated and strong variations in image intensities. In this paper, we propose
+a new 3D segmentation approach which combines the discriminative power of
+convolutional neural networks (CNNs) for preprocessing and investigates the
+performance of three watershed-based postprocessing strategies (WS), which are
+well suited to segment object shapes, even when supplied with vague seed and
+boundary constraints. To leverage the full potential of the watershed
+algorithm, the multi-instance segmentation problem is initially interpreted as
+three-class semantic segmentation problem, which in turn is well-suited for the
+application of CNNs. Using manually annotated 3D confocal microscopy images of
+Arabidopsis thaliana, we show the superior performance of the proposed method
+compared to the state of the art.","Eschweiler, Dennis and Spina, Thiago V and Choudhury, Rohan C and Meyerowitz, Elliot and Cunha, Alexandre and Stegmaier, Johannes",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,wolf2017learned,\cite{wolf2017learned},Learned Watershed: End-to-End Learning of Seeded Segmentation,http://arxiv.org/abs/1704.02249v2,"Learned boundary maps are known to outperform hand- crafted ones as a basis
+for the watershed algorithm. We show, for the first time, how to train
+watershed computation jointly with boundary map prediction. The estimator for
+the merging priorities is cast as a neural network that is con- volutional
+(over space) and recurrent (over iterations). The latter allows learning of
+complex shape priors. The method gives the best known seeded segmentation
+results on the CREMI segmentation challenge.","Wolf, Steffen and Schott, Lukas and Kothe, Ullrich and Hamprecht, Fred",2017,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,kass1988snakes,\cite{kass1988snakes},Snakes: Active contour models,,,"Kass, Michael and Witkin, Andrew and Terzopoulos, Demetri",1988,,,,International Journal of Computer Vision
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,chan2001active,\cite{chan2001active},Active contours without edges,,,"Chan, Tony F and Vese, Luminita A",2001,,,,IEEE Transactions on Image Processing
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,sundaramoorthi2007sobolev,\cite{sundaramoorthi2007sobolev},Sobolev active contours,,,"Sundaramoorthi, Ganesh and Yezzi, Anthony and Mennucci, Andrea C",2007,,,,International Journal of Computer Vision
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,rupprecht2016deep,\cite{rupprecht2016deep},Deep Active Contours,http://arxiv.org/abs/1607.05074v1,"We propose a method for interactive boundary extraction which combines a
+deep, patch-based representation with an active contour framework. We train a
+class-specific convolutional neural network which predicts a vector pointing
+from the respective point on the evolving contour towards the closest point on
+the boundary of the object of interest. These predictions form a vector field
+which is then used for evolving the contour by the Sobolev active contour
+framework proposed by Sundaramoorthi et al. The resulting interactive
+segmentation method is very efficient in terms of required computational
+resources and can even be trained on comparatively small graphics cards. We
+evaluate the potential of the proposed method on both medical and non-medical
+challenge data sets, such as the STACOM data set and the PASCAL VOC 2012 data
+set.","Rupprecht, Christian and Huaroc, Elizabeth and Baust, Maximilian and Navab, Nassir",2016,,,,arXiv preprint arXiv:1607.05074
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,kim2019mumford,\cite{kim2019mumford},Mumford-Shah Loss Functional for Image Segmentation with Deep Learning,http://arxiv.org/abs/1904.02872v2,"Recent state-of-the-art image segmentation algorithms are mostly based on
+deep neural networks, thanks to their high performance and fast computation
+time. However, these methods are usually trained in a supervised manner, which
+requires large number of high quality ground-truth segmentation masks. On the
+other hand, classical image segmentation approaches such as level-set methods
+are formulated in a self-supervised manner by minimizing energy functions such
+as Mumford-Shah functional, so they are still useful to help generation of
+segmentation masks without labels. Unfortunately, these algorithms are usually
+computationally expensive and often have limitation in semantic segmentation.
+In this paper, we propose a novel loss function based on Mumford-Shah
+functional that can be used in deep-learning based image segmentation without
+or with small labeled data. This loss function is based on the observation that
+the softmax layer of deep neural networks has striking similarity to the
+characteristic function in the Mumford-Shah functional. We show that the new
+loss function enables semi-supervised and unsupervised segmentation. In
+addition, our loss function can be also used as a regularized function to
+enhance supervised semantic segmentation algorithms. Experimental results on
+multiple datasets demonstrate the effectiveness of the proposed method.","Kim, Boah and Ye, Jong Chul",2019,,,,IEEE Transactions on Image Processing
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,chen2019learning,\cite{chen2019learning},Learning active contour models for medical image segmentation,,,"Chen, Xu and Williams, Bryan M and Vallabhaneni, Srinivasa R and Czanner, Gabriela and Williams, Rachel and Zheng, Yalin",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,zhang2020deep,\cite{zhang2020deep},Deep active contour network for medical image segmentation,,,"Zhang, Mo and Dong, Bin and Li, Quanzheng",2020,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,kim2019cnn,\cite{kim2019cnn},CNN-based Semantic Segmentation using Level Set Loss,http://arxiv.org/abs/1910.00950v1,"Thesedays, Convolutional Neural Networks are widely used in semantic
+segmentation. However, since CNN-based segmentation networks produce
+low-resolution outputs with rich semantic information, it is inevitable that
+spatial details (e.g., small bjects and fine boundary information) of
+segmentation results will be lost. To address this problem, motivated by a
+variational approach to image segmentation (i.e., level set theory), we propose
+a novel loss function called the level set loss which is designed to refine
+spatial details of segmentation results. To deal with multiple classes in an
+image, we first decompose the ground truth into binary images. Note that each
+binary image consists of background and regions belonging to a class. Then we
+convert level set functions into class probability maps and calculate the
+energy for each class. The network is trained to minimize the weighted sum of
+the level set loss and the cross-entropy loss. The proposed level set loss
+improves the spatial details of segmentation results in a time and memory
+efficient way. Furthermore, our experimental results show that the proposed
+loss function achieves better performance than previous approaches.","Kim, Youngeun and Kim, Seunghyeon and Kim, Taekyung and Kim, Changick",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,gur2019unsupervised,\cite{gur2019unsupervised},"Unsupervised Microvascular Image Segmentation Using an Active Contours
+  Mimicking Neural Network",http://arxiv.org/abs/1908.01373v2,"The task of blood vessel segmentation in microscopy images is crucial for
+many diagnostic and research applications. However, vessels can look vastly
+different, depending on the transient imaging conditions, and collecting data
+for supervised training is laborious. We present a novel deep learning method
+for unsupervised segmentation of blood vessels. The method is inspired by the
+field of active contours and we introduce a new loss term, which is based on
+the morphological Active Contours Without Edges (ACWE) optimization method. The
+role of the morphological operators is played by novel pooling layers that are
+incorporated to the network's architecture. We demonstrate the challenges that
+are faced by previous supervised learning solutions, when the imaging
+conditions shift. Our unsupervised method is able to outperform such previous
+methods in both the labeled dataset, and when applied to similar but different
+datasets. Our code, as well as efficient PyTorch reimplementations of the
+baseline methods VesselNN and DeepVess is available on GitHub -
+https://github.com/shirgur/UMIS.","Gur, Shir and Wolf, Lior and Golgher, Lior and Blinder, Pablo",2019,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,marcos2018learning,\cite{marcos2018learning},Learning deep structured active contours end-to-end,http://arxiv.org/abs/1803.06329v1,"The world is covered with millions of buildings, and precisely knowing each
+instance's position and extents is vital to a multitude of applications.
+Recently, automated building footprint segmentation models have shown superior
+detection accuracy thanks to the usage of Convolutional Neural Networks (CNN).
+However, even the latest evolutions struggle to precisely delineating borders,
+which often leads to geometric distortions and inadvertent fusion of adjacent
+building instances. We propose to overcome this issue by exploiting the
+distinct geometric properties of buildings. To this end, we present Deep
+Structured Active Contours (DSAC), a novel framework that integrates priors and
+constraints into the segmentation process, such as continuous boundaries,
+smooth edges, and sharp corners. To do so, DSAC employs Active Contour Models
+(ACM), a family of constraint- and prior-based polygonal models. We learn ACM
+parameterizations per instance using a CNN, and show how to incorporate all
+components in a structured output model, making DSAC trainable end-to-end. We
+evaluate DSAC on three challenging building instance segmentation datasets,
+where it compares favorably against state-of-the-art. Code will be made
+available.","Marcos, Diego and Tuia, Devis and Kellenberger, Benjamin and Zhang, Lisa and Bai, Min and Liao, Renjie and Urtasun, Raquel",2018,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,tang2022contrastive,\cite{tang2022contrastive},Contrastive Boundary Learning for Point Cloud Segmentation,http://arxiv.org/abs/2203.05272v2,"Point cloud segmentation is fundamental in understanding 3D environments.
+However, current 3D point cloud segmentation methods usually perform poorly on
+scene boundaries, which degenerates the overall segmentation performance. In
+this paper, we focus on the segmentation of scene boundaries. Accordingly, we
+first explore metrics to evaluate the segmentation performance on scene
+boundaries. To address the unsatisfactory performance on boundaries, we then
+propose a novel contrastive boundary learning (CBL) framework for point cloud
+segmentation. Specifically, the proposed CBL enhances feature discrimination
+between points across boundaries by contrasting their representations with the
+assistance of scene contexts at multiple scales. By applying CBL on three
+different baseline methods, we experimentally show that CBL consistently
+improves different baselines and assists them to achieve compelling performance
+on boundaries, as well as the overall performance, eg in mIoU. The experimental
+results demonstrate the effectiveness of our method and the importance of
+boundaries for 3D point cloud segmentation. Code and model will be made
+publicly available at https://github.com/LiyaoTang/contrastBoundary.","Tang, Liyao and Zhan, Yibing and Chen, Zhe and Yu, Baosheng and Tao, Dacheng",2022,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,silberman2014instance,\cite{silberman2014instance},Instance segmentation of indoor scenes using a coverage loss,,,"Silberman, Nathan and Sontag, David and Fergus, Rob",2014,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,funke2018candidate,\cite{funke2018candidate},The Candidate Multi-Cut for Cell Segmentation,http://arxiv.org/abs/1707.00907v1,"Two successful approaches for the segmentation of biomedical images are (1)
+the selection of segment candidates from a merge-tree, and (2) the clustering
+of small superpixels by solving a Multi-Cut problem. In this paper, we
+introduce a model that unifies both approaches. Our model, the Candidate
+Multi-Cut (CMC), allows joint selection and clustering of segment candidates
+from a merge-tree. This way, we overcome the respective limitations of the
+individual methods: (1) the space of possible segmentations is not constrained
+to candidates of a merge-tree, and (2) the decision for clustering can be made
+on candidates larger than superpixels, using features over larger contexts. We
+solve the optimization problem of selecting and clustering of candidates using
+an integer linear program. On datasets of 2D light microscopy of cell
+populations and 3D electron microscopy of neurons, we show that our method
+generalizes well and generates more accurate segmentations than merge-tree or
+Multi-Cut methods alone.","Funke, Jan and Zhang, Chong and Pietzsch, Tobias and Ballester, Miguel A Gonzalez and Saalfeld, Stephan",2018,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,fehri2019bayesian,\cite{fehri2019bayesian},Bayesian polytrees with learned deep features for multi-class cell segmentation,,,"Fehri, Hamid and Gooya, Ali and Lu, Yuanjun and Meijering, Erik and Johnston, Simon A and Frangi, Alejandro F",2019,,,,IEEE Transactions on Image Processing
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,souza2016overview,\cite{souza2016overview},"An overview of max-tree principles, algorithms and applications",,,"Souza, Roberto and Tavares, Lu{\'\i}s and Rittner, Let{\'\i}cia and Lotufo, Roberto",,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,jones1999connected,\cite{jones1999connected},Connected filtering and segmentation using component trees,,,"Jones, Ronald",1999,,,,Computer Vision and Image Understanding
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,akram2014segmentation,\cite{akram2014segmentation},Segmentation of cells from spinning disk confocal images using a multi-stage approach,,,"Akram, Saad Ullah and Kannala, Juho and Kaakinen, Mika and Eklund, Lauri and Heikkil{\""a}, Janne",2014,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,akram2016joint,\cite{akram2016joint},Cell segmentation and tracking using cell proposals,,,"Akram, Saad Ullah and Kannala, Juho and Eklund, Lauri and Heikkil{\""a}, Janne",2016,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,razani2021gp,\cite{razani2021gp},{GP-S3Net}: Graph-based panoptic sparse semantic segmentation network,,,"Razani, Ryan and Cheng, Ran and Li, Enxu and Taghavi, Ehsan and Ren, Yuan and Bingbing, Liu",2021,,,,
+Cell Instance Segmentation: The Devil Is in the Boundaries,http://arxiv.org/abs/2510.09848v1,ester1996density,\cite{ester1996density},A density-based algorithm for discovering clusters in large spatial databases with noise,,,"Ester, Martin and Kriegel, Hans-Peter and Sander, J{\""o}rg and Xu, Xiaowei and others",1996,,,,

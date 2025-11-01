@@ -1,0 +1,215 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{conference,times}
+\usepackage{natbib}
+\renewcommand{\cite}{\citep}  % 直接别名替换
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumerate}
+\usepackage{caption}
+\usepackage{pifont}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{tikz}
+\newcommand\dashedrightarrow{\mathrel{\tikz[baseline=-.5ex]\draw[dashed,->](0,0)--(1em,0);}}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{enumitem}
+\usepackage{rotating}
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{\columnwidth}
+\usepackage{adjustbox}
+\let\Bbbk\relax % to solve the incompatible between amssymb & acmart(containing newtxmath)
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\newtheorem{definition}{Definition}
+\usepackage[utf8]{inputenc}
+\usepackage{arydshln}
+\usepackage{cleveref}
+\usepackage{siunitx}
+\usepackage{mathrsfs}
+\usepackage{bbm}
+
+
+\pdfobjcompresslevel=0
+
+
+%\newtheorem{lemma}{Lemma}[section]
+%\newtheorem{proof}{Proof}[section]
+\usepackage{multirow}
+\usepackage{booktabs,bm}
+\usepackage{algorithm}
+% \usepackage{algorithmic}
+\usepackage{algpseudocode} 
+\usepackage{colortbl}
+\definecolor{grey}{rgb}{0.89,0.71,0.57}
+\definecolor{pink}{rgb}{1,0.94,1}
+\definecolor{purple}{rgb}{0.84,0.78,1}
+\definecolor{white}{rgb}{1,1,1}
+\definecolor{backred}{RGB}{255, 190, 190}
+\definecolor{backblue}{RGB}{210, 230, 250}
+\definecolor{mygrey}{RGB}{200,200,200}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+% 淡黄色 (柔和的黄色，适合做背景色)
+\definecolor{lightyellow}{RGB}{255, 252, 51}
+% 淡绿色 (柔和的绿色，适合做背景色)
+\definecolor{lightgreen}{RGB}{204, 255, 204}
+\definecolor{softyellow}{HTML}{FFF8D5}
+\definecolor{mygreen}{RGB}{235, 153, 78}
+\definecolor{standardgreen}{RGB}{112, 173, 71}
+\definecolor{myred}{RGB}{238, 92, 79}
+
+\newcommand{\NA}{\textemdash}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=red,
+    citecolor=cyan,
+    filecolor=magenta,      
+    urlcolor=magenta,
+    }
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{DarkGreen}{RGB}{0,100,0}
+\definecolor{DarkYellow}{rgb}{0.8, 0.8, 0.0} 
+\definecolor{DarkBrown}{rgb}{0.4, 0.2, 0.1} 
+\definecolor{DarkBlue}{rgb}{0.0, 0.0, 0.5} 
+\definecolor{DarkRed}{rgb}{0.5, 0.0, 0.0} 
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{gray},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{green!50!black},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    columns=fullflexible,
+    frame=single,
+}
+
+
+
+\lstset{style=mystyle}
+
+\newcommand{\Ex}{\mathbb{E}}
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\dconv}{\xrightarrow{\mathrm{d}}}
+\newcommand{\asconv}{\xrightarrow{\mathrm{a.s.}}}
+\newcommand{\pconv}{\xrightarrow{\mathrm{P}}}
+\newcommand{\prox}[2]{\text{prox}_{#1}\left(#2\right)}
+\newcommand{\argmin}[1]{\mathop{\text{Argmin}}\limits_{#1}\;}
+\newcommand{\argmax}[1]{\mathop{\text{Argmax}}\limits_{#1}\;}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+%\newcommand{\normF}[2]{\left\| #1 - #2 \right\|_F^2}
+\newcommand{\vectortwo}[2]{\left[ \begin{matrix}
+        #1 \\
+        #2
+        \end{matrix}
+        \right]}
+\newcommand{\innerp}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\eqtext}[1][d]{\overset{\mathrm{#1}}{=}}
+\newcommand{\rmd}{\mathrm{d}}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+
+\definecolor{myblue}{rgb}{0.0, 0.25, 1.0}
+\definecolor{lightblue}{RGB}{194, 223, 255}
+\definecolor{mygreen}{RGB}{35, 153, 78}
+\newcommand{\deltavalue}[2]{#1\scalebox{0.7}{\textcolor{gray}{{ + #2}}}}
+\newcommand{\oursvalue}[2]{#1\scalebox{0.7}{\textbf{\textcolor{myblue}{{ + #2}}}}}
+\newcommand{\negvalue}[2]{#1\scalebox{0.7}{\textcolor{mygreen}{{ - #2}}}}
+\newcommand{\minusdeltavalue}[3]{\hspace{#3mm}#1\scalebox{0.7}{\textcolor{red}{{-#2}}}}
+\newcommand{\conf}[1]{\scalebox{0.7}{\textcolor{gray}{(\textit{#1})}}}
+\usepackage{listings}
+
+
+\newcommand{\ourdata}{{\fontfamily{lmtt}\selectfont \textbf{QI-Safe-10k}}\xspace}
+
+% 字体
+\usepackage{xspace}
+\newcommand{\llmname}[1]{{\fontfamily{pcr}\selectfont {#1}}\xspace}
+
+\title{\method{}: Toward Safety-aware Fine-grained Reasoning in Multimodal Models}
+\def\method{SaFeR-VLM}
+
+
+\author{Huahui Yi$^{1, *}$, ~ Kun Wang$^{2, *}$, ~Qiankun Li$^{2, \dagger}$, ~ Miao Yu$^{3}$,  ~Liang Lin$^{4}$,  \textbf{ Gongli Xi$^{5}$}\textbf{,}  \\ ~\textbf{Hao Wu$^{6, \dagger}$}\textbf{,}
+ \textbf{Xuming Hu}$^{7}$\textbf{,}~    
+ \textbf{Kang Li}$^{1}$\textbf{,} ~ \textbf{Yang Liu}$^{2}$ \\
+$^{1}$West China Biomedical Big Data Center, West China Hospital, SCU~
+\hspace{1mm}$^{2}$NTU~
+\hspace{1mm}$^{3}$USTC\\
+\hspace{1mm}$^{4}$TeleAI, China Telecom~
+\hspace{1mm}$^{5}$BUPT ~
+\hspace{1mm}$^{6}$Tsinghua University~
+\hspace{1mm}$^{7}$HKUST(Guangzhou)
+}
+
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\preprintfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+
+
+\begin{document}
+
+
+\maketitle
+
+\input{1_abstract}
+\vspace{-10pt}
+
+\begingroup
+\renewcommand\thefootnote{}\footnotetext{\small $^{*}$Equal contribution \quad $^{\dagger}$Corresponding author}
+\addtocounter{footnote}{0}
+\endgroup
+
+
+
+
+\input{2_introduction}
+\input{3_related_work}
+\input{4_method}
+\input{5_experiment}
+
+\input{6_conclusion}
+\bibliography{rec.bib}
+\bibliographystyle{conference}
+
+%\clearpage
+\input{7_appendix}
+\end{document}

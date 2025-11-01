@@ -1,0 +1,443 @@
+parent_paper_title,parent_arxiv_link,citation_shorthand,raw_citation_text,cited_paper_title,cited_paper_arxiv_link,cited_paper_abstract,bib_paper_authors,bib_paper_year,bib_paper_month,bib_paper_url,bib_paper_doi,bib_paper_journal
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,ddpm,\cite{ddpm},Denoising Diffusion Probabilistic Models,http://arxiv.org/abs/2006.11239v2,"We present high quality image synthesis results using diffusion probabilistic
+models, a class of latent variable models inspired by considerations from
+nonequilibrium thermodynamics. Our best results are obtained by training on a
+weighted variational bound designed according to a novel connection between
+diffusion probabilistic models and denoising score matching with Langevin
+dynamics, and our models naturally admit a progressive lossy decompression
+scheme that can be interpreted as a generalization of autoregressive decoding.
+On the unconditional CIFAR10 dataset, we obtain an Inception score of 9.46 and
+a state-of-the-art FID score of 3.17. On 256x256 LSUN, we obtain sample quality
+similar to ProgressiveGAN. Our implementation is available at
+https://github.com/hojonathanho/diffusion","Ho, Jonathan and Jain, Ajay and Abbeel, Pieter",2020,,https://proceedings.neurips.cc/paper_files/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,ddim,\cite{ddim},Denoising Diffusion Implicit Models,http://arxiv.org/abs/2010.02502v4,"Denoising diffusion probabilistic models (DDPMs) have achieved high quality
+image generation without adversarial training, yet they require simulating a
+Markov chain for many steps to produce a sample. To accelerate sampling, we
+present denoising diffusion implicit models (DDIMs), a more efficient class of
+iterative implicit probabilistic models with the same training procedure as
+DDPMs. In DDPMs, the generative process is defined as the reverse of a
+Markovian diffusion process. We construct a class of non-Markovian diffusion
+processes that lead to the same training objective, but whose reverse process
+can be much faster to sample from. We empirically demonstrate that DDIMs can
+produce high quality samples $10 \times$ to $50 \times$ faster in terms of
+wall-clock time compared to DDPMs, allow us to trade off computation for sample
+quality, and can perform semantically meaningful image interpolation directly
+in the latent space.","Song, Jiaming and Meng, Chenlin and Ermon, Stefano",2021,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,ldm,\cite{ldm},High-Resolution Image Synthesis with Latent Diffusion Models,,,"Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Björn",2022,,,10.1109/CVPR52688.2022.01042,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,dit,\cite{dit},Scalable Diffusion Models with Transformers,http://arxiv.org/abs/2212.09748v2,"We explore a new class of diffusion models based on the transformer
+architecture. We train latent diffusion models of images, replacing the
+commonly-used U-Net backbone with a transformer that operates on latent
+patches. We analyze the scalability of our Diffusion Transformers (DiTs)
+through the lens of forward pass complexity as measured by Gflops. We find that
+DiTs with higher Gflops -- through increased transformer depth/width or
+increased number of input tokens -- consistently have lower FID. In addition to
+possessing good scalability properties, our largest DiT-XL/2 models outperform
+all prior diffusion models on the class-conditional ImageNet 512x512 and
+256x256 benchmarks, achieving a state-of-the-art FID of 2.27 on the latter.","Peebles, William and Xie, Saining",2023,,,10.1109/ICCV51070.2023.00387,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,unet,\cite{unet},U-Net: Convolutional Networks for Biomedical Image Segmentation,,,"Ronneberger, Olaf
+and Fischer, Philipp
+and Brox, Thomas",2015,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,kaplan2020scalinglawsneurallanguage,\cite{kaplan2020scalinglawsneurallanguage},Scaling Laws for Neural Language Models,http://arxiv.org/abs/2001.08361v1,"We study empirical scaling laws for language model performance on the
+cross-entropy loss. The loss scales as a power-law with model size, dataset
+size, and the amount of compute used for training, with some trends spanning
+more than seven orders of magnitude. Other architectural details such as
+network width or depth have minimal effects within a wide range. Simple
+equations govern the dependence of overfitting on model/dataset size and the
+dependence of training speed on model size. These relationships allow us to
+determine the optimal allocation of a fixed compute budget. Larger models are
+significantly more sample-efficient, such that optimally compute-efficient
+training involves training very large models on a relatively modest amount of
+data and stopping significantly before convergence.",Jared Kaplan and Sam McCandlish and Tom Henighan and Tom B. Brown and Benjamin Chess and Rewon Child and Scott Gray and Alec Radford and Jeffrey Wu and Dario Amodei,2020,,https://arxiv.org/abs/2001.08361,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,sd3,\cite{sd3},Scaling Rectified Flow Transformers for High-Resolution Image Synthesis,http://arxiv.org/abs/2403.03206v1,"Diffusion models create data from noise by inverting the forward paths of
+data towards noise and have emerged as a powerful generative modeling technique
+for high-dimensional, perceptual data such as images and videos. Rectified flow
+is a recent generative model formulation that connects data and noise in a
+straight line. Despite its better theoretical properties and conceptual
+simplicity, it is not yet decisively established as standard practice. In this
+work, we improve existing noise sampling techniques for training rectified flow
+models by biasing them towards perceptually relevant scales. Through a
+large-scale study, we demonstrate the superior performance of this approach
+compared to established diffusion formulations for high-resolution
+text-to-image synthesis. Additionally, we present a novel transformer-based
+architecture for text-to-image generation that uses separate weights for the
+two modalities and enables a bidirectional flow of information between image
+and text tokens, improving text comprehension, typography, and human preference
+ratings. We demonstrate that this architecture follows predictable scaling
+trends and correlates lower validation loss to improved text-to-image synthesis
+as measured by various metrics and human evaluations. Our largest models
+outperform state-of-the-art models, and we will make our experimental data,
+code, and model weights publicly available.","Esser, Patrick and Kulal, Sumith and Blattmann, Andreas and Entezari, Rahim and M\""{u}ller, Jonas and Saini, Harry and Levi, Yam and Lorenz, Dominik and Sauer, Axel and Boesel, Frederic and Podell, Dustin and Dockhorn, Tim and English, Zion and Rombach, Robin",2024,21--27 Jul,https://proceedings.mlr.press/v235/esser24a.html,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,flowmatching,\cite{flowmatching},Flow Matching for Generative Modeling,http://arxiv.org/abs/2210.02747v2,"We introduce a new paradigm for generative modeling built on Continuous
+Normalizing Flows (CNFs), allowing us to train CNFs at unprecedented scale.
+Specifically, we present the notion of Flow Matching (FM), a simulation-free
+approach for training CNFs based on regressing vector fields of fixed
+conditional probability paths. Flow Matching is compatible with a general
+family of Gaussian probability paths for transforming between noise and data
+samples -- which subsumes existing diffusion paths as specific instances.
+Interestingly, we find that employing FM with diffusion paths results in a more
+robust and stable alternative for training diffusion models. Furthermore, Flow
+Matching opens the door to training CNFs with other, non-diffusion probability
+paths. An instance of particular interest is using Optimal Transport (OT)
+displacement interpolation to define the conditional probability paths. These
+paths are more efficient than diffusion paths, provide faster training and
+sampling, and result in better generalization. Training CNFs using Flow
+Matching on ImageNet leads to consistently better performance than alternative
+diffusion-based methods in terms of both likelihood and sample quality, and
+allows fast and reliable sample generation using off-the-shelf numerical ODE
+solvers.","Lipman, Yaron and Chen, Ricky TQ and Ben-Hamu, Heli and Nickel, Maximilian and Le, Matthew",2023,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,rectifiedflow,\cite{rectifiedflow},"Flow Straight and Fast: Learning to Generate and Transfer Data with
+  Rectified Flow",http://arxiv.org/abs/2209.03003v1,"We present rectified flow, a surprisingly simple approach to learning
+(neural) ordinary differential equation (ODE) models to transport between two
+empirically observed distributions \pi_0 and \pi_1, hence providing a unified
+solution to generative modeling and domain transfer, among various other tasks
+involving distribution transport. The idea of rectified flow is to learn the
+ODE to follow the straight paths connecting the points drawn from \pi_0 and
+\pi_1 as much as possible. This is achieved by solving a straightforward
+nonlinear least squares optimization problem, which can be easily scaled to
+large models without introducing extra parameters beyond standard supervised
+learning. The straight paths are special and preferred because they are the
+shortest paths between two points, and can be simulated exactly without time
+discretization and hence yield computationally efficient models. We show that
+the procedure of learning a rectified flow from data, called rectification,
+turns an arbitrary coupling of \pi_0 and \pi_1 to a new deterministic coupling
+with provably non-increasing convex transport costs. In addition, recursively
+applying rectification allows us to obtain a sequence of flows with
+increasingly straight paths, which can be simulated accurately with coarse time
+discretization in the inference phase. In empirical studies, we show that
+rectified flow performs superbly on image generation, image-to-image
+translation, and domain adaptation. In particular, on image generation and
+translation, our method yields nearly straight flows that give high quality
+results even with a single Euler discretization step.",Xingchao Liu and Chengyue Gong and Qiang Liu,2022,,https://arxiv.org/abs/2209.03003,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,wan,\cite{wan},Wan: Open and Advanced Large-Scale Video Generative Models,http://arxiv.org/abs/2503.20314v2,"This report presents Wan, a comprehensive and open suite of video foundation
+models designed to push the boundaries of video generation. Built upon the
+mainstream diffusion transformer paradigm, Wan achieves significant
+advancements in generative capabilities through a series of innovations,
+including our novel VAE, scalable pre-training strategies, large-scale data
+curation, and automated evaluation metrics. These contributions collectively
+enhance the model's performance and versatility. Specifically, Wan is
+characterized by four key features: Leading Performance: The 14B model of Wan,
+trained on a vast dataset comprising billions of images and videos,
+demonstrates the scaling laws of video generation with respect to both data and
+model size. It consistently outperforms the existing open-source models as well
+as state-of-the-art commercial solutions across multiple internal and external
+benchmarks, demonstrating a clear and significant performance superiority.
+Comprehensiveness: Wan offers two capable models, i.e., 1.3B and 14B
+parameters, for efficiency and effectiveness respectively. It also covers
+multiple downstream applications, including image-to-video, instruction-guided
+video editing, and personal video generation, encompassing up to eight tasks.
+Consumer-Grade Efficiency: The 1.3B model demonstrates exceptional resource
+efficiency, requiring only 8.19 GB VRAM, making it compatible with a wide range
+of consumer-grade GPUs. Openness: We open-source the entire series of Wan,
+including source code and all models, with the goal of fostering the growth of
+the video generation community. This openness seeks to significantly expand the
+creative possibilities of video production in the industry and provide academia
+with high-quality video foundation models. All the code and models are
+available at https://github.com/Wan-Video/Wan2.1.",Team Wan and Ang Wang and Baole Ai and Bin Wen and Chaojie Mao and Chen-Wei Xie and Di Chen and Feiwu Yu and Haiming Zhao and Jianxiao Yang and Jianyuan Zeng and Jiayu Wang and Jingfeng Zhang and Jingren Zhou and Jinkai Wang and Jixuan Chen and Kai Zhu and Kang Zhao and Keyu Yan and Lianghua Huang and Mengyang Feng and Ningyi Zhang and Pandeng Li and Pingyu Wu and Ruihang Chu and Ruili Feng and Shiwei Zhang and Siyang Sun and Tao Fang and Tianxing Wang and Tianyi Gui and Tingyu Weng and Tong Shen and Wei Lin and Wei Wang and Wei Wang and Wenmeng Zhou and Wente Wang and Wenting Shen and Wenyuan Yu and Xianzhong Shi and Xiaoming Huang and Xin Xu and Yan Kou and Yangyu Lv and Yifei Li and Yijing Liu and Yiming Wang and Yingya Zhang and Yitong Huang and Yong Li and You Wu and Yu Liu and Yulin Pan and Yun Zheng and Yuntao Hong and Yupeng Shi and Yutong Feng and Zeyinzi Jiang and Zhen Han and Zhi-Fan Wu and Ziyu Liu,2025,,https://arxiv.org/abs/2503.20314,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,easyanimate,\cite{easyanimate},"EasyAnimate: A High-Performance Long Video Generation Method based on
+  Transformer Architecture",http://arxiv.org/abs/2405.18991v2,"This paper presents EasyAnimate, an advanced method for video generation that
+leverages the power of transformer architecture for high-performance outcomes.
+We have expanded the DiT framework originally designed for 2D image synthesis
+to accommodate the complexities of 3D video generation by incorporating a
+motion module block. It is used to capture temporal dynamics, thereby ensuring
+the production of consistent frames and seamless motion transitions. The motion
+module can be adapted to various DiT baseline methods to generate video with
+different styles. It can also generate videos with different frame rates and
+resolutions during both training and inference phases, suitable for both images
+and videos. Moreover, we introduce slice VAE, a novel approach to condense the
+temporal axis, facilitating the generation of long duration videos. Currently,
+EasyAnimate exhibits the proficiency to generate videos with 144 frames. We
+provide a holistic ecosystem for video production based on DiT, encompassing
+aspects such as data pre-processing, VAE training, DiT models training (both
+the baseline model and LoRA model), and end-to-end video inference. Code is
+available at: https://github.com/aigc-apps/EasyAnimate. We are continuously
+working to enhance the performance of our method.",Jiaqi Xu and Xinyi Zou and Kunzhe Huang and Yunkuo Chen and Bo Liu and MengLi Cheng and Xing Shi and Jun Huang,2024,,https://arxiv.org/abs/2405.18991,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,hunyuanvideo,\cite{hunyuanvideo},HunyuanVideo: A Systematic Framework For Large Video Generative Models,http://arxiv.org/abs/2412.03603v6,"Recent advancements in video generation have significantly impacted daily
+life for both individuals and industries. However, the leading video generation
+models remain closed-source, resulting in a notable performance gap between
+industry capabilities and those available to the public. In this report, we
+introduce HunyuanVideo, an innovative open-source video foundation model that
+demonstrates performance in video generation comparable to, or even surpassing,
+that of leading closed-source models. HunyuanVideo encompasses a comprehensive
+framework that integrates several key elements, including data curation,
+advanced architectural design, progressive model scaling and training, and an
+efficient infrastructure tailored for large-scale model training and inference.
+As a result, we successfully trained a video generative model with over 13
+billion parameters, making it the largest among all open-source models. We
+conducted extensive experiments and implemented a series of targeted designs to
+ensure high visual quality, motion dynamics, text-video alignment, and advanced
+filming techniques. According to evaluations by professionals, HunyuanVideo
+outperforms previous state-of-the-art models, including Runway Gen-3, Luma 1.6,
+and three top-performing Chinese video generative models. By releasing the code
+for the foundation model and its applications, we aim to bridge the gap between
+closed-source and open-source communities. This initiative will empower
+individuals within the community to experiment with their ideas, fostering a
+more dynamic and vibrant video generation ecosystem. The code is publicly
+available at https://github.com/Tencent/HunyuanVideo.",Weijie Kong and Qi Tian and Zijian Zhang and Rox Min and Zuozhuo Dai and Jin Zhou and Jiangfeng Xiong and Xin Li and Bo Wu and Jianwei Zhang and Kathrina Wu and Qin Lin and Junkun Yuan and Yanxin Long and Aladdin Wang and Andong Wang and Changlin Li and Duojun Huang and Fang Yang and Hao Tan and Hongmei Wang and Jacob Song and Jiawang Bai and Jianbing Wu and Jinbao Xue and Joey Wang and Kai Wang and Mengyang Liu and Pengyu Li and Shuai Li and Weiyan Wang and Wenqing Yu and Xinchi Deng and Yang Li and Yi Chen and Yutao Cui and Yuanbo Peng and Zhentao Yu and Zhiyu He and Zhiyong Xu and Zixiang Zhou and Zunnan Xu and Yangyu Tao and Qinglin Lu and Songtao Liu and Dax Zhou and Hongfa Wang and Yong Yang and Di Wang and Yuhong Liu and Jie Jiang and Caesar Zhong,2025,,https://arxiv.org/abs/2412.03603,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,cogvideox,\cite{cogvideox},CogVideoX: Text-to-Video Diffusion Models with An Expert Transformer,http://arxiv.org/abs/2408.06072v3,"We present CogVideoX, a large-scale text-to-video generation model based on
+diffusion transformer, which can generate 10-second continuous videos aligned
+with text prompt, with a frame rate of 16 fps and resolution of 768 * 1360
+pixels. Previous video generation models often had limited movement and short
+durations, and is difficult to generate videos with coherent narratives based
+on text. We propose several designs to address these issues. First, we propose
+a 3D Variational Autoencoder (VAE) to compress videos along both spatial and
+temporal dimensions, to improve both compression rate and video fidelity.
+Second, to improve the text-video alignment, we propose an expert transformer
+with the expert adaptive LayerNorm to facilitate the deep fusion between the
+two modalities. Third, by employing a progressive training and multi-resolution
+frame pack technique, CogVideoX is adept at producing coherent, long-duration,
+different shape videos characterized by significant motions. In addition, we
+develop an effective text-video data processing pipeline that includes various
+data preprocessing strategies and a video captioning method, greatly
+contributing to the generation quality and semantic alignment. Results show
+that CogVideoX demonstrates state-of-the-art performance across both multiple
+machine metrics and human evaluations. The model weight of both 3D Causal VAE,
+Video caption model and CogVideoX are publicly available at
+https://github.com/THUDM/CogVideo.",Zhuoyi Yang and Jiayan Teng and Wendi Zheng and Ming Ding and Shiyu Huang and Jiazheng Xu and Yuanming Yang and Wenyi Hong and Xiaohan Zhang and Guanyu Feng and Da Yin and Yuxuan Zhang and Weihan Wang and Yean Cheng and Bin Xu and Xiaotao Gu and Yuxiao Dong and Jie Tang,2025,,https://arxiv.org/abs/2408.06072,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,opensora2,\cite{opensora2},"Open-Sora 2.0: Training a Commercial-Level Video Generation Model in
+  $200k",http://arxiv.org/abs/2503.09642v2,"Video generation models have achieved remarkable progress in the past year.
+The quality of AI video continues to improve, but at the cost of larger model
+size, increased data quantity, and greater demand for training compute. In this
+report, we present Open-Sora 2.0, a commercial-level video generation model
+trained for only $200k. With this model, we demonstrate that the cost of
+training a top-performing video generation model is highly controllable. We
+detail all techniques that contribute to this efficiency breakthrough,
+including data curation, model architecture, training strategy, and system
+optimization. According to human evaluation results and VBench scores,
+Open-Sora 2.0 is comparable to global leading video generation models including
+the open-source HunyuanVideo and the closed-source Runway Gen-3 Alpha. By
+making Open-Sora 2.0 fully open-source, we aim to democratize access to
+advanced video generation technology, fostering broader innovation and
+creativity in content creation. All resources are publicly available at:
+https://github.com/hpcaitech/Open-Sora.",Xiangyu Peng and Zangwei Zheng and Chenhui Shen and Tom Young and Xinying Guo and Binluo Wang and Hang Xu and Hongxin Liu and Mingyan Jiang and Wenjun Li and Yuhui Wang and Anbang Ye and Gang Ren and Qianran Ma and Wanying Liang and Xiang Lian and Xiwen Wu and Yuting Zhong and Zhuangyan Li and Chaoyu Gong and Guojun Lei and Leijun Cheng and Limin Zhang and Minghao Li and Ruijie Zhang and Silan Hu and Shijie Huang and Xiaokang Wang and Yuanheng Zhao and Yuqi Wang and Ziang Wei and Yang You,2025,,https://arxiv.org/abs/2503.09642,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,vchitect2,\cite{vchitect2},Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models,,,Weichen Fan and Chenyang Si and Junhao Song and Zhenyu Yang and Yinan He and Long Zhuo and Ziqi Huang and Ziyue Dong and Jingwen He and Dongwei Pan and Yi Wang and Yuming Jiang and Yaohui Wang and Peng Gao and Xinyuan Chen and Hengjie Li and Dahua Lin and Yu Qiao and Ziwei Liu,2025,,https://arxiv.org/abs/2501.08453,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,attention2017,\cite{attention2017},Attention Is All You Need,http://arxiv.org/abs/1706.03762v7,"The dominant sequence transduction models are based on complex recurrent or
+convolutional neural networks in an encoder-decoder configuration. The best
+performing models also connect the encoder and decoder through an attention
+mechanism. We propose a new simple network architecture, the Transformer, based
+solely on attention mechanisms, dispensing with recurrence and convolutions
+entirely. Experiments on two machine translation tasks show these models to be
+superior in quality while being more parallelizable and requiring significantly
+less time to train. Our model achieves 28.4 BLEU on the WMT 2014
+English-to-German translation task, improving over the existing best results,
+including ensembles by over 2 BLEU. On the WMT 2014 English-to-French
+translation task, our model establishes a new single-model state-of-the-art
+BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction
+of the training costs of the best models from the literature. We show that the
+Transformer generalizes well to other tasks by applying it successfully to
+English constituency parsing both with large and limited training data.","Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, \L ukasz and Polosukhin, Illia",2017,,https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,guo2024animatediff,\cite{guo2024animatediff},"AnimateDiff: Animate Your Personalized Text-to-Image Diffusion Models
+  without Specific Tuning",http://arxiv.org/abs/2307.04725v2,"With the advance of text-to-image (T2I) diffusion models (e.g., Stable
+Diffusion) and corresponding personalization techniques such as DreamBooth and
+LoRA, everyone can manifest their imagination into high-quality images at an
+affordable cost. However, adding motion dynamics to existing high-quality
+personalized T2Is and enabling them to generate animations remains an open
+challenge. In this paper, we present AnimateDiff, a practical framework for
+animating personalized T2I models without requiring model-specific tuning. At
+the core of our framework is a plug-and-play motion module that can be trained
+once and seamlessly integrated into any personalized T2Is originating from the
+same base T2I. Through our proposed training strategy, the motion module
+effectively learns transferable motion priors from real-world videos. Once
+trained, the motion module can be inserted into a personalized T2I model to
+form a personalized animation generator. We further propose MotionLoRA, a
+lightweight fine-tuning technique for AnimateDiff that enables a pre-trained
+motion module to adapt to new motion patterns, such as different shot types, at
+a low training and data collection cost. We evaluate AnimateDiff and MotionLoRA
+on several public representative personalized T2I models collected from the
+community. The results demonstrate that our approaches help these models
+generate temporally smooth animation clips while preserving the visual quality
+and motion diversity. Codes and pre-trained weights are available at
+https://github.com/guoyww/AnimateDiff.","Guo, Yuwei and Yang, Ceyuan and Rao, Anyi and Liang, Zhengyang and Wang, Yaohui and Qiao, Yu and Agrawala, Maneesh and Lin, Dahua and Dai, Bo",2024,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,videoshop,\cite{videoshop},"Videoshop: Localized Semantic Video Editing with Noise-Extrapolated
+  Diffusion Inversion",http://arxiv.org/abs/2403.14617v3,"We introduce Videoshop, a training-free video editing algorithm for localized
+semantic edits. Videoshop allows users to use any editing software, including
+Photoshop and generative inpainting, to modify the first frame; it
+automatically propagates those changes, with semantic, spatial, and temporally
+consistent motion, to the remaining frames. Unlike existing methods that enable
+edits only through imprecise textual instructions, Videoshop allows users to
+add or remove objects, semantically change objects, insert stock photos into
+videos, etc. with fine-grained control over locations and appearance. We
+achieve this through image-based video editing by inverting latents with noise
+extrapolation, from which we generate videos conditioned on the edited image.
+Videoshop produces higher quality edits against 6 baselines on 2 editing
+benchmarks using 10 evaluation metrics.","Fan, Xiang
+and Bhattad, Anand
+and Krishna, Ranjay",2025,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,dni,\cite{dni},DNI: Dilutional Noise Initialization for Diffusion Video Editing,http://arxiv.org/abs/2409.13037v1,"Text-based diffusion video editing systems have been successful in performing
+edits with high fidelity and textual alignment. However, this success is
+limited to rigid-type editing such as style transfer and object overlay, while
+preserving the original structure of the input video. This limitation stems
+from an initial latent noise employed in diffusion video editing systems. The
+diffusion video editing systems prepare initial latent noise to edit by
+gradually infusing Gaussian noise onto the input video. However, we observed
+that the visual structure of the input video still persists within this initial
+latent noise, thereby restricting non-rigid editing such as motion change
+necessitating structural modifications. To this end, this paper proposes
+Dilutional Noise Initialization (DNI) framework which enables editing systems
+to perform precise and dynamic modification including non-rigid editing. DNI
+introduces a concept of `noise dilution' which adds further noise to the latent
+noise in the region to be edited to soften the structural rigidity imposed by
+input video, resulting in more effective edits closer to the target prompt.
+Extensive experiments demonstrate the effectiveness of the DNI framework.","Yoon, Sunjae
+and Koo, Gwanhyeong
+and Hong, Ji Woo
+and Yoo, Chang D.",2025,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,wave,\cite{wave},WAVE: Warping DDIM Inversion Features for Zero-Shot Text-to-Video Editing,,,"Feng, Yutang
+and Gao, Sicheng
+and Bao, Yuxiang
+and Wang, Xiaodi
+and Han, Shumin
+and Zhang, Juan
+and Zhang, Baochang
+and Yao, Angela",2025,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,yatim2025dynvfxaugmentingrealvideos,\cite{yatim2025dynvfxaugmentingrealvideos},DynVFX: Augmenting Real Videos with Dynamic Content,http://arxiv.org/abs/2502.03621v1,"We present a method for augmenting real-world videos with newly generated
+dynamic content. Given an input video and a simple user-provided text
+instruction describing the desired content, our method synthesizes dynamic
+objects or complex scene effects that naturally interact with the existing
+scene over time. The position, appearance, and motion of the new content are
+seamlessly integrated into the original footage while accounting for camera
+motion, occlusions, and interactions with other dynamic objects in the scene,
+resulting in a cohesive and realistic output video. We achieve this via a
+zero-shot, training-free framework that harnesses a pre-trained text-to-video
+diffusion transformer to synthesize the new content and a pre-trained Vision
+Language Model to envision the augmented scene in detail. Specifically, we
+introduce a novel inference-based method that manipulates features within the
+attention mechanism, enabling accurate localization and seamless integration of
+the new content while preserving the integrity of the original scene. Our
+method is fully automated, requiring only a simple user instruction. We
+demonstrate its effectiveness on a wide range of edits applied to real-world
+videos, encompassing diverse objects and scenarios involving both camera and
+object motion.",Danah Yatim and Rafail Fridman and Omer Bar-Tal and Tali Dekel,2025,,https://arxiv.org/abs/2502.03621,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,dreammotion,\cite{dreammotion},"DreamMotion: Space-Time Self-Similar Score Distillation for Zero-Shot
+  Video Editing",http://arxiv.org/abs/2403.12002v2,"Text-driven diffusion-based video editing presents a unique challenge not
+encountered in image editing literature: establishing real-world motion. Unlike
+existing video editing approaches, here we focus on score distillation sampling
+to circumvent the standard reverse diffusion process and initiate optimization
+from videos that already exhibit natural motion. Our analysis reveals that
+while video score distillation can effectively introduce new content indicated
+by target text, it can also cause significant structure and motion deviation.
+To counteract this, we propose to match space-time self-similarities of the
+original video and the edited video during the score distillation. Thanks to
+the use of score distillation, our approach is model-agnostic, which can be
+applied for both cascaded and non-cascaded video diffusion frameworks. Through
+extensive comparisons with leading methods, our approach demonstrates its
+superiority in altering appearances while accurately preserving the original
+structure and motion.","Jeong, Hyeonho
+and Chang, Jinho
+and Park, Geon Yeong
+and Ye, Jong Chul",2025,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,ren2025fdsfrequencyawaredenoisingscore,\cite{ren2025fdsfrequencyawaredenoisingscore},"FDS: Frequency-Aware Denoising Score for Text-Guided Latent Diffusion
+  Image Editing",http://arxiv.org/abs/2503.19191v1,"Text-guided image editing using Text-to-Image (T2I) models often fails to
+yield satisfactory results, frequently introducing unintended modifications,
+such as the loss of local detail and color changes. In this paper, we analyze
+these failure cases and attribute them to the indiscriminate optimization
+across all frequency bands, even though only specific frequencies may require
+adjustment. To address this, we introduce a simple yet effective approach that
+enables the selective optimization of specific frequency bands within localized
+spatial regions for precise edits. Our method leverages wavelets to decompose
+images into different spatial resolutions across multiple frequency bands,
+enabling precise modifications at various levels of detail. To extend the
+applicability of our approach, we provide a comparative analysis of different
+frequency-domain techniques. Additionally, we extend our method to 3D texture
+editing by performing frequency decomposition on the triplane representation,
+enabling frequency-aware adjustments for 3D textures. Quantitative evaluations
+and user studies demonstrate the effectiveness of our method in producing
+high-quality and precise edits.",Yufan Ren and Zicong Jiang and Tong Zhang and Søren Forchhammer and Sabine Süsstrunk,2025,,https://arxiv.org/abs/2503.19191,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,unityindiversity,\cite{unityindiversity},Unity in Diversity: Video Editing via Gradient-Latent Purification,,,"Gao, Junyu and Yang, Kunlin and Yao, Xuan and Hu, Yufan",2025,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,pooledreamfusion,\cite{pooledreamfusion},DreamFusion: Text-to-3D using 2D Diffusion,http://arxiv.org/abs/2209.14988v1,"Recent breakthroughs in text-to-image synthesis have been driven by diffusion
+models trained on billions of image-text pairs. Adapting this approach to 3D
+synthesis would require large-scale datasets of labeled 3D data and efficient
+architectures for denoising 3D data, neither of which currently exist. In this
+work, we circumvent these limitations by using a pretrained 2D text-to-image
+diffusion model to perform text-to-3D synthesis. We introduce a loss based on
+probability density distillation that enables the use of a 2D diffusion model
+as a prior for optimization of a parametric image generator. Using this loss in
+a DeepDream-like procedure, we optimize a randomly-initialized 3D model (a
+Neural Radiance Field, or NeRF) via gradient descent such that its 2D
+renderings from random angles achieve a low loss. The resulting 3D model of the
+given text can be viewed from any angle, relit by arbitrary illumination, or
+composited into any 3D environment. Our approach requires no 3D training data
+and no modifications to the image diffusion model, demonstrating the
+effectiveness of pretrained image diffusion models as priors.","Poole, Ben and Jain, Ajay and Barron, Jonathan T and Mildenhall, Ben",2023,,,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,avrahami2025stableflowvitallayers,\cite{avrahami2025stableflowvitallayers},Stable Flow: Vital Layers for Training-Free Image Editing,http://arxiv.org/abs/2411.14430v2,"Diffusion models have revolutionized the field of content synthesis and
+editing. Recent models have replaced the traditional UNet architecture with the
+Diffusion Transformer (DiT), and employed flow-matching for improved training
+and sampling. However, they exhibit limited generation diversity. In this work,
+we leverage this limitation to perform consistent image edits via selective
+injection of attention features. The main challenge is that, unlike the
+UNet-based models, DiT lacks a coarse-to-fine synthesis structure, making it
+unclear in which layers to perform the injection. Therefore, we propose an
+automatic method to identify ""vital layers"" within DiT, crucial for image
+formation, and demonstrate how these layers facilitate a range of controlled
+stable edits, from non-rigid modifications to object addition, using the same
+mechanism. Next, to enable real-image editing, we introduce an improved image
+inversion method for flow models. Finally, we evaluate our approach through
+qualitative and quantitative comparisons, along with a user study, and
+demonstrate its effectiveness across multiple applications. The project page is
+available at https://omriavrahami.com/stable-flow",Omri Avrahami and Or Patashnik and Ohad Fried and Egor Nemchinov and Kfir Aberman and Dani Lischinski and Daniel Cohen-Or,2025,,https://arxiv.org/abs/2411.14430,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,dalva2024fluxspacedisentangledsemanticediting,\cite{dalva2024fluxspacedisentangledsemanticediting},FluxSpace: Disentangled Semantic Editing in Rectified Flow Transformers,http://arxiv.org/abs/2412.09611v1,"Rectified flow models have emerged as a dominant approach in image
+generation, showcasing impressive capabilities in high-quality image synthesis.
+However, despite their effectiveness in visual generation, rectified flow
+models often struggle with disentangled editing of images. This limitation
+prevents the ability to perform precise, attribute-specific modifications
+without affecting unrelated aspects of the image. In this paper, we introduce
+FluxSpace, a domain-agnostic image editing method leveraging a representation
+space with the ability to control the semantics of images generated by
+rectified flow transformers, such as Flux. By leveraging the representations
+learned by the transformer blocks within the rectified flow models, we propose
+a set of semantically interpretable representations that enable a wide range of
+image editing tasks, from fine-grained image editing to artistic creation. This
+work offers a scalable and effective image editing approach, along with its
+disentanglement capabilities.",Yusuf Dalva and Kavana Venkatesh and Pinar Yanardag,2024,,https://arxiv.org/abs/2412.09611,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,xu2025unveilinversioninvarianceflow,\cite{xu2025unveilinversioninvarianceflow},"Unveil Inversion and Invariance in Flow Transformer for Versatile Image
+  Editing",http://arxiv.org/abs/2411.15843v4,"Leveraging the large generative prior of the flow transformer for tuning-free
+image editing requires authentic inversion to project the image into the
+model's domain and a flexible invariance control mechanism to preserve
+non-target contents. However, the prevailing diffusion inversion performs
+deficiently in flow-based models, and the invariance control cannot reconcile
+diverse rigid and non-rigid editing tasks. To address these, we systematically
+analyze the \textbf{inversion and invariance} control based on the flow
+transformer. Specifically, we unveil that the Euler inversion shares a similar
+structure to DDIM yet is more susceptible to the approximation error. Thus, we
+propose a two-stage inversion to first refine the velocity estimation and then
+compensate for the leftover error, which pivots closely to the model prior and
+benefits editing. Meanwhile, we propose the invariance control that manipulates
+the text features within the adaptive layer normalization, connecting the
+changes in the text prompt to image semantics. This mechanism can
+simultaneously preserve the non-target contents while allowing rigid and
+non-rigid manipulation, enabling a wide range of editing types such as visual
+text, quantity, facial expression, etc. Experiments on versatile scenarios
+validate that our framework achieves flexible and accurate editing, unlocking
+the potential of the flow transformer for versatile image editing.",Pengcheng Xu and Boyuan Jiang and Xiaobin Hu and Donghao Luo and Qingdong He and Jiangning Zhang and Chengjie Wang and Yunsheng Wu and Charles Ling and Boyu Wang,2025,,https://arxiv.org/abs/2411.15843,,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,infedit,\cite{infedit},Inversion-Free Image Editing with Natural Language,http://arxiv.org/abs/2312.04965v1,"Despite recent advances in inversion-based editing, text-guided image
+manipulation remains challenging for diffusion models. The primary bottlenecks
+include 1) the time-consuming nature of the inversion process; 2) the struggle
+to balance consistency with accuracy; 3) the lack of compatibility with
+efficient consistency sampling methods used in consistency models. To address
+the above issues, we start by asking ourselves if the inversion process can be
+eliminated for editing. We show that when the initial sample is known, a
+special variance schedule reduces the denoising step to the same form as the
+multi-step consistency sampling. We name this Denoising Diffusion Consistent
+Model (DDCM), and note that it implies a virtual inversion strategy without
+explicit inversion in sampling. We further unify the attention control
+mechanisms in a tuning-free framework for text-guided editing. Combining them,
+we present inversion-free editing (InfEdit), which allows for consistent and
+faithful editing for both rigid and non-rigid semantic changes, catering to
+intricate modifications without compromising on the image's integrity and
+explicit inversion. Through extensive experiments, InfEdit shows strong
+performance in various editing tasks and also maintains a seamless workflow
+(less than 3 seconds on one single A40), demonstrating the potential for
+real-time applications. Project Page: https://sled-group.github.io/InfEdit/","Xu, Sihan and Huang, Yidong and Pan, Jiayi and Ma, Ziqiao and Chai, Joyce",2024,,,10.1109/CVPR52733.2024.00903,
+Taming Flow-based I2V Models for Creative Video Editing,http://arxiv.org/abs/2509.21917v1,kulikov2024floweditinversionfreetextbasedediting,\cite{kulikov2024floweditinversionfreetextbasedediting},"FlowEdit: Inversion-Free Text-Based Editing Using Pre-Trained Flow
+  Models",http://arxiv.org/abs/2412.08629v2,"Editing real images using a pre-trained text-to-image (T2I) diffusion/flow
+model often involves inverting the image into its corresponding noise map.
+However, inversion by itself is typically insufficient for obtaining
+satisfactory results, and therefore many methods additionally intervene in the
+sampling process. Such methods achieve improved results but are not seamlessly
+transferable between model architectures. Here, we introduce FlowEdit, a
+text-based editing method for pre-trained T2I flow models, which is
+inversion-free, optimization-free and model agnostic. Our method constructs an
+ODE that directly maps between the source and target distributions
+(corresponding to the source and target text prompts) and achieves a lower
+transport cost than the inversion approach. This leads to state-of-the-art
+results, as we illustrate with Stable Diffusion 3 and FLUX. Code and examples
+are available on the project's webpage.",Vladimir Kulikov and Matan Kleiner and Inbar Huberman-Spiegelglas and Tomer Michaeli,2024,,https://arxiv.org/abs/2412.08629,,
