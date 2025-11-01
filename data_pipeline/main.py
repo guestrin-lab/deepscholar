@@ -221,6 +221,9 @@ class DataPipeline:
                     if paper.updated_date
                     else None,
                     "abs_url": paper.abs_url,
+                    "doi": paper.doi,
+                    "journal_ref": paper.journal_ref,
+                    "comments": paper.comments,
                 }
             )
 
@@ -360,6 +363,9 @@ class DataPipeline:
                     if paper.updated_date
                     else None,
                     "abs_url": paper.abs_url,
+                    "doi": paper.doi,
+                    "journal_ref": paper.journal_ref,
+                    "comments": paper.comments,
                 }
             )
 

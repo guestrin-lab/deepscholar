@@ -34,6 +34,7 @@ class PipelineConfig:
     max_author_hindex: Optional[int] = None  # Maximum h-index (optional upper bound)
 
     # Paper filtering
+    filter_accepted_papers: bool = False  # Filter only papers with "published" or "accepted" in comments
     max_papers_per_category: int = (
         100  # Limit papers per category to avoid overwhelming
     )

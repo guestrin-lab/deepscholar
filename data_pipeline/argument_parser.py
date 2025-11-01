@@ -61,6 +61,13 @@ def parse_args():
         help="Maximum h-index (optional upper bound)",
     )
 
+    # Paper filtering
+    parser.add_argument(
+        "--filter-accepted-papers",
+        action="store_true",
+        help="Filter only papers with 'published' or 'accepted' in comments",
+    )
+
     # Paper limits
     parser.add_argument(
         "--max-papers-per-category",
@@ -122,6 +129,7 @@ def parse_args():
         arxiv_categories=args.categories,
         min_author_hindex=args.min_hindex,
         max_author_hindex=args.max_hindex,
+        filter_accepted_papers=args.filter_accepted_papers,
         max_papers_per_category=args.max_papers_per_category,
         min_citations_in_related_works=args.min_citations,
         output_dir=args.output_dir,

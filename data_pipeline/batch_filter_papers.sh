@@ -73,3 +73,4 @@ echo "✅ All folders processed successfully!"
 exit 0
 
 
+
