@@ -35,6 +35,7 @@ class OrganizationEvaluator(Evaluator):
             },
             inplace=True,
         )
+        df.head()
         results: pd.DataFrame = df.pairwise_judge(
             col1="related_work_a",
             col2="related_work_b",
@@ -45,8 +46,9 @@ class OrganizationEvaluator(Evaluator):
             response_format=OrganizationResponse,
         )
         
-        # _judge_0 compares (A, B): decision "A" means A is better, "B" means B is better
-        # _judge_1 compares (B, A) due to permute_cols=True: decision "A" means B is better, "B" means A is better
+        # _judge_0 compares (A, B)
+        # _judge_1 compares (B, A) due to permute_cols=True
+        # decision "A" means A is better, "B" means B is better
         def safe_get_decision(judge_response, default="B"):
             """Safely extract decision from judge response, handling edge cases."""
             if not hasattr(judge_response, "decision"):
@@ -63,10 +65,8 @@ class OrganizationEvaluator(Evaluator):
         results["score_1"] = results["_judge_0"].map(
             lambda x: 1 if safe_get_decision(x, "B") == "A" else 0
         )
-        # For _judge_1, since columns are permuted: "A" means original B is better, "B" means original A is better
-        # So we want score_2 = 1 when original A is better, which is when decision == "B"
         results["score_2"] = results["_judge_1"].map(
-            lambda x: 1 if safe_get_decision(x, "A") == "B" else 0
+            lambda x: 1 if safe_get_decision(x, "B") == "A" else 0
         )
         # Store individual scores as organization_v1 and organization_v2
         results["organization_v1"] = results["score_1"]
