@@ -172,8 +172,12 @@ python filter_quality_papers.py \
 | **Surveys** | 20 | 1000 | 20000 |
 
 **Outputs:**
-- `paper_content_filtered.csv` - Filtered paper data
-- `papers_filtered.csv` - Filtered paper metadata
+- New folder with the name of the input folder, but with the suffix _filtered or the name of the output folder specified in the command.
+    - `paper_content.csv` - Filtered paper data
+    - `papers.csv` - Filtered paper metadata
+    - `papers_with_related_works.csv` - Filtered paper and related works data
+    - `related_works_combined.csv` - Filtered related works data
+    - `citations.csv` - Filtered citations data
 
 ## 📊 Output Files
 
@@ -265,18 +269,18 @@ python -m data_pipeline.get_important_citations \
     --output_file outputs/20240101_120000/important_citations.csv
 
 # Step 4: Generate nuggets from related works
-python data_pipeline/generate_nuggets_from_reports.py \
+python -m data_pipeline.generate_nuggets_from_reports \
     --input_dir outputs/20240101_120000 \
     --model gpt-4o
 
 # Step 5: Filter for quality papers
-python filter_quality_papers.py --input-folder outputs/20240101_120000/
+python -m data_pipeline.filter_quality_papers --input-folder outputs/20240101_120000/ --output-folder outputs/20240101_120000_filtered/
 
 # Step 6: Add reference citation counts
 python -m data_pipeline.add_reference_citations \
-    --papers-csv outputs/20240101_120000/paper_content_filtered.csv \
-    --citations-folder outputs/citations \
-    --output-csv outputs/20240101_120000/paper_content_filtered_with_citations.csv
+    --papers-csv outputs/20240101_120000_filtered/paper_content.csv \
+    --citations-path outputs/20240101_120000_filtered/citations.csv \
+    --output-csv outputs/20240101_120000_filtered/paper_content_with_citations.csv
 ```
 
 ### Quick Testing

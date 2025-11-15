@@ -18,6 +18,7 @@ import re
 import numpy as np
 from typing import Optional
 from pathlib import Path
+from tqdm import tqdm
 
 # Import the citation count function
 try:
@@ -45,14 +46,14 @@ def clean_title_for_search(title: str) -> str:
 
 
 def get_reference_citation_counts(
-    citation_csv_path: str, 
+    citations_df: pd.DataFrame, 
     rate_limit_delay: float = 0.05
 ) -> dict:
     """
     Get citation counts for all references in a citation CSV file.
     
     Args:
-        citation_csv_path: Path to the citation CSV file
+        citations_df: DataFrame containing citations
         rate_limit_delay: Delay between API requests (seconds)
         
     Returns:
@@ -64,12 +65,9 @@ def get_reference_citation_counts(
         - median_citation_count: Median citation count (or "N/A" if none found)
     """
     try:
-        # Read citation CSV
-        citations_df = pd.read_csv(citation_csv_path)
-        
         # Extract unique cited paper titles
         if 'cited_paper_title' not in citations_df.columns:
-            logger.warning(f"No 'cited_paper_title' column in {citation_csv_path}")
+            logger.warning(f"No 'cited_paper_title' column in citations dataframe.")
             return {
                 'citation_counts': [],
                 'citation_counts_with_na': [],
@@ -95,7 +93,7 @@ def get_reference_citation_counts(
         citation_counts = []
         citation_counts_with_na = []
         
-        for i, title in enumerate(cited_titles):
+        for i, title in tqdm(enumerate(cited_titles), total=len(cited_titles), desc="Getting citation counts"):
             if i > 0:
                 time.sleep(rate_limit_delay)  # Rate limiting
             
@@ -120,17 +118,8 @@ def get_reference_citation_counts(
             'median_citation_count': median_citation_count
         }
         
-    except FileNotFoundError:
-        logger.warning(f"Citation file not found: {citation_csv_path}")
-        return {
-            'citation_counts': [],
-            'citation_counts_with_na': [],
-            'total_references': 0,
-            'references_with_citations': 0,
-            'median_citation_count': 'N/A'
-        }
     except Exception as e:
-        logger.error(f"Error processing {citation_csv_path}: {e}")
+        logger.error(f"Error processing citations dataframe: {e}")
         return {
             'citation_counts': [],
             'citation_counts_with_na': [],
@@ -142,7 +131,7 @@ def get_reference_citation_counts(
 
 def process_papers(
     papers_csv_path: str,
-    citations_folder: str,
+    citations_path: str,
     output_csv_path: Optional[str] = None,
     rate_limit_delay: float = 0.05
 ) -> pd.DataFrame:
@@ -151,7 +140,7 @@ def process_papers(
     
     Args:
         papers_csv_path: Path to papers.csv
-        citations_folder: Path to folder containing citation CSV files
+        citations_path: Path to citations.csv file
         output_csv_path: Optional output path (if None, overwrites input)
         rate_limit_delay: Delay between API requests (seconds)
         
@@ -161,7 +150,7 @@ def process_papers(
     # Read papers CSV
     logger.info(f"Reading papers from: {papers_csv_path}")
     papers_df = pd.read_csv(papers_csv_path)
-    
+    citations_df = pd.read_csv(citations_path)
     logger.info(f"Found {len(papers_df)} papers")
     
     # Initialize new columns
@@ -184,14 +173,12 @@ def process_papers(
         arxiv_id = str(arxiv_id).strip()
         
         # Find citation CSV file
-        citation_csv_path = os.path.join(citations_folder, f"{arxiv_id}.csv")
-        
         if (idx + 1) % 10 == 0:
             logger.info(f"Processing paper {idx + 1}/{len(papers_df)}: {arxiv_id}")
         
         # Get citation counts for references
         citation_data = get_reference_citation_counts(
-            citation_csv_path, 
+            citations_df[citations_df["parent_paper_arxiv_id"] == arxiv_id], 
             rate_limit_delay=rate_limit_delay
         )
         
@@ -242,14 +229,14 @@ def parse_args():
         "--papers-csv",
         type=str,
         required=True,
-        help="Path to papers.csv file"
+        help="Path to paper_content.csv file"
     )
     
     parser.add_argument(
-        "--citations-folder",
+        "--citations-path",
         type=str,
         required=True,
-        help="Path to folder containing citation CSV files"
+        help="Path to citations.csv file"
     )
     
     parser.add_argument(
@@ -278,14 +265,14 @@ def main():
         logger.error(f"Papers CSV not found: {args.papers_csv}")
         return
     
-    if not os.path.exists(args.citations_folder):
-        logger.error(f"Citations folder not found: {args.citations_folder}")
+    if not os.path.exists(args.citations_path):
+        logger.error(f"Citations path not found: {args.citations_path}")
         return
     
     # Process papers
     process_papers(
         papers_csv_path=args.papers_csv,
-        citations_folder=args.citations_folder,
+        citations_path=args.citations_path,
         output_csv_path=args.output_csv,
         rate_limit_delay=args.rate_limit_delay
     )

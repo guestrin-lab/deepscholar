@@ -19,6 +19,7 @@ import os
 import pandas as pd
 from pathlib import Path
 from typing import Optional
+import shutil
 
 # Set up logging
 logging.basicConfig(
@@ -37,8 +38,8 @@ class PaperQualityFilter:
         min_citations: int = 5,
         min_rw_length: int = 200,
         max_rw_length: int = 10000,
-        citations_folder: Optional[str] = None,
-        related_works_folder: Optional[str] = None
+        citations_path: Optional[str] = None,
+        related_works_path: Optional[str] = None
     ):
         """
         Initialize the quality filter.
@@ -48,8 +49,8 @@ class PaperQualityFilter:
             min_citations: Minimum number of citations required
             min_rw_length: Minimum length of related works section (characters)
             max_rw_length: Maximum length of related works section (characters)
-            citations_folder: Path to folder with citation CSVs (default: ../citations/)
-            related_works_folder: Path to folder with related works CSVs (default: ../related_works/)
+            citations_path: Path to citation file (default: citations.csv relative to input folder)
+            related_works_path: Path to related works file (default: related_works_combined.csv relative to input folder)
         """
         self.input_folder = Path(input_folder)
         self.min_citations = min_citations
@@ -59,18 +60,21 @@ class PaperQualityFilter:
         # Set up paths
         self.paper_content_path = self.input_folder / "paper_content.csv"
         self.papers_path = self.input_folder / "papers.csv"
+        self.papers_with_related_works_path = self.input_folder / "papers_with_related_works.csv"
+        self.related_works_combined_path = self.input_folder / "related_works_combined.csv"
         
         # Use provided paths or default to parent folders
-        if citations_folder:
-            self.citations_folder = Path(citations_folder)
+        if citations_path:
+            self.citations_path = Path(citations_path)
         else:
-            self.citations_folder = self.input_folder.parent / "citations"
-            
-        if related_works_folder:
-            self.related_works_folder = Path(related_works_folder)
+            self.citations_path = self.input_folder / "citations.csv"
+        if related_works_path:
+            self.related_works_path = Path(related_works_path)
         else:
-            self.related_works_folder = self.input_folder.parent / "related_works"
-        
+            self.related_works_path = self.input_folder / "related_works_combined.csv"
+
+        self.citations_df = pd.read_csv(self.citations_path)
+        self.related_works_df = pd.read_csv(self.related_works_path)
         # Validate paths
         if not self.paper_content_path.exists():
             raise FileNotFoundError(f"paper_content.csv not found at {self.paper_content_path}")
@@ -85,18 +89,8 @@ class PaperQualityFilter:
         Returns:
             Number of citations found
         """
-        citation_file = self.citations_folder / f"{arxiv_id}.csv"
-        
-        if not citation_file.exists():
-            logger.debug(f"No citation file found for {arxiv_id}")
-            return 0
-        
-        try:
-            citations_df = pd.read_csv(citation_file)
-            return len(citations_df)
-        except Exception as e:
-            logger.warning(f"Error reading citation file for {arxiv_id}: {e}")
-            return 0
+        citations = self.citations_df[self.citations_df["parent_paper_arxiv_id"] == arxiv_id]
+        return len(citations)
     
     def validate_related_works(self, row: pd.Series) -> bool:
         """
@@ -217,7 +211,25 @@ class PaperQualityFilter:
         
         return filtered_df
     
-    def filter_and_save(self, output_suffix: str = "_filtered"):
+    def save_filtered_papers(self, filtered_df: pd.DataFrame, output_folder: str = "filtered"):
+        """
+        Save filtered papers.
+        
+        Args:
+            filtered_df: Filtered DataFrame
+            output_folder: Folder to save filtered papers
+        """
+        output_folder = Path(output_folder)
+        shutil.copytree(self.input_folder, output_folder, dirs_exist_ok=True)
+        filtered_df.to_csv(output_folder / "paper_content.csv", index=False)
+        for path in [self.papers_path, self.papers_with_related_works_path, self.related_works_combined_path]:
+            if path.exists():
+                papers_df = pd.read_csv(path)
+                filtered_papers_df = papers_df[papers_df["arxiv_id"].isin(filtered_df["arxiv_id"].values)]
+                print(f"Saving {path.name} to {output_folder / path.name}, {len(filtered_papers_df)} papers")
+                filtered_papers_df.to_csv(output_folder / path.name, index=False)
+    
+    def filter_and_save(self, output_folder: str = "filtered"):
         """
         Filter papers and save results.
         
@@ -226,28 +238,7 @@ class PaperQualityFilter:
         """
         # Filter papers
         filtered_df = self.filter_papers()
-        
-        # Save filtered paper_content.csv
-        paper_content_output = self.input_folder / f"paper_content{output_suffix}.csv"
-        filtered_df.to_csv(paper_content_output, index=False)
-        logger.info(f"Saved filtered paper content to {paper_content_output}")
-        
-        # Also filter papers.csv if it exists
-        if self.papers_path.exists():
-            logger.info(f"Filtering papers.csv based on filtered arxiv_ids...")
-            papers_df = pd.read_csv(self.papers_path)
-            
-            # Get list of filtered arxiv_ids
-            filtered_ids = set(filtered_df["arxiv_id"].values)
-            
-            # Filter papers.csv
-            filtered_papers_df = papers_df[papers_df["arxiv_id"].isin(filtered_ids)]
-            
-            papers_output = self.input_folder / f"papers{output_suffix}.csv"
-            filtered_papers_df.to_csv(papers_output, index=True)
-            logger.info(f"Saved filtered papers to {papers_output}")
-            logger.info(f"Papers in papers.csv: {len(papers_df)} -> {len(filtered_papers_df)}")
-        
+        self.save_filtered_papers(filtered_df, output_folder)
         return filtered_df
 
 
@@ -286,24 +277,24 @@ def parse_args():
     )
     
     parser.add_argument(
-        "--citations-folder",
+        "--citations-path",
         type=str,
         default=None,
-        help="Path to citations folder (default: ../citations/ relative to input folder)"
+        help="Path to citations file (default: citations.csv relative to input folder)"
     )
     
     parser.add_argument(
-        "--related-works-folder",
+        "--related-works-path",
         type=str,
         default=None,
-        help="Path to related works folder (default: ../related_works/ relative to input folder)"
+        help="Path to related works file (default: related_works_combined.csv relative to input folder)"
     )
     
     parser.add_argument(
-        "--output-suffix",
+        "--output-folder",
         type=str,
-        default="_filtered",
-        help="Suffix to add to output filenames (default: _filtered)"
+        default=None,
+        help="Folder to save filtered papers (default: filtered)"
     )
     
     return parser.parse_args()
@@ -324,12 +315,13 @@ def main():
         min_citations=args.min_citations,
         min_rw_length=args.min_rw_length,
         max_rw_length=args.max_rw_length,
-        citations_folder=args.citations_folder,
-        related_works_folder=args.related_works_folder
+        citations_path=args.citations_path,
+        related_works_path=args.related_works_path
     )
     
     # Filter and save
-    filter_obj.filter_and_save(output_suffix=args.output_suffix)
+    output_folder = args.output_folder if args.output_folder else f"{args.input_folder}_filtered"
+    filter_obj.filter_and_save(output_folder=output_folder)
     
     logger.info("✅ Filtering complete!")
 

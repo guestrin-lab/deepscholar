@@ -17,6 +17,8 @@ except ImportError:
     from .arxiv_scraper import ArxivPaper
     from .utils import clean_author_name
 
+import tqdm
+
 logger = logging.getLogger(__name__)
 
 
@@ -49,9 +51,12 @@ class AuthorFilter:
         Returns:
             Filtered list of papers where at least one author meets h-index criteria
         """
+        if self.config.min_author_hindex == 0 and self.config.max_author_hindex is None:
+            logger.info("No author h-index filtering criteria specified. Returning all papers.")
+            return papers
         filtered_papers: list[ArxivPaper] = []
 
-        for paper in papers:
+        for paper in tqdm.tqdm(papers, desc="Filtering papers by author h-index"):
             try:
                 meets_criteria = await self._paper_meets_hindex_criteria(paper)
                 if meets_criteria:
@@ -87,7 +92,7 @@ class AuthorFilter:
     def _author_meets_criteria(self, author_info: AuthorInfo) -> bool:
         """Check if an author meets the h-index criteria."""
         if author_info.hindex is None:
-            return False
+            return True
         if author_info.hindex < self.config.min_author_hindex:
             return False
         if (
