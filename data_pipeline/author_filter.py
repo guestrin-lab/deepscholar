@@ -58,7 +58,7 @@ class AuthorFilter:
 
         for paper in tqdm.tqdm(papers, desc="Filtering papers by author h-index"):
             try:
-                meets_criteria = await self._paper_meets_hindex_criteria(paper)
+                meets_criteria = await self.paper_meets_hindex_criteria(paper)
                 if meets_criteria:
                     filtered_papers.append(paper)
 
@@ -75,9 +75,12 @@ class AuthorFilter:
         )
         return filtered_papers
 
-    async def _paper_meets_hindex_criteria(self, paper: ArxivPaper) -> bool:
+    async def paper_meets_hindex_criteria(self, paper: ArxivPaper | None = None, authors: list[str] | None = None) -> bool:
         """Check if a paper meets the h-index criteria."""
-        tasks = [self._get_author_info(author_name) for author_name in paper.authors]
+        if not authors:
+            authors = paper.authors
+        assert authors is not None
+        tasks = [self._get_author_info(author_name) for author_name in authors]
         author_infos = await asyncio.gather(*tasks, return_exceptions=True)
 
         for author_info in author_infos:
@@ -92,7 +95,7 @@ class AuthorFilter:
     def _author_meets_criteria(self, author_info: AuthorInfo) -> bool:
         """Check if an author meets the h-index criteria."""
         if author_info.hindex is None:
-            return True
+            return False
         if author_info.hindex < self.config.min_author_hindex:
             return False
         if (

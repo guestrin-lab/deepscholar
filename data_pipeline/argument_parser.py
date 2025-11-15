@@ -51,7 +51,7 @@ def parse_args():
     parser.add_argument(
         "--min-hindex",
         type=int,
-        default=20,
+        default=0,
         help="Minimum h-index for at least one author",
     )
     parser.add_argument(

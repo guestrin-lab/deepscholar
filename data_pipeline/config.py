@@ -13,8 +13,8 @@ class PipelineConfig:
     """Configuration for the arxiv data collection pipeline."""
 
     # Date filtering (required fields first)
-    start_date: datetime  # Start date for paper search
-    end_date: datetime  # End date for paper search
+    start_date: datetime | None = None # Start date for paper search
+    end_date: datetime | None = None # End date for paper search
 
     existing_papers_csv: Optional[str] = None
 

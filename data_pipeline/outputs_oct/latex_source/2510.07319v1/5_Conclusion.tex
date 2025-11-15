@@ -1,4 +1,0 @@
-\vspace{-2mm}
-\section{Conclusion}
-\vspace{-2mm}
-In this paper, we rethink the RVOS problem and decompose the RVOS task into the following three factors: \textit{referring}, \textit{video}, and \textit{segmentation}, and propose the \textbf{\nameshort}~framework to address the referring and video factors while leaving the segmentation problem to foundation models. To efficiently adapt image-based foundation segmentation models to referring video object segmentation, we leverage off-the-shelf object detectors and trackers to produce the reference proposal and candidate tracks, which would serve as temporal prompts to instruct foundation segmentation models to produce object masks. With the proposed \nameselect, we would be able to identify temporal prompts suitable for prompting SAM,  enabling efficient model adaptation to referring video object segmentation. Experiments on standard RVOS benchmarks demonstrate the effectiveness of the proposed \nameshort~framework.

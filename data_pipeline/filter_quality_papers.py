@@ -20,6 +20,13 @@ import pandas as pd
 from pathlib import Path
 from typing import Optional
 import shutil
+import asyncio
+try:
+    from author_filter import AuthorFilter
+    from config import PipelineConfig
+except ImportError:
+    from .author_filter import AuthorFilter
+    from .config import PipelineConfig
 
 # Set up logging
 logging.basicConfig(
@@ -39,7 +46,10 @@ class PaperQualityFilter:
         min_rw_length: int = 200,
         max_rw_length: int = 10000,
         citations_path: Optional[str] = None,
-        related_works_path: Optional[str] = None
+        related_works_path: Optional[str] = None,
+        min_hindex: int = 20,
+        max_hindex: Optional[int] = None,
+        request_delay: float = 1.0
     ):
         """
         Initialize the quality filter.
@@ -79,6 +89,13 @@ class PaperQualityFilter:
         if not self.paper_content_path.exists():
             raise FileNotFoundError(f"paper_content.csv not found at {self.paper_content_path}")
     
+        self.author_filter = AuthorFilter(config=PipelineConfig(
+            min_author_hindex=min_hindex,
+            max_author_hindex=max_hindex,
+            request_delay=request_delay
+        ))
+        
+
     def count_citations(self, arxiv_id: str) -> int:
         """
         Count citations for a paper by reading its citation CSV.
@@ -129,7 +146,7 @@ class PaperQualityFilter:
         
         return True
     
-    def filter_papers(self) -> pd.DataFrame:
+    async def filter_papers(self) -> pd.DataFrame:
         """
         Filter papers based on all quality criteria.
         
@@ -138,6 +155,7 @@ class PaperQualityFilter:
         """
         logger.info(f"Reading papers from {self.paper_content_path}")
         df = pd.read_csv(self.paper_content_path)
+        papers_df = pd.read_csv(self.papers_path)
         
         initial_count = len(df)
         logger.info(f"Total papers in input: {initial_count}")
@@ -148,7 +166,8 @@ class PaperQualityFilter:
             "rw_too_short": 0,
             "rw_too_long": 0,
             "insufficient_citations": 0,
-            "passed": 0
+            "passed": 0,
+            "failed_author_filter": 0
         }
         
         # Lists to store filtered data
@@ -184,6 +203,12 @@ class PaperQualityFilter:
                     f"Paper {arxiv_id} has only {citation_count} citations "
                     f"(minimum: {self.min_citations})"
                 )
+                continue
+            
+            paper_authors = papers_df[papers_df["arxiv_id"] == arxiv_id].iloc[0].get("authors", "").split(", ")
+            meets_author_criteria = await self.author_filter.paper_meets_hindex_criteria(authors=paper_authors)
+            if not meets_author_criteria:
+                stats["failed_author_filter"] += 1
                 continue
             
             # Paper passed all filters
@@ -229,7 +254,7 @@ class PaperQualityFilter:
                 print(f"Saving {path.name} to {output_folder / path.name}, {len(filtered_papers_df)} papers")
                 filtered_papers_df.to_csv(output_folder / path.name, index=False)
     
-    def filter_and_save(self, output_folder: str = "filtered"):
+    async def filter_and_save(self, output_folder: str = "filtered"):
         """
         Filter papers and save results.
         
@@ -237,7 +262,7 @@ class PaperQualityFilter:
             output_suffix: Suffix to add to output filenames
         """
         # Filter papers
-        filtered_df = self.filter_papers()
+        filtered_df = await self.filter_papers()
         self.save_filtered_papers(filtered_df, output_folder)
         return filtered_df
 
@@ -296,7 +321,24 @@ def parse_args():
         default=None,
         help="Folder to save filtered papers (default: filtered)"
     )
-    
+    parser.add_argument(
+        "--min-hindex",
+        type=int,
+        default=20,
+        help="Minimum h-index for at least one author (default: 20)"
+    )
+    parser.add_argument(
+        "--max-hindex",
+        type=int,
+        default=None,
+        help="Maximum h-index for at least one author (default: None)"
+    )
+    parser.add_argument(
+        "--request-delay",
+        type=float,
+        default=1.0,
+        help="Delay between requests (seconds) (default: 1.0)"
+    )
     return parser.parse_args()
 
 
@@ -308,6 +350,7 @@ def main():
     logger.info(f"Input folder: {args.input_folder}")
     logger.info(f"Minimum citations: {args.min_citations}")
     logger.info(f"Related works length range: {args.min_rw_length} - {args.max_rw_length} chars")
+    logger.info(f"Author h-index range: {args.min_hindex} - {args.max_hindex}")
     
     # Create filter instance
     filter_obj = PaperQualityFilter(
@@ -316,12 +359,15 @@ def main():
         min_rw_length=args.min_rw_length,
         max_rw_length=args.max_rw_length,
         citations_path=args.citations_path,
-        related_works_path=args.related_works_path
+        related_works_path=args.related_works_path,
+        min_hindex=args.min_hindex,
+        max_hindex=args.max_hindex,
+        request_delay=args.request_delay
     )
     
     # Filter and save
     output_folder = args.output_folder if args.output_folder else f"{args.input_folder}_filtered"
-    filter_obj.filter_and_save(output_folder=output_folder)
+    asyncio.run(filter_obj.filter_and_save(output_folder=output_folder))
     
     logger.info("✅ Filtering complete!")
 

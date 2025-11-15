@@ -168,7 +168,7 @@ class TestAuthorFilter:
         # Mock some papers meeting criteria, some not
         mock_meets_criteria.side_effect = [True, False, True, False]
 
-        result = await filter_obj.filter_papers_by_author_hindex(sample_papers)
+        result = await filter_obj.filter_papers_by_author_hindex(sample_papers.authors)
 
         # Should return papers 0 and 2 (indices where criteria was met)
         assert len(result) == 2

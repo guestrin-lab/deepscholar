@@ -1,5 +1,0 @@
-\section{Conclusion}
-\label{sec:conclusion}
-
-This paper presents \X, a novel fine-grain sparse attention mechanism. \X skips attention computations at a more granular, slice-based level ($M\times 1$) rather than large blocks ($M\times M$), as implemented by current block sparse attention mechanisms. We implement this using our asynchronous gather-load primitive that efficiently loads only the relevant, sparse key-value tokens into on-chip memory asynchronously without overheads. We proposed two training-free strategies to determine the sparse attention mask: one based on caching the mask across denoising iterations and another lightweight method using a query-averaging heuristic. Using \X, we demonstrate an average speedup of $1.48\times$, and up to $1.65\times$ on state of art video diffusion models. 
-

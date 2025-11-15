@@ -1,7 +1,0 @@
-
-\section{More Results}
-
-\paragraph{Audio–visual stream synchronization.}
-We additionally evaluate \name\ on \textbf{CelebV-HQ}, \textbf{CelebV-Text}, \textbf{RAVDESS}, and \textbf{MEAD}, and report these results in the Appendix. We do so because these corpora contain substantial non-speech or highly repeated content that can confound lag metrics and retrieval: CelebV-HQ and CelebV-Text are broad, face-centric video sets with attributes beyond active speech (appearance, actions, emotions, diverse in-the-wild clips), so many segments are not strictly speaking-focused; RAVDESS and MEAD are acted emotion datasets captured in controlled settings, with RAVDESS using only two fixed sentences across many takes (plus sung versions), leading to heavy lexical repetition.
-
-\textit{Experimental analysis.} Across all four datasets, \name shows consistent gains in both temporal alignment (higher $\mathrm{Acc}_{\pm K}$, lower Offset) and cross-modal retrieval (higher R-precision@k). Improvements are most pronounced on the controlled emotion corpora (MEAD/RAVDESS), where reduced acoustic and visual variability amplifies the benefit of our token-level alignment; on the in-the-wild CelebV-HQ/CelebV-Text, gains remain steady despite non-speech spans and repeated content. Notably, all results are achieved with single-frame visual conditioning ($n{=}1$), indicating strong per-frame audio–visual correspondence without reliance on long temporal windows.
