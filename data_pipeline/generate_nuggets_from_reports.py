@@ -16,6 +16,12 @@ def main():
         description="Generate nuggets from ground truth reports"
     )
     parser.add_argument(
+        "--input_dir",
+        type=str,
+        default=".",
+        help="Path to input directory",
+    )
+    parser.add_argument(
         "--output_dir",
         type=str,
         default="gt_nuggets_outputs",
@@ -36,7 +42,7 @@ def main():
     logger = logging.getLogger(__name__)
 
     # Read the CSV file
-    data_path = "../../../scraped_data/20250607_180022/papers_with_related_works.csv"
+    data_path = f"{args.input_dir}/papers_with_related_works.csv"
     logger.info(f"Loading data from {data_path}")
     df = pd.read_csv(data_path)
     logger.info(f"Loaded {len(df)} rows from CSV")

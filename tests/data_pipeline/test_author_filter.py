@@ -157,7 +157,7 @@ class TestAuthorFilter:
         assert result.affiliation is None
         assert result.citations is None
 
-    @patch("data_pipeline.author_filter.AuthorFilter._paper_meets_hindex_criteria")
+    @patch("data_pipeline.author_filter.AuthorFilter.paper_meets_hindex_criteria")
     @patch("data_pipeline.author_filter.asyncio.sleep")
     async def test_filter_papers_by_author_hindex(
         self, mock_sleep, mock_meets_criteria, sample_config, sample_papers
@@ -168,7 +168,7 @@ class TestAuthorFilter:
         # Mock some papers meeting criteria, some not
         mock_meets_criteria.side_effect = [True, False, True, False]
 
-        result = await filter_obj.filter_papers_by_author_hindex(sample_papers.authors)
+        result = await filter_obj.filter_papers_by_author_hindex(sample_papers)
 
         # Should return papers 0 and 2 (indices where criteria was met)
         assert len(result) == 2

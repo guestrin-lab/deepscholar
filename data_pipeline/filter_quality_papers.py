@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Optional
 import shutil
 import asyncio
+import tqdm
 try:
     from author_filter import AuthorFilter
     from config import PipelineConfig
@@ -70,8 +71,6 @@ class PaperQualityFilter:
         # Set up paths
         self.paper_content_path = self.input_folder / "paper_content.csv"
         self.papers_path = self.input_folder / "papers.csv"
-        self.papers_with_related_works_path = self.input_folder / "papers_with_related_works.csv"
-        self.related_works_combined_path = self.input_folder / "related_works_combined.csv"
         
         # Use provided paths or default to parent folders
         if citations_path:
@@ -173,7 +172,7 @@ class PaperQualityFilter:
         # Lists to store filtered data
         filtered_rows = []
         
-        for idx, row in df.iterrows():
+        for idx, row in tqdm.tqdm(df.iterrows(), total=len(df), desc="Filtering papers"):
             arxiv_id = row.get("arxiv_id")
             
             # Check related works section
@@ -208,6 +207,7 @@ class PaperQualityFilter:
             paper_authors = papers_df[papers_df["arxiv_id"] == arxiv_id].iloc[0].get("authors", "").split(", ")
             meets_author_criteria = await self.author_filter.paper_meets_hindex_criteria(authors=paper_authors)
             if not meets_author_criteria:
+                logger.debug(f"Paper {arxiv_id} failed author filter: {paper_authors}")
                 stats["failed_author_filter"] += 1
                 continue
             
@@ -247,12 +247,21 @@ class PaperQualityFilter:
         output_folder = Path(output_folder)
         shutil.copytree(self.input_folder, output_folder, dirs_exist_ok=True)
         filtered_df.to_csv(output_folder / "paper_content.csv", index=False)
-        for path in [self.papers_path, self.papers_with_related_works_path, self.related_works_combined_path]:
+        
+        citation_paths = ['citations.csv', 'important_citations.csv', 'recovered_citations.csv']
+        paper_paths = ['paper_content_with_citations.csv', 'papers.csv', 'papers_with_related_works.csv', 'related_works_combined.csv']
+        for csv_file_name in [*paper_paths, *citation_paths]:
+            path = self.input_folder / csv_file_name
             if path.exists():
-                papers_df = pd.read_csv(path)
-                filtered_papers_df = papers_df[papers_df["arxiv_id"].isin(filtered_df["arxiv_id"].values)]
-                print(f"Saving {path.name} to {output_folder / path.name}, {len(filtered_papers_df)} papers")
-                filtered_papers_df.to_csv(output_folder / path.name, index=False)
+                df = pd.read_csv(path)
+                if csv_file_name in paper_paths:
+                    print(f"Filtering {csv_file_name} by arxiv_id")
+                    df = df[df["arxiv_id"].isin(filtered_df["arxiv_id"].values)]
+                elif csv_file_name in citation_paths:
+                    print(f"Filtering {csv_file_name} by parent_paper_arxiv_id")
+                    df = df[df["parent_paper_arxiv_id"].isin(filtered_df["arxiv_id"].values)]
+                print(f"Saving {csv_file_name} to {output_folder / csv_file_name}, {len(df)} papers")
+                df.to_csv(output_folder / csv_file_name, index=False)
     
     async def filter_and_save(self, output_folder: str = "filtered"):
         """
