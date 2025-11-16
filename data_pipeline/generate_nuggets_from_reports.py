@@ -5,7 +5,7 @@ import logging
 import os
 import datetime
 import pandas as pd
-
+from tqdm import tqdm
 from nuggetizer.core.types import Query, Document, Request
 from nuggetizer.models.nuggetizer import Nuggetizer
 from nuggetizer.core.metrics import calculate_nugget_scores
@@ -58,7 +58,7 @@ def main():
 
     nuggetizer = Nuggetizer(model=args.model, log_level=args.log_level)
 
-    for i, row in df.iterrows():
+    for i, row in tqdm(df.iterrows()):
         arxiv_id = row.get("arxiv_id", f"paper_{i}")
         abstract = row.get("abstract", "")
         related_works = row.get("clean_latex_related_works", "")
