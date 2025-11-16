@@ -175,11 +175,12 @@ class DataPipeline:
         dfs = []
         for file in all_related_works:
             df = pd.read_csv(file)
-            if df['arxiv_id'].isna().any():
+            if df['arxiv_id'].isna().any() or len(df) == 0:
                 logger.warning(f"Skipping {file} because it has missing arxiv_id")
                 continue
-            if df['arxiv_id'] not in dataframes["papers"]["arxiv_id"].values:
+            if df['arxiv_id'].iloc[0] not in dataframes["papers"]["arxiv_id"].values.tolist():
                 logger.warning(f"Skipping {file} because it has an arxiv_id that is not in the papers dataframe")
+                continue
             dfs.append(df)
 
         # Combine all dataframes
