@@ -106,6 +106,7 @@ class PaperQualityFilter:
             Number of citations found
         """
         citations = self.citations_df[self.citations_df["parent_paper_arxiv_id"] == arxiv_id]
+        citations = citations.dropna(subset=['cited_paper_title'])
         return len(citations)
     
     def validate_related_works(self, row: pd.Series) -> bool:
@@ -172,7 +173,10 @@ class PaperQualityFilter:
         # Lists to store filtered data
         filtered_rows = []
         
-        for idx, row in tqdm.tqdm(df.iterrows(), total=len(df), desc="Filtering papers"):
+        pbar = tqdm.tqdm(total=len(df), desc="Filtering papers")
+        for idx, row in df.iterrows():
+            pbar.update(1)
+            pbar.set_postfix({"passed": stats["passed"]})
             arxiv_id = row.get("arxiv_id")
             
             # Check related works section
@@ -205,11 +209,13 @@ class PaperQualityFilter:
                 continue
             
             paper_authors = papers_df[papers_df["arxiv_id"] == arxiv_id].iloc[0].get("authors", "").split(", ")
-            meets_author_criteria = await self.author_filter.paper_meets_hindex_criteria(authors=paper_authors)
-            if not meets_author_criteria:
-                logger.debug(f"Paper {arxiv_id} failed author filter: {paper_authors}")
-                stats["failed_author_filter"] += 1
-                continue
+            
+            if self.author_filter.config.min_author_hindex > 0 or self.author_filter.config.max_author_hindex is not None:
+                meets_author_criteria = await self.author_filter.paper_meets_hindex_criteria(authors=paper_authors)
+                if not meets_author_criteria:
+                    logger.debug(f"Paper {arxiv_id} failed author filter: {paper_authors}")
+                    stats["failed_author_filter"] += 1
+                    continue
             
             # Paper passed all filters
             stats["passed"] += 1
@@ -230,6 +236,7 @@ class PaperQualityFilter:
         logger.info(f"Papers with related works too short: {stats['rw_too_short']}")
         logger.info(f"Papers with related works too long: {stats['rw_too_long']}")
         logger.info(f"Papers with insufficient citations: {stats['insufficient_citations']}")
+        logger.info(f"Papers that failed author filter: {stats['failed_author_filter']}")
         logger.info(f"Papers that passed filters: {stats['passed']}")
         logger.info(f"Pass rate: {stats['passed'] / initial_count * 100:.2f}%")
         logger.info("=" * 60)

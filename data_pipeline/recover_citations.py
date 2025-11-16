@@ -62,24 +62,27 @@ def search_arxiv_api(title: str) -> Dict[str, str] | None:
     except Exception as _:
         return None
 
-
+include_header=True
 def save_results(
     results: List[Dict[str, str]], df: pd.DataFrame, output_file_path: str
 ):
+    global include_header
     if not results:
         return
     df_results = pd.DataFrame(results)
-    df_results.to_csv(output_file_path, index=False, mode="a")
-
+    df_results.to_csv(output_file_path, index=False, mode="a", header=include_header)
+    include_header = False
 
 def process_dataset(csv_file_path: str, output_file_path: str):
     """
     Process the dataset and find arXiv matches.
     """
+    global include_header
     # Read the CSV file
     df = pd.read_csv(csv_file_path)
     if os.path.exists(output_file_path):
         existing_df: pd.DataFrame = pd.read_csv(output_file_path)
+        include_header = False
     else:
         existing_df = pd.DataFrame(columns=df.columns)
 
@@ -116,7 +119,7 @@ def process_dataset(csv_file_path: str, output_file_path: str):
             print(f"arXiv match found for {title[:50]}...")
         results.append({**row.to_dict(), **api_match})
 
-        if index % 100 == 0:
+        if index % 10 == 0:
             save_results(results, df, output_file_path)
             results = []
         # Add a small delay to be respectful to the API

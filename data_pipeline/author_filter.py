@@ -7,7 +7,7 @@ import logging
 import time
 import requests  # type: ignore
 from dataclasses import dataclass
-
+from pathlib import Path
 try:
     from config import PipelineConfig
     from arxiv_scraper import ArxivPaper
@@ -18,7 +18,8 @@ except ImportError:
     from .utils import clean_author_name
 
 import tqdm
-
+import pickle
+import os
 logger = logging.getLogger(__name__)
 
 
@@ -38,6 +39,9 @@ class AuthorFilter:
     def __init__(self, config: PipelineConfig):
         self.config = config
         self._author_cache: dict[str, AuthorInfo] = {}
+        if os.path.exists("author_cache.pkl"):
+            with open("author_cache.pkl", "rb") as f:
+                self._author_cache = pickle.load(f)
 
     async def filter_papers_by_author_hindex(
         self, papers: list[ArxivPaper]
@@ -112,22 +116,28 @@ class AuthorFilter:
             return self._author_cache[clean_name]
         author_info = None
 
-        try:
-            author_info = await self._get_author_from_google_scholar(clean_name)
-        except Exception as e:
-            logger.debug(f"Google Scholar lookup failed for {clean_name}: {e}")
-
-        # If Google Scholar fails, try Semantic Scholar
-        if not author_info or author_info.hindex is None:
+        for i in range(3):
             try:
-                semantic_info = await self._get_author_from_semantic_scholar(clean_name)
-                if semantic_info and semantic_info.hindex is not None:
-                    author_info = semantic_info
+                author_info = await self._get_author_from_google_scholar(clean_name)
+                break
             except Exception as e:
-                logger.debug(f"Semantic Scholar lookup failed for {clean_name}: {e}")
+                logger.debug(f"Google Scholar lookup failed for {clean_name}: {e}")
+
+            # If Google Scholar fails, try Semantic Scholar
+            if not author_info or author_info.hindex is None:
+                try:
+                    semantic_info = await self._get_author_from_semantic_scholar(clean_name)
+                    if semantic_info and semantic_info.hindex is not None:
+                        author_info = semantic_info
+                    if author_info and author_info.hindex is not None:
+                        break
+                except Exception as e:
+                    logger.debug(f"Semantic Scholar lookup failed for {clean_name}: {e}")
 
         author_info = author_info or AuthorInfo(name=clean_name, hindex=None)
         self._author_cache[clean_name] = author_info
+        with open("author_cache.pkl", "wb") as f:
+            pickle.dump(self._author_cache, f)
         return author_info
 
     async def _get_author_from_google_scholar(
