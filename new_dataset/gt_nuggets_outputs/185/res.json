@@ -1,0 +1,201 @@
+{
+  "qid": "2511.09722v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nMinerals play a critical role in the advanced energy technologies necessary for decarbonization, but characterizing mineral deposits hidden underground remains costly and challenging. Inspired by recent progress in generative modeling, we develop a learning method which infers the locations of minerals by masking and infilling geospatial maps of resource availability. We demonstrate this technique using mineral data for the conterminous United States, and train performant models, with the best achieving Dice coefficients of $0.31 \\pm 0.01$ and recalls of $0.22 \\pm 0.02$ on test data at 1$\\times$1 mi$^2$ spatial resolution. One major advantage of our approach is that it can easily incorporate auxiliary data sources for prediction which may be more abundant than mineral data. We highlight the capabilities of our model by adding input layers derived from geophysical sources, along with a nation-wide ground survey of soils originally intended for agronomic purposes. We find that employing such auxiliary features can improve inference performance, while also enabling model evaluation in regions with no recorded minerals.",
+  "nuggets": [
+    {
+      "text": "Generative modeling aids mineral location inference",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Subsurface mapping involves geospatial infilling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Mineral deposits are crucial for decarbonization",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Auxiliary data improves mineral prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Masked geospatial infilling for resource maps",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Geospatial infilling is a form of prospectivity mapping",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data fusion enhances geospatial inference",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Subsurface mapping is costly and challenging",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Geophysical sources enhance model capabilities",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Dice coefficient measures model performance",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Remote sensing aids subsurface mapping",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hyperspectral data supports geospatial inference",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ViT struggles with sparse subsurface data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ResNet U-Net suits mineral prospecting",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hyperspectral satellites provide granular color information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Generative modeling aids mineral location inference",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Subsurface mapping involves geospatial infilling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Auxiliary data improves mineral prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Geospatial infilling is a form of prospectivity mapping",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data fusion enhances geospatial inference",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Remote sensing aids subsurface mapping",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hyperspectral data supports geospatial inference",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ViT struggles with sparse subsurface data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ResNet U-Net suits mineral prospecting",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hyperspectral satellites provide granular color information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Generative modeling aids mineral location inference",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Subsurface mapping involves geospatial infilling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Auxiliary data improves mineral prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Masked geospatial infilling for resource maps",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Geospatial infilling is a form of prospectivity mapping",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data fusion enhances geospatial inference",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Geophysical sources enhance model capabilities",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Remote sensing aids subsurface mapping",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hyperspectral data supports geospatial inference",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ViT struggles with sparse subsurface data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ResNet U-Net suits mineral prospecting",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hyperspectral satellites provide granular color information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.625,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.6875,
+    "all_score": 0.7333333333333333
+  }
+}

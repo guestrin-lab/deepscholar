@@ -1,0 +1,186 @@
+{
+  "qid": "2511.09484v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nLearning dexterous and agile policy for humanoid and dexterous hand control requires large-scale demonstrations, but collecting robot-specific data is prohibitively expensive. In contrast, abundant human motion data is readily available from motion capture, videos, and virtual reality, which could help address the data scarcity problem. However, due to the embodiment gap and missing dynamic information like force and torque, these demonstrations cannot be directly executed on robots. To bridge this gap, we propose Scalable Physics-Informed DExterous Retargeting (SPIDER), a physics-based retargeting framework to transform and augment kinematic-only human demonstrations to dynamically feasible robot trajectories at scale. Our key insight is that human demonstrations should provide global task structure and objective, while large-scale physics-based sampling with curriculum-style virtual contact guidance should refine trajectories to ensure dynamical feasibility and correct contact sequences. SPIDER scales across diverse 9 humanoid/dexterous hand embodiments and 6 datasets, improving success rates by 18% compared to standard sampling, while being 10X faster than reinforcement learning (RL) baselines, and enabling the generation of a 2.4M frames dynamic-feasible robot dataset for policy learning. As a universal physics-based retargeting method, SPIDER can work with diverse quality data and generate diverse and high-quality data to enable efficient policy learning with methods like RL.",
+  "nuggets": [
+    {
+      "text": "SPIDER transforms kinematic human demonstrations to robot trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER scales across 9 humanoid/dexterous hand embodiments",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SPIDER uses physics-based sampling with virtual contact guidance",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Kinematic retargeting maps human poses to robot motions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Optimization-based retargeting ensures dynamical feasibility",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER addresses instability in trajectory sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER provides accurate, contact-aware mappings for control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Human motion data is abundant from motion capture, videos, VR",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Embodiment gap and missing dynamics hinder direct execution on robots",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPIDER improves success rates by 18% over standard sampling",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPIDER is 10X faster than RL baselines",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPIDER generates a 2.4M frames dynamic-feasible robot dataset",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPIDER works with diverse quality data",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Neural networks convert human motions to robot motions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RL-based retargeting produces dexterous, feasible robot motions",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Sampling-based optimization solves non-convex problems",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "SPIDER transforms kinematic human demonstrations to robot trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER uses physics-based sampling with virtual contact guidance",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Kinematic retargeting maps human poses to robot motions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Optimization-based retargeting ensures dynamical feasibility",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER addresses instability in trajectory sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER provides accurate, contact-aware mappings for control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Neural networks convert human motions to robot motions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Sampling-based optimization solves non-convex problems",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "SPIDER transforms kinematic human demonstrations to robot trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER scales across 9 humanoid/dexterous hand embodiments",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SPIDER uses physics-based sampling with virtual contact guidance",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Kinematic retargeting maps human poses to robot motions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Optimization-based retargeting ensures dynamical feasibility",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER addresses instability in trajectory sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPIDER provides accurate, contact-aware mappings for control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Neural networks convert human motions to robot motions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RL-based retargeting produces dexterous, feasible robot motions",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Sampling-based optimization solves non-convex problems",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6666666666666666,
+    "strict_all_score": 0.5,
+    "vital_score": 0.7222222222222222,
+    "all_score": 0.5625
+  }
+}

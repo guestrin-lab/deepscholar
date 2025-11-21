@@ -1,0 +1,211 @@
+{
+  "qid": "2511.09588v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nMedical image segmentation using deep learning (DL) has enabled the development of automated analysis pipelines for large-scale population studies. However, state-of-the-art DL methods are prone to hallucinations, which can result in anatomically implausible segmentations. With manual correction impractical at scale, automated quality control (QC) techniques have to address the challenge. While promising, existing QC methods are organ-specific, limiting their generalizability and usability beyond their original intended task. To overcome this limitation, we propose no-new Quality Control (nnQC), a robust QC framework based on a diffusion-generative paradigm that self-adapts to any input organ dataset. Central to nnQC is a novel Team of Experts (ToE) architecture, where two specialized experts independently encode 3D spatial awareness, represented by the relative spatial position of an axial slice, and anatomical information derived from visual features from the original image. A weighted conditional module dynamically combines the pair of independent embeddings, or opinions to condition the sampling mechanism within a diffusion process, enabling the generation of a spatially aware pseudo-ground truth for predicting QC scores. Within its framework, nnQC integrates fingerprint adaptation to ensure adaptability across organs, datasets, and imaging modalities. We evaluated nnQC on seven organs using twelve publicly available datasets. Our results demonstrate that nnQC consistently outperforms state-of-the-art methods across all experiments, including cases where segmentation masks are highly degraded or completely missing, confirming its versatility and effectiveness across different organs.",
+  "nuggets": [
+    {
+      "text": "State-of-the-art DL methods prone to segmentation hallucinations",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Manual correction impractical for large-scale studies",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Automated QC techniques address segmentation challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing QC methods are often organ-specific",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "nnQC framework based on diffusion-generative paradigm",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "nnQC self-adapts to any input organ dataset",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Team of Experts architecture central to nnQC",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Diffusion process generates spatially aware pseudo-ground truth",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "nnQC integrates fingerprint adaptation for cross-organ adaptability",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Evaluated nnQC on seven organs, twelve datasets",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "nnQC outperforms state-of-the-art methods consistently",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Versatility and effectiveness across different organs confirmed",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "nnQC inspired by nnU-Net's self-adaptation strategy",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Deep learning enables automated medical image segmentation",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Experts encode 3D spatial and anatomical information",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Weighted conditional module combines independent embeddings",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Independent QC methods are versatile and adaptable",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Reconstruction-based QC techniques generate pseudo-ground truth masks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Latent Diffusion Models sample effectively in learned latent space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Generalist models segment wide range of anatomical structures",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Specialist models like nnU-Net remain highly competitive",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "nnU-Net self-configures and retrains for each dataset",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Automated QC techniques address segmentation challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion process generates spatially aware pseudo-ground truth",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Independent QC methods are versatile and adaptable",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Reconstruction-based QC techniques generate pseudo-ground truth masks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Latent Diffusion Models sample effectively in learned latent space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Specialist models like nnU-Net remain highly competitive",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "nnU-Net self-configures and retrains for each dataset",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Automated QC techniques address segmentation challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "nnQC framework based on diffusion-generative paradigm",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Diffusion process generates spatially aware pseudo-ground truth",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "nnQC inspired by nnU-Net's self-adaptation strategy",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Independent QC methods are versatile and adaptable",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Reconstruction-based QC techniques generate pseudo-ground truth masks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Latent Diffusion Models sample effectively in learned latent space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Generalist models segment wide range of anatomical structures",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Specialist models like nnU-Net remain highly competitive",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "nnU-Net self-configures and retrains for each dataset",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.15384615384615385,
+    "strict_all_score": 0.3181818181818182,
+    "vital_score": 0.23076923076923078,
+    "all_score": 0.38636363636363635
+  }
+}

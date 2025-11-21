@@ -1,0 +1,166 @@
+{
+  "qid": "2511.10539v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nReconstructing dynamic humans interacting with real-world environments from monocular videos is an important and challenging task. Despite considerable progress in 4D neural rendering, existing approaches either model dynamic scenes holistically or model scenes and backgrounds separately aim to introduce parametric human priors. However, these approaches either neglect distinct motion characteristics of various components in scene especially human, leading to incomplete reconstructions, or ignore the information exchange between the separately modeled components, resulting in spatial inconsistencies and visual artifacts at human-scene boundaries. To address this, we propose {\\bf Separate-then-Map} (StM) strategy that introduces a dedicated information mapping mechanism to bridge separately defined and optimized models. Our method employs a shared transformation function for each Gaussian attribute to unify separately modeled components, enhancing computational efficiency by avoiding exhaustive pairwise interactions while ensuring spatial and visual coherence between humans and their surroundings. Extensive experiments on monocular video datasets demonstrate that StM significantly outperforms existing state-of-the-art methods in both visual quality and rendering accuracy, particularly at challenging human-scene interaction boundaries.",
+  "nuggets": [
+    {
+      "text": "4D neural rendering models dynamic scenes holistically or separately.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods neglect distinct motion characteristics of scene components.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Separate-then-Map (StM) strategy bridges separately optimized models.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "StM enhances computational efficiency and spatial coherence.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "StM outperforms state-of-the-art in visual quality and accuracy.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Existing methods lack integration of model representations.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StM maps representation spaces into a unified one.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StM uses shared transformation for Gaussian attributes.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Dynamic NeRF and Gaussian Splatting enable high-quality rendering.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Dynamic 3DGS optimizes Gaussian kernel position and shape.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Human avatars reconstruction often ignores surrounding environments.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Neuman and Vid2Avatar separate human and background neural fields.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "HUGS uses distinct Gaussian fields for background and avatar.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "4D neural rendering models dynamic scenes holistically or separately.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods neglect distinct motion characteristics of scene components.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods lack integration of model representations.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StM maps representation spaces into a unified one.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Human avatars reconstruction often ignores surrounding environments.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Neuman and Vid2Avatar separate human and background neural fields.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "HUGS uses distinct Gaussian fields for background and avatar.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "4D neural rendering models dynamic scenes holistically or separately.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods neglect distinct motion characteristics of scene components.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Separate-then-Map (StM) strategy bridges separately optimized models.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Existing methods lack integration of model representations.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StM maps representation spaces into a unified one.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic NeRF and Gaussian Splatting enable high-quality rendering.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Dynamic 3DGS optimizes Gaussian kernel position and shape.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Human avatars reconstruction often ignores surrounding environments.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Neuman and Vid2Avatar separate human and background neural fields.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "HUGS uses distinct Gaussian fields for background and avatar.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5714285714285714,
+    "strict_all_score": 0.5384615384615384,
+    "vital_score": 0.6428571428571429,
+    "all_score": 0.6538461538461539
+  }
+}

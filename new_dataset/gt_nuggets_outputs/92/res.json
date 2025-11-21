@@ -1,0 +1,196 @@
+{
+  "qid": "2511.08484v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe propose patching for large language models (LLMs) like software versions, a lightweight and modular approach for addressing safety vulnerabilities. While vendors release improved LLM versions, major releases are costly, infrequent, and difficult to tailor to customer needs, leaving released models with known safety gaps. Unlike full-model fine-tuning or major version updates, our method enables rapid remediation by prepending a compact, learnable prefix to an existing model. This \"patch\" introduces only 0.003% additional parameters, yet reliably steers model behavior toward that of a safer reference model. Across three critical domains (toxicity mitigation, bias reduction, and harmfulness refusal) policy patches achieve safety improvements comparable to next-generation safety-aligned models while preserving fluency. Our results demonstrate that LLMs can be \"patched\" much like software, offering vendors and practitioners a practical mechanism for distributing scalable, efficient, and composable safety updates between major model releases.",
+  "nuggets": [
+    {
+      "text": "Patching LLMs like software for safety vulnerabilities",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Full-model alignment requires large compute and access to weights",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Policy patches introduce 0.003% additional parameters",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Policy patching is modular and easy to ship",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Small, learnable prefixes serve as modular safety patches",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Patching achieves safety improvements comparable to next-gen models",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Vendors release costly and infrequent LLM versions",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Our method enables rapid remediation with compact prefixes",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Safety updates are scalable, efficient, and composable",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Adapter-based techniques reduce training cost compared to fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Prefix-tuning augments attention computations in transformer layers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Prompt tuning uses learnable vectors at input embedding layer",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RealToxicityPrompts detoxification shows narrow alignment effectiveness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gender-debiasing methods face scalability and portability challenges",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Parameter-efficient adaptation techniques provide a middle ground",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Full-model alignment requires large compute and access to weights",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Policy patching is modular and easy to ship",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Small, learnable prefixes serve as modular safety patches",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Adapter-based techniques reduce training cost compared to fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Prefix-tuning augments attention computations in transformer layers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Prompt tuning uses learnable vectors at input embedding layer",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RealToxicityPrompts detoxification shows narrow alignment effectiveness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gender-debiasing methods face scalability and portability challenges",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Parameter-efficient adaptation techniques provide a middle ground",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Patching LLMs like software for safety vulnerabilities",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Full-model alignment requires large compute and access to weights",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Policy patching is modular and easy to ship",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Small, learnable prefixes serve as modular safety patches",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our method enables rapid remediation with compact prefixes",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Safety updates are scalable, efficient, and composable",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Adapter-based techniques reduce training cost compared to fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Prefix-tuning augments attention computations in transformer layers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Prompt tuning uses learnable vectors at input embedding layer",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RealToxicityPrompts detoxification shows narrow alignment effectiveness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gender-debiasing methods face scalability and portability challenges",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Parameter-efficient adaptation techniques provide a middle ground",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.3333333333333333,
+    "strict_all_score": 0.6,
+    "vital_score": 0.5,
+    "all_score": 0.7
+  }
+}

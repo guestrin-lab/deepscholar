@@ -1,0 +1,171 @@
+{
+  "qid": "2511.09573v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nMany machine learning tasks in the natural sciences are precisely equivariant to particular symmetries. Nonetheless, equivariant methods are often not employed, perhaps because training is perceived to be challenging, or the symmetry is expected to be learned, or equivariant implementations are seen as hard to build. Group averaging is an available technique for these situations. It happens at test time; it can make any trained model precisely equivariant at a (often small) cost proportional to the size of the group; it places no requirements on model structure or training. It is known that, under mild conditions, the group-averaged model will have a provably better prediction accuracy than the original model. Here we show that an inexpensive group averaging can improve accuracy in practice. We take well-established benchmark machine learning models of differential equations in which certain symmetries ought to be obeyed. At evaluation time, we average the models over a small group of symmetries. Our experiments show that this procedure always decreases the average evaluation loss, with improvements of up to 37\\% in terms of the VRMSE. The averaging produces visually better predictions for continuous dynamics. This short paper shows that, under certain common circumstances, there are no disadvantages to imposing exact symmetries; the ML4PS community should consider group averaging as a cheap and simple way to improve model accuracy.",
+  "nuggets": [
+    {
+      "text": "Equivariant methods often not employed in machine learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging improves model accuracy at test time",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Group averaging requires no changes to model structure",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging decreases evaluation loss by up to 37% VRMSE",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetries in machine learning tasks in natural sciences",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Group averaging produces better predictions for continuous dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetry-preserving models improve generalization and reduce sample complexity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Frame averaging improves naive group averaging approach",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Equivariant networks incorporate symmetry into architecture",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Group convolutions and invariant theory for equivariant models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetry-preserving models have vast literature",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Equivariant models perceived as challenging to train",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Equivariant methods often not employed in machine learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging requires no changes to model structure",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging decreases evaluation loss by up to 37% VRMSE",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging produces better predictions for continuous dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetry-preserving models improve generalization and reduce sample complexity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Frame averaging improves naive group averaging approach",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Equivariant networks incorporate symmetry into architecture",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Group convolutions and invariant theory for equivariant models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetry-preserving models have vast literature",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Equivariant methods often not employed in machine learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging improves model accuracy at test time",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Group averaging requires no changes to model structure",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging decreases evaluation loss by up to 37% VRMSE",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Group averaging produces better predictions for continuous dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetry-preserving models improve generalization and reduce sample complexity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Frame averaging improves naive group averaging approach",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Equivariant networks incorporate symmetry into architecture",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Group convolutions and invariant theory for equivariant models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Symmetry-preserving models have vast literature",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6666666666666666,
+    "strict_all_score": 0.75,
+    "vital_score": 0.75,
+    "all_score": 0.7916666666666666
+  }
+}

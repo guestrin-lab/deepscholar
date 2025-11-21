@@ -1,0 +1,221 @@
+{
+  "qid": "2511.04564v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nPhysics-informed machine learning (PIML) integrates partial differential equations (PDEs) into machine learning models to solve inverse problems, such as estimating coefficient functions (e.g., the Hamiltonian function) that characterize physical systems. This framework enables data-driven understanding and prediction of complex physical phenomena. While coefficient functions in PIML are typically estimated on the basis of predictive performance, physics as a discipline does not rely solely on prediction accuracy to evaluate models. For example, Kepler's heliocentric model was favored owing to small discrepancies in planetary motion, despite its similar predictive accuracy to the geocentric model. This highlights the inherent uncertainties in data-driven model inference and the scientific importance of selecting physically meaningful solutions. In this paper, we propose a framework to quantify and analyze such uncertainties in the estimation of coefficient functions in PIML. We apply our framework to reduced model of magnetohydrodynamics and our framework shows that there are uncertainties, and unique identification is possible with geometric constraints. Finally, we confirm that we can estimate the reduced model uniquely by incorporating these constraints.",
+  "nuggets": [
+    {
+      "text": "PIML integrates PDEs into machine learning models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PIML solves inverse problems like coefficient estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Identifiability issues exist in PIML inverse problems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Uncertainty quantification is crucial in PIML",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Geometric constraints aid unique identification in PIML",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Flat optimization landscapes cause incorrect PINN solutions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No quantitative framework for uncertainty in PIML",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PINNs and HNNs are examples of PIML",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed loss functions include data and PDE terms",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Kepler's model favored despite similar predictive accuracy",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Bayesian PINNs provide qualitative uncertainty evaluation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Carleman estimates help in hyperbolic equation uniqueness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Calderón's problem addresses elliptic equation uncertainty",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "B-PINNs use distributions to infer posteriors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Thresholds needed for Bayesian PINN identifiability",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "PIML integrates PDEs into machine learning models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PIML solves inverse problems like coefficient estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Identifiability issues exist in PIML inverse problems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Flat optimization landscapes cause incorrect PINN solutions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No quantitative framework for uncertainty in PIML",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PINNs and HNNs are examples of PIML",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed loss functions include data and PDE terms",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian PINNs provide qualitative uncertainty evaluation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Carleman estimates help in hyperbolic equation uniqueness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Calderón's problem addresses elliptic equation uncertainty",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "B-PINNs use distributions to infer posteriors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Thresholds needed for Bayesian PINN identifiability",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "PIML integrates PDEs into machine learning models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PIML solves inverse problems like coefficient estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Identifiability issues exist in PIML inverse problems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Uncertainty quantification is crucial in PIML",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Geometric constraints aid unique identification in PIML",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Flat optimization landscapes cause incorrect PINN solutions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No quantitative framework for uncertainty in PIML",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PINNs and HNNs are examples of PIML",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed loss functions include data and PDE terms",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian PINNs provide qualitative uncertainty evaluation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Carleman estimates help in hyperbolic equation uniqueness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Calderón's problem addresses elliptic equation uncertainty",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "B-PINNs use distributions to infer posteriors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Thresholds needed for Bayesian PINN identifiability",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.7142857142857143,
+    "strict_all_score": 0.8,
+    "vital_score": 0.8571428571428571,
+    "all_score": 0.8666666666666667
+  }
+}

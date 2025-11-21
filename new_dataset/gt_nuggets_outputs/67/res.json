@@ -1,0 +1,191 @@
+{
+  "qid": "2511.09870v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nRecently segment anything model (SAM) has attracted widespread concerns, and it is often treated as a vision foundation model for universal segmentation. Some researchers have attempted to directly apply the foundation model to the RGB-D video salient object detection (RGB-D VSOD) task, which often encounters three challenges, including the dependence on manual prompts, the high memory consumption of sequential adapters, and the computational burden of memory attention. To address the limitations, we propose a novel method, namely Segment Anything Model with Depth-guided Adaptive Queries (SAM-DAQ), which adapts SAM2 to pop-out salient objects from videos by seamlessly integrating depth and temporal cues within a unified framework. Firstly, we deploy a parallel adapter-based multi-modal image encoder (PAMIE), which incorporates several depth-guided parallel adapters (DPAs) in a skip-connection way. Remarkably, we fine-tune the frozen SAM encoder under prompt-free conditions, where the DPA utilizes depth cues to facilitate the fusion of multi-modal features. Secondly, we deploy a query-driven temporal memory (QTM) module, which unifies the memory bank and prompt embeddings into a learnable pipeline. Concretely, by leveraging both frame-level queries and video-level queries simultaneously, the QTM module can not only selectively extract temporal consistency features but also iteratively update the temporal representations of the queries. Extensive experiments are conducted on three RGB-D VSOD datasets, and the results show that the proposed SAM-DAQ consistently outperforms state-of-the-art methods in terms of all evaluation metrics.",
+  "nuggets": [
+    {
+      "text": "SAM is a vision foundation model for segmentation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SAM faces challenges in RGB-D VSOD tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SAM-DAQ integrates depth and temporal cues",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SAM-DAQ uses parallel adapter-based multi-modal image encoder",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SAM-DAQ operates under prompt-free conditions",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Query-driven temporal memory module unifies memory bank and prompts",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SAM-DAQ outperforms state-of-the-art methods in RGB-D VSOD",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SAM's reliance on manual prompts limits its practicality",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sequential adapters in SAM incur high memory consumption",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No previous work encodes memory queries in video SAM framework",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Depth-guided parallel adapters facilitate multi-modal feature fusion",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QTM module extracts temporal consistency features",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "RGB-D SOD methods use early, middle, and late fusion strategies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Video SOD leverages temporal information for spatial-temporal consistency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Parameter-efficient fine-tuning strategies explored for SAM",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "SAM is a vision foundation model for segmentation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SAM faces challenges in RGB-D VSOD tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SAM's reliance on manual prompts limits its practicality",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sequential adapters in SAM incur high memory consumption",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No previous work encodes memory queries in video SAM framework",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "RGB-D SOD methods use early, middle, and late fusion strategies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Video SOD leverages temporal information for spatial-temporal consistency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Parameter-efficient fine-tuning strategies explored for SAM",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "SAM is a vision foundation model for segmentation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SAM faces challenges in RGB-D VSOD tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SAM-DAQ integrates depth and temporal cues",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Query-driven temporal memory module unifies memory bank and prompts",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SAM's reliance on manual prompts limits its practicality",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sequential adapters in SAM incur high memory consumption",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No previous work encodes memory queries in video SAM framework",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Depth-guided parallel adapters facilitate multi-modal feature fusion",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QTM module extracts temporal consistency features",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "RGB-D SOD methods use early, middle, and late fusion strategies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Video SOD leverages temporal information for spatial-temporal consistency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Parameter-efficient fine-tuning strategies explored for SAM",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.5333333333333333,
+    "vital_score": 0.6,
+    "all_score": 0.6666666666666666
+  }
+}

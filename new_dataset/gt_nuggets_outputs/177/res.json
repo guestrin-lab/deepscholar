@@ -1,0 +1,211 @@
+{
+  "qid": "2511.05460v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nPre-trained Time Series Foundational Models (TSFMs) represent a significant advance, capable of forecasting diverse time series with complex characteristics, including varied seasonalities, trends, and long-range dependencies. Despite their primary goal of universal time series forecasting, their efficacy is far from uniform; divergent training protocols and data sources cause individual TSFMs to exhibit highly variable performance across different forecasting tasks, domains, and horizons. Leveraging this complementary expertise by arbitrating existing TSFM outputs presents a compelling strategy, yet this remains a largely unexplored area of research. In this paper, we conduct a thorough examination of how different TSFMs exhibit specialized performance profiles across various forecasting settings, and how we can effectively leverage this behavior in arbitration between different time series models. We specifically analyze how factors such as model selection and forecast horizon distribution can influence the efficacy of arbitration strategies. Based on this analysis, we propose Synapse, a novel arbitration framework for TSFMs. Synapse is designed to dynamically leverage a pool of TSFMs, assign and adjust predictive weights based on their relative, context-dependent performance, and construct a robust forecast distribution by adaptively sampling from the output quantiles of constituent models. Experimental results demonstrate that Synapse consistently outperforms other popular ensembling techniques as well as individual TSFMs, demonstrating Synapse's efficacy in time series forecasting.",
+  "nuggets": [
+    {
+      "text": "Pre-trained Time Series Foundational Models (TSFMs) advance forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs handle diverse time series with complex characteristics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs show variable performance across tasks and domains",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Arbitrating TSFM outputs is an unexplored research area",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Synapse framework leverages TSFMs for improved forecasting",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Synapse dynamically assigns predictive weights to TSFMs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Synapse outperforms popular ensembling techniques",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "TimesFM excels in extreme long-horizon forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs promise universal forecasting solutions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Complementary expertise of TSFMs aids advanced arbitration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Statistical methods like ARIMA and ETS are strong baselines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning models capture complex, non-linear dependencies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers and MLPs are recent deep learning advancements",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Chronos and TimeGPT use language modeling for forecasting",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flowstate and Moirai explore novel TSFM architectures",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Pre-trained Time Series Foundational Models (TSFMs) advance forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs handle diverse time series with complex characteristics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs show variable performance across tasks and domains",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TimesFM excels in extreme long-horizon forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs promise universal forecasting solutions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Complementary expertise of TSFMs aids advanced arbitration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Statistical methods like ARIMA and ETS are strong baselines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning models capture complex, non-linear dependencies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers and MLPs are recent deep learning advancements",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Chronos and TimeGPT use language modeling for forecasting",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flowstate and Moirai explore novel TSFM architectures",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Pre-trained Time Series Foundational Models (TSFMs) advance forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs handle diverse time series with complex characteristics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs show variable performance across tasks and domains",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Arbitrating TSFM outputs is an unexplored research area",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Synapse framework leverages TSFMs for improved forecasting",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "TimesFM excels in extreme long-horizon forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TSFMs promise universal forecasting solutions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Complementary expertise of TSFMs aids advanced arbitration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Statistical methods like ARIMA and ETS are strong baselines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning models capture complex, non-linear dependencies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers and MLPs are recent deep learning advancements",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Chronos and TimeGPT use language modeling for forecasting",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flowstate and Moirai explore novel TSFM architectures",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6,
+    "strict_all_score": 0.7333333333333333,
+    "vital_score": 0.7,
+    "all_score": 0.8
+  }
+}

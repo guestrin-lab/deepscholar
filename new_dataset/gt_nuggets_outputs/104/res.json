@@ -1,0 +1,121 @@
+{
+  "qid": "2511.09833v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nSupervised learning relies on high-quality labeled data, but obtaining such data through human annotation is both expensive and time-consuming. Recent work explores using large language models (LLMs) for annotation, but LLM-generated labels still fall short of human-level quality. To address this problem, we propose the Annotation with Critical Thinking (ACT) data pipeline, where LLMs serve not only as annotators but also as judges to critically identify potential errors. Human effort is then directed towards reviewing only the most \"suspicious\" cases, significantly improving the human annotation efficiency. Our major contributions are as follows: (1) ACT is applicable to a wide range of domains, including natural language processing (NLP), computer vision (CV), and multimodal understanding, by leveraging multimodal-LLMs (MLLMs). (2) Through empirical studies, we derive 7 insights on how to enhance annotation quality while efficiently reducing the human cost, and then translate these findings into user-friendly guidelines. (3) We theoretically analyze how to modify the loss function so that models trained on ACT data achieve similar performance to those trained on fully human-annotated data. Our experiments show that the performance gap can be reduced to less than 2% on most benchmark datasets while saving up to 90% of human costs.",
+  "nuggets": [
+    {
+      "text": "ACT pipeline uses LLMs as annotators and judges",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ACT improves human annotation efficiency significantly",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ACT applicable to NLP, CV, and multimodal understanding",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ACT reduces human annotation cost by up to 90%",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ACT achieves less than 2% performance gap on benchmarks",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "CDI uses XGBoost for LLM error detection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CDI lacks flexibility and requires task-specific design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-as-a-Judge evaluates outputs of other LLMs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Self-criticism in LLMs may introduce bias",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-criticism shows better performance in ACT pipeline",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "CDI uses XGBoost for LLM error detection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CDI lacks flexibility and requires task-specific design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-as-a-Judge evaluates outputs of other LLMs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Self-criticism in LLMs may introduce bias",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-criticism shows better performance in ACT pipeline",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "ACT pipeline uses LLMs as annotators and judges",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "CDI uses XGBoost for LLM error detection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CDI lacks flexibility and requires task-specific design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-as-a-Judge evaluates outputs of other LLMs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Self-criticism in LLMs may introduce bias",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-criticism shows better performance in ACT pipeline",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.0,
+    "strict_all_score": 0.5,
+    "vital_score": 0.1,
+    "all_score": 0.55
+  }
+}

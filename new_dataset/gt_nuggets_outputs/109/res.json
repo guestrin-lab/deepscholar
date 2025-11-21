@@ -1,0 +1,176 @@
+{
+  "qid": "2511.08258v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nGenerating ground-level images from aerial views is a challenging task due to extreme viewpoint disparity, occlusions, and a limited field of view. We introduce Top2Ground, a novel diffusion-based method that directly generates photorealistic ground-view images from aerial input images without relying on intermediate representations such as depth maps or 3D voxels. Specifically, we condition the denoising process on a joint representation of VAE-encoded spatial features (derived from aerial RGB images and an estimated height map) and CLIP-based semantic embeddings. This design ensures the generation is both geometrically constrained by the scene's 3D structure and semantically consistent with its content. We evaluate Top2Ground on three diverse datasets: CVUSA, CVACT, and the Auto Arborist. Our approach shows 7.3% average improvement in SSIM across three benchmark datasets, showing Top2Ground can robustly handle both wide and narrow fields of view, highlighting its strong generalization capabilities.",
+  "nuggets": [
+    {
+      "text": "Top2Ground generates ground-level images from aerial views.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground uses VAE and CLIP-based conditioning.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No intermediate representations like depth maps needed.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground improves SSIM by 7.3% on benchmark datasets.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Cross-view synthesis faces challenges like occlusions, viewpoint disparity.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prior methods used CNNs, GANs, geometry-guided models.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Top2Ground evaluated on CVUSA, CVACT, Auto Arborist datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground ensures structural coherence, semantic alignment.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion-based models synthesize high-fidelity images.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Handles wide and narrow fields of view robustly.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion models allow flexible, photorealistic image synthesis.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Geometry-guided models need accurate priors, computationally expensive.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Top2Ground generates ground-level images from aerial views.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground uses VAE and CLIP-based conditioning.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No intermediate representations like depth maps needed.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-view synthesis faces challenges like occlusions, viewpoint disparity.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground evaluated on CVUSA, CVACT, Auto Arborist datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground ensures structural coherence, semantic alignment.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Handles wide and narrow fields of view robustly.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion models allow flexible, photorealistic image synthesis.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Geometry-guided models need accurate priors, computationally expensive.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Top2Ground generates ground-level images from aerial views.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground uses VAE and CLIP-based conditioning.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "No intermediate representations like depth maps needed.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-view synthesis faces challenges like occlusions, viewpoint disparity.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prior methods used CNNs, GANs, geometry-guided models.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Top2Ground evaluated on CVUSA, CVACT, Auto Arborist datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Top2Ground ensures structural coherence, semantic alignment.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion-based models synthesize high-fidelity images.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Handles wide and narrow fields of view robustly.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion models allow flexible, photorealistic image synthesis.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Geometry-guided models need accurate priors, computationally expensive.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.75,
+    "strict_all_score": 0.75,
+    "vital_score": 0.8125,
+    "all_score": 0.8333333333333334
+  }
+}

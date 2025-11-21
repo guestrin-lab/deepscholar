@@ -1,0 +1,121 @@
+{
+  "qid": "2511.09487v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nRehearsal-based Continual Learning (CL) maintains a limited memory buffer to store replay samples for knowledge retention, making these approaches heavily reliant on the quality of the stored samples. Current Rehearsal-based CL methods typically construct the memory buffer by selecting a representative subset (referred to as coresets), aiming to approximate the training efficacy of the full dataset with minimal storage overhead. However, mainstream Coreset Selection (CS) methods generally formulate the CS problem as a bi-level optimization problem that relies on numerous inner and outer iterations to solve, leading to substantial computational cost thus limiting their practical efficiency. In this paper, we aim to provide a more efficient selection logic and scheme for coreset construction. To this end, we first analyze the Mean Squared Error (MSE) between the buffer-trained model and the Bayes-optimal model through the perspective of localized error decomposition to investigate the contribution of samples from different regions to MSE suppression. Further theoretical and experimental analyses demonstrate that samples with high probability density play a dominant role in error suppression. Inspired by this, we propose the Probability Density-Aware Coreset (PDAC) method. PDAC leverages the Projected Gaussian Mixture (PGM) model to estimate each sample's joint density, enabling efficient density-prioritized buffer selection. Finally, we introduce the streaming Expectation Maximization (EM) algorithm to enhance the adaptability of PGM parameters to streaming data, yielding Streaming PDAC (SPDAC) for streaming scenarios. Extensive comparative experiments show that our methods outperforms other baselines across various CL settings while ensuring favorable efficiency.",
+  "nuggets": [
+    {
+      "text": "Rehearsal-based CL uses memory buffers for knowledge retention",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Coreset Selection (CS) approximates training with minimal storage",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level optimization in CS incurs high computational cost",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PDAC method uses Probability Density for coreset selection",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Projected Gaussian Mixture (PGM) model estimates sample density",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Streaming EM algorithm adapts PGM to streaming data",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPDAC enhances efficiency in streaming scenarios",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "High probability density samples suppress error effectively",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "PDAC outperforms baselines in various CL settings",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "CS strategies include K-Center and gradient matching",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level CS optimization vulnerable to training dynamics fluctuations",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Rehearsal-based CL uses memory buffers for knowledge retention",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Coreset Selection (CS) approximates training with minimal storage",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level optimization in CS incurs high computational cost",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CS strategies include K-Center and gradient matching",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level CS optimization vulnerable to training dynamics fluctuations",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Rehearsal-based CL uses memory buffers for knowledge retention",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Coreset Selection (CS) approximates training with minimal storage",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level optimization in CS incurs high computational cost",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CS strategies include K-Center and gradient matching",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level CS optimization vulnerable to training dynamics fluctuations",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.3333333333333333,
+    "strict_all_score": 0.45454545454545453,
+    "vital_score": 0.3333333333333333,
+    "all_score": 0.45454545454545453
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "qid": "2511.01052v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nCancer staging is critical for patient prognosis and treatment planning, yet extracting pathologic TNM staging from unstructured pathology reports poses a persistent challenge. Existing natural language processing (NLP) and machine learning (ML) strategies often depend on large annotated datasets, limiting their scalability and adaptability. In this study, we introduce two Knowledge Elicitation methods designed to overcome these limitations by enabling large language models (LLMs) to induce and apply domain-specific rules for cancer staging. The first, Knowledge Elicitation with Long-Term Memory (KEwLTM), uses an iterative prompting strategy to derive staging rules directly from unannotated pathology reports, without requiring ground-truth labels. The second, Knowledge Elicitation with Retrieval-Augmented Generation (KEwRAG), employs a variation of RAG where rules are pre-extracted from relevant guidelines in a single step and then applied, enhancing interpretability and avoiding repeated retrieval overhead. We leverage the ability of LLMs to apply broad knowledge learned during pre-training to new tasks. Using breast cancer pathology reports from the TCGA dataset, we evaluate their performance in identifying T and N stages, comparing them against various baseline approaches on two open-source LLMs. Our results indicate that KEwLTM outperforms KEwRAG when Zero-Shot Chain-of-Thought (ZSCOT) inference is effective, whereas KEwRAG achieves better performance when ZSCOT inference is less effective. Both methods offer transparent, interpretable interfaces by making the induced rules explicit. These findings highlight the promise of our Knowledge Elicitation methods as scalable, high-performing solutions for automated cancer staging with enhanced interpretability, particularly in clinical settings with limited annotated data.",
+  "nuggets": [
+    {
+      "text": "Cancer staging critical for prognosis and treatment planning.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Extracting TNM staging from unstructured reports is challenging.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NLP and ML strategies depend on large annotated datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Knowledge Elicitation methods overcome dataset limitations.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "KEwLTM derives rules from unannotated reports without labels.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KEwRAG uses pre-extracted rules from guidelines.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Both methods offer transparent, interpretable interfaces.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalable solutions for automated cancer staging.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs apply broad knowledge to new tasks.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Evaluated on breast cancer reports from TCGA dataset.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "KEwLTM outperforms KEwRAG with effective ZSCOT inference.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "KEwRAG better when ZSCOT inference is less effective.",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Extracting TNM staging from unstructured reports is challenging.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NLP and ML strategies depend on large annotated datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KEwLTM derives rules from unannotated reports without labels.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KEwRAG uses pre-extracted rules from guidelines.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Both methods offer transparent, interpretable interfaces.",
+      "importance": "vital",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Extracting TNM staging from unstructured reports is challenging.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NLP and ML strategies depend on large annotated datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Knowledge Elicitation methods overcome dataset limitations.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "KEwLTM derives rules from unannotated reports without labels.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KEwRAG uses pre-extracted rules from guidelines.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Both methods offer transparent, interpretable interfaces.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalable solutions for automated cancer staging.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.625,
+    "strict_all_score": 0.4166666666666667,
+    "vital_score": 0.75,
+    "all_score": 0.5
+  }
+}

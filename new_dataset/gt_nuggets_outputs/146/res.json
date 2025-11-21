@@ -1,0 +1,211 @@
+{
+  "qid": "2511.01352v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nIn this paper, we present a new algorithm, MiniFool, that implements physics-inspired adversarial attacks for testing neural network-based classification tasks in particle and astroparticle physics. While we initially developed the algorithm for the search for astrophysical tau neutrinos with the IceCube Neutrino Observatory, we apply it to further data from other science domains, thus demonstrating its general applicability. Here, we apply the algorithm to the well-known MNIST data set and furthermore, to Open Data data from the CMS experiment at the Large Hadron Collider. The algorithm is based on minimizing a cost function that combines a $χ^2$ based test-statistic with the deviation from the desired target score. The test statistic quantifies the probability of the perturbations applied to the data based on the experimental uncertainties. For our studied use cases, we find that the likelihood of a flipped classification differs for both the initially correctly and incorrectly classified events. When testing changes of the classifications as a function of an attack parameter that scales the experimental uncertainties, the robustness of the network decision can be quantified. Furthermore, this allows testing the robustness of the classification of unlabeled experimental data.",
+  "nuggets": [
+    {
+      "text": "MiniFool algorithm for adversarial attacks in particle physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-inspired adversarial attacks test neural network classifications",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Algorithm applied to MNIST and CMS experiment data",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Cost function combines $χ^2$ test-statistic and target score deviation",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Test statistic quantifies perturbation probability from experimental uncertainties",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MiniFool adds physical uncertainties to distance metrics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Statistically motivated $L_2$ distance metric replaces network loss function",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MiniFool developed for IceCube Neutrino Observatory",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Likelihood of flipped classification differs for correct and incorrect events",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Attack parameter scales experimental uncertainties for robustness testing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Robustness of unlabeled experimental data classification tested",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Adversarial attacks valuable in astroparticle and particle physics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fast Gradient Sign Method (FGSM) for adversarial examples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Projected Gradient Descent (PGD) achieves smaller perturbations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepFool algorithm iteratively extends FGSM",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "L-BFGS algorithm minimizes scaled distance-metric",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Carlini et al. use different loss functions for robustness evaluation",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "MiniFool algorithm for adversarial attacks in particle physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MiniFool adds physical uncertainties to distance metrics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Statistically motivated $L_2$ distance metric replaces network loss function",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Attack parameter scales experimental uncertainties for robustness testing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adversarial attacks valuable in astroparticle and particle physics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fast Gradient Sign Method (FGSM) for adversarial examples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Projected Gradient Descent (PGD) achieves smaller perturbations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepFool algorithm iteratively extends FGSM",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "L-BFGS algorithm minimizes scaled distance-metric",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Carlini et al. use different loss functions for robustness evaluation",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "MiniFool algorithm for adversarial attacks in particle physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-inspired adversarial attacks test neural network classifications",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MiniFool adds physical uncertainties to distance metrics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Statistically motivated $L_2$ distance metric replaces network loss function",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Attack parameter scales experimental uncertainties for robustness testing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Robustness of unlabeled experimental data classification tested",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Adversarial attacks valuable in astroparticle and particle physics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fast Gradient Sign Method (FGSM) for adversarial examples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Projected Gradient Descent (PGD) achieves smaller perturbations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepFool algorithm iteratively extends FGSM",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "L-BFGS algorithm minimizes scaled distance-metric",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Carlini et al. use different loss functions for robustness evaluation",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.42857142857142855,
+    "strict_all_score": 0.5882352941176471,
+    "vital_score": 0.5,
+    "all_score": 0.6470588235294118
+  }
+}

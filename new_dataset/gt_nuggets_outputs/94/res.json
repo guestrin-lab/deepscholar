@@ -1,0 +1,191 @@
+{
+  "qid": "2511.10035v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nAs a critical task in autonomous driving perception systems, 3D object detection is used to identify and track key objects, such as vehicles and pedestrians. However, detecting distant, small, or occluded objects (hard instances) remains a challenge, which directly compromises the safety of autonomous driving systems. We observe that existing multi-modal 3D object detection methods often follow a single-guided paradigm, failing to account for the differences in information density of hard instances between modalities. In this work, we propose DGFusion, based on the Dual-guided paradigm, which fully inherits the advantages of the Point-guide-Image paradigm and integrates the Image-guide-Point paradigm to address the limitations of the single paradigms. The core of DGFusion, the Difficulty-aware Instance Pair Matcher (DIPM), performs instance-level feature matching based on difficulty to generate easy and hard instance pairs, while the Dual-guided Modules exploit the advantages of both pair types to enable effective multi-modal feature fusion. Experimental results demonstrate that our DGFusion outperforms the baseline methods, with respective improvements of +1.0\\% mAP, +0.8\\% NDS, and +1.3\\% average recall on nuScenes. Extensive experiments demonstrate consistent robustness gains for hard instance detection across ego-distance, size, visibility, and small-scale training scenarios.",
+  "nuggets": [
+    {
+      "text": "3D object detection is crucial for autonomous driving.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hard instances are distant, small, or occluded objects.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Single-guided paradigms struggle with hard instance detection.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DGFusion uses a Dual-guided paradigm for better detection.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DGFusion combines Point-guide-Image and Image-guide-Point paradigms.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Difficulty-aware Instance Pair Matcher (DIPM) matches features by difficulty.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "DGFusion improves mAP, NDS, and recall on nuScenes.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GraphAlign++ and UniTR enhance spatial alignment and robustness.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Far3D excels in long-distance detection with camera-only methods.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-modal fusion enhances detection by integrating sensor data.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BEV-based methods merge LiDAR and Camera data effectively.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LiDAR provides depth; cameras excel in rare object detection.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Feature-level fusion is more effective than input-level fusion.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "HGSFusion resolves errors in camera-radar fusion.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "RaLiBEV and L4DR improve weather robustness with radar fusion.",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "3D object detection is crucial for autonomous driving.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hard instances are distant, small, or occluded objects.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DGFusion uses a Dual-guided paradigm for better detection.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DGFusion combines Point-guide-Image and Image-guide-Point paradigms.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GraphAlign++ and UniTR enhance spatial alignment and robustness.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Far3D excels in long-distance detection with camera-only methods.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-modal fusion enhances detection by integrating sensor data.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BEV-based methods merge LiDAR and Camera data effectively.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Feature-level fusion is more effective than input-level fusion.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "3D object detection is crucial for autonomous driving.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hard instances are distant, small, or occluded objects.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Single-guided paradigms struggle with hard instance detection.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DGFusion uses a Dual-guided paradigm for better detection.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DGFusion combines Point-guide-Image and Image-guide-Point paradigms.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GraphAlign++ and UniTR enhance spatial alignment and robustness.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Far3D excels in long-distance detection with camera-only methods.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-modal fusion enhances detection by integrating sensor data.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BEV-based methods merge LiDAR and Camera data effectively.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LiDAR provides depth; cameras excel in rare object detection.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Feature-level fusion is more effective than input-level fusion.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6666666666666666,
+    "strict_all_score": 0.6,
+    "vital_score": 0.7222222222222222,
+    "all_score": 0.6666666666666666
+  }
+}

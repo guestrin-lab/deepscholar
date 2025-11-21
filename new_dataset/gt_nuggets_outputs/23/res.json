@@ -1,0 +1,211 @@
+{
+  "qid": "2511.02769v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe chemical space of drug-like molecules is vast, motivating the development of generative models that must learn broad chemical distributions, enable conditional generation by capturing structure-property representations, and provide fast molecular generation. Meeting the objectives depends on modeling choices, including the probabilistic modeling approach, the conditional generative formulation, the architecture, and the molecular input representation. To address the challenges, we present STAR-VAE (Selfies-encoded, Transformer-based, AutoRegressive Variational Auto Encoder), a scalable latent-variable framework with a Transformer encoder and an autoregressive Transformer decoder. It is trained on 79 million drug-like molecules from PubChem, using SELFIES to guarantee syntactic validity. The latent-variable formulation enables conditional generation: a property predictor supplies a conditioning signal that is applied consistently to the latent prior, the inference network, and the decoder. Our contributions are: (i) a Transformer-based latent-variable encoder-decoder model trained on SELFIES representations; (ii) a principled conditional latent-variable formulation for property-guided generation; and (iii) efficient finetuning with low-rank adapters (LoRA) in both encoder and decoder, enabling fast adaptation with limited property and activity data. On the GuacaMol and MOSES benchmarks, our approach matches or exceeds baselines, and latent-space analyses reveal smooth, semantically structured representations that support both unconditional exploration and property-aware generation. On the Tartarus benchmarks, the conditional model shifts docking-score distributions toward stronger predicted binding. These results suggest that a modernized, scale-appropriate VAE remains competitive for molecular generation when paired with principled conditioning and parameter-efficient finetuning.",
+  "nuggets": [
+    {
+      "text": "Generative models explore vast chemical space",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Conditional VAEs enable property-aware generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers favor large-scale sequence modeling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SELFIES ensure syntactic validity in generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-VAE uses Transformer encoder-decoder",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-VAE trained on 79 million molecules",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Low-rank adapters enable efficient finetuning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Conditional model shifts docking-score distributions",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Modernized VAEs remain competitive for molecular generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational autoencoders create smooth latent spaces",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GrammarVAE guarantees syntactic validity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GraphVAE outputs probabilistic molecular graphs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MolGPT uses autoregressive Transformer for SMILES",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Chemformer is a BART-style encoder-decoder",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-VAE matches or exceeds GuacaMol, MOSES baselines",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Generative models explore vast chemical space",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Conditional VAEs enable property-aware generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers favor large-scale sequence modeling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SELFIES ensure syntactic validity in generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-VAE uses Transformer encoder-decoder",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low-rank adapters enable efficient finetuning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Modernized VAEs remain competitive for molecular generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational autoencoders create smooth latent spaces",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GrammarVAE guarantees syntactic validity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GraphVAE outputs probabilistic molecular graphs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MolGPT uses autoregressive Transformer for SMILES",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Chemformer is a BART-style encoder-decoder",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Generative models explore vast chemical space",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Conditional VAEs enable property-aware generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers favor large-scale sequence modeling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SELFIES ensure syntactic validity in generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-VAE uses Transformer encoder-decoder",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low-rank adapters enable efficient finetuning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Modernized VAEs remain competitive for molecular generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational autoencoders create smooth latent spaces",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GrammarVAE guarantees syntactic validity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GraphVAE outputs probabilistic molecular graphs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MolGPT uses autoregressive Transformer for SMILES",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Chemformer is a BART-style encoder-decoder",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.7777777777777778,
+    "strict_all_score": 0.8,
+    "vital_score": 0.7777777777777778,
+    "all_score": 0.8
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "qid": "2511.05396v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nOff-dynamics reinforcement learning (RL), where training and deployment transition dynamics are different, can be formulated as learning in a robust Markov decision process (RMDP) where uncertainties in transition dynamics are imposed. Existing literature mostly assumes access to generative models allowing arbitrary state-action queries or pre-collected datasets with a good state coverage of the deployment environment, bypassing the challenge of exploration. In this work, we study a more realistic and challenging setting where the agent is limited to online interaction with the training environment. To capture the intrinsic difficulty of exploration in online RMDPs, we introduce the supremal visitation ratio, a novel quantity that measures the mismatch between the training dynamics and the deployment dynamics. We show that if this ratio is unbounded, online learning becomes exponentially hard. We propose the first computationally efficient algorithm that achieves sublinear regret in online RMDPs with $f$-divergence based transition uncertainties. We also establish matching regret lower bounds, demonstrating that our algorithm achieves optimal dependence on both the supremal visitation ratio and the number of interaction episodes. Finally, we validate our theoretical results through comprehensive numerical experiments.",
+  "nuggets": [
+    {
+      "text": "Off-dynamics RL involves different training and deployment dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "RMDPs handle uncertainties in transition dynamics",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Existing work assumes generative models or pre-collected datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our work focuses on online interaction with training environment",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Supremal visitation ratio measures training-deployment dynamics mismatch",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Unbounded supremal ratio makes online learning exponentially hard",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "First efficient algorithm with sublinear regret in online RMDPs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Theoretical results validated through numerical experiments",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Online RMDPs explored with different uncertainty sets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Algorithm uses f-divergence based transition uncertainties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Matching regret lower bounds established",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Optimal dependence on supremal ratio and interaction episodes",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "CRMDPs and RRMDPs studied in various settings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Off-dynamics RL linked to domain adaptation and transfer learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Off-dynamics RL involves different training and deployment dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing work assumes generative models or pre-collected datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our work focuses on online interaction with training environment",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Online RMDPs explored with different uncertainty sets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Algorithm uses f-divergence based transition uncertainties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CRMDPs and RRMDPs studied in various settings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Off-dynamics RL linked to domain adaptation and transfer learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Off-dynamics RL involves different training and deployment dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "RMDPs handle uncertainties in transition dynamics",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Existing work assumes generative models or pre-collected datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our work focuses on online interaction with training environment",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Online RMDPs explored with different uncertainty sets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Algorithm uses f-divergence based transition uncertainties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CRMDPs and RRMDPs studied in various settings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Off-dynamics RL linked to domain adaptation and transfer learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4444444444444444,
+    "strict_all_score": 0.5,
+    "vital_score": 0.5,
+    "all_score": 0.5357142857142857
+  }
+}

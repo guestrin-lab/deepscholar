@@ -1,0 +1,216 @@
+{
+  "qid": "2509.21862v2",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe study of emergent behaviors in large language model (LLM)-driven multi-agent systems is a critical research challenge, yet progress is limited by a lack of principled methodologies for controlled experimentation. To address this, we introduce Shachi, a formal methodology and modular framework that decomposes an agent's policy into core cognitive components: Configuration for intrinsic traits, Memory for contextual persistence, and Tools for expanded capabilities, all orchestrated by an LLM reasoning engine. This principled architecture moves beyond brittle, ad-hoc agent designs and enables the systematic analysis of how specific architectural choices influence collective behavior. We validate our methodology on a comprehensive 10-task benchmark and demonstrate its power through novel scientific inquiries. Critically, we establish the external validity of our approach by modeling a real-world U.S. tariff shock, showing that agent behaviors align with observed market reactions only when their cognitive architecture is appropriately configured with memory and tools. Our work provides a rigorous, open-source foundation for building and evaluating LLM agents, aimed at fostering more cumulative and scientifically grounded research.",
+  "nuggets": [
+    {
+      "text": "Shachi framework decomposes agent policy into cognitive components",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Configuration, Memory, Tools are core components in Shachi",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLM reasoning engine orchestrates Shachi's cognitive components",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Shachi enables systematic analysis of architectural choices",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Shachi provides open-source foundation for LLM agent research",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLMs enhance realism and adaptability in ABM",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative agents simulate interactive social behaviors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OASIS, Sotopia, EconAgent extend LLM ideas to simulations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StockAgent, AuctionArena test strategic decision-making",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shachi validated on a comprehensive 10-task benchmark",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Shachi models real-world U.S. tariff shock",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Agent behaviors align with market reactions in Shachi",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ABM simulates interactions among autonomous agents",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ABM integrates agent-based computing and social sciences",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PsychoBench evaluates psychological traits in agents",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AutoGen, Concordia, EDSL focus on conversational automation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MLE-Dojo focuses on LLM training workflows",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Implacro bridges gap with standardized agent-environment interface",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "LLMs enhance realism and adaptability in ABM",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative agents simulate interactive social behaviors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OASIS, Sotopia, EconAgent extend LLM ideas to simulations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StockAgent, AuctionArena test strategic decision-making",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ABM simulates interactions among autonomous agents",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ABM integrates agent-based computing and social sciences",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PsychoBench evaluates psychological traits in agents",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AutoGen, Concordia, EDSL focus on conversational automation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MLE-Dojo focuses on LLM training workflows",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Implacro bridges gap with standardized agent-environment interface",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "LLMs enhance realism and adaptability in ABM",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative agents simulate interactive social behaviors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OASIS, Sotopia, EconAgent extend LLM ideas to simulations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "StockAgent, AuctionArena test strategic decision-making",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shachi models real-world U.S. tariff shock",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Agent behaviors align with market reactions in Shachi",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ABM simulates interactions among autonomous agents",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ABM integrates agent-based computing and social sciences",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PsychoBench evaluates psychological traits in agents",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AutoGen, Concordia, EDSL focus on conversational automation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MLE-Dojo focuses on LLM training workflows",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Implacro bridges gap with standardized agent-environment interface",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4444444444444444,
+    "strict_all_score": 0.5555555555555556,
+    "vital_score": 0.4444444444444444,
+    "all_score": 0.6111111111111112
+  }
+}

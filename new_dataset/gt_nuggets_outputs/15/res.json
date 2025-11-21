@@ -1,0 +1,196 @@
+{
+  "qid": "2511.04838v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nIn molecular property prediction, the most valuable compounds (e.g., high potency) often occupy sparse regions of the target space. Standard Graph Neural Networks (GNNs) commonly optimize for the average error, underperforming on these uncommon but critical cases, with existing oversampling methods often distorting molecular topology. In this paper, we introduce SPECTRA, a Spectral Target-Aware graph augmentation framework that generates realistic molecular graphs in the spectral domain. SPECTRA (i) reconstructs multi-attribute molecular graphs from SMILES; (ii) aligns molecule pairs via (Fused) Gromov-Wasserstein couplings to obtain node correspondences; (iii) interpolates Laplacian eigenvalues, eigenvectors and node features in a stable share-basis; and (iv) reconstructs edges to synthesize physically plausible intermediates with interpolated targets. A rarity-aware budgeting scheme, derived from a kernel density estimation of labels, concentrates augmentation where data are scarce. Coupled with a spectral GNN using edge-aware Chebyshev convolutions, SPECTRA densifies underrepresented regions without degrading global accuracy. On benchmarks, SPECTRA consistently improves error in relevant target ranges while maintaining competitive overall MAE, and yields interpretable synthetic molecules whose structure reflects the underlying spectral geometry. Our results demonstrate that spectral, geometry-aware augmentation is an effective and efficient strategy for imbalanced molecular property regression.",
+  "nuggets": [
+    {
+      "text": "SPECTRA targets underrepresented regions in molecular property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA uses spectral domain for realistic molecular graph generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Rarity-aware budgeting scheme focuses augmentation on scarce data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA maintains global accuracy while improving rare target predictions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA reconstructs molecular graphs from SMILES",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gromov-Wasserstein couplings align molecule pairs in SPECTRA",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPECTRA interpolates Laplacian eigenvalues and eigenvectors",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Edge-aware Chebyshev convolutions used in SPECTRA's spectral GNN",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPECTRA synthesizes chemically plausible intermediates",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Spectral methods improve performance but often ignore regression settings",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SPECTRA improves regression accuracy in rare, critical regimes",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Spectral GNNs capture global information better than spatial approaches",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Spectral graph theory aids in dimensionality reduction and clustering",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Imbalanced learning in GNNs tackled with oversampling and loss manipulation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SMOTE generates synthetic samples by interpolating labeled data",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Molecular generation explores chemical space while ensuring validity",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "SPECTRA targets underrepresented regions in molecular property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA uses spectral domain for realistic molecular graph generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Rarity-aware budgeting scheme focuses augmentation on scarce data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA maintains global accuracy while improving rare target predictions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA synthesizes chemically plausible intermediates",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA improves regression accuracy in rare, critical regimes",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Imbalanced learning in GNNs tackled with oversampling and loss manipulation",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "SPECTRA targets underrepresented regions in molecular property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA uses spectral domain for realistic molecular graph generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Rarity-aware budgeting scheme focuses augmentation on scarce data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA maintains global accuracy while improving rare target predictions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPECTRA reconstructs molecular graphs from SMILES",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SPECTRA synthesizes chemically plausible intermediates",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Spectral methods improve performance but often ignore regression settings",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SPECTRA improves regression accuracy in rare, critical regimes",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Spectral GNNs capture global information better than spatial approaches",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Spectral graph theory aids in dimensionality reduction and clustering",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Imbalanced learning in GNNs tackled with oversampling and loss manipulation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SMOTE generates synthetic samples by interpolating labeled data",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Molecular generation explores chemical space while ensuring validity",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5454545454545454,
+    "strict_all_score": 0.4375,
+    "vital_score": 0.6363636363636364,
+    "all_score": 0.625
+  }
+}

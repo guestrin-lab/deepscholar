@@ -1,0 +1,261 @@
+{
+  "qid": "2510.16080v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nEmergency departments worldwide face rising patient volumes, workforce shortages, and variability in triage decisions that threaten the delivery of timely and accurate care. Current triage methods rely primarily on vital signs, routine laboratory values, and clinicians' judgment, which, while effective, often miss emerging biological signals that could improve risk prediction for infection typing or antibiotic administration in acute conditions. To address this challenge, we introduce TriAgent, a large language model (LLM)-based multi-agent framework that couples automated biomarker discovery with deep research for literature-grounded validation and novelty assessment. TriAgent employs a supervisor research agent to generate research topics and delegate targeted queries to specialized sub-agents for evidence retrieval from various data sources. Findings are synthesized to classify biomarkers as either grounded in existing knowledge or flagged as novel candidates, offering transparent justification and highlighting unexplored pathways in acute care risk stratification. Unlike prior frameworks limited to existing routine clinical biomarkers, TriAgent aims to deliver an end-to-end framework from data analysis to literature grounding to improve transparency, explainability and expand the frontier of potentially actionable clinical biomarkers. Given a user's clinical query and quantitative triage data, TriAgent achieved a topic adherence F1 score of 55.7 +/- 5.0%, surpassing the CoT-ReAct agent by over 10%, and a faithfulness score of 0.42 +/- 0.39, exceeding all baselines by more than 50%. Across experiments, TriAgent consistently outperformed state-of-the-art LLM-based agentic frameworks in biomarker justification and literature-grounded novelty assessment. We share our repo: https://github.com/CellFace/TriAgent.",
+  "nuggets": [
+    {
+      "text": "TriAgent improves acute care triage with novel biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-based multi-agent framework for biomarker discovery",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent synthesizes findings for biomarker classification",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "TriAgent offers transparent justification for novel biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent highlights unexplored pathways in risk stratification",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent integrates data analysis and literature grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent flags novel biomarkers for validation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent generates structured justification for clinical significance",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent outperforms state-of-the-art LLM frameworks",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Multi-agent systems improve interpretability and grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs drive biomarker discovery with biomedical literature grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Role-specialized LLMs contextualize putative biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent surpasses CoT-ReAct agent by over 10% in F1 score",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "TriAgent achieves faithfulness score exceeding baselines by 50%",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "TriAgent employs supervisor research agent for topic generation",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "TriAgent uses specialized sub-agents for evidence retrieval",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "TriAgent repository: https://github.com/CellFace/TriAgent",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Multi-agent frameworks emulate collaborative clinical reasoning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedAgents framework simulates multidisciplinary clinical rounds",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adaptive agent systems tailor complexity dynamically",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "TriAgent improves acute care triage with novel biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-based multi-agent framework for biomarker discovery",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent offers transparent justification for novel biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent highlights unexplored pathways in risk stratification",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent integrates data analysis and literature grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent flags novel biomarkers for validation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent generates structured justification for clinical significance",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-agent systems improve interpretability and grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs drive biomarker discovery with biomedical literature grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Role-specialized LLMs contextualize putative biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-agent frameworks emulate collaborative clinical reasoning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedAgents framework simulates multidisciplinary clinical rounds",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adaptive agent systems tailor complexity dynamically",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "TriAgent improves acute care triage with novel biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-based multi-agent framework for biomarker discovery",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent synthesizes findings for biomarker classification",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "TriAgent offers transparent justification for novel biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent highlights unexplored pathways in risk stratification",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent integrates data analysis and literature grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent flags novel biomarkers for validation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent generates structured justification for clinical significance",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-agent systems improve interpretability and grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs drive biomarker discovery with biomedical literature grounding",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Role-specialized LLMs contextualize putative biomarkers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TriAgent employs supervisor research agent for topic generation",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "TriAgent uses specialized sub-agents for evidence retrieval",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multi-agent frameworks emulate collaborative clinical reasoning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedAgents framework simulates multidisciplinary clinical rounds",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adaptive agent systems tailor complexity dynamically",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.8333333333333334,
+    "strict_all_score": 0.65,
+    "vital_score": 0.875,
+    "all_score": 0.725
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "qid": "2510.25132v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nDesigning enzyme backbones with substrate-specific functionality is a critical challenge in computational protein engineering. Current generative models excel in protein design but face limitations in binding data, substrate-specific control, and flexibility for de novo enzyme backbone generation. To address this, we introduce EnzyBind, a dataset with 11,100 experimentally validated enzyme-substrate pairs specifically curated from PDBbind. Building on this, we propose EnzyControl, a method that enables functional and substrate-specific control in enzyme backbone generation. Our approach generates enzyme backbones conditioned on MSA-annotated catalytic sites and their corresponding substrates, which are automatically extracted from curated enzyme-substrate data. At the core of EnzyControl is EnzyAdapter, a lightweight, modular component integrated into a pretrained motif-scaffolding model, allowing it to become substrate-aware. A two-stage training paradigm further refines the model's ability to generate accurate and functional enzyme structures. Experiments show that our EnzyControl achieves the best performance across structural and functional metrics on EnzyBind and EnzyBench benchmarks, with particularly notable improvements of 13\\% in designability and 13\\% in catalytic efficiency compared to the baseline models. The code is released at https://github.com/Vecteur-libre/EnzyControl.",
+  "nuggets": [
+    {
+      "text": "EnzyControl enables substrate-specific enzyme backbone generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "EnzyBind dataset includes 11,100 enzyme-substrate pairs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "EnzyAdapter integrates into motif-scaffolding models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Two-stage training refines enzyme structure generation",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "EnzyControl improves designability and catalytic efficiency by 13%",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MSA-annotated catalytic sites guide enzyme generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "EnzyControl outperforms on EnzyBind and EnzyBench benchmarks",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Generative models face limitations in substrate-specific control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "EnzyControl code available on GitHub",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "De novo design constructs new enzymes with synthetic scaffolds",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rational design uses computational modeling for enzyme optimization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Semi-rational design uses experimental data for site-directed mutagenesis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Motif-scaffolding creates proteins with functional motifs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RFdiffusion and FrameFlow use generative modeling for scaffolding",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "EnzyControl enables substrate-specific enzyme backbone generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "EnzyAdapter integrates into motif-scaffolding models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MSA-annotated catalytic sites guide enzyme generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models face limitations in substrate-specific control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "De novo design constructs new enzymes with synthetic scaffolds",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rational design uses computational modeling for enzyme optimization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Semi-rational design uses experimental data for site-directed mutagenesis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Motif-scaffolding creates proteins with functional motifs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RFdiffusion and FrameFlow use generative modeling for scaffolding",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "EnzyControl enables substrate-specific enzyme backbone generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "EnzyAdapter integrates into motif-scaffolding models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MSA-annotated catalytic sites guide enzyme generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models face limitations in substrate-specific control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "De novo design constructs new enzymes with synthetic scaffolds",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rational design uses computational modeling for enzyme optimization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Semi-rational design uses experimental data for site-directed mutagenesis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Motif-scaffolding creates proteins with functional motifs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RFdiffusion and FrameFlow use generative modeling for scaffolding",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4444444444444444,
+    "strict_all_score": 0.6428571428571429,
+    "vital_score": 0.4444444444444444,
+    "all_score": 0.6428571428571429
+  }
+}

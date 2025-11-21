@@ -1,0 +1,226 @@
+{
+  "qid": "2510.14143v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nQuantitative analysis of multidimensional biological images is useful for understanding complex cellular phenotypes and accelerating advances in biomedical research. As modern microscopy generates ever-larger 2D and 3D datasets, existing computational approaches are increasingly limited by their scalability, efficiency, and integration with modern scientific computing workflows. Existing bioimage analysis tools often lack application programmable interfaces (APIs), do not support graphics processing unit (GPU) acceleration, lack broad 3D image processing capabilities, and/or have poor interoperability for compute-heavy workflows. Here, we introduce cubic, an open-source Python library that addresses these challenges by augmenting widely used SciPy and scikit-image APIs with GPU-accelerated alternatives from CuPy and RAPIDS cuCIM. cubic's API is device-agnostic and dispatches operations to GPU when data reside on the device and otherwise executes on CPU, seamlessly accelerating a broad range of image processing routines. This approach enables GPU acceleration of existing bioimage analysis workflows, from preprocessing to segmentation and feature extraction for 2D and 3D data. We evaluate cubic both by benchmarking individual operations and by reproducing existing deconvolution and segmentation pipelines, achieving substantial speedups while maintaining algorithmic fidelity. These advances establish a robust foundation for scalable, reproducible bioimage analysis that integrates with the broader Python scientific computing ecosystem, including other GPU-accelerated methods, enabling both interactive exploration and automated high-throughput analysis workflows. cubic is openly available at https://github$.$com/alxndrkalinin/cubic",
+  "nuggets": [
+    {
+      "text": "cubic is an open-source Python library for bioimage analysis",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "cubic augments SciPy and scikit-image with GPU-accelerated alternatives",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "cubic's API is device-agnostic, supporting both GPU and CPU",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "cubic accelerates 2D and 3D image processing routines",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "cubic integrates with the Python scientific computing ecosystem",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "CuPy and RAPIDS cuCIM provide GPU-accelerated implementations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "napari plugins provide GPU-accelerated routines for specific tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ImageJ/Fiji offers a vast plugin ecosystem for bioimage analysis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CellProfiler is Python-based but CPU-bound for large images",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Ilastik provides user-friendly pixel/object classification with optional GPU",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QuPath includes GPU support but limited in morphometric pipelines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "napari is a Python-native image viewer with a plugin ecosystem",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "OpenCV and scikit-image are popular for image processing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "clEsperanto exposes CLIJ2 operations to Python users",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PyTorch and TensorFlow support GPUs but focus on deep learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cytokit uses TensorFlow for GPU-accelerated image registration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Kornia and torchvision offer GPU-accelerated preprocessing for deep learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "CuPy and RAPIDS cuCIM provide GPU-accelerated implementations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "napari plugins provide GPU-accelerated routines for specific tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ImageJ/Fiji offers a vast plugin ecosystem for bioimage analysis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CellProfiler is Python-based but CPU-bound for large images",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Ilastik provides user-friendly pixel/object classification with optional GPU",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QuPath includes GPU support but limited in morphometric pipelines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "napari is a Python-native image viewer with a plugin ecosystem",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "OpenCV and scikit-image are popular for image processing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "clEsperanto exposes CLIJ2 operations to Python users",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PyTorch and TensorFlow support GPUs but focus on deep learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cytokit uses TensorFlow for GPU-accelerated image registration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Kornia and torchvision offer GPU-accelerated preprocessing for deep learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "cubic augments SciPy and scikit-image with GPU-accelerated alternatives",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "CuPy and RAPIDS cuCIM provide GPU-accelerated implementations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "napari plugins provide GPU-accelerated routines for specific tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ImageJ/Fiji offers a vast plugin ecosystem for bioimage analysis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CellProfiler is Python-based but CPU-bound for large images",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Ilastik provides user-friendly pixel/object classification with optional GPU",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QuPath includes GPU support but limited in morphometric pipelines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "napari is a Python-native image viewer with a plugin ecosystem",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "OpenCV and scikit-image are popular for image processing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "clEsperanto exposes CLIJ2 operations to Python users",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PyTorch and TensorFlow support GPUs but focus on deep learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cytokit uses TensorFlow for GPU-accelerated image registration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Kornia and torchvision offer GPU-accelerated preprocessing for deep learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.2857142857142857,
+    "strict_all_score": 0.7058823529411765,
+    "vital_score": 0.35714285714285715,
+    "all_score": 0.7352941176470589
+  }
+}

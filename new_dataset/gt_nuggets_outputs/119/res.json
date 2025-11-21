@@ -1,0 +1,146 @@
+{
+  "qid": "2511.10179v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe present QuCoWE a framework that learns quantumnative word embeddings by training shallow hardwareefficient parameterized quantum circuits PQCs with a contrastive skipgram objective Words are encoded by datareuploading circuits with controlled ring entanglement similarity is computed via quantum state fidelity and passed through a logitfidelity head that aligns scores with the shiftedPMI scale of SGNSNoiseContrastive Estimation To maintain trainability we introduce an entanglementbudget regularizer based on singlequbit purity that mitigates barren plateaus On Text8 and WikiText2 QuCoWE attains competitive intrinsic WordSim353 SimLex999 and extrinsic SST2 TREC6 performance versus 50100d classical baselines while using fewer learned parameters per token All experiments are run in classical simulation we analyze depolarizingreadout noise and include errormitigation hooks zeronoise extrapolation randomized compiling to facilitate hardware deployment",
+  "nuggets": [
+    {
+      "text": "QuCoWE learns quantum-native word embeddings",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Uses shallow hardware-efficient parameterized quantum circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Contrastive skip-gram objective for training",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Words encoded by data-reuploading circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Similarity via quantum state fidelity",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Entanglement-budget regularizer mitigates barren plateaus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Experiments run in classical simulation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Controlled ring entanglement for encoding",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Logit-fidelity head aligns with shifted-PMI scale",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Competitive performance on WordSim353, SimLex999",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Outperforms classical baselines with fewer parameters",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Error mitigation: zero-noise extrapolation, randomized compiling",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Facilitates hardware deployment",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Uses shallow hardware-efficient parameterized quantum circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Words encoded by data-reuploading circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Entanglement-budget regularizer mitigates barren plateaus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Experiments run in classical simulation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Error mitigation: zero-noise extrapolation, randomized compiling",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "QuCoWE learns quantum-native word embeddings",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Uses shallow hardware-efficient parameterized quantum circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Words encoded by data-reuploading circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Entanglement-budget regularizer mitigates barren plateaus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Experiments run in classical simulation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Logit-fidelity head aligns with shifted-PMI scale",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Error mitigation: zero-noise extrapolation, randomized compiling",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Facilitates hardware deployment",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5714285714285714,
+    "strict_all_score": 0.38461538461538464,
+    "vital_score": 0.6428571428571429,
+    "all_score": 0.5
+  }
+}

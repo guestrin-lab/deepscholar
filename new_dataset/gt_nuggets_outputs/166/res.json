@@ -1,0 +1,131 @@
+{
+  "qid": "2511.04403v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nBayesian experimental design (BED) provides a principled framework for optimizing data collection, but existing approaches do not apply to crucial real-world settings such as dynamical systems with partial observability, where only noisy and incomplete observations are available. These systems are naturally modeled as state-space models (SSMs), where latent states mediate the link between parameters and data, making the likelihood -- and thus information-theoretic objectives like the expected information gain (EIG) -- intractable. In addition, the dynamical nature of the system requires online algorithms that update posterior distributions and select designs sequentially in a computationally efficient manner. We address these challenges by deriving new estimators of the EIG and its gradient that explicitly marginalize latent states, enabling scalable stochastic optimization in nonlinear SSMs. Our approach leverages nested particle filters (NPFs) for efficient online inference with convergence guarantees. Applications to realistic models, such as the susceptible-infected-recovered (SIR) and a moving source location task, show that our framework successfully handles both partial observability and online computation.",
+  "nuggets": [
+    {
+      "text": "Bayesian experimental design optimizes data collection",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing approaches struggle with partially observable dynamical systems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "State-space models involve latent states and intractable likelihoods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Online algorithms needed for sequential design in dynamical systems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "New EIG estimators marginalize latent states for scalability",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Nested particle filters enable efficient online inference",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Applications include SIR model and moving source location task",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Likelihood-free design methods use surrogates or simulations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adaptive design for fully observable states uses particle methods",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Surrogate-based adaptive variants need offline datasets",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Bayesian experimental design optimizes data collection",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing approaches struggle with partially observable dynamical systems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "State-space models involve latent states and intractable likelihoods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Online algorithms needed for sequential design in dynamical systems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Likelihood-free design methods use surrogates or simulations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Surrogate-based adaptive variants need offline datasets",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Bayesian experimental design optimizes data collection",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing approaches struggle with partially observable dynamical systems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "State-space models involve latent states and intractable likelihoods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Online algorithms needed for sequential design in dynamical systems",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Likelihood-free design methods use surrogates or simulations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adaptive design for fully observable states uses particle methods",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Surrogate-based adaptive variants need offline datasets",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5714285714285714,
+    "strict_all_score": 0.6,
+    "vital_score": 0.5714285714285714,
+    "all_score": 0.65
+  }
+}

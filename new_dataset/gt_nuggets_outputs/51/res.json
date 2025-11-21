@@ -1,0 +1,231 @@
+{
+  "qid": "2511.05510v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nUnderstanding the dynamic behavior of proteins is critical to elucidating their functional mechanisms, yet generating realistic, temporally coherent trajectories of protein ensembles remains a significant challenge. In this work, we introduce a novel hierarchical autoregressive framework for modeling protein dynamics that leverages the intrinsic multi-scale organization of molecular motions. Unlike existing methods that focus on generating static conformational ensembles or treat dynamic sampling as an independent process, our approach characterizes protein dynamics as a Markovian process. The framework employs a two-scale architecture: a low-resolution model captures slow, collective motions driving major conformational transitions, while a high-resolution model generates detailed local fluctuations conditioned on these large-scale movements. This hierarchical design ensures that the causal dependencies inherent in protein dynamics are preserved, enabling the generation of temporally coherent and physically realistic trajectories. By bridging high-level biophysical principles with state-of-the-art generative modeling, our approach provides an efficient framework for simulating protein dynamics that balances computational efficiency with physical accuracy.",
+  "nuggets": [
+    {
+      "text": "Hierarchical autoregressive framework models protein dynamics",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multi-scale organization of molecular motions leveraged",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Markovian process characterizes protein dynamics",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Two-scale architecture captures protein motions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Causal dependencies in protein dynamics preserved",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Temporally coherent, physically realistic trajectories generated",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Efficient framework balances computational efficiency, physical accuracy",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "VAMPNet uses variational approaches for Markov processes",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FoldFlow captures multi-scale structural variations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ITO learns transition density operators for coarse-grained representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low-resolution model captures slow, collective motions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High-resolution model generates detailed local fluctuations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning revolutionizes protein conformational ensemble generation",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AlphaFlow fine-tunes predictors for ensemble generation",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "BioEMU uses diffusion-based framework for accurate ensembles",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ConfDiff enhances generation fidelity with force-guided networks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DiffMD estimates conformational density gradients",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "EigenFold models proteins as harmonic oscillators",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "arDCA models protein sequence distributions autoregressively",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Structure Language Models generate diverse backbone conformations",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Multi-scale organization of molecular motions leveraged",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Two-scale architecture captures protein motions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "VAMPNet uses variational approaches for Markov processes",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FoldFlow captures multi-scale structural variations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ITO learns transition density operators for coarse-grained representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low-resolution model captures slow, collective motions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High-resolution model generates detailed local fluctuations",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Hierarchical autoregressive framework models protein dynamics",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multi-scale organization of molecular motions leveraged",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Two-scale architecture captures protein motions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "VAMPNet uses variational approaches for Markov processes",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FoldFlow captures multi-scale structural variations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ITO learns transition density operators for coarse-grained representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low-resolution model captures slow, collective motions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High-resolution model generates detailed local fluctuations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning revolutionizes protein conformational ensemble generation",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AlphaFlow fine-tunes predictors for ensemble generation",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "BioEMU uses diffusion-based framework for accurate ensembles",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ConfDiff enhances generation fidelity with force-guided networks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DiffMD estimates conformational density gradients",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "EigenFold models proteins as harmonic oscillators",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "arDCA models protein sequence distributions autoregressively",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Structure Language Models generate diverse backbone conformations",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.35,
+    "vital_score": 0.55,
+    "all_score": 0.575
+  }
+}

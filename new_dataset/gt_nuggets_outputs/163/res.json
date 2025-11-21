@@ -1,0 +1,191 @@
+{
+  "qid": "2511.04563v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nCommercially available Noisy Intermediate-Scale Quantum (NISQ) devices now make small hybrid quantum-classical experiments practical, but many tools hide configuration or demand ad-hoc scripting.\n  We introduce the Quantum Experiment Framework (QEF): A lightweight framework designed to support the systematic, hypothesis-driven study of quantum algorithms. Unlike many existing approaches, QEF emphasises iterative, exploratory analysis of evolving experimental strategies rather than exhaustive empirical evaluation of fixed algorithms using predefined quality metrics. The framework's design is informed by a comprehensive review of the literature, identifying principal parameters and measurement practices currently reported in the field.\n  QEF captures all key aspects of quantum software and algorithm experiments through a concise specification that expands into a Cartesian product of variants for controlled large-scale parameter sweeps. This design enables rigorous and systematic evaluation, as well as precise reproducibility. Large sweeps are automatically partitioned into asynchronous jobs across simulators or cloud hardware, and ascertain full hyper-parameter traceability. QEF supports parameter reuse to improve overall experiment runtimes, and collects all metrics and metadata into a form that can be conveniently explored with standard statistical and visualisation software.\n  By combining reproducibility and scalability while avoiding the complexities of full workflow engines, QEF seeks to lower the practical barriers to empirical research on quantum algorithms, whether these are designed for current NISQ devices or future error-corrected quantum systems.",
+  "nuggets": [
+    {
+      "text": "QEF supports hypothesis-driven quantum algorithm studies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF enables iterative, exploratory analysis of experiments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF offers systematic evaluation and precise reproducibility",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QEF lowers barriers to empirical quantum research",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QEF designed for NISQ and future quantum systems",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QEF fills gap between benchmarking and vendor-specific services",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF partitions large sweeps into asynchronous jobs",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QEF supports parameter reuse for improved runtimes",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QEF collects metrics and metadata for analysis",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QEF avoids complexities of full workflow engines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tierkreis represents programs as dataflow graphs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Amazon Braket tracks metrics and hyper-parameters",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Quokka decomposes algorithms into microservices",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QUARK benchmarks quantum applications end-to-end",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SupermarQ evaluates quantum processors with static circuits",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "QEF supports hypothesis-driven quantum algorithm studies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF enables iterative, exploratory analysis of experiments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF fills gap between benchmarking and vendor-specific services",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF avoids complexities of full workflow engines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tierkreis represents programs as dataflow graphs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Quokka decomposes algorithms into microservices",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QUARK benchmarks quantum applications end-to-end",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SupermarQ evaluates quantum processors with static circuits",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "QEF supports hypothesis-driven quantum algorithm studies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF enables iterative, exploratory analysis of experiments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF offers systematic evaluation and precise reproducibility",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QEF lowers barriers to empirical quantum research",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QEF fills gap between benchmarking and vendor-specific services",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QEF collects metrics and metadata for analysis",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QEF avoids complexities of full workflow engines",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tierkreis represents programs as dataflow graphs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Amazon Braket tracks metrics and hyper-parameters",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Quokka decomposes algorithms into microservices",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QUARK benchmarks quantum applications end-to-end",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SupermarQ evaluates quantum processors with static circuits",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.5333333333333333,
+    "vital_score": 0.6666666666666666,
+    "all_score": 0.6666666666666666
+  }
+}

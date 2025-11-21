@@ -1,0 +1,171 @@
+{
+  "qid": "2511.09000v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nMaintaining software is an ongoing process that stretches beyond the initial release. Stable software versions continuously evolve to fix bugs, add improvements, address security issues, and ensure compatibility. This ongoing support involves Backporting, which means taking a fix or update from a newer version and applying it to an older version of the same software. As software versions evolve, new technical debt can arise during backport maintenance activities. This study examines the technical debt involved in fixing 105,396 commits from 31,076 backport sources across 87 repositories in three software ecosystems (Apache, Eclipse, and Python). The goal is to identify when and why new technical debt arises during backporting in stable source code. Our results indicate that approximately 4.3% of backports introduce new technical debt. Apache contributes the most absolute instances, while Python and Eclipse exhibit nearly three times higher debt-to-commit ratios than Apache. Feature migrations make older Apache releases debt-prone in the early phase, whereas Python and Eclipse releases tend to accumulate technical debt mostly during the middle phase of their release cycles. Additionally, developers who are inexperienced, under high workloads, or non-owners are more likely to introduce technical debt during backporting.",
+  "nuggets": [
+    {
+      "text": "Backporting involves applying updates to older software versions.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Technical debt arises during backport maintenance activities.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Approximately 4.3% of backports introduce new technical debt.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Apache has the most absolute instances of technical debt.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Python and Eclipse have higher debt-to-commit ratios than Apache.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Feature migrations make older Apache releases debt-prone early.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Python and Eclipse accumulate debt in the middle release phase.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Studies focus on backporting in Linux, automating recommendations.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Technical debt affects software change- and fault-proneness.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Longitudinal studies analyze technical debt evolution across releases.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Inexperienced developers are more likely to introduce technical debt.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High workloads increase the likelihood of introducing technical debt.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-owner developers often introduce technical debt during backporting.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Code smells and bugs persist, increasing technical debt.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Backporting involves applying updates to older software versions.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Technical debt arises during backport maintenance activities.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Studies focus on backporting in Linux, automating recommendations.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Technical debt affects software change- and fault-proneness.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Longitudinal studies analyze technical debt evolution across releases.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Inexperienced developers are more likely to introduce technical debt.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High workloads increase the likelihood of introducing technical debt.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-owner developers often introduce technical debt during backporting.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Backporting involves applying updates to older software versions.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Technical debt arises during backport maintenance activities.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Studies focus on backporting in Linux, automating recommendations.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Technical debt affects software change- and fault-proneness.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Longitudinal studies analyze technical debt evolution across releases.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Inexperienced developers are more likely to introduce technical debt.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High workloads increase the likelihood of introducing technical debt.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-owner developers often introduce technical debt during backporting.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Code smells and bugs persist, increasing technical debt.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.5714285714285714,
+    "vital_score": 0.5,
+    "all_score": 0.6071428571428571
+  }
+}

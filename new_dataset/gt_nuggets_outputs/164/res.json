@@ -1,0 +1,151 @@
+{
+  "qid": "2511.08856v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nVarious complex water management decisions are made in snow-dominant watersheds with the knowledge of Snow-Water Equivalent (SWE) -- a key measure widely used to estimate the water content of a snowpack. However, forecasting SWE is challenging because SWE is influenced by various factors including topography and an array of environmental conditions, and has therefore been observed to be spatio-temporally variable. Classical approaches to SWE forecasting have not adequately utilized these spatial/temporal correlations, nor do they provide uncertainty estimates -- which can be of significant value to the decision maker. In this paper, we present ForeSWE, a new probabilistic spatio-temporal forecasting model that integrates deep learning and classical probabilistic techniques. The resulting model features a combination of an attention mechanism to integrate spatiotemporal features and interactions, alongside a Gaussian process module that provides principled quantification of prediction uncertainty. We evaluate the model on data from 512 Snow Telemetry (SNOTEL) stations in the Western US. The results show significant improvements in both forecasting accuracy and prediction interval compared to existing approaches. The results also serve to highlight the efficacy in uncertainty estimates between different approaches. Collectively, these findings have provided a platform for deployment and feedback by the water management community.",
+  "nuggets": [
+    {
+      "text": "Attention-based models predict SWE using spatiotemporal features",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ForeSWE integrates deep learning and probabilistic techniques",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ForeSWE uses attention mechanism for spatiotemporal integration",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ForeSWE includes Gaussian process for uncertainty quantification",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ForeSWE evaluated on 512 SNOTEL stations in Western US",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ForeSWE improves forecasting accuracy and prediction interval",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SWE forecasting uses mechanistic and data-driven approaches",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mechanistic models use physical and hydrological equations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Machine learning learns from historical SWE data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ARIMA and SARIMA models predict daily and monthly SWE",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian Model Averaging forecasts SWE with uncertainty",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LSTM and zonal bias correction predict gridded SWE",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ForeSWE provides platform for water management community feedback",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Attention-based models predict SWE using spatiotemporal features",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SWE forecasting uses mechanistic and data-driven approaches",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mechanistic models use physical and hydrological equations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Machine learning learns from historical SWE data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ARIMA and SARIMA models predict daily and monthly SWE",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian Model Averaging forecasts SWE with uncertainty",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LSTM and zonal bias correction predict gridded SWE",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Attention-based models predict SWE using spatiotemporal features",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SWE forecasting uses mechanistic and data-driven approaches",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mechanistic models use physical and hydrological equations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Machine learning learns from historical SWE data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ARIMA and SARIMA models predict daily and monthly SWE",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian Model Averaging forecasts SWE with uncertainty",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LSTM and zonal bias correction predict gridded SWE",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.16666666666666666,
+    "strict_all_score": 0.5384615384615384,
+    "vital_score": 0.16666666666666666,
+    "all_score": 0.5384615384615384
+  }
+}

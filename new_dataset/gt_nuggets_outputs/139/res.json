@@ -1,0 +1,126 @@
+{
+  "qid": "2509.25721v2",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe introduce the first version of the AI Productivity Index (APEX), a benchmark for assessing whether frontier AI models can perform knowledge work with high economic value. APEX addresses one of the largest inefficiencies in AI research: outside of coding, benchmarks often fail to test economically relevant capabilities. APEX-v1.0 contains 200 test cases and covers four domains: investment banking, management consulting, law, and primary medical care. It was built in three steps. First, we sourced experts with top-tier experience e.g., investment bankers from Goldman Sachs. Second, experts created prompts that reflect high-value tasks in their day-to-day work. Third, experts created rubrics for evaluating model responses. We evaluate 23 frontier models on APEX-v1.0 using an LM judge. GPT 5 (Thinking = High) achieves the highest mean score (64.2%), followed by Grok 4 (61.3%) and Gemini 2.5 Flash (Thinking = On) (60.4%). Qwen 3 235B is the best performing open-source model and seventh best overall. There is a large gap between the performance of even the best models and human experts, highlighting the need for better measurement of models' ability to produce economically valuable work.",
+  "nuggets": [
+    {
+      "text": "APEX assesses AI models' economic value in knowledge work",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "APEX-v1.0 covers investment banking, consulting, law, medical care",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "APEX uses expert-created prompts and rubrics for evaluation",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Large gap between AI models and human experts in APEX",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GPT 5 scores highest on APEX with 64.2%",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Qwen 3 235B is top open-source model on APEX",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GAIA benchmark tests advanced reasoning and tool use",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MMLU measures general knowledge and reasoning across subjects",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "GDPval tests AI on real-world economically valuable tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Anthropic's Economic Index tracks AI's economic impact",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "VendingBench evaluates LLM agents' long-term task coherence",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SWE-Lancer benchmark includes freelance software engineering tasks",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "GDPval tests AI on real-world economically valuable tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Anthropic's Economic Index tracks AI's economic impact",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "VendingBench evaluates LLM agents' long-term task coherence",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SWE-Lancer benchmark includes freelance software engineering tasks",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "GAIA benchmark tests advanced reasoning and tool use",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MMLU measures general knowledge and reasoning across subjects",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "GDPval tests AI on real-world economically valuable tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Anthropic's Economic Index tracks AI's economic impact",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "VendingBench evaluates LLM agents' long-term task coherence",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SWE-Lancer benchmark includes freelance software engineering tasks",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.0,
+    "strict_all_score": 0.3333333333333333,
+    "vital_score": 0.0,
+    "all_score": 0.4166666666666667
+  }
+}

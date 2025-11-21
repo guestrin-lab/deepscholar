@@ -1,0 +1,191 @@
+{
+  "qid": "2511.08823v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nGenerating novel views of a natural scene, e.g., every-day scenes both indoors and outdoors, from a single view is an under-explored problem, even though it is an organic extension to the object-centric novel view synthesis. Existing diffusion-based approaches focus rather on small camera movements in real scenes or only consider unnatural object-centric scenes, limiting their potential applications in real-world settings. In this paper we move away from these constrained regimes and propose a 3D diffusion model trained with image-only losses on a large-scale dataset of real-world, multi-category, unaligned, and casually acquired videos of everyday scenes. We propose DT-NVS, a 3D-aware diffusion model for generalized novel view synthesis that exploits a transformer-based architecture backbone. We make significant contributions to transformer and self-attention architectures to translate images to 3d representations, and novel camera conditioning strategies to allow training on real-world unaligned datasets. In addition, we introduce a novel training paradigm swapping the role of reference frame between the conditioning image and the sampled noisy input. We evaluate our approach on the 3D task of generalized novel view synthesis from a single input image and show improvements over state-of-the-art 3D aware diffusion models and deterministic approaches, while generating diverse outputs.",
+  "nuggets": [
+    {
+      "text": "3D diffusion models lack large 3D ground truth datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS uses transformer-based architecture for novel view synthesis.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DT-NVS trained on real-world, unaligned, multi-category videos.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS introduces novel camera conditioning strategies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS swaps reference frame roles in training.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS improves over state-of-the-art 3D diffusion models.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Diffusion models focus on small camera movements or object-centric scenes.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "3D-aware diffusion models extend diffusion models to 3D tasks.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS generates diverse outputs from a single input image.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "DT-NVS exploits self-attention architectures for 3D representation.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NeRF revolutionized novel view synthesis from posed images.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers successful in computer vision tasks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision Transformer (ViT) and Masked Autoencoder (MAE) in self-supervised learning.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Transformers used for 3D implicit representation and point clouds.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "3D diffusion models lack large 3D ground truth datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS trained on real-world, unaligned, multi-category videos.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS introduces novel camera conditioning strategies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS swaps reference frame roles in training.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "3D-aware diffusion models extend diffusion models to 3D tasks.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS exploits self-attention architectures for 3D representation.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NeRF revolutionized novel view synthesis from posed images.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers successful in computer vision tasks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers used for 3D implicit representation and point clouds.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "3D diffusion models lack large 3D ground truth datasets.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS uses transformer-based architecture for novel view synthesis.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DT-NVS trained on real-world, unaligned, multi-category videos.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS introduces novel camera conditioning strategies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS swaps reference frame roles in training.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion models focus on small camera movements or object-centric scenes.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "3D-aware diffusion models extend diffusion models to 3D tasks.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DT-NVS exploits self-attention architectures for 3D representation.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NeRF revolutionized novel view synthesis from posed images.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers successful in computer vision tasks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision Transformer (ViT) and Masked Autoencoder (MAE) in self-supervised learning.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Transformers used for 3D implicit representation and point clouds.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6,
+    "strict_all_score": 0.6428571428571429,
+    "vital_score": 0.7,
+    "all_score": 0.75
+  }
+}

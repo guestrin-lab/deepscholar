@@ -1,0 +1,176 @@
+{
+  "qid": "2510.14455v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nMolecular optimization is a central task in drug discovery that requires precise structural reasoning and domain knowledge. While large language models (LLMs) have shown promise in generating high-level editing intentions in natural language, they often struggle to faithfully execute these modifications-particularly when operating on non-intuitive representations like SMILES. We introduce MECo, a framework that bridges reasoning and execution by translating editing actions into executable code. MECo reformulates molecular optimization for LLMs as a cascaded framework: generating human-interpretable editing intentions from a molecule and property goal, followed by translating those intentions into executable structural edits via code generation. Our approach achieves over 98% accuracy in reproducing held-out realistic edits derived from chemical reactions and target-specific compound pairs. On downstream optimization benchmarks spanning physicochemical properties and target activities, MECo substantially improves consistency by 38-86 percentage points to 90%+ and achieves higher success rates over SMILES-based baselines while preserving structural similarity. By aligning intention with execution, MECo enables consistent, controllable and interpretable molecular design, laying the foundation for high-fidelity feedback loops and collaborative human-AI workflows in drug discovery.",
+  "nuggets": [
+    {
+      "text": "MECo bridges reasoning and execution in molecular optimization",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SMILES representations are non-intuitive for LLMs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MECo translates editing actions into executable code",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MECo improves consistency by 38-86 percentage points",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MECo aligns intention with execution for molecular design",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SMILES poorly align with natural language reasoning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MECo enables high-fidelity feedback loops in drug discovery",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MECo achieves over 98% accuracy in reproducing edits",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLMs struggle with SMILES due to multiple encodings",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Graph-based approaches capture structural validity better",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChemBERTa and MolBERT are molecular language models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MOLLEO and ChatDrug adapt LLMs for molecular modifications",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DrugAssist contributed MolOpt-Instructions dataset",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MolReasoner integrates Chain-of-Thought with reinforcement learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LICO extends LLMs for black-box molecular optimization",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "SMILES representations are non-intuitive for LLMs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SMILES poorly align with natural language reasoning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-based approaches capture structural validity better",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChemBERTa and MolBERT are molecular language models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MOLLEO and ChatDrug adapt LLMs for molecular modifications",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DrugAssist contributed MolOpt-Instructions dataset",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MolReasoner integrates Chain-of-Thought with reinforcement learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LICO extends LLMs for black-box molecular optimization",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "SMILES representations are non-intuitive for LLMs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SMILES poorly align with natural language reasoning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs struggle with SMILES due to multiple encodings",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Graph-based approaches capture structural validity better",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChemBERTa and MolBERT are molecular language models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MOLLEO and ChatDrug adapt LLMs for molecular modifications",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DrugAssist contributed MolOpt-Instructions dataset",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MolReasoner integrates Chain-of-Thought with reinforcement learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LICO extends LLMs for black-box molecular optimization",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.2857142857142857,
+    "strict_all_score": 0.5333333333333333,
+    "vital_score": 0.2857142857142857,
+    "all_score": 0.5666666666666667
+  }
+}

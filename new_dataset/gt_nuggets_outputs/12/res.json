@@ -1,0 +1,166 @@
+{
+  "qid": "2509.13294v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nUnraveling the dynamical motions of biomolecules is essential for bridging their structure and function, yet it remains a major computational challenge. Molecular dynamics (MD) simulation provides a detailed depiction of biomolecular motion, but its high-resolution temporal evolution comes at significant computational cost, limiting its applicability to timescales of biological relevance. Deep learning approaches have emerged as promising solutions to overcome these computational limitations by learning to predict long-timescale dynamics. However, generalizable kinetics models for proteins remain largely unexplored, and the fundamental limits of achievable acceleration while preserving dynamical accuracy are poorly understood. In this work, we fill this gap with DeepJump, an Euclidean-Equivariant Flow Matching-based model for predicting protein conformational dynamics across multiple temporal scales. We train DeepJump on trajectories of the diverse proteins of mdCATH, systematically studying our model's performance in generalizing to long-term dynamics of fast-folding proteins and characterizing the trade-off between computational acceleration and prediction accuracy. We demonstrate the application of DeepJump to ab initio folding, showcasing prediction of folding pathways and native states. Our results demonstrate that DeepJump achieves significant $\\approx$1000$\\times$ computational acceleration while effectively recovering long-timescale dynamics, providing a stepping stone for enabling routine simulation of proteins.",
+  "nuggets": [
+    {
+      "text": "Deep learning addresses MD simulation's computational challenges",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Recent models enable large-step dynamics trajectory sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepJump predicts protein dynamics across temporal scales",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "DeepJump trained on diverse mdCATH protein trajectories",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "DeepJump balances computational acceleration and prediction accuracy",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepJump achieves 1000x acceleration in protein simulations",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ML force fields like ANI, NequIP, MACE improve efficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MLFFs limited by femtosecond timestep constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models like AlphaFlow, BioEmu generate Boltzmann ensembles",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Ensemble models lack full dynamics understanding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "EquiJump, JAMUN use equivariant networks for conformational states",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Guided Flow Matching enhances sampling efficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepJump demonstrates ab initio folding pathway predictions",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Recent models enable large-step dynamics trajectory sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepJump balances computational acceleration and prediction accuracy",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ML force fields like ANI, NequIP, MACE improve efficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MLFFs limited by femtosecond timestep constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models like AlphaFlow, BioEmu generate Boltzmann ensembles",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Ensemble models lack full dynamics understanding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "EquiJump, JAMUN use equivariant networks for conformational states",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Guided Flow Matching enhances sampling efficiency",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Deep learning addresses MD simulation's computational challenges",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Recent models enable large-step dynamics trajectory sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepJump balances computational acceleration and prediction accuracy",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ML force fields like ANI, NequIP, MACE improve efficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MLFFs limited by femtosecond timestep constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models like AlphaFlow, BioEmu generate Boltzmann ensembles",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Ensemble models lack full dynamics understanding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "EquiJump, JAMUN use equivariant networks for conformational states",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Guided Flow Matching enhances sampling efficiency",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.3333333333333333,
+    "strict_all_score": 0.6153846153846154,
+    "vital_score": 0.4166666666666667,
+    "all_score": 0.6538461538461539
+  }
+}

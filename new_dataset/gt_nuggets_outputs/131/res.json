@@ -1,0 +1,206 @@
+{
+  "qid": "2510.27008v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nPredatory pricing -- where a firm strategically lowers prices to undermine competitors -- is a contentious topic in dynamic oligopoly theory, with scholars debating practical relevance and the existence of predatory equilibria. Although finite-horizon dynamic models have long been proposed to capture the strategic intertemporal incentives of oligopolists, the existence and form of equilibrium strategies in settings that allow for firm exit (drop-outs following loss-making periods) have remained an open question. We focus on the seminal dynamic oligopoly model by Selten (1965) that introduces the subgame perfect equilibrium and analyzes smooth market sharing. Equilibrium can be derived analytically in models that do not allow for dropouts, but not in models that can lead to predatory pricing. In this paper, we leverage recent advances in deep reinforcement learning to compute and verify equilibria in finite-horizon dynamic oligopoly games. Our experiments reveal two key findings: first, state-of-the-art deep reinforcement learning algorithms reliably converge to equilibrium in both perfect- and imperfect-information oligopoly models; second, when firms face asymmetric cost structures, the resulting equilibria exhibit predatory pricing behavior. These results demonstrate that predatory pricing can emerge as a rational equilibrium strategy across a broad variety of model settings. By providing equilibrium analysis of finite-horizon dynamic oligopoly models with drop-outs, our study answers a decade-old question and offers new insights for competition authorities and regulators.",
+  "nuggets": [
+    {
+      "text": "Selten's 1965 model introduced subgame perfect equilibrium.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Predatory pricing debated in dynamic oligopoly theory.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Finite-horizon models capture strategic intertemporal incentives.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep reinforcement learning computes equilibria in oligopoly games.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Equilibrium analysis with firm exit remains an open question.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Asymmetric cost structures lead to predatory pricing behavior.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Recent studies show learning algorithms converge to equilibrium.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "New methodology uses deep RL agents in self-play.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "First work analyzing dynamic oligopoly with new learning approach.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "State-of-the-art algorithms converge to equilibrium reliably.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Equilibrium learning explores payoff-maximizing agent strategies.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Finite-horizon models less sensitive to discount factors.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Dropout mechanisms create strategic discontinuities in models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic programming methods slow with growing state space.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Verification algorithm provides upper bound on equilibrium distance.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Selten's 1965 model introduced subgame perfect equilibrium.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Finite-horizon models capture strategic intertemporal incentives.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep reinforcement learning computes equilibria in oligopoly games.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Recent studies show learning algorithms converge to equilibrium.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "New methodology uses deep RL agents in self-play.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "First work analyzing dynamic oligopoly with new learning approach.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Finite-horizon models less sensitive to discount factors.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Dropout mechanisms create strategic discontinuities in models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic programming methods slow with growing state space.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Verification algorithm provides upper bound on equilibrium distance.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Selten's 1965 model introduced subgame perfect equilibrium.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Predatory pricing debated in dynamic oligopoly theory.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Finite-horizon models capture strategic intertemporal incentives.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep reinforcement learning computes equilibria in oligopoly games.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Equilibrium analysis with firm exit remains an open question.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Recent studies show learning algorithms converge to equilibrium.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "New methodology uses deep RL agents in self-play.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "First work analyzing dynamic oligopoly with new learning approach.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Equilibrium learning explores payoff-maximizing agent strategies.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Finite-horizon models less sensitive to discount factors.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Dropout mechanisms create strategic discontinuities in models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic programming methods slow with growing state space.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Verification algorithm provides upper bound on equilibrium distance.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6666666666666666,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.7777777777777778,
+    "all_score": 0.7666666666666667
+  }
+}

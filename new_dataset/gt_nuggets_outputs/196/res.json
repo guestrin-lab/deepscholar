@@ -1,0 +1,161 @@
+{
+  "qid": "2511.04361v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nEnergy markets exhibit complex causal relationships between weather patterns, generation technologies, and price formation, with regime changes occurring continuously rather than at discrete break points. Current approaches model electricity prices without explicit causal interpretation or counterfactual reasoning capabilities. We introduce Augmented Time Series Causal Models (ATSCM) for energy markets, extending counterfactual reasoning frameworks to multivariate temporal data with learned causal structure. Our approach models energy systems through interpretable factors (weather, generation mix, demand patterns), rich grid dynamics, and observable market variables. We integrate neural causal discovery to learn time-varying causal graphs without requiring ground truth DAGs. Applied to real-world electricity price data, ATSCM enables novel counterfactual queries such as \"What would prices be under different renewable generation scenarios?\".",
+  "nuggets": [
+    {
+      "text": "ATSCM models energy markets with causal interpretation",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Energy markets have complex causal relationships",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Traditional models lack counterfactual reasoning capabilities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ATSCM extends counterfactual reasoning to multivariate data",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Neural causal discovery learns time-varying causal graphs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ATSCM enables novel counterfactual queries in energy markets",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ASCM frameworks assume static causal structures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TNCM-VAE, SCIGAN, Causal Transformer address temporal dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Regime changes occur continuously in energy markets",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Causal inference applied to financial stress testing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy markets require specialized causal treatment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional electricity price forecasting uses ARIMA, VAR, LSTM",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Traditional models lack counterfactual reasoning capabilities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Neural causal discovery learns time-varying causal graphs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ASCM frameworks assume static causal structures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TNCM-VAE, SCIGAN, Causal Transformer address temporal dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Causal inference applied to financial stress testing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy markets require specialized causal treatment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional electricity price forecasting uses ARIMA, VAR, LSTM",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "ATSCM models energy markets with causal interpretation",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Traditional models lack counterfactual reasoning capabilities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ATSCM extends counterfactual reasoning to multivariate data",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Neural causal discovery learns time-varying causal graphs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ATSCM enables novel counterfactual queries in energy markets",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ASCM frameworks assume static causal structures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "TNCM-VAE, SCIGAN, Causal Transformer address temporal dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Causal inference applied to financial stress testing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy markets require specialized causal treatment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional electricity price forecasting uses ARIMA, VAR, LSTM",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.5833333333333334,
+    "vital_score": 0.6875,
+    "all_score": 0.7083333333333334
+  }
+}

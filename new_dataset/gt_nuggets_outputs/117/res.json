@@ -1,0 +1,211 @@
+{
+  "qid": "2511.09478v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nReinforcement learning (RL) has demonstrated considerable potential for enhancing reasoning in large language models (LLMs). However, existing methods suffer from Gradient Starvation and Policy Degradation when training directly on samples with mixed difficulty. To mitigate this, prior approaches leverage Chain-of-Thought (CoT) data, but the construction of high-quality CoT annotations remains labor-intensive. Alternatively, curriculum learning strategies have been explored but frequently encounter challenges, such as difficulty mismatch, reliance on manual curriculum design, and catastrophic forgetting. To address these issues, we propose AdaCuRL, a Adaptive Curriculum Reinforcement Learning framework that integrates coarse-to-fine difficulty estimation with adaptive curriculum scheduling. This approach dynamically aligns data difficulty with model capability and incorporates a data revisitation mechanism to mitigate catastrophic forgetting. Furthermore, AdaCuRL employs adaptive reference and sparse KL strategies to prevent Policy Degradation. Extensive experiments across diverse reasoning benchmarks demonstrate that AdaCuRL consistently achieves significant performance improvements on both LLMs and MLLMs.",
+  "nuggets": [
+    {
+      "text": "AdaCuRL integrates coarse-to-fine difficulty estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL uses adaptive curriculum scheduling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL aligns data difficulty with model capability",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AdaCuRL incorporates data revisitation to prevent forgetting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL employs adaptive reference and sparse KL strategies",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AdaCuRL prevents Policy Degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL improves performance on LLMs and MLLMs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Curriculum learning encounters catastrophic forgetting",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Fixed curricula lack model feedback incorporation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Historical data revisiting prevents performance degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KL loss computation avoids Policy Degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CoT data construction is labor-intensive",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Curriculum learning faces difficulty mismatch challenges",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning relies on manual design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepSeek-R1 reduces need for extensive CoT data",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "AdaCuRL integrates coarse-to-fine difficulty estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL uses adaptive curriculum scheduling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL incorporates data revisitation to prevent forgetting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL prevents Policy Degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fixed curricula lack model feedback incorporation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Historical data revisiting prevents performance degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KL loss computation avoids Policy Degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning faces difficulty mismatch challenges",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning relies on manual design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepSeek-R1 reduces need for extensive CoT data",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "AdaCuRL integrates coarse-to-fine difficulty estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL uses adaptive curriculum scheduling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL aligns data difficulty with model capability",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AdaCuRL incorporates data revisitation to prevent forgetting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AdaCuRL employs adaptive reference and sparse KL strategies",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AdaCuRL prevents Policy Degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning encounters catastrophic forgetting",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Fixed curricula lack model feedback incorporation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Historical data revisiting prevents performance degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KL loss computation avoids Policy Degradation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CoT data construction is labor-intensive",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Curriculum learning faces difficulty mismatch challenges",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning relies on manual design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepSeek-R1 reduces need for extensive CoT data",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6363636363636364,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.7727272727272727,
+    "all_score": 0.8
+  }
+}

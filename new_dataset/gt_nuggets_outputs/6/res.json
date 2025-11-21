@@ -1,0 +1,201 @@
+{
+  "qid": "2510.01480v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe integration of artificial intelligence (AI) in early-stage drug discovery offers unprecedented opportunities for exploring chemical space and accelerating hit-to-lead optimization. However, docking optimization in generative approaches is computationally expensive and may lead to inaccurate results. Here, we present a novel generative framework that balances pharmacophore similarity to reference compounds with structural diversity from active molecules. The framework allows users to provide custom reference sets, including FDA-approved drugs or clinical candidates, and guides the \\textit{de novo} generation of potential therapeutics. We demonstrate its applicability through a case study targeting estrogen receptor modulators and antagonists for breast cancer. The generated compounds maintain high pharmacophoric fidelity to known active molecules while introducing substantial structural novelty, suggesting strong potential for functional innovation and patentability. Comprehensive evaluation of the generated molecules against common drug-like properties confirms the robustness and pharmaceutical relevance of the approach.",
+  "nuggets": [
+    {
+      "text": "AI enhances early-stage drug discovery",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Docking optimization is computationally expensive",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Novel framework balances pharmacophore similarity and structural diversity",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Custom reference sets include FDA-approved drugs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Framework guides de novo generation of therapeutics",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Generated compounds show pharmacophoric fidelity and structural novelty",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Evaluation confirms robustness and pharmaceutical relevance",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Framework is target-agnostic and docking-independent",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Balances scaffold novelty with pharmacophoric fidelity",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Avoids predefined binding sites for early-stage exploration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Case study targets estrogen receptor modulators",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Potential for functional innovation and patentability",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PGMG uses graph-based generative model with pharmacophoric constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PharmacoNet accelerates virtual screening with high accuracy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DiffPhore predicts binding poses without explicit docking",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "O-LAP improves docking rescoring with cavity-filling pseudo-ligands",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PharmaDiff generates molecules with 3D feature constraints",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Framework is target-agnostic and docking-independent",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Balances scaffold novelty with pharmacophoric fidelity",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Avoids predefined binding sites for early-stage exploration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Potential for functional innovation and patentability",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PGMG uses graph-based generative model with pharmacophoric constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PharmacoNet accelerates virtual screening with high accuracy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DiffPhore predicts binding poses without explicit docking",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "O-LAP improves docking rescoring with cavity-filling pseudo-ligands",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PharmaDiff generates molecules with 3D feature constraints",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Novel framework balances pharmacophore similarity and structural diversity",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Framework is target-agnostic and docking-independent",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Balances scaffold novelty with pharmacophoric fidelity",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Avoids predefined binding sites for early-stage exploration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Case study targets estrogen receptor modulators",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Potential for functional innovation and patentability",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PGMG uses graph-based generative model with pharmacophoric constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PharmacoNet accelerates virtual screening with high accuracy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DiffPhore predicts binding poses without explicit docking",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "O-LAP improves docking rescoring with cavity-filling pseudo-ligands",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PharmaDiff generates molecules with 3D feature constraints",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.3,
+    "strict_all_score": 0.5294117647058824,
+    "vital_score": 0.35,
+    "all_score": 0.5882352941176471
+  }
+}

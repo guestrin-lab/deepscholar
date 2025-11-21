@@ -1,0 +1,136 @@
+{
+  "qid": "2511.10004v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nHow can we accurately quantize a pre-trained Vision Transformer model? Quantization algorithms compress Vision Transformers (ViTs) into low-bit formats, reducing memory and computation demands with minimal accuracy degradation. However, existing methods rely on uniform precision, ignoring the diverse sensitivity of ViT components to quantization. Metric-based Mixed Precision Quantization (MPQ) is a promising alternative, but previous MPQ methods for ViTs suffer from three major limitations: 1) coarse granularity, 2) mismatch in metric scale across component types, and 3) quantization-unaware bit allocation. In this paper, we propose LampQ (Layer-wise Mixed Precision Quantization for Vision Transformers), an accurate metric-based MPQ method for ViTs to overcome these limitations. LampQ performs layer-wise quantization to achieve both fine-grained control and efficient acceleration, incorporating a type-aware Fisher-based metric to measure sensitivity. Then, LampQ assigns bit-widths optimally through integer linear programming and further updates them iteratively. Extensive experiments show that LampQ provides the state-of-the-art performance in quantizing ViTs pre-trained on various tasks such as image classification, object detection, and zero-shot quantization.",
+  "nuggets": [
+    {
+      "text": "LampQ overcomes limitations of previous MPQ methods for ViTs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LampQ uses type-aware Fisher-based metric for sensitivity measurement",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LampQ assigns bit-widths optimally via integer linear programming",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LampQ achieves state-of-the-art performance in ViT quantization",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Quantization reduces memory and computation with minimal accuracy loss",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Previous MPQ methods had coarse granularity and metric scale mismatch",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LampQ performs layer-wise quantization for fine-grained control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Metric-based MPQ methods use statistical properties for quantization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Learning-based methods update bit-widths using loss gradients",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RL-based methods use agents for bit allocation policy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "NAS-based solutions automate bit selection space exploration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensive experiments validate LampQ's effectiveness on various tasks",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "LampQ uses type-aware Fisher-based metric for sensitivity measurement",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LampQ performs layer-wise quantization for fine-grained control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Metric-based MPQ methods use statistical properties for quantization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Learning-based methods update bit-widths using loss gradients",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RL-based methods use agents for bit allocation policy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "NAS-based solutions automate bit selection space exploration",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "LampQ uses type-aware Fisher-based metric for sensitivity measurement",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LampQ performs layer-wise quantization for fine-grained control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Metric-based MPQ methods use statistical properties for quantization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Learning-based methods update bit-widths using loss gradients",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RL-based methods use agents for bit allocation policy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "NAS-based solutions automate bit selection space exploration",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.2857142857142857,
+    "strict_all_score": 0.5,
+    "vital_score": 0.2857142857142857,
+    "all_score": 0.5
+  }
+}

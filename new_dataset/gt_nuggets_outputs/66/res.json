@@ -1,0 +1,166 @@
+{
+  "qid": "2511.08181v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nRecommender systems (RS) are currently being studied to mitigate limitations during cold-start conditions by leveraging modality information or introducing Agent concepts based on the exceptional reasoning capabilities of Large Language Models (LLMs). Meanwhile, food and beverage recommender systems have traditionally used knowledge graph and ontology concepts due to the domain's unique data attributes and relationship characteristics. On this background, we propose MARC, a multimodal and multi-task cocktail recommender system based on Agentic Retrieval-Augmented Generation (RAG) utilizing graph database under cold-start conditions. The proposed system generates high-quality, contextually appropriate answers through two core processes: a task recognition router and a reflection process. The graph database was constructed by processing cocktail data from Kaggle, and its effectiveness was evaluated using 200 manually crafted questions. The evaluation used both LLM-as-a-judge and human evaluation to demonstrate that answers generated via the graph database outperformed those from a simple vector database in terms of quality. The code is available at https://github.com/diddbwls/cocktail_rec_agentrag",
+  "nuggets": [
+    {
+      "text": "MARC: multimodal cocktail recommender using Agentic RAG",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Cold-start conditions addressed with modality and Agent concepts",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Graph database outperforms vector database in quality",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Task recognition router and reflection process enhance recommendations",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Food and beverage RS use knowledge graphs and ontologies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Agentic RAG improves answer quality in cold-start scenarios",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLM-based agents transform static prompts to dynamic decisions",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Recommender systems leverage LLMs for improved recommendations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Ontology and knowledge graphs offer explainability in RS",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Agent frameworks in RS enhance planning and interaction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cocktail data from Kaggle used for graph database",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-as-a-judge and human evaluation used for assessment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Code available at github.com/diddbwls/cocktail_rec_agentrag",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Graph RAG enhances performance and interpretability",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLM-based RS improve accuracy with multimodal information",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Food and beverage RS use knowledge graphs and ontologies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Recommender systems leverage LLMs for improved recommendations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Ontology and knowledge graphs offer explainability in RS",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Agent frameworks in RS enhance planning and interaction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cocktail data from Kaggle used for graph database",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-as-a-judge and human evaluation used for assessment",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Food and beverage RS use knowledge graphs and ontologies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Agentic RAG improves answer quality in cold-start scenarios",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLM-based agents transform static prompts to dynamic decisions",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Recommender systems leverage LLMs for improved recommendations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Ontology and knowledge graphs offer explainability in RS",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Agent frameworks in RS enhance planning and interaction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cocktail data from Kaggle used for graph database",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-as-a-judge and human evaluation used for assessment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph RAG enhances performance and interpretability",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4,
+    "strict_all_score": 0.4,
+    "vital_score": 0.5,
+    "all_score": 0.5
+  }
+}

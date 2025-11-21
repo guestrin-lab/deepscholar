@@ -1,0 +1,311 @@
+{
+  "qid": "2511.07032v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nFairness concerns are increasingly critical as machine learning models are deployed in high-stakes applications. While existing fairness-aware methods typically intervene at the model level, they often suffer from high computational costs, limited scalability, and poor generalization. To address these challenges, we propose a Bayesian data selection framework that ensures fairness by aligning group-specific posterior distributions of model parameters and sample weights with a shared central distribution. Our framework supports flexible alignment via various distributional discrepancy measures, including Wasserstein distance, maximum mean discrepancy, and $f$-divergence, allowing geometry-aware control without imposing explicit fairness constraints. This data-centric approach mitigates group-specific biases in training data and improves fairness in downstream tasks, with theoretical guarantees. Experiments on benchmark datasets show that our method consistently outperforms existing data selection and model-based fairness methods in both fairness and accuracy.",
+  "nuggets": [
+    {
+      "text": "Bayesian data selection framework ensures fairness",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Aligns group-specific posteriors with central distribution",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Supports Wasserstein distance, maximum mean discrepancy, $f$-divergence",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Geometry-aware control without explicit fairness constraints",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Mitigates group-specific biases in training data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Improves fairness in downstream tasks with theoretical guarantees",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Outperforms existing data selection and model-based fairness methods",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Data-centric approach for fairness in machine learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fairness-aware methods: preprocessing, in-processing, post-processing",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample-weighting and mini-batch reweighting challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Few methods adjust sampling to meet fairness metrics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "In-processing methods incorporate fairness constraints during training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalability and generalization challenges in fairness methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "High computational costs in model-level fairness methods",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Limited scalability and poor generalization in fairness methods",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level optimization and meta-learning in data selection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning favors easy samples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Online methods prioritize high-loss or high-gradient examples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Confidence-based approaches select uncertain instances",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fair representation learning reduces discriminatory information",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fair data generation and data mapping techniques",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Post-processing methods adjust model outputs for fairness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian data selection optimized with SVGD",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Bayesian data selection framework ensures fairness",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Aligns group-specific posteriors with central distribution",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Mitigates group-specific biases in training data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-centric approach for fairness in machine learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fairness-aware methods: preprocessing, in-processing, post-processing",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample-weighting and mini-batch reweighting challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Few methods adjust sampling to meet fairness metrics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "In-processing methods incorporate fairness constraints during training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalability and generalization challenges in fairness methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Limited scalability and poor generalization in fairness methods",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level optimization and meta-learning in data selection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning favors easy samples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Online methods prioritize high-loss or high-gradient examples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Confidence-based approaches select uncertain instances",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fair representation learning reduces discriminatory information",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Post-processing methods adjust model outputs for fairness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian data selection optimized with SVGD",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Bayesian data selection framework ensures fairness",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Aligns group-specific posteriors with central distribution",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Mitigates group-specific biases in training data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-centric approach for fairness in machine learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fairness-aware methods: preprocessing, in-processing, post-processing",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample-weighting and mini-batch reweighting challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Few methods adjust sampling to meet fairness metrics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "In-processing methods incorporate fairness constraints during training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalability and generalization challenges in fairness methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "High computational costs in model-level fairness methods",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Limited scalability and poor generalization in fairness methods",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bi-level optimization and meta-learning in data selection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Curriculum learning favors easy samples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Online methods prioritize high-loss or high-gradient examples",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Confidence-based approaches select uncertain instances",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fair representation learning reduces discriminatory information",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Fair data generation and data mapping techniques",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Post-processing methods adjust model outputs for fairness",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Bayesian data selection optimized with SVGD",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6923076923076923,
+    "strict_all_score": 0.7391304347826086,
+    "vital_score": 0.6923076923076923,
+    "all_score": 0.782608695652174
+  }
+}

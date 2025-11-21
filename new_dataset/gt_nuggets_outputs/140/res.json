@@ -1,0 +1,201 @@
+{
+  "qid": "2511.05577v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nVision-Language Models (VLMs) have shown strong performance in tasks like visual question answering and multimodal text generation, but their effectiveness in scientific domains such as materials science remains limited. While some machine learning methods have addressed specific challenges in this field, there is still a lack of foundation models designed for broad tasks like polymer property prediction using multimodal data. In this work, we present a multimodal polymer dataset to fine-tune VLMs through instruction-tuning pairs and assess the impact of multimodality on prediction performance. Our fine-tuned models, using LoRA, outperform unimodal and baseline approaches, demonstrating the benefits of multimodal learning. Additionally, this approach reduces the need to train separate models for different properties, lowering deployment and maintenance costs.",
+  "nuggets": [
+    {
+      "text": "VLMs underperform in scientific domains like materials science",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Lack of foundation models for polymer property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multimodal polymer dataset fine-tunes VLMs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LoRA fine-tuned models outperform unimodal approaches",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Multimodal learning reduces model training costs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Transformer-based architecture for multitask learning in polymers",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs explored for polymer property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Zhang combined multimodal embeddings for property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Unified multimodal VLM for direct property prediction lacking",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision-Language Models excel in visual question answering",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CLIP links image and text data for classification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "OpenAI GPT-4 excels in vision-language tasks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Polymer Genome platform predicts polymer properties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PolyBERT trained on millions of polymers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gupta fine-tuned LLMs on P-SMILES inputs",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "VLMs underperform in scientific domains like materials science",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Lack of foundation models for polymer property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs explored for polymer property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Zhang combined multimodal embeddings for property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Unified multimodal VLM for direct property prediction lacking",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision-Language Models excel in visual question answering",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CLIP links image and text data for classification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Polymer Genome platform predicts polymer properties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PolyBERT trained on millions of polymers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gupta fine-tuned LLMs on P-SMILES inputs",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "VLMs underperform in scientific domains like materials science",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Lack of foundation models for polymer property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based architecture for multitask learning in polymers",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs explored for polymer property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Zhang combined multimodal embeddings for property prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Unified multimodal VLM for direct property prediction lacking",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision-Language Models excel in visual question answering",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CLIP links image and text data for classification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "OpenAI GPT-4 excels in vision-language tasks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Polymer Genome platform predicts polymer properties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PolyBERT trained on millions of polymers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gupta fine-tuned LLMs on P-SMILES inputs",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5555555555555556,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.6111111111111112,
+    "all_score": 0.7333333333333333
+  }
+}

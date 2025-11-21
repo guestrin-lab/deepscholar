@@ -1,0 +1,196 @@
+{
+  "qid": "2510.24670v2",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nAccurately predicting the three-dimensional structures of protein-ligand complexes remains a fundamental challenge in computational drug discovery that limits the pace and success of therapeutic design. Deep learning methods have recently shown strong potential as structural prediction tools, achieving promising accuracy across diverse biomolecular systems. However, their performance and utility are constrained by scarce experimental data, inefficient architectures, physically invalid poses, and the limited ability to exploit auxiliary information available at inference. To address these issues, we introduce Pearl (Placing Every Atom in the Right Location), a foundation model for protein-ligand cofolding at scale. Pearl addresses these challenges with three key innovations: (1) training recipes that include large-scale synthetic data to overcome data scarcity; (2) architectures that incorporate an SO(3)-equivariant diffusion module to inherently respect 3D rotational symmetries, improving generalization and sample efficiency, and (3) controllable inference, including a generalized multi-chain templating system supporting both protein and non-polymeric components as well as dual unconditional/conditional modes. Pearl establishes a new state-of-the-art performance in protein-ligand cofolding. On the key metric of generating accurate (RMSD < 2 Å) and physically valid poses, Pearl surpasses AlphaFold 3 and other open source baselines on the public Runs N' Poses and PoseBusters benchmarks, delivering 14.5% and 14.2% improvements, respectively, over the next best model. In the pocket-conditional cofolding regime, Pearl delivers $3.6\\times$ improvement on a proprietary set of challenging, real-world drug targets at the more rigorous RMSD < 1 Å threshold. Finally, we demonstrate that model performance correlates directly with synthetic dataset size used in training.",
+  "nuggets": [
+    {
+      "text": "Pearl is a foundation model for protein-ligand cofolding.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl uses large-scale synthetic data to overcome data scarcity.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SO(3)-equivariant diffusion module respects 3D rotational symmetries.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Pearl supports dual unconditional/conditional inference modes.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Pearl surpasses AlphaFold 3 on Runs N' Poses benchmark.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Pearl delivers 3.6x improvement on challenging drug targets.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Model performance correlates with synthetic dataset size.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Geometric deep learning principles enhance Pearl's architecture.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Controllability improves practical utility of cofolding models.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl generalizes multi-chain templates to non-polymeric components.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "End-to-end folding models revolutionized protein structure prediction.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AlphaFold 3 generalized folding to all PDB molecule types.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cofolding models often use denoising diffusion probabilistic models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-based ligand docking was traditional in SBDD.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning approaches for docking don't outperform classical methods.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Pearl is a foundation model for protein-ligand cofolding.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl uses large-scale synthetic data to overcome data scarcity.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Geometric deep learning principles enhance Pearl's architecture.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Controllability improves practical utility of cofolding models.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl generalizes multi-chain templates to non-polymeric components.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "End-to-end folding models revolutionized protein structure prediction.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AlphaFold 3 generalized folding to all PDB molecule types.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cofolding models often use denoising diffusion probabilistic models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-based ligand docking was traditional in SBDD.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning approaches for docking don't outperform classical methods.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Pearl is a foundation model for protein-ligand cofolding.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl uses large-scale synthetic data to overcome data scarcity.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl supports dual unconditional/conditional inference modes.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Geometric deep learning principles enhance Pearl's architecture.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Controllability improves practical utility of cofolding models.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pearl generalizes multi-chain templates to non-polymeric components.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "End-to-end folding models revolutionized protein structure prediction.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AlphaFold 3 generalized folding to all PDB molecule types.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cofolding models often use denoising diffusion probabilistic models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-based ligand docking was traditional in SBDD.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning approaches for docking don't outperform classical methods.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.55,
+    "all_score": 0.7
+  }
+}

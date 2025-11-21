@@ -1,0 +1,196 @@
+{
+  "qid": "2511.08263v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nData condensation techniques aim to synthesize a compact dataset from a larger one to enable efficient model training, yet while successful in unimodal settings, they often fail in multimodal scenarios where preserving intricate inter-modal dependencies is crucial. To address this, we introduce ImageBindDC, a novel data condensation framework operating within the unified feature space of ImageBind. Our approach moves beyond conventional distribution-matching by employing a powerful Characteristic Function (CF) loss, which operates in the Fourier domain to facilitate a more precise statistical alignment via exact infinite moment matching. We design our objective to enforce three critical levels of distributional consistency: (i) uni-modal alignment, which matches the statistical properties of synthetic and real data within each modality; (ii) cross-modal alignment, which preserves pairwise semantics by matching the distributions of hybrid real-synthetic data pairs; and (iii) joint-modal alignment, which captures the complete multivariate data structure by aligning the joint distribution of real data pairs with their synthetic counterparts. Extensive experiments highlight the effectiveness of ImageBindDC: on the NYU-v2 dataset, a model trained on just 5 condensed datapoints per class achieves lossless performance comparable to one trained on the full dataset, achieving a new state-of-the-art with an 8.2\\% absolute improvement over the previous best method and more than 4$\\times$ less condensation time.",
+  "nuggets": [
+    {
+      "text": "ImageBindDC introduces a novel data condensation framework.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Characteristic Function loss operates in the Fourier domain.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ImageBindDC enforces uni-modal, cross-modal, joint-modal alignment.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Multi-modal condensation preserves inter-modal dependencies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ImageBindDC achieves state-of-the-art on NYU-v2 dataset.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ImageBindDC improves performance with fewer data points.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Dataset distillation synthesizes new, optimized data points.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Distribution Matching aligns feature statistics in embedding space.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-modal data condensation is a critical research direction.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data condensation synthesizes compact datasets for efficient training.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Uni-modal condensation focuses on single data type alignment.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AVDD matches distributions in separate feature spaces.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LoRS uses low-rank factorization for cross-modal relationships.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RepBlend encourages diversity, prevents modality collapse.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gradient Matching aligns training gradients or parameter trajectories.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Multi-modal condensation preserves inter-modal dependencies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Dataset distillation synthesizes new, optimized data points.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Distribution Matching aligns feature statistics in embedding space.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-modal data condensation is a critical research direction.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data condensation synthesizes compact datasets for efficient training.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Uni-modal condensation focuses on single data type alignment.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AVDD matches distributions in separate feature spaces.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LoRS uses low-rank factorization for cross-modal relationships.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RepBlend encourages diversity, prevents modality collapse.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gradient Matching aligns training gradients or parameter trajectories.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "ImageBindDC introduces a novel data condensation framework.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multi-modal condensation preserves inter-modal dependencies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Dataset distillation synthesizes new, optimized data points.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Distribution Matching aligns feature statistics in embedding space.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-modal data condensation is a critical research direction.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data condensation synthesizes compact datasets for efficient training.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Uni-modal condensation focuses on single data type alignment.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AVDD matches distributions in separate feature spaces.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LoRS uses low-rank factorization for cross-modal relationships.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RepBlend encourages diversity, prevents modality collapse.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Gradient Matching aligns training gradients or parameter trajectories.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4444444444444444,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.5,
+    "all_score": 0.7
+  }
+}

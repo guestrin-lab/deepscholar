@@ -1,0 +1,221 @@
+{
+  "qid": "2510.17826v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nBuilding a working mental model of a protein typically requires weeks of reading, cross-referencing crystal and predicted structures, and inspecting ligand complexes, an effort that is slow, unevenly accessible, and often requires specialized computational skills. We introduce \\emph{Speak to a Protein}, a new capability that turns protein analysis into an interactive, multimodal dialogue with an expert co-scientist. The AI system retrieves and synthesizes relevant literature, structures, and ligand data; grounds answers in a live 3D scene; and can highlight, annotate, manipulate and see the visualization. It also generates and runs code when needed, explaining results in both text and graphics. We demonstrate these capabilities on relevant proteins, posing questions about binding pockets, conformational changes, or structure-activity relationships to test ideas in real-time. \\emph{Speak to a Protein} reduces the time from question to evidence, lowers the barrier to advanced structural analysis, and enables hypothesis generation by tightly coupling language, code, and 3D structures. \\emph{Speak to a Protein} is freely accessible at https://open.playmolecule.org.",
+  "nuggets": [
+    {
+      "text": "Speak to a Protein enables interactive protein analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AI co-scientist paradigm for protein analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "System retrieves and synthesizes literature, structures, ligand data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generates and runs code for analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reduces time from question to evidence",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Lowers barrier to advanced structural analysis",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Enables hypothesis generation with language, code, 3D structures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProteinChat couples LLM prompting with 3D structures",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Prot2Chat fuses protein sequence, structure, text",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ChatMol Copilot coordinates cheminformatics tools",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GPT-4 evaluated for structural modeling, interaction analysis",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ChemCrow equips GPT-4 with chemistry tools",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Agent frameworks augment LLMs with tool use, retrieval",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Grounds answers in live 3D scene",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Highlights, annotates, manipulates 3D visualizations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Explains results in text and graphics",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Freely accessible at open.playmolecule.org",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Aligns with AI Scientist vision by Hiroaki Kitano",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "CLADD specializes in drug discovery tasks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Speak to a Protein enables interactive protein analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AI co-scientist paradigm for protein analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "System retrieves and synthesizes literature, structures, ligand data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generates and runs code for analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reduces time from question to evidence",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Enables hypothesis generation with language, code, 3D structures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Agent frameworks augment LLMs with tool use, retrieval",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Grounds answers in live 3D scene",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Highlights, annotates, manipulates 3D visualizations",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Speak to a Protein enables interactive protein analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AI co-scientist paradigm for protein analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "System retrieves and synthesizes literature, structures, ligand data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generates and runs code for analysis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reduces time from question to evidence",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Enables hypothesis generation with language, code, 3D structures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GPT-4 evaluated for structural modeling, interaction analysis",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ChemCrow equips GPT-4 with chemistry tools",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Agent frameworks augment LLMs with tool use, retrieval",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Grounds answers in live 3D scene",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Highlights, annotates, manipulates 3D visualizations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Aligns with AI Scientist vision by Hiroaki Kitano",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "CLADD specializes in drug discovery tasks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5384615384615384,
+    "strict_all_score": 0.47368421052631576,
+    "vital_score": 0.6153846153846154,
+    "all_score": 0.5789473684210527
+  }
+}

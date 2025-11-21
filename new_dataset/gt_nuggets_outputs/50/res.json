@@ -1,0 +1,176 @@
+{
+  "qid": "2510.23273v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nAccurate protein function prediction requires integrating heterogeneous intrinsic signals (e.g., sequence and structure) with noisy extrinsic contexts (e.g., protein-protein interactions and GO term annotations). However, two key challenges hinder effective fusion: (i) cross-modal distributional mismatch among embeddings produced by pre-trained intrinsic encoders, and (ii) noisy relational graphs of extrinsic data that degrade GNN-based information aggregation. We propose Diffused and Aligned Multi-modal Protein Embedding (DAMPE), a unified framework that addresses these through two core mechanisms. First, we propose Optimal Transport (OT)-based representation alignment that establishes correspondence between intrinsic embedding spaces of different modalities, effectively mitigating cross-modal heterogeneity. Second, we develop a Conditional Graph Generation (CGG)-based information fusion method, where a condition encoder fuses the aligned intrinsic embeddings to provide informative cues for graph reconstruction. Meanwhile, our theoretical analysis implies that the CGG objective drives this condition encoder to absorb graph-aware knowledge into its produced protein representations. Empirically, DAMPE outperforms or matches state-of-the-art methods such as DPFunc on standard GO benchmarks, achieving AUPR gains of 0.002-0.013 pp and Fmax gains 0.004-0.007 pp. Ablation studies further show that OT-based alignment contributes 0.043-0.064 pp AUPR, while CGG-based fusion adds 0.005-0.111 pp Fmax. Overall, DAMPE offers a scalable and theoretically grounded approach for robust multi-modal protein representation learning, substantially enhancing protein function prediction.",
+  "nuggets": [
+    {
+      "text": "DAMPE integrates intrinsic and extrinsic signals for protein function prediction",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Optimal Transport aligns cross-modal intrinsic embeddings",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Conditional Graph Generation fuses aligned embeddings for graph reconstruction",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "DAMPE outperforms state-of-the-art methods like DPFunc",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Multi-modal approaches integrate sequence and structure information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Protein function prediction benefits from multi-source representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAMPE offers scalable, robust multi-modal protein representation learning",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Sequence encoders capture features from amino acid sequences",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based PLMs dominate protein sequence tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Structure encoders capture spatial properties of protein conformations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LM-GVP infuses structural context into sequence embeddings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ESM-GearNet compares fusion paradigms for sequence-structure integration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Serial fusion augments geometric models with PLM-derived features",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DPFunc integrates sequence, structure, and domain information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Multi-modal approaches integrate sequence and structure information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Protein function prediction benefits from multi-source representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sequence encoders capture features from amino acid sequences",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based PLMs dominate protein sequence tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Structure encoders capture spatial properties of protein conformations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LM-GVP infuses structural context into sequence embeddings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ESM-GearNet compares fusion paradigms for sequence-structure integration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Serial fusion augments geometric models with PLM-derived features",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DPFunc integrates sequence, structure, and domain information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Multi-modal approaches integrate sequence and structure information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Protein function prediction benefits from multi-source representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sequence encoders capture features from amino acid sequences",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based PLMs dominate protein sequence tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Structure encoders capture spatial properties of protein conformations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LM-GVP infuses structural context into sequence embeddings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ESM-GearNet compares fusion paradigms for sequence-structure integration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Serial fusion augments geometric models with PLM-derived features",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DPFunc integrates sequence, structure, and domain information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.2857142857142857,
+    "strict_all_score": 0.6428571428571429,
+    "vital_score": 0.2857142857142857,
+    "all_score": 0.6428571428571429
+  }
+}

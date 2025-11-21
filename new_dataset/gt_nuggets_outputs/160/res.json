@@ -1,0 +1,151 @@
+{
+  "qid": "2511.02087v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nEffectively leveraging prior knowledge of a system's physics is crucial for applications of machine learning to scientific domains. Previous approaches mostly focused on incorporating physical insights at the architectural level. In this paper, we propose a framework to leverage physical information directly into the loss function for prediction and generative modeling tasks on systems like molecules and spins. We derive energy loss functions assuming that each data sample is in thermal equilibrium with respect to an approximate energy landscape. By using the reverse KL divergence with a Boltzmann distribution around the data, we obtain the loss as an energy difference between the data and the model predictions. This perspective also recasts traditional objectives like MSE as energy-based, but with a physically meaningless energy. In contrast, our formulation yields physically grounded loss functions with gradients that better align with valid configurations, while being architecture-agnostic and computationally efficient. The energy loss functions also inherently respect physical symmetries. We demonstrate our approach on molecular generation and spin ground-state prediction and report significant improvements over baselines.",
+  "nuggets": [
+    {
+      "text": "Energy-based models shape energy landscapes for learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hamiltonian Neural Networks use physics-informed losses",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Lagrangian Neural Networks apply physics-informed losses",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Our framework approximates local energy landscapes around data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reverse KL divergence used with Boltzmann distribution",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy loss functions respect physical symmetries",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Our method is architecture-agnostic and computationally efficient",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Significant improvements in molecular generation and spin prediction",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Our approach avoids partition function minimization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed neural networks learn PDEs via loss penalties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PINNs enforce solutions consistent with physical constraints",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Boltzmann Generators sample configurations from known energy functions",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Energy-based models shape energy landscapes for learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our framework approximates local energy landscapes around data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reverse KL divergence used with Boltzmann distribution",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our approach avoids partition function minimization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed neural networks learn PDEs via loss penalties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Boltzmann Generators sample configurations from known energy functions",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Energy-based models shape energy landscapes for learning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hamiltonian Neural Networks use physics-informed losses",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Lagrangian Neural Networks apply physics-informed losses",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Our framework approximates local energy landscapes around data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reverse KL divergence used with Boltzmann distribution",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our approach avoids partition function minimization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed neural networks learn PDEs via loss penalties",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PINNs enforce solutions consistent with physical constraints",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Boltzmann Generators sample configurations from known energy functions",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.375,
+    "strict_all_score": 0.5,
+    "vital_score": 0.5,
+    "all_score": 0.625
+  }
+}

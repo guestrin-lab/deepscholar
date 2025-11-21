@@ -1,0 +1,226 @@
+{
+  "qid": "2511.03113v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nComputational antibody design holds immense promise for therapeutic discovery, yet existing generative models are fundamentally limited by two core challenges: (i) a lack of dynamical consistency, which yields physically implausible structures, and (ii) poor generalization due to data scarcity and structural bias. We introduce FP-AbDiff, the first antibody generator to enforce Fokker-Planck Equation (FPE) physics along the entire generative trajectory. Our method minimizes a novel FPE residual loss over the mixed manifold of CDR geometries (R^3 x SO(3)), compelling locally-learned denoising scores to assemble into a globally coherent probability flow. This physics-informed regularizer is synergistically integrated with deep biological priors within a state-of-the-art SE(3)-equivariant diffusion framework. Rigorous evaluation on the RAbD benchmark confirms that FP-AbDiff establishes a new state-of-the-art. In de novo CDR-H3 design, it achieves a mean Root Mean Square Deviation of 0.99 Å when superposing on the variable region, a 25% improvement over the previous state-of-the-art model, AbX, and the highest reported Contact Amino Acid Recovery of 39.91%. This superiority is underscored in the more challenging six-CDR co-design task, where our model delivers consistently superior geometric precision, cutting the average full-chain Root Mean Square Deviation by ~15%, and crucially, achieves the highest full-chain Amino Acid Recovery on the functionally dominant CDR-H3 loop (45.67%). By aligning generative dynamics with physical laws, FP-AbDiff enhances robustness and generalizability, establishing a principled approach for physically faithful and functionally viable antibody design.",
+  "nuggets": [
+    {
+      "text": "FP-AbDiff enforces Fokker-Planck physics in antibody generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Geometric models improve sequence-structure design",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Diffusion models like DiffAb and AbDiffuser mark progress",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AbX learns continuous-time score field but lacks dynamical consistency",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FP-AbDiff minimizes FPE residual loss over CDR geometries",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FP-AbDiff integrates physics-informed regularizer with SE(3)-equivariant framework",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "FP-AbDiff achieves state-of-the-art on RAbD benchmark",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FP-AbDiff aligns generative dynamics with physical laws",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FP-AbDiff enhances robustness and generalizability in antibody design",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Computational antibody design evolves from energy-based to generative models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RosettaAntibodyDesign and AbDesign used statistical energy functions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Protein language models treat proteins as textual inputs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Autoregressive methods like HERN show strong CDR co-design performance",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GNN-based models MEAN and dyMEAN excel in CDR co-design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AlphaFold2 and SE(3)-Fold yield high-fidelity structures",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FP-AbDiff improves CDR-H3 design RMSD by 25% over AbX",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FP-AbDiff achieves highest Contact Amino Acid Recovery of 39.91%",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FP-AbDiff excels in six-CDR co-design task",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FP-AbDiff cuts full-chain RMSD by ~15%",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FP-AbDiff achieves highest full-chain Amino Acid Recovery on CDR-H3",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "FP-AbDiff enforces Fokker-Planck physics in antibody generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion models like DiffAb and AbDiffuser mark progress",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AbX learns continuous-time score field but lacks dynamical consistency",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FP-AbDiff aligns generative dynamics with physical laws",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Computational antibody design evolves from energy-based to generative models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RosettaAntibodyDesign and AbDesign used statistical energy functions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Protein language models treat proteins as textual inputs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Autoregressive methods like HERN show strong CDR co-design performance",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GNN-based models MEAN and dyMEAN excel in CDR co-design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AlphaFold2 and SE(3)-Fold yield high-fidelity structures",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "FP-AbDiff enforces Fokker-Planck physics in antibody generation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Geometric models improve sequence-structure design",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Diffusion models like DiffAb and AbDiffuser mark progress",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AbX learns continuous-time score field but lacks dynamical consistency",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FP-AbDiff integrates physics-informed regularizer with SE(3)-equivariant framework",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "FP-AbDiff aligns generative dynamics with physical laws",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Computational antibody design evolves from energy-based to generative models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RosettaAntibodyDesign and AbDesign used statistical energy functions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Protein language models treat proteins as textual inputs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Autoregressive methods like HERN show strong CDR co-design performance",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GNN-based models MEAN and dyMEAN excel in CDR co-design",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AlphaFold2 and SE(3)-Fold yield high-fidelity structures",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4444444444444444,
+    "strict_all_score": 0.5,
+    "vital_score": 0.5555555555555556,
+    "all_score": 0.55
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "qid": "2510.05747v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nPhysicochemically informed biological sequence generation has the potential to accelerate computer-aided cellular therapy, yet current models fail to \\emph{jointly} ensure novelty, diversity, and biophysical plausibility when designing variable regions of T-cell receptors (TCRs). We present \\textbf{PhysicoGPTCR}, a large generative protein Transformer that is \\emph{dual-conditioned} on peptide and HLA context and trained to autoregressively synthesise TCR sequences while embedding residue-level physicochemical descriptors. The model is optimised on curated TCR--peptide--HLA triples with a maximum-likelihood objective and compared against ANN, GPTCR, LSTM, and VAE baselines. Across multiple neoantigen benchmarks, PhysicoGPTCR substantially improves edit-distance, similarity, and longest-common-subsequence scores, while populating a broader region of sequence space. Blind in-silico docking and structural modelling further reveal a higher proportion of binding-competent clones than the strongest baseline, validating the benefit of explicit context conditioning and physicochemical awareness. Experimental results demonstrate that dual-conditioned, physics-grounded generative modelling enables end-to-end design of functional TCR candidates, reducing the discovery timeline from months to minutes without sacrificing wet-lab verifiability.",
+  "nuggets": [
+    {
+      "text": "PhysicoGPTCR is dual-conditioned on peptide and HLA context",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR embeds residue-level physicochemical descriptors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR improves edit-distance, similarity, and LCS scores",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "PhysicoGPTCR populates a broader region of sequence space",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "PhysicoGPTCR shows higher binding-competent clones in docking",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "PhysicoGPTCR reduces discovery timeline from months to minutes",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Prior models lack dual antigen-HLA conditioning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR benchmarks against ANN, GPTCR, LSTM, VAE baselines",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NetTCR-2.0, DeepTCR, TITAN are non-generative classifiers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TESSAR focuses on receptor repertoires without antigen context",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TCRGPT samples CDR3 loops conditioned on target peptide",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ProGen, ProtGPT2, ESM-1v create functional enzymes, antibodies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RFdiffusion, Chroma design full-atom backbones",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ProteinMPNN, Atom3D, ESM-Fold use structural priors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rosetta-guided pipelines combine scoring with Monte-Carlo sampling",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "PhysicoGPTCR is dual-conditioned on peptide and HLA context",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR embeds residue-level physicochemical descriptors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prior models lack dual antigen-HLA conditioning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR benchmarks against ANN, GPTCR, LSTM, VAE baselines",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NetTCR-2.0, DeepTCR, TITAN are non-generative classifiers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TESSAR focuses on receptor repertoires without antigen context",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TCRGPT samples CDR3 loops conditioned on target peptide",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ProGen, ProtGPT2, ESM-1v create functional enzymes, antibodies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RFdiffusion, Chroma design full-atom backbones",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ProteinMPNN, Atom3D, ESM-Fold use structural priors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rosetta-guided pipelines combine scoring with Monte-Carlo sampling",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "PhysicoGPTCR is dual-conditioned on peptide and HLA context",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR embeds residue-level physicochemical descriptors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prior models lack dual antigen-HLA conditioning",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicoGPTCR benchmarks against ANN, GPTCR, LSTM, VAE baselines",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NetTCR-2.0, DeepTCR, TITAN are non-generative classifiers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TESSAR focuses on receptor repertoires without antigen context",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TCRGPT samples CDR3 loops conditioned on target peptide",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ProGen, ProtGPT2, ESM-1v create functional enzymes, antibodies",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RFdiffusion, Chroma design full-atom backbones",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ProteinMPNN, Atom3D, ESM-Fold use structural priors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rosetta-guided pipelines combine scoring with Monte-Carlo sampling",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.7333333333333333,
+    "vital_score": 0.5,
+    "all_score": 0.7333333333333333
+  }
+}

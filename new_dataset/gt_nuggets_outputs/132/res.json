@@ -1,0 +1,191 @@
+{
+  "qid": "2511.05766v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nLarge language models (LLMs) are increasingly examined as both behavioral subjects and decision systems, yet it remains unclear whether observed cognitive biases reflect surface imitation or deeper probability shifts. Anchoring bias, a classic human judgment bias, offers a critical test case. While prior work shows LLMs exhibit anchoring, most evidence relies on surface-level outputs, leaving internal mechanisms and attributional contributions unexplored. This paper advances the study of anchoring in LLMs through three contributions: (1) a log-probability-based behavioral analysis showing that anchors shift entire output distributions, with controls for training-data contamination; (2) exact Shapley-value attribution over structured prompt fields to quantify anchor influence on model log-probabilities; and (3) a unified Anchoring Bias Sensitivity Score integrating behavioral and attributional evidence across six open-source models. Results reveal robust anchoring effects in Gemma-2B, Phi-2, and Llama-2-7B, with attribution signaling that the anchors influence reweighting. Smaller models such as GPT-2, Falcon-RW-1B, and GPT-Neo-125M show variability, suggesting scale may modulate sensitivity. Attributional effects, however, vary across prompt designs, underscoring fragility in treating LLMs as human substitutes. The findings demonstrate that anchoring bias in LLMs is robust, measurable, and interpretable, while highlighting risks in applied domains. More broadly, the framework bridges behavioral science, LLM safety, and interpretability, offering a reproducible path for evaluating other cognitive biases in LLMs.",
+  "nuggets": [
+    {
+      "text": "Anchoring bias in LLMs shows robust, measurable effects.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values quantify anchor influence on model log-probabilities.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Behavioral and attributional evidence integrated in Anchoring Bias Sensitivity Score.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Gemma-2B, Phi-2, Llama-2-7B show strong anchoring effects.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Anchoring bias highlights risks in applied LLM domains.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Anchoring bias in LLMs tested with log-probability analysis.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Attributional effects vary across prompt designs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anchoring bias in LLMs involves deeper probability shifts.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLMs' anchoring bias reflects systematic distributional shifts.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values provide interpretable evidence of internal scoring dynamics.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs exhibit cognitive biases similar to human judgment.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Smaller models show variability in anchoring sensitivity.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values adapted from cooperative game theory.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs' cognitive biases differ in scale and stability from humans.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs bridge behavioral science, safety, and interpretability.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Anchoring bias in LLMs shows robust, measurable effects.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values quantify anchor influence on model log-probabilities.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Attributional effects vary across prompt designs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs' anchoring bias reflects systematic distributional shifts.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values provide interpretable evidence of internal scoring dynamics.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs exhibit cognitive biases similar to human judgment.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Smaller models show variability in anchoring sensitivity.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values adapted from cooperative game theory.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs' cognitive biases differ in scale and stability from humans.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Anchoring bias in LLMs shows robust, measurable effects.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values quantify anchor influence on model log-probabilities.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anchoring bias in LLMs tested with log-probability analysis.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Attributional effects vary across prompt designs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs' anchoring bias reflects systematic distributional shifts.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values provide interpretable evidence of internal scoring dynamics.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs exhibit cognitive biases similar to human judgment.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Smaller models show variability in anchoring sensitivity.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Shapley values adapted from cooperative game theory.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs' cognitive biases differ in scale and stability from humans.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs bridge behavioral science, safety, and interpretability.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.6,
+    "vital_score": 0.55,
+    "all_score": 0.6666666666666666
+  }
+}

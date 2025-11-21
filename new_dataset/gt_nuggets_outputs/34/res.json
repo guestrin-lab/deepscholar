@@ -1,0 +1,211 @@
+{
+  "qid": "2509.19586v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe introduce FragAtlas-62M, a specialized foundation model trained on the largest fragment dataset to date. Built on the complete ZINC-22 fragment subset comprising over 62 million molecules, it achieves unprecedented coverage of fragment chemical space. Our GPT-2 based model (42.7M parameters) generates 99.90% chemically valid fragments. Validation across 12 descriptors and three fingerprint methods shows generated fragments closely match the training distribution (all effect sizes < 0.4). The model retains 53.6% of known ZINC fragments while producing 22% novel structures with practical relevance. We release FragAtlas-62M with training code, preprocessed data, documentation, and model weights to accelerate adoption.",
+  "nuggets": [
+    {
+      "text": "FragAtlas-62M trained on 62M ZINC fragments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GPT-2 based model with 42.7M parameters",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "99.90% chemically valid fragment generation",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Model retains 53.6% known ZINC fragments",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "22% novel structures with practical relevance",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Validation across 12 descriptors and three fingerprint methods",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Fragment-based drug discovery offers efficient chemical space exploration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ZINC database provides billion-scale molecule libraries",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Computational tools for fragment generation are limited",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models use fragments as building blocks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fragment-based approaches lack comprehensive foundation models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Effect sizes < 0.4 for generated fragments",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FragAtlas-62M includes training code and model weights",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MolGPT adapts GPT for molecule generation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChemBERTa applies BERT-style pretraining to molecules",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FragGPT explores unordered chemical language",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-canonical SMILES improve model robustness",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Frag2Seq combines fragment tokenization with geometric information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "FragAtlas-62M trained on 62M ZINC fragments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fragment-based drug discovery offers efficient chemical space exploration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ZINC database provides billion-scale molecule libraries",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Computational tools for fragment generation are limited",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models use fragments as building blocks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fragment-based approaches lack comprehensive foundation models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MolGPT adapts GPT for molecule generation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChemBERTa applies BERT-style pretraining to molecules",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FragGPT explores unordered chemical language",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Frag2Seq combines fragment tokenization with geometric information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "FragAtlas-62M trained on 62M ZINC fragments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fragment-based drug discovery offers efficient chemical space exploration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ZINC database provides billion-scale molecule libraries",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Computational tools for fragment generation are limited",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models use fragments as building blocks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fragment-based approaches lack comprehensive foundation models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MolGPT adapts GPT for molecule generation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChemBERTa applies BERT-style pretraining to molecules",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FragGPT explores unordered chemical language",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-canonical SMILES improve model robustness",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Frag2Seq combines fragment tokenization with geometric information",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5454545454545454,
+    "strict_all_score": 0.5555555555555556,
+    "vital_score": 0.5454545454545454,
+    "all_score": 0.5833333333333334
+  }
+}

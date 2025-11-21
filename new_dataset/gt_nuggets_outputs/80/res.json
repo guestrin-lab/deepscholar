@@ -1,0 +1,161 @@
+{
+  "qid": "2511.10480v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nOptimizing the performance of large language models (LLMs) on large-scale AI training and inference systems requires a scalable and expressive mechanism to model distributed workload execution. Such modeling is essential for pre-deployment system-level optimizations (e.g., parallelization strategies) and design-space explorations. While recent efforts have proposed collecting execution traces from real systems, access to large-scale infrastructure remains limited to major cloud providers. Moreover, traces obtained from existing platforms cannot be easily adapted to study future larger-scale system configurations. We introduce Symbolic Tensor grAph GEnerator(STAGE), a framework that synthesizes high-fidelity execution traces to accurately model LLM workloads. STAGE supports a comprehensive set of parallelization strategies, allowing users to systematically explore a wide spectrum of LLM architectures and system configurations. STAGE demonstrates its scalability by synthesizing high-fidelity LLM traces spanning over 32K GPUs, while preserving tensor-level accuracy in compute, memory, and communication. STAGE will be publicly available to facilitate further research in distributed machine learning systems.",
+  "nuggets": [
+    {
+      "text": "STAGE synthesizes high-fidelity execution traces for LLM workloads.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "STAGE supports comprehensive parallelization strategies for LLMs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAGE models distributed workload execution for system optimizations.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "STAGE scales to over 32K GPUs with tensor-level accuracy.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "STAGE facilitates research in distributed machine learning systems.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "DeepBench and MLPerf offer standardized metrics for AI tasks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PyTorch Execution Observer and NVIDIA CUPTI require actual runs for traces.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "vTrain, MADMAX, Calculon model distributed LLM workloads.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tensor representation aids system-level optimization in deep learning.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FlexFlow and Unity determine parallelization strategies in distributed settings.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mist proposes symbolic tensor representations for memory parallelism.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Operator fusion enhances parallel processing and memory efficiency.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "STAGE supports comprehensive parallelization strategies for LLMs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepBench and MLPerf offer standardized metrics for AI tasks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PyTorch Execution Observer and NVIDIA CUPTI require actual runs for traces.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "vTrain, MADMAX, Calculon model distributed LLM workloads.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tensor representation aids system-level optimization in deep learning.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FlexFlow and Unity determine parallelization strategies in distributed settings.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mist proposes symbolic tensor representations for memory parallelism.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Operator fusion enhances parallel processing and memory efficiency.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "STAGE synthesizes high-fidelity execution traces for LLM workloads.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "STAGE supports comprehensive parallelization strategies for LLMs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepBench and MLPerf offer standardized metrics for AI tasks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PyTorch Execution Observer and NVIDIA CUPTI require actual runs for traces.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "vTrain, MADMAX, Calculon model distributed LLM workloads.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tensor representation aids system-level optimization in deep learning.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "FlexFlow and Unity determine parallelization strategies in distributed settings.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mist proposes symbolic tensor representations for memory parallelism.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Operator fusion enhances parallel processing and memory efficiency.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.2,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.3,
+    "all_score": 0.7083333333333334
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "qid": "2510.22828v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe Synthetic Control method (SC) has become a valuable tool for estimating causal effects. Originally designed for single-treated unit scenarios, it has recently found applications in high-dimensional disaggregated settings with multiple treated units. However, challenges in practical implementation and computational efficiency arise in such scenarios. To tackle these challenges, we propose a novel approach that integrates the Multivariate Square-root Lasso method into the synthetic control framework. We rigorously establish the estimation error bounds for fitting the Synthetic Control weights using Multivariate Square-root Lasso, accommodating high-dimensionality and time series dependencies. Additionally, we quantify the estimation error for the Average Treatment Effect on the Treated (ATT). Through simulation studies, we demonstrate that our method offers superior computational efficiency without compromising estimation accuracy. We apply our method to assess the causal impact of COVID-19 Stay-at-Home Orders on the monthly unemployment rate in the United States at the county level.",
+  "nuggets": [
+    {
+      "text": "Synthetic Control Methods for multiple treated units",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "High-dimensional settings pose computational challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multivariate Square-root Lasso improves computational efficiency",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Estimation error bounds for Synthetic Control weights",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Quantifying estimation error for Average Treatment Effect",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Simulation studies show superior computational efficiency",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Multivariate Square-root Lasso estimates error covariance matrix",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "COVID-19 Stay-at-Home Orders impact unemployment rates",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Synthetic Control Using Lasso allows automatic donor selection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Augmented Synthetic Control estimator with penalty term",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multivariate Regression with Covariance Estimation (MRCE)",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MRCE maximizes penalized normal log-likelihood",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Synthetic Control Methods for multiple treated units",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "High-dimensional settings pose computational challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multivariate Square-root Lasso estimates error covariance matrix",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic Control Using Lasso allows automatic donor selection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Augmented Synthetic Control estimator with penalty term",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Synthetic Control Methods for multiple treated units",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "High-dimensional settings pose computational challenges",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Multivariate Square-root Lasso improves computational efficiency",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multivariate Square-root Lasso estimates error covariance matrix",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic Control Using Lasso allows automatic donor selection",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Augmented Synthetic Control estimator with penalty term",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multivariate Regression with Covariance Estimation (MRCE)",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.42857142857142855,
+    "strict_all_score": 0.4166666666666667,
+    "vital_score": 0.5,
+    "all_score": 0.5
+  }
+}

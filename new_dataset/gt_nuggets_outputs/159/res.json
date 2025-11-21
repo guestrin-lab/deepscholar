@@ -1,0 +1,211 @@
+{
+  "qid": "2511.05209v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe challenge of scaling quantum computers to gain computational power is expected to lead to architectures with multiple connected quantum processing units (QPUs), commonly referred to as Distributed Quantum Computing (DQC). In parallel, there is a growing momentum toward treating quantum computers as accelerators, integrating them into the heterogeneous architectures of high-performance computing (HPC) environments. This work combines these two foreseeable futures in CUNQA, an open-source DQC emulator designed for HPC environments that allows testing, evaluating and studying DQC in HPC before it even becomes real. It implements the three DQC models of no-communication, classical-communication and quantum-communication; which will be examined in this work. Addressing programming considerations, explaining emulation and simulation details, and delving into the specifics of the implementation will be part of the effort. The well-known Quantum Phase Estimation (QPE) algorithm is used to demonstrate and analyze the emulation of the models. To the best of our knowledge, CUNQA is the first tool designed to emulate the three DQC schemes in an HPC environment.",
+  "nuggets": [
+    {
+      "text": "CUNQA is an open-source DQC emulator for HPC environments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA emulates no-communication, classical-communication, and quantum-communication DQC models",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "CUNQA is the first tool to emulate three DQC schemes in HPC",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA focuses on DQC as a central design element",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA differs from QFw and MQSS in middleware focus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CONQURE's cloud-based system is incompatible with accelerator notion",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA leverages widely adopted models for user adaptation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA uses Quantum Phase Estimation (QPE) for model demonstration",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Quantum Framework (QFw) mimics a GPU accelerator stack",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Munich Quantum Software Stack (MQSS) defines a programming model in C",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CONQURE provides a cloud-based platform and OpenMP-Q for quantum accelerators",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QCCP proposes a new programming model for HPC environments",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Claudino et al. used XACC with HPC for MC-VQE simulation",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QFw and MQSS emphasize middleware layer in infrastructures",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA's CunqaCircuit is similar to Qiskit's QuantumCircuit",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "CUNQA is an open-source DQC emulator for HPC environments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA is the first tool to emulate three DQC schemes in HPC",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA focuses on DQC as a central design element",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA differs from QFw and MQSS in middleware focus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CONQURE's cloud-based system is incompatible with accelerator notion",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA leverages widely adopted models for user adaptation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Quantum Framework (QFw) mimics a GPU accelerator stack",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Munich Quantum Software Stack (MQSS) defines a programming model in C",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CONQURE provides a cloud-based platform and OpenMP-Q for quantum accelerators",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QCCP proposes a new programming model for HPC environments",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QFw and MQSS emphasize middleware layer in infrastructures",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA's CunqaCircuit is similar to Qiskit's QuantumCircuit",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "CUNQA is an open-source DQC emulator for HPC environments",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA is the first tool to emulate three DQC schemes in HPC",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA focuses on DQC as a central design element",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA differs from QFw and MQSS in middleware focus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CONQURE's cloud-based system is incompatible with accelerator notion",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA leverages widely adopted models for user adaptation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Quantum Framework (QFw) mimics a GPU accelerator stack",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Munich Quantum Software Stack (MQSS) defines a programming model in C",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CONQURE provides a cloud-based platform and OpenMP-Q for quantum accelerators",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QCCP proposes a new programming model for HPC environments",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "QFw and MQSS emphasize middleware layer in infrastructures",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CUNQA's CunqaCircuit is similar to Qiskit's QuantumCircuit",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.8571428571428571,
+    "strict_all_score": 0.8,
+    "vital_score": 0.8571428571428571,
+    "all_score": 0.8
+  }
+}

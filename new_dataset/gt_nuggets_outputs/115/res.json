@@ -1,0 +1,166 @@
+{
+  "qid": "2511.09363v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nSafety verification of dynamical systems via barrier certificates is essential for ensuring correctness in autonomous applications. Synthesizing these certificates involves discovering mathematical functions with current methods suffering from poor scalability, dependence on carefully designed templates, and exhaustive or incremental function-space searches. They also demand substantial manual expertise--selecting templates, solvers, and hyperparameters, and designing sampling strategies--requiring both theoretical and practical knowledge traditionally shared through linguistic reasoning rather than formalized methods.\n  This motivates a key question: can such expert reasoning be captured and operationalized by language models? We address this by introducing an LLM-based agentic framework for barrier certificate synthesis. The framework uses natural language reasoning to propose, refine, and validate candidate certificates, integrating LLM-driven template discovery with SMT-based verification, and supporting barrier-controller co-synthesis to ensure consistency between safety certificates and controllers.\n  To evaluate this capability, we introduce BarrierBench, a benchmark of 100 dynamical systems spanning linear, nonlinear, discrete-time, and continuous-time settings. Our experiments assess not only the effectiveness of LLM-guided barrier synthesis but also the utility of retrieval-augmented generation and agentic coordination strategies in improving its reliability and performance. Across these tasks, the framework achieves more than 90% success in generating valid certificates. By releasing BarrierBench and the accompanying toolchain, we aim to establish a community testbed for advancing the integration of language-based reasoning with formal verification in dynamical systems.\n  The benchmark is publicly available at https://hycodev.com/dataset/barrierbench",
+  "nuggets": [
+    {
+      "text": "Barrier certificates ensure safety in dynamical systems",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs exhibit strong reasoning and problem-solving capabilities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs decompose complex problems into sub-tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hybrid approaches couple LLM reasoning with formal verification",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "BarrierBench evaluates LLM-guided barrier synthesis",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "BarrierBench includes 100 diverse dynamical systems",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLM-based framework achieves 90% success in certificate generation",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Traditional methods rely on sum-of-squares programming",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CEGIS frameworks integrate neural approximators with SMT verification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven methods extend to unknown system dynamics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs applied in robotic task planning and autonomous driving",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs lack grounding in physical constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BarrierBench aims to advance language-based reasoning in verification",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "LLMs exhibit strong reasoning and problem-solving capabilities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs decompose complex problems into sub-tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hybrid approaches couple LLM reasoning with formal verification",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional methods rely on sum-of-squares programming",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CEGIS frameworks integrate neural approximators with SMT verification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven methods extend to unknown system dynamics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs applied in robotic task planning and autonomous driving",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs lack grounding in physical constraints",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Barrier certificates ensure safety in dynamical systems",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs exhibit strong reasoning and problem-solving capabilities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs decompose complex problems into sub-tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hybrid approaches couple LLM reasoning with formal verification",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional methods rely on sum-of-squares programming",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CEGIS frameworks integrate neural approximators with SMT verification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven methods extend to unknown system dynamics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs applied in robotic task planning and autonomous driving",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs lack grounding in physical constraints",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.42857142857142855,
+    "strict_all_score": 0.6153846153846154,
+    "vital_score": 0.5,
+    "all_score": 0.6538461538461539
+  }
+}

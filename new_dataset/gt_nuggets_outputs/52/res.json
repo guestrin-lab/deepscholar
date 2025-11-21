@@ -1,0 +1,181 @@
+{
+  "qid": "2511.08579v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nCan language models (LMs) learn to faithfully describe their internal computations? Are they better able to describe themselves than other models? We study the extent to which LMs' privileged access to their own internals can be leveraged to produce new techniques for explaining their behavior. Using existing interpretability techniques as a source of ground truth, we fine-tune LMs to generate natural language descriptions of (1) the information encoded by LM features, (2) the causal structure of LMs' internal activations, and (3) the influence of specific input tokens on LM outputs. When trained with only tens of thousands of example explanations, explainer models exhibit non-trivial generalization to new queries. This generalization appears partly attributable to explainer models' privileged access to their own internals: using a model to explain its own computations generally works better than using a *different* model to explain its computations (even if the other model is significantly more capable). Our results suggest not only that LMs can learn to reliably explain their internal computations, but that such explanations offer a scalable complement to existing interpretability methods.",
+  "nuggets": [
+    {
+      "text": "LMs can describe their internal computations",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Mechanistic interpretability describes features and causal circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalable interpretability methods balance correctness and efficiency",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Latent Interpretation Tuning fine-tunes models for hidden representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Models' introspective abilities assessed on mechanistic methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Privileged access aids LMs in explaining their computations",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Explainer models generalize to new queries",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Chain-of-thought verbalizations can be unfaithful",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Automated feature description pipelines require computational resources",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LogitLens, PatchScopes, SelfIE enable zero-shot self-interpretation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Explanations can be provided in-band for user understanding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Introspection and metacognition in models are debated",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Existing interpretability techniques provide ground truth",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Mechanistic interpretability describes features and causal circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalable interpretability methods balance correctness and efficiency",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Latent Interpretation Tuning fine-tunes models for hidden representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Models' introspective abilities assessed on mechanistic methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Chain-of-thought verbalizations can be unfaithful",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Automated feature description pipelines require computational resources",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LogitLens, PatchScopes, SelfIE enable zero-shot self-interpretation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Explanations can be provided in-band for user understanding",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "LMs can describe their internal computations",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Mechanistic interpretability describes features and causal circuits",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Scalable interpretability methods balance correctness and efficiency",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Latent Interpretation Tuning fine-tunes models for hidden representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Models' introspective abilities assessed on mechanistic methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Privileged access aids LMs in explaining their computations",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Chain-of-thought verbalizations can be unfaithful",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Automated feature description pipelines require computational resources",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LogitLens, PatchScopes, SelfIE enable zero-shot self-interpretation",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Explanations can be provided in-band for user understanding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Introspection and metacognition in models are debated",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Existing interpretability techniques provide ground truth",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5714285714285714,
+    "strict_all_score": 0.6153846153846154,
+    "vital_score": 0.7142857142857143,
+    "all_score": 0.7692307692307693
+  }
+}

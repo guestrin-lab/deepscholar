@@ -1,0 +1,416 @@
+{
+  "qid": "2510.02903v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nModeling the dynamics of cellular differentiation is fundamental to advancing the understanding and treatment of diseases associated with this process, such as cancer. With the rapid growth of single-cell datasets, this has also become a particularly promising and active domain for machine learning. Current state-of-the-art models, however, rely on computationally expensive optimal transport preprocessing and multi-stage training, while also not discovering explicit gene interactions. To address these challenges we propose Cell-Mechanistic Neural Networks (Cell-MNN), an encoder-decoder architecture whose latent representation is a locally linearized ODE governing the dynamics of cellular evolution from stem to tissue cells. Cell-MNN is fully end-to-end (besides a standard PCA pre-processing) and its ODE representation explicitly learns biologically consistent and interpretable gene interactions. Empirically, we show that Cell-MNN achieves competitive performance on single-cell benchmarks, surpasses state-of-the-art baselines in scaling to larger datasets and joint training across multiple datasets, while also learning interpretable gene interactions that we validate against the TRRUST database of gene interactions.",
+  "nuggets": [
+    {
+      "text": "Cell-MNN models cellular differentiation dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN uses locally linearized ODEs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN learns interpretable gene interactions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN eliminates optimal transport preprocessing",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN involves single-stage training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NeuralODE-based methods output velocity fields",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OT preprocessing approximates cell trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OT-MFM and DeepRUOT use multi-stage training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gene regulatory networks represent cell interactions",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SINDy infers governing equations from data",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MNN predicts dynamics from observed trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ODEFormer extends ODE discovery to amortized settings",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Locally linear parameterization in physics and control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Design of gene perturbations enabled by control",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Cell-MNN validated against TRRUST database",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN surpasses state-of-the-art baselines",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Cell-MNN scales to larger datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN supports joint training across datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Single-cell trajectory inference reconstructs dynamics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Action Matching avoids OT preprocessing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GRN discovery from flow-matching models",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Tree-based methods for GRN discovery",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Information-theoretic approaches for GRN discovery",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Regression-based time-series models for GRN",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gaussian processes for GRN discovery",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "PerturbODE learns explicit ODE representations",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Apollo navigation filter uses locally linear models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Control of 2-link 6-muscle arm model",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rocket landing uses locally linear parameterization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Control-oriented structure supports performant controllers",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Cell-MNN models cellular differentiation dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN uses locally linearized ODEs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN learns interpretable gene interactions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN eliminates optimal transport preprocessing",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN involves single-stage training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NeuralODE-based methods output velocity fields",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OT preprocessing approximates cell trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OT-MFM and DeepRUOT use multi-stage training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MNN predicts dynamics from observed trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ODEFormer extends ODE discovery to amortized settings",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Locally linear parameterization in physics and control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN validated against TRRUST database",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN scales to larger datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN supports joint training across datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Single-cell trajectory inference reconstructs dynamics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Action Matching avoids OT preprocessing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Apollo navigation filter uses locally linear models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Control of 2-link 6-muscle arm model",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rocket landing uses locally linear parameterization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Control-oriented structure supports performant controllers",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Cell-MNN models cellular differentiation dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN uses locally linearized ODEs",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN learns interpretable gene interactions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN eliminates optimal transport preprocessing",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN involves single-stage training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NeuralODE-based methods output velocity fields",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OT preprocessing approximates cell trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OT-MFM and DeepRUOT use multi-stage training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gene regulatory networks represent cell interactions",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SINDy infers governing equations from data",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MNN predicts dynamics from observed trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ODEFormer extends ODE discovery to amortized settings",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Locally linear parameterization in physics and control",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Design of gene perturbations enabled by control",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Cell-MNN validated against TRRUST database",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN surpasses state-of-the-art baselines",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Cell-MNN scales to larger datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Cell-MNN supports joint training across datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Single-cell trajectory inference reconstructs dynamics",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Action Matching avoids OT preprocessing",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GRN discovery from flow-matching models",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Tree-based methods for GRN discovery",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Information-theoretic approaches for GRN discovery",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Regression-based time-series models for GRN",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gaussian processes for GRN discovery",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "PerturbODE learns explicit ODE representations",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Apollo navigation filter uses locally linear models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Control of 2-link 6-muscle arm model",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Rocket landing uses locally linear parameterization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Control-oriented structure supports performant controllers",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.7857142857142857,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.8928571428571429,
+    "all_score": 0.8333333333333334
+  }
+}

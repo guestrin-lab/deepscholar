@@ -1,0 +1,291 @@
+{
+  "qid": "2511.09025v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nLarge Language Models (LLMs) have impressive data fusion and reasoning capabilities for autonomous driving (AD). However, training LLMs for AD faces significant challenges including high computation transmission costs, and privacy concerns associated with sensitive driving data. Federated Learning (FL) is promising for enabling autonomous vehicles (AVs) to collaboratively train models without sharing raw data. We present Federated LLM-based Autonomous Driving (FLAD), an FL framework that leverages distributed multimodal sensory data across AVs in heterogeneous environment. FLAD has three key innovations: (1) a cloud-edge-vehicle collaborative architecture that reduces communication delay and preserving data privacy; (2) an intelligent parallelized collaborative training with a communication scheduling mechanism that optimizes training efficiency, leveraging end-devices otherwise having insufficient resources for model training; and (3) a knowledge distillation method that personalizes LLM according to heterogeneous edge data. In addition, we prototype FLAD in a testbed with NVIDIA Jetsons, overcoming practical implementation challenges including CPU/GPU memory sharing in resource-constrained devices, dynamic model partitions, and fault-tolerant training.Extensive experimental evaluation demonstrates that FLAD achieves superior end-to-end AD performance while efficiently utilizing distributed vehicular resources, opening up new possibilities for future collaborative AD model training and knowledge sharing.",
+  "nuggets": [
+    {
+      "text": "FLAD leverages federated learning for autonomous driving.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD uses cloud-edge-vehicle collaboration to reduce communication delay.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD optimizes training efficiency with intelligent parallelized collaborative training.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD personalizes LLMs using knowledge distillation for heterogeneous data.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD prototypes on NVIDIA Jetsons for resource-constrained environments.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD addresses privacy concerns by not sharing raw data.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Oobleck enhances fault tolerance in distributed training.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Asteroid accelerates fault-tolerant pipeline training.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "EdgePipe optimizes execution under fluctuating network conditions.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "StellaTrain and FlexNN enhance network-aware scheduling.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "AutoFed addresses multimodal sensor heterogeneity in FL.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveAdapter aligns perception and planning features.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveLM Agent uses vision-language reasoning for decision-making.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Talk2BEV enhances spatial understanding with BEV maps.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LMDrive integrates sensor data with natural language navigation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveDreamer trains a world model on real-world scenarios.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "UniAD unifies feature abstractions for holistic interaction modeling.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ZeRO reduces memory redundancy for large models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Megatron improves intra-layer parallelism.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TensorPipe and DAPPLE optimize layer-based training.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Alpa unifies parallelism strategies across heterogeneous devices.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "FLAD leverages federated learning for autonomous driving.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD uses cloud-edge-vehicle collaboration to reduce communication delay.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD optimizes training efficiency with intelligent parallelized collaborative training.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD personalizes LLMs using knowledge distillation for heterogeneous data.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD prototypes on NVIDIA Jetsons for resource-constrained environments.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD addresses privacy concerns by not sharing raw data.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AutoFed addresses multimodal sensor heterogeneity in FL.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveAdapter aligns perception and planning features.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveLM Agent uses vision-language reasoning for decision-making.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Talk2BEV enhances spatial understanding with BEV maps.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LMDrive integrates sensor data with natural language navigation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveDreamer trains a world model on real-world scenarios.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "UniAD unifies feature abstractions for holistic interaction modeling.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ZeRO reduces memory redundancy for large models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Megatron improves intra-layer parallelism.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TensorPipe and DAPPLE optimize layer-based training.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Alpa unifies parallelism strategies across heterogeneous devices.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "FLAD leverages federated learning for autonomous driving.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD uses cloud-edge-vehicle collaboration to reduce communication delay.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD optimizes training efficiency with intelligent parallelized collaborative training.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD personalizes LLMs using knowledge distillation for heterogeneous data.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD prototypes on NVIDIA Jetsons for resource-constrained environments.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FLAD addresses privacy concerns by not sharing raw data.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "AutoFed addresses multimodal sensor heterogeneity in FL.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveAdapter aligns perception and planning features.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveLM Agent uses vision-language reasoning for decision-making.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Talk2BEV enhances spatial understanding with BEV maps.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LMDrive integrates sensor data with natural language navigation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DriveDreamer trains a world model on real-world scenarios.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "UniAD unifies feature abstractions for holistic interaction modeling.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ZeRO reduces memory redundancy for large models.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Megatron improves intra-layer parallelism.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TensorPipe and DAPPLE optimize layer-based training.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Alpa unifies parallelism strategies across heterogeneous devices.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6363636363636364,
+    "strict_all_score": 0.8095238095238095,
+    "vital_score": 0.6363636363636364,
+    "all_score": 0.8095238095238095
+  }
+}

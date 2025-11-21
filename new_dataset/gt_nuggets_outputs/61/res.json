@@ -1,0 +1,216 @@
+{
+  "qid": "2511.09980v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nDynamic retrieval-augmented generation (RAG) allows large language models (LLMs) to fetch external knowledge on demand, offering greater adaptability than static RAG. A central challenge in this setting lies in determining the optimal timing for retrieval. Existing methods often trigger retrieval based on low token-level confidence, which may lead to delayed intervention after errors have already propagated. We introduce Entropy-Trend Constraint (ETC), a training-free method that determines optimal retrieval timing by modeling the dynamics of token-level uncertainty. Specifically, ETC utilizes first- and second-order differences of the entropy sequence to detect emerging uncertainty trends, enabling earlier and more precise retrieval. Experiments on six QA benchmarks with three LLM backbones demonstrate that ETC consistently outperforms strong baselines while reducing retrieval frequency. ETC is particularly effective in domain-specific scenarios, exhibiting robust generalization capabilities. Ablation studies and qualitative analyses further confirm that trend-aware uncertainty modeling yields more effective retrieval timing. The method is plug-and-play, model-agnostic, and readily integrable into existing decoding pipelines. Implementation code is included in the supplementary materials.",
+  "nuggets": [
+    {
+      "text": "Dynamic RAG allows LLMs to fetch knowledge on demand",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Optimal retrieval timing is a central challenge in dynamic RAG",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods often use low token-level confidence for retrieval",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Delayed intervention can occur after errors propagate",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Entropy-Trend Constraint (ETC) models token-level uncertainty dynamics",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ETC enables earlier and more precise retrieval",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ETC exhibits robust generalization capabilities",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Trend-aware uncertainty modeling improves retrieval timing",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ETC is training-free, plug-and-play, and model-agnostic",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ETC integrates into existing decoding pipelines",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic RAG activates retrieval when LLMs need it",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prediction confidence used for retrieval timing by some methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ETC uses first- and second-order entropy differences",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ETC outperforms baselines on six QA benchmarks",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ETC reduces retrieval frequency while maintaining performance",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "ETC is effective in domain-specific scenarios",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Implementation code is included in supplementary materials",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Training-based RAG systems are less efficient than training-free",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Retrieval every n tokens or sentence proposed by some researchers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Token importance considered for retrieval timing by some methods",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Dynamic RAG allows LLMs to fetch knowledge on demand",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Optimal retrieval timing is a central challenge in dynamic RAG",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods often use low token-level confidence for retrieval",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ETC is training-free, plug-and-play, and model-agnostic",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ETC integrates into existing decoding pipelines",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic RAG activates retrieval when LLMs need it",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prediction confidence used for retrieval timing by some methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Retrieval every n tokens or sentence proposed by some researchers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Token importance considered for retrieval timing by some methods",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Dynamic RAG allows LLMs to fetch knowledge on demand",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Optimal retrieval timing is a central challenge in dynamic RAG",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods often use low token-level confidence for retrieval",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Entropy-Trend Constraint (ETC) models token-level uncertainty dynamics",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ETC is training-free, plug-and-play, and model-agnostic",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ETC integrates into existing decoding pipelines",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Dynamic RAG activates retrieval when LLMs need it",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Prediction confidence used for retrieval timing by some methods",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Training-based RAG systems are less efficient than training-free",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Retrieval every n tokens or sentence proposed by some researchers",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Token importance considered for retrieval timing by some methods",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5833333333333334,
+    "strict_all_score": 0.45,
+    "vital_score": 0.625,
+    "all_score": 0.5
+  }
+}

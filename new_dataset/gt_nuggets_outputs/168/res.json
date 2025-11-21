@@ -1,0 +1,161 @@
+{
+  "qid": "2511.05187v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe propose a new way of training neural networks, with the goal of reducing training cost. Our method uses approximate predicted gradients instead of the full gradients that require an expensive backward pass. We derive a control-variate-based technique that ensures our updates are unbiased estimates of the true gradient. Moreover, we propose a novel way to derive a predictor for the gradient inspired by the theory of the Neural Tangent Kernel. We empirically show the efficacy of the technique on a vision transformer classification task.",
+  "nuggets": [
+    {
+      "text": "Approximate predicted gradients reduce training cost",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Control-variate technique ensures unbiased gradient estimates",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Inspired by Neural Tangent Kernel theory",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Efficacy shown on vision transformer classification task",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Synthetic gradients differ in speed and accuracy focus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low NTK rank makes gradient approximation efficient",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic gradients learn backward pass using another network",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Partial gradients use sparse updates with top-k heuristic",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Control variates reduce gradient variance in simulations",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Neural Tangent Kernel links neural networks to kernel machines",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Low-rank structure in Hessian relates to low-rank gradients",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Memory-compute tradeoff reduces compute, increases memory",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Approximate predicted gradients reduce training cost",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Control-variate technique ensures unbiased gradient estimates",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Inspired by Neural Tangent Kernel theory",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic gradients differ in speed and accuracy focus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low NTK rank makes gradient approximation efficient",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Memory-compute tradeoff reduces compute, increases memory",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Approximate predicted gradients reduce training cost",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Control-variate technique ensures unbiased gradient estimates",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Inspired by Neural Tangent Kernel theory",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic gradients differ in speed and accuracy focus",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Low NTK rank makes gradient approximation efficient",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic gradients learn backward pass using another network",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Partial gradients use sparse updates with top-k heuristic",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Control variates reduce gradient variance in simulations",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Neural Tangent Kernel links neural networks to kernel machines",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Low-rank structure in Hessian relates to low-rank gradients",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Memory-compute tradeoff reduces compute, increases memory",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.8333333333333334,
+    "strict_all_score": 0.5,
+    "vital_score": 0.8333333333333334,
+    "all_score": 0.7083333333333334
+  }
+}

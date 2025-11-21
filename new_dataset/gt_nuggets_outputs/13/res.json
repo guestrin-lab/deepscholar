@@ -1,0 +1,226 @@
+{
+  "qid": "2510.02259v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nGraph Neural Networks (GNNs) are the dominant architecture for molecular machine learning, particularly for molecular property prediction and machine learning interatomic potentials (MLIPs). GNNs perform message passing on predefined graphs often induced by a fixed radius cutoff or k-nearest neighbor scheme. While this design aligns with the locality present in many molecular tasks, a hard-coded graph can limit expressivity due to the fixed receptive field and slows down inference with sparse graph operations. In this work, we investigate whether pure, unmodified Transformers trained directly on Cartesian coordinates$\\unicode{x2013}$without predefined graphs or physical priors$\\unicode{x2013}$can approximate molecular energies and forces. As a starting point for our analysis, we demonstrate how to train a Transformer to competitive energy and force mean absolute errors under a matched training compute budget, relative to a state-of-the-art equivariant GNN on the OMol25 dataset. We discover that the Transformer learns physically consistent patterns$\\unicode{x2013}$such as attention weights that decay inversely with interatomic distance$\\unicode{x2013}$and flexibly adapts them across different molecular environments due to the absence of hard-coded biases. The use of a standard Transformer also unlocks predictable improvements with respect to scaling training resources, consistent with empirical scaling laws observed in other domains. Our results demonstrate that many favorable properties of GNNs can emerge adaptively in Transformers, challenging the necessity of hard-coded graph inductive biases and pointing toward standardized, scalable architectures for molecular modeling.",
+  "nuggets": [
+    {
+      "text": "GNNs dominate molecular machine learning for property prediction.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs use predefined graphs with fixed radius or k-nearest neighbors.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hard-coded graphs limit GNN expressivity and slow inference.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers trained on Cartesian coordinates without predefined graphs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers achieve competitive errors on OMol25 dataset.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Transformers challenge necessity of hard-coded graph inductive biases.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs incorporate physical inductive biases like rotational equivariance.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-based MLIPs struggle with scalability and generalization.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers offer standardized, scalable architectures for molecular modeling.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Transformers learn attention weights inversely with interatomic distance.",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Transformers adapt flexibly across molecular environments.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Standard Transformers improve with scaling training resources.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Scaling laws observed in other domains apply to Transformers.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Early MLIPs used handcrafted physical features, not graph-based.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Some GNNs use attention mechanisms but not standard Transformers.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs face issues like oversmoothing and oversquashing.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "GNNs dominate molecular machine learning for property prediction.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs use predefined graphs with fixed radius or k-nearest neighbors.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hard-coded graphs limit GNN expressivity and slow inference.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers trained on Cartesian coordinates without predefined graphs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers challenge necessity of hard-coded graph inductive biases.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs incorporate physical inductive biases like rotational equivariance.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-based MLIPs struggle with scalability and generalization.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers adapt flexibly across molecular environments.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Standard Transformers improve with scaling training resources.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Early MLIPs used handcrafted physical features, not graph-based.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Some GNNs use attention mechanisms but not standard Transformers.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs face issues like oversmoothing and oversquashing.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "GNNs dominate molecular machine learning for property prediction.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs use predefined graphs with fixed radius or k-nearest neighbors.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Hard-coded graphs limit GNN expressivity and slow inference.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers trained on Cartesian coordinates without predefined graphs.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers challenge necessity of hard-coded graph inductive biases.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs incorporate physical inductive biases like rotational equivariance.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-based MLIPs struggle with scalability and generalization.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformers offer standardized, scalable architectures for molecular modeling.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Transformers adapt flexibly across molecular environments.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Standard Transformers improve with scaling training resources.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Scaling laws observed in other domains apply to Transformers.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Early MLIPs used handcrafted physical features, not graph-based.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Some GNNs use attention mechanisms but not standard Transformers.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GNNs face issues like oversmoothing and oversquashing.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.7777777777777778,
+    "strict_all_score": 0.75,
+    "vital_score": 0.8333333333333334,
+    "all_score": 0.8125
+  }
+}

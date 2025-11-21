@@ -1,0 +1,241 @@
+{
+  "qid": "2511.01464v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nBy reducing resolution, coarse-grained models greatly accelerate molecular simulations, unlocking access to long-timescale phenomena, though at the expense of microscopic information. Recovering this fine-grained detail is essential for tasks that depend on atomistic accuracy, making backmapping a central challenge in molecular modeling. We introduce split-flows, a novel flow-based approach that reinterprets backmapping as a continuous-time measure transport across resolutions. Unlike existing generative strategies, split-flows establish a direct probabilistic link between resolutions, enabling expressive conditional sampling of atomistic structures and -- for the first time -- a tractable route to computing mapping entropies, an information-theoretic measure of the irreducible detail lost in coarse-graining. We demonstrate these capabilities on diverse molecular systems, including chignolin, a lipid bilayer, and alanine dipeptide, highlighting split-flows as a principled framework for accurate backmapping and systematic evaluation of coarse-grained models.",
+  "nuggets": [
+    {
+      "text": "Backmapping is a central challenge in molecular modeling.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Split-flows reinterpret backmapping as continuous-time measure transport.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Split-flows establish a probabilistic link between resolutions.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Split-flows enable conditional sampling of atomistic structures.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Split-flows compute mapping entropies for coarse-graining.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Split-flows provide a framework for diverse molecular systems.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Split-flows evaluate coarse-grained models systematically.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Split-flows demonstrated on chignolin, lipid bilayer, alanine dipeptide.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Split-flows offer a rigorous framework for computing mapping entropies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative strategies lack direct probabilistic links between resolutions.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy measures detail loss in coarse-graining.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous normalizing flows improve expressiveness in modeling.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Flow matching enables efficient training of continuous flows.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy identifies high-quality representations in molecular systems.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Data-driven methods replace traditional handcrafted algorithms.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-step samplers generalize to unseen molecular structures.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy connects to dynamical behavior consistency.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Mapping entropy applied to spin models, financial markets.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Flow matching replaces maximum likelihood with quadratic regression.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Modern flow matching generalizes normalizing flows for measure transport.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Backmapping is a central challenge in molecular modeling.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Split-flows establish a probabilistic link between resolutions.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Split-flows offer a rigorous framework for computing mapping entropies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative strategies lack direct probabilistic links between resolutions.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy measures detail loss in coarse-graining.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flow matching enables efficient training of continuous flows.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven methods replace traditional handcrafted algorithms.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-step samplers generalize to unseen molecular structures.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flow matching replaces maximum likelihood with quadratic regression.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Modern flow matching generalizes normalizing flows for measure transport.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Backmapping is a central challenge in molecular modeling.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Split-flows establish a probabilistic link between resolutions.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Split-flows compute mapping entropies for coarse-graining.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Split-flows offer a rigorous framework for computing mapping entropies.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative strategies lack direct probabilistic links between resolutions.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy measures detail loss in coarse-graining.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous normalizing flows improve expressiveness in modeling.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Flow matching enables efficient training of continuous flows.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy identifies high-quality representations in molecular systems.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Data-driven methods replace traditional handcrafted algorithms.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-step samplers generalize to unseen molecular structures.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mapping entropy connects to dynamical behavior consistency.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Mapping entropy applied to spin models, financial markets.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Flow matching replaces maximum likelihood with quadratic regression.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Modern flow matching generalizes normalizing flows for measure transport.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.3333333333333333,
+    "strict_all_score": 0.5,
+    "vital_score": 0.3888888888888889,
+    "all_score": 0.625
+  }
+}

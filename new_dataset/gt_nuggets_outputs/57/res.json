@@ -1,0 +1,351 @@
+{
+  "qid": "2511.10515v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nOlympiad-level physics problem-solving presents a significant challenge for both humans and artificial intelligence (AI), as it requires a sophisticated integration of precise calculation, abstract reasoning, and a fundamental grasp of physical principles. The Chinese Physics Olympiad (CPhO), renowned for its complexity and depth, serves as an ideal and rigorous testbed for these advanced capabilities. In this paper, we introduce LOCA-R (LOgical Chain Augmentation for Reasoning), an improved version of the LOCA framework adapted for complex reasoning, and apply it to the CPhO 2025 theory examination. LOCA-R achieves a near-perfect score of 313 out of 320 points, solidly surpassing the highest-scoring human competitor and significantly outperforming all baseline methods.",
+  "nuggets": [
+    {
+      "text": "LOCA-R achieves 313/320 on CPhO 2025",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LOCA-R surpasses top human competitor",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LOCA-R outperforms all baseline methods",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "CPhO is a rigorous testbed for AI",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Olympiad-level physics challenges AI and humans",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LOCA-R is an improved LOCA framework",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Physics Supernova targets physics problem-solving",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics Reasoner developed for physics tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Mixture of Refinement Agents (MoRA) for physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PHYBench for competition-level physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OlympiadBench for Olympiad-level difficulty",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ABench-Physics for large-scale physics data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysReason for physics reasoning tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicsEval evaluates physics problem-solving",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CPhO 2025 has no data contamination",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CPhO 2025 provides reliable reference answers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Chain-of-Thought (CoT) for reasoning tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tree-of-Thought (ToT) explores reasoning paths",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-of-Thought (GoT) uses model's capabilities",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Self-refine relies on internal model capabilities",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Plan-and-Solve uses external tools",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ReAct framework for reasoning tasks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multi-Agent Debate (MAD) improves reasoning",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Supervised Fine-Tuning (SFT) needs expert data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Reinforcement Learning (RL) is costly",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PHYSICS reflects university-level coursework",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TPBench for theoretical physics",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Physics Supernova targets physics problem-solving",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics Reasoner developed for physics tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Mixture of Refinement Agents (MoRA) for physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PHYBench for competition-level physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OlympiadBench for Olympiad-level difficulty",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ABench-Physics for large-scale physics data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysReason for physics reasoning tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicsEval evaluates physics problem-solving",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CPhO 2025 has no data contamination",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CPhO 2025 provides reliable reference answers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Chain-of-Thought (CoT) for reasoning tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tree-of-Thought (ToT) explores reasoning paths",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-of-Thought (GoT) uses model's capabilities",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Self-refine relies on internal model capabilities",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Supervised Fine-Tuning (SFT) needs expert data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Reinforcement Learning (RL) is costly",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PHYSICS reflects university-level coursework",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TPBench for theoretical physics",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "CPhO is a rigorous testbed for AI",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Physics Supernova targets physics problem-solving",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics Reasoner developed for physics tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Mixture of Refinement Agents (MoRA) for physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PHYBench for competition-level physics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OlympiadBench for Olympiad-level difficulty",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ABench-Physics for large-scale physics data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysReason for physics reasoning tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "PhysicsEval evaluates physics problem-solving",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CPhO 2025 has no data contamination",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CPhO 2025 provides reliable reference answers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Chain-of-Thought (CoT) for reasoning tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Tree-of-Thought (ToT) explores reasoning paths",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Graph-of-Thought (GoT) uses model's capabilities",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Self-refine relies on internal model capabilities",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Plan-and-Solve uses external tools",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ReAct framework for reasoning tasks",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Multi-Agent Debate (MAD) improves reasoning",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Supervised Fine-Tuning (SFT) needs expert data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Reinforcement Learning (RL) is costly",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PHYSICS reflects university-level coursework",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "TPBench for theoretical physics",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.625,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.65625,
+    "all_score": 0.7407407407407407
+  }
+}

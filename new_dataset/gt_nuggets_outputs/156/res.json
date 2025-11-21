@@ -1,0 +1,186 @@
+{
+  "qid": "2511.01019v2",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nArtificial intelligence is transforming the sciences, yet general conversational AI systems often generate unverified \"hallucinations\" undermining scientific rigor. We present OceanAI, a conversational platform that integrates the natural-language fluency of open-source large language models (LLMs) with real-time, parameterized access to authoritative oceanographic data streams hosted by the National Oceanic and Atmospheric Administration (NOAA). Each query such as \"What was Boston Harbor's highest water level in 2024?\" triggers real-time API calls that identify, parse, and synthesize relevant datasets into reproducible natural-language responses and data visualizations. In a blind comparison with three widely used AI chat-interface products, only OceanAI produced NOAA-sourced values with original data references; others either declined to answer or provided unsupported results. Designed for extensibility, OceanAI connects to multiple NOAA data products and variables, supporting applications in marine hazard forecasting, ecosystem assessment, and water-quality monitoring. By grounding outputs and verifiable observations, OceanAI advances transparency, reproducibility, and trust, offering a scalable framework for AI-enabled decision support within the oceans. A public demonstration is available at https://oceanai.ai4ocean.xyz.",
+  "nuggets": [
+    {
+      "text": "OceanAI integrates LLMs with NOAA data for real-time responses",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "General LLMs often generate unverified 'hallucinations'",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI supports marine hazard forecasting and ecosystem assessment",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "OceanAI ensures transparency, reproducibility, and trust",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI outperforms other AI chat interfaces in data accuracy",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "OceanAI connects to multiple NOAA data products and variables",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "OceanAI offers a scalable framework for AI-enabled decision support",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Toolformer and HuggingGPT autonomously call APIs for information retrieval",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs in scientific domains need factual accuracy and timeliness",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ClimateGPT and GeoGalactica process literature but lack real-time data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "IDEA integrates LLMs with geoscience data and analytical tools",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Tool augmentation helps LLMs improve factual accuracy",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Retrieval-augmented generation grounds responses in retrieved documents",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "OceanGPT lacks real-time integration with observational datasets",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI provides a public demonstration at oceanai.ai4ocean.xyz",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "OceanAI integrates LLMs with NOAA data for real-time responses",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "General LLMs often generate unverified 'hallucinations'",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI ensures transparency, reproducibility, and trust",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI offers a scalable framework for AI-enabled decision support",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs in scientific domains need factual accuracy and timeliness",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ClimateGPT and GeoGalactica process literature but lack real-time data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "IDEA integrates LLMs with geoscience data and analytical tools",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanGPT lacks real-time integration with observational datasets",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "OceanAI integrates LLMs with NOAA data for real-time responses",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "General LLMs often generate unverified 'hallucinations'",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI ensures transparency, reproducibility, and trust",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "OceanAI offers a scalable framework for AI-enabled decision support",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Toolformer and HuggingGPT autonomously call APIs for information retrieval",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs in scientific domains need factual accuracy and timeliness",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ClimateGPT and GeoGalactica process literature but lack real-time data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "IDEA integrates LLMs with geoscience data and analytical tools",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Tool augmentation helps LLMs improve factual accuracy",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Retrieval-augmented generation grounds responses in retrieved documents",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "OceanGPT lacks real-time integration with observational datasets",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6363636363636364,
+    "strict_all_score": 0.5333333333333333,
+    "vital_score": 0.6818181818181818,
+    "all_score": 0.6333333333333333
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "qid": "2510.16986v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nIn many business settings, task-specific labeled data are scarce or costly to obtain, which limits supervised learning on a specific task. To address this challenge, we study sample sharing in the case of ridge regression: leveraging an auxiliary data set while explicitly protecting against negative transfer. We introduce a principled, data-driven rule that decides how many samples from an auxiliary dataset to add to the target training set. The rule is based on an estimate of the transfer gain i.e. the marginal reduction in the predictive error. Building on this estimator, we derive finite-sample guaranties: under standard conditions, the procedure borrows when it improves parameter estimation and abstains otherwise. In the Gaussian feature setting, we analyze which data set properties ensure that borrowing samples reduces the predictive error. We validate the approach in synthetic and real datasets, observing consistent gains over strong baselines and single-task training while avoiding negative transfer.",
+  "nuggets": [
+    {
+      "text": "Transfer learning offsets data scarcity by leveraging source tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Negative transfer degrades performance when source tasks misalign",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample sharing involves adding auxiliary samples to target training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven rule decides auxiliary sample addition in ridge regression",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Finite-sample guarantees ensure borrowing improves parameter estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gaussian feature setting analyzed for predictive error reduction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Consistent gains observed over baselines in synthetic and real datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample sharing used in multi-agent linear bandits and Bayesian inference",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Our method avoids joint source-target objectives, focuses on target task",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transfer learning includes domain adaptation and pretraining-fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Negative transfer gap and transfer risk are key concepts",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Regularization in linear models biases target parameters toward source",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Transfer learning offsets data scarcity by leveraging source tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Negative transfer degrades performance when source tasks misalign",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample sharing involves adding auxiliary samples to target training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven rule decides auxiliary sample addition in ridge regression",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Finite-sample guarantees ensure borrowing improves parameter estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gaussian feature setting analyzed for predictive error reduction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Consistent gains observed over baselines in synthetic and real datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our method avoids joint source-target objectives, focuses on target task",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transfer learning includes domain adaptation and pretraining-fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Regularization in linear models biases target parameters toward source",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Transfer learning offsets data scarcity by leveraging source tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Negative transfer degrades performance when source tasks misalign",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample sharing involves adding auxiliary samples to target training",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-driven rule decides auxiliary sample addition in ridge regression",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Finite-sample guarantees ensure borrowing improves parameter estimation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gaussian feature setting analyzed for predictive error reduction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Consistent gains observed over baselines in synthetic and real datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sample sharing used in multi-agent linear bandits and Bayesian inference",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Our method avoids joint source-target objectives, focuses on target task",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Transfer learning includes domain adaptation and pretraining-fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Negative transfer gap and transfer risk are key concepts",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Regularization in linear models biases target parameters toward source",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.8888888888888888,
+    "strict_all_score": 0.8333333333333334,
+    "vital_score": 0.9444444444444444,
+    "all_score": 0.9166666666666666
+  }
+}

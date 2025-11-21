@@ -1,0 +1,166 @@
+{
+  "qid": "2511.06239v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nLearning-based methods for sampling from the Gibbs distribution in finite-dimensional spaces have progressed quickly, yet theory and algorithmic design for infinite-dimensional function spaces remain limited. This gap persists despite their strong potential for sampling the paths of conditional diffusion processes, enabling efficient simulation of trajectories of diffusion processes that respect rare events or boundary constraints. In this work, we present the adjoint sampler for infinite-dimensional function spaces, a stochastic optimal control-based diffusion sampler that operates in function space and targets Gibbs-type distributions on infinite-dimensional Hilbert spaces. Our Functional Adjoint Sampler (FAS) generalizes Adjoint Sampling (Havens et al., 2025) to Hilbert spaces based on a SOC theory called stochastic maximum principle, yielding a simple and scalable matching-type objective for a functional representation. We show that FAS achieves superior transition path sampling performance across synthetic potential and real molecular systems, including Alanine Dipeptide and Chignolin.",
+  "nuggets": [
+    {
+      "text": "Functional Adjoint Sampler (FAS) targets Gibbs distributions in Hilbert spaces",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "FAS generalizes Adjoint Sampling to infinite-dimensional function spaces",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Stochastic optimal control theory underpins FAS",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "FAS uses stochastic maximum principle for functional representation",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "FAS excels in transition path sampling for molecular systems",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Existing approaches limited to finite-dimensional settings",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensions to function space remain unexplored",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Score-based diffusion models extended to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flow matching generalized to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Schrödinger bridge matching adapted to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion samplers address sample-to-energy settings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adjoint-based samplers scale better than vanilla SOC approaches",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Stochastic optimal control theory underpins FAS",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing approaches limited to finite-dimensional settings",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensions to function space remain unexplored",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Score-based diffusion models extended to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flow matching generalized to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Schrödinger bridge matching adapted to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion samplers address sample-to-energy settings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adjoint-based samplers scale better than vanilla SOC approaches",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Functional Adjoint Sampler (FAS) targets Gibbs distributions in Hilbert spaces",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "FAS generalizes Adjoint Sampling to infinite-dimensional function spaces",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Stochastic optimal control theory underpins FAS",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing approaches limited to finite-dimensional settings",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensions to function space remain unexplored",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Score-based diffusion models extended to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Flow matching generalized to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Schrödinger bridge matching adapted to function space",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion samplers address sample-to-energy settings",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Adjoint-based samplers scale better than vanilla SOC approaches",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.42857142857142855,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.5714285714285714,
+    "all_score": 0.75
+  }
+}

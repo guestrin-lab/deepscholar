@@ -1,0 +1,156 @@
+{
+  "qid": "2511.00977v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nUnderstanding the evolution of cellular microenvironments in spatiotemporal data is essential for deciphering tissue development and disease progression. While experimental techniques like spatial transcriptomics now enable high-resolution mapping of tissue organization across space and time, current methods that model cellular evolution operate at the single-cell level, overlooking the coordinated development of cellular states in a tissue. We introduce NicheFlow, a flow-based generative model that infers the temporal trajectory of cellular microenvironments across sequential spatial slides. By representing local cell neighborhoods as point clouds, NicheFlow jointly models the evolution of cell states and spatial coordinates using optimal transport and Variational Flow Matching. Our approach successfully recovers both global spatial architecture and local microenvironment composition across diverse spatiotemporal datasets, from embryonic to brain development.",
+  "nuggets": [
+    {
+      "text": "NicheFlow models cellular microenvironments using generative models.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Spatial transcriptomics enables high-resolution tissue mapping.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "NicheFlow uses optimal transport and Variational Flow Matching.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Point clouds represent local cell neighborhoods in NicheFlow.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NicheFlow recovers global spatial architecture and local composition.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "NicheFlow infers niche trajectories and generates coordinates and states.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models predict gene expression from histology slides.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LUNA predicts single-cell spatial coordinates using diffusion models.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Graph-based algorithms infer pseudotime from spatial slides.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Discrete OT links cells across time for state evolution.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeST-OT aligns spatial slides with semi-relaxed OT couplings.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SpaTrack uses Fused Gromov-Wasserstein OT for spatial differences.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "NicheFlow uses optimal transport and Variational Flow Matching.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Point clouds represent local cell neighborhoods in NicheFlow.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NicheFlow infers niche trajectories and generates coordinates and states.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Discrete OT links cells across time for state evolution.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeST-OT aligns spatial slides with semi-relaxed OT couplings.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SpaTrack uses Fused Gromov-Wasserstein OT for spatial differences.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "NicheFlow models cellular microenvironments using generative models.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "NicheFlow uses optimal transport and Variational Flow Matching.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Point clouds represent local cell neighborhoods in NicheFlow.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NicheFlow infers niche trajectories and generates coordinates and states.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Generative models predict gene expression from histology slides.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LUNA predicts single-cell spatial coordinates using diffusion models.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Graph-based algorithms infer pseudotime from spatial slides.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Discrete OT links cells across time for state evolution.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "DeST-OT aligns spatial slides with semi-relaxed OT couplings.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SpaTrack uses Fused Gromov-Wasserstein OT for spatial differences.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.5,
+    "vital_score": 0.5833333333333334,
+    "all_score": 0.6666666666666666
+  }
+}

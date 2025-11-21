@@ -1,0 +1,191 @@
+{
+  "qid": "2511.05629v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nSea Surface Temperature (SST) is crucial for understanding upper-ocean thermal dynamics and ocean-atmosphere interactions, which have profound economic and social impacts. While data-driven models show promise in SST prediction, their black-box nature often limits interpretability and overlooks key physical processes. Recently, physics-informed neural networks have been gaining momentum but struggle with complex ocean-atmosphere dynamics due to 1) inadequate characterization of seawater movement (e.g., coastal upwelling) and 2) insufficient integration of external SST drivers (e.g., turbulent heat fluxes). To address these challenges, we propose SSTODE, a physics-informed Neural Ordinary Differential Equations (Neural ODEs) framework for SST prediction. First, we derive ODEs from fluid transport principles, incorporating both advection and diffusion to model ocean spatiotemporal dynamics. Through variational optimization, we recover a latent velocity field that explicitly governs the temporal dynamics of SST. Building upon ODE, we introduce an Energy Exchanges Integrator (EEI)-inspired by ocean heat budget equations-to account for external forcing factors. Thus, the variations in the components of these factors provide deeper insights into SST dynamics. Extensive experiments demonstrate that SSTODE achieves state-of-the-art performances in global and regional SST forecasting benchmarks. Furthermore, SSTODE visually reveals the impact of advection dynamics, thermal diffusion patterns, and diurnal heating-cooling cycles on SST evolution. These findings demonstrate the model's interpretability and physical consistency.",
+  "nuggets": [
+    {
+      "text": "SSTODE uses Neural ODEs for SST prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed models improve interpretability in SST forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning models lack explicit physical constraints",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SSTODE incorporates advection and diffusion for ocean dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy Exchanges Integrator accounts for external forcing factors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SSTODE achieves state-of-the-art SST forecasting performance",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Neural ODEs model fluid dynamics and climate processes",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SSTODE reveals advection dynamics and thermal diffusion patterns",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SSTODE addresses limitations of idealized advection assumptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational optimization recovers latent velocity fields",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SSTODE visually demonstrates diurnal heating-cooling cycles",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Traditional models struggle with computational cost and adaptability",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Neural ODEs integrate dynamics from initial conditions",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "PINNs combine data-driven learning with physical priors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous-time forecasting preserves intermediate states",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "SSTODE uses Neural ODEs for SST prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed models improve interpretability in SST forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning models lack explicit physical constraints",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SSTODE incorporates advection and diffusion for ocean dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy Exchanges Integrator accounts for external forcing factors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SSTODE addresses limitations of idealized advection assumptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional models struggle with computational cost and adaptability",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "PINNs combine data-driven learning with physical priors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous-time forecasting preserves intermediate states",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "SSTODE uses Neural ODEs for SST prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Physics-informed models improve interpretability in SST forecasting",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Deep learning models lack explicit physical constraints",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SSTODE incorporates advection and diffusion for ocean dynamics",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Energy Exchanges Integrator accounts for external forcing factors",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Neural ODEs model fluid dynamics and climate processes",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SSTODE addresses limitations of idealized advection assumptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional models struggle with computational cost and adaptability",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Neural ODEs integrate dynamics from initial conditions",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "PINNs combine data-driven learning with physical priors",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous-time forecasting preserves intermediate states",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5454545454545454,
+    "strict_all_score": 0.6,
+    "vital_score": 0.5909090909090909,
+    "all_score": 0.6666666666666666
+  }
+}

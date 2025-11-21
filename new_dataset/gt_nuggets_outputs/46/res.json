@@ -1,0 +1,161 @@
+{
+  "qid": "2510.19484v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe molecular large language models have garnered widespread attention due to their promising potential on molecular applications. However, current molecular large language models face significant limitations in understanding molecules due to inadequate textual descriptions and suboptimal molecular representation strategies during pretraining. To address these challenges, we introduce KnowMol-100K, a large-scale dataset with 100K fine-grained molecular annotations across multiple levels, bridging the gap between molecules and textual descriptions. Additionally, we propose chemically-informative molecular representation, effectively addressing limitations in existing molecular representation strategies. Building upon these innovations, we develop KnowMol, a state-of-the-art multi-modal molecular large language model. Extensive experiments demonstrate that KnowMol achieves superior performance across molecular understanding and generation tasks.\n  GitHub: https://github.com/yzf-code/KnowMol\n  Huggingface: https://hf.co/datasets/yzf1102/KnowMol-100K",
+  "nuggets": [
+    {
+      "text": "KnowMol-100K dataset contains 100K fine-grained molecular annotations",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "KnowMol model excels in molecular understanding and generation tasks",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Existing models struggle with inadequate textual descriptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Chemically-informative molecular representation proposed in KnowMol",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "KnowMol bridges gap between molecules and textual descriptions",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "KnowMol model is multi-modal and state-of-the-art",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Existing models have suboptimal molecular representation strategies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KnowMol addresses limitations in molecular representation strategies",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "KnowMol uses advanced tools for multi-level molecule-text dataset",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods rely heavily on PubChem data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "HIGHT and UniMoT propose tokenizers for molecular representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KnowMol-100K dataset available on Huggingface",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "KnowMol-100K dataset available on GitHub",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GPT-3.5 and GPT-4 used for semantic enrichment in other models",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MolCA and 3D-MoLM leverage Q-Former modules",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Existing models struggle with inadequate textual descriptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing models have suboptimal molecular representation strategies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KnowMol uses advanced tools for multi-level molecule-text dataset",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods rely heavily on PubChem data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "HIGHT and UniMoT propose tokenizers for molecular representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MolCA and 3D-MoLM leverage Q-Former modules",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "KnowMol-100K dataset contains 100K fine-grained molecular annotations",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Existing models struggle with inadequate textual descriptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing models have suboptimal molecular representation strategies",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "KnowMol uses advanced tools for multi-level molecule-text dataset",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing methods rely heavily on PubChem data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "HIGHT and UniMoT propose tokenizers for molecular representations",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GPT-3.5 and GPT-4 used for semantic enrichment in other models",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MolCA and 3D-MoLM leverage Q-Former modules",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.45454545454545453,
+    "strict_all_score": 0.4,
+    "vital_score": 0.5,
+    "all_score": 0.4666666666666667
+  }
+}

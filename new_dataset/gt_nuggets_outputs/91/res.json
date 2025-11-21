@@ -1,0 +1,246 @@
+{
+  "qid": "2511.09157v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWith the deep integration of artificial intelligence and interactive technology, Graphical User Interface (GUI) Agent, as the carrier connecting goal-oriented natural language and real-world devices, has received widespread attention from the community. Contemporary benchmarks aim to evaluate the comprehensive capabilities of GUI agents in GUI operation tasks, generally determining task completion solely by inspecting the final screen state. However, GUI operation tasks consist of multiple chained steps while not all critical information is presented in the final few pages. Although a few research has begun to incorporate intermediate steps into evaluation, accurately and automatically capturing this process information still remains an open challenge. To address this weakness, we introduce ProBench, a comprehensive mobile benchmark with over 200 challenging GUI tasks covering widely-used scenarios. Remaining the traditional State-related Task evaluation, we extend our dataset to include Process-related Task and design a specialized evaluation method. A newly introduced Process Provider automatically supplies accurate process information, enabling presice assessment of agent's performance. Our evaluation of advanced GUI agents reveals significant limitations for real-world GUI scenarios. These shortcomings are prevalent across diverse models, including both large-scale generalist models and smaller, GUI-specific models. A detailed error analysis further exposes several universal problems, outlining concrete directions for future improvements.",
+  "nuggets": [
+    {
+      "text": "ProBench introduces over 200 challenging GUI tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench includes Process-related Task evaluation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Process Provider supplies accurate process information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench reveals limitations in advanced GUI agents",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SPA-BENCH and A3 consider intermediate process information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench captures process information with Process Provider",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "RICO dataset for GUI element classification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "UGIF introduced instruction-based GUI control task",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AITW dataset suffers from instruction redundancy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AITZ refined AITW with Chain-of-Action-Thought",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidControl dataset with simpler tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Static benchmarks ignore dynamic, interactive features",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidArena focuses on Google and built-in apps",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "B-Moca tasks lack diversity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidWorld uses open-source applications from F-Droid",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidLab leverages offline and static applications",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "ProBench introduces over 200 challenging GUI tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench includes Process-related Task evaluation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Process Provider supplies accurate process information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPA-BENCH and A3 consider intermediate process information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench captures process information with Process Provider",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "RICO dataset for GUI element classification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "UGIF introduced instruction-based GUI control task",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AITW dataset suffers from instruction redundancy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AITZ refined AITW with Chain-of-Action-Thought",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidControl dataset with simpler tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Static benchmarks ignore dynamic, interactive features",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidArena focuses on Google and built-in apps",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "B-Moca tasks lack diversity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidWorld uses open-source applications from F-Droid",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidLab leverages offline and static applications",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "ProBench introduces over 200 challenging GUI tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench includes Process-related Task evaluation",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Process Provider supplies accurate process information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPA-BENCH and A3 consider intermediate process information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ProBench captures process information with Process Provider",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "RICO dataset for GUI element classification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "UGIF introduced instruction-based GUI control task",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AITW dataset suffers from instruction redundancy",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AITZ refined AITW with Chain-of-Action-Thought",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidControl dataset with simpler tasks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Static benchmarks ignore dynamic, interactive features",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidArena focuses on Google and built-in apps",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "B-Moca tasks lack diversity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidWorld uses open-source applications from F-Droid",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AndroidLab leverages offline and static applications",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.8333333333333334,
+    "strict_all_score": 0.9375,
+    "vital_score": 0.8333333333333334,
+    "all_score": 0.9375
+  }
+}

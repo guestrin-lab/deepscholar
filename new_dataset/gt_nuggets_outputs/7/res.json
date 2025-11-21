@@ -1,0 +1,266 @@
+{
+  "qid": "2510.19870v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nMulti-omics data integration is crucial for understanding complex diseases, yet limited sample sizes, noise, and heterogeneity often reduce predictive power. To address these challenges, we introduce Omics-GAN, a Generative Adversarial Network (GAN)-based framework designed to generate high-quality synthetic multi-omics profiles while preserving biological relationships. We evaluated Omics-GAN on three omics types (mRNA, miRNA, and DNA methylation) using the ROSMAP cohort for Alzheimer's disease (AD) and TCGA datasets for colon and liver cancer. A support vector machine (SVM) classifier with repeated 5-fold cross-validation demonstrated that synthetic datasets consistently improved prediction accuracy compared to original omics profiles. The AUC of SVM for mRNA improved from 0.72 to 0.74 in AD, and from 0.68 to 0.72 in liver cancer. Synthetic miRNA enhanced classification in colon cancer from 0.59 to 0.69, while synthetic methylation data improved performance in liver cancer from 0.64 to 0.71. Boxplot analyses confirmed that synthetic data preserved statistical distributions while reducing noise and outliers. Feature selection identified significant genes overlapping with original datasets and revealed additional candidates validated by GO and KEGG enrichment analyses. Finally, molecular docking highlighted potential drug repurposing candidates, including Nilotinib for AD, Atovaquone for liver cancer, and Tecovirimat for colon cancer. Omics-GAN enhances disease prediction, preserves biological fidelity, and accelerates biomarker and drug discovery, offering a scalable strategy for precision medicine applications.",
+  "nuggets": [
+    {
+      "text": "Omics-GAN generates high-quality synthetic multi-omics profiles",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GANs enhance predictive accuracy in multi-omics data integration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Omics-GAN evaluated on ROSMAP and TCGA datasets",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Synthetic datasets improve SVM prediction accuracy",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Omics-GAN preserves biological relationships in synthetic data",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Feature selection reveals significant genes and new candidates",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Molecular docking identifies potential drug repurposing candidates",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Omics-GAN accelerates biomarker and drug discovery",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GANs capture non-linear correlations in multi-omics data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GANs generate synthetic data to augment small datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MiNet and DeepOmix incorporate biological knowledge into architectures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MoGCN integrates multiple modalities using autoencoders",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepMOCCA combines PPIs with multi-omics data for cancer prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MvNE learns unified probability distribution across omics modalities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Synthetic data reduces noise and outliers",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "GO and KEGG analyses validate new gene candidates",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Nilotinib, Atovaquone, Tecovirimat identified for drug repurposing",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Traditional methods focus on analyzing multi-omics data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MOFA identifies transcriptional and epigenetic changes",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "iOmicsPASS integrates multi-omics data with biological networks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "NEMO captures similarity patterns across different omics",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "PINSPlus discovers tumor subtypes with survival differences",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MOLI uses modality-specific neural networks for drug response prediction",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SALMON organizes data for biological interpretability",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DCCA analyzes single-cell multi-omics data with cyclical attention",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "GANs enhance predictive accuracy in multi-omics data integration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GANs capture non-linear correlations in multi-omics data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GANs generate synthetic data to augment small datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MiNet and DeepOmix incorporate biological knowledge into architectures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MoGCN integrates multiple modalities using autoencoders",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepMOCCA combines PPIs with multi-omics data for cancer prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MvNE learns unified probability distribution across omics modalities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional methods focus on analyzing multi-omics data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MOFA identifies transcriptional and epigenetic changes",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "iOmicsPASS integrates multi-omics data with biological networks",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "GANs enhance predictive accuracy in multi-omics data integration",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GANs capture non-linear correlations in multi-omics data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "GANs generate synthetic data to augment small datasets",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MiNet and DeepOmix incorporate biological knowledge into architectures",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MoGCN integrates multiple modalities using autoencoders",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DeepMOCCA combines PPIs with multi-omics data for cancer prediction",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MvNE learns unified probability distribution across omics modalities",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Traditional methods focus on analyzing multi-omics data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MOFA identifies transcriptional and epigenetic changes",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "iOmicsPASS integrates multi-omics data with biological networks",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "NEMO captures similarity patterns across different omics",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "PINSPlus discovers tumor subtypes with survival differences",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "MOLI uses modality-specific neural networks for drug response prediction",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SALMON organizes data for biological interpretability",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "DCCA analyzes single-cell multi-omics data with cyclical attention",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.4,
+    "vital_score": 0.5,
+    "all_score": 0.5
+  }
+}

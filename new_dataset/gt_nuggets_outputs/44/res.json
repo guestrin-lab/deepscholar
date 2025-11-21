@@ -1,0 +1,206 @@
+{
+  "qid": "2509.25171v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nReinforcement learning with stochastic optimal control offers a promising framework for diffusion fine-tuning, where a pre-trained diffusion model is optimized to generate paths that lead to a reward-tilted distribution. While these approaches enable optimization without access to explicit samples from the optimal distribution, they require training on rollouts under the current fine-tuned model, making them susceptible to reinforcing sub-optimal trajectories that yield poor rewards. To overcome this challenge, we introduce TRee Search Guided TRajectory-Aware Fine-Tuning for Discrete Diffusion (TR2-D2), a novel framework that optimizes reward-guided discrete diffusion trajectories with tree search to construct replay buffers for trajectory-aware fine-tuning. These buffers are generated using Monte Carlo Tree Search (MCTS) and subsequently used to fine-tune a pre-trained discrete diffusion model under a stochastic optimal control objective. We validate our framework on single- and multi-objective fine-tuning of biological sequence diffusion models, highlighting the overall effectiveness of TR2-D2 for reliable reward-guided fine-tuning in discrete sequence generation.",
+  "nuggets": [
+    {
+      "text": "TR2-D2 optimizes discrete diffusion with tree search",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Monte Carlo Tree Search constructs replay buffers",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Trajectory-aware fine-tuning for discrete diffusion",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Stochastic optimal control in diffusion fine-tuning",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Reward-guided discrete diffusion trajectories",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Fine-tuning biological sequence diffusion models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reinforcement learning in diffusion model optimization",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Monte Carlo Tree Search in diffusion fine-tuning",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Search-based optimization in diffusion trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Discrete diffusion models for sequence data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Entropy-regularized control in diffusion fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-objective optimization in diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Classifier-free guidance in discrete diffusion",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Inference-time scaling for diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Masked discrete diffusion models capture long-range dependencies",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Fine-tuning biological sequence diffusion models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reinforcement learning in diffusion model optimization",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Search-based optimization in diffusion trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Discrete diffusion models for sequence data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Entropy-regularized control in diffusion fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-objective optimization in diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Inference-time scaling for diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Masked discrete diffusion models capture long-range dependencies",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "TR2-D2 optimizes discrete diffusion with tree search",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Monte Carlo Tree Search constructs replay buffers",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Trajectory-aware fine-tuning for discrete diffusion",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Stochastic optimal control in diffusion fine-tuning",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Reward-guided discrete diffusion trajectories",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Fine-tuning biological sequence diffusion models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Reinforcement learning in diffusion model optimization",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Monte Carlo Tree Search in diffusion fine-tuning",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Search-based optimization in diffusion trajectories",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Discrete diffusion models for sequence data",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Entropy-regularized control in diffusion fine-tuning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Multi-objective optimization in diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Classifier-free guidance in discrete diffusion",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Inference-time scaling for diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Masked discrete diffusion models capture long-range dependencies",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.3333333333333333,
+    "strict_all_score": 0.5333333333333333,
+    "vital_score": 0.6666666666666666,
+    "all_score": 0.7666666666666667
+  }
+}

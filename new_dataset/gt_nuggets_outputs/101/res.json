@@ -1,0 +1,226 @@
+{
+  "qid": "2511.08402v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nAccurate disease interpretation from radiology remains challenging due to imaging heterogeneity. Achieving expert-level diagnostic decisions requires integration of subtle image features with clinical knowledge. Yet major vision-language models (VLMs) treat images as holistic entities and overlook fine-grained image details that are vital for disease diagnosis. Clinicians analyze images by utilizing their prior medical knowledge and identify anatomical structures as important region of interests (ROIs). Inspired from this human-centric workflow, we introduce Anatomy-VLM, a fine-grained, vision-language model that incorporates multi-scale information. First, we design a model encoder to localize key anatomical features from entire medical images. Second, these regions are enriched with structured knowledge for contextually-aware interpretation. Finally, the model encoder aligns multi-scale medical information to generate clinically-interpretable disease prediction. Anatomy-VLM achieves outstanding performance on both in- and out-of-distribution datasets. We also validate the performance of Anatomy-VLM on downstream image segmentation tasks, suggesting that its fine-grained alignment captures anatomical and pathology-related knowledge. Furthermore, the Anatomy-VLM's encoder facilitates zero-shot anatomy-wise interpretation, providing its strong expert-level clinical interpretation capabilities.",
+  "nuggets": [
+    {
+      "text": "Anatomy-VLM integrates multi-scale information for disease diagnosis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision-Language Models often overlook fine-grained image details",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Clinicians use anatomical structures as regions of interest",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Anatomy-VLM localizes key anatomical features in medical images",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Structured knowledge enriches regions for context-aware interpretation",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Anatomy-VLM aligns multi-scale medical information for predictions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "General-purpose VLMs lack specialized medical knowledge",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM mimics radiologists' multi-step reasoning process",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM unifies object locations, visual features, textual information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM delivers clinically-grounded outputs with interpretability",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM excels in in- and out-of-distribution datasets",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Anatomy-VLM validated on downstream image segmentation tasks",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Anatomy-VLM's encoder supports zero-shot anatomy-wise interpretation",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Fine-grained alignment captures anatomical and pathology-related knowledge",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BioViL uses radiology image-text pairs for alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedCLIP focuses on medical image-text contrastive learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedKLIP enhances feature representation with medical knowledge",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Anatomy-VLM integrates multi-scale information for disease diagnosis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision-Language Models often overlook fine-grained image details",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM localizes key anatomical features in medical images",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM aligns multi-scale medical information for predictions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "General-purpose VLMs lack specialized medical knowledge",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM mimics radiologists' multi-step reasoning process",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM unifies object locations, visual features, textual information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM delivers clinically-grounded outputs with interpretability",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fine-grained alignment captures anatomical and pathology-related knowledge",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BioViL uses radiology image-text pairs for alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedCLIP focuses on medical image-text contrastive learning",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Anatomy-VLM integrates multi-scale information for disease diagnosis",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Vision-Language Models often overlook fine-grained image details",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Clinicians use anatomical structures as regions of interest",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Anatomy-VLM localizes key anatomical features in medical images",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Structured knowledge enriches regions for context-aware interpretation",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Anatomy-VLM aligns multi-scale medical information for predictions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "General-purpose VLMs lack specialized medical knowledge",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM mimics radiologists' multi-step reasoning process",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM unifies object locations, visual features, textual information",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Anatomy-VLM delivers clinically-grounded outputs with interpretability",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Fine-grained alignment captures anatomical and pathology-related knowledge",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BioViL uses radiology image-text pairs for alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedCLIP focuses on medical image-text contrastive learning",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MedKLIP enhances feature representation with medical knowledge",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.8,
+    "strict_all_score": 0.6470588235294118,
+    "vital_score": 0.9,
+    "all_score": 0.7352941176470589
+  }
+}

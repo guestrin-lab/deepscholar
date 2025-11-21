@@ -1,0 +1,146 @@
+{
+  "qid": "2511.09737v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nGeneralization to unseen environments is a significant challenge in the field of robotics and control. In this work, we focus on contextual reinforcement learning, where agents act within environments with varying contexts, such as self-driving cars or quadrupedal robots that need to operate in different terrains or weather conditions than they were trained for. We tackle the critical task of generalizing to out-of-distribution (OOD) settings, without access to explicit context information at test time. Recent work has addressed this problem by training a context encoder and a history adaptation module in separate stages. While promising, this two-phase approach is cumbersome to implement and train. We simplify the methodology and introduce SPARC: single-phase adaptation for robust control. We test SPARC on varying contexts within the high-fidelity racing simulator Gran Turismo 7 and wind-perturbed MuJoCo environments, and find that it achieves reliable and robust OOD generalization.",
+  "nuggets": [
+    {
+      "text": "Generalization to unseen environments is a key challenge in robotics.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Contextual reinforcement learning adapts agents to varying environmental contexts.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPARC simplifies adaptation by using a single-phase approach.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Two-phase learning involves context encoder and history adaptation module.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SPARC tested on Gran Turismo 7 and MuJoCo environments.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Domain randomization introduces diversity during training for robust policies.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "System identification methods improve performance under varying conditions.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Meta-reinforcement learning enables adaptable policy learning.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Model-Agnostic Meta-Learning (MAML) allows rapid task adaptation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hypernetworks generate task-specific policy parameters on the fly.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Generalization to unseen environments is a key challenge in robotics.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Contextual reinforcement learning adapts agents to varying environmental contexts.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Two-phase learning involves context encoder and history adaptation module.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Domain randomization introduces diversity during training for robust policies.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "System identification methods improve performance under varying conditions.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Meta-reinforcement learning enables adaptable policy learning.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Model-Agnostic Meta-Learning (MAML) allows rapid task adaptation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hypernetworks generate task-specific policy parameters on the fly.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Generalization to unseen environments is a key challenge in robotics.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Contextual reinforcement learning adapts agents to varying environmental contexts.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Two-phase learning involves context encoder and history adaptation module.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Domain randomization introduces diversity during training for robust policies.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "System identification methods improve performance under varying conditions.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Meta-reinforcement learning enables adaptable policy learning.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Model-Agnostic Meta-Learning (MAML) allows rapid task adaptation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hypernetworks generate task-specific policy parameters on the fly.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.6,
+    "strict_all_score": 0.8,
+    "vital_score": 0.6,
+    "all_score": 0.8
+  }
+}

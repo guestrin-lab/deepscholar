@@ -1,0 +1,206 @@
+{
+  "qid": "2510.25743v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe introduce Agentic Economic Modeling (AEM), a framework that aligns synthetic LLM choices with small-sample human evidence for reliable econometric inference. AEM first generates task-conditioned synthetic choices via LLMs, then learns a bias-correction mapping from task features and raw LLM choices to human-aligned choices, upon which standard econometric estimators perform inference to recover demand elasticities and treatment effects.We validate AEM in two experiments. In a large scale conjoint study with millions of observations, using only 10% of the original data to fit the correction model lowers the error of the demand-parameter estimates, while uncorrected LLM choices even increase the errors. In a regional field experiment, a mixture model calibrated on 10% of geographic regions estimates an out-of-domain treatment effect of -65\\pm10 bps, closely matching the full human experiment (-60\\pm8 bps).Under time-wise extrapolation, training with only day-one human data yields -24 bps (95% CI: [-26, -22], p<1e-5),improving over the human-only day-one baseline (-17 bps, 95% CI: [-43, +9], p=0.2049).These results demonstrate AEM's potential to improve RCT efficiency and establish a foundation method for LLM-based counterfactual generation.",
+  "nuggets": [
+    {
+      "text": "AEM aligns LLM choices with human evidence.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AEM improves econometric inference with bias correction.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AEM validated in large-scale conjoint and field experiments.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "AEM reduces error in demand-parameter estimates.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AEM improves RCT efficiency and counterfactual generation.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLMs can simulate experimental subjects in research.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs show machine bias in opinion polling.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Persona-based prompting captures heterogeneity in responses.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-human hybrids enhance insight generation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mixture-of-Personas increases response diversity.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-generated personas may embed systematic errors.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs used in marketing for synthetic respondents.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs require rigorous validation to avoid social risks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-augmentation integrates LLM and human data.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Model alignment affects population-simulation results.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "LLMs can simulate experimental subjects in research.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs show machine bias in opinion polling.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Persona-based prompting captures heterogeneity in responses.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-human hybrids enhance insight generation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mixture-of-Personas increases response diversity.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-generated personas may embed systematic errors.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs used in marketing for synthetic respondents.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs require rigorous validation to avoid social risks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-augmentation integrates LLM and human data.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Model alignment affects population-simulation results.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "AEM aligns LLM choices with human evidence.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AEM improves econometric inference with bias correction.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "AEM reduces error in demand-parameter estimates.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "LLMs can simulate experimental subjects in research.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs show machine bias in opinion polling.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Persona-based prompting captures heterogeneity in responses.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-human hybrids enhance insight generation.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Mixture-of-Personas increases response diversity.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLM-generated personas may embed systematic errors.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs used in marketing for synthetic respondents.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs require rigorous validation to avoid social risks.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Data-augmentation integrates LLM and human data.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Model alignment affects population-simulation results.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.0,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.3,
+    "all_score": 0.7666666666666667
+  }
+}

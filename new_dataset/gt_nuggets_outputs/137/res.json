@@ -1,0 +1,191 @@
+{
+  "qid": "2511.00727v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe develop new methods to integrate experimental and observational data in causal inference. While randomized controlled trials offer strong internal validity, they are often costly and therefore limited in sample size. Observational data, though cheaper and often with larger sample sizes, are prone to biases due to unmeasured confounders. To harness their complementary strengths, we propose a systematic framework that formulates causal estimation as an empirical risk minimization (ERM) problem. A full model containing the causal parameter is obtained by minimizing a weighted combination of experimental and observational losses--capturing the causal parameter's validity and the full model's fit, respectively. The weight is chosen through cross-validation on the causal parameter across experimental folds. Our experiments on real and synthetic data show the efficacy and reliability of our method. We also provide theoretical non-asymptotic error bounds.",
+  "nuggets": [
+    {
+      "text": "Integrating experimental and observational data in causal inference",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Randomized controlled trials offer strong internal validity",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Observational data prone to biases from unmeasured confounders",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Systematic framework for causal estimation as empirical risk minimization",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Weighted combination of experimental and observational losses",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Cross-validation to choose weight for causal parameter",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our method dynamically adjusts weighting of data sources",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-validation tailored to causal estimands",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing literature often ad hoc with auxiliary assumptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Efficacy and reliability shown on real and synthetic data",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Theoretical non-asymptotic error bounds provided",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Pooling methods require unconfoundedness assumptions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Shrinkage methods assume equal average effects across strata",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Error-prone estimators balance biased components to cancel confounding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Soft version of pooling by adjusting data source weighting",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Observational data prone to biases from unmeasured confounders",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-validation to choose weight for causal parameter",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our method dynamically adjusts weighting of data sources",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-validation tailored to causal estimands",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing literature often ad hoc with auxiliary assumptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pooling methods require unconfoundedness assumptions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Shrinkage methods assume equal average effects across strata",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Error-prone estimators balance biased components to cancel confounding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Soft version of pooling by adjusting data source weighting",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Integrating experimental and observational data in causal inference",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Observational data prone to biases from unmeasured confounders",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Weighted combination of experimental and observational losses",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Cross-validation to choose weight for causal parameter",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Our method dynamically adjusts weighting of data sources",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Cross-validation tailored to causal estimands",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing literature often ad hoc with auxiliary assumptions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Pooling methods require unconfoundedness assumptions",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Shrinkage methods assume equal average effects across strata",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Error-prone estimators balance biased components to cancel confounding",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Soft version of pooling by adjusting data source weighting",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.5555555555555556,
+    "strict_all_score": 0.6,
+    "vital_score": 0.6666666666666666,
+    "all_score": 0.6666666666666666
+  }
+}

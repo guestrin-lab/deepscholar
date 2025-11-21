@@ -1,0 +1,181 @@
+{
+  "qid": "2511.08955v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nSimulating microstructure evolution (MicroEvo) is vital for materials design but demands high numerical accuracy, efficiency, and physical fidelity. Although recent studies on deep learning (DL) offer a promising alternative to traditional solvers, the field lacks standardized benchmarks. Existing studies are flawed due to a lack of comparing specialized MicroEvo DL models with state-of-the-art spatio-temporal architectures, an overemphasis on numerical accuracy over physical fidelity, and a failure to analyze error propagation over time. To address these gaps, we introduce MicroEvoEval, the first comprehensive benchmark for image-based microstructure evolution prediction. We evaluate 14 models, encompassing both domain-specific and general-purpose architectures, across four representative MicroEvo tasks with datasets specifically structured for both short- and long-term assessment. Our multi-faceted evaluation framework goes beyond numerical accuracy and computational cost, incorporating a curated set of structure-preserving metrics to assess physical fidelity. Our extensive evaluations yield several key insights. Notably, we find that modern architectures (e.g., VMamba), not only achieve superior long-term stability and physical fidelity but also operate with an order-of-magnitude greater computational efficiency. The results highlight the necessity of holistic evaluation and identify these modern architectures as a highly promising direction for developing efficient and reliable surrogate models in data-driven materials science.",
+  "nuggets": [
+    {
+      "text": "MicroEvoEval is the first comprehensive benchmark for MicroEvo prediction.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Deep learning offers an alternative to traditional MicroEvo solvers.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing studies lack comparison with state-of-the-art architectures.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "MicroEvoEval evaluates 14 models on four representative tasks.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Evaluation framework includes structure-preserving metrics for physical fidelity.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Modern architectures achieve superior stability and efficiency.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Holistic evaluation is necessary for developing surrogate models.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "MicroEvoEval addresses gaps in existing MicroEvo studies.",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Phase-field models describe spatio-temporal dynamics through PDEs.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High computational cost restricts traditional MicroEvo simulations.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RNN variants capture temporal dependencies in MicroEvo prediction.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "VMamba achieves superior long-term stability and physical fidelity.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "General-purpose spatio-temporal models lack inherent physical constraints.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based architectures capture long-range dependencies.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CNN-RNN structures use CNNs as feature extractors for RNNs.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Deep learning offers an alternative to traditional MicroEvo solvers.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing studies lack comparison with state-of-the-art architectures.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Phase-field models describe spatio-temporal dynamics through PDEs.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High computational cost restricts traditional MicroEvo simulations.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RNN variants capture temporal dependencies in MicroEvo prediction.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "General-purpose spatio-temporal models lack inherent physical constraints.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based architectures capture long-range dependencies.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CNN-RNN structures use CNNs as feature extractors for RNNs.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Deep learning offers an alternative to traditional MicroEvo solvers.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Existing studies lack comparison with state-of-the-art architectures.",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Modern architectures achieve superior stability and efficiency.",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Phase-field models describe spatio-temporal dynamics through PDEs.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "High computational cost restricts traditional MicroEvo simulations.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "RNN variants capture temporal dependencies in MicroEvo prediction.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "VMamba achieves superior long-term stability and physical fidelity.",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "General-purpose spatio-temporal models lack inherent physical constraints.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Transformer-based architectures capture long-range dependencies.",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "CNN-RNN structures use CNNs as feature extractors for RNNs.",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.25,
+    "strict_all_score": 0.5333333333333333,
+    "vital_score": 0.3125,
+    "all_score": 0.6
+  }
+}

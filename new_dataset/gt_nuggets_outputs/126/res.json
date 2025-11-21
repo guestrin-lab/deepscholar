@@ -1,0 +1,141 @@
+{
+  "qid": "2511.09748v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nLarge Language Models (LLMs) excel at evaluating machine translation (MT), but their scale and cost hinder deployment on edge devices and in privacy-sensitive workflows. We ask: how small can you get while still detecting meaning-altering translation errors? Focusing on English->German Critical Error Detection (CED), we benchmark sub-2B models (LFM2-350M, Qwen-3-0.6B/1.7B, Llama-3.2-1B-Instruct, Gemma-3-1B) across WMT21, WMT22, and SynCED-EnDe-2025. Our framework standardizes prompts, applies lightweight logit-bias calibration and majority voting, and reports both semantic quality (MCC, F1-ERR/F1-NOT) and compute metrics (VRAM, latency, throughput). Results reveal a clear sweet spot around one billion parameters: Gemma-3-1B provides the best quality-efficiency trade-off, reaching MCC=0.77 with F1-ERR=0.98 on SynCED-EnDe-2025 after merged-weights fine-tuning, while maintaining 400 ms single-sample latency on a MacBook Pro M4 Pro (24 GB). At larger scale, Qwen-3-1.7B attains the highest absolute MCC (+0.11 over Gemma) but with higher compute cost. In contrast, ultra-small models (0.6B) remain usable with few-shot calibration yet under-detect entity and number errors. Overall, compact, instruction-tuned LLMs augmented with lightweight calibration and small-sample supervision can deliver trustworthy, on-device CED for MT, enabling private, low-cost error screening in real-world translation pipelines. All datasets, prompts, and scripts are publicly available at our GitHub repository.",
+  "nuggets": [
+    {
+      "text": "LLMs excel at machine translation evaluation",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Scale and cost hinder LLM deployment on edge devices",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Focus on English->German Critical Error Detection (CED)",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Benchmark sub-2B models for CED",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Framework standardizes prompts and applies logit-bias calibration",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Reports semantic quality and compute metrics",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Gemma-3-1B offers best quality-efficiency trade-off",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Ultra-small models under-detect entity and number errors",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Compact LLMs enable private, low-cost error screening",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Models include LFM2-350M, Qwen-3-0.6B/1.7B, Llama-3.2-1B-Instruct, Gemma-3-1B",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gemma-3-1B achieves MCC=0.77, F1-ERR=0.98",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Qwen-3-1.7B has highest MCC but higher compute cost",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Datasets, prompts, scripts available on GitHub",
+      "importance": "okay",
+      "assignment": "not_support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "Scale and cost hinder LLM deployment on edge devices",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Focus on English->German Critical Error Detection (CED)",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Benchmark sub-2B models for CED",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Compact LLMs enable private, low-cost error screening",
+      "importance": "vital",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "LLMs excel at machine translation evaluation",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Scale and cost hinder LLM deployment on edge devices",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Focus on English->German Critical Error Detection (CED)",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Benchmark sub-2B models for CED",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Compact LLMs enable private, low-cost error screening",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Models include LFM2-350M, Qwen-3-0.6B/1.7B, Llama-3.2-1B-Instruct, Gemma-3-1B",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gemma-3-1B achieves MCC=0.77, F1-ERR=0.98",
+      "importance": "okay",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Qwen-3-1.7B has highest MCC but higher compute cost",
+      "importance": "okay",
+      "assignment": "partial_support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.4444444444444444,
+    "strict_all_score": 0.3076923076923077,
+    "vital_score": 0.5,
+    "all_score": 0.46153846153846156
+  }
+}

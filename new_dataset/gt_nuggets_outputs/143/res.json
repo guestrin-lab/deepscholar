@@ -1,0 +1,251 @@
+{
+  "qid": "2511.04856v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nWe introduce theoretically grounded Continuous Semi-Quantum Boltzmann Machines (CSQBMs) that supports continuous-action reinforcement learning. By combining exponential-family priors over visible units with quantum Boltzmann distributions over hidden units, CSQBMs yield a hybrid quantum-classical model that reduces qubit requirements while retaining strong expressiveness. Crucially, gradients with respect to continuous variables can be computed analytically, enabling direct integration into Actor-Critic algorithms. Building on this, we propose a continuous Q-learning framework that replaces global maximization by efficient sampling from the CSQBM distribution, thereby overcoming instability issues in continuous control.",
+  "nuggets": [
+    {
+      "text": "Continuous Semi-Quantum Boltzmann Machines (CSQBMs) for reinforcement learning",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "CSQBMs combine exponential-family priors with quantum Boltzmann distributions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CSQBMs reduce qubit requirements while retaining expressiveness",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "Gradients with respect to continuous variables computed analytically",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CSQBMs integrate directly into Actor-Critic algorithms",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous Q-learning framework using CSQBMs for efficient sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CSQBMs overcome instability issues in continuous control",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gaussian-Bernoulli models enhance expressiveness but face training instabilities",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Continuous-valued QBM uses imaginary-time evolution for efficient sampling",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Q-learning is sample-efficient but limited to discrete action spaces",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sampling-based methods approximate local optima but risk instability",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Quantum RL includes fully quantum and subroutine-based methods",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational approaches replace classical function approximators with quantum circuits",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Quantum Boltzmann machines exploit quantum sampling for richer representations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Free energy of QBM improves sample efficiency in discrete environments",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensions to continuous environments use Bernoulli-distributed binary visible units",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AC algorithms achieve state-of-the-art but face sample inefficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Analytic solutions for global optima require strong structural assumptions",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "CSQBMs combine exponential-family priors with quantum Boltzmann distributions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gradients with respect to continuous variables computed analytically",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CSQBMs integrate directly into Actor-Critic algorithms",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous Q-learning framework using CSQBMs for efficient sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Q-learning is sample-efficient but limited to discrete action spaces",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Quantum RL includes fully quantum and subroutine-based methods",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational approaches replace classical function approximators with quantum circuits",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Quantum Boltzmann machines exploit quantum sampling for richer representations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Free energy of QBM improves sample efficiency in discrete environments",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensions to continuous environments use Bernoulli-distributed binary visible units",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AC algorithms achieve state-of-the-art but face sample inefficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Analytic solutions for global optima require strong structural assumptions",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "Continuous Semi-Quantum Boltzmann Machines (CSQBMs) for reinforcement learning",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "CSQBMs combine exponential-family priors with quantum Boltzmann distributions",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Gradients with respect to continuous variables computed analytically",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CSQBMs integrate directly into Actor-Critic algorithms",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Continuous Q-learning framework using CSQBMs for efficient sampling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "CSQBMs overcome instability issues in continuous control",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Gaussian-Bernoulli models enhance expressiveness but face training instabilities",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Continuous-valued QBM uses imaginary-time evolution for efficient sampling",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Q-learning is sample-efficient but limited to discrete action spaces",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Sampling-based methods approximate local optima but risk instability",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Quantum RL includes fully quantum and subroutine-based methods",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Variational approaches replace classical function approximators with quantum circuits",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Quantum Boltzmann machines exploit quantum sampling for richer representations",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Free energy of QBM improves sample efficiency in discrete environments",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Extensions to continuous environments use Bernoulli-distributed binary visible units",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "AC algorithms achieve state-of-the-art but face sample inefficiency",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Analytic solutions for global optima require strong structural assumptions",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.45454545454545453,
+    "strict_all_score": 0.6666666666666666,
+    "vital_score": 0.6818181818181818,
+    "all_score": 0.8055555555555556
+  }
+}

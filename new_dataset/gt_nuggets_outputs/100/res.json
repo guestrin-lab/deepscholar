@@ -1,0 +1,201 @@
+{
+  "qid": "2511.08462v2",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nStatic analysis tools provide a powerful means to detect security vulnerabilities by specifying queries that encode vulnerable code patterns. However, writing such queries is challenging and requires diverse expertise in security and program analysis. To address this challenge, we present QLCoder - an agentic framework that automatically synthesizes queries in CodeQL, a powerful static analysis engine, directly from a given CVE metadata. QLCode embeds an LLM in a synthesis loop with execution feedback, while constraining its reasoning using a custom MCP interface that allows structured interaction with a Language Server Protocol (for syntax guidance) and a RAG database (for semantic retrieval of queries and documentation). This approach allows QLCoder to generate syntactically and semantically valid security queries. We evaluate QLCode on 176 existing CVEs across 111 Java projects. Building upon the Claude Code agent framework, QLCoder synthesizes correct queries that detect the CVE in the vulnerable but not in the patched versions for 53.4% of CVEs. In comparison, using only Claude Code synthesizes 10% correct queries.",
+  "nuggets": [
+    {
+      "text": "QLCoder synthesizes CodeQL queries from CVE metadata",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QLCoder uses LLM in a synthesis loop with feedback",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "QLCoder employs a custom MCP interface for structured interaction",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QLCoder uses RAG database for semantic query retrieval",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "QLCoder achieves 53.4% correct queries on 176 CVEs",
+      "importance": "vital",
+      "assignment": "not_support"
+    },
+    {
+      "text": "SWE-agent uses LLM agents for software engineering tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LSPAI guides LLM-generated unit tests using LSP servers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QLCoder integrates Language Server Protocol for syntax guidance",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Claude Code alone synthesizes 10% correct queries",
+      "importance": "okay",
+      "assignment": "not_support"
+    },
+    {
+      "text": "LLMs are used for vulnerability detection and repair",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "IRIS uses LLMs for source and sink identification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "KNighter synthesizes CSA checkers from C repository commits",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MocQ derives a subset DSL of CodeQL and Joern",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hazel assists code completions with a language server",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SPEAC repairs LLM-generated code for low resource languages",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MultiPL-T translates high resource code to low resource languages",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "supported_nuggets": [
+    {
+      "text": "SWE-agent uses LLM agents for software engineering tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LSPAI guides LLM-generated unit tests using LSP servers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QLCoder integrates Language Server Protocol for syntax guidance",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs are used for vulnerability detection and repair",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "IRIS uses LLMs for source and sink identification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "KNighter synthesizes CSA checkers from C repository commits",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MocQ derives a subset DSL of CodeQL and Joern",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hazel assists code completions with a language server",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SPEAC repairs LLM-generated code for low resource languages",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MultiPL-T translates high resource code to low resource languages",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "partially_supported_nuggets": [
+    {
+      "text": "QLCoder uses LLM in a synthesis loop with feedback",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "SWE-agent uses LLM agents for software engineering tasks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LSPAI guides LLM-generated unit tests using LSP servers",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "QLCoder integrates Language Server Protocol for syntax guidance",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs are used for vulnerability detection and repair",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "IRIS uses LLMs for source and sink identification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "KNighter synthesizes CSA checkers from C repository commits",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MocQ derives a subset DSL of CodeQL and Joern",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Hazel assists code completions with a language server",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SPEAC repairs LLM-generated code for low resource languages",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MultiPL-T translates high resource code to low resource languages",
+      "importance": "okay",
+      "assignment": "support"
+    }
+  ],
+  "nuggets_metrics": {
+    "strict_vital_score": 0.2857142857142857,
+    "strict_all_score": 0.625,
+    "vital_score": 0.35714285714285715,
+    "all_score": 0.65625
+  }
+}
