@@ -6,7 +6,8 @@
 <!-- [![Dataset](https://img.shields.io/badge/Dataset-deepscholar--bench%2FDeepScholarBench-blue)](https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench)
 [![GitHub](https://img.shields.io/badge/GitHub-deepscholar--bench-green)](https://github.com/guestrin-lab/deepscholar-bench)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/guestrin-lab/deepscholar-bench/blob/main/LICENSE)
-[![Leaderboard](https://img.shields.io/badge/Leaderboard-DeepScholar%20Bench-orange)](https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html) -->
+[![Leaderboard](https://img.shields.io/badge/Leaderboard-DeepScholar%20Bench-orange)](https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html)
+-->
 
 <!-- **📊 Dataset**: [deepscholar-bench/DeepScholarBench](https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench)  
 **🔗 GitHub**: [guestrin-lab/deepscholar-bench](https://github.com/guestrin-lab/deepscholar-bench)
@@ -14,7 +15,7 @@
 
 
 <p align="center">
-| <a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> |
+<a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> | <a href="https://deep-scholar.vercel.app"><b> 🤖 DeepResearch Preview </b></a>
 </p>
 
 ---
