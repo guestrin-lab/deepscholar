@@ -57,26 +57,31 @@ def jaccard_similarity(str1, str2):
 def get_citation_count_from_title(
     title, mailto="your@email.com", similarity_threshold=0.8
 ):
-    try:
-        search_url = f"https://api.openalex.org/works?search={title}&mailto={mailto}"
-        response = requests.get(search_url, timeout=10)
-        response.raise_for_status()
-        results = response.json().get("results", [])
+    for iteration in range(3):
+        try:
+            search_url = f"https://api.openalex.org/works?search={title}&mailto={mailto}"
+            response = requests.get(search_url, timeout=10)
+            response.raise_for_status()
+            results = response.json().get("results", [])
 
-        if results:
-            top_result = results[0]
-            paper_title = top_result.get("display_name", "")
-            citation_count = top_result.get("cited_by_count", 0)
+            if results:
+                top_result = results[0]
+                paper_title = top_result.get("display_name", "")
+                citation_count = top_result.get("cited_by_count", 0)
 
-            # Compare similarity
-            similarity = jaccard_similarity(title, paper_title)
-            if similarity >= similarity_threshold:
-                return citation_count
+                # Compare similarity
+                similarity = jaccard_similarity(title, paper_title)
+                if similarity >= similarity_threshold:
+                    return citation_count
+                else:
+                    return None
+        except Exception as e:
+            print(f"Error fetching citation count: {e}")
+            if iteration < 2:
+                time.sleep(1)
             else:
+                print(f"No results found for {title}")
                 return None
-    except Exception as e:
-        print(f"Error fetching citation count: {e}")
-        return None
 
 
 # === Get valid arXiv links and mapped IDs ===
