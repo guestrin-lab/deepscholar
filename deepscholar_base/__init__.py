@@ -16,22 +16,26 @@ except ImportError:
     from .taxonomize import categorize_references
 
 async def deepscholar_base(
-    configs: Configs,
     topic: str,
     end_date: datetime | None = None,
+    configs: Configs | None = None,
+    **kwargs: Any,
 ) -> tuple[str, pd.DataFrame | None, dict[str, Any]]:
     """
     Runs the DeepScholarBase pipeline and returns the intro section, the final document dataframe, and a dictionary of statistics.
     Args:
-        configs: Configs object
         topic: The user's query
         end_date: The end date for the search
-
+        configs: Configs object
+        kwargs: Additional configurations to override the default configurations. This takes precedence over the configs object.
     Returns:
         intro_section: The intro section of the report
         docs_df: The final document dataframe
         stats: A dictionary of intermediate results
     """
+    configs = configs or Configs()
+    configs = configs.model_copy(update=kwargs)
+    
     stats = {"configs": configs.log()}
     docs_df = None
     final_report = ""

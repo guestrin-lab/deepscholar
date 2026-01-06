@@ -1,4 +1,4 @@
-from deepscholar_base.settings import Configs
+from deepscholar_base.configs import Configs
 from deepscholar_base import deepscholar_base
 from dotenv import load_dotenv
 from lotus.models import LM
