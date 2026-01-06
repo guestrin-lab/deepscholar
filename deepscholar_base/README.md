@@ -9,123 +9,19 @@ The pipeline takes a **research topic** (and optionally an **end date** to limit
 ### Pipeline Overview
 
 ```
-                                  ┌────────────┐
-                                  │   INPUT    │
-                                  │   topic    │
-                                  │  end_date  │
-                                  │  configs   │
-                                  └─────┬──────┘
-                                        │
-                                        ▼
-          ┌───────────────────────────────────────────────────────┐
-          │                    STEP 1: SEARCH                     │
-          │  ┌─────────────────────────────────────────────────┐  │
-          │  │         use_agentic_search = True?              │  │
-          │  └────────────────────┬────────────────────────────┘  │
-          │              ┌────────┴────────┐                      │
-          │              ▼                 ▼                      │
-          │     ┌──────────────┐   ┌───────────────┐              │
-          │     │   Agentic    │   │   Recursive   │              │
-          │     │   Search     │   │    Search     │              │
-          │     │  (Agent+     │   │  (Multi-step  │              │
-          │     │   Tools)     │   │   queries)    │              │
-          │     └──────┬───────┘   └───────┬───────┘              │
-          │            │                   │                      │
-          │            └─────────┬─────────┘                      │
-          │                      │                                │
-          │                      ▼                                │
-          │              ┌──────────────┐                         │
-          │              │   docs_df    │   DataFrame with        │
-          │              │   queries    │   title, url, snippet,  │
-          │              │   background │   date, authors, etc.   │
-          │              └──────────────┘                         │
-          └──────────────────────┬───────────────────────────────┘
-                                 │
-                                 ▼
-          ┌───────────────────────────────────────────────────────┐
-          │                    STEP 2: FILTER                     │
-          │  ┌─────────────────────────────────────────────────┐  │
-          │  │  if use_sem_filter:                             │  │
-          │  │    sem_filter() - Keep only relevant docs       │  │
-          │  │                                                 │  │
-          │  │  if use_sem_topk:                               │  │
-          │  │    sem_topk(K=final_max_results_count)          │  │
-          │  │    - Select top K most relevant docs            │  │
-          │  └─────────────────────────────────────────────────┘  │
-          │                                                       │
-          │  If docs_df.empty → Retry search (max_search_retries) │
-          └──────────────────────┬───────────────────────────────┘
-                                 │
-                                 ▼
-          ┌──────────────────────────────────────────────────────┐
-          │               STEP 3: GENERATE INTRO                  │
-          │  ┌─────────────────────────────────────────────────┐  │
-          │  │  generate_intro_section()                       │  │
-          │  │   - Uses sem_agg() to summarize all docs        │  │
-          │  │   - Creates cohesive background/intro section   │  │
-          │  │   - Includes inline citations [author, date]    │  │
-          │  └─────────────────────────────────────────────────┘  │
-          └──────────────────────┬───────────────────────────────┘
-                                 │
-                                 ▼
-          ┌──────────────────────────────────────────────────────┐
-          │                 STEP 4: TAXONOMIZE                    │
-          │  ┌─────────────────────────────────────────────────┐  │
-          │  │  if categorize_references:                      │  │
-          │  │    1. generate_categories()                     │  │
-          │  │       - LLM creates ≤10 distinct categories     │  │
-          │  │                                                 │  │
-          │  │    2. match_references_to_categories()          │  │
-          │  │       - sem_map() assigns each doc a category   │  │
-          │  │                                                 │  │
-          │  │    3. if generate_category_summary:             │  │
-          │  │       - sem_agg() per category → summaries      │  │
-          │  └─────────────────────────────────────────────────┘  │
-          └──────────────────────┬───────────────────────────────┘
-                                 │
-                                 ▼
-          ┌──────────────────────────────────────────────────────┐
-          │               STEP 5: GENERATE INSIGHTS               │
-          │  ┌─────────────────────────────────────────────────┐  │
-          │  │  if generate_insights:                          │  │
-          │  │    sem_extract() on each doc                    │  │
-          │  │    - Extracts: "key idea/summary"               │  │
-          │  │    - Adds new column(s) to docs_df              │  │
-          │  └─────────────────────────────────────────────────┘  │
-          └──────────────────────┬───────────────────────────────┘
-                                 │
-                                 ▼
-          ┌──────────────────────────────────────────────────────┐
-          │             STEP 6: GENERATE FINAL REPORT             │
-          │  ┌─────────────────────────────────────────────────┐  │
-          │  │  generate_final_report()                        │  │
-          │  │                                                 │  │
-          │  │  If categorized:                                │  │
-          │  │    - Creates outline with category links        │  │
-          │  │    - Groups papers by category                  │  │
-          │  │    - Adds category summaries                    │  │
-          │  │                                                 │  │
-          │  │  Formats papers as Markdown tables              │  │
-          │  │  Combines: intro + outline + categorized refs   │  │
-          │  └─────────────────────────────────────────────────┘  │
-          └──────────────────────┬───────────────────────────────┘
-                                 │
-                                 ▼
-                        ┌───────────────┐
-                        │    OUTPUT     │
-                        │  final_report │ (Markdown string)
-                        │    docs_df    │ (DataFrame)
-                        │     stats     │ (Dict with usage)
-                        └───────────────┘
+            ┌────────┐    ┌────────┐    ┌───────────┐    ┌──────────┐    ┌──────────┐    
+ (INPUT) ─▶ │ SEARCH │ ─▶ │ FILTER │ ─▶ │ SUMMARIZE │ ─▶ │TAXONOMIZE│ ─▶ │ DETAILED │ ─▶ (OUTPUT)
+  topic     │        │    │        │    │           │    │          │    │ INSIGHTS │     report
+ end_date   │ Gather │    │  Keep  │    │ Generate  │    │ Group by │    │ Extract  │   references
+            │ papers │    │relevant│    │ background│    │ category │    │ key idea │    
+            └────────┘    └────────┘    └───────────┘    └──────────┘    └──────────┘    
 ```
 
-### Search Modes
-
-The pipeline begins by searching for relevant literature. You can choose between two search strategies:
+## Search Modes
 
 #### Agentic Search (`use_agentic_search=True`, default)
 
-An AI agent iteratively searches arXiv and the web using tools. The agent decides what to search, reads promising results, refines its queries, and synthesizes a background section—all autonomously over up to 100 turns.
+An autonomous AI agent with tools that iteratively searches and reads papers until it has enough context. The agent decides what to search, which results to read in detail, and when to stop.
 
 ```
                               ┌─────────────────────────────────────┐
@@ -164,47 +60,17 @@ An AI agent iteratively searches arXiv and the web using tools. The agent decide
 A structured multi-step approach where the LLM generates queries, searches multiple corpuses in parallel, and uses accumulated results to generate better queries in subsequent iterations.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                         RECURSIVE SEARCH LOOP                                   │
-│                      (num_search_steps iterations)                              │
-└─────────────────────────────────────────────────────────────────────────────────┘
-
-Step 1                        Step 2                        Step N
-───────                       ───────                       ───────
-
-┌──────────────┐             ┌──────────────┐             ┌──────────────┐
-│ Generate     │             │ Generate     │             │ Generate     │
-│ Queries      │             │ Queries      │             │ Queries      │
-│ (from topic) │             │ (topic +     │             │ (topic +     │
-└──────┬───────┘             │  background) │             │  background) │
-       │                     └──────┬───────┘             └──────┬───────┘
-       ▼                            ▼                            ▼
-┌──────────────┐             ┌──────────────┐             ┌──────────────┐
-│   Search     │             │   Search     │             │   Search     │
-│  ┌────────┐  │             │  ┌────────┐  │             │  ┌────────┐  │
-│  │ arXiv  │  │             │  │ arXiv  │  │             │  │ arXiv  │  │
-│  ├────────┤  │             │  ├────────┤  │             │  ├────────┤  │
-│  │ Tavily │  │             │  │ Tavily │  │             │  │ Tavily │  │
-│  ├────────┤  │             │  ├────────┤  │             │  ├────────┤  │
-│  │ Google │  │             │  │ Google │  │             │  │ Google │  │
-│  └────────┘  │             │  └────────┘  │             │  └────────┘  │
-└──────┬───────┘             └──────┬───────┘             └──────┬───────┘
-       │                            │                            │
-       ▼                            ▼                            ▼
-┌──────────────┐             ┌──────────────┐             ┌──────────────┐
-│  Dedupe &    │             │  Dedupe &    │             │  Dedupe &    │
-│  Accumulate  │────────────▶│  Accumulate  │────...─────▶│  Accumulate  │
-│  Results     │             │  Results     │             │  Results     │
-└──────┬───────┘             └──────┬───────┘             └──────┬───────┘
-       │                            │                            │
-       ▼                            ▼                            ▼
-┌──────────────┐             ┌──────────────┐             ┌──────────────┐
-│  Summarize   │             │  Summarize   │             │    Final     │
-│  Background  │────────────▶│  Background  │────...─────▶│   Output     │
-└──────────────┘             └──────────────┘             └──────────────┘
-       │                            │
-       │    background informs      │    background informs
-       └────── next queries ────────┘────── next queries ──────▶
+Step 1                    Step 2                    Step N
+──────                    ──────                    ──────
+Generate queries    ─▶    Generate queries    ─...-▶    Generate queries
+       │                  (informed by              (informed by
+       ▼                   background)               background)
+Search arXiv/web                │                        │
+       │                        ▼                        ▼
+       ▼                  Search arXiv/web         Search arXiv/web
+Summarize background            │                        │
+       │                        ▼                        ▼
+       └──────────────▶   Summarize background ─...-▶  Final output
 ```
 
 Both modes support an optional `end_date` parameter that filters results to only include papers published before that date. Web search can be disabled with `enable_web_search=False` to search only arXiv.
@@ -218,7 +84,7 @@ from lotus.models import LM
 from datetime import datetime
 import asyncio
 
-# Configure the pipeline with a base LM
+# Simple: single LM for all stages
 configs = Configs(
     lm=LM(model="gpt-4o", temperature=1.0, max_tokens=10000)
 )
@@ -231,16 +97,13 @@ configs = Configs(
     generation_lm=LM(model="gpt-4o", temperature=0.7),  # For summaries & report
 )
 
-# Run the pipeline
 async def main():
     final_report, docs_df, stats = await deepscholar_base(
         topic="What are the latest developments in retrieval-augmented generation?",
-        end_date=datetime(2025, 1, 1),  # Only papers before this date
+        end_date=datetime(2025, 1, 1),
         configs=configs,
     )
     print(final_report)
-    print(f"Found {len(docs_df)} papers")
-    print(f"Total tokens used: {stats['total_usage']['total_tokens']}")
 
 asyncio.run(main())
 ```
@@ -267,10 +130,8 @@ asyncio.run(main())
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `use_sem_filter` | `True` | Apply semantic relevance filtering |
-| `use_sem_topk` | `True` | Rank and select top-K most relevant papers |
-| `final_max_results_count` | `30` | Maximum papers to keep after filtering |
-| `sem_filter_kwargs` | `{strategy: COT}` | Arguments for LOTUS `sem_filter()` |
-| `sem_topk_kwargs` | `{strategy: COT}` | Arguments for LOTUS `sem_topk()` |
+| `use_sem_topk` | `True` | Rank and select top-K papers |
+| `final_max_results_count` | `30` | Max papers after filtering |
 
 ### Generation Settings
 
@@ -300,4 +161,3 @@ The pipeline returns a tuple of three values:
 1. **`final_report`** (str): The complete Markdown document ready for display or export
 2. **`docs_df`** (DataFrame): All filtered papers with columns: `id`, `title`, `url`, `snippet`, `date`, `authors`, `category`, `key idea/summary`
 3. **`stats`** (dict): Detailed statistics including per-stage token usage, intermediate results, and any errors
-
