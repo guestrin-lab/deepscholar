@@ -24,35 +24,18 @@ The pipeline takes a **research topic** (and optionally an **end date** to limit
 An autonomous AI agent with tools that iteratively searches and reads papers until it has enough context. The agent decides what to search, which results to read in detail, and when to stop.
 
 ```
-                              ┌─────────────────────────────────────┐
-                              │           AI AGENT                  │
-                              │   (up to 100 autonomous turns)      │
-                              └──────────────┬──────────────────────┘
-                                             │
-                    ┌────────────────────────┼────────────────────────┐
-                    │                        │                        │
-                    ▼                        ▼                        ▼
-          ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
-          │  search_arxiv() │      │  search_web()   │      │ read_abstracts()│
-          │                 │      │    (Tavily)     │      │ read_webpages() │
-          └────────┬────────┘      └────────┬────────┘      └────────┬────────┘
-                   │                        │                        │
-                   └────────────────────────┼────────────────────────┘
-                                            │
-                                            ▼
-                              ┌─────────────────────────────┐
-                              │   Agent reviews results,    │
-                              │   decides next action:      │
-                              │   • Search more?            │
-                              │   • Read specific papers?   │
-                              │   • Done collecting?        │
-                              └──────────────┬──────────────┘
-                                             │
-                                             ▼
-                              ┌─────────────────────────────┐
-                              │  Synthesize background +    │
-                              │  Return collected papers_df │
-                              └─────────────────────────────┘
+         ┌──────────────── AI AGENT ────────────────┐
+         │ (uses up to 100 autonomous turns)        │
+         │  Tools:                                  │
+         │   • search_arxiv()    • search_web()     │
+         │   • read_abstracts()  • read_webpages()  │
+         └────────────────┬─────────────────────────┘
+                         │
+         ┌────── Agent: decides what to search ─────┐
+         │       what to read, when done            │
+         └───────────────┬──────────────────────────┘
+                         │
+            ┌── Synthesize & return references ──┐
 ```
 
 #### Recursive Search (`use_agentic_search=False`)
