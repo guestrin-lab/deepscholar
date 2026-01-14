@@ -30,7 +30,7 @@ An autonomous AI agent with tools that iteratively searches and reads papers unt
          │   • search_arxiv()    • search_web()     │
          │   • read_abstracts()  • read_webpages()  │
          └────────────────┬─────────────────────────┘
-                         │
+                          │
          ┌────── Agent: decides what to search ─────┐
          │       what to read, when done            │
          └───────────────┬──────────────────────────┘
