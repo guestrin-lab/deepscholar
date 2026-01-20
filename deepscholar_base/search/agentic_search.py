@@ -497,7 +497,7 @@ async def agentic_search(
         instructions=prompt,
         tools=tools,
         model=model,
-        model_configs=model_configs,
+        model_settings=model_configs,
     )
     result = await Runner.run(
         agent,
