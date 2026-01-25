@@ -1,8 +1,7 @@
 import asyncio
 from enum import Enum
 from typing import Callable, Coroutine, Any
-from datetime import datetime, timezone
-import arxiv
+from datetime import datetime
 from agents import function_tool, RunContextWrapper, RunConfig
 from openai.types.responses import ResponseInputItemParam
 from agents.models.chatcmpl_converter import Converter
@@ -13,13 +12,12 @@ from agents.util._json import _to_dump_compatible
 import pandas as pd
 from lotus.types import LMStats
 import logging
-import tavily
-import os
 from lotus.models import LM
 from openai import AsyncOpenAI
 from agents import OpenAIResponsesModel, OpenAIChatCompletionsModel, ModelSettings
 from openai.types.shared import Reasoning
 import re
+from lotus import web_search, web_extract, WebSearchCorpus
 
 try:
     from deepscholar_base.utils.prompts import (
@@ -38,11 +36,8 @@ except ImportError:
     )
     from ..configs import Configs
 
-arxiv_client = arxiv.Client()
 arxiv_logger = logging.getLogger("arxiv")
 arxiv_logger.setLevel(logging.WARNING)
-
-tavily_client = tavily.AsyncTavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 
 @dataclass
 class AgentContext:
@@ -50,153 +45,61 @@ class AgentContext:
     end_date: datetime | None  # YYYYMMDDhhmm (UTC)
     papers_df: pd.DataFrame | None
     queries: list[list[str]]
+    
+    def merge_papers_df(self, new: pd.DataFrame) -> None:
+        """Deduplicate entries by url; override old rows with new if url matches."""
+        if self.papers_df is None or len(self.papers_df) == 0:
+            self.papers_df = new.copy()
+        url_map = {row["url"]: row for row in self.papers_df.to_dict(orient="records")}
+        info = new.to_dict(orient="records")
+        info = [{**url_map[row["url"]], **row} for row in info if row["url"] in url_map]
+        merged = pd.concat([self.papers_df, pd.DataFrame(info)], ignore_index=True)
+        self.papers_df = merged.drop_duplicates(subset=["url"])
 
 
-# All Search Tools
+# ---------- Search Functions ----------
 class ToolTypes(Enum):
     ARXIV = "arxiv"
     WEB = "web"
-
-    def to_parsed_results(
-        self,
-        results: list[dict] | list[arxiv.Result],
-        query: str,
-        current_papers_df: pd.DataFrame | None = None,
-    ) -> pd.DataFrame:
+    
+    def to_web_search_corpus(self) -> WebSearchCorpus:
         if self == ToolTypes.ARXIV:
-            assert all(isinstance(result, arxiv.Result) for result in results), (
-                "Results must be a list of arxiv.Result objects"
-            )
-            info = [
-                {
-                    "id": result.entry_id.split("/")[-1],  # type: ignore
-                    "title": result.title,  # type: ignore
-                    "url": result.entry_id,  # type: ignore
-                    "snippet": result.summary,  # type: ignore
-                    "date": result.published.strftime("%Y-%m-%d %H:%M:%S%z"),  # type: ignore
-                    "authors": ", ".join([author.name for author in result.authors]),  # type: ignore
-                    "query": query,  # type: ignore
-                    "context": f"{result.title}[{result.entry_id}]: {result.summary}",  # type: ignore
-                }
-                for result in results
-            ]
+            return WebSearchCorpus.ARXIV
         elif self == ToolTypes.WEB:
-            assert all(isinstance(result, dict) for result in results), (
-                "Results must be a list of dict objects"
-            )
-            if current_papers_df is not None:
-                maps = {
-                    row["url"]: row
-                    for row in current_papers_df.to_dict(orient="records")
-                }
-            else:
-                maps = {}
-            info = [
-                {
-                    "id": result["url"],  # type: ignore
-                    "title": result.get(
-                        "title", maps.get(result["url"], {}).get("title", "Untitled")
-                    ),  # type: ignore
-                    "url": result["url"],  # type: ignore
-                    "snippet": result.get(
-                        "content",
-                        result.get(
-                            "raw_content",
-                            maps.get(result["url"], {}).get("snippet", "No content"),
-                        ),
-                    ),  # type: ignore
-                    "query": query,  # type: ignore
-                    "date": result.get("date", None),
-                }
-                for result in results
-            ]
-            for inf in info:
-                inf["context"] = f"{inf['title']}[{inf['url']}]: {inf['snippet']}"
+            return WebSearchCorpus.TAVILY
         else:
             raise ValueError(f"Invalid search type: {self}")
-        return pd.DataFrame(info)
-
-    def to_search_function(
-        self,
-    ) -> Callable[
-        [Configs, datetime | None, str],
-        Coroutine[Any, Any, tuple[str, list[dict] | list[arxiv.Result]]],
-    ]:  # type: ignore
+        
+    def to_rename_map(self) -> dict[str, str]:
         if self == ToolTypes.ARXIV:
-            return _search_arxiv  # type: ignore
+            return {"link": "url", "abstract": "snippet", "published": "date"}
         elif self == ToolTypes.WEB:
-            return _search_tavily  # type: ignore
-        else:
-            raise ValueError(f"Invalid search type: {self}")
-
-    def to_read_function(
-        self,
-    ) -> Callable[
-        [Configs, datetime | None, list[str]],
-        Coroutine[Any, Any, tuple[str, list[dict] | list[arxiv.Result]]],
-    ]:  # type: ignore
-        if self == ToolTypes.ARXIV:
-            return _read_arxiv_abstracts  # type: ignore
-        elif self == ToolTypes.WEB:
-            return _read_webpage_full_text  # type: ignore
+            return {"content": "snippet"}
         else:
             raise ValueError(f"Invalid search type: {self}")
 
 
-async def _search_arxiv(
-    configs: Configs, cutoff: datetime | None, query: str
-) -> tuple[str, list[arxiv.Result]]:
-    # Enforce cutoff server-side using arXiv's query syntax
-    # Example: (quantum computing) AND submittedDate:[* TO 202201010000]
-    if cutoff is not None:
-        date_clause = f"submittedDate:[* TO {cutoff.strftime('%Y%m%d%H%M')}]"
-        full_query = f"({query}) AND {date_clause}"
-    else:
-        full_query = query
+def _normalize_search_df(
+    df: pd.DataFrame,
+    query: str,
+    rename_map: dict,
+    results_fmt_func: Callable[[pd.Series], str],
+    empty_result: str,
+) -> tuple[str, pd.DataFrame]:
+    if df.empty:
+        return empty_result, pd.DataFrame(columns=["title", "url", "snippet", "query", "context", "date"])
 
-    search = arxiv.Search(
-        query=full_query,
-        max_results=configs.per_query_max_search_results_count,
-        sort_by=arxiv.SortCriterion.Relevance,
-        sort_order=arxiv.SortOrder.Descending,
-    )
-
-    results = []
-    raw_results = []
-    for r in arxiv_client.results(search):
-        results.append(f"{r.title} ({r.published.date()}): {r.entry_id}")
-        raw_results.append(r)
-
-    return "\n".join(
-        results
-    ) if results else "No results found on or before the cutoff date.", raw_results
-
-
-async def _search_tavily(
-    configs: Configs, cutoff: datetime | None, query: str, score_threshold: float = 0.5
-) -> tuple[str, list[dict]]:
-    try:
-        response = await tavily_client.search(
-            query,
-            search_depth="basic",
-            end_date=cutoff.strftime("%Y-%m-%d") if cutoff else None,
-            max_results=configs.per_query_max_search_results_count,
-            include_answer=False,
-            include_raw_content=False,
-            include_images=False,
-        )
-    except Exception as e:
-        configs.logger.error(f"Tavily error: {e}")
-        raise e
-
-    results = [
-        result for result in response["results"] if result["score"] >= score_threshold
-    ]
-    results_section = "\n".join(
-        [f"{result['title']}: {result['url']}" for result in results]
-    )
-    return results_section, results
-
+    df = df.rename(columns=rename_map)
+    if "date" in df.columns:
+        df["date"] = df["date"].astype(str)
+    required_columns = ["title", "url", "snippet", "query", "context", "date"]
+    for col in required_columns:
+        if col not in df.columns:
+            df[col] = ""
+    df["query"] = query
+    df["context"] = df.apply(lambda row: f"{row.get('title', '')}[{row.get('url', '')}]: {row.get('snippet', '')}", axis=1)
+    results_section = "\n".join([results_fmt_func(row) for _, row in df.iterrows()])
+    return (results_section if results_section else empty_result), df
 
 async def _handle_one_search_query(
     ctx: RunContextWrapper[AgentContext],
@@ -207,23 +110,25 @@ async def _handle_one_search_query(
 ) -> tuple[str, str | None]:
     successful_query = None
     try:
-        query_results, raw_results = await search_type.to_search_function()(
-            ctx.context.configs, cutoff, query
+        web_search_df = web_search(
+            corpus=search_type.to_web_search_corpus(),
+            query=query,
+            K=ctx.context.configs.per_query_max_search_results_count,
+            end_date=cutoff,
         )
-        df = search_type.to_parsed_results(raw_results, query, ctx.context.papers_df)
-        if ctx.context.papers_df is None or len(ctx.context.papers_df) == 0:
-            ctx.context.papers_df = df.copy()
-        else:
-            ctx.context.papers_df = pd.concat(
-                [ctx.context.papers_df, df], ignore_index=True
-            )
+        query_results, df = _normalize_search_df(
+            web_search_df,
+            query,
+            rename_map=search_type.to_rename_map(),
+            results_fmt_func=lambda row: f"{row.get('title', 'Untitled')} ({row.get('date', '')}): {row.get('url', '')}",
+            empty_result="No results found.",
+        )
+        ctx.context.merge_papers_df(df)
         successful_query = query
     except Exception as e:
         ctx.context.configs.logger.error(f"Error searching {search_type.value} for query {query}: {e}")
         query_results = f"Error searching {search_type.value} for query {query}: {e}"
-    # Format the results with query header
     query_section = f"=== QUERY {i}: {query} ===\n{query_results}"
-
     return query_section, successful_query
 
 
@@ -248,9 +153,7 @@ async def _search(
     ctx.context.configs.logger.info(f"Successful queries: {successful_queries}, collected total references: {len(ctx.context.papers_df)}")
     all_results = [query_section for query_section, _ in all_results_sections]
     ctx.context.queries.append(successful_queries)
-
     return "\n\n".join(all_results)
-
 
 @function_tool
 async def search_arxiv(ctx: RunContextWrapper[AgentContext], queries: list[str]) -> str:
@@ -275,12 +178,11 @@ async def search_arxiv(ctx: RunContextWrapper[AgentContext], queries: list[str])
     """
     return await _search(ctx, ToolTypes.ARXIV, queries)
 
-
 @function_tool
 async def search_web(ctx: RunContextWrapper[AgentContext], queries: list[str]) -> str:
     """
     Search the web for literature that matches the provided queries.
-    Your query will be passed to the Tavily API.
+    Uses lotus web_search function with Tavily corpus.
 
     Returns up to 10 entries per query, with clear separation showing which results correspond to which query.
     Each entry is formatted as "Title: URL".
@@ -297,53 +199,45 @@ async def search_web(ctx: RunContextWrapper[AgentContext], queries: list[str]) -
     """
     return await _search(ctx, ToolTypes.WEB, queries)
 
-
-# All Read Tools
-async def _read_arxiv_abstracts(
-    configs: Configs, cutoff: datetime | None, paper_ids: list[str]
-) -> tuple[str, list[arxiv.Result]]:
-    if cutoff is not None:
-        cutoff_dt = datetime.strptime(cutoff, "%Y%m%d%H%M").replace(tzinfo=timezone.utc)
+# ---------- Generic "Read" Extraction Helpers ----------
+def _extract_contents(
+    configs: Configs,
+    keys: list[str],
+    display_fmt: Callable[[str, pd.DataFrame], str],
+    corpus: WebSearchCorpus,
+    error_prefix: str,
+) -> tuple[str, pd.DataFrame]:
+    extracted_dfs = []
+    results_text = []
+    for key in keys:
+        try:
+            extract_df = web_extract(corpus=corpus, doc_id=key)
+            # Defensive
+            if not extract_df.empty and extract_df.iloc[0].get("full_text"):
+                display_text = display_fmt(key, extract_df)
+                results_text.append(display_text)
+                row = {
+                    "title": "",
+                    "url": extract_df.iloc[0]["url"],
+                    "snippet": extract_df.iloc[0]["full_text"],
+                    "query": f"{corpus.value}_read",
+                    "context": f"[{key}]: {extract_df.iloc[0]['full_text'][:1000]}",
+                    "date": "",
+                }
+                extracted_dfs.append(pd.DataFrame([row]))
+            else:
+                results_text.append(f"{key}: Error extracting content")
+        except Exception as e:
+            configs.logger.error(f"{error_prefix} from {key}: {e}")
+            results_text.append(f"{key}: Error extracting content")
+    if extracted_dfs:
+        result_df = pd.concat(extracted_dfs, ignore_index=True)
     else:
-        cutoff_dt = None
-    search = arxiv.Search(id_list=paper_ids)
-    results = []
-    raw_results: list[arxiv.Result] = []
-    for result in arxiv_client.results(search):
-        if cutoff_dt is not None and result.published > cutoff_dt:
-            results.append(f"{result.entry_id}: Paper published after the cutoff date.")
-        else:
-            results.append(f"{result.title}\n\n{result.summary.strip()}")
-            raw_results.append(result)
-    return (
-        "\n\n---\n\n".join(results)
-        if results
-        else "No valid results found on or before the cutoff date.",
-        raw_results,
-    )
+        result_df = pd.DataFrame(columns=["title", "url", "snippet", "query", "context", "date"])
+    answer = "\n\n---\n\n".join(results_text) if results_text else (f"No valid results found." if corpus==WebSearchCorpus.ARXIV else "No content found")
+    return answer, result_df
 
-
-async def _read_webpage_full_text(
-    configs: Configs, cutoff: datetime | None, urls: list[str]
-) -> tuple[str, list[dict]]:
-    try:
-        extracted_data = await tavily_client.extract(urls, extract_depth="basic", format="text")
-    except Exception as e:
-        configs.logger.error(f"Error extracting content: {e}")
-        return f"Error extracting content: {e}", []
-
-    url_to_results = {r["url"]: r for r in extracted_data["results"]}
-
-    results = [
-        f"{url}: {url_to_results[url]['raw_content'][:1000]}"
-        if url in url_to_results
-        else f"{url}: Error extracting content"
-        for url in urls
-    ]
-    raw_results = [url_to_results[url] for url in urls if url in url_to_results]
-    return "\n\n---\n\n".join(results) if results else "No content found", raw_results
-
-
+# ---------- Read Tool Extraction Implementations ----------
 async def _read_content(
     ctx: RunContextWrapper[AgentContext], tool_type: ToolTypes, input: list[str]
 ) -> str:
@@ -351,27 +245,21 @@ async def _read_content(
     cutoff = ctx.context.end_date
     successful_inputs = [f"{tool_type.value}_read"]
     try:
-        answer, raw_results = await tool_type.to_read_function()(
-            ctx.context.configs, cutoff, input
+        answer, df = _extract_contents(
+            ctx.context.configs,
+            input,
+            display_fmt=lambda pid, extract_df: f"{extract_df.iloc[0]['url']}\n\n{extract_df.iloc[0]['full_text'].strip()[:1000]}",
+            corpus=tool_type.to_web_search_corpus(),
+            error_prefix=f"Error extracting {tool_type.value} content",
         )
-        if raw_results:
-            df = tool_type.to_parsed_results(
-                raw_results, f"{tool_type.value}_read", ctx.context.papers_df
-            )
-            if ctx.context.papers_df is None or len(ctx.context.papers_df) == 0:
-                ctx.context.papers_df = df.copy()
-            else:
-                ctx.context.papers_df = pd.concat(
-                    [ctx.context.papers_df, df], ignore_index=True
-                )
+        if df is not None and not df.empty:
+            ctx.context.merge_papers_df(df)
             successful_inputs.extend(input)
     except Exception as e:
         answer = f"Error extracting content from {tool_type.value} for {input}: {e}"
-
     ctx.context.configs.logger.info(f"Successful inputs: {successful_inputs}, collected total references: {len(ctx.context.papers_df)}")
     ctx.context.queries.append(successful_inputs)
     return answer
-
 
 @function_tool
 async def read_arxiv_abstracts(
@@ -390,7 +278,6 @@ async def read_arxiv_abstracts(
     """
     return await _read_content(ctx, ToolTypes.ARXIV, paper_ids)
 
-
 @function_tool
 async def read_webpage_full_text(
     ctx: RunContextWrapper[AgentContext], urls: list[str]
@@ -405,7 +292,6 @@ async def read_webpage_full_text(
         urls: A list of web page URLs. Example: ["https://www.google.com", "https://www.wikipedia.org"]
     """
     return await _read_content(ctx, ToolTypes.WEB, urls)
-
 
 def _call_model_input_filter(input: CallModelData[AgentContext]) -> ModelInputData:
     """
@@ -439,7 +325,6 @@ def _call_model_input_filter(input: CallModelData[AgentContext]) -> ModelInputDa
     ]
     configs.logger.debug(f"User message index: {user_message_index}")
     if user_message_index:
-        # Keep the last user message in context
         last_user_message_index = user_message_index[-1]
         input_allowed_length = input_allowed_length - len(
             str(input_items[last_user_message_index])
@@ -462,7 +347,6 @@ def _call_model_input_filter(input: CallModelData[AgentContext]) -> ModelInputDa
     configs.logger.debug(f"Final input: {final_input}")
     return ModelInputData(instructions=instructions, input=final_input)
 
-
 async def agentic_search(
     configs: Configs,
     topic: str,
@@ -482,9 +366,7 @@ async def agentic_search(
         else openai_sdk_arxiv_search_system_prompt
     )
     if configs.enable_web_search:
-        configs.logger.info(
-            "Web search is enabled, adding web search tools and prompt."
-        )
+        configs.logger.info("Web search is enabled, adding web search tools and prompt.")
         tools.append(search_web)
         tools.append(read_webpage_full_text)
         prompt = (
@@ -524,10 +406,8 @@ async def agentic_search(
         total_tokens=result.context_wrapper.usage.total_tokens,
     )
     if len(docs_df) > 0:
-        # Deduplicate results by URL
         docs_df = docs_df.drop_duplicates(subset=["url"])
     return result.context_wrapper.context.queries, docs_df, result.final_output
-
 
 def _lotus_lm_to_openai_lm(
     configs: Configs, lm: LM,
@@ -557,7 +437,6 @@ def _lotus_lm_to_openai_lm(
         top_p=lm.kwargs.get("top_p"),
         frequency_penalty=lm.kwargs.get("frequency_penalty"),
         presence_penalty=lm.kwargs.get("presence_penalty"),
-        # max_tokens=lm.kwargs.get("max_tokens"),
         reasoning=Reasoning(
             effort=lm.kwargs.get("reasoning_effort", "low"),
         )
@@ -568,15 +447,12 @@ def _lotus_lm_to_openai_lm(
     configs.logger.info(
         f"Using OpenAI LM: {lm.model} {model_configs}"
     )
-
     return model, model_configs
-
 
 def _is_responses_model(configs: Configs, model: str) -> bool:
     if configs.use_responses_model is not None:
         return configs.use_responses_model
     if "gpt" in model.lower():
-    # Extracts the first model number from the string, e.g., "gpt-4-turbo" -> 4, "gpt-4.1-extended" -> 4.1
         if "oss" in model.lower():
             return True
         match = re.search(r"(\d+(?:\.\d+)?)", model)
