@@ -75,55 +75,29 @@ For more details and a full introduction, please continue to our **[Dataset Scri
 
 ## 📚 DeepScholar Base
 
-DeepScholar Base is our baseline research synthesis pipeline that generates comprehensive literature reviews from a research topic. It demonstrates a modular approach to deep research with the following stages:
-
-### Pipeline Overview
-
-1. **Search** - Performs agentic or recursive web search to find relevant academic papers
-2. **Filter** - Uses semantic filtering and ranking to select the most relevant results
-3. **Intro Generation** - Creates an introductory section summarizing the research landscape
-4. **Taxonomization** - Categorizes references into meaningful groups with category summaries
-5. **Insight Generation** - Extracts key insights from each document
-6. **Final Report** - Synthesizes everything into a cohesive research report
-
-### Usage
+DeepScholar Base is our baseline research synthesis pipeline that generates comprehensive literature reviews from a research topic. Built on [LOTUS](https://github.com/lotus-data/lotus), it provides a modular 6-stage approach: **Search → Filter → Intro Generation → Taxonomization → Insight Extraction → Final Report**.
 
 ```python
 from deepscholar_base import deepscholar_base
 from deepscholar_base.configs import Configs
 from lotus.models import LM
+from datetime import datetime
 import asyncio
 
-# Configure the pipeline
-configs = Configs(
-    lm=LM(model="gpt-5-mini", temperature=1.0, max_tokens=10000)
-)
+configs = Configs(lm=LM(model="gpt-4o", temperature=1.0, max_tokens=10000))
 
-# Run the pipeline
 async def main():
-    final_output, docs_df, stats = await deepscholar_base(
-        settings, 
-        "What are the latest developments in the field of AI."
+    final_report, docs_df, stats = await deepscholar_base(
+        topic="What are the latest developments in retrieval-augmented generation?",
+        end_date=datetime(2025, 1, 1),  # Only papers before this date
+        configs=configs,
     )
-    print(final_output)
+    print(final_report)
 
 asyncio.run(main())
 ```
 
-### Configuration Options
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `use_agentic_search` | `True` | Use agentic search (vs recursive search) |
-| `enable_web_search` | `True` | Enable web search for papers |
-| `per_query_max_search_results_count` | `10` | Max results per search query |
-| `use_sem_filter` | `True` | Apply semantic filtering |
-| `use_sem_topk` | `True` | Use semantic top-k ranking |
-| `final_max_results_count` | `30` | Max papers in final report |
-| `categorize_references` | `True` | Group references into categories |
-| `generate_insights` | `True` | Generate insights from documents |
-
-You can also configure separate LMs for different pipeline stages (`search_lm`, `filter_lm`, `taxonomize_lm`, `generation_lm`) for fine-grained control.
+For detailed documentation including pipeline diagrams, search mode comparisons (agentic vs recursive), and full configuration reference, see the **[DeepScholar Base README](deepscholar_base/README.md)**.
 
 
 ## 🤝 Contributing
