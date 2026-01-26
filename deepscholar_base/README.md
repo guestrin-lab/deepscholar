@@ -1,6 +1,6 @@
 # DeepScholar Base
 
-DeepScholar Base is our reference pipeline for research synthesis. Built on top of the [LOTUS framework](https://github.com/lotus-data/lotus) for LLM-powered data processing, it leverages semantic operators, which provide a rich-set of primitives for LLM-based data processing. This allows DeepScholar to achieve competitive performance with OpenAI's DeepResearch, while running 2x faster.
+DeepScholar Base is our reference pipeline for research synthesis. It is built on top of the [LOTUS framework](https://github.com/lotus-data/lotus), which introduces and serves semantic operators for LLM-powered data processing. LOTUS' semantic operators provide a rich-set of primitives, providing a superset of RAG that goes beyond search() and LM() calls. Using LOTUS, DeepScholar achieves competitive performance with OpenAI's DeepResearch, while running 2x faster.
 
 ![Pipeline Overview Diagram](../assets/deepscholarbase-res.png)
 
