@@ -2,6 +2,40 @@
 
 DeepScholar Base is our baseline research synthesis pipeline that transforms a research topic into a comprehensive, well-organized literature review with proper citations. Built on top of the [LOTUS framework](https://github.com/lotus-data/lotus) for LLM-powered data processing, it demonstrates a modular approach to automated deep research.
 
+## Quickstart
+
+```python
+from deepscholar_base import deepscholar_base
+from deepscholar_base.configs import Configs
+from lotus.models import LM
+from datetime import datetime
+import asyncio
+
+# Set configs
+configs = Configs(
+    lm=LM(model="gpt-4o", temperature=1.0, max_tokens=10000)
+)
+
+# Advanced configs - use different LMs for different stages
+# configs = Configs(
+#    search_lm=LM(model="gpt-4o", temperature=0.7),      # For query generation & agentic search
+#    filter_lm=LM(model="gpt-4o-mini", temperature=0),   # For semantic filtering
+#    taxonomize_lm=LM(model="gpt-4o", temperature=0.5),  # For categorization
+#    generation_lm=LM(model="gpt-4o", temperature=0.7),  # For summaries & report
+# )
+
+# Run deepscholar_base with your query
+async def main():
+    final_report, docs_df, stats = await deepscholar_base(
+        topic="What are the latest developments in retrieval-augmented generation?",
+        end_date=datetime(2025, 1, 1),
+        configs=configs,
+    )
+    print(final_report)
+
+asyncio.run(main())
+```
+
 ## How It Works
 
 The pipeline takes a **research topic** (and optionally an **end date** to limit searches to papers before a certain date—useful for reproducibility or backdating research) and produces a **Markdown report** with categorized references, summaries, and inline citations.
@@ -58,38 +92,7 @@ Summarize background            │                        │
 
 Both modes support an optional `end_date` parameter that filters results to only include papers published before that date. Web search can be disabled with `enable_web_search=False` to search only arXiv.
 
-## Usage
 
-```python
-from deepscholar_base import deepscholar_base
-from deepscholar_base.configs import Configs
-from lotus.models import LM
-from datetime import datetime
-import asyncio
-
-# Simple: single LM for all stages
-configs = Configs(
-    lm=LM(model="gpt-4o", temperature=1.0, max_tokens=10000)
-)
-
-# Or use different LMs for different stages
-configs = Configs(
-    search_lm=LM(model="gpt-4o", temperature=0.7),      # For query generation & agentic search
-    filter_lm=LM(model="gpt-4o-mini", temperature=0),   # For semantic filtering
-    taxonomize_lm=LM(model="gpt-4o", temperature=0.5),  # For categorization
-    generation_lm=LM(model="gpt-4o", temperature=0.7),  # For summaries & report
-)
-
-async def main():
-    final_report, docs_df, stats = await deepscholar_base(
-        topic="What are the latest developments in retrieval-augmented generation?",
-        end_date=datetime(2025, 1, 1),
-        configs=configs,
-    )
-    print(final_report)
-
-asyncio.run(main())
-```
 
 ## Configuration Reference
 
