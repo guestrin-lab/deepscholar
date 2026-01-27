@@ -41,16 +41,16 @@ asyncio.run(main())
 
 ## How It Works
 
-The pipeline takes a **research topic** (and optionally an **end date** to limit searches to papers before a certain date—useful for reproducibility or backdating research) and produces a **Markdown report** with categorized references, summaries, and inline citations.
+The pipeline takes a user's **research query** and produces a **Markdown report** with categorized references, summaries, and inline citations. The pipeline procedes through a series of stages, including agentic search, document filtering, aggregation, clustering and extraction. Each of these steps are implemented efficiently using LOTUS's [semantic operators](https://arxiv.org/abs/2407.11418), which provide primitives for LLM-based bulk processing (e.g., sem_filter, sem_agg, sem_extract). The pipline can also optionally take an `end_date` parameter to limit searches to papers before a certain date—useful for reproducibility or backdating research.
 
 ### Pipeline Overview
 
 ```
             ┌────────┐    ┌────────┐    ┌───────────┐    ┌──────────┐    ┌──────────┐    
- (INPUT) ─▶ │ SEARCH │ ─▶ │ FILTER │ ─▶ │ SUMMARIZE │ ─▶ │TAXONOMIZE│ ─▶ │ DETAILED │ ─▶ (OUTPUT)
-  topic     │        │    │        │    │           │    │          │    │ INSIGHTS │     report
- end_date   │ Gather │    │  Keep  │    │ Generate  │    │ Group by │    │ Extract  │   references
-            │ papers │    │relevant│    │ background│    │ category │    │ key idea │    
+  INPUT  ─▶ │ SEARCH │ ─▶ │ FILTER │ ─▶ │AGGREGATION│ ─▶ │CLUSTERING│ ─▶ │EXTRACTION│ ─▶ OUTPUT
+  query     │        │    │        │    │           │    │          │    │          │    report
+    +       │ Gather │    │  Keep  │    │ Summarize │    │Categorize│    │ Extract  │       +
+(end_date)  │ papers │    │relevant│    │   info    │    │  sources │    │ insights │   references
             └────────┘    └────────┘    └───────────┘    └──────────┘    └──────────┘    
 ```
 
