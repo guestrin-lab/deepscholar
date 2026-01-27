@@ -15,7 +15,7 @@
 
 
 <p align="center">
-<a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> | <a href="https://deep-scholar.vercel.app"><b> 🤖 DeepResearch Preview </b></a>
+<a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> | <a href="https://deep-scholar.vercel.app"><b> 🤖 DeepScholar Live Preview </b></a>
 </p>
 
 ---
@@ -46,9 +46,11 @@ conda activate dsbench
 pip install -r requirements.txt
 ```
 
-### Basic Usage
+### 📊 Benchmark Usage
+You can start scraping your own datasets and running our holistic, automated evaluation suite using the commands below. For more details and a full introduction, please continue to our **[Dataset Scripts Description](data_pipeline/README.md)** and/or our **[Evaluation library Description](eval/README.md)**.
 
-#### 1. Collect Research Data
+
+#### 1. Scraping Data
 
 ```bash
 # Collect recent AI papers since May 1, 2025
@@ -70,10 +72,9 @@ python -m eval.main \
     --model_name gpt-4o
 ```
 
-For more details and a full introduction, please continue to our **[Dataset Scripts Description](data_pipeline/README.md)** and/or our **[Evaluation library Description](eval/README.md)**.
 
 
-## 📚 DeepScholar-Base
+### 📚 DeepScholar-Base
 
 DeepScholar-Base is our reference pipeline research synthesis pipeline that generates comprehensive literature reviews from a research query. It serves as a strong, open-source baseline and is built on [LOTUS](https://github.com/lotus-data/lotus) for efficient LLM-based data processing. For detailed documentation see the **[DeepScholar Base README](deepscholar_base/README.md)**.
 
