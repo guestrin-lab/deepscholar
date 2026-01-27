@@ -15,7 +15,11 @@
 
 
 <p align="center">
-<a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> | <a href="https://deep-scholar.vercel.app"><b> 🤖 DeepScholar Live Preview </b></a>
+<a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> | <a href="https://deep-scholar.vercel.app"><b> 🤖 DeepScholar Live Preview </b></a> 
+</p>
+
+<p align="center">
+<a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://discord.gg/ZWQBurm5bt"><b> 🎮Discord </b></a>
 </p>
 
 ---
