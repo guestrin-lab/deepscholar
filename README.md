@@ -73,9 +73,9 @@ python -m eval.main \
 For more details and a full introduction, please continue to our **[Dataset Scripts Description](data_pipeline/README.md)** and/or our **[Evaluation library Description](eval/README.md)**.
 
 
-## 📚 DeepScholar Base
+## 📚 DeepScholar-Base
 
-DeepScholar Base is our baseline research synthesis pipeline that generates comprehensive literature reviews from a research topic. Built on [LOTUS](https://github.com/lotus-data/lotus), it provides a modular 6-stage approach: **Search → Filter → Intro Generation → Taxonomization → Insight Extraction → Final Report**.
+DeepScholar-Base is our reference pipeline research synthesis pipeline that generates comprehensive literature reviews from a research query. It serves as a strong, open-source baseline and is built on [LOTUS](https://github.com/lotus-data/lotus) for efficient LLM-based data processing. For detailed documentation see the **[DeepScholar Base README](deepscholar_base/README.md)**.
 
 ```python
 from deepscholar_base import deepscholar_base
@@ -96,8 +96,6 @@ async def main():
 
 asyncio.run(main())
 ```
-
-For detailed documentation including pipeline diagrams, search mode comparisons (agentic vs recursive), and full configuration reference, see the **[DeepScholar Base README](deepscholar_base/README.md)**.
 
 
 ## 🤝 Contributing
