@@ -24,7 +24,7 @@
 
 ---
 
-DeepScholar-Bench provides a live benchmark dataset and holistic evaluation of generative research synthesis, an emerging capability among AI systems designed for DeepResearch.
+DeepScholar-Bench provides a live benchmark dataset and holistic evaluation of generative research synthesis, an emerging capability among AI systems designed for DeepResearch. We also developed DeepScholar-base, a strong open-source reference pipeline/
 
 This repository provides:
 1. **[Dataset Scripts](data_pipeline/README.md)** - which allow you to collect new datasets from recent, high-quality Arxiv papers using our automated data-collection pipeline. You can set your own configurations (e.g., choice of valid date ranges and valid Arxiv domains) to customize your dataset
