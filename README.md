@@ -1,5 +1,5 @@
 <h1 align="center"> 
-    🌐🔍DeepScholar-Bench: A Live Benchmark for Generative Research Synthesis
+    🌐🔍DeepScholar-Bench: Build and Benchmark DeepResearch for Generative Research Synthesis
 </h1>
 
 
