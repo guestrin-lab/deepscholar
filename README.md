@@ -1,12 +1,13 @@
 <h1 align="center"> 
-    🌐🔍DeepScholar-Bench: A Live Benchmark for Generative Research Synthesis
+    🌐🔍DeepScholar-Bench: Build and Benchmark Generative Research Synthesis
 </h1>
 
 
 <!-- [![Dataset](https://img.shields.io/badge/Dataset-deepscholar--bench%2FDeepScholarBench-blue)](https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench)
 [![GitHub](https://img.shields.io/badge/GitHub-deepscholar--bench-green)](https://github.com/guestrin-lab/deepscholar-bench)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/guestrin-lab/deepscholar-bench/blob/main/LICENSE)
-[![Leaderboard](https://img.shields.io/badge/Leaderboard-DeepScholar%20Bench-orange)](https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html) -->
+[![Leaderboard](https://img.shields.io/badge/Leaderboard-DeepScholar%20Bench-orange)](https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html)
+-->
 
 <!-- **📊 Dataset**: [deepscholar-bench/DeepScholarBench](https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench)  
 **🔗 GitHub**: [guestrin-lab/deepscholar-bench](https://github.com/guestrin-lab/deepscholar-bench)
@@ -14,17 +15,21 @@
 
 
 <p align="center">
-| <a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> |
+<a href="https://guestrin-lab.github.io/deepscholar-leaderboard/leaderboard/deepscholar_bench_leaderboard.html"><b> 🏆 Live Leaderboard</b></a> | <a href="https://deep-scholar.vercel.app"><b> 🤖 DeepScholar Live Preview </b></a> 
+</p>
+
+<p align="center">
+<a href="https://huggingface.co/datasets/deepscholar-bench/DeepScholarBench"><b> 📊 Dataset </b></a> | <a href="https://arxiv.org/abs/2508.20033"><b>📄 Paper</b></a> | <a href="https://discord.gg/ZWQBurm5bt"><b> 🎮Discord </b></a>
 </p>
 
 ---
 
-DeepScholar-Bench provides a live benchmark dataset and holistic evaluation of generative research synthesis, an emerging capability among AI systems designed for DeepResearch.
+DeepScholar-Bench provides a live benchmark dataset and holistic evaluation of generative research synthesis, an emerging capability among AI systems designed for DeepResearch. We also developed DeepScholar-base, a strong open-source reference pipeline/
 
 This repository provides:
 1. **[Dataset Scripts](data_pipeline/README.md)** - which allow you to collect new datasets from recent, high-quality Arxiv papers using our automated data-collection pipeline. You can set your own configurations (e.g., choice of valid date ranges and valid Arxiv domains) to customize your dataset
 2. **[An Evaluation Suite](eval/README.md)** - for measuring performance of long-form research synthesis answers. Our evaluation framework supports a holistic set of metrics, which demonstrate high agreement with human annotations. Our eval suite is built using the [LOTUS framework for LLM-based data processing](https://github.com/lotus-data/lotus), which  provides a library for LLM-based evaluations and can be used directly to instantiate [your custom LLM-judges](https://lotus-ai.readthedocs.io/en/latest/evals.html#).
-
+3. **[DeepScholar-base](deepscholar_base/README.md)** - our open-source reference pipeline for generative research synthesis. It is built on top of the [LOTUS framework](https://github.com/lotus-data/lotus), which introduces and serves semantic operators for LLM-powered data processing. LOTUS' semantic operators provide a rich-set of primitives, providing a superset of RAG that goes beyond search() and LM() calls. On DeepScholar-bench, our reference pipeline achieves competitive performance with OpenAI's DeepResearch, while running 2x faster.
 
 If you run into any problems with the code in this repo, leaderboard, or dataset, please feel free to raise an issue and we will address it promptly. If you would like to add your AI system to the DeepScholar-bench leaderboard, please fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSeug4igDHhVUU3XnrUSeMVRUJFKlHP28i8fcBAu_LHCkqdV1g/viewform).
 
@@ -45,9 +50,11 @@ conda activate dsbench
 pip install -r requirements.txt
 ```
 
-### Basic Usage
+### 📊 Benchmark Usage
+You can start scraping your own datasets and running our holistic, automated evaluation suite using the commands below. For more details and a full introduction, please continue to our **[Dataset Scripts Description](data_pipeline/README.md)** and/or our **[Evaluation library Description](eval/README.md)**.
 
-#### 1. Collect Research Data
+
+#### 1. Scraping Data
 
 ```bash
 # Collect recent AI papers since May 1, 2025
@@ -69,8 +76,31 @@ python -m eval.main \
     --model_name gpt-4o
 ```
 
-For more details and a full introduction, please continue to our **[Dataset Scripts Description](data_pipeline/README.md)** and/or our **[Evaluation library Description](eval/README.md)**.
 
+
+### 📚 DeepScholar-Base
+
+DeepScholar-Base is our reference pipeline research synthesis pipeline that generates comprehensive literature reviews from a research query. It serves as a strong, open-source baseline and is built on [LOTUS](https://github.com/lotus-data/lotus) for efficient LLM-based data processing. For detailed documentation see the **[DeepScholar Base README](deepscholar_base/README.md)**.
+
+```python
+from deepscholar_base import deepscholar_base
+from deepscholar_base.configs import Configs
+from lotus.models import LM
+from datetime import datetime
+import asyncio
+
+configs = Configs(lm=LM(model="gpt-4o", temperature=1.0, max_tokens=10000))
+
+async def main():
+    final_report, docs_df, stats = await deepscholar_base(
+        topic="What are the latest developments in retrieval-augmented generation?",
+        end_date=datetime(2025, 1, 1),  # Only papers before this date
+        configs=configs,
+    )
+    print(final_report)
+
+asyncio.run(main())
+```
 
 
 ## 🤝 Contributing

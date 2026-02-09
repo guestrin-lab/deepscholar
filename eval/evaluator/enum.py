@@ -54,7 +54,7 @@ class EvaluationFunction(Enum):
         key_to_parsers: dict[str, list[Parser]],
         output_dir: str | None = None,
         **kwargs,
-    ) -> pd.DataFrame:
+    ) -> dict[str, pd.DataFrame]:
         evaluator = self.to_evaluator()(**kwargs)
         results = {
             key: evaluator.calculate(parsers) if parsers else pd.DataFrame()
