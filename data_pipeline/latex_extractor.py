@@ -92,9 +92,9 @@ class LatexExtractor:
 
         paper_data_list = []
 
-        for paper in papers:
+        for i, paper in enumerate(papers):
             try:
-                logger.info(f"Processing paper: {paper.title}")
+                logger.info(f"Processing paper {i+1} of {len(papers)}: {paper.title}")
 
                 # Download LaTeX source first (for citation extraction)
                 latex_content = await self._download_latex_source(paper)

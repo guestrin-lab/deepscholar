@@ -6,6 +6,9 @@ import arxiv
 import tenacity
 import os
 import argparse
+from dotenv import load_env
+
+load_env()
 
 tavily_client = TavilyClient(os.getenv("TAVILY_API_KEY"))
 arxiv_client = arxiv.Client()

@@ -301,6 +301,11 @@ class DataPipeline:
             )
 
         dataframes["citations"] = pd.DataFrame(citations_data)
+        
+        # 4. Queries dataframe
+        query_df = dataframes["paper_content"].copy()
+        query_df["query"] = query_df.apply(lambda x: QUERY_TEMPLATE.format(cutoff_date=x["publication_date"], abstract=x["abstract"]), axis=1)
+        dataframes["queries"] = query_df
         logger.info(
             f"Generated citations dataframe: {len(dataframes['citations'])} rows"
         )
@@ -468,6 +473,12 @@ async def main():
     else:
         print("❌ Pipeline failed to generate any dataframes.")
 
+
+
+QUERY_TEMPLATE = """
+Your task is to write a Related Works section for an academic paper given the paper's abstract. Your response should provide the Related Works section and references. Only include references from arXiv that are published before {cutoff_date}. Mention them in a separate, numbered reference list at the end and use the reference numbers to provide in-line citations in the Related Works section for all claims referring to a source (e.g., description of source [3]. Further details [6][7][8][9][10].) Each in-line citation must consist of a single reference number within a pair of brackets. Do not use any other citation forma. Do not exceed 600 words for the related works section. Here is the paper abstract:
+{abstract}
+"""
 
 if __name__ == "__main__":
     asyncio.run(main())
