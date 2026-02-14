@@ -56,17 +56,17 @@ cp .env.example .env
 
 ### 🔄 Complete Pipeline
 
-`run_all.sh` orchestrates data collection → report generation → evaluation end-to-end:
+`scripts/run_all.sh` orchestrates data collection → report generation → evaluation end-to-end:
 
 ```bash
 # Full pipeline for CS papers from Jan 2025
-./run_all.sh --field cs --start-date 2025-01-01 --output-base runs/cs_jan2025
+./scripts/run_all.sh --field cs --start-date 2025-01-01 --output-base runs/cs_jan2025
 
 # Single paper
-./run_all.sh --paper-id 2502.07374 --output-base runs/single_paper
+./scripts/run_all.sh --paper-id 2502.07374 --output-base runs/single_paper
 
 # Skip collection, evaluate existing results only
-./run_all.sh --skip-data-pipeline --skip-deepscholar --output-base runs/cs_jan2025
+./scripts/run_all.sh --skip-data-pipeline --skip-deepscholar --output-base runs/cs_jan2025
 ```
 
 Output structure:
@@ -152,11 +152,11 @@ asyncio.run(main())
 
 ## 🔌 MCP Integration
 
-DeepScholar-Base can be used as an [MCP (Model Context Protocol)](https://spec.modelcontextprotocol.io/) server, letting you call it from Claude Desktop or any MCP-compatible client. See [mcp/README.md](mcp/README.md) for full setup and usage instructions.
+DeepScholar-Base can be used as an [MCP (Model Context Protocol)](https://spec.modelcontextprotocol.io/) server, letting you call it from Cursor, Claude Desktop, or any MCP-compatible client. See [scripts/mcp/README.md](scripts/mcp/README.md) for full setup, Cursor config, and usage.
 
 ```bash
-# Start the MCP server
-python mcp/server.py --config mcp/config.yaml
+# Start the MCP server (from project root)
+python scripts/mcp/server.py
 ```
 
 ## 🤝 Contributing
