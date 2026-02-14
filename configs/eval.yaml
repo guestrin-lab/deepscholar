@@ -1,0 +1,31 @@
+# Evaluation Suite Default Configuration
+# Keys match the CLI argument dest names (underscored form of --arg-names).
+# CLI arguments override these values when explicitly passed.
+
+# Systems to evaluate
+modes:
+  - deepscholar_base
+
+# Metrics to run ('all' expands to every available metric)
+evals:
+  - all
+
+# Paths
+# Input: length must match modes
+input_folder: []
+output_folder: results
+
+# Specific file IDs to evaluate. If not provided, processes all files in the input folder.
+# file_id: null
+
+# Eval specific paths
+dataset_path: dataset/papers_with_related_works.csv
+# Required for REFERENCE_COVERAGE
+important_citations_path: dataset/important_citations.csv
+# Required for NUGGET_COVERAGE
+nugget_groundtruth_dir_path: dataset/gt_nuggets_outputs
+# Required for ground-truth evaluation
+reference_folder: tests/baselines_results/openscholar
+
+# Model used for LLM-based evaluations
+model_name: gpt-4o

@@ -1,14 +1,14 @@
 arxiv==2.2.0
 beautifulsoup4==4.13.5
 datasets==2.19.1
-lotus_ai[arxiv,file-extractor]>=1.1.4
+git+https://github.com/lotus-data/lotus.git#egg=lotus_ai[arxiv,file-extractor]
 nltk==3.9.1
 pandas==2.3.2
+pyyaml>=6.0
 PyPDF2==3.0.1
 pytest==8.4.1
 Requests==2.32.5
 tabulate==0.9.0
-tenacity==9.0.0
 -e eval/nuggetizer
 exa-py>=2.0.1
 openai-agents>=0.4.2

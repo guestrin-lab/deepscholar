@@ -1,4 +1,6 @@
 import argparse
+import os
+import sys
 from datetime import datetime, timedelta
 
 try:
@@ -6,9 +8,81 @@ try:
 except ImportError:
     from .config import PipelineConfig
 
+# Category sets per field (used by --field shorthand)
+FIELD_CATEGORIES: dict[str, list[str]] = {
+    "cs": [
+        "cs.IR", "cs.CV", "cs.AI", "cs.CL", "cs.LG", "cs.DC", "cs.DB",
+        "cs.AR", "cs.SD", "cs.CR", "cs.ET", "cs.GR", "cs.PL", "cs.SY",
+        "cs.OS", "cs.PF", "cs.SE", "cs.MM",
+    ],
+    "bio": [
+        "q-bio.BM", "q-bio.CB", "q-bio.GN", "q-bio.MN", "q-bio.NC",
+        "q-bio.OT", "q-bio.PE", "q-bio.QM", "q-bio.SC", "q-bio.TO",
+    ],
+    "econ": ["econ.EM", "econ.GN", "econ.TH"],
+    "phy": [
+        "astro-ph.CO", "astro-ph.EP", "astro-ph.GA", "astro-ph.HE",
+        "astro-ph.IM", "astro-ph.SR", "cond-mat.dis-nn", "cond-mat.mes-hall",
+        "cond-mat.mtrl-sci", "cond-mat.other", "cond-mat.quant-gas",
+        "cond-mat.soft", "cond-mat.stat-mech", "cond-mat.str-el",
+        "cond-mat.supr-con", "gr-qc", "hep-ex", "hep-lat", "hep-ph", "hep-th",
+        "math-ph", "nlin.AO", "nlin.CD", "nlin.CG", "nlin.PS", "nlin.SI",
+        "nucl-ex", "nucl-th", "quant-ph", "physics.acc-ph", "physics.ao-ph",
+        "physics.app-ph", "physics.atm-clus", "physics.atom-ph",
+        "physics.bio-ph", "physics.chem-ph", "physics.class-ph",
+        "physics.comp-ph", "physics.data-an", "physics.ed-ph",
+        "physics.flu-dyn", "physics.gen-ph", "physics.geo-ph",
+        "physics.hist-ph", "physics.ins-det", "physics.med-ph",
+        "physics.optics", "physics.plasm-ph", "physics.pop-ph",
+        "physics.soc-ph", "physics.space-ph",
+    ],
+    "stat": ["stat.ML", "stat.OT", "stat.TH", "stat.AP", "stat.CO", "stat.ME"],
+}
+
+_DEFAULT_CONFIG_YAML = "configs/data_pipeline.yaml"
+
+
+def _load_yaml(path: str) -> dict:
+    """Load a YAML file and return its contents as a dict. Returns {} on any error."""
+    if not path or not os.path.exists(path):
+        return {}
+    try:
+        import yaml
+        with open(path) as f:
+            data = yaml.safe_load(f) or {}
+        if not isinstance(data, dict):
+            print(f"Warning: {path} is not a YAML mapping; ignoring.", file=sys.stderr)
+            return {}
+        return data
+    except Exception as e:
+        print(f"Warning: Could not load config {path}: {e}", file=sys.stderr)
+        return {}
+
 
 def parse_args():
+    # Pre-parse to get --config-yaml before building the main parser
+    pre_parser = argparse.ArgumentParser(add_help=False)
+    pre_parser.add_argument("--config-yaml", default=_DEFAULT_CONFIG_YAML)
+    pre_args, _ = pre_parser.parse_known_args()
+
+    yaml_values = _load_yaml(pre_args.config_yaml)
+
+    # 'fields' needs special handling due to action="append"; extract and handle separately
+    yaml_fields: list[str] = yaml_values.pop("fields", [])
+    if isinstance(yaml_fields, str):
+        yaml_fields = [yaml_fields]
+
     parser = argparse.ArgumentParser(description="ArXiv Data Collection Pipeline")
+
+    parser.add_argument(
+        "--config-yaml",
+        type=str,
+        default=pre_args.config_yaml,
+        help=(
+            f"Path to YAML config file (default: {_DEFAULT_CONFIG_YAML}). "
+            "Provides base values; any explicitly-passed CLI arg overrides the YAML."
+        ),
+    )
 
     # Single paper processing
     parser.add_argument(
@@ -39,12 +113,26 @@ def parse_args():
         help="End date for paper search (YYYY-MM-DD)",
     )
 
-    # ArXiv categories
+    # ArXiv categories — specify either --field or --categories (or both)
+    parser.add_argument(
+        "--field",
+        dest="fields",
+        action="append",
+        default=[],
+        choices=list(FIELD_CATEGORIES.keys()),
+        metavar="FIELD",
+        help=(
+            "Convenience alias: expand a named field into its ArXiv categories "
+            f"({', '.join(FIELD_CATEGORIES.keys())}). "
+            "Can be repeated to combine fields. Use --categories for custom lists."
+        ),
+    )
     parser.add_argument(
         "--categories",
         nargs="+",
-        default=["cs.AI", "cs.CL", "cs.LG"],
-        help="ArXiv categories to search",
+        default=None,
+        help="Explicit ArXiv categories to search (e.g. cs.AI cs.LG). "
+             "If --field is also given, both sets are merged.",
     )
 
     # Author filtering
@@ -65,7 +153,7 @@ def parse_args():
     parser.add_argument(
         "--max-papers-per-category",
         type=int,
-        default=1000,  # the rate limit is 1000 papers per category
+        default=1000,
         help="Maximum papers per category",
     )
     parser.add_argument(
@@ -110,7 +198,42 @@ def parse_args():
         help="Delay between requests (seconds)",
     )
 
+    # Apply YAML as defaults so CLI args naturally override them.
+    # 'fields' is handled separately below due to action="append".
+    if yaml_values:
+        parser.set_defaults(**yaml_values)
+
     args = parser.parse_args()
+
+    # Resolve --field into categories and merge with --categories.
+    # If no --field was passed on CLI, fall back to YAML fields.
+    cli_fields: list[str] = args.fields  # populated only by explicit CLI --field flags
+    effective_fields = cli_fields if cli_fields else yaml_fields
+
+    field_categories: list[str] = []
+    for f in effective_fields:
+        if f in FIELD_CATEGORIES:
+            field_categories.extend(FIELD_CATEGORIES[f])
+        else:
+            parser.error(
+                f"Unknown field '{f}'. Choices: {', '.join(FIELD_CATEGORIES.keys())}"
+            )
+
+    if field_categories and args.categories:
+        # Both given: merge (deduplicate, preserve order)
+        seen: set[str] = set()
+        merged: list[str] = []
+        for c in field_categories + args.categories:
+            if c not in seen:
+                seen.add(c)
+                merged.append(c)
+        args.categories = merged
+    elif field_categories:
+        args.categories = field_categories
+    elif args.categories is None:
+        # Neither --field nor --categories nor YAML categories: fall back to default
+        args.categories = ["cs.AI", "cs.CL", "cs.LG"]
+
     start_date = datetime.strptime(args.start_date, "%Y-%m-%d")
     end_date = datetime.strptime(args.end_date, "%Y-%m-%d")
 

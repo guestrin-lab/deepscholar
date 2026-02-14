@@ -1,0 +1,45 @@
+# DeepScholar-Base Default Configuration
+# Keys match the Configs class fields in deepscholar_base/configs.py.
+# CLI arguments to deepscholar_base/main.py override these when explicitly passed.
+
+
+# Input File Settings
+queries_file: dataset/queries.csv
+start_idx: 0
+end_idx: null
+
+output_folder: results
+
+# Language model — specify model plus any extra kwargs understood by LOTUS LM
+lm:
+  model: gpt-4o-mini
+  temperature: 1.0
+  max_tokens: 10000
+
+search_mode: agentic
+
+# Common search settings
+max_search_retries: 3
+use_structured_output: true
+enable_web_search: true
+per_query_max_search_results_count: 10
+
+# Agentic search only
+use_responses_model: null
+
+# Recursive search only
+num_search_steps: 3
+num_search_queries_per_step_per_corpus: 2
+web_corpuses: [TAVILY]
+
+# Filtering
+use_sem_filter: true
+use_sem_topk: true
+final_max_results_count: 30
+
+# Taxonomization
+categorize_references: true
+generate_category_summary: true
+
+# Generation
+generate_insights: true

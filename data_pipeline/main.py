@@ -175,6 +175,12 @@ class DataPipeline:
         dfs = []
         for file in all_related_works:
             df = pd.read_csv(file)
+            if df['arxiv_id'].isna().any() or len(df) == 0:
+                logger.warning(f"Skipping {file} because it has missing arxiv_id")
+                continue
+            if df['arxiv_id'].iloc[0] not in dataframes["papers"]["arxiv_id"].values.tolist():
+                logger.warning(f"Skipping {file} because it has an arxiv_id that is not in the papers dataframe")
+                continue
             dfs.append(df)
 
         # Combine all dataframes
@@ -221,6 +227,9 @@ class DataPipeline:
                     if paper.updated_date
                     else None,
                     "abs_url": paper.abs_url,
+                    "doi": paper.doi,
+                    "journal_ref": paper.journal_ref,
+                    "comments": paper.comments,
                 }
             )
 
@@ -292,6 +301,11 @@ class DataPipeline:
             )
 
         dataframes["citations"] = pd.DataFrame(citations_data)
+        
+        # 4. Queries dataframe
+        query_df = dataframes["papers"].copy()
+        query_df["query"] = query_df.apply(lambda x: QUERY_TEMPLATE.format(cutoff_date=x["published_date"], abstract=x["abstract"]), axis=1)
+        dataframes["queries"] = query_df
         logger.info(
             f"Generated citations dataframe: {len(dataframes['citations'])} rows"
         )
@@ -360,11 +374,22 @@ class DataPipeline:
                     if paper.updated_date
                     else None,
                     "abs_url": paper.abs_url,
+                    "doi": paper.doi,
+                    "journal_ref": paper.journal_ref,
+                    "comments": paper.comments,
                 }
             )
 
         dataframes["papers"] = pd.DataFrame(papers_data)
         logger.info(f"Generated papers dataframe: {len(dataframes['papers'])} rows")
+        
+        # 4. Queries dataframe
+        query_df = dataframes["papers"].copy()
+        query_df["query"] = query_df.apply(lambda x: QUERY_TEMPLATE.format(cutoff_date=x["published_date"], abstract=x["abstract"]), axis=1)
+        dataframes["queries"] = query_df
+        logger.info(
+            f"Generated queries dataframe: {len(dataframes['queries'])} rows"
+        )
 
         return dataframes
 
@@ -456,6 +481,12 @@ async def main():
     else:
         print("❌ Pipeline failed to generate any dataframes.")
 
+
+
+QUERY_TEMPLATE = """
+Your task is to write a Related Works section for an academic paper given the paper's abstract. Your response should provide the Related Works section and references. Only include references from arXiv that are published before {cutoff_date}. Mention them in a separate, numbered reference list at the end and use the reference numbers to provide in-line citations in the Related Works section for all claims referring to a source (e.g., description of source [3]. Further details [6][7][8][9][10].) Each in-line citation must consist of a single reference number within a pair of brackets. Do not use any other citation forma. Do not exceed 600 words for the related works section. Here is the paper abstract:
+{abstract}
+"""
 
 if __name__ == "__main__":
     asyncio.run(main())

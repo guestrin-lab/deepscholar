@@ -1,0 +1,41 @@
+# Data Pipeline Default Configuration
+# CLI arguments override these values when explicitly passed.
+
+# Date range
+# start_date: "2025-01-01"   # Required when running without --paper-id
+# end_date: "2025-03-01"     # Defaults to today if not set
+
+# Single-paper mode
+# paper_id: null             # ArXiv ID, e.g. "2502.07374"
+# existing_papers_csv: null  # Path to existing papers CSV to skip scraping
+
+# ArXiv categories — use 'fields' for named expansion or 'categories' for explicit lists
+# fields: [cs]               # Named field(s): cs, bio, econ, phy, stat (can be a list)
+categories:
+  - cs.AI
+  - cs.CL
+  - cs.LG
+start_date: "2025-01-01"
+end_date: "2025-03-01"
+
+# Exisiting papers
+paper_id: null             # ArXiv ID, e.g. "2502.07374"
+existing_papers_csv: null  # Path to existing papers CSV to skip scraping
+
+# Author filtering
+min_hindex: 20
+max_hindex: null
+
+# Paper limits
+max_papers_per_category: 1000
+min_citations: 5
+
+# Output
+output_dir: data_pipeline/outputs
+# no_save_papers: false
+# no_save_content: false
+# no_save_citations: false
+
+# Processing
+concurrent_requests: 5
+request_delay: 1.0
