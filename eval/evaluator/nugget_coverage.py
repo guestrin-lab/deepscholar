@@ -110,8 +110,37 @@ class NuggetCoverageEvaluator(Evaluator):
                 "all_score": 0.0,
             }
 
+    def _check_alignment(self, parsers: list[Parser]) -> None:
+        """Fail fast if a ground-truth nugget folder belongs to another paper.
+
+        Nuggets are looked up by file_id (the dataset row index), so a folder
+        holding a different paper would silently score the output against the
+        wrong reference. Compare the stored qid with the row's arxiv_id before
+        any LLM call is made.
+        """
+        mismatches = []
+        for parser in parsers:
+            expected = parser.s_map_groundtruth.get("arxiv_id")
+            gt_path = os.path.join(self.gt_dir, str(parser.file_id), "res.json")
+            if not expected or not os.path.exists(gt_path):
+                continue
+            with open(gt_path, "r", encoding="utf-8") as f:
+                qid = json.load(f).get("qid")
+            if qid and str(qid) != str(expected):
+                mismatches.append(
+                    f"{parser.folder_path}: {gt_path} has qid {qid}, "
+                    f"but dataset row {parser.file_id} is {expected}"
+                )
+        if mismatches:
+            raise ValueError(
+                "Ground-truth nuggets do not match the dataset rows; refusing to "
+                "score nugget coverage against another paper's nuggets:\n"
+                + "\n".join(mismatches)
+            )
+
     def calculate(self, parsers: list[Parser]) -> pd.DataFrame:
         """Calculate nugget coverage metrics for all parsers."""
+        self._check_alignment(parsers)
         return pd.DataFrame(
             [
                 {
