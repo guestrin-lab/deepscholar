@@ -1,221 +1,321 @@
 {
-  "qid": "2506.02847v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nDeploying large language models (LLMs) on edge devices is crucial for\ndelivering fast responses and ensuring data privacy. However, the limited\nstorage, weight, and power of edge devices make it difficult to deploy\nLLM-powered applications. These devices must balance latency requirements with\nenergy consumption and model accuracy. In this paper, we first quantify the\nchallenges of deploying LLMs on off-the-shelf edge devices and then we present\nCLONE, an in-depth algorithm-hardware co-design at both the model- and\nsystem-level that intelligently integrates real-time, energy optimization while\nmaintaining robust generality. In order to maximize the synergistic benefits of\nthese algorithms in always-on and intermediate edge computing settings, we\nspecialize in a 28nm scalable hardware accelerator system. We implement and\nextensively evaluate CLONE on two off-the-shelf edge platforms. Experiments\nshow that CLONE effectively accelerates the inference process up to 11.92x, and\nsaves energy up to 7.36x, while maintaining high-generation.",
+  "qid": "2505.08071v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nDe novo assembly enables investigations of unknown genomes, paving the way\nfor personalized medicine and disease management. However, it faces immense\ncomputational challenges arising from the excessive data volumes and\nalgorithmic complexity.\n  While state-of-the-art de novo assemblers utilize distributed systems for\nextreme-scale genome assembly, they demand substantial computational and memory\nresources. They also fail to address the inherent challenges of de novo\nassembly, including a large memory footprint, memory-bound behavior, and\nirregular data patterns stemming from complex, interdependent data structures.\nGiven these challenges, de novo assembly merits a custom hardware solution,\nthough existing approaches have not fully addressed the limitations.\n  We propose NMP-PaK, a hardware-software co-design that accelerates scalable\nde novo genome assembly through near-memory processing (NMP). Our channel-level\nNMP architecture addresses memory bottlenecks while providing sufficient\nscratchpad space for processing elements. Customized processing elements\nmaximize parallelism while efficiently handling large data structures that are\nboth dynamic and interdependent. Software optimizations include customized\nbatch processing to reduce the memory footprint and hybrid CPU-NMP processing\nto address hardware underutilization caused by irregular data patterns.\n  NMP-PaK conducts the same genome assembly while incurring a 14X smaller\nmemory footprint compared to the state-of-the-art de novo assembly. Moreover,\nNMP-PaK delivers a 16X performance improvement over the CPU baseline, with a\n2.4X reduction in memory operations. Consequently, NMP-PaK achieves 8.3X\ngreater throughput than state-of-the-art de novo assembly under the same\nresource constraints, showcasing its superior computational efficiency.",
   "nuggets": [
     {
-      "text": "LLMs are memory-, compute-, and energy-intensive, often requiring cloud inference",
+      "text": "De novo assembly faces computational and memory bottlenecks",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Edge LLM inference enhances data privacy and real-time service delivery",
+      "text": "Distributed systems for de novo assembly require large resources",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Edge devices face storage, weight, and power constraints for LLM deployment",
+      "text": "State-of-the-art assemblers struggle with memory footprint and irregular data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Near-memory processing (NMP) accelerators address memory bottlenecks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NMP-PaK targets Iterative Compaction, the most time-consuming step",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Model-level optimizations: quantization, pruning, distillation, architecture search",
+      "text": "NMP-PaK performs reference-free assembly with reduced memory footprint",
       "importance": "vital",
-      "assignment": "support"
+      "assignment": "partial_support"
     },
     {
-      "text": "Most prior work neglects system-level trade-offs like storage and weight efficiency",
+      "text": "NMP-PaK achieves 14X smaller memory footprint than state-of-the-art",
       "importance": "vital",
-      "assignment": "support"
+      "assignment": "not_support"
     },
     {
-      "text": "Existing model customization methods struggle with task-agnostic, general LLMs",
+      "text": "NMP-PaK achieves 8.3X throughput over state-of-the-art under same resources",
       "importance": "vital",
-      "assignment": "support"
+      "assignment": "not_support"
     },
     {
-      "text": "Edge–cloud collaboration enables selective offloading for complex LLM tasks",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Edge-first execution preserves privacy and real-time responsiveness",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "LLM compilers and software stacks enable co-processor and near-sensor integration",
+      "text": "Zhou et al. used hybrid memory cubes for Megahit assembly acceleration",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Software stack integration can add computational and communication overhead",
+      "text": "Hybrid memory cubes discontinued; Megahit does not scale to large genomes",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "LLM decoder layers and stochastic outputs offer hardware optimization opportunities",
+      "text": "Angizi et al. proposed PIM-Assembler using in-DRAM X(N)OR for small genomes",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DVFS dynamically adjusts processor voltage/frequency for system-level optimization",
+      "text": "PIM-Assembler not demonstrated for extreme-scale assembly",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Most DVFS strategies target discriminative models, not generative LLMs",
+      "text": "Wu et al. accelerated k-mer counting with in-storage processing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Selective cloud offloading amortizes bandwidth and compute costs",
+      "text": "GPU-based accelerators improve local assembly, sorting, and prefix scan",
       "importance": "okay",
       "assignment": "support"
+    },
+    {
+      "text": "GPUs limited by memory capacity and irregular access patterns",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-De Bruijn graph accelerators focus on sequence mapping and alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BWA-MEM and minimap2 are standard for short and long-read alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "mm2-fast, mm2-ax, mm2-gb accelerate minimap2 on CPUs and GPUs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Guo et al. used FPGA for sequence mapping acceleration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SeGraM and Harp accelerate sequence-to-graph mapping of long reads",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MegIS uses in-storage processing for metagenomics analysis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GenDP and QUETZAL accelerate dynamic programming for genomic applications",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "NMP-PaK delivers 16X CPU baseline performance, 2.4X fewer memory operations",
+      "importance": "okay",
+      "assignment": "not_support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "LLMs are memory-, compute-, and energy-intensive, often requiring cloud inference",
+      "text": "De novo assembly faces computational and memory bottlenecks",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Edge LLM inference enhances data privacy and real-time service delivery",
+      "text": "Distributed systems for de novo assembly require large resources",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Model-level optimizations: quantization, pruning, distillation, architecture search",
+      "text": "State-of-the-art assemblers struggle with memory footprint and irregular data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Most prior work neglects system-level trade-offs like storage and weight efficiency",
+      "text": "Near-memory processing (NMP) accelerators address memory bottlenecks",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Existing model customization methods struggle with task-agnostic, general LLMs",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Edge–cloud collaboration enables selective offloading for complex LLM tasks",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Edge-first execution preserves privacy and real-time responsiveness",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "LLM compilers and software stacks enable co-processor and near-sensor integration",
+      "text": "Zhou et al. used hybrid memory cubes for Megahit assembly acceleration",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Software stack integration can add computational and communication overhead",
+      "text": "Hybrid memory cubes discontinued; Megahit does not scale to large genomes",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "LLM decoder layers and stochastic outputs offer hardware optimization opportunities",
+      "text": "Angizi et al. proposed PIM-Assembler using in-DRAM X(N)OR for small genomes",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DVFS dynamically adjusts processor voltage/frequency for system-level optimization",
+      "text": "PIM-Assembler not demonstrated for extreme-scale assembly",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Most DVFS strategies target discriminative models, not generative LLMs",
+      "text": "Wu et al. accelerated k-mer counting with in-storage processing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Selective cloud offloading amortizes bandwidth and compute costs",
+      "text": "GPU-based accelerators improve local assembly, sorting, and prefix scan",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GPUs limited by memory capacity and irregular access patterns",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-De Bruijn graph accelerators focus on sequence mapping and alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BWA-MEM and minimap2 are standard for short and long-read alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "mm2-fast, mm2-ax, mm2-gb accelerate minimap2 on CPUs and GPUs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Guo et al. used FPGA for sequence mapping acceleration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SeGraM and Harp accelerate sequence-to-graph mapping of long reads",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MegIS uses in-storage processing for metagenomics analysis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GenDP and QUETZAL accelerate dynamic programming for genomic applications",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "LLMs are memory-, compute-, and energy-intensive, often requiring cloud inference",
+      "text": "De novo assembly faces computational and memory bottlenecks",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Edge LLM inference enhances data privacy and real-time service delivery",
+      "text": "Distributed systems for de novo assembly require large resources",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Edge devices face storage, weight, and power constraints for LLM deployment",
+      "text": "State-of-the-art assemblers struggle with memory footprint and irregular data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Near-memory processing (NMP) accelerators address memory bottlenecks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NMP-PaK targets Iterative Compaction, the most time-consuming step",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Model-level optimizations: quantization, pruning, distillation, architecture search",
+      "text": "NMP-PaK performs reference-free assembly with reduced memory footprint",
       "importance": "vital",
-      "assignment": "support"
+      "assignment": "partial_support"
     },
     {
-      "text": "Most prior work neglects system-level trade-offs like storage and weight efficiency",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Existing model customization methods struggle with task-agnostic, general LLMs",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Edge–cloud collaboration enables selective offloading for complex LLM tasks",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Edge-first execution preserves privacy and real-time responsiveness",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "LLM compilers and software stacks enable co-processor and near-sensor integration",
+      "text": "Zhou et al. used hybrid memory cubes for Megahit assembly acceleration",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Software stack integration can add computational and communication overhead",
+      "text": "Hybrid memory cubes discontinued; Megahit does not scale to large genomes",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "LLM decoder layers and stochastic outputs offer hardware optimization opportunities",
+      "text": "Angizi et al. proposed PIM-Assembler using in-DRAM X(N)OR for small genomes",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DVFS dynamically adjusts processor voltage/frequency for system-level optimization",
+      "text": "PIM-Assembler not demonstrated for extreme-scale assembly",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Most DVFS strategies target discriminative models, not generative LLMs",
+      "text": "Wu et al. accelerated k-mer counting with in-storage processing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Selective cloud offloading amortizes bandwidth and compute costs",
+      "text": "GPU-based accelerators improve local assembly, sorting, and prefix scan",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GPUs limited by memory capacity and irregular access patterns",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Non-De Bruijn graph accelerators focus on sequence mapping and alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "BWA-MEM and minimap2 are standard for short and long-read alignment",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "mm2-fast, mm2-ax, mm2-gb accelerate minimap2 on CPUs and GPUs",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Guo et al. used FPGA for sequence mapping acceleration",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SeGraM and Harp accelerate sequence-to-graph mapping of long reads",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "MegIS uses in-storage processing for metagenomics analysis",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GenDP and QUETZAL accelerate dynamic programming for genomic applications",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.875,
-    "strict_all_score": 0.9285714285714286,
-    "vital_score": 0.9375,
-    "all_score": 0.9642857142857143
+    "strict_vital_score": 0.5,
+    "strict_all_score": 0.782608695652174,
+    "vital_score": 0.625,
+    "all_score": 0.8260869565217391
   }
 }

@@ -1,263 +1,248 @@
 {
-  "qid": "2505.03484v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nRecent deep sequential recommendation models often struggle to effectively\nmodel key characteristics of user behaviors, particularly in handling sequence\nlength variations and capturing diverse interaction patterns. We propose\nSTAR-Rec, a novel architecture that synergistically combines preference-aware\nattention and state-space modeling through a sequence-level mixture-of-experts\nframework. STAR-Rec addresses these challenges by: (1) employing\npreference-aware attention to capture both inherently similar item\nrelationships and diverse preferences, (2) utilizing state-space modeling to\nefficiently process variable-length sequences with linear complexity, and (3)\nincorporating a mixture-of-experts component that adaptively routes different\nbehavioral patterns to specialized experts, handling both focused\ncategory-specific browsing and diverse category exploration patterns. We\ntheoretically demonstrate how the state space model and attention mechanisms\ncan be naturally unified in recommendation scenarios, where SSM captures\ntemporal dynamics through state compression while attention models both similar\nand diverse item relationships. Extensive experiments on four real-world\ndatasets demonstrate that STAR-Rec consistently outperforms state-of-the-art\nsequential recommendation methods, particularly in scenarios involving diverse\nuser behaviors and varying sequence lengths.",
+  "qid": "2504.18383v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nCross-domain Sequential Recommendation (CDSR) aims to extract the preference\nfrom the user's historical interactions across various domains. Despite some\nprogress in CDSR, two problems set the barrier for further advancements, i.e.,\noverlap dilemma and transition complexity. The former means existing CDSR\nmethods severely rely on users who own interactions on all domains to learn\ncross-domain item relationships, compromising the practicability. The latter\nrefers to the difficulties in learning the complex transition patterns from the\nmixed behavior sequences. With powerful representation and reasoning abilities,\nLarge Language Models (LLMs) are promising to address these two problems by\nbridging the items and capturing the user's preferences from a semantic view.\nTherefore, we propose an LLMs Enhanced Cross-domain Sequential Recommendation\nmodel (LLM4CDSR). To obtain the semantic item relationships, we first propose\nan LLM-based unified representation module to represent items. Then, a\ntrainable adapter with contrastive regularization is designed to adapt the CDSR\ntask. Besides, a hierarchical LLMs profiling module is designed to summarize\nuser cross-domain preferences. Finally, these two modules are integrated into\nthe proposed tri-thread framework to derive recommendations. We have conducted\nextensive experiments on three public cross-domain datasets, validating the\neffectiveness of LLM4CDSR. We have released the code online.",
   "nuggets": [
     {
-      "text": "Transformers and RNNs are foundational for sequential recommendation",
+      "text": "CDSR combines cross-domain and sequential recommendation strengths",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "TransRec and matrix factorization struggled with multiple behaviors, long sequences",
+      "text": "Key CDSR challenge: bridging distribution gaps between domains",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "SASRec uses multi-head attention for sequence modeling",
+      "text": "User modeling in CDSR captures global preferences from mixed sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "BERT4Rec employs bidirectional transformers for contextual information",
+      "text": "Existing CDSR methods mainly use collaborative signals",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Transformer models face quadratic complexity with long sequences",
+      "text": "LLMs offer strong reasoning and semantic representation abilities",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "State-space models (SSMs) excel at capturing temporal dynamics",
+      "text": "LLMs applied to recommender systems and sequential recommendation",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "SSMs struggle to balance long/short-term modeling and pattern diversity",
+      "text": "LLMs enhancing SRS: used as item/user encoders (e.g., SAID, TSLRec)",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "STAR-Rec unifies preference-aware attention and state-space modeling",
+      "text": "No prior work explores LLMs for enhancing CDSR",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "STAR-Rec uses mixture-of-experts for diverse behavioral patterns",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "STAR-Rec efficiently handles variable-length sequences and diverse item relationships",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "LinRec introduces linear complexity attention for efficiency",
+      "text": "Most CDSR methods use GNNs to connect items across domains",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "GRU4Rec offers linear complexity but limited effectiveness",
+      "text": "C2DSR builds interaction graphs from item co-occurrences",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Mamba4Rec improves efficiency with selective state space modeling",
+      "text": "EA-GCL and MGCL use contrastive objectives for graph learning",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "ECHO-Mamba4Rec combines bidirectional Mamba and frequency-domain filtering",
+      "text": "π-Net introduces cross-domain transfer for hybrid user preferences",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "RecMamba handles lifelong recommendation scenarios",
+      "text": "TriCDR models mixed sequences with triple contrastive tasks",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Mamba4KT adapts Mamba for knowledge tracing",
+      "text": "LLMs as SRS: direct recommendation generation (e.g., GOT4Rec, TALLRec, S-DPO)",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "SIGMA uses bi-directional structure and selective gating for context modeling",
+      "text": "LLM-ESR combines collaborative and semantic information via dual-view modeling",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs embeddings can be cached for efficient serving",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Transformers and RNNs are foundational for sequential recommendation",
+      "text": "CDSR combines cross-domain and sequential recommendation strengths",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "TransRec and matrix factorization struggled with multiple behaviors, long sequences",
+      "text": "Key CDSR challenge: bridging distribution gaps between domains",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "SASRec uses multi-head attention for sequence modeling",
+      "text": "User modeling in CDSR captures global preferences from mixed sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "BERT4Rec employs bidirectional transformers for contextual information",
+      "text": "Existing CDSR methods mainly use collaborative signals",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Transformer models face quadratic complexity with long sequences",
+      "text": "LLMs offer strong reasoning and semantic representation abilities",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "State-space models (SSMs) excel at capturing temporal dynamics",
+      "text": "LLMs applied to recommender systems and sequential recommendation",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "SSMs struggle to balance long/short-term modeling and pattern diversity",
+      "text": "LLMs enhancing SRS: used as item/user encoders (e.g., SAID, TSLRec)",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "STAR-Rec unifies preference-aware attention and state-space modeling",
+      "text": "No prior work explores LLMs for enhancing CDSR",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "STAR-Rec uses mixture-of-experts for diverse behavioral patterns",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "STAR-Rec efficiently handles variable-length sequences and diverse item relationships",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "LinRec introduces linear complexity attention for efficiency",
+      "text": "Most CDSR methods use GNNs to connect items across domains",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "GRU4Rec offers linear complexity but limited effectiveness",
+      "text": "C2DSR builds interaction graphs from item co-occurrences",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Mamba4Rec improves efficiency with selective state space modeling",
+      "text": "EA-GCL and MGCL use contrastive objectives for graph learning",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "ECHO-Mamba4Rec combines bidirectional Mamba and frequency-domain filtering",
+      "text": "π-Net introduces cross-domain transfer for hybrid user preferences",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "RecMamba handles lifelong recommendation scenarios",
+      "text": "TriCDR models mixed sequences with triple contrastive tasks",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Mamba4KT adapts Mamba for knowledge tracing",
+      "text": "LLMs as SRS: direct recommendation generation (e.g., GOT4Rec, TALLRec, S-DPO)",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "SIGMA uses bi-directional structure and selective gating for context modeling",
+      "text": "LLM-ESR combines collaborative and semantic information via dual-view modeling",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs embeddings can be cached for efficient serving",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "Transformers and RNNs are foundational for sequential recommendation",
+      "text": "CDSR combines cross-domain and sequential recommendation strengths",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "TransRec and matrix factorization struggled with multiple behaviors, long sequences",
+      "text": "Key CDSR challenge: bridging distribution gaps between domains",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "SASRec uses multi-head attention for sequence modeling",
+      "text": "User modeling in CDSR captures global preferences from mixed sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "BERT4Rec employs bidirectional transformers for contextual information",
+      "text": "Existing CDSR methods mainly use collaborative signals",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Transformer models face quadratic complexity with long sequences",
+      "text": "LLMs offer strong reasoning and semantic representation abilities",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "State-space models (SSMs) excel at capturing temporal dynamics",
+      "text": "LLMs applied to recommender systems and sequential recommendation",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "SSMs struggle to balance long/short-term modeling and pattern diversity",
+      "text": "LLMs enhancing SRS: used as item/user encoders (e.g., SAID, TSLRec)",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "STAR-Rec unifies preference-aware attention and state-space modeling",
+      "text": "No prior work explores LLMs for enhancing CDSR",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "STAR-Rec uses mixture-of-experts for diverse behavioral patterns",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "STAR-Rec efficiently handles variable-length sequences and diverse item relationships",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "LinRec introduces linear complexity attention for efficiency",
+      "text": "Most CDSR methods use GNNs to connect items across domains",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "GRU4Rec offers linear complexity but limited effectiveness",
+      "text": "C2DSR builds interaction graphs from item co-occurrences",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Mamba4Rec improves efficiency with selective state space modeling",
+      "text": "EA-GCL and MGCL use contrastive objectives for graph learning",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "ECHO-Mamba4Rec combines bidirectional Mamba and frequency-domain filtering",
+      "text": "π-Net introduces cross-domain transfer for hybrid user preferences",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "RecMamba handles lifelong recommendation scenarios",
+      "text": "TriCDR models mixed sequences with triple contrastive tasks",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Mamba4KT adapts Mamba for knowledge tracing",
+      "text": "LLMs as SRS: direct recommendation generation (e.g., GOT4Rec, TALLRec, S-DPO)",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "SIGMA uses bi-directional structure and selective gating for context modeling",
+      "text": "LLM-ESR combines collaborative and semantic information via dual-view modeling",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "LLMs embeddings can be cached for efficient serving",
       "importance": "okay",
       "assignment": "support"
     }

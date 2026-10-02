@@ -1,246 +1,226 @@
 {
-  "qid": "2504.21282v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nNatural language (NL)-driven table discovery identifies relevant tables from\nlarge table repositories based on NL queries. While current deep-learning-based\nmethods using the traditional dense vector search pipeline, i.e.,\nrepresentation-index-search, achieve remarkable accuracy, they face several\nlimitations that impede further performance improvements: (i) the errors\naccumulated during the table representation and indexing phases affect the\nsubsequent search accuracy; and (ii) insufficient query-table interaction\nhinders effective semantic alignment, impeding accuracy improvements. In this\npaper, we propose a novel framework Birdie, using a differentiable search\nindex. It unifies the indexing and search into a single encoder-decoder\nlanguage model, thus getting rid of error accumulations. Birdie first assigns\neach table a prefix-aware identifier and leverages a large language model-based\nquery generator to create synthetic queries for each table. It then encodes the\nmapping between synthetic queries/tables and their corresponding table\nidentifiers into the parameters of an encoder-decoder language model, enabling\ndeep query-table interactions. During search, the trained model directly\ngenerates table identifiers for a given query. To accommodate the continual\nindexing of dynamic tables, we introduce an index update strategy via parameter\nisolation, which mitigates the issue of catastrophic forgetting. Extensive\nexperiments demonstrate that Birdie outperforms state-of-the-art dense methods\nby 16.8% in accuracy, and reduces forgetting by over 90% compared to other\ncontinual learning approaches.",
+  "qid": "2504.06975v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nIn order to achieve low latency, high throughput, and partition tolerance,\nmodern databases forgo strong transaction isolation for weak isolation\nguarantees. However, several production databases have been found to suffer\nfrom isolation bugs, breaking their data-consistency contract. Black-box\ntesting is a prominent technique for detecting isolation bugs, by checking\nwhether histories of database transactions adhere to a prescribed isolation\nlevel.\n  Testing databases on realistic workloads of large size requires isolation\ntesters to be as efficient as possible, a requirement that has initiated a\nstudy of the complexity of isolation testing. Although testing strong isolation\nhas been known to be NP-complete, weak isolation levels were recently shown to\nbe testable in polynomial time, which has propelled the scalability of testing\ntools. However, existing testers have a large polynomial complexity,\nrestricting testing to workloads of only moderate size, which is not typical of\nlarge-scale databases.\n  In this work, we develop AWDIT, a highly-efficient and provably optimal\ntester for weak database isolation. Given a history $H$ of size $n$ and $k$\nsessions, AWDIT tests whether H satisfies the most common weak isolation levels\nof Read Committed (RC), Read Atomic (RA), and Causal Consistency (CC) in time\n$O(n^{3/2})$, $O(n^{3/2})$, and $O(n \\cdot k)$, respectively, improving\nsignificantly over the state of the art. Moreover, we prove that AWDIT is\nessentially optimal, in the sense that there is a conditional lower bound of\n$n^{3/2}$ for any weak isolation level between RC and CC. Our experiments show\nthat AWDIT is significantly faster than existing, highly optimized testers;\ne.g., for the $\\sim$20% largest histories, AWDIT obtains an average speedup of\n$245\\times$, $193\\times$, and $62\\times$ for RC, RA, and CC, respectively, over\nthe best baseline.",
   "nuggets": [
     {
-      "text": "NL-driven table discovery retrieves tables using natural language queries",
+      "text": "Black-box testing detects isolation bugs in databases",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Traditional methods use a representation-index-search pipeline with dense vectors",
+      "text": "Weak isolation levels testable in polynomial time",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Errors in representation and indexing phases reduce search accuracy",
+      "text": "Existing weak isolation testers have high polynomial complexity",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Insufficient query-table interaction limits semantic alignment and accuracy",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Differentiable search index (DSI) unifies indexing and search in one model",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Birdie is the first to use DSI for table discovery",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Birdie assigns prefix-aware identifiers and generates synthetic queries per table",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "Birdie encodes query-table mappings in encoder-decoder model parameters",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "Birdie enables deep query-table interactions during search",
+      "text": "AWDIT achieves optimal complexity for weak isolation testing",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Birdie directly generates table identifiers for queries",
+      "text": "AWDIT tests RC, RA, CC in O(n^{3/2}), O(n^{3/2}), O(n·k)",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Birdie introduces parameter isolation to mitigate catastrophic forgetting",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Birdie outperforms state-of-the-art dense methods by 16.8% in accuracy",
+      "text": "AWDIT significantly outperforms previous testers in speed",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Birdie reduces catastrophic forgetting by over 90% compared to other methods",
+      "text": "Conditional lower bound of n^{3/2} for weak isolation testing",
       "importance": "vital",
-      "assignment": "not_support"
+      "assignment": "partial_support"
     },
     {
-      "text": "OpenDTR uses TAPAS as a bi-encoder for table representation",
+      "text": "Parameterization by sessions/topology yields efficient algorithms",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "NP-completeness for strong and some weak memory models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Database isolation formalized axiomatically and operationally",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Solo encodes cell-attribute-cell triplets for finer table representation",
+      "text": "Testing strong isolation is NP-complete",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "OpenWikiTable explores various query and table encoder options",
+      "text": "AWDIT avoids exhaustive search over all Transactional Anomalous Patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Cross-encoder re-ranking enables deep query-table interactions but lacks scalability",
+      "text": "Plume checks weak isolation via Transactional Anomalous Patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DSI was first used for document retrieval, now applied to tables",
+      "text": "Strong isolation testers use SAT/SMT solving",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Replay-based continual learning in DSI struggles to balance new and old data",
+      "text": "Consistency testing parallels shared-memory memory model verification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Causally-consistent memory models allow efficient consistency checks",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "NL-driven table discovery retrieves tables using natural language queries",
+      "text": "Black-box testing detects isolation bugs in databases",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Traditional methods use a representation-index-search pipeline with dense vectors",
+      "text": "Weak isolation levels testable in polynomial time",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Errors in representation and indexing phases reduce search accuracy",
+      "text": "Existing weak isolation testers have high polynomial complexity",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Insufficient query-table interaction limits semantic alignment and accuracy",
+      "text": "Parameterization by sessions/topology yields efficient algorithms",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Differentiable search index (DSI) unifies indexing and search in one model",
+      "text": "NP-completeness for strong and some weak memory models",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Birdie is the first to use DSI for table discovery",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Birdie introduces parameter isolation to mitigate catastrophic forgetting",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "OpenDTR uses TAPAS as a bi-encoder for table representation",
+      "text": "Database isolation formalized axiomatically and operationally",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Solo encodes cell-attribute-cell triplets for finer table representation",
+      "text": "Testing strong isolation is NP-complete",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "OpenWikiTable explores various query and table encoder options",
+      "text": "AWDIT avoids exhaustive search over all Transactional Anomalous Patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Cross-encoder re-ranking enables deep query-table interactions but lacks scalability",
+      "text": "Plume checks weak isolation via Transactional Anomalous Patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DSI was first used for document retrieval, now applied to tables",
+      "text": "Strong isolation testers use SAT/SMT solving",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Replay-based continual learning in DSI struggles to balance new and old data",
+      "text": "Consistency testing parallels shared-memory memory model verification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Causally-consistent memory models allow efficient consistency checks",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "NL-driven table discovery retrieves tables using natural language queries",
+      "text": "Black-box testing detects isolation bugs in databases",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Traditional methods use a representation-index-search pipeline with dense vectors",
+      "text": "Weak isolation levels testable in polynomial time",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Errors in representation and indexing phases reduce search accuracy",
+      "text": "Existing weak isolation testers have high polynomial complexity",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Insufficient query-table interaction limits semantic alignment and accuracy",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Differentiable search index (DSI) unifies indexing and search in one model",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Birdie is the first to use DSI for table discovery",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Birdie enables deep query-table interactions during search",
+      "text": "AWDIT achieves optimal complexity for weak isolation testing",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Birdie introduces parameter isolation to mitigate catastrophic forgetting",
+      "text": "Conditional lower bound of n^{3/2} for weak isolation testing",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "Parameterization by sessions/topology yields efficient algorithms",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "OpenDTR uses TAPAS as a bi-encoder for table representation",
+      "text": "NP-completeness for strong and some weak memory models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Database isolation formalized axiomatically and operationally",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Solo encodes cell-attribute-cell triplets for finer table representation",
+      "text": "Testing strong isolation is NP-complete",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "OpenWikiTable explores various query and table encoder options",
+      "text": "AWDIT avoids exhaustive search over all Transactional Anomalous Patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Cross-encoder re-ranking enables deep query-table interactions but lacks scalability",
+      "text": "Plume checks weak isolation via Transactional Anomalous Patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DSI was first used for document retrieval, now applied to tables",
+      "text": "Strong isolation testers use SAT/SMT solving",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Replay-based continual learning in DSI struggles to balance new and old data",
+      "text": "Consistency testing parallels shared-memory memory model verification",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Causally-consistent memory models allow efficient consistency checks",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.5384615384615384,
-    "strict_all_score": 0.6842105263157895,
-    "vital_score": 0.5769230769230769,
-    "all_score": 0.7105263157894737
+    "strict_vital_score": 0.5555555555555556,
+    "strict_all_score": 0.75,
+    "vital_score": 0.6666666666666666,
+    "all_score": 0.8125
   }
 }

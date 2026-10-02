@@ -1,231 +1,301 @@
 {
-  "qid": "2505.12791v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThis paper reports on findings from a comparative study on the effectiveness\nand efficiency of federated unlearning strategies within Federated Online\nLearning to Rank (FOLTR), with specific attention to systematically analysing\nthe unlearning capabilities of methods in a verifiable manner.\n  Federated approaches to ranking of search results have recently garnered\nattention to address users privacy concerns. In FOLTR, privacy is safeguarded\nby collaboratively training ranking models across decentralized data sources,\npreserving individual user data while optimizing search results based on\nimplicit feedback, such as clicks.\n  Recent legislation introduced across numerous countries is establishing the\nso called \"the right to be forgotten\", according to which services based on\nmachine learning models like those in FOLTR should provide capabilities that\nallow users to remove their own data from those used to train models. This has\nsparked the development of unlearning methods, along with evaluation practices\nto measure whether unlearning of a user data successfully occurred. Current\nevaluation practices are however often controversial, necessitating the use of\nmultiple metrics for a more comprehensive assessment -- but previous proposals\nof unlearning methods only used single evaluation metrics.\n  This paper addresses this limitation: our study rigorously assesses the\neffectiveness of unlearning strategies in managing both under-unlearning and\nover-unlearning scenarios using adapted, and newly proposed evaluation metrics.\nThanks to our detailed analysis, we uncover the strengths and limitations of\nfive unlearning strategies, offering valuable insights into optimizing\nfederated unlearning to balance data privacy and system performance within\nFOLTR. We publicly release our code and complete results at\nhttps://github.com/Iris1026/Unlearning-for-FOLTR.git.",
+  "qid": "2505.00552v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nGraph convolutional networks have recently gained prominence in collaborative\nfiltering (CF) for recommendations. However, we identify potential bottlenecks\nin two foundational components. First, the embedding layer leads to a latent\nspace with limited capacity, overlooking locally observed but potentially\nvaluable preference patterns. Also, the widely-used neighborhood aggregation is\nlimited in its ability to leverage diverse preference patterns in a\nfine-grained manner. Building on spectral graph theory, we reveal that these\nlimitations stem from graph filtering with a cut-off in the frequency spectrum\nand a restricted linear form. To address these issues, we introduce ChebyCF, a\nCF framework based on graph spectral filtering. Instead of a learned embedding,\nit takes a user's raw interaction history to utilize the full spectrum of\nsignals contained in it. Also, it adopts Chebyshev interpolation to effectively\napproximate a flexible non-linear graph filter, and further enhances it by\nusing an additional ideal pass filter and degree-based normalization. Through\nextensive experiments, we verify that ChebyCF overcomes the aforementioned\nbottlenecks and achieves state-of-the-art performance across multiple\nbenchmarks and reasonably fast inference. Our code is available at\nhttps://github.com/chanwoo0806/ChebyCF.",
   "nuggets": [
     {
-      "text": "Federated Online Learning to Rank (FOLTR) enables privacy-preserving collaborative ranking",
+      "text": "Graph convolutional networks (GCNs) widely used in collaborative filtering (CF)",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FOLTR trains ranking models across decentralized data using implicit feedback",
+      "text": "ChebNet uses Chebyshev basis for spectral filtering",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Federated Unlearning (FU) removes individual client data from global models",
+      "text": "GCNs first applied to CF in NGCF; complexity issues noted",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FU in FOLTR is largely unexplored; Wang et al. (2024) is the only prior work",
+      "text": "CF relies on user-item interaction data, not node features",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Existing FU methods in FOLTR use limited evaluation metrics",
+      "text": "Most graph filters in CF are linear, limiting flexibility",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF uses Chebyshev interpolation for flexible, efficient graph filtering",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF leverages raw interaction history, not learned embeddings",
+      "importance": "vital",
+      "assignment": "partial_support"
+    },
+    {
+      "text": "ChebyCF achieves state-of-the-art CF performance",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Comprehensive FU evaluation in FOLTR requires multiple metrics for assessment",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "FOLtR-ES introduced evolution strategies and local differential privacy to FOLTR",
+      "text": "Spatial and spectral graph convolutions are main GNN approaches",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FOLtR-ES is less effective on large-scale datasets",
+      "text": "GCN simplifies spectral convolutions with first-order linear filters",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FPDGD integrates Pairwise Differentiable Gradient Descent into FOLTR for improved performance",
+      "text": "Spectral graph convolution uses Laplacian eigendecomposition; polynomial approximations reduce cost",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FPDGD shows strong ranking performance and robustness to data noise",
-      "importance": "okay",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "FOLTR research is early-stage, with foundational studies on privacy and performance",
+      "text": "ChebNetII improves Chebyshev interpolation, reducing Runge phenomenon",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Naive FU retrains models from scratch, incurring high computational cost",
+      "text": "GPR-GNN and BernNet use monomial and Bernstein bases",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FedEraser reconstructs unlearned models by adjusting historical client updates",
+      "text": "Model simplification for CF: SGC, LightGCN, UltraGCN, SGCF",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Other efficient FU methods use knowledge distillation or optimization techniques",
+      "text": "Various methods capture user-item graph information: disentanglement, trend filtering, message passing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FU has been studied in NLP, recommendation, and knowledge graph domains",
+      "text": "Graph contrastive learning addresses interaction data sparsity",
       "importance": "okay",
-      "assignment": "partial_support"
+      "assignment": "support"
     },
     {
-      "text": "Wang et al. (2024) evaluated FU in FOLTR using user simulation and poisoning attacks",
+      "text": "GSF-based CF models use spectral convolution: SpectralCF, GF-CF, LinkProp, PGSP, SGFCF",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GF-CF shows spatial GCNs act as low-pass spectral filters",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SGFCF introduces new normalization and individualized filtering",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF eliminates heavy node-wise feature transformations",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Federated Online Learning to Rank (FOLTR) enables privacy-preserving collaborative ranking",
+      "text": "Graph convolutional networks (GCNs) widely used in collaborative filtering (CF)",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FOLTR trains ranking models across decentralized data using implicit feedback",
+      "text": "ChebNet uses Chebyshev basis for spectral filtering",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Federated Unlearning (FU) removes individual client data from global models",
+      "text": "GCNs first applied to CF in NGCF; complexity issues noted",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FU in FOLTR is largely unexplored; Wang et al. (2024) is the only prior work",
+      "text": "CF relies on user-item interaction data, not node features",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FOLtR-ES introduced evolution strategies and local differential privacy to FOLTR",
+      "text": "Most graph filters in CF are linear, limiting flexibility",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF uses Chebyshev interpolation for flexible, efficient graph filtering",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Spatial and spectral graph convolutions are main GNN approaches",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FOLtR-ES is less effective on large-scale datasets",
+      "text": "GCN simplifies spectral convolutions with first-order linear filters",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FPDGD integrates Pairwise Differentiable Gradient Descent into FOLTR for improved performance",
+      "text": "Spectral graph convolution uses Laplacian eigendecomposition; polynomial approximations reduce cost",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FOLTR research is early-stage, with foundational studies on privacy and performance",
+      "text": "ChebNetII improves Chebyshev interpolation, reducing Runge phenomenon",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Naive FU retrains models from scratch, incurring high computational cost",
+      "text": "GPR-GNN and BernNet use monomial and Bernstein bases",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FedEraser reconstructs unlearned models by adjusting historical client updates",
+      "text": "Model simplification for CF: SGC, LightGCN, UltraGCN, SGCF",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Other efficient FU methods use knowledge distillation or optimization techniques",
+      "text": "Various methods capture user-item graph information: disentanglement, trend filtering, message passing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Wang et al. (2024) evaluated FU in FOLTR using user simulation and poisoning attacks",
+      "text": "Graph contrastive learning addresses interaction data sparsity",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GSF-based CF models use spectral convolution: SpectralCF, GF-CF, LinkProp, PGSP, SGFCF",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GF-CF shows spatial GCNs act as low-pass spectral filters",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SGFCF introduces new normalization and individualized filtering",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF eliminates heavy node-wise feature transformations",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "Federated Online Learning to Rank (FOLTR) enables privacy-preserving collaborative ranking",
+      "text": "Graph convolutional networks (GCNs) widely used in collaborative filtering (CF)",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FOLTR trains ranking models across decentralized data using implicit feedback",
+      "text": "ChebNet uses Chebyshev basis for spectral filtering",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Federated Unlearning (FU) removes individual client data from global models",
+      "text": "GCNs first applied to CF in NGCF; complexity issues noted",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "FU in FOLTR is largely unexplored; Wang et al. (2024) is the only prior work",
+      "text": "CF relies on user-item interaction data, not node features",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Comprehensive FU evaluation in FOLTR requires multiple metrics for assessment",
+      "text": "Most graph filters in CF are linear, limiting flexibility",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF uses Chebyshev interpolation for flexible, efficient graph filtering",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF leverages raw interaction history, not learned embeddings",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "FOLtR-ES introduced evolution strategies and local differential privacy to FOLTR",
+      "text": "Spatial and spectral graph convolutions are main GNN approaches",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FOLtR-ES is less effective on large-scale datasets",
+      "text": "GCN simplifies spectral convolutions with first-order linear filters",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FPDGD integrates Pairwise Differentiable Gradient Descent into FOLTR for improved performance",
+      "text": "Spectral graph convolution uses Laplacian eigendecomposition; polynomial approximations reduce cost",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FPDGD shows strong ranking performance and robustness to data noise",
-      "importance": "okay",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "FOLTR research is early-stage, with foundational studies on privacy and performance",
+      "text": "ChebNetII improves Chebyshev interpolation, reducing Runge phenomenon",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Naive FU retrains models from scratch, incurring high computational cost",
+      "text": "GPR-GNN and BernNet use monomial and Bernstein bases",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FedEraser reconstructs unlearned models by adjusting historical client updates",
+      "text": "Model simplification for CF: SGC, LightGCN, UltraGCN, SGCF",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Other efficient FU methods use knowledge distillation or optimization techniques",
+      "text": "Various methods capture user-item graph information: disentanglement, trend filtering, message passing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FU has been studied in NLP, recommendation, and knowledge graph domains",
+      "text": "Graph contrastive learning addresses interaction data sparsity",
       "importance": "okay",
-      "assignment": "partial_support"
+      "assignment": "support"
     },
     {
-      "text": "Wang et al. (2024) evaluated FU in FOLTR using user simulation and poisoning attacks",
+      "text": "GSF-based CF models use spectral convolution: SpectralCF, GF-CF, LinkProp, PGSP, SGFCF",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "GF-CF shows spatial GCNs act as low-pass spectral filters",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SGFCF introduces new normalization and individualized filtering",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "ChebyCF eliminates heavy node-wise feature transformations",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.6666666666666666,
-    "strict_all_score": 0.75,
-    "vital_score": 0.75,
-    "all_score": 0.84375
+    "strict_vital_score": 0.75,
+    "strict_all_score": 0.9,
+    "vital_score": 0.8125,
+    "all_score": 0.925
   }
 }

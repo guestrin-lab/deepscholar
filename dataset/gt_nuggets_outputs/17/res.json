@@ -1,246 +1,241 @@
 {
-  "qid": "2506.01037v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nExisting diffusion-based video super-resolution (VSR) methods are susceptible\nto introducing complex degradations and noticeable artifacts into\nhigh-resolution videos due to their inherent randomness. In this paper, we\npropose a noise-robust real-world VSR framework by incorporating\nself-supervised learning and Mamba into pre-trained latent diffusion models. To\nensure content consistency across adjacent frames, we enhance the diffusion\nmodel with a global spatio-temporal attention mechanism using the Video\nState-Space block with a 3D Selective Scan module, which reinforces coherence\nat an affordable computational cost. To further reduce artifacts in generated\ndetails, we introduce a self-supervised ControlNet that leverages HR features\nas guidance and employs contrastive learning to extract degradation-insensitive\nfeatures from LR videos. Finally, a three-stage training strategy based on a\nmixture of HR-LR videos is proposed to stabilize VSR training. The proposed\nSelf-supervised ControlNet with Spatio-Temporal Continuous Mamba based VSR\nalgorithm achieves superior perceptual quality than state-of-the-arts on\nreal-world VSR benchmark datasets, validating the effectiveness of the proposed\nmodel design and training strategies.",
+  "qid": "2505.24443v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nConventional semi-supervised learning (SSL) ideally assumes that labeled and\nunlabeled data share an identical class distribution, however in practice, this\nassumption is easily violated, as unlabeled data often includes unknown class\ndata, i.e., outliers. The outliers are treated as noise, considerably degrading\nthe performance of SSL models. To address this drawback, we propose a novel\nframework, Diversify and Conquer (DAC), to enhance SSL robustness in the\ncontext of open-set semi-supervised learning. In particular, we note that\nexisting open-set SSL methods rely on prediction discrepancies between inliers\nand outliers from a single model trained on labeled data. This approach can be\neasily failed when the labeled data is insufficient, leading to performance\ndegradation that is worse than naive SSL that do not account for outliers. In\ncontrast, our approach exploits prediction disagreements among multiple models\nthat are differently biased towards the unlabeled distribution. By leveraging\nthe discrepancies arising from training on unlabeled data, our method enables\nrobust outlier detection even when the labeled data is underspecified. Our key\ncontribution is constructing a collection of differently biased models through\na single training process. By encouraging divergent heads to be differently\nbiased towards outliers while making consistent predictions for inliers, we\nexploit the disagreement among these heads as a measure to identify unknown\nconcepts. Our code is available at https://github.com/heejokong/DivCon.",
   "nuggets": [
     {
-      "text": "Most VSR assumes pre-defined degradation, struggles with real-world degradations",
+      "text": "Conventional SSL assumes identical class distributions in labeled and unlabeled data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Maintaining temporal consistency and photorealism in VSR is challenging",
+      "text": "Outliers in unlabeled data degrade SSL performance",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Diffusion-based VSR can introduce artifacts due to randomness",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "Mamba: adaptive state-space model, context-dependent reasoning",
+      "text": "Open-set SSL addresses unknown class samples in unlabeled data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Mamba's application to VSR is unexplored",
+      "text": "Over-rejection is a challenge when labeled data is scarce",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "ControlNet leverages HR features and contrastive learning for artifact reduction",
+      "text": "Most open-set SSL methods rely on a single model's prediction uncertainty",
       "importance": "vital",
-      "assignment": "not_support"
+      "assignment": "support"
     },
     {
-      "text": "Video super-resolution (VSR) enhances HR videos from degraded LR inputs",
+      "text": "DAC leverages prediction disagreements among multiple differently biased models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC enables robust outlier detection with underspecified labeled data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC constructs multiple biased models in a single training process",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Detect-and-filter is a major open-set SSL strategy",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "VSR methods: temporal sliding-window and recurrent frameworks",
+      "text": "Outlier detection often uses prediction confidence, sample similarity, or energy discrepancy",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Sliding-window VSR uses fixed neighboring frames, limited temporal context",
+      "text": "Learnable detectors and binary classifiers are used for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Recurrent VSR exploits longer temporal dependencies via RNNs",
+      "text": "OpenMatch introduced one-vs-all binary classifiers for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Real-world VSR data collection is labor-intensive, limited generalization",
+      "text": "Some methods use curriculum, self-training, or contrastive learning for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Data augmentation with diverse degradations improves VSR robustness",
-      "importance": "okay",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "State space models (S4) capture long-range dependencies in sequences",
+      "text": "Bi-level optimization and binary decomposition can reduce outlier impact",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "S4's LTI property limits adaptability to dynamic content",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Self-supervised learning (SSL) excels in computer vision tasks",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Contrastive learning: prominent SSL method for representation learning",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Contrastive learning promotes separation of positive and negative examples",
+      "text": "Few works address over-rejection explicitly in open-set SSL",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Most VSR assumes pre-defined degradation, struggles with real-world degradations",
+      "text": "Conventional SSL assumes identical class distributions in labeled and unlabeled data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Maintaining temporal consistency and photorealism in VSR is challenging",
+      "text": "Outliers in unlabeled data degrade SSL performance",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Mamba: adaptive state-space model, context-dependent reasoning",
+      "text": "Open-set SSL addresses unknown class samples in unlabeled data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Mamba's application to VSR is unexplored",
+      "text": "Over-rejection is a challenge when labeled data is scarce",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Video super-resolution (VSR) enhances HR videos from degraded LR inputs",
+      "text": "Most open-set SSL methods rely on a single model's prediction uncertainty",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC leverages prediction disagreements among multiple differently biased models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC enables robust outlier detection with underspecified labeled data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC constructs multiple biased models in a single training process",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Detect-and-filter is a major open-set SSL strategy",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "VSR methods: temporal sliding-window and recurrent frameworks",
+      "text": "Outlier detection often uses prediction confidence, sample similarity, or energy discrepancy",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Sliding-window VSR uses fixed neighboring frames, limited temporal context",
+      "text": "Learnable detectors and binary classifiers are used for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Recurrent VSR exploits longer temporal dependencies via RNNs",
+      "text": "OpenMatch introduced one-vs-all binary classifiers for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Real-world VSR data collection is labor-intensive, limited generalization",
+      "text": "Some methods use curriculum, self-training, or contrastive learning for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "State space models (S4) capture long-range dependencies in sequences",
+      "text": "Bi-level optimization and binary decomposition can reduce outlier impact",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "S4's LTI property limits adaptability to dynamic content",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Self-supervised learning (SSL) excels in computer vision tasks",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Contrastive learning: prominent SSL method for representation learning",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Contrastive learning promotes separation of positive and negative examples",
+      "text": "Few works address over-rejection explicitly in open-set SSL",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "Most VSR assumes pre-defined degradation, struggles with real-world degradations",
+      "text": "Conventional SSL assumes identical class distributions in labeled and unlabeled data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Maintaining temporal consistency and photorealism in VSR is challenging",
+      "text": "Outliers in unlabeled data degrade SSL performance",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Mamba: adaptive state-space model, context-dependent reasoning",
+      "text": "Open-set SSL addresses unknown class samples in unlabeled data",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Mamba's application to VSR is unexplored",
+      "text": "Over-rejection is a challenge when labeled data is scarce",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Video super-resolution (VSR) enhances HR videos from degraded LR inputs",
+      "text": "Most open-set SSL methods rely on a single model's prediction uncertainty",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC leverages prediction disagreements among multiple differently biased models",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC enables robust outlier detection with underspecified labeled data",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "DAC constructs multiple biased models in a single training process",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Detect-and-filter is a major open-set SSL strategy",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "VSR methods: temporal sliding-window and recurrent frameworks",
+      "text": "Outlier detection often uses prediction confidence, sample similarity, or energy discrepancy",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Sliding-window VSR uses fixed neighboring frames, limited temporal context",
+      "text": "Learnable detectors and binary classifiers are used for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Recurrent VSR exploits longer temporal dependencies via RNNs",
+      "text": "OpenMatch introduced one-vs-all binary classifiers for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Real-world VSR data collection is labor-intensive, limited generalization",
+      "text": "Some methods use curriculum, self-training, or contrastive learning for outlier detection",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Data augmentation with diverse degradations improves VSR robustness",
-      "importance": "okay",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "State space models (S4) capture long-range dependencies in sequences",
+      "text": "Bi-level optimization and binary decomposition can reduce outlier impact",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "S4's LTI property limits adaptability to dynamic content",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Self-supervised learning (SSL) excels in computer vision tasks",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Contrastive learning: prominent SSL method for representation learning",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Contrastive learning promotes separation of positive and negative examples",
+      "text": "Few works address over-rejection explicitly in open-set SSL",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.6666666666666666,
-    "strict_all_score": 0.8235294117647058,
-    "vital_score": 0.6666666666666666,
-    "all_score": 0.8529411764705882
+    "strict_vital_score": 1.0,
+    "strict_all_score": 1.0,
+    "vital_score": 1.0,
+    "all_score": 1.0
   }
 }

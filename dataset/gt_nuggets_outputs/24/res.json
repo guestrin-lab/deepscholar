@@ -1,226 +1,151 @@
 {
-  "qid": "2505.22616v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nNeural rendering methods have gained significant attention for their ability\nto reconstruct 3D scenes from 2D images. The core idea is to take multiple\nviews as input and optimize the reconstructed scene by minimizing the\nuncertainty in geometry and appearance across the views. However, the\nreconstruction quality is limited by the number of input views. This limitation\nis further pronounced in complex and dynamic scenes, where certain angles of\nobjects are never seen. In this paper, we propose to use video frame\ninterpolation as the data augmentation method for neural rendering.\nFurthermore, we design a lightweight yet high-quality video frame interpolation\nmodel, PS4PRO (Pixel-to-pixel Supervision for Photorealistic Rendering and\nOptimization). PS4PRO is trained on diverse video datasets, implicitly modeling\ncamera movement as well as real-world 3D geometry. Our model performs as an\nimplicit world prior, enriching the photo supervision for 3D reconstruction. By\nleveraging the proposed method, we effectively augment existing datasets for\nneural rendering methods. Our experimental results indicate that our method\nimproves the reconstruction performance on both static and dynamic scenes.",
+  "qid": "2505.22167v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nDiffusion transformers (DiT) have demonstrated exceptional performance in\nvideo generation. However, their large number of parameters and high\ncomputational complexity limit their deployment on edge devices. Quantization\ncan reduce storage requirements and accelerate inference by lowering the\nbit-width of model parameters. Yet, existing quantization methods for image\ngeneration models do not generalize well to video generation tasks. We identify\ntwo primary challenges: the loss of information during quantization and the\nmisalignment between optimization objectives and the unique requirements of\nvideo generation. To address these challenges, we present Q-VDiT, a\nquantization framework specifically designed for video DiT models. From the\nquantization perspective, we propose the Token-aware Quantization Estimator\n(TQE), which compensates for quantization errors in both the token and feature\ndimensions. From the optimization perspective, we introduce Temporal\nMaintenance Distillation (TMD), which preserves the spatiotemporal correlations\nbetween frames and enables the optimization of each frame with respect to the\noverall video context. Our W3A6 Q-VDiT achieves a scene consistency of 23.40,\nsetting a new benchmark and outperforming current state-of-the-art quantization\nmethods by 1.9$\\times$. Code will be available at\nhttps://github.com/cantbebetter2/Q-VDiT.",
   "nuggets": [
     {
-      "text": "Neural rendering reconstructs 3D scenes from 2D images",
+      "text": "Diffusion transformers (DiT) excel in video generation tasks",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Reconstruction quality depends on number of input views",
+      "text": "DiT models have high parameter counts and computational complexity",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Complex and dynamic scenes exacerbate view limitation",
+      "text": "Quantization reduces model size and accelerates inference",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Video frame interpolation (VFI) augments data for neural rendering",
+      "text": "Existing quantization methods target image generation, not video",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Video generation quantization faces information loss and optimization misalignment",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "PS4PRO is a lightweight, high-quality VFI model for neural rendering",
+      "text": "Q-VDiT is a quantization framework for video DiT models",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "PS4PRO models camera movement and 3D geometry implicitly",
-      "importance": "vital",
+      "text": "Diffusion models generate high-quality images via denoising Gaussian noise",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Q-DM, BinaryDM, BiDM, TerDiT use quantization-aware training for diffusion models",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Q-Diffusion, PTQ4DM, PTQ-D, TFMQ-DM, QuEST, EfficientDM, MixDQ focus on Unet-based diffusion quantization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Q-DiT, PTQ4DiT, SVDQuant, ViDiT-Q address diffusion transformer quantization",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Current quantization methods require extensive training or focus on images",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Token-aware Quantization Estimator (TQE) compensates for token and feature quantization errors",
+      "importance": "okay",
       "assignment": "not_support"
     },
     {
-      "text": "PS4PRO enriches photo supervision as an implicit world prior",
-      "importance": "vital",
+      "text": "Temporal Maintenance Distillation (TMD) preserves spatiotemporal frame correlations",
+      "importance": "okay",
       "assignment": "not_support"
     },
     {
-      "text": "PS4PRO improves 3D reconstruction for static and dynamic scenes",
-      "importance": "vital",
+      "text": "Q-VDiT achieves state-of-the-art scene consistency and outperforms prior methods",
+      "importance": "okay",
       "assignment": "not_support"
-    },
-    {
-      "text": "Conventional VFI uses motion estimation, blending, morphing",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Deep learning has advanced VFI with end-to-end neural networks",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "DAIN, RIFE, M2M, EMA-VFI are notable deep VFI models",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Deep VFI uses depth estimation, deformable convolution, feature extraction",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Challenges remain in VFI: large motion, fine detail preservation",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "AlignNeRF uses optical flow for better view alignment in neural rendering",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "DiffusionNeRF and 3DGS-enhancer use diffusion models for regularization",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Diffusion-based methods can introduce artifacts, increase training time",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "NeRFs are used in autonomous driving for 3D scene simulation",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "UniSim and Neurad optimize NeRF for realistic autonomous driving data",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Lightning-NeRF accelerates NeRF with fast neural initialization",
-      "importance": "okay",
-      "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Conventional VFI uses motion estimation, blending, morphing",
+      "text": "Existing quantization methods target image generation, not video",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Diffusion models generate high-quality images via denoising Gaussian noise",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Deep learning has advanced VFI with end-to-end neural networks",
+      "text": "Q-DM, BinaryDM, BiDM, TerDiT use quantization-aware training for diffusion models",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DAIN, RIFE, M2M, EMA-VFI are notable deep VFI models",
+      "text": "Q-Diffusion, PTQ4DM, PTQ-D, TFMQ-DM, QuEST, EfficientDM, MixDQ focus on Unet-based diffusion quantization",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Deep VFI uses depth estimation, deformable convolution, feature extraction",
+      "text": "Q-DiT, PTQ4DiT, SVDQuant, ViDiT-Q address diffusion transformer quantization",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Challenges remain in VFI: large motion, fine detail preservation",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "AlignNeRF uses optical flow for better view alignment in neural rendering",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "DiffusionNeRF and 3DGS-enhancer use diffusion models for regularization",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Diffusion-based methods can introduce artifacts, increase training time",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "NeRFs are used in autonomous driving for 3D scene simulation",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "UniSim and Neurad optimize NeRF for realistic autonomous driving data",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Lightning-NeRF accelerates NeRF with fast neural initialization",
+      "text": "Current quantization methods require extensive training or focus on images",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "Video frame interpolation (VFI) augments data for neural rendering",
+      "text": "Existing quantization methods target image generation, not video",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Video generation quantization faces information loss and optimization misalignment",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Conventional VFI uses motion estimation, blending, morphing",
+      "text": "Diffusion models generate high-quality images via denoising Gaussian noise",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Deep learning has advanced VFI with end-to-end neural networks",
+      "text": "Q-DM, BinaryDM, BiDM, TerDiT use quantization-aware training for diffusion models",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DAIN, RIFE, M2M, EMA-VFI are notable deep VFI models",
+      "text": "Q-Diffusion, PTQ4DM, PTQ-D, TFMQ-DM, QuEST, EfficientDM, MixDQ focus on Unet-based diffusion quantization",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Deep VFI uses depth estimation, deformable convolution, feature extraction",
+      "text": "Q-DiT, PTQ4DiT, SVDQuant, ViDiT-Q address diffusion transformer quantization",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Challenges remain in VFI: large motion, fine detail preservation",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "AlignNeRF uses optical flow for better view alignment in neural rendering",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "DiffusionNeRF and 3DGS-enhancer use diffusion models for regularization",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Diffusion-based methods can introduce artifacts, increase training time",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "NeRFs are used in autonomous driving for 3D scene simulation",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "UniSim and Neurad optimize NeRF for realistic autonomous driving data",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Lightning-NeRF accelerates NeRF with fast neural initialization",
+      "text": "Current quantization methods require extensive training or focus on images",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.0,
-    "strict_all_score": 0.5789473684210527,
-    "vital_score": 0.0625,
-    "all_score": 0.6052631578947368
+    "strict_vital_score": 0.16666666666666666,
+    "strict_all_score": 0.42857142857142855,
+    "vital_score": 0.25,
+    "all_score": 0.4642857142857143
   }
 }
