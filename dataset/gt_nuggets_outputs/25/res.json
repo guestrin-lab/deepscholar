@@ -1,266 +1,196 @@
 {
-  "qid": "2505.22458v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nUnsupervised domain adaptation for semantic segmentation (UDA-SS) aims to\ntransfer knowledge from labeled source data to unlabeled target data. However,\ntraditional UDA-SS methods assume that category settings between source and\ntarget domains are known, which is unrealistic in real-world scenarios. This\nleads to performance degradation if private classes exist. To address this\nlimitation, we propose Universal Domain Adaptation for Semantic Segmentation\n(UniDA-SS), achieving robust adaptation even without prior knowledge of\ncategory settings. We define the problem in the UniDA-SS scenario as low\nconfidence scores of common classes in the target domain, which leads to\nconfusion with private classes. To solve this problem, we propose UniMAP:\nUniDA-SS with Image Matching and Prototype-based Distinction, a novel framework\ncomposed of two key components. First, Domain-Specific Prototype-based\nDistinction (DSPD) divides each class into two domain-specific prototypes,\nenabling finer separation of domain-specific features and enhancing the\nidentification of common classes across domains. Second, Target-based Image\nMatching (TIM) selects a source image containing the most common-class pixels\nbased on the target pseudo-label and pairs it in a batch to promote effective\nlearning of common classes. We also introduce a new UniDA-SS benchmark and\ndemonstrate through various experiments that UniMAP significantly outperforms\nbaselines. The code is available at\n\\href{https://github.com/KU-VGI/UniMAP}{this https URL}.",
+  "qid": "2505.22552v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nIntegrating knowledge graphs (KGs) to enhance the reasoning capabilities of\nlarge language models (LLMs) is an emerging research challenge in claim\nverification. While KGs provide structured, semantically rich representations\nwell-suited for reasoning, most existing verification methods rely on\nunstructured text corpora, limiting their ability to effectively leverage KGs.\nAdditionally, despite possessing strong reasoning abilities, modern LLMs\nstruggle with multi-step modular pipelines and reasoning over KGs without\nadaptation. To address these challenges, we propose ClaimPKG, an end-to-end\nframework that seamlessly integrates LLM reasoning with structured knowledge\nfrom KGs. Specifically, the main idea of ClaimPKG is to employ a lightweight,\nspecialized LLM to represent the input claim as pseudo-subgraphs, guiding a\ndedicated subgraph retrieval module to identify relevant KG subgraphs. These\nretrieved subgraphs are then processed by a general-purpose LLM to produce the\nfinal verdict and justification. Extensive experiments on the FactKG dataset\ndemonstrate that ClaimPKG achieves state-of-the-art performance, outperforming\nstrong baselines in this research field by 9%-12% accuracy points across\nmultiple categories. Furthermore, ClaimPKG exhibits zero-shot generalizability\nto unstructured datasets such as HoVer and FEVEROUS, effectively combining\nstructured knowledge from KGs with LLM reasoning across various LLM backbones.",
   "nuggets": [
     {
-      "text": "Semantic segmentation models are vulnerable to domain and category shifts",
+      "text": "Claim verification uses unstructured and structured knowledge bases",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Unsupervised Domain Adaptation (UDA) uses labeled source and unlabeled target data",
+      "text": "Text-based claim verification methods dominate, e.g., FEVER dataset",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UDA for segmentation: adversarial learning and self-training approaches",
+      "text": "Structured verification uses tables and graphs for robust results",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UDA requires prior knowledge of class overlap, limiting generalizability",
+      "text": "FactKG introduced a comprehensive KG-based claim verification dataset",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Universal Domain Adaptation (UniDA) addresses unknown category configurations",
+      "text": "Knowledge graphs enable explicit logical reasoning over nodes and edges",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UniDA is underexplored in semantic segmentation compared to classification",
+      "text": "StructGPT and RoG use subgraph retrieval and LLMs for complex reasoning",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UniDA-SS enables adaptation without prior knowledge of category overlap",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "UniMAP: UniDA-SS with Image Matching and Prototype-based Distinction",
+      "text": "ClaimPKG integrates LLM reasoning with KG subgraph retrieval",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Domain-Specific Prototype-based Distinction (DSPD) separates domain-specific features",
+      "text": "ClaimPKG outperforms baselines on FactKG by 9%-12% accuracy",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "Target-based Image Matching (TIM) pairs source and target images for common classes",
+      "text": "ClaimPKG generalizes to unstructured datasets like HoVer and FEVEROUS",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "UniMAP introduces a new UniDA-SS benchmark and outperforms baselines",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "Semantic segmentation classifies each pixel into a semantic category",
+      "text": "Recent advances address ambiguous QA, factual changes, multi-document verification",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Fully Convolutional Networks (FCNs) are foundational for semantic segmentation",
+      "text": "Graph neural networks process KGs; table transformers for tables",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Dilated convolutions, global pooling, and pyramid pooling enhance context in segmentation",
+      "text": "KG-GPT pipeline: sentence decomposition, subgraph retrieval, logical inference",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Attention mechanisms and transformers improve semantic segmentation performance",
+      "text": "LLMs simplify reasoning over text, e.g., ProgramFC, FOLK",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Adversarial UDA uses domain classifiers for domain-invariant features",
+      "text": "ClaimPKG uses a specialized LLM to generate pseudo-subgraphs from claims",
       "importance": "okay",
-      "assignment": "support"
+      "assignment": "not_support"
     },
     {
-      "text": "Self-training UDA assigns pseudo-labels to target pixels using confidence thresholding",
+      "text": "ClaimPKG retrieves relevant KG subgraphs for verification",
       "importance": "okay",
-      "assignment": "support"
+      "assignment": "not_support"
     },
     {
-      "text": "UniDA in classification: confidence-based unknown detection, thresholding methods",
+      "text": "General-purpose LLM processes subgraphs for verdict and justification",
       "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "CMU, ROS, DANCE, OVANet: thresholding strategies for UniDA in classification",
-      "importance": "okay",
-      "assignment": "support"
+      "assignment": "not_support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Semantic segmentation models are vulnerable to domain and category shifts",
+      "text": "Claim verification uses unstructured and structured knowledge bases",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Unsupervised Domain Adaptation (UDA) uses labeled source and unlabeled target data",
+      "text": "Text-based claim verification methods dominate, e.g., FEVER dataset",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UDA for segmentation: adversarial learning and self-training approaches",
+      "text": "Structured verification uses tables and graphs for robust results",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UDA requires prior knowledge of class overlap, limiting generalizability",
+      "text": "FactKG introduced a comprehensive KG-based claim verification dataset",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Universal Domain Adaptation (UniDA) addresses unknown category configurations",
+      "text": "Knowledge graphs enable explicit logical reasoning over nodes and edges",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UniDA is underexplored in semantic segmentation compared to classification",
+      "text": "StructGPT and RoG use subgraph retrieval and LLMs for complex reasoning",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UniDA-SS enables adaptation without prior knowledge of category overlap",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Semantic segmentation classifies each pixel into a semantic category",
+      "text": "Recent advances address ambiguous QA, factual changes, multi-document verification",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Fully Convolutional Networks (FCNs) are foundational for semantic segmentation",
+      "text": "Graph neural networks process KGs; table transformers for tables",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Dilated convolutions, global pooling, and pyramid pooling enhance context in segmentation",
+      "text": "KG-GPT pipeline: sentence decomposition, subgraph retrieval, logical inference",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Attention mechanisms and transformers improve semantic segmentation performance",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Adversarial UDA uses domain classifiers for domain-invariant features",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Self-training UDA assigns pseudo-labels to target pixels using confidence thresholding",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "UniDA in classification: confidence-based unknown detection, thresholding methods",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "CMU, ROS, DANCE, OVANet: thresholding strategies for UniDA in classification",
+      "text": "LLMs simplify reasoning over text, e.g., ProgramFC, FOLK",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "Semantic segmentation models are vulnerable to domain and category shifts",
+      "text": "Claim verification uses unstructured and structured knowledge bases",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Unsupervised Domain Adaptation (UDA) uses labeled source and unlabeled target data",
+      "text": "Text-based claim verification methods dominate, e.g., FEVER dataset",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UDA for segmentation: adversarial learning and self-training approaches",
+      "text": "Structured verification uses tables and graphs for robust results",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UDA requires prior knowledge of class overlap, limiting generalizability",
+      "text": "FactKG introduced a comprehensive KG-based claim verification dataset",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Universal Domain Adaptation (UniDA) addresses unknown category configurations",
+      "text": "Knowledge graphs enable explicit logical reasoning over nodes and edges",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UniDA is underexplored in semantic segmentation compared to classification",
+      "text": "StructGPT and RoG use subgraph retrieval and LLMs for complex reasoning",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "UniDA-SS enables adaptation without prior knowledge of category overlap",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "UniMAP introduces a new UniDA-SS benchmark and outperforms baselines",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "Semantic segmentation classifies each pixel into a semantic category",
+      "text": "Recent advances address ambiguous QA, factual changes, multi-document verification",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Fully Convolutional Networks (FCNs) are foundational for semantic segmentation",
+      "text": "Graph neural networks process KGs; table transformers for tables",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Dilated convolutions, global pooling, and pyramid pooling enhance context in segmentation",
+      "text": "KG-GPT pipeline: sentence decomposition, subgraph retrieval, logical inference",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Attention mechanisms and transformers improve semantic segmentation performance",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Adversarial UDA uses domain classifiers for domain-invariant features",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Self-training UDA assigns pseudo-labels to target pixels using confidence thresholding",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "UniDA in classification: confidence-based unknown detection, thresholding methods",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "CMU, ROS, DANCE, OVANet: thresholding strategies for UniDA in classification",
+      "text": "LLMs simplify reasoning over text, e.g., ProgramFC, FOLK",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.6363636363636364,
-    "strict_all_score": 0.7894736842105263,
-    "vital_score": 0.6818181818181818,
-    "all_score": 0.8157894736842105
+    "strict_vital_score": 0.6666666666666666,
+    "strict_all_score": 0.625,
+    "vital_score": 0.6666666666666666,
+    "all_score": 0.625
   }
 }

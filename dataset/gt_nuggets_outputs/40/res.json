@@ -1,186 +1,241 @@
 {
-  "qid": "2505.22194v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nVision Transformers (ViTs) leverage the transformer architecture to\neffectively capture global context, demonstrating strong performance in\ncomputer vision tasks. A major challenge in ViT hardware acceleration is that\nthe model family contains complex arithmetic operations that are sensitive to\nmodel accuracy, such as the Softmax and LayerNorm operations, which cannot be\nmapped onto efficient hardware with low precision. Existing methods only\nexploit parallelism in the matrix multiplication operations of the model on\nhardware and keep these complex operations on the CPU. This results in\nsuboptimal performance due to the communication overhead between the CPU and\naccelerator. Can new data formats solve this problem?\n  In this work, we present the first ViT accelerator that maps all operations\nof the ViT models onto FPGAs. We exploit a new arithmetic format named\nMicroscaling Integer (MXInt) for datapath designs and evaluate how different\ndesign choices can be made to trade off accuracy, hardware performance, and\nhardware utilization. Our contributions are twofold. First, we quantize ViTs\nusing the MXInt format, achieving both high area efficiency and accuracy.\nSecond, we propose MXInt-specific hardware optimization that map these complex\narithmetic operations into custom hardware. Within 1\\% accuracy loss, our\nmethod achieves at least 93$\\times$ speedup compared to Float16 and at least\n1.9$\\times$ speedup compared to related work.",
+  "qid": "2504.06211v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nZero-Knowledge Proofs (ZKPs) are rapidly gaining importance in\nprivacy-preserving and verifiable computing. ZKPs enable a proving party to\nprove the truth of a statement to a verifying party without revealing anything\nelse. ZKPs have applications in blockchain technologies, verifiable machine\nlearning, and electronic voting, but have yet to see widespread adoption due to\nthe computational complexity of the proving process. Recent works have\naccelerated the key primitives of state-of-the-art ZKP protocols on GPU and\nASIC. However, the protocols accelerated thus far face one of two challenges:\nthey either require a trusted setup for each application, or they generate\nlarger proof sizes with higher verification costs, limiting their applicability\nin scenarios with numerous verifiers or strict verification time constraints.\nThis work presents an accelerator, zkSpeed, for HyperPlonk, a state-of-the-art\nZKP protocol that supports both one-time, universal setup and small proof sizes\nfor typical ZKP applications in publicly verifiable, consensus-based systems.\nWe accelerate the entire protocol, including two major primitives: SumCheck and\nMulti-scalar Multiplications (MSMs). We develop a full-chip architecture using\n366.46 mm$^2$ and 2 TB/s of bandwidth to accelerate the entire proof generation\nprocess, achieving geometric mean speedups of 801$\\times$ over CPU baselines.",
   "nuggets": [
     {
-      "text": "MXInt quantization enables efficient ViT hardware acceleration",
+      "text": "ZKP hardware research focuses on accelerating NTTs, MSMs, and SumChecks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Groth16 requires a trusted setup for each application",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "HyperPlonk supports universal setup and small proof sizes",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Prior ViT accelerators use fixed-point quantization, not MXInt",
+      "text": "zkSpeed accelerates HyperPlonk, supporting consensus-based, many-verifier systems",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Existing ViT accelerators offload complex ops to CPU, causing overhead",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "Most prior work accelerates only matrix multiplications on FPGA",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "MXInt-specific datapath optimization enables full ViT model acceleration",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "MXInt achieves high area efficiency and accuracy for ViTs",
+      "text": "zkSpeed achieves 801x speedup over CPU for HyperPlonk proofs",
       "importance": "vital",
       "assignment": "not_support"
     },
     {
-      "text": "MXInt-based accelerator maps all ViT operations onto FPGA",
+      "text": "Prior ZKP accelerators focus on Groth16 or Spartan, not HyperPlonk",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Darvish et al. introduced MXInt quantization for DNNs, not hardware",
+      "text": "SZKP is the state-of-the-art ASIC for Groth16 ZKP acceleration",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MXFP extends MXInt to non-integer shared components",
+      "text": "SZKP achieves 493x speedup over CPU for Groth16 proofs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Block floating-point quantization groups values for shared digits",
+      "text": "NoCap accelerates Spartan+Orion proofs, focusing on SumCheck and NTTs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Layer-wise, channel-wise, vector-wise quantization explored for CNNs",
+      "text": "NoCap achieves 41x speedup over PipeZK for Spartan proofs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FACT and FlightLLM use mixed-precision quantization for transformers",
+      "text": "NoCap is suited for few verifiers and non-critical proof size scenarios",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "GOBO and EdgeBERT use software-hardware co-design for transformer acceleration",
+      "text": "zkSpeed supports 255-bit and 381-bit primes for MLEs and elliptic curves",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MXInt accelerator achieves 93x speedup over Float16, 1.9x over prior work",
+      "text": "zkSpeed incurs higher area cost for much smaller proof sizes than NoCap",
       "importance": "okay",
-      "assignment": "not_support"
+      "assignment": "support"
+    },
+    {
+      "text": "SZKP+ (iso-area) achieves 6x faster proving than zkSpeed but needs circuit-specific setup",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Jellyfish is a HyperPlonk variant supporting high-arity gates and high-degree constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "zkSpeed could be extended to support Jellyfish for improved runtime",
+      "importance": "okay",
+      "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Prior ViT accelerators use fixed-point quantization, not MXInt",
+      "text": "ZKP hardware research focuses on accelerating NTTs, MSMs, and SumChecks",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "MXInt-specific datapath optimization enables full ViT model acceleration",
+      "text": "Groth16 requires a trusted setup for each application",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "MXInt-based accelerator maps all ViT operations onto FPGA",
+      "text": "zkSpeed accelerates HyperPlonk, supporting consensus-based, many-verifier systems",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Darvish et al. introduced MXInt quantization for DNNs, not hardware",
+      "text": "Prior ZKP accelerators focus on Groth16 or Spartan, not HyperPlonk",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "SZKP is the state-of-the-art ASIC for Groth16 ZKP acceleration",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MXFP extends MXInt to non-integer shared components",
+      "text": "SZKP achieves 493x speedup over CPU for Groth16 proofs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Block floating-point quantization groups values for shared digits",
+      "text": "NoCap accelerates Spartan+Orion proofs, focusing on SumCheck and NTTs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Layer-wise, channel-wise, vector-wise quantization explored for CNNs",
+      "text": "NoCap achieves 41x speedup over PipeZK for Spartan proofs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FACT and FlightLLM use mixed-precision quantization for transformers",
+      "text": "NoCap is suited for few verifiers and non-critical proof size scenarios",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "GOBO and EdgeBERT use software-hardware co-design for transformer acceleration",
+      "text": "zkSpeed supports 255-bit and 381-bit primes for MLEs and elliptic curves",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "zkSpeed incurs higher area cost for much smaller proof sizes than NoCap",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SZKP+ (iso-area) achieves 6x faster proving than zkSpeed but needs circuit-specific setup",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Jellyfish is a HyperPlonk variant supporting high-arity gates and high-degree constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "zkSpeed could be extended to support Jellyfish for improved runtime",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "MXInt quantization enables efficient ViT hardware acceleration",
+      "text": "ZKP hardware research focuses on accelerating NTTs, MSMs, and SumChecks",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "Groth16 requires a trusted setup for each application",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "HyperPlonk supports universal setup and small proof sizes",
       "importance": "vital",
       "assignment": "partial_support"
     },
     {
-      "text": "Prior ViT accelerators use fixed-point quantization, not MXInt",
+      "text": "zkSpeed accelerates HyperPlonk, supporting consensus-based, many-verifier systems",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Most prior work accelerates only matrix multiplications on FPGA",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "MXInt-specific datapath optimization enables full ViT model acceleration",
+      "text": "Prior ZKP accelerators focus on Groth16 or Spartan, not HyperPlonk",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "MXInt-based accelerator maps all ViT operations onto FPGA",
-      "importance": "vital",
-      "assignment": "support"
-    },
-    {
-      "text": "Darvish et al. introduced MXInt quantization for DNNs, not hardware",
+      "text": "SZKP is the state-of-the-art ASIC for Groth16 ZKP acceleration",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MXFP extends MXInt to non-integer shared components",
+      "text": "SZKP achieves 493x speedup over CPU for Groth16 proofs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Block floating-point quantization groups values for shared digits",
+      "text": "NoCap accelerates Spartan+Orion proofs, focusing on SumCheck and NTTs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Layer-wise, channel-wise, vector-wise quantization explored for CNNs",
+      "text": "NoCap achieves 41x speedup over PipeZK for Spartan proofs",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "FACT and FlightLLM use mixed-precision quantization for transformers",
+      "text": "NoCap is suited for few verifiers and non-critical proof size scenarios",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "GOBO and EdgeBERT use software-hardware co-design for transformer acceleration",
+      "text": "zkSpeed supports 255-bit and 381-bit primes for MLEs and elliptic curves",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "zkSpeed incurs higher area cost for much smaller proof sizes than NoCap",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "SZKP+ (iso-area) achieves 6x faster proving than zkSpeed but needs circuit-specific setup",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "Jellyfish is a HyperPlonk variant supporting high-arity gates and high-degree constraints",
+      "importance": "okay",
+      "assignment": "support"
+    },
+    {
+      "text": "zkSpeed could be extended to support Jellyfish for improved runtime",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.42857142857142855,
-    "strict_all_score": 0.6428571428571429,
-    "vital_score": 0.5714285714285714,
-    "all_score": 0.7142857142857143
+    "strict_vital_score": 0.6666666666666666,
+    "strict_all_score": 0.875,
+    "vital_score": 0.75,
+    "all_score": 0.90625
   }
 }

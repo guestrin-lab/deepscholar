@@ -1,321 +1,226 @@
 {
-  "qid": "2504.17448v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nActive learning (AL) reduces human annotation costs for machine learning\nsystems by strategically selecting the most informative unlabeled data for\nannotation, but performing it individually may still be insufficient due to\nrestricted data diversity and annotation budget. Federated Active Learning\n(FAL) addresses this by facilitating collaborative data selection and model\ntraining, while preserving the confidentiality of raw data samples. Yet,\nexisting FAL methods fail to account for the heterogeneity of data distribution\nacross clients and the associated fluctuations in global and local model\nparameters, adversely affecting model accuracy. To overcome these challenges,\nwe propose CHASe (Client Heterogeneity-Aware Data Selection), specifically\ndesigned for FAL. CHASe focuses on identifying those unlabeled samples with\nhigh epistemic variations (EVs), which notably oscillate around the decision\nboundaries during training. To achieve both effectiveness and efficiency,\n\\model{} encompasses techniques for 1) tracking EVs by analyzing inference\ninconsistencies across training epochs, 2) calibrating decision boundaries of\ninaccurate models with a new alignment loss, and 3) enhancing data selection\nefficiency via a data freeze and awaken mechanism with subset sampling.\nExperiments show that CHASe surpasses various established baselines in terms of\neffectiveness and efficiency, validated across diverse datasets, model\ncomplexities, and heterogeneous federation settings.",
+  "qid": "2506.01833v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nInspired by the success of unsupervised pre-training paradigms, researchers\nhave applied these approaches to DNA pre-training. However, we argue that these\napproaches alone yield suboptimal results because pure DNA sequences lack\nsufficient information, since their functions are regulated by genomic profiles\nlike chromatin accessibility. Here, we demonstrate that supervised training for\ngenomic profile prediction serves as a more effective alternative to pure\nsequence pre-training. Furthermore, considering the multi-species and\nmulti-profile nature of genomic profile prediction, we introduce our\n$\\textbf{S}$pecies-$\\textbf{P}$rofile $\\textbf{A}$daptive\n$\\textbf{C}$ollaborative $\\textbf{E}$xperts (SPACE) that leverages Mixture of\nExperts (MoE) to better capture the relationships between DNA sequences across\ndifferent species and genomic profiles, thereby learning more effective DNA\nrepresentations. Through extensive experiments across various tasks, our model\nachieves state-of-the-art performance, establishing that DNA models trained\nwith supervised genomic profiles serve as powerful DNA representation learners.\nThe code is available at https://github.com/ZhuJiwei111/SPACE.",
   "nuggets": [
     {
-      "text": "Active learning (AL) reduces annotation costs by selecting informative data",
+      "text": "Supervised genomic profile models predict functional profiles from DNA sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "AL methods perform well in federated learning (FL) with IID data",
+      "text": "Unsupervised DNA foundation models adapt NLP pre-training to DNA sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Federated Active Learning (FAL) integrates AL into FL for collaborative selection",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "Existing FAL methods often ignore client data heterogeneity",
+      "text": "Little systematic comparison between unsupervised and supervised DNA models",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Selections based on instant models can be unstable during training",
+      "text": "MoE enables dynamic learning of species-specific and shared genomic features",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Epistemic variation (EV) measures model uncertainty over time",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "CHASe tracks EVs by analyzing inference inconsistencies across epochs",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "CHASe calibrates decision boundaries with a new alignment loss",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "CHASe improves data selection efficiency with freeze and awaken mechanism",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "CHASe outperforms baselines across datasets and federation settings",
-      "importance": "vital",
-      "assignment": "not_support"
-    },
-    {
-      "text": "AL methods: uncertainty-based, distribution-based, loss-based",
+      "text": "DeepSEA pioneered CNN-based multi-task genomic profile prediction",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Uncertainty-based AL uses prediction uncertainty, margin, or entropy",
+      "text": "Enformer uses hybrid Transformer-CNN for state-of-the-art genomic profile prediction",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Bayesian networks, MC-Dropout, Ensembles estimate model uncertainty",
+      "text": "Genomic profile models use shared encoders with independent prediction heads",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Distribution-based AL selects diverse samples via clustering or core-set",
+      "text": "Few studies assess if intermediate representations capture biological patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Core-set AL finds small, representative subsets for training",
+      "text": "DNABERT introduced BERT-style masked language modeling for DNA",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Loss-based AL selects hard samples using loss functions",
+      "text": "Subsequent unsupervised models use MLM or NTP objectives for DNA",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "LL4AL estimates uncertainty and diversity for sample selection",
+      "text": "Unsupervised models optimize data, architectures, and tokenization strategies",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Recent AL works align data distributions with adversarial classifiers",
+      "text": "MoE selectively activates expert networks via sparse routing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Federated learning (FL) enables collaborative model training without sharing raw data",
-      "importance": "okay",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "Non-IID data in FL degrades model performance",
+      "text": "MoE improves parameter efficiency and model capacity in Transformers",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Some FAL works select samples using global or local models",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Recent FAL studies consider intra- and inter-class diversity",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Active Federated Learning (AFL) selects clients, not data samples",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Some FL data selection works assume fully labeled data, not AL",
+      "text": "MoE is implemented by replacing FFNs in Transformer architectures",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "Active learning (AL) reduces annotation costs by selecting informative data",
+      "text": "Supervised genomic profile models predict functional profiles from DNA sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "AL methods perform well in federated learning (FL) with IID data",
+      "text": "Unsupervised DNA foundation models adapt NLP pre-training to DNA sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Existing FAL methods often ignore client data heterogeneity",
+      "text": "Little systematic comparison between unsupervised and supervised DNA models",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Selections based on instant models can be unstable during training",
+      "text": "MoE enables dynamic learning of species-specific and shared genomic features",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "AL methods: uncertainty-based, distribution-based, loss-based",
+      "text": "DeepSEA pioneered CNN-based multi-task genomic profile prediction",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Uncertainty-based AL uses prediction uncertainty, margin, or entropy",
+      "text": "Enformer uses hybrid Transformer-CNN for state-of-the-art genomic profile prediction",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Bayesian networks, MC-Dropout, Ensembles estimate model uncertainty",
+      "text": "Genomic profile models use shared encoders with independent prediction heads",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Distribution-based AL selects diverse samples via clustering or core-set",
+      "text": "Few studies assess if intermediate representations capture biological patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Core-set AL finds small, representative subsets for training",
+      "text": "DNABERT introduced BERT-style masked language modeling for DNA",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Loss-based AL selects hard samples using loss functions",
+      "text": "Subsequent unsupervised models use MLM or NTP objectives for DNA",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "LL4AL estimates uncertainty and diversity for sample selection",
+      "text": "Unsupervised models optimize data, architectures, and tokenization strategies",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Recent AL works align data distributions with adversarial classifiers",
+      "text": "MoE selectively activates expert networks via sparse routing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Non-IID data in FL degrades model performance",
+      "text": "MoE improves parameter efficiency and model capacity in Transformers",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Some FAL works select samples using global or local models",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Recent FAL studies consider intra- and inter-class diversity",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Active Federated Learning (AFL) selects clients, not data samples",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Some FL data selection works assume fully labeled data, not AL",
+      "text": "MoE is implemented by replacing FFNs in Transformer architectures",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "Active learning (AL) reduces annotation costs by selecting informative data",
+      "text": "Supervised genomic profile models predict functional profiles from DNA sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "AL methods perform well in federated learning (FL) with IID data",
+      "text": "Unsupervised DNA foundation models adapt NLP pre-training to DNA sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Federated Active Learning (FAL) integrates AL into FL for collaborative selection",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "Existing FAL methods often ignore client data heterogeneity",
+      "text": "Little systematic comparison between unsupervised and supervised DNA models",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Selections based on instant models can be unstable during training",
+      "text": "MoE enables dynamic learning of species-specific and shared genomic features",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "Epistemic variation (EV) measures model uncertainty over time",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "AL methods: uncertainty-based, distribution-based, loss-based",
+      "text": "DeepSEA pioneered CNN-based multi-task genomic profile prediction",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Uncertainty-based AL uses prediction uncertainty, margin, or entropy",
+      "text": "Enformer uses hybrid Transformer-CNN for state-of-the-art genomic profile prediction",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Bayesian networks, MC-Dropout, Ensembles estimate model uncertainty",
+      "text": "Genomic profile models use shared encoders with independent prediction heads",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Distribution-based AL selects diverse samples via clustering or core-set",
+      "text": "Few studies assess if intermediate representations capture biological patterns",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Core-set AL finds small, representative subsets for training",
+      "text": "DNABERT introduced BERT-style masked language modeling for DNA",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Loss-based AL selects hard samples using loss functions",
+      "text": "Subsequent unsupervised models use MLM or NTP objectives for DNA",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "LL4AL estimates uncertainty and diversity for sample selection",
+      "text": "Unsupervised models optimize data, architectures, and tokenization strategies",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Recent AL works align data distributions with adversarial classifiers",
+      "text": "MoE selectively activates expert networks via sparse routing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Federated learning (FL) enables collaborative model training without sharing raw data",
-      "importance": "okay",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "Non-IID data in FL degrades model performance",
+      "text": "MoE improves parameter efficiency and model capacity in Transformers",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Some FAL works select samples using global or local models",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Recent FAL studies consider intra- and inter-class diversity",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Active Federated Learning (AFL) selects clients, not data samples",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Some FL data selection works assume fully labeled data, not AL",
+      "text": "MoE is implemented by replacing FFNs in Transformer architectures",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.4,
-    "strict_all_score": 0.7083333333333334,
-    "vital_score": 0.5,
-    "all_score": 0.7708333333333334
+    "strict_vital_score": 1.0,
+    "strict_all_score": 1.0,
+    "vital_score": 1.0,
+    "all_score": 1.0
   }
 }

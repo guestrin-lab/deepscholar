@@ -1,256 +1,271 @@
 {
-  "qid": "2505.17507v1",
-  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nThe rapid growth of open source machine learning (ML) resources, such as\nmodels and datasets, has accelerated IR research. However, existing platforms\nlike Hugging Face do not explicitly utilize structured representations,\nlimiting advanced queries and analyses such as tracing model evolution and\nrecommending relevant datasets. To fill the gap, we construct HuggingKG, the\nfirst large-scale knowledge graph built from the Hugging Face community for ML\nresource management. With 2.6 million nodes and 6.2 million edges, HuggingKG\ncaptures domain-specific relations and rich textual attributes. It enables us\nto further present HuggingBench, a multi-task benchmark with three novel test\ncollections for IR tasks including resource recommendation, classification, and\ntracing. Our experiments reveal unique characteristics of HuggingKG and the\nderived tasks. Both resources are publicly available, expected to advance\nresearch in open source resource sharing and management.",
+  "qid": "2505.03484v1",
+  "query": "Write a Related Works section for an academic paper given the paper's abstract. Here is the paper abstract:\nRecent deep sequential recommendation models often struggle to effectively\nmodel key characteristics of user behaviors, particularly in handling sequence\nlength variations and capturing diverse interaction patterns. We propose\nSTAR-Rec, a novel architecture that synergistically combines preference-aware\nattention and state-space modeling through a sequence-level mixture-of-experts\nframework. STAR-Rec addresses these challenges by: (1) employing\npreference-aware attention to capture both inherently similar item\nrelationships and diverse preferences, (2) utilizing state-space modeling to\nefficiently process variable-length sequences with linear complexity, and (3)\nincorporating a mixture-of-experts component that adaptively routes different\nbehavioral patterns to specialized experts, handling both focused\ncategory-specific browsing and diverse category exploration patterns. We\ntheoretically demonstrate how the state space model and attention mechanisms\ncan be naturally unified in recommendation scenarios, where SSM captures\ntemporal dynamics through state compression while attention models both similar\nand diverse item relationships. Extensive experiments on four real-world\ndatasets demonstrate that STAR-Rec consistently outperforms state-of-the-art\nsequential recommendation methods, particularly in scenarios involving diverse\nuser behaviors and varying sequence lengths.",
   "nuggets": [
     {
-      "text": "HuggingKG is the first large-scale KG from Hugging Face for ML resources",
+      "text": "Transformers and RNNs are foundational for sequential recommendation",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG supports advanced queries: model evolution, dataset recommendation",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "HuggingBench is a multi-task benchmark built on HuggingKG",
+      "text": "TransRec and matrix factorization struggled with multiple behaviors, long sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench provides datasets for recommendation, classification, tracing",
+      "text": "SASRec uses multi-head attention for sequence modeling",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "DEKR and MLTaskKG are prior KGs for ML resource recommendation",
+      "text": "BERT4Rec employs bidirectional transformers for contextual information",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG integrates richer metadata and fine-grained relationships",
+      "text": "Transformer models face quadratic complexity with long sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench enables model tracing, pioneering inter-Model relation analysis",
+      "text": "State-space models (SSMs) excel at capturing temporal dynamics",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG and HuggingBench are publicly available for research",
+      "text": "SSMs struggle to balance long/short-term modeling and pattern diversity",
       "importance": "vital",
-      "assignment": "not_support"
+      "assignment": "support"
     },
     {
-      "text": "HuggingKG contains 2.6M nodes, 6.2M edges, 8 types, 30 relations",
+      "text": "STAR-Rec unifies preference-aware attention and state-space modeling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec uses mixture-of-experts for diverse behavioral patterns",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec efficiently handles variable-length sequences and diverse item relationships",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LinRec introduces linear complexity attention for efficiency",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG captures inter-Model relations: Adapter, Finetune, Merge, Quantize",
+      "text": "GRU4Rec offers linear complexity but limited effectiveness",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG includes user interaction signals: Publish, Like, Follow",
+      "text": "Mamba4Rec improves efficiency with selective state space modeling",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DEKR focuses on description enhancement, lacks dynamic/user relations",
+      "text": "ECHO-Mamba4Rec combines bidirectional Mamba and frequency-domain filtering",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MLTaskKG integrates static data, supports task-oriented library recommendation",
+      "text": "RecMamba handles lifelong recommendation scenarios",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "paper2repo matches papers to code, limited entity types, no KG structure",
+      "text": "Mamba4KT adapts Mamba for knowledge tracing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Xu et al. use multi-modal features for repo recommendation, no explicit KG",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "GRETA builds an Entity Tag Graph for repository tag assignment",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Bai et al. predict Issue-PR links on GitHub, not model evolution",
+      "text": "SIGMA uses bi-directional structure and selective gating for context modeling",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "supported_nuggets": [
     {
-      "text": "HuggingKG is the first large-scale KG from Hugging Face for ML resources",
+      "text": "Transformers and RNNs are foundational for sequential recommendation",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench is a multi-task benchmark built on HuggingKG",
+      "text": "TransRec and matrix factorization struggled with multiple behaviors, long sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench provides datasets for recommendation, classification, tracing",
+      "text": "SASRec uses multi-head attention for sequence modeling",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "DEKR and MLTaskKG are prior KGs for ML resource recommendation",
+      "text": "BERT4Rec employs bidirectional transformers for contextual information",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG integrates richer metadata and fine-grained relationships",
+      "text": "Transformer models face quadratic complexity with long sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench enables model tracing, pioneering inter-Model relation analysis",
+      "text": "State-space models (SSMs) excel at capturing temporal dynamics",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG contains 2.6M nodes, 6.2M edges, 8 types, 30 relations",
+      "text": "SSMs struggle to balance long/short-term modeling and pattern diversity",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec unifies preference-aware attention and state-space modeling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec uses mixture-of-experts for diverse behavioral patterns",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec efficiently handles variable-length sequences and diverse item relationships",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LinRec introduces linear complexity attention for efficiency",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG captures inter-Model relations: Adapter, Finetune, Merge, Quantize",
+      "text": "GRU4Rec offers linear complexity but limited effectiveness",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG includes user interaction signals: Publish, Like, Follow",
+      "text": "Mamba4Rec improves efficiency with selective state space modeling",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DEKR focuses on description enhancement, lacks dynamic/user relations",
+      "text": "ECHO-Mamba4Rec combines bidirectional Mamba and frequency-domain filtering",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MLTaskKG integrates static data, supports task-oriented library recommendation",
+      "text": "RecMamba handles lifelong recommendation scenarios",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "paper2repo matches papers to code, limited entity types, no KG structure",
+      "text": "Mamba4KT adapts Mamba for knowledge tracing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Xu et al. use multi-modal features for repo recommendation, no explicit KG",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "GRETA builds an Entity Tag Graph for repository tag assignment",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Bai et al. predict Issue-PR links on GitHub, not model evolution",
+      "text": "SIGMA uses bi-directional structure and selective gating for context modeling",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "partially_supported_nuggets": [
     {
-      "text": "HuggingKG is the first large-scale KG from Hugging Face for ML resources",
+      "text": "Transformers and RNNs are foundational for sequential recommendation",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG supports advanced queries: model evolution, dataset recommendation",
-      "importance": "vital",
-      "assignment": "partial_support"
-    },
-    {
-      "text": "HuggingBench is a multi-task benchmark built on HuggingKG",
+      "text": "TransRec and matrix factorization struggled with multiple behaviors, long sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench provides datasets for recommendation, classification, tracing",
+      "text": "SASRec uses multi-head attention for sequence modeling",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "DEKR and MLTaskKG are prior KGs for ML resource recommendation",
+      "text": "BERT4Rec employs bidirectional transformers for contextual information",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG integrates richer metadata and fine-grained relationships",
+      "text": "Transformer models face quadratic complexity with long sequences",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingBench enables model tracing, pioneering inter-Model relation analysis",
+      "text": "State-space models (SSMs) excel at capturing temporal dynamics",
       "importance": "vital",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG contains 2.6M nodes, 6.2M edges, 8 types, 30 relations",
+      "text": "SSMs struggle to balance long/short-term modeling and pattern diversity",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec unifies preference-aware attention and state-space modeling",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec uses mixture-of-experts for diverse behavioral patterns",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "STAR-Rec efficiently handles variable-length sequences and diverse item relationships",
+      "importance": "vital",
+      "assignment": "support"
+    },
+    {
+      "text": "LinRec introduces linear complexity attention for efficiency",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG captures inter-Model relations: Adapter, Finetune, Merge, Quantize",
+      "text": "GRU4Rec offers linear complexity but limited effectiveness",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "HuggingKG includes user interaction signals: Publish, Like, Follow",
+      "text": "Mamba4Rec improves efficiency with selective state space modeling",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "DEKR focuses on description enhancement, lacks dynamic/user relations",
+      "text": "ECHO-Mamba4Rec combines bidirectional Mamba and frequency-domain filtering",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "MLTaskKG integrates static data, supports task-oriented library recommendation",
+      "text": "RecMamba handles lifelong recommendation scenarios",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "paper2repo matches papers to code, limited entity types, no KG structure",
+      "text": "Mamba4KT adapts Mamba for knowledge tracing",
       "importance": "okay",
       "assignment": "support"
     },
     {
-      "text": "Xu et al. use multi-modal features for repo recommendation, no explicit KG",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "GRETA builds an Entity Tag Graph for repository tag assignment",
-      "importance": "okay",
-      "assignment": "support"
-    },
-    {
-      "text": "Bai et al. predict Issue-PR links on GitHub, not model evolution",
+      "text": "SIGMA uses bi-directional structure and selective gating for context modeling",
       "importance": "okay",
       "assignment": "support"
     }
   ],
   "nuggets_metrics": {
-    "strict_vital_score": 0.75,
-    "strict_all_score": 0.8823529411764706,
-    "vital_score": 0.8125,
-    "all_score": 0.9117647058823529
+    "strict_vital_score": 1.0,
+    "strict_all_score": 1.0,
+    "vital_score": 1.0,
+    "all_score": 1.0
   }
 }
